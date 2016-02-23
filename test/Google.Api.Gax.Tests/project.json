@@ -1,0 +1,24 @@
+﻿{
+    "version": "0.0.0-*",
+    "description": "Tests for Google.Apis.Common",
+    "authors": [
+        "Google"
+    ],
+    "tags": [
+        ""
+    ],
+    "projectUrl": "",
+    "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+    "dependencies": {
+        "xunit": "2.1.0",
+        "xunit.runner.dnx": "2.1.0-rc1-build204",
+        "Google.Api.Gax": "",
+        "Ix-Async": "1.2.5"
+    },
+    "commands": {
+        "test": "xunit.runner.dnx -parallel none"
+    },
+    "frameworks": {
+        "dnx451": {}
+    }
+}

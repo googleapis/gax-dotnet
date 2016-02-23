@@ -1,0 +1,6 @@
+.vs
+.vscode
+*.user
+obj
+bin
+project.lock.json
