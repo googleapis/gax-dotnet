@@ -1,14 +1,5 @@
 ﻿{
-    "version": "0.0.0-*",
-    "description": "Tests for Google.Apis.Common",
-    "authors": [
-        "Google"
-    ],
-    "tags": [
-        ""
-    ],
-    "projectUrl": "",
-    "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+    "description": "Tests for Google.Api.Gax",
     "dependencies": {
         "xunit": "2.1.0",
         "xunit.runner.dnx": "2.1.0-rc1-build204",
