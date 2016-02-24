@@ -4,3 +4,8 @@
 obj
 bin
 project.lock.json
+
+# Used by docfx as the conventional output directory.
+# (We could put this under obj if that became simpler; see
+# docfx.json.)
+_site
