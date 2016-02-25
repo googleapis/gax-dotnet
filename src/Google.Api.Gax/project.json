@@ -7,6 +7,9 @@
     "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
     "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
     "tags": [ "Google" ],
+    "compilationOptions": {
+        "keyFile": "../../Gax.snk"
+    },
     "dependencies": {
         "Google.Apis.Auth": "1.10.0",
         "Google.Protobuf": "3.0.0-beta2",

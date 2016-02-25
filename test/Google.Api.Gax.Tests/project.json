@@ -6,6 +6,9 @@
         "Google.Api.Gax": "",
         "Ix-Async": "1.2.5"
     },
+    "compilationOptions": {
+        "keyFile": "../../Gax.snk"
+    },
     "commands": {
         "test": "xunit.runner.dnx -parallel none"
     },
