@@ -1,0 +1,27 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "**/project.json" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "cwd": "src"
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "**/*.yml" ],
+        "cwd": "obj/api",
+        "dest": "api"
+      },
+    ],
+    "globalMetadata": {
+      "_appTitle": "GAX: Google API Extensions"
+    },
+    "dest": "_site"
+  }
+}

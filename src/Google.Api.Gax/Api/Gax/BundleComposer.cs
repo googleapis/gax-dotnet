@@ -14,7 +14,7 @@ using System.Linq;
 namespace Google.Api.Gax
 {
     /// <summary>
-    /// Describes operations used by a <see cref="Bundler"/> to combine requests together and split a
+    /// Describes operations used by a <see cref="Bundler{,}"/> to combine requests together and split a
     /// single response into its components to reply to the original requests.
     /// </summary>
     /// <remarks>This type is almost never needed by manually written code.
