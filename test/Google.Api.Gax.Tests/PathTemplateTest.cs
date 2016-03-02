@@ -62,6 +62,7 @@ namespace Google.Api.Gax.Tests
         [InlineData("buckets/*/*/objects/*", "buckets/f/o/objects/bar", new[] { "f", "o", "bar" }, null)]
         [InlineData("buckets/*/objects/**", "buckets/foo/objects/bar/baz", new[] { "foo", "bar/baz" }, null)]
         [InlineData("bar/**/foo/*", "bar/foo/foo/foo/bar", new[] { "foo/foo", "bar" }, null)]
+        [InlineData("bar/**/foo/*", "bar/foo/bar", new[] { "", "bar" }, null)]
         [InlineData("bar/*/foo/*", "//service/bar/x/foo/y", new[] { "x", "y" }, "service")]
         public void ParseName_Valid(string templateText, string name, string[] expectedResourceIds, string expectedServiceName)
         {
@@ -72,6 +73,49 @@ namespace Google.Api.Gax.Tests
                 Assert.Equal(resourceName[i], expectedResourceIds[i]);
             }
             Assert.Equal(expectedServiceName, resourceName.ServiceName);
+        }
+
+        [Theory]
+        [InlineData("buckets/*/objects/*", new[] { "foo", "bar" }, "buckets/foo/objects/bar")]
+        [InlineData("buckets/**/objects/*", new[] { "foo/qux", "bar" }, "buckets/foo/qux/objects/bar")]
+        [InlineData("buckets/**/objects/*", new[] { "", "bar" }, "buckets/objects/bar")]
+        public void Expand_Valid(string templateText, string[] resourceIds, string expectedResult)
+        {
+            var template = new PathTemplate(templateText);
+            var actual = template.Expand(resourceIds);
+            Assert.Equal(expectedResult, actual);
+        }
+
+        [Theory]
+        [InlineData("buckets/*/objects/*", new[] { "foo/qux", "bar" })]
+        [InlineData("buckets/**/objects/*", new[] { "bar" })]
+        [InlineData("buckets/*/objects/*", new[] { "foo", "bar", "baz" })]
+        [InlineData("buckets/*/objects/*", new[] { "foo", "" })]
+        [InlineData("buckets/**/objects/*", new[] { "foo", "bar", "baz" })]
+        public void Expand_Invalid(string templateText, string[] resourceIds)
+        {
+            var template = new PathTemplate(templateText);
+            Assert.Throws<ArgumentException>(() => template.Expand(resourceIds));
+        }
+
+        [Theory]
+        [InlineData("buckets/*/objects/*", null, new[] { "foo", "bar" }, "buckets/foo/objects/bar")]
+        [InlineData("buckets/*/objects/*", "service", new[] { "foo", "bar" }, "//service/buckets/foo/objects/bar")]
+        public void ExpandWithService_Valid(string templateText, string serviceName, string[] resourceIds, string expectedResult)
+        {
+            var template = new PathTemplate(templateText);
+            var actual = template.ExpandWithService(serviceName, resourceIds);
+            Assert.Equal(expectedResult, actual);
+        }
+
+        [Theory]
+        [InlineData("buckets/*/objects/*", null, new[] { "foo/qux", "bar" })]
+        [InlineData("buckets/*/objects/*", "", new[] { "foo", "bar" })]
+        [InlineData("buckets/*/objects/*", "a/b", new[] { "foo", "bar" })]
+        public void ExpandWithService_Invalid(string templateText, string serviceName, string[] resourceIds)
+        {
+            var template = new PathTemplate(templateText);
+            Assert.Throws<ArgumentException>(() => template.ExpandWithService(serviceName, resourceIds));
         }
     }
 }

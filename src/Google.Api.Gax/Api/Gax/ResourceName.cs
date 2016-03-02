@@ -37,14 +37,7 @@ namespace Google.Api.Gax
             get { return _serviceName; }
             set
             {
-                if (value == "")
-                {
-                    throw new ArgumentException("Service name cannot be empty", nameof(value));
-                }
-                if (value != null && value.Contains("/"))
-                {
-                    throw new ArgumentException("Service name cannot be contain /", nameof(value));
-                }
+                PathTemplate.ValidateServiceName(_serviceName, nameof(value));
                 _serviceName = value;
             }
         }

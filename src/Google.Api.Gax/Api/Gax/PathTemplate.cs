@@ -76,6 +76,28 @@ namespace Google.Api.Gax
         public int ParameterCount => _parameterSegments.Count;
 
         /// <summary>
+        /// Validates a service name, ensuring it is not empty and doesn't contain any slashes.
+        /// (In the future, we may want to make this stricter, e.g. that it's a valid DNS-like name.)
+        /// </summary>
+        /// <param name="serviceName">The name to validate</param>
+        /// <param name="parameterName">The name of the parameter</param>
+        internal static void ValidateServiceName(string serviceName, string parameterName)
+        {
+            if (serviceName == null)
+            {
+                return;
+            }
+            if (serviceName == "")
+            {
+                throw new ArgumentException("Service name cannot be empty", parameterName);
+            }
+            if (serviceName.Contains("/"))
+            {
+                throw new ArgumentException("Service name cannot be contain /", parameterName);
+            }
+        }
+
+        /// <summary>
         /// Validate a single value from a sequence. This is used in both parsing and instantiating.
         /// </summary>
         internal void ValidateResourceId(int index, string resourceId)
@@ -99,6 +121,43 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
+        /// Validates that the given resource IDs are valid for this template, and returns a string representation
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is equivalent to calling <c>new ResourceName(template, resourceIds).ToString()</c>, but simpler in
+        /// calling code and more efficient in terms of memory allocation.
+        /// </para>
+        /// <para>
+        /// This method assumes no service name is required. Call <see cref="ExpandWithService"/> to specify a service name.
+        /// </para>
+        /// </remarks>
+        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template.</param>
+        /// <returns>The string representation of the resource name.</returns>
+        public string Expand(string[] resourceIds) => ExpandWithService(null, resourceIds);
+
+        /// <summary>
+        /// Validates that the given resource IDs are valid for this template, and returns a string representation
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is equivalent to calling <c>new ResourceName(template, resourceIds).ToString()</c>, but simpler in
+        /// calling code and more efficient in terms of memory allocation.
+        /// </para>
+        /// <para>
+        /// This method assumes no service name is required. Call <see cref="ExpandWithService"/> to specify a service name.
+        /// </para>
+        /// </remarks>
+        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template.</param>
+        /// <returns>The string representation of the resource name.</returns>
+        public string ExpandWithService(string serviceName, string[] resourceIds)
+        {
+            ValidateResourceIds(resourceIds);
+            ValidateServiceName(serviceName, nameof(serviceName));
+            return ReplaceParameters(serviceName, resourceIds);
+        }
+
+        /// <summary>
         /// Returns a string representation of the template with parameters replaced by resource IDs.
         /// </summary>
         /// <param name="resourceIds">Resource IDs to interpolate the template with. Expected to have been validated already.</param>
@@ -108,13 +167,18 @@ namespace Google.Api.Gax
             var result = new StringBuilder();
             if (serviceName != null)
             {
-                result.Append("//").Append(serviceName);
+                result.Append("//").Append(serviceName).Append("/");
             }
+            bool suppressSlash = true;
             foreach (var segment in _segments)
             {
-                if (result.Length != 0)
+                if (!suppressSlash)
                 {
                     result.Append('/');
+                }
+                else
+                {
+                    suppressSlash = false;
                 }
                 switch (segment.Kind)
                 {
@@ -122,8 +186,12 @@ namespace Google.Api.Gax
                         result.Append(segment.Value);
                         break;
                     case SegmentKind.Wildcard:
-                    case SegmentKind.PathWildcard:
                         result.Append(resourceIds[nextIdIndex++]);
+                        break;
+                    case SegmentKind.PathWildcard:
+                        string path = resourceIds[nextIdIndex++];
+                        result.Append(path);
+                        suppressSlash = path == "";
                         break;
                 }
             }
@@ -170,6 +238,7 @@ namespace Google.Api.Gax
             if (name.StartsWith("//"))
             {
                 int nameEnd = name.IndexOf('/', 2);
+                // Can't call ValidateServiceName as we don't want to throw...
                 if (nameEnd == 2)
                 {
                     errorText = "Service name cannot be empty";
@@ -184,14 +253,18 @@ namespace Google.Api.Gax
                 name = name.Substring(nameEnd + 1);
             }
             string[] nameSegments = name.Split(SlashSplit);
-            if (nameSegments.Length < _segments.Count)
+            if (_hasPathWildcard)
             {
-                errorText = "Name does not match template: too few segments";
-                return null;
+                // The path wildcard can be empty...
+                if (nameSegments.Length < _segments.Count - 1)
+                {
+                    errorText = "Name does not match template: too few segments";
+                    return null;
+                }
             }
-            if (!_hasPathWildcard && nameSegments.Length > _segments.Count)
+            else if (nameSegments.Length != _segments.Count)
             {
-                errorText = "Name does not match template: too many segments";
+                errorText = "Name does not match template: incorrect number of segments";
                 return null;
             }
             string[] resourceIds = new string[ParameterCount];
