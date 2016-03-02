@@ -1,0 +1,363 @@
+﻿/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+
+namespace Google.Api.Gax
+{
+    /// <summary>
+    /// Represents a path template used for resource names which may be composed of multiple IDs.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Templates use a subset of the syntax of the API platform. See the protobuf of <see cref="HttpRule"/> for
+    /// details of the API platform.
+    /// </para>
+    /// <para>
+    /// This class performs no URL escaping or unescaping. It is designed for use within GRPC, where no
+    /// URL encoding is required.
+    /// </para>
+    /// </remarks>
+    public sealed class PathTemplate
+    {
+        /// <summary>
+        /// Just an array containing a single slash, to avoid constructing a new array every time we need
+        /// to split.
+        /// </summary>
+        private static readonly char[] SlashSplit = { '/' };
+
+        /// <summary>
+        /// List of segments in this template. Never modified after construction.
+        /// </summary>
+        private readonly IList<Segment> _segments;
+        /// <summary>
+        /// List of the segments in this template which are wildcards. Never modified after construction.
+        /// </summary>
+        private readonly IList<Segment> _parameterSegments;
+
+        private readonly string _originalTemplate;
+        private readonly bool _hasPathWildcard;
+
+        /// <summary>
+        /// The names of the parameters within the template. This collection has one element per parameter,
+        /// but unnamed parameters have a name of <c>null</c>.
+        /// </summary>
+        public ReadOnlyCollection<string> ParameterNames { get; }
+
+        /// <summary>
+        /// Constructs a template from its textual representation, such as <c>shelves/*/books/**</c>.
+        /// </summary>
+        /// <param name="template">The textual representation of the template.</param>
+        public PathTemplate(string template)
+        {
+            _segments = template.Split(SlashSplit).Select(Segment.Parse).ToList();
+            _parameterSegments = _segments.Where(s => s.Kind != SegmentKind.Literal).ToList();
+            int pathWildcardCount = _segments.Count(s => s.Kind == SegmentKind.PathWildcard);
+            if (pathWildcardCount > 1)
+            {
+                throw new ArgumentException("Template contains multiple path wildcards", nameof(template));
+            }
+            _hasPathWildcard = pathWildcardCount != 0;
+            _originalTemplate = template;
+            ParameterNames = _parameterSegments.Select(x => x.Value).ToList().AsReadOnly();
+        }
+
+        /// <summary>
+        /// The number of parameter segments (regular wildcards or path wildcards, named or unnamed) in the template.
+        /// </summary>
+        public int ParameterCount => _parameterSegments.Count;
+
+        /// <summary>
+        /// Validate a single value from a sequence. This is used in both parsing and instantiating.
+        /// </summary>
+        internal void ValidateResourceId(int index, string resourceId)
+        {
+            _parameterSegments[index].ValidateWildcardValue(resourceId);
+        }
+
+        /// <summary>
+        /// Validates a whole array of resource IDs, including that the count matches.
+        /// </summary>
+        internal void ValidateResourceIds(string[] resourceIds)
+        {
+            if (resourceIds.Length != ParameterCount)
+            {
+                throw new ArgumentException($"Expected {ParameterCount} ids, got {resourceIds.Length}");
+            }
+            for (int i = 0; i < resourceIds.Length; i++)
+            {
+                ValidateResourceId(i, resourceIds[i]);
+            }
+        }
+
+        /// <summary>
+        /// Returns a string representation of the template with parameters replaced by resource IDs.
+        /// </summary>
+        /// <param name="resourceIds">Resource IDs to interpolate the template with. Expected to have been validated already.</param>
+        internal string ReplaceParameters(string serviceName, string[] resourceIds)
+        {
+            int nextIdIndex = 0;
+            var result = new StringBuilder();
+            if (serviceName != null)
+            {
+                result.Append("//").Append(serviceName);
+            }
+            foreach (var segment in _segments)
+            {
+                if (result.Length != 0)
+                {
+                    result.Append('/');
+                }
+                switch (segment.Kind)
+                {
+                    case SegmentKind.Literal:
+                        result.Append(segment.Value);
+                        break;
+                    case SegmentKind.Wildcard:
+                    case SegmentKind.PathWildcard:
+                        result.Append(resourceIds[nextIdIndex++]);
+                        break;
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Attempts to parse the given resource name against this template, returning <c>null</c> on failure.
+        /// </summary>
+        /// <remarks>
+        /// Although this method returns <c>null</c> if a name is passed in which doesn't match the template,
+        /// it still throws <see cref="ArgumentNullException"/> if <paramref name="name"/> is null, as this would
+        /// usually indicate a programming error rather than a data error.
+        /// </remarks>
+        /// <param name="name">The resource name to parse against this template.</param>
+        /// <returns>The parsed name as a <see cref="ResourceName"/>, or <c>null</c> if the name does not match this
+        /// template.</returns>
+        public ResourceName TryParseName(string name)
+        {
+            string ignoredErrorText;
+            return TryParseName(name, out ignoredErrorText);
+        }
+
+        /// <summary>
+        /// Attempts to parse the given resource name against this template, throwing <see cref="ArgumentException" /> on failure.
+        /// </summary>
+        /// <param name="name">The resource name to parse against this template.</param>
+        /// <returns>The parsed name as a <see cref="ResourceName"/>.</returns>
+        public ResourceName ParseName(string name)
+        {
+            string errorText;
+            ResourceName resourceName = TryParseName(name, out errorText);
+            if (resourceName == null)
+            {
+                throw new ArgumentException(errorText, nameof(name));
+            }
+            return resourceName;
+        }
+
+        private ResourceName TryParseName(string name, out string errorText)
+        {
+            GaxPreconditions.CheckNotNull(name, nameof(name));
+            string serviceName = null;
+            if (name.StartsWith("//"))
+            {
+                int nameEnd = name.IndexOf('/', 2);
+                if (nameEnd == 2)
+                {
+                    errorText = "Service name cannot be empty";
+                    return null;
+                }
+                if (nameEnd == -1)
+                {
+                    errorText = "Name does not match template: no segments after service name";
+                    return null;
+                }
+                serviceName = name.Substring(2, nameEnd - 2);
+                name = name.Substring(nameEnd + 1);
+            }
+            string[] nameSegments = name.Split(SlashSplit);
+            if (nameSegments.Length < _segments.Count)
+            {
+                errorText = "Name does not match template: too few segments";
+                return null;
+            }
+            if (!_hasPathWildcard && nameSegments.Length > _segments.Count)
+            {
+                errorText = "Name does not match template: too many segments";
+                return null;
+            }
+            string[] resourceIds = new string[ParameterCount];
+            int resourceIdIndex = 0;
+            int nameSegmentIndex = 0;
+            foreach (var segment in _segments)
+            {
+                switch (segment.Kind)
+                {
+                    case SegmentKind.Literal:
+                        var nameSegment = nameSegments[nameSegmentIndex++];
+                        if (nameSegment != segment.Value)
+                        {
+                            errorText = $"Name does not match template in literal segment: '{nameSegment}' != '{segment.Value}'";
+                            return null;
+                        }
+                        break;
+                    case SegmentKind.Wildcard:
+                        // Could use segment.ValidateWildcard, but the exception wouldn't be as clean.
+                        var value = nameSegments[nameSegmentIndex++];
+                        if (value == "")
+                        {
+                            errorText = "Name does not match template: wildcard segment is empty";
+                            return null;
+                        }
+                        resourceIds[resourceIdIndex++] = value;
+                        break;
+                    case SegmentKind.PathWildcard:
+                        // Work out how many segments to consume based on the number of segments in the template and the
+                        // actual number of segments in the specified name
+                        int count = nameSegments.Length - _segments.Count + 1;
+                        // Make the common case more efficient
+                        if (count == 1)
+                        {
+                            resourceIds[resourceIdIndex++] = nameSegments[nameSegmentIndex++];
+                        }
+                        else
+                        {
+                            resourceIds[resourceIdIndex++] = string.Join("/", nameSegments.Skip(nameSegmentIndex).Take(count));
+                            nameSegmentIndex += count;
+                        }
+                        break;
+                }
+            }
+            errorText = null;
+            return ResourceName.CreateWithShallowCopy(this, serviceName, resourceIds);
+        }
+
+        /// <summary>
+        /// Returns the textual representation of this template.
+        /// </summary>
+        /// <returns>The same textual representation that this template was initially constructed with.</returns>
+        public override string ToString() => _originalTemplate;
+
+        private enum SegmentKind
+        {
+            /// <summary>
+            /// A literal path segment.
+            /// </summary>
+            Literal,
+
+            /// <summary>
+            /// A simple wildcard ('*').
+            /// </summary>
+            Wildcard,
+
+            /// <summary>
+            /// A path wildcard ('**').
+            /// </summary>
+            PathWildcard,
+        }
+
+        /// <summary>
+        /// A segment of a path.
+        /// </summary>
+        private sealed class Segment
+        {
+            private static readonly Segment UnnamedWildcard = new Segment(SegmentKind.Wildcard, null);
+            private static readonly Segment UnnamedPathWildcard = new Segment(SegmentKind.PathWildcard, null);
+
+            internal SegmentKind Kind { get; }
+            /// <summary>
+            /// The literal value or the name of a wildcard.
+            /// null for unnamed wildcards.
+            /// </summary>
+            internal string Value { get; }
+
+            private Segment(SegmentKind kind, string value)
+            {
+                Kind = kind;
+                Value = value;
+            }
+
+            internal void ValidateWildcardValue(string value)
+            {
+                GaxPreconditions.CheckNotNull(value, nameof(value));
+                // TODO: Use subclasses instead?
+                switch (Kind)
+                {
+                    case SegmentKind.Literal:
+                        throw new InvalidOperationException("Values cannot be specified for literal segments");
+                    case SegmentKind.PathWildcard:
+                        if (value.StartsWith("/") || value.EndsWith("/"))
+                        {
+                            throw new ArgumentException("Path wildcard values must not start or end with /", nameof(value));
+                        }
+                        break;
+                    case SegmentKind.Wildcard:
+                        if (value == "")
+                        {
+                            throw new ArgumentException("Wildcard resource ids must not be empty", nameof(value));
+                        }
+                        if (value.Contains("/"))
+                        {
+                            throw new ArgumentException("Wildcard resource ids must not contain /", nameof(value));
+                        }
+                        break;
+                }
+            }
+
+            internal static Segment Parse(string segment)
+            {
+                if (segment == "")
+                {
+                    throw new ArgumentException("Invalid template: empty segment", nameof(segment));
+                }
+                if (segment == "*")
+                {
+                    return UnnamedWildcard;
+                }
+                if (segment == "**")
+                {
+                    return UnnamedPathWildcard;
+                }
+                bool startsWithBrace = segment.StartsWith("{");
+                bool endsWithBrace = segment.EndsWith("}");
+                if (startsWithBrace != endsWithBrace)
+                {
+                    throw new ArgumentException($"Invalid template segment: {segment}", nameof(segment));
+                }
+                if (!startsWithBrace)
+                {
+                    return new Segment(SegmentKind.Literal, segment);
+                }
+                int equalsIndex = segment.IndexOf('=');
+                if (equalsIndex == -1)
+                {
+                    // Implicitly named wildcard
+                    return new Segment(SegmentKind.Wildcard, segment.Substring(1, segment.Length - 2));
+                }
+                string name = segment.Substring(1, equalsIndex - 1);
+                if (name == "")
+                {
+                    throw new ArgumentException($"Invalid template segment: {segment}", nameof(segment));
+                }
+                string match = segment.Substring(equalsIndex);
+                switch (match)
+                {
+                    case "=*}":
+                        return new Segment(SegmentKind.Wildcard, name);
+                    case "=**}":
+                        return new Segment(SegmentKind.PathWildcard, name);
+                    default:
+                        throw new ArgumentException($"Invalid template segment: {segment}", nameof(segment));
+                }
+            }
+        }
+    }
+}
