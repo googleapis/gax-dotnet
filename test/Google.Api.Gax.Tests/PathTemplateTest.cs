@@ -27,6 +27,7 @@ namespace Google.Api.Gax.Tests
         }
 
         [Theory]
+        [InlineData("")]
         [InlineData("shelves/**/books/**")]
         [InlineData("bar/**/{name=foo/**}:verb")]
         [InlineData("shelves/foo}")]
@@ -54,16 +55,25 @@ namespace Google.Api.Gax.Tests
         public void ParseName_Invalid(string templateText, string name)
         {
             var template = new PathTemplate(templateText);
-            Assert.Throws<ArgumentException>(() => template.ParseName(name));
-            Assert.Null(template.TryParseName(name));
+            Assert.Throws<FormatException>(() => template.ParseName(name));
+            ResourceName result;
+            Assert.False(template.TryParseName(name, out result));
+            Assert.Null(result);
         }
 
         [Theory]
         [InlineData("buckets/*/*/objects/*", "buckets/f/o/objects/bar", new[] { "f", "o", "bar" }, null)]
         [InlineData("buckets/*/objects/**", "buckets/foo/objects/bar/baz", new[] { "foo", "bar/baz" }, null)]
         [InlineData("bar/**/foo/*", "bar/foo/foo/foo/bar", new[] { "foo/foo", "bar" }, null)]
-        [InlineData("bar/**/foo/*", "bar/foo/bar", new[] { "", "bar" }, null)]
         [InlineData("bar/*/foo/*", "//service/bar/x/foo/y", new[] { "x", "y" }, "service")]
+        // Empty path wild cards are a pain...
+        [InlineData("bar/**/foo/*", "bar/foo/bar", new[] { "", "bar" }, null)]
+        [InlineData("**/foo/*", "foo/bar", new[] { "", "bar" }, null)]
+        [InlineData("**/foo/*", "//service/foo/bar", new[] { "", "bar" }, "service")]
+        [InlineData("**", "", new[] { "" }, null)]
+        [InlineData("**", "//service", new[] { "" }, "service")]
+        [InlineData("a/**", "a", new[] { "" }, null)]
+        [InlineData("a/**", "//service/a", new[] { "" }, "service")]
         public void ParseName_Valid(string templateText, string name, string[] expectedResourceIds, string expectedServiceName)
         {
             var template = new PathTemplate(templateText);
@@ -73,6 +83,13 @@ namespace Google.Api.Gax.Tests
                 Assert.Equal(resourceName[i], expectedResourceIds[i]);
             }
             Assert.Equal(expectedServiceName, resourceName.ServiceName);
+            // Should round-trip...
+            Assert.Equal(name, resourceName.ToString());
+
+            // And TryParse...
+            ResourceName result;
+            Assert.True(template.TryParseName(name, out result));
+            Assert.NotNull(result);
         }
 
         [Theory]
@@ -116,6 +133,20 @@ namespace Google.Api.Gax.Tests
         {
             var template = new PathTemplate(templateText);
             Assert.Throws<ArgumentException>(() => template.ExpandWithService(serviceName, resourceIds));
+        }
+
+        /// <summary>
+        /// Test to document a weird corner case that I think is reasonable to ignore.
+        /// With a path template consisting of only "**", both "//service/" and "//service" are representations
+        /// of a resource name with an empty value for the parameter. After parsing, we can't tell the difference.
+        /// (If we banned empty values for path wildcards, that would simplify quite a few things...)
+        /// </summary>
+        [Fact]
+        public void NonRoundtripCornerCase()
+        {
+            var template = new PathTemplate("**");
+            var name = template.ParseName("//service/");
+            Assert.Equal("//service", name.ToString());
         }
     }
 }

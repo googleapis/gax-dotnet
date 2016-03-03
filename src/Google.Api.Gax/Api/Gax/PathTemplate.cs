@@ -19,7 +19,8 @@ namespace Google.Api.Gax
     /// <remarks>
     /// <para>
     /// Templates use a subset of the syntax of the API platform. See the protobuf of <see cref="HttpRule"/> for
-    /// details of the API platform.
+    /// details of the API platform. (The source for <c>HttpRule</c> is at
+    /// https://github.com/googleapis/googleapis/blob/master/google/api/http.proto)
     /// </para>
     /// <para>
     /// This class performs no URL escaping or unescaping. It is designed for use within GRPC, where no
@@ -37,11 +38,12 @@ namespace Google.Api.Gax
         /// <summary>
         /// List of segments in this template. Never modified after construction.
         /// </summary>
-        private readonly IList<Segment> _segments;
+        private readonly IReadOnlyList<Segment> _segments;
+
         /// <summary>
         /// List of the segments in this template which are wildcards. Never modified after construction.
         /// </summary>
-        private readonly IList<Segment> _parameterSegments;
+        private readonly IReadOnlyList<Segment> _parameterSegments;
 
         private readonly string _originalTemplate;
         private readonly bool _hasPathWildcard;
@@ -55,9 +57,10 @@ namespace Google.Api.Gax
         /// <summary>
         /// Constructs a template from its textual representation, such as <c>shelves/*/books/**</c>.
         /// </summary>
-        /// <param name="template">The textual representation of the template.</param>
+        /// <param name="template">The textual representation of the template. Must not be null.</param>
         public PathTemplate(string template)
         {
+            GaxPreconditions.CheckNotNull(template, nameof(template));
             _segments = template.Split(SlashSplit).Select(Segment.Parse).ToList();
             _parameterSegments = _segments.Where(s => s.Kind != SegmentKind.Literal).ToList();
             int pathWildcardCount = _segments.Count(s => s.Kind == SegmentKind.PathWildcard);
@@ -95,6 +98,7 @@ namespace Google.Api.Gax
             {
                 throw new ArgumentException("Service name cannot be contain /", parameterName);
             }
+            // TODO: More restrictions when they've been determined.
         }
 
         /// <summary>
@@ -110,9 +114,10 @@ namespace Google.Api.Gax
         /// </summary>
         internal void ValidateResourceIds(string[] resourceIds)
         {
+            GaxPreconditions.CheckNotNull(resourceIds, nameof(resourceIds));
             if (resourceIds.Length != ParameterCount)
             {
-                throw new ArgumentException($"Expected {ParameterCount} ids, got {resourceIds.Length}");
+                throw new ArgumentException($"Expected {ParameterCount} ids, got {resourceIds.Length}", nameof(resourceIds));
             }
             for (int i = 0; i < resourceIds.Length; i++)
             {
@@ -132,25 +137,19 @@ namespace Google.Api.Gax
         /// This method assumes no service name is required. Call <see cref="ExpandWithService"/> to specify a service name.
         /// </para>
         /// </remarks>
-        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template.</param>
+        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template. Must not be null.</param>
         /// <returns>The string representation of the resource name.</returns>
-        public string Expand(string[] resourceIds) => ExpandWithService(null, resourceIds);
+        public string Expand(params string[] resourceIds) => ExpandWithService(null, resourceIds);
 
         /// <summary>
         /// Validates that the given resource IDs are valid for this template, and returns a string representation
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// This is equivalent to calling <c>new ResourceName(template, resourceIds).ToString()</c>, but simpler in
-        /// calling code and more efficient in terms of memory allocation.
-        /// </para>
-        /// <para>
-        /// This method assumes no service name is required. Call <see cref="ExpandWithService"/> to specify a service name.
-        /// </para>
         /// </remarks>
-        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template.</param>
+        /// <param name="resourceIds">The resource IDs to use to populate the parameters in this template. Must not be null.</param>
+        /// <param name="serviceName">The service name, which may be null.</param>
         /// <returns>The string representation of the resource name.</returns>
-        public string ExpandWithService(string serviceName, string[] resourceIds)
+        public string ExpandWithService(string serviceName, params string[] resourceIds)
         {
             ValidateResourceIds(resourceIds);
             ValidateServiceName(serviceName, nameof(serviceName));
@@ -167,18 +166,13 @@ namespace Google.Api.Gax
             var result = new StringBuilder();
             if (serviceName != null)
             {
-                result.Append("//").Append(serviceName).Append("/");
+                result.Append("//").Append(serviceName);
             }
-            bool suppressSlash = true;
             foreach (var segment in _segments)
             {
-                if (!suppressSlash)
+                if (result.Length != 0)
                 {
                     result.Append('/');
-                }
-                else
-                {
-                    suppressSlash = false;
                 }
                 switch (segment.Kind)
                 {
@@ -191,7 +185,11 @@ namespace Google.Api.Gax
                     case SegmentKind.PathWildcard:
                         string path = resourceIds[nextIdIndex++];
                         result.Append(path);
-                        suppressSlash = path == "";
+                        if (path == "" && result.Length > 0)
+                        {
+                            // Swallow any slash that we've already added for this.
+                            result.Length--;
+                        }
                         break;
                 }
             }
@@ -206,32 +204,34 @@ namespace Google.Api.Gax
         /// it still throws <see cref="ArgumentNullException"/> if <paramref name="name"/> is null, as this would
         /// usually indicate a programming error rather than a data error.
         /// </remarks>
-        /// <param name="name">The resource name to parse against this template.</param>
-        /// <returns>The parsed name as a <see cref="ResourceName"/>, or <c>null</c> if the name does not match this
-        /// template.</returns>
-        public ResourceName TryParseName(string name)
+        /// <param name="name">The resource name to parse against this template. Must not be null.</param>
+        /// <param name="result">When this method returns, the parsed resource name or <c>null</c> if parsing fails.</param>
+        /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
+        public bool TryParseName(string name, out ResourceName result)
         {
-            string ignoredErrorText;
-            return TryParseName(name, out ignoredErrorText);
+            return TryParseNameInternal(name, out result) == null;
         }
 
         /// <summary>
         /// Attempts to parse the given resource name against this template, throwing <see cref="ArgumentException" /> on failure.
         /// </summary>
-        /// <param name="name">The resource name to parse against this template.</param>
+        /// <param name="name">The resource name to parse against this template. Must not be null.</param>
         /// <returns>The parsed name as a <see cref="ResourceName"/>.</returns>
         public ResourceName ParseName(string name)
         {
-            string errorText;
-            ResourceName resourceName = TryParseName(name, out errorText);
+            ResourceName resourceName;
+            string errorText = TryParseNameInternal(name, out resourceName);
             if (resourceName == null)
             {
-                throw new ArgumentException(errorText, nameof(name));
+                throw new FormatException(errorText);
             }
             return resourceName;
         }
 
-        private ResourceName TryParseName(string name, out string errorText)
+        /// <summary>
+        /// Implementation of parsing, returning the error message for a FormatException if parsing fails.
+        /// </summary>
+        private string TryParseNameInternal(string name, out ResourceName result)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             string serviceName = null;
@@ -241,31 +241,35 @@ namespace Google.Api.Gax
                 // Can't call ValidateServiceName as we don't want to throw...
                 if (nameEnd == 2)
                 {
-                    errorText = "Service name cannot be empty";
-                    return null;
+                    result = null;
+                    return "Service name cannot be empty";
                 }
+                // It's *just about* plausible to have a template of ** and a value of "//service".
                 if (nameEnd == -1)
                 {
-                    errorText = "Name does not match template: no segments after service name";
-                    return null;
+                    serviceName = name.Substring(2);
+                    name = "";
                 }
-                serviceName = name.Substring(2, nameEnd - 2);
-                name = name.Substring(nameEnd + 1);
+                else
+                {
+                    serviceName = name.Substring(2, nameEnd - 2);
+                    name = name.Substring(nameEnd + 1);
+                }
             }
-            string[] nameSegments = name.Split(SlashSplit);
+            string[] nameSegments = name == "" ? new string[0] : name.Split(SlashSplit);
             if (_hasPathWildcard)
             {
                 // The path wildcard can be empty...
                 if (nameSegments.Length < _segments.Count - 1)
                 {
-                    errorText = "Name does not match template: too few segments";
-                    return null;
+                    result = null;
+                    return "Name does not match template: too few segments";
                 }
             }
             else if (nameSegments.Length != _segments.Count)
             {
-                errorText = "Name does not match template: incorrect number of segments";
-                return null;
+                result = null;
+                return "Name does not match template: incorrect number of segments";
             }
             string[] resourceIds = new string[ParameterCount];
             int resourceIdIndex = 0;
@@ -278,8 +282,8 @@ namespace Google.Api.Gax
                         var nameSegment = nameSegments[nameSegmentIndex++];
                         if (nameSegment != segment.Value)
                         {
-                            errorText = $"Name does not match template in literal segment: '{nameSegment}' != '{segment.Value}'";
-                            return null;
+                            result = null;
+                            return $"Name does not match template in literal segment: '{nameSegment}' != '{segment.Value}'";
                         }
                         break;
                     case SegmentKind.Wildcard:
@@ -287,8 +291,8 @@ namespace Google.Api.Gax
                         var value = nameSegments[nameSegmentIndex++];
                         if (value == "")
                         {
-                            errorText = "Name does not match template: wildcard segment is empty";
-                            return null;
+                            result = null;
+                            return "Name does not match template: wildcard segment is empty";
                         }
                         resourceIds[resourceIdIndex++] = value;
                         break;
@@ -309,8 +313,8 @@ namespace Google.Api.Gax
                         break;
                 }
             }
-            errorText = null;
-            return ResourceName.CreateWithShallowCopy(this, serviceName, resourceIds);
+            result = ResourceName.CreateWithShallowCopy(this, serviceName, resourceIds);
+            return null; // Success!
         }
 
         /// <summary>

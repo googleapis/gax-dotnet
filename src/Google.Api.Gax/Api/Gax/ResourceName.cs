@@ -87,15 +87,16 @@ namespace Google.Api.Gax
         /// are ignored. This constructor does not populate the <see cref="ServiceName"/> property,
         /// but that can be set after construction.
         /// </summary>
+        /// <param name="template">The template for the new resource name. Must not be null.</param>
+        /// <param name="resourceIds">The resource IDs to populate template parameters with. Must not be null.</param>
         public ResourceName(PathTemplate template, params string[] resourceIds)
         {
-            Template = template;
-            this._resourceIds = (string[]) resourceIds.Clone();
+            Template = GaxPreconditions.CheckNotNull(template, nameof(Template));
             GaxPreconditions.CheckNotNull(resourceIds, nameof(resourceIds));
             // This is a somewhat annoying defensive copy. Given that we're usually going to just call ToString()
             // on the ResourceName, we don't really need the cloned array, or even the ResourceName itself.
-            resourceIds = (string[]) resourceIds.Clone();
-            template.ValidateResourceIds(resourceIds);
+            _resourceIds = (string[]) resourceIds.Clone();
+            template.ValidateResourceIds(_resourceIds);
         }
 
         /// <summary>
@@ -122,6 +123,11 @@ namespace Google.Api.Gax
             return new ResourceName(template, serviceName, resourceIds, true);
         }
 
+        /// <summary>
+        /// Returns a string representation of this resource name, expanding the template
+        /// parameters with the resource IDs and prepending the service name (if present).
+        /// </summary>
+        /// <returns>A string representation of this resource name.</returns>
         public override string ToString() => Template.ReplaceParameters(ServiceName, _resourceIds);
     }
 }
