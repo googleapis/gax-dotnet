@@ -33,7 +33,7 @@ namespace Google.Api.Gax
         /// Just an array containing a single slash, to avoid constructing a new array every time we need
         /// to split.
         /// </summary>
-        private static readonly char[] SlashSplit = { '/' };
+        private static readonly char[] s_slashSplit = { '/' };
 
         /// <summary>
         /// List of segments in this template. Never modified after construction.
@@ -52,7 +52,7 @@ namespace Google.Api.Gax
         /// The names of the parameters within the template. This collection has one element per parameter,
         /// but unnamed parameters have a name of <c>null</c>.
         /// </summary>
-        public ReadOnlyCollection<string> ParameterNames { get; }
+        public IReadOnlyList<string> ParameterNames { get; }
 
         /// <summary>
         /// Constructs a template from its textual representation, such as <c>shelves/*/books/**</c>.
@@ -61,7 +61,7 @@ namespace Google.Api.Gax
         public PathTemplate(string template)
         {
             GaxPreconditions.CheckNotNull(template, nameof(template));
-            _segments = template.Split(SlashSplit).Select(Segment.Parse).ToList();
+            _segments = template.Split(s_slashSplit).Select(Segment.Parse).ToList();
             _parameterSegments = _segments.Where(s => s.Kind != SegmentKind.Literal).ToList();
             int pathWildcardCount = _segments.Count(s => s.Kind == SegmentKind.PathWildcard);
             if (pathWildcardCount > 1)
@@ -256,7 +256,7 @@ namespace Google.Api.Gax
                     name = name.Substring(nameEnd + 1);
                 }
             }
-            string[] nameSegments = name == "" ? new string[0] : name.Split(SlashSplit);
+            string[] nameSegments = name == "" ? new string[0] : name.Split(s_slashSplit);
             if (_hasPathWildcard)
             {
                 // The path wildcard can be empty...
@@ -346,8 +346,8 @@ namespace Google.Api.Gax
         /// </summary>
         private sealed class Segment
         {
-            private static readonly Segment UnnamedWildcard = new Segment(SegmentKind.Wildcard, null);
-            private static readonly Segment UnnamedPathWildcard = new Segment(SegmentKind.PathWildcard, null);
+            private static readonly Segment s_unnamedWildcard = new Segment(SegmentKind.Wildcard, null);
+            private static readonly Segment s_unnamedPathWildcard = new Segment(SegmentKind.PathWildcard, null);
 
             internal SegmentKind Kind { get; }
             /// <summary>
@@ -397,11 +397,11 @@ namespace Google.Api.Gax
                 }
                 if (segment == "*")
                 {
-                    return UnnamedWildcard;
+                    return s_unnamedWildcard;
                 }
                 if (segment == "**")
                 {
-                    return UnnamedPathWildcard;
+                    return s_unnamedPathWildcard;
                 }
                 bool startsWithBrace = segment.StartsWith("{");
                 bool endsWithBrace = segment.EndsWith("}");

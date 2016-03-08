@@ -62,12 +62,16 @@ namespace Google.Api.Gax
         private int GetParameterIndex(string parameterName)
         {
             GaxPreconditions.CheckNotNull(parameterName, nameof(parameterName));
-            int index = Template.ParameterNames.IndexOf(parameterName);
-            if (index == -1)
+            var names = Template.ParameterNames;
+            // Annoyingly, IReadOnlyList doesn't have IndexOf... (and nor does LINQ)
+            for (int i = 0; i < names.Count; i++)
             {
-                throw new KeyNotFoundException($"Template doesn't contain a parameter named '{parameterName}'");
+                if (names[i] == parameterName)
+                {
+                    return i;
+                }
             }
-            return index;
+            throw new KeyNotFoundException($"Template doesn't contain a parameter named '{parameterName}'");
         }
 
         /// <summary>
