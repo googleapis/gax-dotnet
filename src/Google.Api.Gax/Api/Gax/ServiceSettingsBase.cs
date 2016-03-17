@@ -19,23 +19,11 @@ namespace Google.Api.Gax
     /// </remarks>
     public abstract class ServiceSettingsBase
     {
-        private TimeSpan? _timeout;
-
         /// <summary>
-        /// If not null, a timeout for all RPC calls. If null or unset, the RPC method default timeout will be used.
+        /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.
+        /// If null or unset, RPC default settings will be used for all settings.
         /// </summary>
-        public TimeSpan? Timeout
-        {
-            get { return _timeout; }
-            set
-            {
-                if (value != null && value.Value.Ticks <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Timeout must be positive and cannot be zero");
-                }
-                _timeout = value;
-            }
-        }
+        public CallSettings CallSettings { get; set; }
 
         /// <summary>
         /// If not null, the clock used to calculate RPC deadlines. If null or unset, the <see cref="SystemClock"/> is used.
@@ -66,7 +54,7 @@ namespace Google.Api.Gax
         /// <returns><paramref name="settings"/>, for convenience when calling as part of <see cref="Clone"/>.</returns>
         protected T CloneInto(T settings)
         {
-            settings.Timeout = Timeout;
+            settings.CallSettings = CallSettings.Clone();
             settings.Clock = Clock;
             return settings;
         }

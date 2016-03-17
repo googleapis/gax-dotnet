@@ -20,7 +20,8 @@ namespace Google.Api.Gax
     /// </summary>
     public class ClientHelper
     {
-        private readonly Func<DateTime?> _deadlineCalculator;
+        private readonly IClock _clock;
+        private readonly CallSettings _globalCallSettings;
 
         /// <summary>
         /// Constructs a helper from the given settings. These are expected to be cloned
@@ -29,48 +30,48 @@ namespace Google.Api.Gax
         /// <param name="settings">The service settings.</param>
         public ClientHelper(ServiceSettingsBase settings)
         {
-            _deadlineCalculator = GetDeadlineCalculator(settings);
+            _clock = settings.Clock ?? SystemClock.Instance;
+            _globalCallSettings = settings.CallSettings ?? new CallSettings();
         }
 
-        /// <summary>
-        /// Returns a function which will compute a deadline suitable for the clock and timeout
-        /// currently in effect in the given settings.
-        /// </summary>
-        /// <remarks>
-        /// Later changes made to the clock and timeout in the settings will not affect the returned delegate.
-        /// </remarks>
-        /// <returns>A delegate which computes a deadline.</returns>
-        private static Func<DateTime?> GetDeadlineCalculator(ServiceSettingsBase settings)
+        private DateTime? CalculateDeadline(Expiration expiration)
         {
-            var timeout = settings.Timeout;
-            if (timeout == null)
+            if (expiration == null || expiration.IsNone)
             {
-                return () => null;
+                return null;
             }
-            else
-            {
-                IClock clock = settings.Clock ?? SystemClock.Instance;
-                TimeSpan actualTimeout = timeout.Value;
-                // Important: this lambda expression doesn't capture settings
-                return () => clock.GetCurrentDateTimeUtc() + actualTimeout;
-            }
+            return expiration.Deadline ?? _clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
         }
 
         /// <summary>
         /// Builds a suitable <see cref="CallOptions"/> taking service settings into account,
-        /// along with a call-specific cancellation token and override mechanism.
+        /// along with a call-specific cancellation token and CallSettings override.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token to use for this call.</param>
         /// <param name="callOptionsOverride">Optional options override delegate.</param>
         /// <returns></returns>
         public CallOptions BuildCallOptions(
-            CancellationToken cancellationToken,
-            Func<CallOptions, CallOptions> callOptionsOverride)
+            CancellationToken? cancellationToken,
+            CallSettings callSettings)
         {
-            var callOptions = new CallOptions(
-                deadline: _deadlineCalculator(),
-                cancellationToken: cancellationToken);
-            return callOptionsOverride?.Invoke(callOptions) ?? callOptions;
+            if (callSettings == null)
+            {
+                return new CallOptions(
+                    headers: _globalCallSettings.Headers, // TODO: Add GAX header(s)
+                    deadline: CalculateDeadline(_globalCallSettings.Expiration),
+                    cancellationToken: cancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
+                    writeOptions: _globalCallSettings.WriteOptions,
+                    propagationToken: _globalCallSettings.PropagationToken,
+                    credentials: _globalCallSettings.Credentials);
+            }
+            return new CallOptions(
+                // TODO: Sort out our cloning story.
+                headers: callSettings.Headers?.Clone() ?? _globalCallSettings.Headers, // TODO: Add GAX header(s)
+                deadline: CalculateDeadline(callSettings.Expiration ?? _globalCallSettings.Expiration),
+                cancellationToken: cancellationToken ?? callSettings.CancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
+                writeOptions: callSettings.WriteOptions ?? _globalCallSettings.WriteOptions,
+                propagationToken: callSettings.PropagationToken ?? _globalCallSettings.PropagationToken,
+                credentials: callSettings.Credentials ?? _globalCallSettings.Credentials);
         }
 
         #region Factory methods for client construction
