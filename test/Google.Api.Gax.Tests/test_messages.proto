@@ -17,6 +17,14 @@ message BundlingRequest {
 }
 
 message BundlingResponse {
+  string name = 1;
+  repeated string entries = 2;
+}
+
+message SimpleRequest {
+  string name = 1;
+}
+
+message SimpleResponse {
   string name = 2;
-  repeated string entries = 3;
 }

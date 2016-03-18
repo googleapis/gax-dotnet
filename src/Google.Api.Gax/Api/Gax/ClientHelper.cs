@@ -41,13 +41,15 @@ namespace Google.Api.Gax
             _globalCallSettings = settings.CallSettings ?? new CallSettings();
         }
 
-        private DateTime? CalculateDeadline(Expiration expiration)
+        // TODO: Make this an extension method on IClock or Expiration? Doesn't really feel like it belongs here.
+        // Can't be a regular instance method on Expiration as we want to handle null.
+        internal static DateTime? CalculateDeadline(IClock clock, Expiration expiration)
         {
             if (expiration == null || expiration.IsNone)
             {
                 return null;
             }
-            return expiration.Deadline ?? _clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
+            return expiration.Deadline ?? clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace Google.Api.Gax
             {
                 return new CallOptions(
                     headers: _globalCallSettings.Headers, // TODO: Add GAX header(s)
-                    deadline: CalculateDeadline(_globalCallSettings.Expiration),
+                    deadline: CalculateDeadline(_clock, _globalCallSettings.Expiration),
                     cancellationToken: cancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
                     writeOptions: _globalCallSettings.WriteOptions,
                     propagationToken: _globalCallSettings.PropagationToken,
@@ -74,7 +76,7 @@ namespace Google.Api.Gax
             return new CallOptions(
                 // TODO: Sort out our cloning story.
                 headers: callSettings.Headers ?? _globalCallSettings.Headers, // TODO: Add GAX header(s)
-                deadline: CalculateDeadline(callSettings.Expiration ?? _globalCallSettings.Expiration),
+                deadline: CalculateDeadline(_clock, callSettings.Expiration ?? _globalCallSettings.Expiration),
                 cancellationToken: cancellationToken ?? callSettings.CancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
                 writeOptions: callSettings.WriteOptions ?? _globalCallSettings.WriteOptions,
                 propagationToken: callSettings.PropagationToken ?? _globalCallSettings.PropagationToken,
