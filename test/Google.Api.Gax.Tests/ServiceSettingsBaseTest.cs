@@ -15,52 +15,30 @@ namespace Google.Api.Gax.Tests
     {
         class TestSettings : ServiceSettingsBase<TestSettings>
         {
-            public override TestSettings Clone()
-            {
-                return CloneInto(new TestSettings());
-            }
+            public override TestSettings Clone() => CloneInto(new TestSettings());
         }
 
         [Fact]
         public void DefaultToNulls()
         {
             var settings = new TestSettings();
-            Assert.Null(settings.Timeout);
+            Assert.Null(settings.CallSettings);
             Assert.Null(settings.Clock);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData(1)]
-        public void Timeout_Valid(int? millis)
-        {
-            var timeout = millis == null ? default(TimeSpan?) : TimeSpan.FromMilliseconds(millis.Value);
-            var settings = new TestSettings { Timeout = timeout };
-            Assert.Equal(timeout, settings.Timeout);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void Timeout_Invalid(int? millis)
-        {
-            var timeout = millis == null ? default(TimeSpan?) : TimeSpan.FromMilliseconds(millis.Value);
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TestSettings { Timeout = timeout });
         }
 
         [Fact]
         public void Clone()
         {
             var clock = new Mock<IClock>();
-            var timeout = TimeSpan.FromSeconds(1);
+            var callSettings = new CallSettings();
             var settings = new TestSettings
             {
-                Timeout = timeout,
+                CallSettings = callSettings,
                 Clock = clock.Object,
             };
             var clonedSettings = settings.Clone();
             Assert.NotSame(settings, clonedSettings);
-            Assert.Equal(timeout, clonedSettings.Timeout);
+            Assert.NotSame(callSettings, clonedSettings.CallSettings);
             Assert.Equal(clock.Object, clonedSettings.Clock);
         }
 
