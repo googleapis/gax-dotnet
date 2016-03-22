@@ -104,7 +104,6 @@ namespace Google.Api.Gax.Tests
                 Credentials = null, // Un-creatable, un-mockable
             };
             CallOptions callOptions = helper.BuildCallOptions(null, callSettings);
-            Assert.NotSame(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
@@ -169,12 +168,9 @@ namespace Google.Api.Gax.Tests
             Assert.Equal(argCancellationToken, callOptions.CancellationToken);
         }
 
-        private class DummySettings : ServiceSettingsBase<DummySettings>
+        private class DummySettings : ServiceSettingsBase
         {
-            public override DummySettings Clone()
-            {
-                return CloneInto(new DummySettings());
-            }
+            public DummySettings Clone() => CloneInto(new DummySettings());
         }
     }
 }

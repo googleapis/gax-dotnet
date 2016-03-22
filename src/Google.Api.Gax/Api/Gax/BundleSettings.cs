@@ -78,15 +78,12 @@ namespace Google.Api.Gax
         /// Creates a clone of this object, with all the same property values.
         /// </summary>
         /// <returns>A clone of this set of bundle settings.</returns>
-        public BundleSettings Clone()
+        public BundleSettings Clone() => new BundleSettings
         {
-            return new BundleSettings
-            {
-                EntryCountThreshold = EntryCountThreshold,
-                RequestSizeThreshold = RequestSizeThreshold,
-                DelayThreshold = DelayThreshold
-            };
-        }
+            EntryCountThreshold = EntryCountThreshold,
+            RequestSizeThreshold = RequestSizeThreshold,
+            DelayThreshold = DelayThreshold
+        };
 
         /// <summary>
         /// Checks that the settings are valid, throwing an <see cref="ArgumentException"/>

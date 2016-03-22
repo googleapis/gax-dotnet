@@ -24,8 +24,8 @@ namespace Google.Api.Gax
         private readonly CallSettings _globalCallSettings;
 
         /// <summary>
-        /// Constructs a helper from the given settings. These are expected to be cloned
-        /// already, and not changed afterwards.
+        /// Constructs a helper from the given settings.
+        /// Behavior is undefined if settings are changed after construction.
         /// </summary>
         /// <param name="settings">The service settings.</param>
         public ClientHelper(ServiceSettingsBase settings)
@@ -66,7 +66,7 @@ namespace Google.Api.Gax
             }
             return new CallOptions(
                 // TODO: Sort out our cloning story.
-                headers: callSettings.Headers?.Clone() ?? _globalCallSettings.Headers, // TODO: Add GAX header(s)
+                headers: callSettings.Headers ?? _globalCallSettings.Headers, // TODO: Add GAX header(s)
                 deadline: CalculateDeadline(callSettings.Expiration ?? _globalCallSettings.Expiration),
                 cancellationToken: cancellationToken ?? callSettings.CancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
                 writeOptions: callSettings.WriteOptions ?? _globalCallSettings.WriteOptions,
@@ -103,14 +103,14 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// Creates a client using application default credentials, taking care of generic cloning and
-        /// credential scoping.
+        /// Creates a client using application default credentials, taking care of credential scoping.
+        /// Behavior is undefined if any settings are changed after creation.
         /// </summary>
         /// <typeparam name="TClient">Type of the client to construct.</typeparam>
         /// <typeparam name="TSettings">Service-specific settings type.</typeparam>
-        /// <param name="settings">The service settings. This is cloned if not null.</param>
-        /// <param name="serviceEndpointSettings">The endpoint settings. This is cloned if not null.</param>
-        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any. These are cloned if not null.</param>
+        /// <param name="settings">The service settings.</param>
+        /// <param name="serviceEndpointSettings">The endpoint settings.</param>
+        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any.</param>
         /// <param name="defaultCredentialScopes">The credential scopes to apply if none are supplied. These are not expected to change.</param>
         /// <param name="clientFactory">The factory delegate which creates a client given the relevant credentials, service settings and endpoint.</param>
         /// <returns>A task which, when completed, will have a result of the newly constructed client.</returns>
@@ -120,24 +120,22 @@ namespace Google.Api.Gax
             IEnumerable<string> suppliedCredentialScopes,
             IEnumerable<string> defaultCredentialScopes,
             Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase<TSettings>
+            where TSettings : ServiceSettingsBase
         {
-            settings = settings?.Clone();
-            serviceEndpointSettings = serviceEndpointSettings?.Clone();
-            var credentialScopes = suppliedCredentialScopes?.ToList() ?? defaultCredentialScopes;
+            var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
             var credentials = await GetScopedApplicationDefaultChannelCredentials(credentialScopes);
             return clientFactory(credentials, settings, serviceEndpointSettings);
         }
 
         /// <summary>
-        /// Creates a client using application default credentials, taking care of generic cloning and
-        /// credential scoping.
+        /// Creates a client using application default credentials, taking care of credential scoping.
+        /// Behavior is undefined if any settings are changed after creation.
         /// </summary>
         /// <typeparam name="TClient">Type of the client to construct.</typeparam>
         /// <typeparam name="TSettings">Service-specific settings type.</typeparam>
-        /// <param name="settings">The service settings. This is cloned if not null.</param>
-        /// <param name="serviceEndpointSettings">The endpoint settings. This is cloned if not null.</param>
-        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any. These are cloned if not null.</param>
+        /// <param name="settings">The service settings.</param>
+        /// <param name="serviceEndpointSettings">The endpoint settings.</param>
+        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any.</param>
         /// <param name="defaultCredentialScopes">The credential scopes to apply if none are supplied. These are not expected to change.</param>
         /// <param name="clientFactory">The factory delegate which creates a client given the relevant credentials, service settings and endpoint.</param>
         /// <returns>A newly constructed client.</returns>
@@ -147,11 +145,9 @@ namespace Google.Api.Gax
             IEnumerable<string> suppliedCredentialScopes,
             IEnumerable<string> defaultCredentialScopes,
             Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase<TSettings>
+            where TSettings : ServiceSettingsBase
         {
-            settings = settings?.Clone();
-            serviceEndpointSettings = serviceEndpointSettings?.Clone();
-            var credentialScopes = suppliedCredentialScopes?.ToList() ?? defaultCredentialScopes;
+            var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
             return Task.Run(async () =>
             {
                 var credentials = await GetScopedApplicationDefaultChannelCredentials(credentialScopes);
