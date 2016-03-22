@@ -74,7 +74,7 @@ namespace Google.Api.Gax
             ApiCallable<TRequest, TResponse> callable)
         {
             // TODO: Validation
-            _settings = GaxPreconditions.CheckNotNull(settings, nameof(settings)).Clone();
+            _settings = GaxPreconditions.CheckNotNull(settings, nameof(settings));
             _settings.Validate(nameof(settings));
             this._composer = GaxPreconditions.CheckNotNull(composer, nameof(composer));
             this._callable = GaxPreconditions.CheckNotNull(callable, nameof(callable));

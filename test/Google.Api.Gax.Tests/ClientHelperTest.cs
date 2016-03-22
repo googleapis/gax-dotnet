@@ -104,7 +104,6 @@ namespace Google.Api.Gax.Tests
                 Credentials = null, // Un-creatable, un-mockable
             };
             CallOptions callOptions = helper.BuildCallOptions(null, callSettings);
-            Assert.NotSame(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
