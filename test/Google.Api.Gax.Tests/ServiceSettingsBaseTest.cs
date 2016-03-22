@@ -13,9 +13,9 @@ namespace Google.Api.Gax.Tests
 {
     public class ServiceSettingsBaseTest
     {
-        class TestSettings : ServiceSettingsBase<TestSettings>
+        class TestSettings : ServiceSettingsBase
         {
-            public override TestSettings Clone() => CloneInto(new TestSettings());
+            public TestSettings Clone() => CloneInto(new TestSettings());
         }
 
         [Fact]

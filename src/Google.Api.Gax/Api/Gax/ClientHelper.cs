@@ -120,7 +120,7 @@ namespace Google.Api.Gax
             IEnumerable<string> suppliedCredentialScopes,
             IEnumerable<string> defaultCredentialScopes,
             Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase<TSettings>
+            where TSettings : ServiceSettingsBase
         {
             var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
             var credentials = await GetScopedApplicationDefaultChannelCredentials(credentialScopes);
@@ -145,7 +145,7 @@ namespace Google.Api.Gax
             IEnumerable<string> suppliedCredentialScopes,
             IEnumerable<string> defaultCredentialScopes,
             Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase<TSettings>
+            where TSettings : ServiceSettingsBase
         {
             var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
             return Task.Run(async () =>

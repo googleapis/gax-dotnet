@@ -168,12 +168,9 @@ namespace Google.Api.Gax.Tests
             Assert.Equal(argCancellationToken, callOptions.CancellationToken);
         }
 
-        private class DummySettings : ServiceSettingsBase<DummySettings>
+        private class DummySettings : ServiceSettingsBase
         {
-            public override DummySettings Clone()
-            {
-                return CloneInto(new DummySettings());
-            }
+            public DummySettings Clone() => CloneInto(new DummySettings());
         }
     }
 }
