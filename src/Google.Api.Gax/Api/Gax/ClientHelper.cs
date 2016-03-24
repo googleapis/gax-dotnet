@@ -8,8 +8,6 @@ using Google.Apis.Auth.OAuth2;
 using Grpc.Auth;
 using Grpc.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +18,18 @@ namespace Google.Api.Gax
     /// </summary>
     public class ClientHelper
     {
+        /// <summary>
+        /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
+        /// task can be used whenever channel credentials are required. The returned task always runs in the
+        /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
+        /// </summary>
+        private static readonly Lazy<Task<ChannelCredentials>> s_lazyDefaultChannelCredentials
+            = new Lazy<Task<ChannelCredentials>>(() => Task.Run(async () =>
+            {
+                var credentials = await GoogleCredential.GetApplicationDefaultAsync();
+                return ChannelCredentials.Create(new SslCredentials(), credentials.ToCallCredentials());
+            }));
+
         private readonly IClock _clock;
         private readonly CallSettings _globalCallSettings;
 
@@ -77,82 +87,32 @@ namespace Google.Api.Gax
         #region Factory methods for client construction
 
         /// <summary>
-        /// Creates a channel for the host and port in this object, with defaults for unspecified values.
+        /// Creates a channel with the specified endpoint and credentials, defaulting to the application default
+        /// credentials.
         /// </summary>
-        /// <param name="endpoint">Endpoint settings to use. Must not be null.</param>
-        /// <param name="defaultHost">The host to use if <see cref="Host"/> is null. Must not be null.</param>
-        /// <param name="defaultPort">The port to use if <see cref="Port"/> is null.</param>
-        /// <param name="credentials">The credentials to use with the channel. Must not be null.</param>
-        /// <returns>A channel for the given endpoint with application default credentials.</returns>
-        public static Channel CreateChannel(ServiceEndpointSettings endpoint, string defaultHost, int defaultPort, ChannelCredentials credentials)
+        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
+        /// <param name="credentials">The channel credentials to use, or null to use the application default credentials.</param>
+        /// <returns>A task representing the asynchronous operation. When completed, the result of the task will be a
+        /// channel for the specified endpoint, with the given credentials or application default credentials.</returns>
+        public static async Task<Channel> CreateChannelAsync(ServiceEndpoint endpoint, ChannelCredentials credentials)
         {
-            GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            GaxPreconditions.CheckNotNull(defaultHost, nameof(defaultHost));
-            GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
-            return new Channel(endpoint.Host ?? defaultHost, endpoint.Port ?? defaultPort, credentials);
-        }
-
-        private static async Task<ChannelCredentials> GetScopedApplicationDefaultChannelCredentials(IEnumerable<string> scopes)
-        {
-            var credentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
-            if (credentials.IsCreateScopedRequired)
-            {
-                credentials = credentials.CreateScoped(scopes);
-            }
-            return ChannelCredentials.Create(new SslCredentials(), credentials.ToCallCredentials());
+            // TODO: Could avoid constructing the task-based state machine if either credentials is supplied or the
+            // lazy default channel credentials task has completed.
+            var effectiveCredentials = credentials ?? await s_lazyDefaultChannelCredentials.Value.ConfigureAwait(false);
+            return new Channel(endpoint.Host, endpoint.Port, effectiveCredentials);
         }
 
         /// <summary>
-        /// Creates a client using application default credentials, taking care of credential scoping.
-        /// Behavior is undefined if any settings are changed after creation.
+        /// Creates a channel with the specified endpoint and credentials, defaulting to the application default
+        /// credentials.
         /// </summary>
-        /// <typeparam name="TClient">Type of the client to construct.</typeparam>
-        /// <typeparam name="TSettings">Service-specific settings type.</typeparam>
-        /// <param name="settings">The service settings.</param>
-        /// <param name="serviceEndpointSettings">The endpoint settings.</param>
-        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any.</param>
-        /// <param name="defaultCredentialScopes">The credential scopes to apply if none are supplied. These are not expected to change.</param>
-        /// <param name="clientFactory">The factory delegate which creates a client given the relevant credentials, service settings and endpoint.</param>
-        /// <returns>A task which, when completed, will have a result of the newly constructed client.</returns>
-        public static async Task<TClient> CreateFromDefaultCredentialsAsync<TClient, TSettings>(
-            TSettings settings,
-            ServiceEndpointSettings serviceEndpointSettings,
-            IEnumerable<string> suppliedCredentialScopes,
-            IEnumerable<string> defaultCredentialScopes,
-            Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase
+        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
+        /// <param name="credentials">The channel credentials to use, or null to use the application default credentials.</param>
+        /// <returns>A channel for the specified endpoint, with the given credentials or application default credentials.</returns>
+        public static Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials)
         {
-            var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
-            var credentials = await GetScopedApplicationDefaultChannelCredentials(credentialScopes);
-            return clientFactory(credentials, settings, serviceEndpointSettings);
-        }
-
-        /// <summary>
-        /// Creates a client using application default credentials, taking care of credential scoping.
-        /// Behavior is undefined if any settings are changed after creation.
-        /// </summary>
-        /// <typeparam name="TClient">Type of the client to construct.</typeparam>
-        /// <typeparam name="TSettings">Service-specific settings type.</typeparam>
-        /// <param name="settings">The service settings.</param>
-        /// <param name="serviceEndpointSettings">The endpoint settings.</param>
-        /// <param name="suppliedCredentialScopes">The credential scopes supplied by the client, if any.</param>
-        /// <param name="defaultCredentialScopes">The credential scopes to apply if none are supplied. These are not expected to change.</param>
-        /// <param name="clientFactory">The factory delegate which creates a client given the relevant credentials, service settings and endpoint.</param>
-        /// <returns>A newly constructed client.</returns>
-        public static TClient CreateFromDefaultCredentials<TClient, TSettings>(
-            TSettings settings,
-            ServiceEndpointSettings serviceEndpointSettings,
-            IEnumerable<string> suppliedCredentialScopes,
-            IEnumerable<string> defaultCredentialScopes,
-            Func<ChannelCredentials, TSettings, ServiceEndpointSettings, TClient> clientFactory)
-            where TSettings : ServiceSettingsBase
-        {
-            var credentialScopes = suppliedCredentialScopes ?? defaultCredentialScopes;
-            return Task.Run(async () =>
-            {
-                var credentials = await GetScopedApplicationDefaultChannelCredentials(credentialScopes);
-                return clientFactory(credentials, settings, serviceEndpointSettings);
-            }).Result;
+            var effectiveCredentials = credentials ?? s_lazyDefaultChannelCredentials.Value.Result;
+            return new Channel(endpoint.Host, endpoint.Port, effectiveCredentials);
         }
         #endregion
     }
