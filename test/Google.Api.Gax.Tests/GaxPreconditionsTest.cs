@@ -30,6 +30,29 @@ namespace Google.Api.Gax.Tests
             Assert.Equal(nameof(x), exception.ParamName);
         }
 
+        [Fact]
+        public void CheckNotNullOrEmpty_Valid()
+        {
+            string x = "foo";
+            Assert.Same(x, GaxPreconditions.CheckNotNullOrEmpty(x, nameof(x)));
+        }
+
+        [Fact]
+        public void CheckNotNull_Null()
+        {
+            string x = null;
+            var exception = Assert.Throws<ArgumentNullException>(() => GaxPreconditions.CheckNotNullOrEmpty(x, nameof(x)));
+            Assert.Equal(nameof(x), exception.ParamName);
+        }
+
+        [Fact]
+        public void CheckNotNull_Empty()
+        {
+            string x = "";
+            var exception = Assert.Throws<ArgumentException>(() => GaxPreconditions.CheckNotNullOrEmpty(x, nameof(x)));
+            Assert.Equal(nameof(x), exception.ParamName);
+        }
+
         [Theory]
         [InlineData(RangeMin)]
         [InlineData((RangeMin + RangeMax) / 2)]

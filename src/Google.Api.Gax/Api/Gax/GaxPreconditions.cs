@@ -34,8 +34,8 @@ namespace Google.Api.Gax
         /// <summary>
         /// Checks that the given argument (to the calling method) is non-null.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="argument"></param>
+        /// <typeparam name="T">The type of the parameter.</typeparam>
+        /// <param name="argument">The argument provided for the parameter.</param>
         /// <param name="paramName">The name of the parameter in the calling method.</param>
         /// <exception cref="ArgumentNullException"><paramref name="argument"/> is null</exception>
         /// <returns><paramref name="argument"/> if it is not null</returns>
@@ -44,6 +44,27 @@ namespace Google.Api.Gax
             if (argument == null)
             {
                 throw new ArgumentNullException(paramName);
+            }
+            return argument;
+        }
+
+        /// <summary>
+        /// Checks that a string argument is neither null, nor an empty string.
+        /// </summary>
+        /// <param name="argument">The argument provided for the parameter.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="argument"/> is null</exception>
+        /// <exception cref="ArgumentException"><paramref name="argument"/> is empty</exception>
+        /// <returns><paramref name="argument"/> if it is not null or empty</returns>
+        public static string CheckNotNullOrEmpty(string argument, string paramName)
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(paramName);
+            }
+            if (argument == "")
+            {
+                throw new ArgumentException("An empty string was provided, but is not valid", paramName);
             }
             return argument;
         }
