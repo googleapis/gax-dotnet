@@ -24,11 +24,8 @@ namespace Google.Api.Gax
         /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
         /// </summary>
         private static readonly Lazy<Task<ChannelCredentials>> s_lazyDefaultChannelCredentials
-            = new Lazy<Task<ChannelCredentials>>(() => Task.Run(async () =>
-            {
-                var credentials = await GoogleCredential.GetApplicationDefaultAsync();
-                return ChannelCredentials.Create(new SslCredentials(), credentials.ToCallCredentials());
-            }));
+            = new Lazy<Task<ChannelCredentials>>(
+                () => Task.Run(async () => (await GoogleCredential.GetApplicationDefaultAsync()).ToChannelCredentials()));
 
         private readonly IClock _clock;
         private readonly CallSettings _globalCallSettings;
