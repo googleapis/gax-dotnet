@@ -134,7 +134,7 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
-        public async Task ExponentialTimeouts()
+        public void ExponentialTimeouts()
         {
             var callDuration = 300;
             var failures = 2;
@@ -168,7 +168,7 @@ namespace Google.Api.Gax.Tests
         [InlineData(StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
         [InlineData(StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, true)]
         [InlineData(StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
-        public async Task RetryFilter(StatusCode failureCode, StatusCode[] filterCodes, bool expectedToRetry)
+        public void RetryFilter(StatusCode failureCode, StatusCode[] filterCodes, bool expectedToRetry)
         {
             var callDuration = 100;
             var failures = 1;

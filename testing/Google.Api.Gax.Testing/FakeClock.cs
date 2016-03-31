@@ -22,11 +22,6 @@ namespace Google.Api.Gax.Testing
         private long _ticks;
 
         /// <summary>
-        /// Event raised (synchronously) whenever the clock is advanced.
-        /// </summary>
-        public event EventHandler<TimeChangedEventArgs> TimeChanged;
-
-        /// <summary>
         /// Creates an instance with an initial time of 2000-01-01T00:00:00Z.
         /// </summary>
         public FakeClock() : this(new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc))
@@ -92,15 +87,5 @@ namespace Google.Api.Gax.Testing
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representing the clock's date and time in UTC.</returns>
         public DateTime GetCurrentDateTimeUtc() => new DateTime(Interlocked.Read(ref _ticks), DateTimeKind.Utc);
-
-        public sealed class TimeChangedEventArgs : EventArgs
-        {
-            public DateTime UtcTime { get; }
-
-            internal TimeChangedEventArgs(DateTime utcTime)
-            {
-                UtcTime = utcTime;
-            }
-        }
     }
 }
