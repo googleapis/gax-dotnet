@@ -1,29 +1,33 @@
 ﻿{
-    "version": "0.1.0-*",
-    "title": "Google API Extensions",
-    "description": "Support classes for Google API client libraries",
-    "authors": [ "Google Inc." ],
-    "owners": [ "googleapis-packages" ],
-    "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
-    "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
-    "tags": [ "Google" ],
-    "compilationOptions": {
-        "keyFile": "../../Gax.snk"
-    },
-    "dependencies": {
-        "Google.Apis.Auth": "1.11.0",
-        "Google.Protobuf": "3.0.0-beta2",
-        "Grpc.Auth": "0.13.0",
-        "Grpc.Core": "0.13.0",
-        "grpc.native.csharp": "0.13.0",
-        "Ix-Async": "1.2.5"
-    },
-    "frameworks": {
-        "net451": {
-            "frameworkAssemblies": {
-                "System.IO": "",
-                "System.Runtime": ""
-            }
+  "version": "0.1.0-*",
+  "title": "Google API Extensions",
+  "description": "Support classes for Google API client libraries",
+  "authors": [ "Google Inc." ],
+  "owners": [ "googleapis-packages" ],
+  "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+  "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+  "tags": [ "Google" ],
+  "compilationOptions": {
+    "keyFile": "../../Gax.snk"
+  },
+  "dependencies": {
+    "Google.Apis.Auth": "1.11.0",
+    "Google.Protobuf": "3.0.0-beta2",
+    "Grpc.Auth": "0.13.0",
+    "Grpc.Core": "0.13.0",
+    "grpc.native.csharp": "0.13.0",
+    "Ix-Async": "1.2.5"
+  },
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.IO": {
+          "type": "build"
+        },
+        "System.Runtime": {
+          "type": "build"
         }
+      }
     }
+  }
 }
