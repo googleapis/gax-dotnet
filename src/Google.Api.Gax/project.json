@@ -19,7 +19,7 @@
     "Ix-Async": "1.2.5"
   },
   "frameworks": {
-    "net451": {
+    "net45": {
       "frameworkAssemblies": {
         "System.IO": {
           "type": "build"
