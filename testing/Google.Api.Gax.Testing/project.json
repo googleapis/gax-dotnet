@@ -15,7 +15,7 @@
     "Google.Api.Gax": ""
   },
   "frameworks": {
-    "net451": {
+    "net45": {
       "frameworkAssemblies": {
         "System.IO": {
           "type": "build"
