@@ -28,3 +28,13 @@ message SimpleRequest {
 message SimpleResponse {
   string name = 2;
 }
+
+message PageStreamingRequest {
+  string token = 1;
+  string check = 2;
+}
+
+message PageStreamingPage {
+  repeated int32 items = 1;
+  string next_page_token = 3;
+}

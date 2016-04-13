@@ -29,6 +29,12 @@ namespace Google.Api.Gax
         Task Delay(TimeSpan delay);
 
         /// <summary>
+        /// Synchronously sleeps for the given delay.
+        /// </summary>
+        /// <param name="delay">Time to sleep for. Must not be negative.</param>
+        void Sleep(TimeSpan delay);
+
+        /// <summary>
         /// Schedules an action to be executed in another thread.
         /// </summary>
         /// <remarks>

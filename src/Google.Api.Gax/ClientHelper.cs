@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 using Google.Apis.Auth.OAuth2;
+using Google.Protobuf;
 using Grpc.Auth;
 using Grpc.Core;
 using System;
@@ -28,7 +29,7 @@ namespace Google.Api.Gax
                 () => Task.Run(async () => (await GoogleCredential.GetApplicationDefaultAsync()).ToChannelCredentials()));
 
         private readonly IClock _clock;
-        private readonly CallSettings _globalCallSettings;
+        private readonly CallSettings _clientCallSettings;
 
         /// <summary>
         /// Constructs a helper from the given settings.
@@ -38,7 +39,7 @@ namespace Google.Api.Gax
         public ClientHelper(ServiceSettingsBase settings)
         {
             _clock = settings.Clock ?? SystemClock.Instance;
-            _globalCallSettings = settings.CallSettings ?? new CallSettings();
+            _clientCallSettings = settings.CallSettings ?? new CallSettings();
         }
 
         // TODO: Make this an extension method on IClock or Expiration? Doesn't really feel like it belongs here.
@@ -54,33 +55,51 @@ namespace Google.Api.Gax
 
         /// <summary>
         /// Builds a suitable <see cref="CallOptions"/> taking service settings into account,
-        /// along with a call-specific cancellation token and CallSettings override.
+        /// along with a call-specific CallSettings override.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token to use for this call.</param>
-        /// <param name="callOptionsOverride">Optional options override delegate.</param>
+        /// <param name="callSettingsOverride">Optional overrides of CallSettings.</param>
         /// <returns></returns>
-        public CallOptions BuildCallOptions(
-            CancellationToken? cancellationToken,
-            CallSettings callSettings)
+        internal CallOptions BuildCallOptions(CallSettings callSettingsOverride)
         {
-            if (callSettings == null)
+            if (callSettingsOverride == null)
             {
                 return new CallOptions(
-                    headers: _globalCallSettings.Headers, // TODO: Add GAX header(s)
-                    deadline: CalculateDeadline(_clock, _globalCallSettings.Expiration),
-                    cancellationToken: cancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
-                    writeOptions: _globalCallSettings.WriteOptions,
-                    propagationToken: _globalCallSettings.PropagationToken,
-                    credentials: _globalCallSettings.Credentials);
+                    headers: _clientCallSettings.Headers, // TODO: Add GAX header(s)
+                    deadline: CalculateDeadline(_clock, _clientCallSettings.Expiration),
+                    cancellationToken: _clientCallSettings.CancellationToken ?? default(CancellationToken),
+                    writeOptions: _clientCallSettings.WriteOptions,
+                    propagationToken: _clientCallSettings.PropagationToken,
+                    credentials: _clientCallSettings.Credentials);
             }
             return new CallOptions(
                 // TODO: Sort out our cloning story.
-                headers: callSettings.Headers ?? _globalCallSettings.Headers, // TODO: Add GAX header(s)
-                deadline: CalculateDeadline(_clock, callSettings.Expiration ?? _globalCallSettings.Expiration),
-                cancellationToken: cancellationToken ?? callSettings.CancellationToken ?? _globalCallSettings.CancellationToken ?? default(CancellationToken),
-                writeOptions: callSettings.WriteOptions ?? _globalCallSettings.WriteOptions,
-                propagationToken: callSettings.PropagationToken ?? _globalCallSettings.PropagationToken,
-                credentials: callSettings.Credentials ?? _globalCallSettings.Credentials);
+                headers: callSettingsOverride.Headers ?? _clientCallSettings.Headers, // TODO: Add GAX header(s)
+                deadline: CalculateDeadline(_clock, callSettingsOverride.Expiration ?? _clientCallSettings.Expiration),
+                cancellationToken: callSettingsOverride.CancellationToken ?? _clientCallSettings.CancellationToken ?? default(CancellationToken),
+                writeOptions: callSettingsOverride.WriteOptions ?? _clientCallSettings.WriteOptions,
+                propagationToken: callSettingsOverride.PropagationToken ?? _clientCallSettings.PropagationToken,
+                credentials: callSettingsOverride.Credentials ?? _clientCallSettings.Credentials);
+        }
+
+        /// <summary>
+        /// Builds an <see cref="ApiCall"/> given suitable underlying async and sync calls.
+        /// </summary>
+        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="asyncGrpcCall">The underlying synchronous gRPC call.</param>
+        /// <param name="syncGrpcCall">The underlying asynchronous gRPC call.</param>
+        /// <returns></returns>
+        public ApiCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
+            Func<TRequest, CallOptions, TResponse> syncGrpcCall)
+            where TRequest : class, IMessage<TRequest>
+            where TResponse : class, IMessage<TResponse>
+        {
+            ApiCall<TRequest, TResponse>.AsyncCall asyncCall = (request, callSettings) =>
+                asyncGrpcCall(request, BuildCallOptions(callSettings)).ResponseAsync;
+            ApiCall<TRequest, TResponse>.SyncCall syncCall = (request, callSettings) =>
+                syncGrpcCall(request, BuildCallOptions(callSettings));
+            return new ApiCall<TRequest, TResponse>(asyncCall, syncCall);
         }
 
         #region Factory methods for client construction
