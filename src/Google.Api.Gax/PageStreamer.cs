@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -34,6 +35,8 @@ namespace Google.Api.Gax
     /// <typeparam name="TResponse">The type of response obtained when fetching pages</typeparam>
     /// <typeparam name="TToken">The type of the "next page token", which must be equatable to itself</typeparam>
     public sealed class PageStreamer<TResource, TRequest, TResponse, TToken>
+        where TRequest : class, IMessage<TRequest>
+        where TResponse : class, IMessage<TResponse>
         where TToken : IEquatable<TToken>
     {
         private readonly Func<TRequest, TToken, TRequest> _requestProvider;
@@ -66,19 +69,24 @@ namespace Google.Api.Gax
         /// <summary>
         /// Lazily fetches resources a page at a time.
         /// </summary>
+        /// <param name="callSettings">The <see cref="CallSettings"/> to apply to each RPC invocation.</param>
         /// <param name="initialRequest">The initial request to send. If this contains a page token,
         /// that token is maintained. This is also passed to the request provider along with a token
         /// to provide another request. (The provider may build a new object, or modify the existing request.)</param>
-        /// <param name="responseFetcher">A function to fetch a response containing a page of results given a request.</param>
-        /// <returns>A sequence of resources, which are fetched a page at a time. Must not be null.</returns>
-        public IEnumerable<TResource> Fetch(TRequest initialRequest, Func<TRequest, TResponse> responseFetcher)
+        /// <param name="responseFetcherCall">An <see cref="ApiCall{TRequest, TResponse}"/>
+        /// to fetch a response containing a page of results given a request. Must not be null.</param>
+        /// <returns>A sequence of resources, which are fetched a page at a time.</returns>
+        public IEnumerable<TResource> Fetch(
+            CallSettings callSettings,
+            TRequest initialRequest,
+            ApiCall<TRequest, TResponse> responseFetcherCall)
         {
-            GaxPreconditions.CheckNotNull(responseFetcher, nameof(responseFetcher));
+            GaxPreconditions.CheckNotNull(responseFetcherCall, nameof(responseFetcherCall));
             TToken token;
             TRequest nextRequest = initialRequest;
             do
             {
-                TResponse response = responseFetcher(nextRequest);
+                TResponse response = responseFetcherCall.Sync(nextRequest, callSettings);
                 token = _tokenExtractor(response);
                 nextRequest = _requestProvider(initialRequest, token);
                 foreach (var item in _resourceExtractor(response))
@@ -91,25 +99,35 @@ namespace Google.Api.Gax
         /// <summary>
         /// Lazily and asynchronously fetches resources a page at a time.
         /// </summary>
+        /// <param name="callSettings">The <see cref="CallSettings"/> to apply to each RPC invocation.</param>
         /// <param name="initialRequest">The initial request to send. If this contains a page token,
         /// that token is maintained. This is also passed to the request provider along with a token
         /// to provide another request. (The provider may build a new object, or modify the existing request.)</param>
-        /// <param name="responseFetcher">A function to asynchronously fetch a response containing a page of
-        /// results given a request. Must not be null</param>
+        /// <param name="responseFetcherCall">An <see cref="ApiCall{TRequest, TResponse}"/>
+        /// to asynchronously fetch a response containing a page of results given a request. Must not be null</param>
         /// <returns>A sequence of resources, which are fetched asynchronously and a page at a time.</returns>
-        public IAsyncEnumerable<TResource> FetchAsync(TRequest initialRequest, Func<TRequest, CancellationToken, Task<TResponse>> responseFetcher)
+        public IAsyncEnumerable<TResource> FetchAsync(
+            CallSettings callSettings,
+            TRequest initialRequest,
+            ApiCall<TRequest, TResponse> responseFetcherCall)
         {
-            GaxPreconditions.CheckNotNull(responseFetcher, nameof(responseFetcher));
+            GaxPreconditions.CheckNotNull(responseFetcherCall, nameof(responseFetcherCall));
             TRequest nextRequest = initialRequest;
             bool done = false;
+            CallSettings rpcCallSettings = callSettings?.Clone() ?? new CallSettings();
             return new PageStreamingAsyncEnumerable<TResource>(async cancellationToken =>
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                // If MoveNext() has been passed a non-default cancellation-token, then use it.
+                // Otherwise, use the callSettings cancellation-token (if it has one).
+                CancellationToken? rpcCancellationToken = cancellationToken != default(CancellationToken) ?
+                    cancellationToken : callSettings?.CancellationToken;
+                rpcCancellationToken?.ThrowIfCancellationRequested();
                 if (done)
                 {
                     return null;
                 }
-                TResponse response = await responseFetcher(nextRequest, cancellationToken).ConfigureAwait(false);
+                rpcCallSettings.CancellationToken = rpcCancellationToken;
+                TResponse response = await responseFetcherCall.Async(nextRequest, rpcCallSettings).ConfigureAwait(false);
                 TToken token = _tokenExtractor(response);
                 done = IsEmptyToken(token);
                 nextRequest = _requestProvider(initialRequest, token);

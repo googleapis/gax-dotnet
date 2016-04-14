@@ -76,9 +76,6 @@ namespace Google.Api.Gax.Testing
         /// <summary>
         /// Advances the clock by the given time span.
         /// </summary>
-        /// <remarks>
-        /// This will raise the <see cref="TimeChanged"/> event, synchronously.
-        /// </remarks>
         /// <param name="timeSpan">Time span to advance the clock by.</param>
         public void Advance(TimeSpan timeSpan) => Advance(timeSpan.Ticks);
 

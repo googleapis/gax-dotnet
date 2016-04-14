@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
@@ -14,6 +15,8 @@ namespace Google.Api.Gax
         private SystemScheduler() {}
 
         public Task Delay(TimeSpan timeSpan) => Task.Delay(timeSpan);
+
+        public void Sleep(TimeSpan timeSpan) => Thread.Sleep(timeSpan);
 
         public Task Schedule(Action action, TimeSpan timeSpan) =>
             Task.Run(async () =>

@@ -49,9 +49,12 @@ namespace Google.Api.Gax.Testing
         /// <inheritdoc />
         public Task Delay(TimeSpan delay)
         {
-            var tcs = new TaskCompletionSource<int>();
-            return Schedule(() => tcs.SetResult(0), delay);
+            Task task = Schedule(delegate { }, delay);
+            return task;
         }
+
+        /// <inheritdoc />
+        public void Sleep(TimeSpan delay) => Delay(delay).Wait();
 
         /// <inheritdoc />
         public Task Schedule(Action action, TimeSpan delay)
@@ -73,6 +76,7 @@ namespace Google.Api.Gax.Testing
                         _actions.AddBefore(node, scheduledAction);
                         break;
                     }
+                    node = node.Next;
                 }
                 if (node == null)
                 {
@@ -96,10 +100,6 @@ namespace Google.Api.Gax.Testing
         /// Runs the scheduler until the given deadline.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// The deadline is primarily to guard against any bugs in production code or tests
-        /// causing infinite loops. It's still possible, but this helps to reduce the likelihood.
-        /// </para>
         /// <para>
         /// The scheduler maintains a queue of scheduled tasks (including "complete a delaying task")
         /// and moves through that queue, executing the tasks as it goes. As tasks are expected to schedule
@@ -135,7 +135,24 @@ namespace Google.Api.Gax.Testing
                 // TODO: If nothing else, we could execute all the co-scheduled tasks together before pausing...
                 Thread.Sleep(PauseTime);
             }
-        }        
+        }
+
+        /// <summary>
+        /// Runs the scheduler whilst the specified function is executing.
+        /// </summary>
+        /// <typeparam name="T">The return type of the function.</typeparam>
+        /// <param name="fn">The function to execute within this scheduler.</param>
+        /// <returns>The value returned from the function.</returns>
+        /// <remarks>
+        /// This scheduler is executed using the <see cref="Run()"/> method.
+        /// </remarks>
+        public T Run<T>(Func<T> fn)
+        {
+            Task<T> task = Task.Run(fn);
+            Thread.Sleep(PauseTime);
+            Run();
+            return task.Result;
+        }
 
         private sealed class ScheduledAction
         {

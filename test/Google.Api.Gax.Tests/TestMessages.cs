@@ -27,14 +27,19 @@ namespace Google.Api.Gax {
             "bGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIPCgdlbnRyaWVzGAIgAygJIjEK",
             "EEJ1bmRsaW5nUmVzcG9uc2USDAoEbmFtZRgBIAEoCRIPCgdlbnRyaWVzGAIg",
             "AygJIh0KDVNpbXBsZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSIeCg5TaW1wbGVS",
-            "ZXNwb25zZRIMCgRuYW1lGAIgASgJYgZwcm90bzM="));
+            "ZXNwb25zZRIMCgRuYW1lGAIgASgJIjQKFFBhZ2VTdHJlYW1pbmdSZXF1ZXN0",
+            "Eg0KBXRva2VuGAEgASgJEg0KBWNoZWNrGAIgASgJIjsKEVBhZ2VTdHJlYW1p",
+            "bmdQYWdlEg0KBWl0ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgDIAEo",
+            "CWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.BundlingRequest), global::Google.Api.Gax.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null),
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.BundlingResponse), global::Google.Api.Gax.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null),
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleRequest), global::Google.Api.Gax.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleResponse), global::Google.Api.Gax.SimpleResponse.Parser, new[]{ "Name" }, null, null, null)
+            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleResponse), global::Google.Api.Gax.SimpleResponse.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingRequest), global::Google.Api.Gax.PageStreamingRequest.Parser, new[]{ "Token", "Check" }, null, null, null),
+            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingPage), global::Google.Api.Gax.PageStreamingPage.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
           }));
     }
     #endregion
@@ -483,6 +488,259 @@ namespace Google.Api.Gax {
             break;
           case 18: {
             Name = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class PageStreamingRequest : pb::IMessage<PageStreamingRequest> {
+    private static readonly pb::MessageParser<PageStreamingRequest> _parser = new pb::MessageParser<PageStreamingRequest>(() => new PageStreamingRequest());
+    public static pb::MessageParser<PageStreamingRequest> Parser { get { return _parser; } }
+
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.Gax.TestMessagesReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    public PageStreamingRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    public PageStreamingRequest(PageStreamingRequest other) : this() {
+      token_ = other.token_;
+      check_ = other.check_;
+    }
+
+    public PageStreamingRequest Clone() {
+      return new PageStreamingRequest(this);
+    }
+
+    /// <summary>Field number for the "token" field.</summary>
+    public const int TokenFieldNumber = 1;
+    private string token_ = "";
+    public string Token {
+      get { return token_; }
+      set {
+        token_ = pb::Preconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "check" field.</summary>
+    public const int CheckFieldNumber = 2;
+    private string check_ = "";
+    public string Check {
+      get { return check_; }
+      set {
+        check_ = pb::Preconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    public override bool Equals(object other) {
+      return Equals(other as PageStreamingRequest);
+    }
+
+    public bool Equals(PageStreamingRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Token != other.Token) return false;
+      if (Check != other.Check) return false;
+      return true;
+    }
+
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (Check.Length != 0) hash ^= Check.GetHashCode();
+      return hash;
+    }
+
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Token.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Token);
+      }
+      if (Check.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Check);
+      }
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      if (Token.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
+      }
+      if (Check.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Check);
+      }
+      return size;
+    }
+
+    public void MergeFrom(PageStreamingRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Token.Length != 0) {
+        Token = other.Token;
+      }
+      if (other.Check.Length != 0) {
+        Check = other.Check;
+      }
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            Token = input.ReadString();
+            break;
+          }
+          case 18: {
+            Check = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class PageStreamingPage : pb::IMessage<PageStreamingPage> {
+    private static readonly pb::MessageParser<PageStreamingPage> _parser = new pb::MessageParser<PageStreamingPage>(() => new PageStreamingPage());
+    public static pb::MessageParser<PageStreamingPage> Parser { get { return _parser; } }
+
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.Gax.TestMessagesReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    public PageStreamingPage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    public PageStreamingPage(PageStreamingPage other) : this() {
+      items_ = other.items_.Clone();
+      nextPageToken_ = other.nextPageToken_;
+    }
+
+    public PageStreamingPage Clone() {
+      return new PageStreamingPage(this);
+    }
+
+    /// <summary>Field number for the "items" field.</summary>
+    public const int ItemsFieldNumber = 1;
+    private static readonly pb::FieldCodec<int> _repeated_items_codec
+        = pb::FieldCodec.ForInt32(10);
+    private readonly pbc::RepeatedField<int> items_ = new pbc::RepeatedField<int>();
+    public pbc::RepeatedField<int> Items {
+      get { return items_; }
+    }
+
+    /// <summary>Field number for the "next_page_token" field.</summary>
+    public const int NextPageTokenFieldNumber = 3;
+    private string nextPageToken_ = "";
+    public string NextPageToken {
+      get { return nextPageToken_; }
+      set {
+        nextPageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    public override bool Equals(object other) {
+      return Equals(other as PageStreamingPage);
+    }
+
+    public bool Equals(PageStreamingPage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!items_.Equals(other.items_)) return false;
+      if (NextPageToken != other.NextPageToken) return false;
+      return true;
+    }
+
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= items_.GetHashCode();
+      if (NextPageToken.Length != 0) hash ^= NextPageToken.GetHashCode();
+      return hash;
+    }
+
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+      items_.WriteTo(output, _repeated_items_codec);
+      if (NextPageToken.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(NextPageToken);
+      }
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      size += items_.CalculateSize(_repeated_items_codec);
+      if (NextPageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NextPageToken);
+      }
+      return size;
+    }
+
+    public void MergeFrom(PageStreamingPage other) {
+      if (other == null) {
+        return;
+      }
+      items_.Add(other.items_);
+      if (other.NextPageToken.Length != 0) {
+        NextPageToken = other.NextPageToken;
+      }
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10:
+          case 8: {
+            items_.AddEntriesFrom(input, _repeated_items_codec);
+            break;
+          }
+          case 26: {
+            NextPageToken = input.ReadString();
             break;
           }
         }

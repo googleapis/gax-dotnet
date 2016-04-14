@@ -20,7 +20,7 @@ namespace Google.Api.Gax.Tests
         {
             var mockClock = new Mock<IClock>();
             var helper = new ClientHelper(new DummySettings { Clock = mockClock.Object });
-            var options = helper.BuildCallOptions(CancellationToken.None, null);
+            var options = helper.BuildCallOptions(null);
             Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
         }
@@ -37,12 +37,12 @@ namespace Google.Api.Gax.Tests
                 CallSettings = new CallSettings { Expiration = Expiration.FromTimeout(timeout) },
                 Clock = mockClock.Object
             });
-            var options = helper.BuildCallOptions(CancellationToken.None, null);
+            var options = helper.BuildCallOptions(null);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, now + timeout);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Once);
         }
-
+        
         [Fact]
         public void BuildCallOptions_TimeoutAndImplicitSystemClock()
         {
@@ -52,20 +52,11 @@ namespace Google.Api.Gax.Tests
             {
                 CallSettings = new CallSettings { Expiration = Expiration.FromTimeout(timeout) }
             });
-            var options = helper.BuildCallOptions(CancellationToken.None, null);
+            var options = helper.BuildCallOptions(null);
             // Allow for 100ms for the above code to execute... more than enough time.
             Assert.InRange(options.Deadline.Value, now + timeout, now + TimeSpan.FromMilliseconds(100) + timeout);
         }
-
-        [Fact]
-        public void BuildCallOptions_PopulatesCancellationToken()
-        {
-            var cts = new CancellationTokenSource();
-            var helper = new ClientHelper(new DummySettings());
-            var options = helper.BuildCallOptions(cts.Token, null);
-            Assert.Equal(cts.Token, options.CancellationToken);
-        }
-
+        
         [Fact]
         public void BuildCallOptions_GlobalCallSettings()
         {
@@ -80,7 +71,7 @@ namespace Google.Api.Gax.Tests
                 Credentials = null, // Un-creatable, un-mockable
             };
             var helper = new ClientHelper(new DummySettings { CallSettings = callSettings });
-            CallOptions callOptions = helper.BuildCallOptions(null, null);
+            CallOptions callOptions = helper.BuildCallOptions(null);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
@@ -103,69 +94,13 @@ namespace Google.Api.Gax.Tests
                 PropagationToken = null, // Un-creatable, un-mockable
                 Credentials = null, // Un-creatable, un-mockable
             };
-            CallOptions callOptions = helper.BuildCallOptions(null, callSettings);
+            CallOptions callOptions = helper.BuildCallOptions(callSettings);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
             Assert.Equal(callSettings.WriteOptions, callOptions.WriteOptions);
             Assert.Null(callOptions.PropagationToken);
             Assert.Null(callOptions.Credentials);
-        }
-
-        [Fact]
-        public void BuildCallOptions_CancellationToken_NoOverride()
-        {
-            var globalCancellationToken = new CancellationTokenSource().Token;
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = new CallSettings
-                {
-                    CancellationToken = globalCancellationToken
-                }
-            });
-            CallOptions callOptions = helper.BuildCallOptions(null, null);
-            Assert.Equal(globalCancellationToken, callOptions.CancellationToken);
-        }
-
-        [Fact]
-        public void BuildCallOptions_CancellationToken_SettingsOverride()
-        {
-            var globalCancellationToken = new CancellationTokenSource().Token;
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = new CallSettings
-                {
-                    CancellationToken = globalCancellationToken
-                }
-            });
-            var overrideCancellationToken = new CancellationTokenSource().Token;
-            var callSettingsOverride = new CallSettings
-            {
-                CancellationToken = overrideCancellationToken
-            };
-            CallOptions callOptions = helper.BuildCallOptions(null, callSettingsOverride);
-            Assert.Equal(overrideCancellationToken, callOptions.CancellationToken);
-        }
-
-        [Fact]
-        public void BuildCallOptions_CancellationToken_ArgOverride()
-        {
-            var globalCancellationToken = new CancellationTokenSource().Token;
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = new CallSettings
-                {
-                    CancellationToken = globalCancellationToken
-                }
-            });
-            var overrideCancellationToken = new CancellationTokenSource().Token;
-            var callSettingsOverride = new CallSettings
-            {
-                CancellationToken = overrideCancellationToken
-            };
-            var argCancellationToken = new CancellationTokenSource().Token;
-            CallOptions callOptions = helper.BuildCallOptions(argCancellationToken, callSettingsOverride);
-            Assert.Equal(argCancellationToken, callOptions.CancellationToken);
         }
 
         private class DummySettings : ServiceSettingsBase
