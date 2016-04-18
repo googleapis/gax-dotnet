@@ -127,7 +127,13 @@ namespace Google.Api.Gax.Tests
 
         private class DummySettings : ServiceSettingsBase
         {
-            public DummySettings Clone() => CloneInto(new DummySettings());
+            public DummySettings()
+            {
+            }
+
+            private DummySettings(DummySettings existing) : base(existing) { }
+
+            public DummySettings Clone() => new DummySettings(this);
         }
     }
 }

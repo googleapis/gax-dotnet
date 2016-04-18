@@ -15,7 +15,13 @@ namespace Google.Api.Gax.Tests
     {
         class TestSettings : ServiceSettingsBase
         {
-            public TestSettings Clone() => CloneInto(new TestSettings());
+            public TestSettings()
+            {
+            }
+
+            private TestSettings(TestSettings existing) : base(existing) { }
+
+            public TestSettings Clone() => new TestSettings(this);
         }
 
         [Fact]
@@ -43,5 +49,14 @@ namespace Google.Api.Gax.Tests
             Assert.Equal(clock.Object, clonedSettings.Clock);
         }
 
+        [Fact]
+        public void CloneWithDefaults()
+        {
+            var settings = new TestSettings();
+            var clonedSettings = settings.Clone();
+            Assert.Null(clonedSettings.CallSettings);
+            Assert.Null(clonedSettings.Clock);
+            Assert.Equal(settings.UserAgent, clonedSettings.UserAgent);
+        }
     }
 }

@@ -43,6 +43,7 @@ namespace Google.Api.Gax
         internal UserAgentBuilder AppendAssemblyVersion(string name, System.Type type)
             => AppendVersion(name, FormatAssemblyVersion(type));
 
+        // TODO: This probably won't work as-is on .NET Core.
         /// <summary>
         /// Appends the .NET environment information to the list.
         /// </summary>

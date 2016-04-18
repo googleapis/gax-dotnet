@@ -20,6 +20,10 @@ namespace Google.Api.Gax
     /// </remarks>
     public abstract class ServiceSettingsBase
     {
+        /// <summary>
+        /// Constructs a new service settings base object with a default user agent, unset call settings and
+        /// unset clock.
+        /// </summary>
         protected ServiceSettingsBase()
         {
             UserAgent = new UserAgentBuilder()
@@ -31,7 +35,19 @@ namespace Google.Api.Gax
                 .ToString();
         }
 
-        internal string UserAgent { get; set; }
+        /// <summary>
+        /// Constructs a new service settings base object by cloning the settings from an existing one.
+        /// </summary>
+        /// <param name="existing">The existing settings object to clone settings from. Must not be null.</param>
+        protected ServiceSettingsBase(ServiceSettingsBase existing)
+        {
+            GaxPreconditions.CheckNotNull(existing, nameof(existing));
+            CallSettings = existing.CallSettings?.Clone();
+            Clock = existing.Clock;
+            UserAgent = existing.UserAgent;
+        }
+
+        internal string UserAgent { get; }
 
         /// <summary>
         /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.
@@ -47,19 +63,5 @@ namespace Google.Api.Gax
         /// In production code generally leave this unset to use the <see cref="SystemClock"/>.
         /// </remarks>
         public IClock Clock { get; set; }
-
-        /// <summary>
-        /// Copies the properties declared in <see cref="ServiceSettingsBase"/> into a new
-        /// settings object.
-        /// </summary>
-        /// <param name="settings">The settings object to copy properties into</param>
-        /// <returns><paramref name="settings"/>, for convenience when calling as part of <see cref="Clone"/>.</returns>
-        protected T CloneInto<T>(T settings) where T : ServiceSettingsBase
-        {
-            settings.CallSettings = CallSettings.Clone();
-            settings.Clock = Clock;
-            settings.UserAgent = UserAgent;
-            return settings;
-        }
     }
 }
