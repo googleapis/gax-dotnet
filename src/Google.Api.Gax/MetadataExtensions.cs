@@ -22,5 +22,12 @@ namespace Google.Api.Gax
 
         public static Metadata Clone(this Metadata metadata) =>
             metadata.IsReadOnly ? metadata : new Metadata { metadata };
+
+        public static Metadata WithUserAgent(this Metadata metadata, string userAgent)
+        {
+            metadata = metadata.Clone();
+            metadata.Add(UserAgentBuilder.HeaderName, userAgent);
+            return metadata;
+        }
     }
 }

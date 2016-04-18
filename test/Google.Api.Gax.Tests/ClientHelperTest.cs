@@ -8,6 +8,8 @@
 using Grpc.Core;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Xunit;
 
@@ -72,6 +74,10 @@ namespace Google.Api.Gax.Tests
             };
             var helper = new ClientHelper(new DummySettings { CallSettings = callSettings });
             CallOptions callOptions = helper.BuildCallOptions(null);
+            var userAgent = RemoveUserAgent(callOptions.Headers);
+            Assert.Contains("gax/", userAgent);
+            Assert.Contains("grpc/", userAgent);
+            Assert.Contains("Google.Api.Gax.Tests/", userAgent);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
@@ -95,12 +101,28 @@ namespace Google.Api.Gax.Tests
                 Credentials = null, // Un-creatable, un-mockable
             };
             CallOptions callOptions = helper.BuildCallOptions(callSettings);
+            var userAgent = RemoveUserAgent(callOptions.Headers);
+            Assert.Contains("gax/", userAgent);
+            Assert.Contains("grpc/", userAgent);
+            Assert.Contains("Google.Api.Gax.Tests/", userAgent);
             Assert.Equal(callSettings.Headers, callOptions.Headers);
             Assert.Equal(callSettings.Expiration.Deadline.Value, callOptions.Deadline);
             Assert.Equal(callSettings.CancellationToken, callOptions.CancellationToken);
             Assert.Equal(callSettings.WriteOptions, callOptions.WriteOptions);
             Assert.Null(callOptions.PropagationToken);
             Assert.Null(callOptions.Credentials);
+        }
+
+        private string RemoveUserAgent(Metadata metadata)
+        {
+            var userAgentEntries = metadata
+                .Where(entry => entry.Key.Equals(UserAgentBuilder.HeaderName, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();           
+            foreach (var entry in userAgentEntries)
+            {
+                metadata.Remove(entry);
+            }
+            return string.Join(" ", userAgentEntries.Select(entry => entry.Value));
         }
 
         private class DummySettings : ServiceSettingsBase

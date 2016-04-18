@@ -39,6 +39,7 @@ namespace Google.Api.Gax.Tests
             var clonedSettings = settings.Clone();
             Assert.NotSame(settings, clonedSettings);
             Assert.NotSame(callSettings, clonedSettings.CallSettings);
+            Assert.Equal(settings.UserAgent, clonedSettings.UserAgent);
             Assert.Equal(clock.Object, clonedSettings.Clock);
         }
 

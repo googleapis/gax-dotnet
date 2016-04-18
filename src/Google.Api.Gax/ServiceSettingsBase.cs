@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Grpc.Core;
 using System;
 
 namespace Google.Api.Gax
@@ -19,6 +20,19 @@ namespace Google.Api.Gax
     /// </remarks>
     public abstract class ServiceSettingsBase
     {
+        protected ServiceSettingsBase()
+        {
+            UserAgent = new UserAgentBuilder()
+                .AppendDotNetEnvironment()
+                .AppendAssemblyVersion("gax", typeof(CallSettings))
+                .AppendAssemblyVersion("grpc", typeof(Channel))
+                // TODO: Use the assembly name instead of the namespace? Allow it to be specified?
+                .AppendAssemblyVersion(GetType().Namespace, GetType())
+                .ToString();
+        }
+
+        internal string UserAgent { get; set; }
+
         /// <summary>
         /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.
         /// If null or unset, RPC default settings will be used for all settings.
@@ -44,6 +58,7 @@ namespace Google.Api.Gax
         {
             settings.CallSettings = CallSettings.Clone();
             settings.Clock = Clock;
+            settings.UserAgent = UserAgent;
             return settings;
         }
     }
