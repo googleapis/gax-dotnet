@@ -134,17 +134,23 @@ namespace Google.Api.Gax
 
         private sealed class RandomJitterImpl : IJitter
         {
-            // We might want to move this code to a more general place, if we need multi-threaded randomness elsewhere.
-            private static int seed = Environment.TickCount;
+            private readonly object _lock = new object();
 
-            private static ThreadLocal<Random> randomWrapper = new ThreadLocal<Random>(() =>
-                new Random(Interlocked.Increment(ref seed))
-            );
+            // See http://stackoverflow.com/questions/36376888 for why we don't have a thread-local RNG.
+            // We only ever create one instance of RandomJitterImpl, so it doesn't really matter
+            // whether this is an instance variable or static; we'll only have a single Random instance.
+            private readonly Random _random = new Random();
 
             public TimeSpan GetDelay(TimeSpan maxDelay)
             {
-                var random = randomWrapper.Value;
-                return maxDelay.Ticks <= 0 ? maxDelay : new TimeSpan((long) (random.NextDouble() * maxDelay.Ticks));
+                if (maxDelay <= TimeSpan.Zero)
+                {
+                    return maxDelay;
+                }
+                lock (_lock)
+                {
+                    return new TimeSpan((long)(_random.NextDouble() * maxDelay.Ticks));
+                }                
             }
         }
 
