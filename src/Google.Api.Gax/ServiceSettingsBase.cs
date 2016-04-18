@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Grpc.Core;
 using System;
 
 namespace Google.Api.Gax
@@ -20,6 +21,35 @@ namespace Google.Api.Gax
     public abstract class ServiceSettingsBase
     {
         /// <summary>
+        /// Constructs a new service settings base object with a default user agent, unset call settings and
+        /// unset clock.
+        /// </summary>
+        protected ServiceSettingsBase()
+        {
+            UserAgent = new UserAgentBuilder()
+                .AppendDotNetEnvironment()
+                .AppendAssemblyVersion("gax", typeof(CallSettings))
+                .AppendAssemblyVersion("grpc", typeof(Channel))
+                // TODO: Use the assembly name instead of the namespace? Allow it to be specified?
+                .AppendAssemblyVersion(GetType().Namespace, GetType())
+                .ToString();
+        }
+
+        /// <summary>
+        /// Constructs a new service settings base object by cloning the settings from an existing one.
+        /// </summary>
+        /// <param name="existing">The existing settings object to clone settings from. Must not be null.</param>
+        protected ServiceSettingsBase(ServiceSettingsBase existing)
+        {
+            GaxPreconditions.CheckNotNull(existing, nameof(existing));
+            CallSettings = existing.CallSettings?.Clone();
+            Clock = existing.Clock;
+            UserAgent = existing.UserAgent;
+        }
+
+        internal string UserAgent { get; }
+
+        /// <summary>
         /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.
         /// If null or unset, RPC default settings will be used for all settings.
         /// </summary>
@@ -33,18 +63,5 @@ namespace Google.Api.Gax
         /// In production code generally leave this unset to use the <see cref="SystemClock"/>.
         /// </remarks>
         public IClock Clock { get; set; }
-
-        /// <summary>
-        /// Copies the properties declared in <see cref="ServiceSettingsBase"/> into a new
-        /// settings object.
-        /// </summary>
-        /// <param name="settings">The settings object to copy properties into</param>
-        /// <returns><paramref name="settings"/>, for convenience when calling as part of <see cref="Clone"/>.</returns>
-        protected T CloneInto<T>(T settings) where T : ServiceSettingsBase
-        {
-            settings.CallSettings = CallSettings.Clone();
-            settings.Clock = Clock;
-            return settings;
-        }
     }
 }

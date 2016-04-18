@@ -30,6 +30,7 @@ namespace Google.Api.Gax
 
         private readonly IClock _clock;
         private readonly CallSettings _clientCallSettings;
+        private readonly string _userAgent;
 
         /// <summary>
         /// Constructs a helper from the given settings.
@@ -38,8 +39,16 @@ namespace Google.Api.Gax
         /// <param name="settings">The service settings.</param>
         public ClientHelper(ServiceSettingsBase settings)
         {
+            GaxPreconditions.CheckNotNull(settings, nameof(settings));
             _clock = settings.Clock ?? SystemClock.Instance;
-            _clientCallSettings = settings.CallSettings ?? new CallSettings();
+            _userAgent = settings.UserAgent;
+            _clientCallSettings = settings.CallSettings?.Clone() ?? new CallSettings();
+            // TODO: There should be a nicer way of doing this.
+            if (_clientCallSettings.Headers == null)
+            {
+                _clientCallSettings.Headers = new Metadata();
+            }
+            _clientCallSettings.Headers.Add(UserAgentBuilder.HeaderName, settings.UserAgent);
         }
 
         // TODO: Make this an extension method on IClock or Expiration? Doesn't really feel like it belongs here.
@@ -64,7 +73,7 @@ namespace Google.Api.Gax
             if (callSettingsOverride == null)
             {
                 return new CallOptions(
-                    headers: _clientCallSettings.Headers, // TODO: Add GAX header(s)
+                    headers: _clientCallSettings.Headers,
                     deadline: CalculateDeadline(_clock, _clientCallSettings.Expiration),
                     cancellationToken: _clientCallSettings.CancellationToken ?? default(CancellationToken),
                     writeOptions: _clientCallSettings.WriteOptions,
@@ -73,7 +82,7 @@ namespace Google.Api.Gax
             }
             return new CallOptions(
                 // TODO: Sort out our cloning story.
-                headers: callSettingsOverride.Headers ?? _clientCallSettings.Headers, // TODO: Add GAX header(s)
+                headers: callSettingsOverride.Headers?.WithUserAgent(_userAgent) ?? _clientCallSettings.Headers,
                 deadline: CalculateDeadline(_clock, callSettingsOverride.Expiration ?? _clientCallSettings.Expiration),
                 cancellationToken: callSettingsOverride.CancellationToken ?? _clientCallSettings.CancellationToken ?? default(CancellationToken),
                 writeOptions: callSettingsOverride.WriteOptions ?? _clientCallSettings.WriteOptions,
