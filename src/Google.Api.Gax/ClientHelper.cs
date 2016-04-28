@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Grpc.Auth;
 using Grpc.Core;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -138,8 +139,18 @@ namespace Google.Api.Gax
         /// <returns>A channel for the specified endpoint, with the given credentials or application default credentials.</returns>
         public static Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials)
         {
-            var effectiveCredentials = credentials ?? s_lazyDefaultChannelCredentials.Value.Result;
-            return new Channel(endpoint.Host, endpoint.Port, effectiveCredentials);
+            try
+            {
+                var effectiveCredentials = credentials ?? s_lazyDefaultChannelCredentials.Value.Result;
+                return new Channel(endpoint.Host, endpoint.Port, effectiveCredentials);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exceptions,
+                // but let's handle it relatively gracefully.
+                throw e.InnerExceptions.FirstOrDefault() ?? e;
+            }
         }
         #endregion
     }
