@@ -127,9 +127,7 @@ namespace Google.Api.Gax.Tests
 
         private class DummySettings : ServiceSettingsBase
         {
-            public DummySettings()
-            {
-            }
+            public DummySettings() { }
 
             private DummySettings(DummySettings existing) : base(existing) { }
 

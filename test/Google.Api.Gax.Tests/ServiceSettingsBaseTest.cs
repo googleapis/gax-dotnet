@@ -15,9 +15,7 @@ namespace Google.Api.Gax.Tests
     {
         class TestSettings : ServiceSettingsBase
         {
-            public TestSettings()
-            {
-            }
+            public TestSettings() { }
 
             private TestSettings(TestSettings existing) : base(existing) { }
 
