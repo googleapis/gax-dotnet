@@ -7,89 +7,87 @@
 
 using Google.Protobuf;
 using Grpc.Core;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
     public static class ApiCallRetryExtensions
     {
-        public static ApiCall<TRequest, TResponse> WithRetry<TRequest, TResponse>(
-            this ApiCall<TRequest, TResponse> originalCall,
-            RetrySettings retrySettings,
-            IClock clock,
-            IScheduler scheduler)
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
-        {
-            GaxPreconditions.CheckNotNull(originalCall, nameof(originalCall));
-            GaxPreconditions.CheckNotNull(clock, nameof(clock));
+        // By design, the code is mostly duplicated between the async and sync calls.
 
-            if (retrySettings == null)
+        // Async retry
+        public static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
+            this Func<TRequest, CallSettings, Task<TResponse>> fn,
+            IClock clock, IScheduler scheduler) =>
+            async (request, callSettings) =>
             {
-                // If retry isn't required, simply return the original call.
-                return originalCall;
-            }
-
-            retrySettings.Validate(nameof(retrySettings));
-            scheduler = scheduler ?? SystemScheduler.Instance;
-
-            // By design, the code is mostly duplicated between the async and sync calls.
-
-            ApiCall<TRequest, TResponse>.AsyncCall asyncCall = async (request, callSettings) =>
-            {
-                var overallDeadline = ClientHelper.CalculateDeadline(clock, callSettings.Expiration);
-                var cancellationToken = callSettings.CancellationToken ?? CancellationToken.None;
-                var retryDelay = retrySettings.RetryBackoff.Delay;
-                var callTimeout = retrySettings.TimeoutBackoff.Delay;
-                // The CallSettings, mutated as required for each attempt.
-                var attemptSettings = callSettings.Clone();
+                if (callSettings.RetrySettings == null)
+                {
+                    return await fn(request, callSettings);
+                }
+                RetrySettings retrySettings = callSettings.RetrySettings;
+                DateTime? overallDeadline = callSettings.Expiration.CalculateDeadline(clock);
+                TimeSpan retryDelay = retrySettings.RetryBackoff.Delay;
+                TimeSpan callTimeout = retrySettings.TimeoutBackoff.Delay;
+                // May not need to clone, not yet quite sure...
+                CallSettings attemptCallSettings = callSettings.Clone();
                 while (true)
                 {
-                    var callDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
+                    DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
-                    attemptSettings.Expiration = Expiration.FromDeadline(overallDeadline < callDeadline ? overallDeadline.Value : callDeadline);
-
+                    DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
+                    attemptCallSettings.Expiration = Expiration.FromDeadline(combinedDeadline);
                     try
                     {
-                        return await originalCall.Async(request, attemptSettings).ConfigureAwait(false);
+                        return await fn(request, attemptCallSettings);
                     }
                     catch (RpcException e) when (retrySettings.RetryFilter(e))
                     {
-                        var actualDelay = retrySettings.DelayJitter.GetDelay(retryDelay);
-                        var expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
+                        TimeSpan actualDelay = retrySettings.DelayJitter.GetDelay(retryDelay);
+                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
                         if (expectedRetryTime > overallDeadline)
                         {
                             throw;
                         }
-                        await scheduler.Delay(actualDelay).ConfigureAwait(false);
+                        await scheduler.Delay(actualDelay);
                         retryDelay = retrySettings.RetryBackoff.NextDelay(retryDelay);
                         callTimeout = retrySettings.TimeoutBackoff.NextDelay(callTimeout);
                     }
                 }
             };
 
-            ApiCall<TRequest, TResponse>.SyncCall syncCall = (request, callSettings) =>
+        // Sync retry
+        public static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
+            this Func<TRequest, CallSettings, TResponse> fn,
+            IClock clock, IScheduler scheduler) =>
+            (request, callSettings) =>
             {
-                var overallDeadline = ClientHelper.CalculateDeadline(clock, callSettings.Expiration);
-                var cancellationToken = callSettings.CancellationToken ?? CancellationToken.None;
-                var retryDelay = retrySettings.RetryBackoff.Delay;
-                var callTimeout = retrySettings.TimeoutBackoff.Delay;
-                // The CallSettings, mutated as required for each attempt.
-                var attemptSettings = callSettings.Clone();
+                if (callSettings.RetrySettings == null)
+                {
+                    return fn(request, callSettings);
+                }
+                RetrySettings retrySettings = callSettings.RetrySettings;
+                DateTime? overallDeadline = callSettings.Expiration.CalculateDeadline(clock);
+                TimeSpan retryDelay = retrySettings.RetryBackoff.Delay;
+                TimeSpan callTimeout = retrySettings.TimeoutBackoff.Delay;
+                // May not need to clone, not yet quite sure...
+                CallSettings attemptCallSettings = callSettings.Clone();
                 while (true)
                 {
-                    var callDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
+                    DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
-                    attemptSettings.Expiration = Expiration.FromDeadline(overallDeadline < callDeadline ? overallDeadline.Value : callDeadline);
-
+                    DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
+                    attemptCallSettings.Expiration = Expiration.FromDeadline(combinedDeadline);
                     try
                     {
-                        return originalCall.Sync(request, attemptSettings);
+                        return fn(request, attemptCallSettings);
                     }
                     catch (RpcException e) when (retrySettings.RetryFilter(e))
                     {
-                        var actualDelay = retrySettings.DelayJitter.GetDelay(retryDelay);
-                        var expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
+                        TimeSpan actualDelay = retrySettings.DelayJitter.GetDelay(retryDelay);
+                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
                         if (expectedRetryTime > overallDeadline)
                         {
                             throw;
@@ -101,8 +99,6 @@ namespace Google.Api.Gax
                 }
             };
 
-            return new ApiCall<TRequest, TResponse>(asyncCall, syncCall);
-        }
     }
 }
 

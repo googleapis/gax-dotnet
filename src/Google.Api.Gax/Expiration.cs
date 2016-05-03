@@ -9,6 +9,13 @@ using System;
 
 namespace Google.Api.Gax
 {
+    public enum ExpirationType
+    {
+        None,
+        Timeout,
+        Deadline,
+    }
+
     /// <summary>
     /// Expiration specified by relative timeout or absolute deadline.
     /// </summary>
@@ -58,19 +65,31 @@ namespace Google.Api.Gax
         /// </summary>
         public DateTime? Deadline { get; }
 
-        /// <summary>
-        /// Does this <see cref="Expiration"/> contain a relative timeout?
-        /// </summary>
-        public bool IsTimeout => Timeout != null;
+        public ExpirationType Type =>
+            Timeout != null ? ExpirationType.Timeout :
+            Deadline != null ? ExpirationType.Deadline :
+            ExpirationType.None;
+    }
 
-        /// <summary>
-        /// Does this <see cref="Expiration"/> contain an absolute deadline?
-        /// </summary>
-        public bool IsDeadline => Deadline != null;
-
-        /// <summary>
-        /// Does this <see cref="Expiration"/> specify no expiration?
-        /// </summary>
-        public bool IsNone => Timeout == null && Deadline == null;
+    public static class ExpirationExtensions
+    {
+        public static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
+        {
+            if (expiration == null)
+            {
+                return null;
+            }
+            switch (expiration.Type)
+            {
+                case ExpirationType.None:
+                    return null;
+                case ExpirationType.Timeout:
+                    return clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
+                case ExpirationType.Deadline:
+                    return expiration.Deadline.Value;
+                default:
+                    throw new ArgumentException("Invalid expiration", nameof(expiration));
+            }
+        }
     }
 }

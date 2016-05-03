@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using System;
 using System.Threading;
 
 namespace Google.Api.Gax
@@ -46,6 +47,16 @@ namespace Google.Api.Gax
         /// </summary>
         public CallCredentials Credentials { get; set; }
 
+        private RetrySettings _retrySettings;
+        /// <summary>
+        /// <see cref="RetrySettings"/> to use, or null for no retry.
+        /// </summary>
+        public RetrySettings RetrySettings
+        {
+            get { return _retrySettings; }
+            set { _retrySettings = value?.Validate(nameof(value)); }
+        }
+
         /// <summary>
         /// Creates a clone of this object, with all the same property values.
         /// </summary>
@@ -62,6 +73,65 @@ namespace Google.Api.Gax
             WriteOptions = WriteOptions,
             PropagationToken = PropagationToken,
             Credentials = Credentials,
+            RetrySettings = RetrySettings?.Clone(),
         };
+
+        // Merge other into this.
+        // Other is unchanged. Returns this
+        // Internal? Or Public?
+        public CallSettings Merge(CallSettings other)
+        {
+            if (other == null)
+            {
+                return this;
+            }
+            if (other.Headers != null)
+            {
+                Headers = other.Headers.Clone();
+            }
+            if (other.Expiration != null)
+            {
+                Expiration = other.Expiration;
+            }
+            if (other.CancellationToken != null)
+            {
+                CancellationToken = other.CancellationToken;
+            }
+            if (other.WriteOptions != null)
+            {
+                WriteOptions = other.WriteOptions;
+            }
+            if (other.PropagationToken != null)
+            {
+                PropagationToken = other.PropagationToken;
+            }
+            if (other.Credentials != null)
+            {
+                Credentials = other.Credentials;
+            }
+            if (other.RetrySettings != null)
+            {
+                RetrySettings = other.RetrySettings;
+            }
+            return this;
+        }
+
+        internal CallOptions ToCallOptions(IClock clock) => new CallOptions(
+            headers: Headers,
+            deadline: Expiration.CalculateDeadline(clock),
+            cancellationToken: CancellationToken ?? default(CancellationToken),
+            writeOptions: WriteOptions,
+            propagationToken: PropagationToken,
+            credentials: Credentials);
+
+        internal CallSettings AddUserAgent(string userAgent)
+        {
+            if (Headers == null)
+            {
+                Headers = new Metadata();
+            }
+            Headers.Add(UserAgentBuilder.HeaderName, userAgent);
+            return this;
+        }
     }
 }

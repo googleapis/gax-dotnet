@@ -6,6 +6,8 @@
  */
 
 using Grpc.Core;
+using Moq;
+using System;
 using System.Threading;
 using Xunit;
 
@@ -55,6 +57,61 @@ namespace Google.Api.Gax.Tests
             var callSettings = new CallSettings { Headers = null };
             var clone = callSettings.Clone();
             Assert.Null(clone.Headers);
+        }
+
+        [Fact]
+        public void ToCallOptions_ExpirationNull()
+        {
+            var mockClock = new Mock<IClock>();
+            CallSettings callSettings = new CallSettings();
+            var options = callSettings.ToCallOptions(mockClock.Object);
+            Assert.Null(options.Deadline);
+            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+        }
+
+        [Fact]
+        public void ToCallOptions_ExpirationTimeout()
+        {
+            var now = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
+            var timeout = TimeSpan.FromSeconds(1);
+            var mockClock = new Mock<IClock>();
+            mockClock.Setup(c => c.GetCurrentDateTimeUtc()).Returns(now);
+            var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(timeout) };
+            var options = callSettings.ToCallOptions(mockClock.Object);
+            // Value should be exact, as we control time precisely.
+            Assert.Equal(options.Deadline.Value, now + timeout);
+            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Once);
+        }
+
+        [Fact]
+        public void ToCallOptions_ExpirationDeadline()
+        {
+            var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
+            var mockClock = new Mock<IClock>();
+            var callSettings = new CallSettings { Expiration = Expiration.FromDeadline(deadline) };
+            var options = callSettings.ToCallOptions(mockClock.Object);
+            // Value should be exact, as we control time precisely.
+            Assert.Equal(options.Deadline.Value, deadline);
+            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+        }
+
+        [Fact]
+        public void ToCallOptions_All()
+        {
+            var callSettings = new CallSettings
+            {
+                Headers = new Metadata { new Metadata.Entry("1", "one") },
+                Expiration = Expiration.None,
+                CancellationToken = new CancellationTokenSource().Token,
+                WriteOptions = new WriteOptions(WriteFlags.NoCompress),
+                PropagationToken = null, // Not possible to create/mock
+                Credentials = null, // Not possible to create/mock
+            };
+            var options = callSettings.ToCallOptions(null);
+            Assert.Same(callSettings.Headers, options.Headers);
+            Assert.Null(options.Deadline);
+            Assert.Equal(callSettings.CancellationToken, options.CancellationToken);
+            Assert.Same(callSettings.WriteOptions, options.WriteOptions);
         }
     }
 }

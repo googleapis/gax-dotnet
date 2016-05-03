@@ -61,8 +61,8 @@ namespace Google.Api.Gax
             {
                 RetryBackoff = RetryBackoff?.Clone(),
                 TimeoutBackoff = TimeoutBackoff?.Clone(),
+                RetryFilter = RetryFilter,
                 DelayJitter = DelayJitter,
-                RetryFilter = RetryFilter
             };
 
         /// <summary>
