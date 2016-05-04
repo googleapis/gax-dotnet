@@ -5,13 +5,15 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using System;
+
 namespace Google.Api.Gax
 {
     /// <summary>
     /// Settings specifying a service endpoint in the form of a host name and port.
     /// This class is immutable and thread-safe.
     /// </summary>
-    public sealed class ServiceEndpoint
+    public sealed class ServiceEndpoint : IEquatable<ServiceEndpoint>
     {
         /// <summary>
         /// The host name to connect to. Never null or empty.
@@ -53,5 +55,27 @@ namespace Google.Api.Gax
         /// </summary>
         /// <returns>This endpoint's data in the format "host:port".</returns>
         public override string ToString() => $"{Host}:{Port}";
+
+        /// <summary>
+        /// Determines equality between this object and <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare with this one.</param>
+        /// <returns><c>true</c> if <paramref name="obj"/> is a <see cref="ServiceEndpoint"/>
+        /// with the same host and port; <c>false</c> otherwise.</returns>
+        public override bool Equals(object obj) => Equals(obj as ServiceEndpoint);
+
+        /// <summary>
+        /// Returns a hash code for this object, consistent with <see cref="Equals(ServiceEndpoint)"/>.
+        /// </summary>
+        /// <returns>A hash code for this object.</returns>
+        public override int GetHashCode() => unchecked(Host.GetHashCode() * 31 + Port);
+
+        /// <summary>
+        /// Determines equality between this endpoint and <paramref name="other"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare with this one.</param>
+        /// <returns><c>true</c> if <paramref name="other"/> is a <see cref="ServiceEndpoint"/>
+        /// with the same host and port; <c>false</c> otherwise.</returns>
+        public bool Equals(ServiceEndpoint other) => other != null && other.Host == Host && other.Port == Port;
     }
 }

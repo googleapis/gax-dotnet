@@ -61,5 +61,28 @@ namespace Google.Api.Gax.Tests
             var endpoint = new ServiceEndpoint("foo", 22);
             Assert.Equal("foo:22", endpoint.ToString());
         }
+
+        [Fact]
+        public void Equality()
+        {
+            var endpoint1 = new ServiceEndpoint("foo", 22);
+            var endpoint2 = new ServiceEndpoint("foo", 22);
+            var endpoint3 = new ServiceEndpoint("bar", 22);
+            var endpoint4 = new ServiceEndpoint("foo", 23);
+
+            Assert.True(endpoint1.Equals(endpoint2));
+            Assert.True(endpoint1.Equals((object) endpoint2));
+            Assert.False(endpoint1.Equals(null));
+            Assert.False(endpoint1.Equals((object)null));
+            Assert.False(endpoint1.Equals(endpoint3));
+            Assert.False(endpoint1.Equals((object)endpoint3));
+            Assert.False(endpoint1.Equals(endpoint4));
+            Assert.False(endpoint1.Equals((object)endpoint4));
+            Assert.Equal(endpoint1.GetHashCode(), endpoint2.GetHashCode());
+            // These aren't actually guaranteed, but it would be pretty weird for this test
+            // to fail without it being a bug.
+            Assert.NotEqual(endpoint1.GetHashCode(), endpoint3.GetHashCode());
+            Assert.NotEqual(endpoint1.GetHashCode(), endpoint4.GetHashCode());
+        }
     }
 }
