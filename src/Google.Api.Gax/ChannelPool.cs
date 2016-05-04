@@ -62,6 +62,7 @@ namespace Google.Api.Gax
         /// <returns>A channel for the specified endpoint.</returns>
         public Channel GetChannel(ServiceEndpoint endpoint)
         {
+            GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = s_lazyDefaultChannelCredentials.Value.Result;
             return GetChannel(endpoint, credentials);
         }
@@ -75,6 +76,7 @@ namespace Google.Api.Gax
         /// task will be channel for the specified endpoint.</returns>
         public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint)
         {
+            GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await s_lazyDefaultChannelCredentials.Value;
             return GetChannel(endpoint, credentials);
         }
