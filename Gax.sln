@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax", "src\Google.Api.Gax\Google.Api.Gax.xproj", "{16E01144-C66A-4267-AE2C-40FECF562BBB}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Tests", "test\Google.Api.Gax.Tests\Google.Api.Gax.Tests.xproj", "{911A7CDE-2F97-4D82-A25F-9DCC89ADF481}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Testing", "testing\Google.Api.Gax.Testing\Google.Api.Gax.Testing.xproj", "{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.IntegrationTests", "test\Google.Api.Gax.IntegrationTests\Google.Api.Gax.IntegrationTests.xproj", "{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
