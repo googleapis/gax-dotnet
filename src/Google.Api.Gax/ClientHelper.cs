@@ -43,52 +43,6 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(settings, nameof(settings));
             _clock = settings.Clock ?? SystemClock.Instance;
             _userAgent = settings.UserAgent;
-            _clientCallSettings = settings.CallSettings?.Clone() ?? new CallSettings();
-            // TODO: There should be a nicer way of doing this.
-            if (_clientCallSettings.Headers == null)
-            {
-                _clientCallSettings.Headers = new Metadata();
-            }
-            _clientCallSettings.Headers.Add(UserAgentBuilder.HeaderName, settings.UserAgent);
-        }
-
-        // TODO: Make this an extension method on IClock or Expiration? Doesn't really feel like it belongs here.
-        // Can't be a regular instance method on Expiration as we want to handle null.
-        internal static DateTime? CalculateDeadline(IClock clock, Expiration expiration)
-        {
-            if (expiration == null || expiration.IsNone)
-            {
-                return null;
-            }
-            return expiration.Deadline ?? clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
-        }
-
-        /// <summary>
-        /// Builds a suitable <see cref="CallOptions"/> taking service settings into account,
-        /// along with a call-specific CallSettings override.
-        /// </summary>
-        /// <param name="callSettingsOverride">Optional overrides of CallSettings.</param>
-        /// <returns></returns>
-        internal CallOptions BuildCallOptions(CallSettings callSettingsOverride)
-        {
-            if (callSettingsOverride == null)
-            {
-                return new CallOptions(
-                    headers: _clientCallSettings.Headers,
-                    deadline: CalculateDeadline(_clock, _clientCallSettings.Expiration),
-                    cancellationToken: _clientCallSettings.CancellationToken ?? default(CancellationToken),
-                    writeOptions: _clientCallSettings.WriteOptions,
-                    propagationToken: _clientCallSettings.PropagationToken,
-                    credentials: _clientCallSettings.Credentials);
-            }
-            return new CallOptions(
-                // TODO: Sort out our cloning story.
-                headers: callSettingsOverride.Headers?.WithUserAgent(_userAgent) ?? _clientCallSettings.Headers,
-                deadline: CalculateDeadline(_clock, callSettingsOverride.Expiration ?? _clientCallSettings.Expiration),
-                cancellationToken: callSettingsOverride.CancellationToken ?? _clientCallSettings.CancellationToken ?? default(CancellationToken),
-                writeOptions: callSettingsOverride.WriteOptions ?? _clientCallSettings.WriteOptions,
-                propagationToken: callSettingsOverride.PropagationToken ?? _clientCallSettings.PropagationToken,
-                credentials: callSettingsOverride.Credentials ?? _clientCallSettings.Credentials);
         }
 
         /// <summary>
@@ -101,15 +55,19 @@ namespace Google.Api.Gax
         /// <returns></returns>
         public ApiCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
-            Func<TRequest, CallOptions, TResponse> syncGrpcCall)
+            Func<TRequest, CallOptions, TResponse> syncGrpcCall,
+            CallSettings perMethodCallSettings)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
-            ApiCall<TRequest, TResponse>.AsyncCall asyncCall = (request, callSettings) =>
-                asyncGrpcCall(request, BuildCallOptions(callSettings)).ResponseAsync;
-            ApiCall<TRequest, TResponse>.SyncCall syncCall = (request, callSettings) =>
-                syncGrpcCall(request, BuildCallOptions(callSettings));
-            return new ApiCall<TRequest, TResponse>(asyncCall, syncCall);
+            CallSettings baseCallSettings =
+                (perMethodCallSettings?.Clone() ?? new CallSettings())
+                .Merge(_clientCallSettings);
+            // These operations are applied in reverse order.
+            // I.e. User-agent is added first, then retry is performed.
+            return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, _clock)
+                .WithRetry(_clock, SystemScheduler.Instance)
+                .WithUserAgent(_userAgent);
         }
 
         #region Factory methods for client construction

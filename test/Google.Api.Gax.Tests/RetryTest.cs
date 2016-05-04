@@ -43,7 +43,8 @@ namespace Google.Api.Gax.Tests
             }
             try {
                 return Task.FromResult(call.Sync(request, callSettings));
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 // Task.FromException<TResponse>(e) is only available from v4.6 :(
                 var tcs = new TaskCompletionSource<TResponse>();
@@ -70,8 +71,11 @@ namespace Google.Api.Gax.Tests
 
             var rpcTask = scheduler.Run(() =>
             {
-                var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)) };
-                var retryingCallable = callable.WithRetry(retrySettings, scheduler.Clock, scheduler);
+                var callSettings = new CallSettings {
+                    RetrySettings = retrySettings,
+                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                };
+                var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
             });
 
@@ -105,8 +109,11 @@ namespace Google.Api.Gax.Tests
 
             var rpcTask = scheduler.Run(() =>
             {
-                var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)) };
-                var retryingCallable = callable.WithRetry(retrySettings, scheduler.Clock, scheduler);
+                var callSettings = new CallSettings {
+                    RetrySettings = retrySettings,
+                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                };
+                var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
             });
 
@@ -146,8 +153,11 @@ namespace Google.Api.Gax.Tests
             var rpcTask = scheduler.Run(() =>
             {
                 // Expiration makes it fail while waiting to make third call
-                var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(2500)) };
-                var retryingCallable = callable.WithRetry(retrySettings, scheduler.Clock, scheduler);
+                var callSettings = new CallSettings {
+                    RetrySettings = retrySettings,
+                    Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(2500))
+                };
+                var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
 
@@ -186,8 +196,11 @@ namespace Google.Api.Gax.Tests
                 // Call 1: t=0, deadline=1000, completes at 300
                 // Call 2: t=1800, deadline=3800 (2000+1800), completes at 2100
                 // Call 3, t=3600, deadline=4500 (would be 7600, but overall deadline truncates), completes at 3900 (with success)
-                var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(4500)) };
-                var retryingCallable = callable.WithRetry(retrySettings, scheduler.Clock, scheduler);
+                var callSettings = new CallSettings {
+                    RetrySettings = retrySettings,
+                    Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(4500))
+                };
+                var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
 
@@ -222,8 +235,11 @@ namespace Google.Api.Gax.Tests
 
             var rpcTask = scheduler.Run(() =>
             {
-                var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)) };
-                var retryingCallable = server.Callable.WithRetry(retrySettings, scheduler.Clock, scheduler);
+                var callSettings = new CallSettings {
+                    RetrySettings = retrySettings,
+                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                };
+                var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
 
@@ -276,7 +292,7 @@ namespace Google.Api.Gax.Tests
             }
 
             public ApiCall<SimpleRequest, SimpleResponse> Callable =>
-                new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync);
+                new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync, new CallSettings());
 
             public void AssertCallTimes(params long[] ticks)
             {

@@ -6,54 +6,75 @@
  */
 
 using Google.Protobuf;
+using Grpc.Core;
+using System;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
-    /// <summary>
-    /// Wrapper for matching asynchronous and synchronous API calls to the same underlying method.
-    /// </summary>
-    /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
-    /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+    public static class ApiCall
+    {
+        internal static ApiCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
+            Func<TRequest, CallOptions, TResponse> syncGrpcCall,
+            CallSettings baseCallSettings,
+            IClock clock)
+            where TRequest : class, IMessage<TRequest>
+            where TResponse : class, IMessage<TResponse>
+        {
+            return new ApiCall<TRequest, TResponse>(
+                asyncGrpcCall.WithTaskTransform().MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
+                syncGrpcCall.MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
+                baseCallSettings);
+        }
+    }
+
     public sealed class ApiCall<TRequest, TResponse>
         where TRequest : class, IMessage<TRequest>
         where TResponse : class, IMessage<TResponse>
     {
-        /// <summary>
-        /// Delegate representing a single asynchronous API call with a request and <see cref="CallSettings"/>.
-        /// </summary>
-        /// <param name="request">Request to make to the service.</param>
-        /// <param name="callSettings">If not null, provides settings that override the client-provided settings.</param>
-        /// <returns>A task representing the API call; the result of the completed task will be the API response.</returns>
-        public delegate Task<TResponse> AsyncCall(TRequest request, CallSettings callSettings);
-        /// <summary>
-        /// Delegate representing a single synchronous API call with a request and <see cref="CallSettings"/>.
-        /// </summary>
-        /// <param name="request">Request to make to the service.</param>
-        /// <param name="callSettings">If not null, provides settings that override the client-provided settings.</param>
-        /// <returns>The API response.</returns>
-        public delegate TResponse SyncCall(TRequest request, CallSettings callSettings);
-
-        /// <summary>
-        /// Initializes a new <see cref="ApiCall"/> with the specified asynchronous and synchronous calls.
-        /// </summary>
-        /// <param name="asyncCall">The asynchronous API call. Must not be null.</param>
-        /// <param name="syncCall">The synchronous API call. Must not be null.</param>
-        /// <exception cref="ArgumentNullException">Either specified call is null.</exception>
-        public ApiCall(AsyncCall asyncCall, SyncCall syncCall)
+        internal ApiCall(
+            Func<TRequest, CallSettings, Task<TResponse>> asyncCall,
+            Func<TRequest, CallSettings, TResponse> syncCall,
+            CallSettings baseCallSettings)
         {
-            Async = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
-            Sync = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
+            _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
+            _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
+            _baseCallSettings = GaxPreconditions.CheckNotNull(baseCallSettings, nameof(baseCallSettings));
         }
 
-        /// <summary>
-        /// The asynchronous API call. Will not be null.
-        /// </summary>
-        public AsyncCall Async { get; }
+        private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
+        private readonly Func<TRequest, CallSettings, TResponse> _syncCall;
+        private readonly CallSettings _baseCallSettings;
 
-        /// <summary>
-        /// The synchronous API call. Will not be null.
-        /// </summary>
-        public SyncCall Sync { get; }
+        private T Call<T>(TRequest request, CallSettings perCallCallSettings, Func<CallSettings, T> fn)
+        {
+            CallSettings callSettings = _baseCallSettings
+                .Clone()
+                .Merge(perCallCallSettings);
+            return fn(callSettings);
+        }
+
+        public Task<TResponse> Async(TRequest request, CallSettings perCallCallSettings) =>
+            Call(request, perCallCallSettings, callSettings => _asyncCall(request, callSettings));
+
+        public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
+            Call(request, perCallCallSettings, callSettings => _syncCall(request, callSettings));
+
+        internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent)
+        {
+            return new ApiCall<TRequest, TResponse>(
+                _asyncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
+                _syncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
+                _baseCallSettings);
+        }
+
+        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler)
+        {
+            return new ApiCall<TRequest, TResponse>(
+                _asyncCall.WithRetry(clock, scheduler),
+                _syncCall.WithRetry(clock, scheduler),
+                _baseCallSettings);
+        }
     }
 }

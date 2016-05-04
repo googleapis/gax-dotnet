@@ -115,7 +115,7 @@ namespace Google.Api.Gax.Tests
             }
 
             internal ApiCall<PageStreamingRequest, PageStreamingPage> ApiCall =>
-                new ApiCall<PageStreamingRequest, PageStreamingPage>(GetPageAsync, GetPage);
+                new ApiCall<PageStreamingRequest, PageStreamingPage>(GetPageAsync, GetPage, new CallSettings());
 
             public IEnumerable<int> AllItems => Pages.SelectMany(page => page.Items);
         }

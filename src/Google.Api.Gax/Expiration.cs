@@ -10,6 +10,27 @@ using System;
 namespace Google.Api.Gax
 {
     /// <summary>
+    /// The type of <see cref="Expiration"/>; none, timeout or deadline.
+    /// </summary>
+    public enum ExpirationType
+    {
+        /// <summary>
+        /// No expiration; an infinite timeout.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Expiration is a relative timeout, represented by a <see cref="TimeSpan"/>.
+        /// </summary>
+        Timeout,
+
+        /// <summary>
+        /// Expiration is an absolute deadline, represented by a <see cref="DateTime"/>.
+        /// </summary>
+        Deadline,
+    }
+
+    /// <summary>
     /// Expiration specified by relative timeout or absolute deadline.
     /// </summary>
     public sealed class Expiration
@@ -59,18 +80,39 @@ namespace Google.Api.Gax
         public DateTime? Deadline { get; }
 
         /// <summary>
-        /// Does this <see cref="Expiration"/> contain a relative timeout?
+        /// What <see cref="ExpirationType"/> is contained in this <see cref="Expiration"/>.
         /// </summary>
-        public bool IsTimeout => Timeout != null;
+        public ExpirationType Type =>
+            Timeout != null ? ExpirationType.Timeout :
+            Deadline != null ? ExpirationType.Deadline :
+            ExpirationType.None;
+    }
 
+    internal static class ExpirationExtensions
+    {
         /// <summary>
-        /// Does this <see cref="Expiration"/> contain an absolute deadline?
+        /// Calculate a deadline from an <see cref="Expiration"/> and a <see cref="IClock"/>.
         /// </summary>
-        public bool IsDeadline => Deadline != null;
-
-        /// <summary>
-        /// Does this <see cref="Expiration"/> specify no expiration?
-        /// </summary>
-        public bool IsNone => Timeout == null && Deadline == null;
+        /// <param name="expiration"><see cref="Expiration"/>, may be null.</param>
+        /// <param name="clock"><see cref="IClock"/> to use for deadline calculation.</param>
+        /// <returns>The calculated absolute deadline, or null if no deadline should be used.</returns>
+        internal static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
+        {
+            if (expiration == null)
+            {
+                return null;
+            }
+            switch (expiration.Type)
+            {
+                case ExpirationType.None:
+                    return null;
+                case ExpirationType.Timeout:
+                    return clock.GetCurrentDateTimeUtc() + expiration.Timeout.Value;
+                case ExpirationType.Deadline:
+                    return expiration.Deadline.Value;
+                default:
+                    throw new ArgumentException("Invalid expiration", nameof(expiration));
+            }
+        }
     }
 }
