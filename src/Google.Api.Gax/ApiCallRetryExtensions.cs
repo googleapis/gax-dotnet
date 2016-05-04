@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
-    public static class ApiCallRetryExtensions
+    internal static class ApiCallRetryExtensions
     {
         // By design, the code is mostly duplicated between the async and sync calls.
 
         // Async retry
-        public static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
+        internal static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, Task<TResponse>> fn,
             IClock clock, IScheduler scheduler) =>
             async (request, callSettings) =>
@@ -59,7 +59,7 @@ namespace Google.Api.Gax
             };
 
         // Sync retry
-        public static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
+        internal static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, TResponse> fn,
             IClock clock, IScheduler scheduler) =>
             (request, callSettings) =>

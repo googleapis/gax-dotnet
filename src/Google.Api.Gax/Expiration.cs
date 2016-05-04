@@ -9,10 +9,24 @@ using System;
 
 namespace Google.Api.Gax
 {
+    /// <summary>
+    /// The type of <see cref="Expiration"/>; none, timeout or deadline.
+    /// </summary>
     public enum ExpirationType
     {
+        /// <summary>
+        /// No expiration; an infinite timeout.
+        /// </summary>
         None,
+
+        /// <summary>
+        /// Expiration is a relative timeout, represented by a <see cref="TimeSpan"/>.
+        /// </summary>
         Timeout,
+
+        /// <summary>
+        /// Expiration is an absolute deadline, represented by a <see cref="DateTime"/>.
+        /// </summary>
         Deadline,
     }
 
@@ -65,15 +79,24 @@ namespace Google.Api.Gax
         /// </summary>
         public DateTime? Deadline { get; }
 
+        /// <summary>
+        /// What <see cref="ExpirationType"/> is contained in this <see cref="Expiration"/>.
+        /// </summary>
         public ExpirationType Type =>
             Timeout != null ? ExpirationType.Timeout :
             Deadline != null ? ExpirationType.Deadline :
             ExpirationType.None;
     }
 
-    public static class ExpirationExtensions
+    internal static class ExpirationExtensions
     {
-        public static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
+        /// <summary>
+        /// Calculate a deadline from an <see cref="Expiration"/> and a <see cref="IClock"/>.
+        /// </summary>
+        /// <param name="expiration"><see cref="Expiration"/>, may be null.</param>
+        /// <param name="clock"><see cref="IClock"/> to use for deadline calculation.</param>
+        /// <returns>The calculated absolute deadline, or null if no deadline should be used.</returns>
+        internal static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
         {
             if (expiration == null)
             {

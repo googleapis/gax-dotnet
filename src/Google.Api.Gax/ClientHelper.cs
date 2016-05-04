@@ -63,6 +63,8 @@ namespace Google.Api.Gax
             CallSettings baseCallSettings =
                 (perMethodCallSettings?.Clone() ?? new CallSettings())
                 .Merge(_clientCallSettings);
+            // These operations are applied in reverse order.
+            // I.e. User-agent is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, _clock)
                 .WithRetry(_clock, SystemScheduler.Instance)
                 .WithUserAgent(_userAgent);

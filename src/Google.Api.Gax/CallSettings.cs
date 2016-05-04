@@ -76,46 +76,37 @@ namespace Google.Api.Gax
             RetrySettings = RetrySettings?.Clone(),
         };
 
-        // Merge other into this.
-        // Other is unchanged. Returns this
-        // Internal? Or Public?
-        public CallSettings Merge(CallSettings other)
+        /// <summary>
+        /// Merge the specified <see cref="CallSettings"/> into this.
+        /// </summary>
+        /// <param name="other">The <see cref="CallSettings"/> to merge into this.</param>
+        /// <returns>This, with the other <see cref="CallSettings"/>merged.</returns>
+        /// <remarks>
+        /// This is mutated. The other <see cref="CallSettings"/> is not mutated.
+        /// </remarks>
+        internal CallSettings Merge(CallSettings other)
         {
             if (other == null)
             {
                 return this;
             }
-            if (other.Headers != null)
-            {
-                Headers = other.Headers.Clone();
-            }
-            if (other.Expiration != null)
-            {
-                Expiration = other.Expiration;
-            }
-            if (other.CancellationToken != null)
-            {
-                CancellationToken = other.CancellationToken;
-            }
-            if (other.WriteOptions != null)
-            {
-                WriteOptions = other.WriteOptions;
-            }
-            if (other.PropagationToken != null)
-            {
-                PropagationToken = other.PropagationToken;
-            }
-            if (other.Credentials != null)
-            {
-                Credentials = other.Credentials;
-            }
-            if (other.RetrySettings != null)
-            {
-                RetrySettings = other.RetrySettings;
-            }
+            // Should a merge of Headers be additive, instead of overridding?
+            // If additive, how to remove headers during an override?
+            Headers = other.Headers ?? Headers;
+            Expiration = other.Expiration ?? Expiration;
+            CancellationToken = other.CancellationToken ?? CancellationToken;
+            WriteOptions = other.WriteOptions ?? WriteOptions;
+            PropagationToken = other.PropagationToken ?? PropagationToken;
+            Credentials = other.Credentials ?? Credentials;
+            RetrySettings = other.RetrySettings ?? RetrySettings;
             return this;
         }
 
+        /// <summary>
+        /// Transfers settings contained in this into a <see cref="CallOptions"/>.
+        /// </summary>
+        /// <param name="clock">The clock to use for deadline calculation.</param>
+        /// <returns>A <see cref="CallOptions"/> configured from this <see cref="CallSettings"/>.</returns>
         internal CallOptions ToCallOptions(IClock clock) => new CallOptions(
             headers: Headers,
             deadline: Expiration.CalculateDeadline(clock),
@@ -124,6 +115,12 @@ namespace Google.Api.Gax
             propagationToken: PropagationToken,
             credentials: Credentials);
 
+        /// <summary>
+        /// Adds the specified user agent to <see cref="Metadata"/> <see cref="Headers"/>.
+        /// Will instantiate a <see cref="Metadata"/> object if required.
+        /// </summary>
+        /// <param name="userAgent">The user agent string to add to headers.</param>
+        /// <returns>This</returns>
         internal CallSettings AddUserAgent(string userAgent)
         {
             if (Headers == null)

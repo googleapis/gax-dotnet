@@ -64,8 +64,8 @@ namespace Google.Api.Gax
         internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent)
         {
             return new ApiCall<TRequest, TResponse>(
-                _asyncCall.MapArg((CallSettings cs) => cs.AddUserAgent(userAgent)),
-                _syncCall.MapArg((CallSettings cs) => cs.AddUserAgent(userAgent)),
+                _asyncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
+                _syncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
                 _baseCallSettings);
         }
 

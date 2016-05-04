@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Testing;
 using Grpc.Core;
 using Moq;
 using System;
@@ -72,15 +73,12 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void ToCallOptions_ExpirationTimeout()
         {
-            var now = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
+            var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
-            var mockClock = new Mock<IClock>();
-            mockClock.Setup(c => c.GetCurrentDateTimeUtc()).Returns(now);
             var callSettings = new CallSettings { Expiration = Expiration.FromTimeout(timeout) };
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(clock);
             // Value should be exact, as we control time precisely.
-            Assert.Equal(options.Deadline.Value, now + timeout);
-            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Once);
+            Assert.Equal(options.Deadline.Value, clock.GetCurrentDateTimeUtc() + timeout);
         }
 
         [Fact]
