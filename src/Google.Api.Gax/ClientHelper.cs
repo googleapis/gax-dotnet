@@ -28,6 +28,7 @@ namespace Google.Api.Gax
         {
             GaxPreconditions.CheckNotNull(settings, nameof(settings));
             _clock = settings.Clock ?? SystemClock.Instance;
+            _clientCallSettings = settings.CallSettings;
             _userAgent = settings.UserAgent;
         }
 

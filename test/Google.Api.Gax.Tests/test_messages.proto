@@ -30,11 +30,12 @@ message SimpleResponse {
 }
 
 message PageStreamingRequest {
-  string token = 1;
-  string check = 2;
+  string page_token = 1;
+  int32 page_size = 2;
+  string check = 3;
 }
 
-message PageStreamingPage {
+message PageStreamingResponse {
   repeated int32 items = 1;
-  string next_page_token = 3;
+  string next_page_token = 2;
 }

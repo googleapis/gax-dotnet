@@ -27,10 +27,10 @@ namespace Google.Api.Gax {
             "bGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIPCgdlbnRyaWVzGAIgAygJIjEK",
             "EEJ1bmRsaW5nUmVzcG9uc2USDAoEbmFtZRgBIAEoCRIPCgdlbnRyaWVzGAIg",
             "AygJIh0KDVNpbXBsZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSIeCg5TaW1wbGVS",
-            "ZXNwb25zZRIMCgRuYW1lGAIgASgJIjQKFFBhZ2VTdHJlYW1pbmdSZXF1ZXN0",
-            "Eg0KBXRva2VuGAEgASgJEg0KBWNoZWNrGAIgASgJIjsKEVBhZ2VTdHJlYW1p",
-            "bmdQYWdlEg0KBWl0ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgDIAEo",
-            "CWIGcHJvdG8z"));
+            "ZXNwb25zZRIMCgRuYW1lGAIgASgJIkwKFFBhZ2VTdHJlYW1pbmdSZXF1ZXN0",
+            "EhIKCnBhZ2VfdG9rZW4YASABKAkSEQoJcGFnZV9zaXplGAIgASgFEg0KBWNo",
+            "ZWNrGAMgASgJIj8KFVBhZ2VTdHJlYW1pbmdSZXNwb25zZRINCgVpdGVtcxgB",
+            "IAMoBRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
@@ -38,8 +38,8 @@ namespace Google.Api.Gax {
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.BundlingResponse), global::Google.Api.Gax.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null),
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleRequest), global::Google.Api.Gax.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
             new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleResponse), global::Google.Api.Gax.SimpleResponse.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingRequest), global::Google.Api.Gax.PageStreamingRequest.Parser, new[]{ "Token", "Check" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingPage), global::Google.Api.Gax.PageStreamingPage.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
+            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingRequest), global::Google.Api.Gax.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null),
+            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingResponse), global::Google.Api.Gax.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
           }));
     }
     #endregion
@@ -516,7 +516,8 @@ namespace Google.Api.Gax {
     partial void OnConstruction();
 
     public PageStreamingRequest(PageStreamingRequest other) : this() {
-      token_ = other.token_;
+      pageToken_ = other.pageToken_;
+      pageSize_ = other.pageSize_;
       check_ = other.check_;
     }
 
@@ -524,18 +525,28 @@ namespace Google.Api.Gax {
       return new PageStreamingRequest(this);
     }
 
-    /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 1;
-    private string token_ = "";
-    public string Token {
-      get { return token_; }
+    /// <summary>Field number for the "page_token" field.</summary>
+    public const int PageTokenFieldNumber = 1;
+    private string pageToken_ = "";
+    public string PageToken {
+      get { return pageToken_; }
       set {
-        token_ = pb::Preconditions.CheckNotNull(value, "value");
+        pageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "page_size" field.</summary>
+    public const int PageSizeFieldNumber = 2;
+    private int pageSize_;
+    public int PageSize {
+      get { return pageSize_; }
+      set {
+        pageSize_ = value;
       }
     }
 
     /// <summary>Field number for the "check" field.</summary>
-    public const int CheckFieldNumber = 2;
+    public const int CheckFieldNumber = 3;
     private string check_ = "";
     public string Check {
       get { return check_; }
@@ -555,14 +566,16 @@ namespace Google.Api.Gax {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Token != other.Token) return false;
+      if (PageToken != other.PageToken) return false;
+      if (PageSize != other.PageSize) return false;
       if (Check != other.Check) return false;
       return true;
     }
 
     public override int GetHashCode() {
       int hash = 1;
-      if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
+      if (PageSize != 0) hash ^= PageSize.GetHashCode();
       if (Check.Length != 0) hash ^= Check.GetHashCode();
       return hash;
     }
@@ -572,20 +585,27 @@ namespace Google.Api.Gax {
     }
 
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Token.Length != 0) {
+      if (PageToken.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Token);
+        output.WriteString(PageToken);
+      }
+      if (PageSize != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(PageSize);
       }
       if (Check.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(Check);
       }
     }
 
     public int CalculateSize() {
       int size = 0;
-      if (Token.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
+      if (PageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PageToken);
+      }
+      if (PageSize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
       }
       if (Check.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Check);
@@ -597,8 +617,11 @@ namespace Google.Api.Gax {
       if (other == null) {
         return;
       }
-      if (other.Token.Length != 0) {
-        Token = other.Token;
+      if (other.PageToken.Length != 0) {
+        PageToken = other.PageToken;
+      }
+      if (other.PageSize != 0) {
+        PageSize = other.PageSize;
       }
       if (other.Check.Length != 0) {
         Check = other.Check;
@@ -613,10 +636,14 @@ namespace Google.Api.Gax {
             input.SkipLastField();
             break;
           case 10: {
-            Token = input.ReadString();
+            PageToken = input.ReadString();
             break;
           }
-          case 18: {
+          case 16: {
+            PageSize = input.ReadInt32();
+            break;
+          }
+          case 26: {
             Check = input.ReadString();
             break;
           }
@@ -627,9 +654,9 @@ namespace Google.Api.Gax {
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-  public sealed partial class PageStreamingPage : pb::IMessage<PageStreamingPage> {
-    private static readonly pb::MessageParser<PageStreamingPage> _parser = new pb::MessageParser<PageStreamingPage>(() => new PageStreamingPage());
-    public static pb::MessageParser<PageStreamingPage> Parser { get { return _parser; } }
+  public sealed partial class PageStreamingResponse : pb::IMessage<PageStreamingResponse> {
+    private static readonly pb::MessageParser<PageStreamingResponse> _parser = new pb::MessageParser<PageStreamingResponse>(() => new PageStreamingResponse());
+    public static pb::MessageParser<PageStreamingResponse> Parser { get { return _parser; } }
 
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.Gax.TestMessagesReflection.Descriptor.MessageTypes[5]; }
@@ -639,19 +666,19 @@ namespace Google.Api.Gax {
       get { return Descriptor; }
     }
 
-    public PageStreamingPage() {
+    public PageStreamingResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
-    public PageStreamingPage(PageStreamingPage other) : this() {
+    public PageStreamingResponse(PageStreamingResponse other) : this() {
       items_ = other.items_.Clone();
       nextPageToken_ = other.nextPageToken_;
     }
 
-    public PageStreamingPage Clone() {
-      return new PageStreamingPage(this);
+    public PageStreamingResponse Clone() {
+      return new PageStreamingResponse(this);
     }
 
     /// <summary>Field number for the "items" field.</summary>
@@ -664,7 +691,7 @@ namespace Google.Api.Gax {
     }
 
     /// <summary>Field number for the "next_page_token" field.</summary>
-    public const int NextPageTokenFieldNumber = 3;
+    public const int NextPageTokenFieldNumber = 2;
     private string nextPageToken_ = "";
     public string NextPageToken {
       get { return nextPageToken_; }
@@ -674,10 +701,10 @@ namespace Google.Api.Gax {
     }
 
     public override bool Equals(object other) {
-      return Equals(other as PageStreamingPage);
+      return Equals(other as PageStreamingResponse);
     }
 
-    public bool Equals(PageStreamingPage other) {
+    public bool Equals(PageStreamingResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -703,7 +730,7 @@ namespace Google.Api.Gax {
     public void WriteTo(pb::CodedOutputStream output) {
       items_.WriteTo(output, _repeated_items_codec);
       if (NextPageToken.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(NextPageToken);
       }
     }
@@ -717,7 +744,7 @@ namespace Google.Api.Gax {
       return size;
     }
 
-    public void MergeFrom(PageStreamingPage other) {
+    public void MergeFrom(PageStreamingResponse other) {
       if (other == null) {
         return;
       }
@@ -739,7 +766,7 @@ namespace Google.Api.Gax {
             items_.AddEntriesFrom(input, _repeated_items_codec);
             break;
           }
-          case 26: {
+          case 18: {
             NextPageToken = input.ReadString();
             break;
           }
