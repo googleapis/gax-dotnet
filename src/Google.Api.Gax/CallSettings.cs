@@ -6,7 +6,6 @@
  */
 
 using Grpc.Core;
-using System;
 using System.Threading;
 
 namespace Google.Api.Gax
@@ -16,6 +15,21 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class CallSettings
     {
+        public CallSettings() { }
+
+        internal CallSettings(CallSettings other)
+        {
+            if (other != null)
+            {
+                Headers = other.Headers?.Clone();
+                Expiration = other.Expiration;
+                CancellationToken = other.CancellationToken;
+                WriteOptions = other.WriteOptions;
+                PropagationToken = other.PropagationToken;
+                Credentials = other.Credentials;
+                RetrySettings = other.RetrySettings?.Clone();
+            }
+        }
         /// <summary>
         /// Headers to send at the beginning of the call.
         /// </summary>
@@ -65,16 +79,7 @@ namespace Google.Api.Gax
         /// The <see cref="Headers"/> are deep-cloned, so changes to the original Headers
         /// will not affect the cloned Headers.
         /// </remarks>
-        public CallSettings Clone() => new CallSettings
-        {
-            Headers = Headers?.Clone(),
-            Expiration = Expiration,
-            CancellationToken = CancellationToken,
-            WriteOptions = WriteOptions,
-            PropagationToken = PropagationToken,
-            Credentials = Credentials,
-            RetrySettings = RetrySettings?.Clone(),
-        };
+        public CallSettings Clone() => new CallSettings(this);
 
         /// <summary>
         /// Merge the specified <see cref="CallSettings"/> into this.
