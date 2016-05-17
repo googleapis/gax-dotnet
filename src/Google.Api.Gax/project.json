@@ -1,15 +1,20 @@
 ﻿{
   "version": "0.1.0-*",
-  "title": "Google API Extensions",
-  "description": "Support classes for Google API client libraries",
-  "authors": [ "Google Inc." ],
-  "owners": [ "googleapis-packages" ],
-  "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
-  "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
-  "tags": [ "Google" ],
-  "compilationOptions": {
+
+  "packOptions": {
+    "title": "Google API Extensions",
+    "description": "Support classes for Google API client libraries",
+    "authors": [ "Google Inc." ],
+    "owners": [ "googleapis-packages" ],
+    "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+    "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+    "tags": [ "Google" ],
+  },
+
+  "buildOptions": {
     "keyFile": "../../Gax.snk"
   },
+
   "dependencies": {
     "Google.Apis.Auth": "1.13.0",
     "Google.Protobuf": "3.0.0-beta3",
