@@ -32,4 +32,4 @@ script:
   - dotnet restore
   - dotnet build src/*
   - dotnet build test/*
-  - for project in `find . -name '*.Tests'`; do dotnet test $project test -parallel none; done
+  - for project in `find . -name '*.Tests'`; do dotnet test $project -parallel none; done
