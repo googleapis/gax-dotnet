@@ -28,7 +28,4 @@ script:
   - dotnet restore linuxtest
   - dotnet build src/*
   - dotnet build test/*
-  - for project in `find . -name '*.Tests'`; \
-    do mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe \
-    $project/Debug/bin/net45/$project.dll -parallel none; \
-    done
+  - for project in `find . -name '*.Tests'`; do mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe $project/Debug/bin/net45/$project.dll -parallel none; done
