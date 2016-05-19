@@ -32,6 +32,6 @@ script:
   - ls test/Google.Api.Gax.Tests
   - ls test/Google.Api.Gax.Tests/bin
   - ls test/Google.Api.Gax.Tests/bin/Debug
-  - ls test/Google.Api.Gax.Tests/bin/Debug/net45/
-  - mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/Google.Api.Gax.Tests/bin/Debug/net45/Google.Api.Gax.Tests.dll -parallel none
-  - for project in `find test -name '*.Tests'`; do mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/bin/Debug/net45/$project.dll -parallel none; done
+  - ls test/Google.Api.Gax.Tests/bin/Debug/net451/
+  - mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/Google.Api.Gax.Tests/bin/Debug/net451/Google.Api.Gax.Tests.dll -parallel none
+  - for project in `find test -name '*.Tests'`; do mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/bin/Debug/net451/$project.dll -parallel none; done
