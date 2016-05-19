@@ -29,6 +29,6 @@ script:
   - dotnet build src/*
   - dotnet build test/*
   - ls ~/.nuget/packages/xunit.runner.console
-  - ls test/Google.Api.Gax/Tests/Debug/bin/net45/
-  - mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/Google.Api.Gax/Tests/Debug/bin/net45/Google.Api.Gax.Tests.dll -parallel none
+  - ls test/Google.Api.Gax.Tests/Debug/bin/net45/
+  - mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/Google.Api.Gax.Tests/Debug/bin/net45/Google.Api.Gax.Tests.dll -parallel none
   - for project in `find test -name '*.Tests'`; do mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/Debug/bin/net45/$project.dll -parallel none; done
