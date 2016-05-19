@@ -39,9 +39,9 @@ namespace Google.Api.Gax.IntegrationTests
             Task.Run(() => _server.ShutdownAsync()).Wait();
         }
 
-        private class TestServiceImpl : TestService.ITestService
+        private class TestServiceImpl : TestService.TestServiceBase
         {
-            public Task<SimpleResponse> DoSimple(SimpleRequest request, ServerCallContext context)
+            public override Task<SimpleResponse> DoSimple(SimpleRequest request, ServerCallContext context)
                 => Task.FromResult(new SimpleResponse { Name = request.Name });
         }
     }
