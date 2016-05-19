@@ -8,8 +8,8 @@
   "dependencies": {
     "xunit": "2.1.0",
     "dotnet-test-xunit": "1.0.0-rc2-build10015",
-    "Google.Api.Gax": "*",
-    "Google.Api.Gax.Testing": "*",
+    "Google.Api.Gax": { "target": "project" },
+    "Google.Api.Gax.Testing": { "target": "project" },
     "Ix-Async": "1.2.5",
     "Moq": "4.2.1510.2205"
   },
@@ -17,6 +17,15 @@
   "testRunner": "xunit",
 
   "frameworks": {
-    "net451": { }
+    "net451": {
+      "frameworkAssemblies": {
+        "System.IO": {
+          "type": "build"
+        },
+        "System.Runtime": {
+          "type": "build"
+        }
+      }
+    }
   }
 }
