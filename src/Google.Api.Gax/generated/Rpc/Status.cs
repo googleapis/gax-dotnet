@@ -37,8 +37,8 @@ namespace Google.Rpc {
             "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.Status), global::Google.Rpc.Status.Parser, new[]{ "Code", "Message", "Details" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Status), global::Google.Rpc.Status.Parser, new[]{ "Code", "Message", "Details" }, null, null, null)
           }));
     }
     #endregion
@@ -152,7 +152,7 @@ namespace Google.Rpc {
     public string Message {
       get { return message_; }
       set {
-        message_ = pb::Preconditions.CheckNotNull(value, "value");
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 

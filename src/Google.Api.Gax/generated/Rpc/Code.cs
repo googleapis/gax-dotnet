@@ -41,7 +41,7 @@ namespace Google.Rpc {
             "Z2xlLnJwY0IJQ29kZVByb3RvUAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(new[] {typeof(global::Google.Rpc.Code), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Rpc.Code), }, null));
     }
     #endregion
 
@@ -66,13 +66,13 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 200 OK
     /// </summary>
-    OK = 0,
+    [pbr::OriginalName("OK")] Ok = 0,
     /// <summary>
     ///  The operation was cancelled, typically by the caller.
     ///
     ///  HTTP Mapping: 499 Client Closed Request
     /// </summary>
-    CANCELLED = 1,
+    [pbr::OriginalName("CANCELLED")] Cancelled = 1,
     /// <summary>
     ///  Unknown error.  For example, this error may be returned when
     ///  a `Status` value received from another address space belongs to
@@ -82,7 +82,7 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 500 Internal Server Error
     /// </summary>
-    UNKNOWN = 2,
+    [pbr::OriginalName("UNKNOWN")] Unknown = 2,
     /// <summary>
     ///  The client specified an invalid argument.  Note that this differs
     ///  from `FAILED_PRECONDITION`.  `INVALID_ARGUMENT` indicates arguments
@@ -91,7 +91,7 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 400 Bad Request
     /// </summary>
-    INVALID_ARGUMENT = 3,
+    [pbr::OriginalName("INVALID_ARGUMENT")] InvalidArgument = 3,
     /// <summary>
     ///  The deadline expired before the operation could complete. For operations
     ///  that change the state of the system, this error may be returned
@@ -101,7 +101,7 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 504 Gateway Timeout
     /// </summary>
-    DEADLINE_EXCEEDED = 4,
+    [pbr::OriginalName("DEADLINE_EXCEEDED")] DeadlineExceeded = 4,
     /// <summary>
     ///  Some requested entity (e.g., file or directory) was not found.
     ///  For privacy reasons, this code *might* be returned when the client
@@ -109,14 +109,14 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 404 Not Found
     /// </summary>
-    NOT_FOUND = 5,
+    [pbr::OriginalName("NOT_FOUND")] NotFound = 5,
     /// <summary>
     ///  The entity that a client attempted to create (e.g., file or directory)
     ///  already exists.
     ///
     ///  HTTP Mapping: 409 Conflict
     /// </summary>
-    ALREADY_EXISTS = 6,
+    [pbr::OriginalName("ALREADY_EXISTS")] AlreadyExists = 6,
     /// <summary>
     ///  The caller does not have permission to execute the specified
     ///  operation. `PERMISSION_DENIED` must not be used for rejections
@@ -127,21 +127,21 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 403 Forbidden
     /// </summary>
-    PERMISSION_DENIED = 7,
+    [pbr::OriginalName("PERMISSION_DENIED")] PermissionDenied = 7,
     /// <summary>
     ///  The request does not have valid authentication credentials for the
     ///  operation.
     ///
     ///  HTTP Mapping: 401 Unauthorized
     /// </summary>
-    UNAUTHENTICATED = 16,
+    [pbr::OriginalName("UNAUTHENTICATED")] Unauthenticated = 16,
     /// <summary>
     ///  Some resource has been exhausted, perhaps a per-user quota, or
     ///  perhaps the entire file system is out of space.
     ///
     ///  HTTP Mapping: 429 Too Many Requests
     /// </summary>
-    RESOURCE_EXHAUSTED = 8,
+    [pbr::OriginalName("RESOURCE_EXHAUSTED")] ResourceExhausted = 8,
     /// <summary>
     ///  The operation was rejected because the system is not in a state
     ///  required for the operation's execution.  For example, the directory
@@ -170,7 +170,7 @@ namespace Google.Rpc {
     ///  Etag-related headers in the request, it may choose to return 412
     ///  instead of 400 for this error code.
     /// </summary>
-    FAILED_PRECONDITION = 9,
+    [pbr::OriginalName("FAILED_PRECONDITION")] FailedPrecondition = 9,
     /// <summary>
     ///  The operation was aborted, typically due to a concurrency issue such as
     ///  a sequencer check failure or transaction abort.
@@ -180,7 +180,7 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 409 Conflict
     /// </summary>
-    ABORTED = 10,
+    [pbr::OriginalName("ABORTED")] Aborted = 10,
     /// <summary>
     ///  The operation was attempted past the valid range.  E.g., seeking or
     ///  reading past end-of-file.
@@ -200,14 +200,14 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 400 Bad Request
     /// </summary>
-    OUT_OF_RANGE = 11,
+    [pbr::OriginalName("OUT_OF_RANGE")] OutOfRange = 11,
     /// <summary>
     ///  The operation is not implemented or is not supported/enabled in this
     ///  service.
     ///
     ///  HTTP Mapping: 501 Not Implemented
     /// </summary>
-    UNIMPLEMENTED = 12,
+    [pbr::OriginalName("UNIMPLEMENTED")] Unimplemented = 12,
     /// <summary>
     ///  Internal errors.  This means that some invariants expected by the
     ///  underlying system have been broken.  This error code is reserved
@@ -215,7 +215,7 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 500 Internal Server Error
     /// </summary>
-    INTERNAL = 13,
+    [pbr::OriginalName("INTERNAL")] Internal = 13,
     /// <summary>
     ///  The service is currently unavailable.  This is most likely a
     ///  transient condition, which can be corrected by retrying with
@@ -226,13 +226,13 @@ namespace Google.Rpc {
     ///
     ///  HTTP Mapping: 503 Service Unavailable
     /// </summary>
-    UNAVAILABLE = 14,
+    [pbr::OriginalName("UNAVAILABLE")] Unavailable = 14,
     /// <summary>
     ///  Unrecoverable data loss or corruption.
     ///
     ///  HTTP Mapping: 500 Internal Server Error
     /// </summary>
-    DATA_LOSS = 15,
+    [pbr::OriginalName("DATA_LOSS")] DataLoss = 15,
   }
 
   #endregion

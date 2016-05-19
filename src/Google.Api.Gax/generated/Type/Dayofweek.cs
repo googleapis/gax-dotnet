@@ -33,11 +33,12 @@ namespace Google.Type {
             "Chtnb29nbGUvdHlwZS9kYXlvZndlZWsucHJvdG8SC2dvb2dsZS50eXBlKoQB",
             "CglEYXlPZldlZWsSGwoXREFZX09GX1dFRUtfVU5TUEVDSUZJRUQQABIKCgZN",
             "T05EQVkQARILCgdUVUVTREFZEAISDQoJV0VETkVTREFZEAMSDAoIVEhVUlNE",
-            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQiYK",
-            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAaABAWIGcHJvdG8z"));
+            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQiwK",
+            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAaABAaICA0dUUGIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(new[] {typeof(global::Google.Type.DayOfWeek), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Type.DayOfWeek), }, null));
     }
     #endregion
 
@@ -50,35 +51,35 @@ namespace Google.Type {
     /// <summary>
     ///  The unspecified day-of-week.
     /// </summary>
-    DAY_OF_WEEK_UNSPECIFIED = 0,
+    [pbr::OriginalName("DAY_OF_WEEK_UNSPECIFIED")] Unspecified = 0,
     /// <summary>
     ///  The day-of-week of Monday.
     /// </summary>
-    MONDAY = 1,
+    [pbr::OriginalName("MONDAY")] Monday = 1,
     /// <summary>
     ///  The day-of-week of Tuesday.
     /// </summary>
-    TUESDAY = 2,
+    [pbr::OriginalName("TUESDAY")] Tuesday = 2,
     /// <summary>
     ///  The day-of-week of Wednesday.
     /// </summary>
-    WEDNESDAY = 3,
+    [pbr::OriginalName("WEDNESDAY")] Wednesday = 3,
     /// <summary>
     ///  The day-of-week of Thursday.
     /// </summary>
-    THURSDAY = 4,
+    [pbr::OriginalName("THURSDAY")] Thursday = 4,
     /// <summary>
     ///  The day-of-week of Friday.
     /// </summary>
-    FRIDAY = 5,
+    [pbr::OriginalName("FRIDAY")] Friday = 5,
     /// <summary>
     ///  The day-of-week of Saturday.
     /// </summary>
-    SATURDAY = 6,
+    [pbr::OriginalName("SATURDAY")] Saturday = 6,
     /// <summary>
     ///  The day-of-week of Sunday.
     /// </summary>
-    SUNDAY = 7,
+    [pbr::OriginalName("SUNDAY")] Sunday = 7,
   }
 
   #endregion

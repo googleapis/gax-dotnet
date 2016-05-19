@@ -60,13 +60,13 @@ namespace Google.Longrunning {
             "bnNQcm90b1ABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Rpc.StatusReflection.Descriptor, },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.Operation), global::Google.Longrunning.Operation.Parser, new[]{ "Name", "Metadata", "Done", "Error", "Response" }, new[]{ "Result" }, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.GetOperationRequest), global::Google.Longrunning.GetOperationRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.ListOperationsRequest), global::Google.Longrunning.ListOperationsRequest.Parser, new[]{ "Name", "Filter", "PageSize", "PageToken" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.ListOperationsResponse), global::Google.Longrunning.ListOperationsResponse.Parser, new[]{ "Operations", "NextPageToken" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.CancelOperationRequest), global::Google.Longrunning.CancelOperationRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Longrunning.DeleteOperationRequest), global::Google.Longrunning.DeleteOperationRequest.Parser, new[]{ "Name" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.Operation), global::Google.Longrunning.Operation.Parser, new[]{ "Name", "Metadata", "Done", "Error", "Response" }, new[]{ "Result" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.GetOperationRequest), global::Google.Longrunning.GetOperationRequest.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.ListOperationsRequest), global::Google.Longrunning.ListOperationsRequest.Parser, new[]{ "Name", "Filter", "PageSize", "PageToken" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.ListOperationsResponse), global::Google.Longrunning.ListOperationsResponse.Parser, new[]{ "Operations", "NextPageToken" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.CancelOperationRequest), global::Google.Longrunning.CancelOperationRequest.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Longrunning.DeleteOperationRequest), global::Google.Longrunning.DeleteOperationRequest.Parser, new[]{ "Name" }, null, null, null)
           }));
     }
     #endregion
@@ -125,7 +125,7 @@ namespace Google.Longrunning {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -399,7 +399,7 @@ namespace Google.Longrunning {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -511,7 +511,7 @@ namespace Google.Longrunning {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -524,7 +524,7 @@ namespace Google.Longrunning {
     public string Filter {
       get { return filter_; }
       set {
-        filter_ = pb::Preconditions.CheckNotNull(value, "value");
+        filter_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -550,7 +550,7 @@ namespace Google.Longrunning {
     public string PageToken {
       get { return pageToken_; }
       set {
-        pageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -720,7 +720,7 @@ namespace Google.Longrunning {
     public string NextPageToken {
       get { return nextPageToken_; }
       set {
-        nextPageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+        nextPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -838,7 +838,7 @@ namespace Google.Longrunning {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -947,7 +947,7 @@ namespace Google.Longrunning {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 

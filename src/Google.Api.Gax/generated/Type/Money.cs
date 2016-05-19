@@ -32,12 +32,12 @@ namespace Google.Type {
           string.Concat(
             "Chdnb29nbGUvdHlwZS9tb25leS5wcm90bxILZ29vZ2xlLnR5cGUiPAoFTW9u",
             "ZXkSFQoNY3VycmVuY3lfY29kZRgBIAEoCRINCgV1bml0cxgCIAEoAxINCgVu",
-            "YW5vcxgDIAEoBUIfCg9jb20uZ29vZ2xlLnR5cGVCCk1vbmV5UHJvdG9QAWIG",
-            "cHJvdG8z"));
+            "YW5vcxgDIAEoBUIoCg9jb20uZ29vZ2xlLnR5cGVCCk1vbmV5UHJvdG9QAaAB",
+            "AaICA0dUUGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Type.Money), global::Google.Type.Money.Parser, new[]{ "CurrencyCode", "Units", "Nanos" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.Money), global::Google.Type.Money.Parser, new[]{ "CurrencyCode", "Units", "Nanos" }, null, null, null)
           }));
     }
     #endregion
@@ -85,7 +85,7 @@ namespace Google.Type {
     public string CurrencyCode {
       get { return currencyCode_; }
       set {
-        currencyCode_ = pb::Preconditions.CheckNotNull(value, "value");
+        currencyCode_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 

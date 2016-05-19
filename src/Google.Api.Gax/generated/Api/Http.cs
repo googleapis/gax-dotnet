@@ -30,25 +30,131 @@ namespace Google.Api {
     static HttpReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChVnb29nbGUvYXBpL2h0dHAucHJvdG8SCmdvb2dsZS5hcGki2AEKCEh0dHBS",
-            "dWxlEg0KA2dldBgCIAEoCUgAEg0KA3B1dBgDIAEoCUgAEg4KBHBvc3QYBCAB",
-            "KAlIABIQCgZkZWxldGUYBSABKAlIABIPCgVwYXRjaBgGIAEoCUgAEi8KBmN1",
-            "c3RvbRgIIAEoCzIdLmdvb2dsZS5hcGkuQ3VzdG9tSHR0cFBhdHRlcm5IABIM",
-            "CgRib2R5GAcgASgJEjEKE2FkZGl0aW9uYWxfYmluZGluZ3MYCyADKAsyFC5n",
-            "b29nbGUuYXBpLkh0dHBSdWxlQgkKB3BhdHRlcm4iLwoRQ3VzdG9tSHR0cFBh",
-            "dHRlcm4SDAoEa2luZBgBIAEoCRIMCgRwYXRoGAIgASgJQh0KDmNvbS5nb29n",
-            "bGUuYXBpQglIdHRwUHJvdG9QAWIGcHJvdG8z"));
+            "ChVnb29nbGUvYXBpL2h0dHAucHJvdG8SCmdvb2dsZS5hcGkiKwoESHR0cBIj",
+            "CgVydWxlcxgBIAMoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGUi6gEKCEh0dHBS",
+            "dWxlEhAKCHNlbGVjdG9yGAEgASgJEg0KA2dldBgCIAEoCUgAEg0KA3B1dBgD",
+            "IAEoCUgAEg4KBHBvc3QYBCABKAlIABIQCgZkZWxldGUYBSABKAlIABIPCgVw",
+            "YXRjaBgGIAEoCUgAEi8KBmN1c3RvbRgIIAEoCzIdLmdvb2dsZS5hcGkuQ3Vz",
+            "dG9tSHR0cFBhdHRlcm5IABIMCgRib2R5GAcgASgJEjEKE2FkZGl0aW9uYWxf",
+            "YmluZGluZ3MYCyADKAsyFC5nb29nbGUuYXBpLkh0dHBSdWxlQgkKB3BhdHRl",
+            "cm4iLwoRQ3VzdG9tSHR0cFBhdHRlcm4SDAoEa2luZBgBIAEoCRIMCgRwYXRo",
+            "GAIgASgJQiAKDmNvbS5nb29nbGUuYXBpQglIdHRwUHJvdG9QAfgBAWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.HttpRule), global::Google.Api.HttpRule.Parser, new[]{ "Get", "Put", "Post", "Delete", "Patch", "Custom", "Body", "AdditionalBindings" }, new[]{ "Pattern" }, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.CustomHttpPattern), global::Google.Api.CustomHttpPattern.Parser, new[]{ "Kind", "Path" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Http), global::Google.Api.Http.Parser, new[]{ "Rules" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.HttpRule), global::Google.Api.HttpRule.Parser, new[]{ "Selector", "Get", "Put", "Post", "Delete", "Patch", "Custom", "Body", "AdditionalBindings" }, new[]{ "Pattern" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CustomHttpPattern), global::Google.Api.CustomHttpPattern.Parser, new[]{ "Kind", "Path" }, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
+  /// <summary>
+  ///  Defines the HTTP configuration for a service. It contains a list of
+  ///  [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
+  ///  to one or more HTTP REST API methods.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  public sealed partial class Http : pb::IMessage<Http> {
+    private static readonly pb::MessageParser<Http> _parser = new pb::MessageParser<Http>(() => new Http());
+    public static pb::MessageParser<Http> Parser { get { return _parser; } }
+
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    public Http() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    public Http(Http other) : this() {
+      rules_ = other.rules_.Clone();
+    }
+
+    public Http Clone() {
+      return new Http(this);
+    }
+
+    /// <summary>Field number for the "rules" field.</summary>
+    public const int RulesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Google.Api.HttpRule> _repeated_rules_codec
+        = pb::FieldCodec.ForMessage(10, global::Google.Api.HttpRule.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.HttpRule> rules_ = new pbc::RepeatedField<global::Google.Api.HttpRule>();
+    /// <summary>
+    ///  A list of HTTP rules for configuring the HTTP REST API methods.
+    /// </summary>
+    public pbc::RepeatedField<global::Google.Api.HttpRule> Rules {
+      get { return rules_; }
+    }
+
+    public override bool Equals(object other) {
+      return Equals(other as Http);
+    }
+
+    public bool Equals(Http other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!rules_.Equals(other.rules_)) return false;
+      return true;
+    }
+
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= rules_.GetHashCode();
+      return hash;
+    }
+
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+      rules_.WriteTo(output, _repeated_rules_codec);
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      size += rules_.CalculateSize(_repeated_rules_codec);
+      return size;
+    }
+
+    public void MergeFrom(Http other) {
+      if (other == null) {
+        return;
+      }
+      rules_.Add(other.rules_);
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            rules_.AddEntriesFrom(input, _repeated_rules_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   /// <summary>
   ///  `HttpRule` defines the mapping of an RPC method to one or more HTTP
   ///  REST APIs.  The mapping determines what portions of the request
@@ -65,11 +171,15 @@ namespace Google.Api {
   ///  ```proto
   ///  service Messaging {
   ///    rpc GetMessage(GetMessageRequest) returns (Message) {
-  ///      option (google.api.http).get = "/v1/messages/{message_id}";
+  ///      option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
   ///    }
   ///  }
   ///  message GetMessageRequest {
+  ///    message SubMessage {
+  ///      string subfield = 1;
+  ///    }
   ///    string message_id = 1; // mapped to the URL
+  ///    SubMessage sub = 2;    // `sub.subfield` is url-mapped
   ///  }
   ///  message Message {
   ///    string text = 1; // content of the resource
@@ -81,7 +191,7 @@ namespace Google.Api {
   ///
   ///  HTTP | RPC
   ///  -----|-----
-  ///  `GET /v1/messages/123456`  | `GetMessage(message_id: "123456")`
+  ///  `GET /v1/messages/123456/foo`  | `GetMessage(message_id: "123456" sub: SubMessage(subfield: "foo"))`
   ///
   ///  In general, not only fields but also field paths can be referenced
   ///  from a path pattern. Fields mapped to the path pattern cannot be
@@ -93,8 +203,12 @@ namespace Google.Api {
   ///
   ///  ```proto
   ///  message GetMessageRequest {
+  ///    message SubMessage {
+  ///      string subfield = 1;
+  ///    }
   ///    string message_id = 1; // mapped to the URL
   ///    int64 revision = 2;    // becomes a parameter
+  ///    SubMessage sub = 3;    // `sub.subfield` becomes a parameter
   ///  }
   ///  ```
   ///
@@ -102,7 +216,7 @@ namespace Google.Api {
   ///
   ///  HTTP | RPC
   ///  -----|-----
-  ///  `GET /v1/messages/123456?revision=2` | `GetMessage(message_id: "123456" revision: 2)`
+  ///  `GET /v1/messages/123456?revision=2&amp;sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield: "foo"))`
   ///
   ///  Note that fields which are mapped to HTTP parameters must have a
   ///  primitive type or a repeated primitive type. Message types are not
@@ -119,6 +233,7 @@ namespace Google.Api {
   ///      option (google.api.http) = {
   ///        put: "/v1/messages/{message_id}"
   ///        body: "message"
+  ///      };
   ///    }
   ///  }
   ///  message UpdateMessageRequest {
@@ -146,10 +261,11 @@ namespace Google.Api {
   ///      option (google.api.http) = {
   ///        put: "/v1/messages/{message_id}"
   ///        body: "*"
+  ///      };
   ///    }
   ///  }
   ///  message Message {
-  ///    string message_id = 2;
+  ///    string message_id = 1;
   ///    string text = 2;
   ///  }
   ///  ```
@@ -177,6 +293,7 @@ namespace Google.Api {
   ///        additional_bindings {
   ///          get: "/v1/users/{user_id}/messages/{message_id}"
   ///        }
+  ///      };
   ///    }
   ///  }
   ///  message GetMessageRequest {
@@ -194,6 +311,7 @@ namespace Google.Api {
   ///  `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id: "123456")`
   ///
   ///  # Rules for HTTP mapping
+  ///
   ///  The rules for mapping HTTP path, query parameters, and body fields
   ///  to the request message are as follows:
   ///
@@ -217,15 +335,26 @@ namespace Google.Api {
   ///      FieldPath = IDENT { "." IDENT } ;
   ///      Verb     = ":" LITERAL ;
   ///
-  ///  `*` matches a single path component, `**` zero or more path components, and
-  ///  `LITERAL` a constant.  A `Variable` can match an entire path as specified
-  ///  again by a template; this nested template must not contain further variables.
-  ///  If no template is given with a variable, it matches a single path component.
-  ///  The notation `{var}` is henceforth equivalent to `{var=*}`. NOTE: the field
-  ///  paths in variables and in the `body` must not refer to repeated fields.
+  ///  The syntax `*` matches a single path segment. It follows the semantics of
+  ///  [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2 Simple String
+  ///  Expansion.
+  ///
+  ///  The syntax `**` matches zero or more path segments. It follows the semantics
+  ///  of [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.3 Reserved
+  ///  Expansion.
+  ///
+  ///  The syntax `LITERAL` matches literal text in the URL path.
+  ///
+  ///  The syntax `Variable` matches the entire path as specified by its template;
+  ///  this nested template must not contain further variables. If a variable
+  ///  matches a single path segment, its template may be omitted, e.g. `{var}`
+  ///  is equivalent to `{var=*}`.
+  ///
+  ///  NOTE: the field paths in variables and in the `body` must not refer to
+  ///  repeated fields or map fields.
   ///
   ///  Use CustomHttpPattern to specify any HTTP method that is not included in the
-  ///  pattern field, such as HEAD, or "*" to leave the HTTP method unspecified for
+  ///  `pattern` field, such as HEAD, or "*" to leave the HTTP method unspecified for
   ///  a given URL path rule. The wild-card rule is useful for services that provide
   ///  content to Web (HTML) clients.
   /// </summary>
@@ -235,7 +364,7 @@ namespace Google.Api {
     public static pb::MessageParser<HttpRule> Parser { get { return _parser; } }
 
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[1]; }
     }
 
     pbr::MessageDescriptor pb::IMessage.Descriptor {
@@ -249,6 +378,7 @@ namespace Google.Api {
     partial void OnConstruction();
 
     public HttpRule(HttpRule other) : this() {
+      selector_ = other.selector_;
       body_ = other.body_;
       additionalBindings_ = other.additionalBindings_.Clone();
       switch (other.PatternCase) {
@@ -278,6 +408,21 @@ namespace Google.Api {
       return new HttpRule(this);
     }
 
+    /// <summary>Field number for the "selector" field.</summary>
+    public const int SelectorFieldNumber = 1;
+    private string selector_ = "";
+    /// <summary>
+    ///  Selects methods to which this rule applies.
+    ///
+    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// </summary>
+    public string Selector {
+      get { return selector_; }
+      set {
+        selector_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "get" field.</summary>
     public const int GetFieldNumber = 2;
     /// <summary>
@@ -286,7 +431,7 @@ namespace Google.Api {
     public string Get {
       get { return patternCase_ == PatternOneofCase.Get ? (string) pattern_ : ""; }
       set {
-        pattern_ = pb::Preconditions.CheckNotNull(value, "value");
+        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         patternCase_ = PatternOneofCase.Get;
       }
     }
@@ -299,7 +444,7 @@ namespace Google.Api {
     public string Put {
       get { return patternCase_ == PatternOneofCase.Put ? (string) pattern_ : ""; }
       set {
-        pattern_ = pb::Preconditions.CheckNotNull(value, "value");
+        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         patternCase_ = PatternOneofCase.Put;
       }
     }
@@ -312,7 +457,7 @@ namespace Google.Api {
     public string Post {
       get { return patternCase_ == PatternOneofCase.Post ? (string) pattern_ : ""; }
       set {
-        pattern_ = pb::Preconditions.CheckNotNull(value, "value");
+        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         patternCase_ = PatternOneofCase.Post;
       }
     }
@@ -325,7 +470,7 @@ namespace Google.Api {
     public string Delete {
       get { return patternCase_ == PatternOneofCase.Delete ? (string) pattern_ : ""; }
       set {
-        pattern_ = pb::Preconditions.CheckNotNull(value, "value");
+        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         patternCase_ = PatternOneofCase.Delete;
       }
     }
@@ -338,7 +483,7 @@ namespace Google.Api {
     public string Patch {
       get { return patternCase_ == PatternOneofCase.Patch ? (string) pattern_ : ""; }
       set {
-        pattern_ = pb::Preconditions.CheckNotNull(value, "value");
+        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         patternCase_ = PatternOneofCase.Patch;
       }
     }
@@ -367,7 +512,7 @@ namespace Google.Api {
     public string Body {
       get { return body_; }
       set {
-        body_ = pb::Preconditions.CheckNotNull(value, "value");
+        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -417,6 +562,7 @@ namespace Google.Api {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Selector != other.Selector) return false;
       if (Get != other.Get) return false;
       if (Put != other.Put) return false;
       if (Post != other.Post) return false;
@@ -431,6 +577,7 @@ namespace Google.Api {
 
     public override int GetHashCode() {
       int hash = 1;
+      if (Selector.Length != 0) hash ^= Selector.GetHashCode();
       if (patternCase_ == PatternOneofCase.Get) hash ^= Get.GetHashCode();
       if (patternCase_ == PatternOneofCase.Put) hash ^= Put.GetHashCode();
       if (patternCase_ == PatternOneofCase.Post) hash ^= Post.GetHashCode();
@@ -448,6 +595,10 @@ namespace Google.Api {
     }
 
     public void WriteTo(pb::CodedOutputStream output) {
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
       if (patternCase_ == PatternOneofCase.Get) {
         output.WriteRawTag(18);
         output.WriteString(Get);
@@ -481,6 +632,9 @@ namespace Google.Api {
 
     public int CalculateSize() {
       int size = 0;
+      if (Selector.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Selector);
+      }
       if (patternCase_ == PatternOneofCase.Get) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Get);
       }
@@ -509,6 +663,9 @@ namespace Google.Api {
     public void MergeFrom(HttpRule other) {
       if (other == null) {
         return;
+      }
+      if (other.Selector.Length != 0) {
+        Selector = other.Selector;
       }
       if (other.Body.Length != 0) {
         Body = other.Body;
@@ -544,6 +701,10 @@ namespace Google.Api {
           default:
             input.SkipLastField();
             break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
           case 18: {
             Get = input.ReadString();
             break;
@@ -596,7 +757,7 @@ namespace Google.Api {
     public static pb::MessageParser<CustomHttpPattern> Parser { get { return _parser; } }
 
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[2]; }
     }
 
     pbr::MessageDescriptor pb::IMessage.Descriptor {
@@ -627,7 +788,7 @@ namespace Google.Api {
     public string Kind {
       get { return kind_; }
       set {
-        kind_ = pb::Preconditions.CheckNotNull(value, "value");
+        kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -640,7 +801,7 @@ namespace Google.Api {
     public string Path {
       get { return path_; }
       set {
-        path_ = pb::Preconditions.CheckNotNull(value, "value");
+        path_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 

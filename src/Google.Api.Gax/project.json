@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "Google.Apis.Auth": "1.11.0",
-    "Google.Protobuf": "3.0.0-beta2",
+    "Google.Protobuf": "3.0.0-beta3",
+    "Google.Protobuf.Tools": { "version": "3.0.0-beta3", "type": "build" },
     "Grpc.Auth": "0.13.1",
     "Grpc.Core": "0.13.1",
     "Ix-Async": "1.2.5"

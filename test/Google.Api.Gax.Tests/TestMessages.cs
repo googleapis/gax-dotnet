@@ -33,13 +33,13 @@ namespace Google.Api.Gax {
             "IAMoBRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.BundlingRequest), global::Google.Api.Gax.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.BundlingResponse), global::Google.Api.Gax.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleRequest), global::Google.Api.Gax.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.SimpleResponse), global::Google.Api.Gax.SimpleResponse.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingRequest), global::Google.Api.Gax.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.Gax.PageStreamingResponse), global::Google.Api.Gax.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.BundlingRequest), global::Google.Api.Gax.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.BundlingResponse), global::Google.Api.Gax.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.SimpleRequest), global::Google.Api.Gax.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.SimpleResponse), global::Google.Api.Gax.SimpleResponse.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.PageStreamingRequest), global::Google.Api.Gax.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.PageStreamingResponse), global::Google.Api.Gax.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
           }));
     }
     #endregion
@@ -80,7 +80,7 @@ namespace Google.Api.Gax {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -202,7 +202,7 @@ namespace Google.Api.Gax {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -323,7 +323,7 @@ namespace Google.Api.Gax {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -426,7 +426,7 @@ namespace Google.Api.Gax {
     public string Name {
       get { return name_; }
       set {
-        name_ = pb::Preconditions.CheckNotNull(value, "value");
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -531,7 +531,7 @@ namespace Google.Api.Gax {
     public string PageToken {
       get { return pageToken_; }
       set {
-        pageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -551,7 +551,7 @@ namespace Google.Api.Gax {
     public string Check {
       get { return check_; }
       set {
-        check_ = pb::Preconditions.CheckNotNull(value, "value");
+        check_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -696,7 +696,7 @@ namespace Google.Api.Gax {
     public string NextPageToken {
       get { return nextPageToken_; }
       set {
-        nextPageToken_ = pb::Preconditions.CheckNotNull(value, "value");
+        nextPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
