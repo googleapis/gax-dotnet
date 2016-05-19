@@ -32,12 +32,12 @@ namespace Google.Type {
           string.Concat(
             "Chtnb29nbGUvdHlwZS90aW1lb2ZkYXkucHJvdG8SC2dvb2dsZS50eXBlIksK",
             "CVRpbWVPZkRheRINCgVob3VycxgBIAEoBRIPCgdtaW51dGVzGAIgASgFEg8K",
-            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCJgoPY29tLmdvb2dsZS50",
-            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABoAEBYgZwcm90bzM="));
+            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCLAoPY29tLmdvb2dsZS50",
+            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABoAEBogIDR1RQYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Type.TimeOfDay), global::Google.Type.TimeOfDay.Parser, new[]{ "Hours", "Minutes", "Seconds", "Nanos" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.TimeOfDay), global::Google.Type.TimeOfDay.Parser, new[]{ "Hours", "Minutes", "Seconds", "Nanos" }, null, null, null)
           }));
     }
     #endregion
@@ -47,7 +47,7 @@ namespace Google.Type {
   /// <summary>
   ///  Represents a time of day. The date and time zone are either not significant
   ///  or are specified elsewhere. An API may chose to allow leap seconds. Related
-  ///  types are [google.type.Date][google.type.Date] and [google.protobuf.Timestamp][google.protobuf.Timestamp].
+  ///  types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
   /// </summary>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class TimeOfDay : pb::IMessage<TimeOfDay> {

@@ -33,12 +33,12 @@ namespace Google.Type {
             "Chdnb29nbGUvdHlwZS9jb2xvci5wcm90bxILZ29vZ2xlLnR5cGUaHmdvb2ds",
             "ZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byJdCgVDb2xvchILCgNyZWQYASAB",
             "KAISDQoFZ3JlZW4YAiABKAISDAoEYmx1ZRgDIAEoAhIqCgVhbHBoYRgEIAEo",
-            "CzIbLmdvb2dsZS5wcm90b2J1Zi5GbG9hdFZhbHVlQh8KD2NvbS5nb29nbGUu",
-            "dHlwZUIKQ29sb3JQcm90b1ABYgZwcm90bzM="));
+            "CzIbLmdvb2dsZS5wcm90b2J1Zi5GbG9hdFZhbHVlQiUKD2NvbS5nb29nbGUu",
+            "dHlwZUIKQ29sb3JQcm90b1ABogIDR1RQYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Type.Color), global::Google.Type.Color.Parser, new[]{ "Red", "Green", "Blue", "Alpha" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.Color), global::Google.Type.Color.Parser, new[]{ "Red", "Green", "Blue", "Alpha" }, null, null, null)
           }));
     }
     #endregion

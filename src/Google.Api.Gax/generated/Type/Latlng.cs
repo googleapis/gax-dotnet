@@ -31,12 +31,13 @@ namespace Google.Type {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chhnb29nbGUvdHlwZS9sYXRsbmcucHJvdG8SC2dvb2dsZS50eXBlIi0KBkxh",
-            "dExuZxIQCghsYXRpdHVkZRgBIAEoARIRCglsb25naXR1ZGUYAiABKAFCIwoP",
-            "Y29tLmdvb2dsZS50eXBlQgtMYXRMbmdQcm90b1ABoAEBYgZwcm90bzM="));
+            "dExuZxIQCghsYXRpdHVkZRgBIAEoARIRCglsb25naXR1ZGUYAiABKAFCKQoP",
+            "Y29tLmdvb2dsZS50eXBlQgtMYXRMbmdQcm90b1ABoAEBogIDR1RQYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Type.LatLng), global::Google.Type.LatLng.Parser, new[]{ "Latitude", "Longitude" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.LatLng), global::Google.Type.LatLng.Parser, new[]{ "Latitude", "Longitude" }, null, null, null)
           }));
     }
     #endregion
@@ -49,6 +50,40 @@ namespace Google.Type {
   ///  specified otherwise, this must conform to the
   ///  &lt;a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
   ///  standard&lt;/a>. Values must be within normalized ranges.
+  ///
+  ///  Example of normalization code in Python:
+  ///
+  ///      def NormalizeLongitude(longitude):
+  ///        """Wraps decimal degrees longitude to [-180.0, 180.0]."""
+  ///        q, r = divmod(longitude, 360.0)
+  ///        if r > 180.0 or (r == 180.0 and q &lt;= -1.0):
+  ///          return r - 360.0
+  ///        return r
+  ///
+  ///      def NormalizeLatLng(latitude, longitude):
+  ///        """Wraps decimal degrees latitude and longitude to
+  ///        [-180.0, 180.0] and [-90.0, 90.0], respectively."""
+  ///        r = latitude % 360.0
+  ///        if r &lt;= 90.0:
+  ///          return r, NormalizeLongitude(longitude)
+  ///        elif r >= 270.0:
+  ///          return r - 360, NormalizeLongitude(longitude)
+  ///        else:
+  ///          return 180 - r, NormalizeLongitude(longitude + 180.0)
+  ///
+  ///      assert 180.0 == NormalizeLongitude(180.0)
+  ///      assert -180.0 == NormalizeLongitude(-180.0)
+  ///      assert -179.0 == NormalizeLongitude(181.0)
+  ///      assert (0.0, 0.0) == NormalizeLatLng(360.0, 0.0)
+  ///      assert (0.0, 0.0) == NormalizeLatLng(-360.0, 0.0)
+  ///      assert (85.0, 180.0) == NormalizeLatLng(95.0, 0.0)
+  ///      assert (-85.0, -170.0) == NormalizeLatLng(-95.0, 10.0)
+  ///      assert (90.0, 10.0) == NormalizeLatLng(90.0, 10.0)
+  ///      assert (-90.0, -10.0) == NormalizeLatLng(-90.0, -10.0)
+  ///      assert (0.0, -170.0) == NormalizeLatLng(-180.0, 10.0)
+  ///      assert (0.0, -170.0) == NormalizeLatLng(180.0, 10.0)
+  ///      assert (-90.0, 10.0) == NormalizeLatLng(270.0, 10.0)
+  ///      assert (90.0, 10.0) == NormalizeLatLng(-270.0, 10.0)
   /// </summary>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class LatLng : pb::IMessage<LatLng> {

@@ -49,14 +49,14 @@ namespace Google.Rpc {
             "c1Byb3RvUAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, new pbr::GeneratedCodeInfo[] { new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null)}),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, new pbr::GeneratedCodeInfo[] { new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null)}),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.ResourceInfo), global::Google.Rpc.ResourceInfo.Parser, new[]{ "ResourceType", "ResourceName", "Owner", "Description" }, null, null, null),
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.Help), global::Google.Rpc.Help.Parser, new[]{ "Links" }, null, null, new pbr::GeneratedCodeInfo[] { new pbr::GeneratedCodeInfo(typeof(global::Google.Rpc.Help.Types.Link), global::Google.Rpc.Help.Types.Link.Parser, new[]{ "Description", "Url" }, null, null, null)})
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ResourceInfo), global::Google.Rpc.ResourceInfo.Parser, new[]{ "ResourceType", "ResourceName", "Owner", "Description" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help), global::Google.Rpc.Help.Parser, new[]{ "Links" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help.Types.Link), global::Google.Rpc.Help.Types.Link.Parser, new[]{ "Description", "Url" }, null, null, null)})
           }));
     }
     #endregion
@@ -242,7 +242,7 @@ namespace Google.Rpc {
     public string Detail {
       get { return detail_; }
       set {
-        detail_ = pb::Preconditions.CheckNotNull(value, "value");
+        detail_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -477,7 +477,7 @@ namespace Google.Rpc {
         public string Subject {
           get { return subject_; }
           set {
-            subject_ = pb::Preconditions.CheckNotNull(value, "value");
+            subject_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 
@@ -496,7 +496,7 @@ namespace Google.Rpc {
         public string Description {
           get { return description_; }
           set {
-            description_ = pb::Preconditions.CheckNotNull(value, "value");
+            description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 
@@ -733,7 +733,7 @@ namespace Google.Rpc {
         public string Field {
           get { return field_; }
           set {
-            field_ = pb::Preconditions.CheckNotNull(value, "value");
+            field_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 
@@ -746,7 +746,7 @@ namespace Google.Rpc {
         public string Description {
           get { return description_; }
           set {
-            description_ = pb::Preconditions.CheckNotNull(value, "value");
+            description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 
@@ -879,7 +879,7 @@ namespace Google.Rpc {
     public string RequestId {
       get { return requestId_; }
       set {
-        requestId_ = pb::Preconditions.CheckNotNull(value, "value");
+        requestId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -893,7 +893,7 @@ namespace Google.Rpc {
     public string ServingData {
       get { return servingData_; }
       set {
-        servingData_ = pb::Preconditions.CheckNotNull(value, "value");
+        servingData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1023,7 +1023,7 @@ namespace Google.Rpc {
     public string ResourceType {
       get { return resourceType_; }
       set {
-        resourceType_ = pb::Preconditions.CheckNotNull(value, "value");
+        resourceType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1038,7 +1038,7 @@ namespace Google.Rpc {
     public string ResourceName {
       get { return resourceName_; }
       set {
-        resourceName_ = pb::Preconditions.CheckNotNull(value, "value");
+        resourceName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1053,7 +1053,7 @@ namespace Google.Rpc {
     public string Owner {
       get { return owner_; }
       set {
-        owner_ = pb::Preconditions.CheckNotNull(value, "value");
+        owner_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1068,7 +1068,7 @@ namespace Google.Rpc {
     public string Description {
       get { return description_; }
       set {
-        description_ = pb::Preconditions.CheckNotNull(value, "value");
+        description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1333,7 +1333,7 @@ namespace Google.Rpc {
         public string Description {
           get { return description_; }
           set {
-            description_ = pb::Preconditions.CheckNotNull(value, "value");
+            description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 
@@ -1346,7 +1346,7 @@ namespace Google.Rpc {
         public string Url {
           get { return url_; }
           set {
-            url_ = pb::Preconditions.CheckNotNull(value, "value");
+            url_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
 

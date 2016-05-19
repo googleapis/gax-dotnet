@@ -38,8 +38,8 @@ namespace Google.Api {
             "UAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedCodeInfo(null, new pbr::GeneratedCodeInfo[] {
-            new pbr::GeneratedCodeInfo(typeof(global::Google.Api.LabelDescriptor), global::Google.Api.LabelDescriptor.Parser, new[]{ "Key", "ValueType", "Description" }, null, new[]{ typeof(global::Google.Api.LabelDescriptor.Types.ValueType) }, null)
+          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.LabelDescriptor), global::Google.Api.LabelDescriptor.Parser, new[]{ "Key", "ValueType", "Description" }, null, new[]{ typeof(global::Google.Api.LabelDescriptor.Types.ValueType) }, null)
           }));
     }
     #endregion
@@ -87,13 +87,13 @@ namespace Google.Api {
     public string Key {
       get { return key_; }
       set {
-        key_ = pb::Preconditions.CheckNotNull(value, "value");
+        key_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "value_type" field.</summary>
     public const int ValueTypeFieldNumber = 2;
-    private global::Google.Api.LabelDescriptor.Types.ValueType valueType_ = global::Google.Api.LabelDescriptor.Types.ValueType.STRING;
+    private global::Google.Api.LabelDescriptor.Types.ValueType valueType_ = 0;
     /// <summary>
     ///  The type of data that can be assigned to the label.
     /// </summary>
@@ -113,7 +113,7 @@ namespace Google.Api {
     public string Description {
       get { return description_; }
       set {
-        description_ = pb::Preconditions.CheckNotNull(value, "value");
+        description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -137,7 +137,7 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (Key.Length != 0) hash ^= Key.GetHashCode();
-      if (ValueType != global::Google.Api.LabelDescriptor.Types.ValueType.STRING) hash ^= ValueType.GetHashCode();
+      if (ValueType != 0) hash ^= ValueType.GetHashCode();
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       return hash;
     }
@@ -151,7 +151,7 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteString(Key);
       }
-      if (ValueType != global::Google.Api.LabelDescriptor.Types.ValueType.STRING) {
+      if (ValueType != 0) {
         output.WriteRawTag(16);
         output.WriteEnum((int) ValueType);
       }
@@ -166,7 +166,7 @@ namespace Google.Api {
       if (Key.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Key);
       }
-      if (ValueType != global::Google.Api.LabelDescriptor.Types.ValueType.STRING) {
+      if (ValueType != 0) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ValueType);
       }
       if (Description.Length != 0) {
@@ -182,7 +182,7 @@ namespace Google.Api {
       if (other.Key.Length != 0) {
         Key = other.Key;
       }
-      if (other.ValueType != global::Google.Api.LabelDescriptor.Types.ValueType.STRING) {
+      if (other.ValueType != 0) {
         ValueType = other.ValueType;
       }
       if (other.Description.Length != 0) {
@@ -224,15 +224,15 @@ namespace Google.Api {
         /// <summary>
         ///  A variable-length string. This is the default.
         /// </summary>
-        STRING = 0,
+        [pbr::OriginalName("STRING")] String = 0,
         /// <summary>
         ///  Boolean; true or false.
         /// </summary>
-        BOOL = 1,
+        [pbr::OriginalName("BOOL")] Bool = 1,
         /// <summary>
         ///  A 64-bit signed integer.
         /// </summary>
-        INT64 = 2,
+        [pbr::OriginalName("INT64")] Int64 = 2,
       }
 
     }
