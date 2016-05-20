@@ -28,4 +28,4 @@ script:
   - dotnet restore linuxtest
   - dotnet build src/*
   - dotnet build test/*
-  - for project in `find test -type d -depth 1 -name '*.Tests' | xargs basename`; do echo $project; mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/bin/Debug/net451/ubuntu.14.04-x64/$project.dll -parallel none; done
+  - for project in `find -depth 1 -type d -name '*.Tests' test | xargs basename`; do echo $project; mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/bin/Debug/net451/ubuntu.14.04-x64/$project.dll -parallel none; done
