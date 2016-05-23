@@ -33,6 +33,8 @@ namespace Google.Api.Gax
         /// </remarks>
         public BackoffSettings TimeoutBackoff { get; set; }
 
+        public Expiration TotalExpiration { get; set; }
+
         /// <summary>
         /// A predicate to determine whether or not a particular exception should cause the operation to be retried.
         /// Usually this is simply a matter of checking the status codes.
@@ -61,6 +63,7 @@ namespace Google.Api.Gax
             {
                 RetryBackoff = RetryBackoff?.Clone(),
                 TimeoutBackoff = TimeoutBackoff?.Clone(),
+                TotalExpiration = TotalExpiration,
                 DelayJitter = DelayJitter,
                 RetryFilter = RetryFilter
             };
