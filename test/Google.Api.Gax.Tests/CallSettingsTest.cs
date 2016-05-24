@@ -116,6 +116,7 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void ToCallOptions_All()
         {
+            var mockClock = new Mock<IClock>();
             var callSettings = new CallSettings
             {
                 Headers = new Metadata { new Metadata.Entry("1", "one") },
@@ -125,7 +126,7 @@ namespace Google.Api.Gax.Tests
                 PropagationToken = null, // Not possible to create/mock
                 Credentials = null, // Not possible to create/mock
             };
-            var options = callSettings.ToCallOptions(null);
+            var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Same(callSettings.Headers, options.Headers);
             Assert.Null(options.Deadline);
             Assert.Equal(callSettings.CancellationToken, options.CancellationToken);
