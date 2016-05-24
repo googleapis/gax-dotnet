@@ -56,7 +56,7 @@ namespace Google.Api.Gax
         public CallCredentials Credentials { get; set; }
 
         /// <summary>
-        /// Timing to use for the call.
+        /// <see cref="CallTiming"/> to use, or null for default retry/expiration behavior.
         /// </summary>
         /// <remarks>
         /// Allows selecting between retry and simple expiration.
