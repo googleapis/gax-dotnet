@@ -32,9 +32,25 @@ namespace Google.Api.Gax
         /// Create a <see cref="CallTiming"/> with a simple expiration; no retry.
         /// </summary>
         /// <param name="expiration">The <see cref="Google.Api.Gax.Expiration"/> for a call without retry.</param>
-        /// <returns>A <see cref="CallTiming"/> with the specified expiration, without retry.</returns>
+        /// <returns>A <see cref="CallTiming"/> with the specified expiration; without retry.</returns>
         public static CallTiming FromExpiration(Expiration expiration) =>
             new CallTiming(null, GaxPreconditions.CheckNotNull(expiration, nameof(expiration)));
+
+        /// <summary>
+        /// Create a <see cref="CallTiming"/> with a simple timeout; no retry.
+        /// </summary>
+        /// <param name="timeout">The relative timeout for a call without retry.</param>
+        /// <returns>A <see cref="CallTiming"/> with the specified timeout; without retry.</returns>
+        public static CallTiming FromTimeout(TimeSpan timeout) =>
+            FromExpiration(Expiration.FromTimeout(timeout));
+
+        /// <summary>
+        /// Create a <see cref="CallTiming"/> with a simple deadline; no retry.
+        /// </summary>
+        /// <param name="deadline">The absolute deadline for a call without retry.</param>
+        /// <returns>A <see cref="CallTiming"/> with the specified deadline; without retry.</returns>
+        public static CallTiming FromDeadline(DateTime deadline) =>
+            FromExpiration(Expiration.FromDeadline(deadline));
 
         private CallTiming(RetrySettings retry, Expiration expiration)
         {

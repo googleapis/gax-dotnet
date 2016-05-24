@@ -21,7 +21,7 @@ namespace Google.Api.Gax.Tests
         {
             var callSettings = new CallSettings();
             Assert.Null(callSettings.Headers);
-            Assert.Null(callSettings.CallTiming);
+            Assert.Null(callSettings.Timing);
             Assert.Null(callSettings.CancellationToken);
             Assert.Null(callSettings.WriteOptions);
             Assert.Null(callSettings.PropagationToken);
@@ -34,7 +34,7 @@ namespace Google.Api.Gax.Tests
             var callSettings = new CallSettings
             {
                 Headers = new Metadata { new Metadata.Entry("1", "one") },
-                CallTiming = CallTiming.FromExpiration(Expiration.None),
+                Timing = CallTiming.FromExpiration(Expiration.None),
                 CancellationToken = CancellationToken.None,
                 WriteOptions = new WriteOptions(WriteFlags.NoCompress),
                 PropagationToken = null, // Not possible to create/mock
@@ -45,7 +45,7 @@ namespace Google.Api.Gax.Tests
             Assert.NotSame(callSettings.Headers, clone.Headers);
             Assert.Equal(callSettings.Headers, clone.Headers);
             Assert.NotNull(clone.Headers);
-            Assert.Same(callSettings.CallTiming.Expiration, clone.CallTiming.Expiration);
+            Assert.Same(callSettings.Timing.Expiration, clone.Timing.Expiration);
             Assert.Equal(callSettings.CancellationToken, clone.CancellationToken);
             Assert.Same(callSettings.WriteOptions, clone.WriteOptions);
             Assert.Same(callSettings.PropagationToken, clone.PropagationToken);
@@ -76,7 +76,7 @@ namespace Google.Api.Gax.Tests
             var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
             var callSettings = new CallSettings {
-                CallTiming = CallTiming.FromExpiration(Expiration.FromTimeout(timeout))
+                Timing = CallTiming.FromExpiration(Expiration.FromTimeout(timeout))
             };
             var options = callSettings.ToCallOptions(clock);
             // Value should be exact, as we control time precisely.
@@ -89,7 +89,7 @@ namespace Google.Api.Gax.Tests
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
             var mockClock = new Mock<IClock>();
             var callSettings = new CallSettings {
-                CallTiming = CallTiming.FromExpiration(Expiration.FromDeadline(deadline))
+                Timing = CallTiming.FromExpiration(Expiration.FromDeadline(deadline))
             };
             var options = callSettings.ToCallOptions(mockClock.Object);
             // Value should be exact, as we control time precisely.
@@ -103,7 +103,7 @@ namespace Google.Api.Gax.Tests
             var mockClock = new Mock<IClock>();
             var callSettings = new CallSettings
             {
-                CallTiming = CallTiming.FromRetry(new RetrySettings
+                Timing = CallTiming.FromRetry(new RetrySettings
                 {
                     RetryBackoff = new BackoffSettings(),
                     TimeoutBackoff = new BackoffSettings(),
@@ -119,7 +119,7 @@ namespace Google.Api.Gax.Tests
             var callSettings = new CallSettings
             {
                 Headers = new Metadata { new Metadata.Entry("1", "one") },
-                CallTiming = CallTiming.FromExpiration(Expiration.None),
+                Timing = CallTiming.FromExpiration(Expiration.None),
                 CancellationToken = new CancellationTokenSource().Token,
                 WriteOptions = new WriteOptions(WriteFlags.NoCompress),
                 PropagationToken = null, // Not possible to create/mock

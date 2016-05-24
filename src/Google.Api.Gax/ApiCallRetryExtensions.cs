@@ -23,7 +23,7 @@ namespace Google.Api.Gax
             IClock clock, IScheduler scheduler) =>
             async (request, callSettings) =>
             {
-                RetrySettings retrySettings = callSettings.CallTiming?.Retry;
+                RetrySettings retrySettings = callSettings.Timing?.Retry;
                 if (retrySettings == null)
                 {
                     return await fn(request, callSettings);
@@ -38,7 +38,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.CallTiming = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
+                    attemptCallSettings.Timing = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
                     try
                     {
                         return await fn(request, attemptCallSettings);
@@ -64,7 +64,7 @@ namespace Google.Api.Gax
             IClock clock, IScheduler scheduler) =>
             (request, callSettings) =>
             {
-                RetrySettings retrySettings = callSettings.CallTiming?.Retry;
+                RetrySettings retrySettings = callSettings.Timing?.Retry;
                 if (retrySettings == null)
                 {
                     return fn(request, callSettings);
@@ -79,7 +79,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.CallTiming = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
+                    attemptCallSettings.Timing = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
                     try
                     {
                         return fn(request, attemptCallSettings);

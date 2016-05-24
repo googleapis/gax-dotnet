@@ -22,13 +22,11 @@ namespace Google.Api.Gax
             if (other != null)
             {
                 Headers = other.Headers?.Clone();
-                //Expiration = other.Expiration;
                 CancellationToken = other.CancellationToken;
                 WriteOptions = other.WriteOptions;
                 PropagationToken = other.PropagationToken;
                 Credentials = other.Credentials;
-                //RetrySettings = other.RetrySettings?.Clone();
-                CallTiming = other.CallTiming?.Clone();
+                Timing = other.Timing?.Clone();
             }
         }
         /// <summary>
@@ -57,7 +55,13 @@ namespace Google.Api.Gax
         /// </summary>
         public CallCredentials Credentials { get; set; }
 
-        public CallTiming CallTiming { get; set; }
+        /// <summary>
+        /// Timing to use for the call.
+        /// </summary>
+        /// <remarks>
+        /// Allows selecting between retry and simple expiration.
+        /// </remarks>
+        public CallTiming Timing { get; set; }
 
         /// <summary>
         /// Creates a clone of this object, with all the same property values.
@@ -92,7 +96,7 @@ namespace Google.Api.Gax
             PropagationToken = other.PropagationToken ?? PropagationToken;
             Credentials = other.Credentials ?? Credentials;
             //RetrySettings = other.RetrySettings ?? RetrySettings;
-            CallTiming = other.CallTiming ?? CallTiming;
+            Timing = other.Timing ?? Timing;
             return this;
         }
 
@@ -103,7 +107,7 @@ namespace Google.Api.Gax
         /// <returns>A <see cref="CallOptions"/> configured from this <see cref="CallSettings"/>.</returns>
         internal CallOptions ToCallOptions(IClock clock) => new CallOptions(
             headers: Headers,
-            deadline: CallTiming.CalculateDeadline(clock),
+            deadline: Timing.CalculateDeadline(clock),
             cancellationToken: CancellationToken ?? default(CancellationToken),
             writeOptions: WriteOptions,
             propagationToken: PropagationToken,

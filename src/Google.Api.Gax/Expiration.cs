@@ -98,6 +98,7 @@ namespace Google.Api.Gax
         /// <returns>The calculated absolute deadline, or null if no deadline should be used.</returns>
         internal static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
         {
+            GaxPreconditions.CheckNotNull(clock, nameof(clock));
             if (expiration == null)
             {
                 return null;
