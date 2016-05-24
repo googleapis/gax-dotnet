@@ -38,7 +38,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.Timing = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
+                    attemptCallSettings.Timing = CallTiming.FromDeadline(combinedDeadline);
                     try
                     {
                         return await fn(request, attemptCallSettings);
@@ -79,7 +79,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.Timing = CallTiming.FromExpiration(Expiration.FromDeadline(combinedDeadline));
+                    attemptCallSettings.Timing = CallTiming.FromDeadline(combinedDeadline);
                     try
                     {
                         return fn(request, attemptCallSettings);
