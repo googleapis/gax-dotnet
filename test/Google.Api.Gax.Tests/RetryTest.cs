@@ -66,14 +66,14 @@ namespace Google.Api.Gax.Tests
             {
                 RetryBackoff = DoublingBackoff,
                 TimeoutBackoff = ConstantBackoff,
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
                 DelayJitter = RetrySettings.NoJitter
             };
 
             var rpcTask = scheduler.Run(() =>
             {
                 var callSettings = new CallSettings {
-                    RetrySettings = retrySettings,
-                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                    Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
@@ -104,14 +104,14 @@ namespace Google.Api.Gax.Tests
             {
                 RetryBackoff = DoublingBackoff,
                 TimeoutBackoff = ConstantBackoff,
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
                 DelayJitter = RetrySettings.NoJitter
             };
 
             var rpcTask = scheduler.Run(() =>
             {
                 var callSettings = new CallSettings {
-                    RetrySettings = retrySettings,
-                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                    Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
@@ -147,6 +147,7 @@ namespace Google.Api.Gax.Tests
             {
                 RetryBackoff = DoublingBackoff,
                 TimeoutBackoff = ConstantBackoff,
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromTicks(2500)),
                 DelayJitter = RetrySettings.NoJitter
             };
 
@@ -154,8 +155,7 @@ namespace Google.Api.Gax.Tests
             {
                 // Expiration makes it fail while waiting to make third call
                 var callSettings = new CallSettings {
-                    RetrySettings = retrySettings,
-                    Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(2500))
+                    Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
@@ -187,6 +187,7 @@ namespace Google.Api.Gax.Tests
             {
                 RetryBackoff = ConstantBackoff, // 1500 ticks always
                 TimeoutBackoff = DoublingBackoff, // 1000, then 2000, then 4000
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromTicks(4500)),
                 DelayJitter = RetrySettings.NoJitter
             };
 
@@ -197,8 +198,7 @@ namespace Google.Api.Gax.Tests
                 // Call 2: t=1800, deadline=3800 (2000+1800), completes at 2100
                 // Call 3, t=3600, deadline=4500 (would be 7600, but overall deadline truncates), completes at 3900 (with success)
                 var callSettings = new CallSettings {
-                    RetrySettings = retrySettings,
-                    Expiration = Expiration.FromTimeout(TimeSpan.FromTicks(4500))
+                    Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
@@ -230,14 +230,14 @@ namespace Google.Api.Gax.Tests
                 RetryBackoff = ConstantBackoff,
                 TimeoutBackoff = ConstantBackoff,
                 DelayJitter = RetrySettings.NoJitter,
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
                 RetryFilter = RetrySettings.FilterForStatusCodes(filterCodes)
             };
 
             var rpcTask = scheduler.Run(() =>
             {
                 var callSettings = new CallSettings {
-                    RetrySettings = retrySettings,
-                    Expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1))
+                    Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
                 return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
@@ -302,7 +302,7 @@ namespace Google.Api.Gax.Tests
             public void AssertDeadlines(params long[] ticks)
             {
                 // Note that this effectively asserts we always end up with a CallSettings with a deadline.
-                Assert.Equal(ticks, CallSettingsReceived.Select(cs => cs.Expiration.Deadline.Value.Ticks).ToArray());
+                Assert.Equal(ticks, CallSettingsReceived.Select(cs => cs.Timing.Expiration.Deadline.Value.Ticks).ToArray());
             }
         }
     }

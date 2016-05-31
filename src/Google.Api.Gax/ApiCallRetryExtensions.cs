@@ -23,12 +23,12 @@ namespace Google.Api.Gax
             IClock clock, IScheduler scheduler) =>
             async (request, callSettings) =>
             {
-                if (callSettings.RetrySettings == null)
+                RetrySettings retrySettings = callSettings.Timing?.Retry;
+                if (retrySettings == null)
                 {
                     return await fn(request, callSettings);
                 }
-                RetrySettings retrySettings = callSettings.RetrySettings;
-                DateTime? overallDeadline = callSettings.Expiration.CalculateDeadline(clock);
+                DateTime? overallDeadline = retrySettings.TotalExpiration.CalculateDeadline(clock);
                 TimeSpan retryDelay = retrySettings.RetryBackoff.Delay;
                 TimeSpan callTimeout = retrySettings.TimeoutBackoff.Delay;
                 // May not need to clone, not yet quite sure...
@@ -38,7 +38,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.Expiration = Expiration.FromDeadline(combinedDeadline);
+                    attemptCallSettings.Timing = CallTiming.FromDeadline(combinedDeadline);
                     try
                     {
                         return await fn(request, attemptCallSettings);
@@ -64,12 +64,12 @@ namespace Google.Api.Gax
             IClock clock, IScheduler scheduler) =>
             (request, callSettings) =>
             {
-                if (callSettings.RetrySettings == null)
+                RetrySettings retrySettings = callSettings.Timing?.Retry;
+                if (retrySettings == null)
                 {
                     return fn(request, callSettings);
                 }
-                RetrySettings retrySettings = callSettings.RetrySettings;
-                DateTime? overallDeadline = callSettings.Expiration.CalculateDeadline(clock);
+                DateTime? overallDeadline = retrySettings.TotalExpiration.CalculateDeadline(clock);
                 TimeSpan retryDelay = retrySettings.RetryBackoff.Delay;
                 TimeSpan callTimeout = retrySettings.TimeoutBackoff.Delay;
                 // May not need to clone, not yet quite sure...
@@ -79,7 +79,7 @@ namespace Google.Api.Gax
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    attemptCallSettings.Expiration = Expiration.FromDeadline(combinedDeadline);
+                    attemptCallSettings.Timing = CallTiming.FromDeadline(combinedDeadline);
                     try
                     {
                         return fn(request, attemptCallSettings);

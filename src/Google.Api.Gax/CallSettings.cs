@@ -22,12 +22,11 @@ namespace Google.Api.Gax
             if (other != null)
             {
                 Headers = other.Headers?.Clone();
-                Expiration = other.Expiration;
                 CancellationToken = other.CancellationToken;
                 WriteOptions = other.WriteOptions;
                 PropagationToken = other.PropagationToken;
                 Credentials = other.Credentials;
-                RetrySettings = other.RetrySettings?.Clone();
+                Timing = other.Timing?.Clone();
             }
         }
         /// <summary>
@@ -35,11 +34,6 @@ namespace Google.Api.Gax
         /// </summary>
         //public Metadata Headers
         public Metadata Headers { get; set; }
-
-        /// <summary>
-        /// Call expiration.
-        /// </summary>
-        public Expiration Expiration { get; set; }
 
         /// <summary>
         /// Cancellation token that can be used for cancelling the call.
@@ -61,15 +55,13 @@ namespace Google.Api.Gax
         /// </summary>
         public CallCredentials Credentials { get; set; }
 
-        private RetrySettings _retrySettings;
         /// <summary>
-        /// <see cref="RetrySettings"/> to use, or null for no retry.
+        /// <see cref="CallTiming"/> to use, or null for default retry/expiration behavior.
         /// </summary>
-        public RetrySettings RetrySettings
-        {
-            get { return _retrySettings; }
-            set { _retrySettings = value?.Validate(nameof(value)); }
-        }
+        /// <remarks>
+        /// Allows selecting between retry and simple expiration.
+        /// </remarks>
+        public CallTiming Timing { get; set; }
 
         /// <summary>
         /// Creates a clone of this object, with all the same property values.
@@ -98,12 +90,11 @@ namespace Google.Api.Gax
             // Should a merge of Headers be additive, instead of overridding?
             // If additive, how to remove headers during an override?
             Headers = other.Headers ?? Headers;
-            Expiration = other.Expiration ?? Expiration;
             CancellationToken = other.CancellationToken ?? CancellationToken;
             WriteOptions = other.WriteOptions ?? WriteOptions;
             PropagationToken = other.PropagationToken ?? PropagationToken;
             Credentials = other.Credentials ?? Credentials;
-            RetrySettings = other.RetrySettings ?? RetrySettings;
+            Timing = other.Timing ?? Timing;
             return this;
         }
 
@@ -114,7 +105,7 @@ namespace Google.Api.Gax
         /// <returns>A <see cref="CallOptions"/> configured from this <see cref="CallSettings"/>.</returns>
         internal CallOptions ToCallOptions(IClock clock) => new CallOptions(
             headers: Headers,
-            deadline: Expiration.CalculateDeadline(clock),
+            deadline: Timing.CalculateDeadline(clock),
             cancellationToken: CancellationToken ?? default(CancellationToken),
             writeOptions: WriteOptions,
             propagationToken: PropagationToken,
