@@ -6,7 +6,9 @@
  */
 
 using Google.Protobuf;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +34,13 @@ namespace Google.Api.Gax
             new PagedAsyncEnumerator(_callSettings, _request.Clone(), _apiCall);
 
         IAsyncEnumerator<TResponse> IAsyncEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<TResource> Flatten() => this.SelectMany(page => page.ToAsyncEnumerable());
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<FixedSizePage<TResource>> WithFixedPageSize(int pageSize) =>
+            new FixedPageSizeAsyncEnumerable(this, pageSize);
 
         private class PagedAsyncEnumerator : IPagedAsyncEnumerator<TResponse>
         {
@@ -81,5 +90,71 @@ namespace Google.Api.Gax
 
             public void Dispose() { }
         }
+
+        private class FixedPageSizeAsyncEnumerable : IAsyncEnumerable<FixedSizePage<TResource>>
+        {
+            private readonly IPagedAsyncEnumerable<TResponse, TResource> _source;
+            private readonly int _pageSize;
+
+            internal FixedPageSizeAsyncEnumerable(
+                IPagedAsyncEnumerable<TResponse, TResource> source, int pageSize)
+            {
+                _source = source;
+                _pageSize = pageSize;
+            }
+
+            public IAsyncEnumerator<FixedSizePage<TResource>> GetEnumerator() =>
+                new Enumerator(_source.GetEnumerator(), _pageSize);
+
+            private class Enumerator : IAsyncEnumerator<FixedSizePage<TResource>>
+            {
+                private readonly IPagedAsyncEnumerator<TResponse> _enumerator;
+                private readonly int _pageSize;
+
+                internal Enumerator(
+                    IPagedAsyncEnumerator<TResponse> enumerator, int pageSize)
+                {
+                    _enumerator = enumerator;
+                    _pageSize = pageSize;
+                }
+
+                public FixedSizePage<TResource> Current { get; private set; }
+
+                public async Task<bool> MoveNext(CancellationToken cancellationToken)
+                {
+                    var items = new List<TResource>(_pageSize);
+                    while (items.Count < _pageSize)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        int requestCount = _pageSize - items.Count;
+                        var done = !(await _enumerator.MoveNext(requestCount, cancellationToken).ConfigureAwait(false));
+                        if (done)
+                        {
+                            break;
+                        }
+                        items.AddRange(_enumerator.Current);
+                        if (items.Count > _pageSize)
+                        {
+                            // TODO: Better exception type?
+                            throw new NotSupportedException("Invalid server response: " +
+                                $"requested {requestCount} items, received {_enumerator.Current.Count()} items");
+                        }
+                    }
+                    if (items.Count != 0)
+                    {
+                        Current = new FixedSizePage<TResource>(items, _enumerator.Current.NextPageToken);
+                        return true;
+                    }
+                    Current = null;
+                    return false;
+                }
+
+                public void Dispose()
+                {
+                    _enumerator.Dispose();
+                }
+            }
+        }
+
     }
 }

@@ -9,6 +9,7 @@ using Google.Protobuf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Google.Api.Gax
 {
@@ -33,6 +34,42 @@ namespace Google.Api.Gax
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         IEnumerator<TResponse> IEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
+
+        /// <inheritdoc />
+        public IEnumerable<TResource> Flatten() => this.SelectMany(page => page);
+
+        /// <inheritdoc />
+        public IEnumerable<FixedSizePage<TResource>> WithFixedPageSize(int pageSize)
+        {
+            GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
+            using (var enumerator = GetEnumerator())
+            {
+                bool done = false;
+                while (!done)
+                {
+                    var items = new List<TResource>(pageSize);
+                    while (items.Count < pageSize)
+                    {
+                        int requestCount = pageSize - items.Count;
+                        done = !enumerator.MoveNext(requestCount);
+                        if (done)
+                        {
+                            break;
+                        }
+                        items.AddRange(enumerator.Current);
+                        if (items.Count > pageSize)
+                        {
+                            throw new NotSupportedException("Invalid server response: " +
+                                $"requested {requestCount} items, received {enumerator.Current.Count()} items");
+                        }
+                    }
+                    if (items.Count != 0)
+                    {
+                        yield return new FixedSizePage<TResource>(items, enumerator.Current.NextPageToken);
+                    }
+                }
+            }
+        }
 
         private class PagedEnumerator : IPagedEnumerator<TResponse>
         {
