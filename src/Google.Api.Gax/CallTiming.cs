@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
+    /// <summary>
+    /// The type of <see cref="CallTiming"/>; retry or expiration (no retry).
+    /// </summary>
     public enum CallTimingType
     {
         /// <summary>
@@ -18,6 +21,9 @@ namespace Google.Api.Gax
         Expiration,
     }
 
+    /// <summary>
+    /// An RPC simple expiration; or retry settings.
+    /// </summary>
     public sealed class CallTiming
     {
         /// <summary>

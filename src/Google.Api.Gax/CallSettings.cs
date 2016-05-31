@@ -90,12 +90,10 @@ namespace Google.Api.Gax
             // Should a merge of Headers be additive, instead of overridding?
             // If additive, how to remove headers during an override?
             Headers = other.Headers ?? Headers;
-            //Expiration = other.Expiration ?? Expiration;
             CancellationToken = other.CancellationToken ?? CancellationToken;
             WriteOptions = other.WriteOptions ?? WriteOptions;
             PropagationToken = other.PropagationToken ?? PropagationToken;
             Credentials = other.Credentials ?? Credentials;
-            //RetrySettings = other.RetrySettings ?? RetrySettings;
             Timing = other.Timing ?? Timing;
             return this;
         }
