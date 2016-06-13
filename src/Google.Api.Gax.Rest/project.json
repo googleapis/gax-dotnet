@@ -1,0 +1,30 @@
+﻿{
+  "version": "0.1.0-*",
+  "title": "Google REST API Extensions",
+  "description": "Additional support classes for Google REST API client libraries",
+  "authors": [ "Google Inc." ],
+  "owners": [ "googleapis-packages" ],
+  "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+  "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+  "tags": [ "Google" ],
+  "compilationOptions": {
+    "keyFile": "../../Gax.snk"
+  },
+  "dependencies": {
+    "Google.Apis.Auth": "1.13.0",
+    "Google.Apis": "1.13.0",
+    "Ix-Async": "1.2.5"
+  },
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.IO": {
+          "type": "build"
+        },
+        "System.Runtime": {
+          "type": "build"
+        }
+      }
+    }
+  }
+}

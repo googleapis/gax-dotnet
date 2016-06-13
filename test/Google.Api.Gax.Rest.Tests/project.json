@@ -1,0 +1,19 @@
+﻿{
+  "description": "Tests for Google.Api.Gax.Rest",
+  "dependencies": {
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "Google.Api.Gax.Rest": "",
+    "Ix-Async": "1.2.5",
+    "Moq": "4.2.1510.2205"
+  },
+  "compilationOptions": {
+    "keyFile": "../../Gax.snk"
+  },
+  "commands": {
+    "test": "xunit.runner.dnx -parallel none"
+  },
+  "frameworks": {
+    "dnx451": { }
+  }
+}

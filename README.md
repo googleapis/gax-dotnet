@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/googleapis/gax-dotnet.svg?branch=master)](https://travis-ci.org/googleapis/gax-dotnet)
 
+This repository's primary library is `Google.Api.Gax`, but
+additional code is present for the support of Google's
+REST/JSON/HTTP1.1 APIs. This is present in the `Google.Api.Gax.Rest`
+library, which is [described separately](rest.md).
+
 Google API Extensions for .NET
 ===
 
