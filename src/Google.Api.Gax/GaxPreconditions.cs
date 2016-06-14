@@ -189,5 +189,21 @@ namespace Google.Api.Gax
                 throw new ArgumentException(string.Format(format, arg0, arg1), paramName);
             }
         }
+
+        /// <summary>
+        /// Checks that the given value is in fact defined in the enum used as the type argument of the method.
+        /// </summary>
+        /// <typeparam name="T">The enum type to check the value within.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="paramName">The name of the parameter whose value is being tested.</param>
+        /// <returns><paramref name="value"/> if it was a defined value</returns>
+        public static T CheckEnumValue<T>(T value, string paramName) where T : struct
+        {
+            CheckArgument(
+                Enum.IsDefined(typeof(T), value),
+                paramName,
+                "Value {0} not defined in enum {1}", value, typeof(T).Name);
+            return value;
+        }
     }
 }

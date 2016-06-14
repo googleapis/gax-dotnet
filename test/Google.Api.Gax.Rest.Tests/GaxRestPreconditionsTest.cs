@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace Google.Api.Gax.Rest.Tests
@@ -120,6 +121,27 @@ namespace Google.Api.Gax.Rest.Tests
             var exception = Assert.Throws<ArgumentException>(() => GaxRestPreconditions.CheckArgument(false, parameterName, "Foo {0} {1}", 1, 2));
             Assert.StartsWith("Foo 1 2", exception.Message);
             Assert.Equal(parameterName, exception.ParamName);
+        }
+
+        [Fact]
+        public void CheckEnumValue_NotDefined()
+        {
+            var parameterName = "parameterName";
+            var exception = Assert.Throws<ArgumentException>(() => GaxRestPreconditions.CheckEnumValue((SampleEnum) 5, nameof(parameterName)));
+            Assert.Equal(parameterName, exception.ParamName);
+        }
+
+        [Fact]
+        public void CheckEnumValue_Defined()
+        {
+            var parameterName = "parameterName";
+            var value = SampleEnum.DefinedValue;
+            Assert.Equal(value, GaxRestPreconditions.CheckEnumValue(value, nameof(parameterName)));
+        }
+
+        enum SampleEnum
+        {
+            DefinedValue = 1
         }
     }
 }
