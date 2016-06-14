@@ -121,5 +121,26 @@ namespace Google.Api.Gax.Tests
             Assert.StartsWith("Foo 1 2", exception.Message);
             Assert.Equal(parameterName, exception.ParamName);
         }
+
+        [Fact]
+        public void CheckEnumValue_NotDefined()
+        {
+            var parameterName = "parameterName";
+            var exception = Assert.Throws<ArgumentException>(() => GaxPreconditions.CheckEnumValue((SampleEnum)5, nameof(parameterName)));
+            Assert.Equal(parameterName, exception.ParamName);
+        }
+
+        [Fact]
+        public void CheckEnumValue_Defined()
+        {
+            var parameterName = "parameterName";
+            var value = SampleEnum.DefinedValue;
+            Assert.Equal(value, GaxPreconditions.CheckEnumValue(value, nameof(parameterName)));
+        }
+
+        enum SampleEnum
+        {
+            DefinedValue = 1
+        }
     }
 }
