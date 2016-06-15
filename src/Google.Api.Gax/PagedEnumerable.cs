@@ -29,20 +29,27 @@ namespace Google.Api.Gax
             _apiCall = apiCall;
         }
 
-        public IPagedEnumerator<TResponse> GetEnumerator() =>
-            new PagedEnumerator(_callSettings, _request.Clone(), _apiCall);
+        private PagedEnumerator GetPagedEnumerator() => new PagedEnumerator(_callSettings, _request.Clone(), _apiCall);
 
+        public IEnumerable<TResponse> AsPages()
+        {
+            using (var enumerator = GetPagedEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                }
+            }
+        }
+
+        public IEnumerator<TResource> GetEnumerator() => AsPages().SelectMany(page => page).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        IEnumerator<TResponse> IEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
-        public IEnumerable<TResource> Flatten() => this.SelectMany(page => page);
-
-        /// <inheritdoc />
-        public IEnumerable<FixedSizePage<TResource>> WithFixedPageSize(int pageSize)
+        public IEnumerable<FixedSizePage<TResource>> AsFixedSizePages(int pageSize)
         {
             GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
-            using (var enumerator = GetEnumerator())
+            using (var enumerator = GetPagedEnumerator())
             {
                 bool done = false;
                 while (!done)
@@ -71,7 +78,7 @@ namespace Google.Api.Gax
             }
         }
 
-        private class PagedEnumerator : IPagedEnumerator<TResponse>
+        private class PagedEnumerator : IEnumerator<TResponse>
         {
             private readonly CallSettings _callSettings;
             private readonly ApiCall<TRequest, TResponse> _apiCall;

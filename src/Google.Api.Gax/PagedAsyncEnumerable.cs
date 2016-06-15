@@ -30,19 +30,31 @@ namespace Google.Api.Gax
             _apiCall = apiCall;
         }
 
-        public IPagedAsyncEnumerator<TResponse> GetEnumerator() =>
-            new PagedAsyncEnumerator(_callSettings, _request.Clone(), _apiCall);
-
-        IAsyncEnumerator<TResponse> IAsyncEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
+        private PagedAsyncEnumerator GetPagedEnumerator() => new PagedAsyncEnumerator(_callSettings, _request.Clone(), _apiCall);
 
         /// <inheritdoc />
-        public IAsyncEnumerable<TResource> Flatten() => this.SelectMany(page => page.ToAsyncEnumerable());
+        public IAsyncEnumerable<TResponse> AsPages() => new PageAsyncEnumerable(this);
 
         /// <inheritdoc />
-        public IAsyncEnumerable<FixedSizePage<TResource>> WithFixedPageSize(int pageSize) =>
+        public IAsyncEnumerator<TResource> GetEnumerator() => AsPages().SelectMany(page => page.ToAsyncEnumerable()).GetEnumerator();
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<FixedSizePage<TResource>> AsFixedSizePages(int pageSize) =>
             new FixedPageSizeAsyncEnumerable(this, pageSize);
 
-        private class PagedAsyncEnumerator : IPagedAsyncEnumerator<TResponse>
+        private class PageAsyncEnumerable : IAsyncEnumerable<TResponse>
+        {
+            private readonly PagedAsyncEnumerable<TRequest, TResponse, TResource> _source;
+
+            internal PageAsyncEnumerable(PagedAsyncEnumerable<TRequest, TResponse, TResource> source)
+            {
+                _source = source;
+            }
+
+            public IAsyncEnumerator<TResponse> GetEnumerator() => _source.GetPagedEnumerator();
+        }
+
+        private class PagedAsyncEnumerator : IAsyncEnumerator<TResponse>
         {
             private readonly CallSettings _callSettings;
             private readonly ApiCall<TRequest, TResponse> _apiCall;
@@ -93,26 +105,26 @@ namespace Google.Api.Gax
 
         private class FixedPageSizeAsyncEnumerable : IAsyncEnumerable<FixedSizePage<TResource>>
         {
-            private readonly IPagedAsyncEnumerable<TResponse, TResource> _source;
+            private readonly PagedAsyncEnumerable<TRequest, TResponse, TResource> _source;
             private readonly int _pageSize;
 
             internal FixedPageSizeAsyncEnumerable(
-                IPagedAsyncEnumerable<TResponse, TResource> source, int pageSize)
+                PagedAsyncEnumerable<TRequest, TResponse, TResource> source, int pageSize)
             {
                 _source = source;
                 _pageSize = pageSize;
             }
 
             public IAsyncEnumerator<FixedSizePage<TResource>> GetEnumerator() =>
-                new Enumerator(_source.GetEnumerator(), _pageSize);
+                new Enumerator(_source.GetPagedEnumerator(), _pageSize);
 
             private class Enumerator : IAsyncEnumerator<FixedSizePage<TResource>>
             {
-                private readonly IPagedAsyncEnumerator<TResponse> _enumerator;
+                private readonly PagedAsyncEnumerator _enumerator;
                 private readonly int _pageSize;
 
                 internal Enumerator(
-                    IPagedAsyncEnumerator<TResponse> enumerator, int pageSize)
+                    PagedAsyncEnumerator enumerator, int pageSize)
                 {
                     _enumerator = enumerator;
                     _pageSize = pageSize;
