@@ -29,7 +29,7 @@ namespace Google.Api.Gax
         /// <remarks>
         /// This allows an increasing timeout, initially requesting a fast call,
         /// then allowing a bit more time, then a bit more, and so on. However,
-        /// the timeout will also be adjusted to accommodate <see cref="TotalTimeout"/>.
+        /// the timeout will also be adjusted to accommodate <see cref="TotalExpiration"/>.
         /// </remarks>
         public BackoffSettings TimeoutBackoff { get; set; }
 

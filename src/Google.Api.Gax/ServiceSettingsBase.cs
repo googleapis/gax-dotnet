@@ -13,11 +13,6 @@ namespace Google.Api.Gax
     /// <summary>
     /// Common settings for all services.
     /// </summary>
-    /// <remarks>
-    /// This non-generic type is used for convenience for code which doesn't need to know about specific
-    /// settings types. Generated settings classes derive from <see cref="ServiceSettingsBase{T}"/> to provide
-    /// type-safe cloning.
-    /// </remarks>
     public abstract class ServiceSettingsBase
     {
         /// <summary>
