@@ -6,6 +6,8 @@ call dnu build src\Google.Api.Gax
 IF ERRORLEVEL 1 EXIT /B 1
 call dnu build src\Google.Api.Gax.Rest
 IF ERRORLEVEL 1 EXIT /B 1
+call dnu build testing\Google.Api.Gax.Testing
+IF ERRORLEVEL 1 EXIT /B 1
 call dnu build test\Google.Api.Gax.Tests
 IF ERRORLEVEL 1 EXIT /B 1
 call dnu build test\Google.Api.Gax.Rest.Tests
@@ -17,4 +19,6 @@ IF ERRORLEVEL 1 EXIT /B 1
 call dnu pack src\Google.Api.Gax
 IF ERRORLEVEL 1 EXIT /B 1
 call dnu pack src\Google.Api.Gax.Rest
+IF ERRORLEVEL 1 EXIT /B 1
+call dnu pack testing\Google.Api.Gax.Testing
 IF ERRORLEVEL 1 EXIT /B 1
