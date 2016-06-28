@@ -35,23 +35,6 @@ namespace Google.Api.Gax.IntegrationTests {
       get { return global::Google.Api.Gax.IntegrationTests.TestServiceReflection.Descriptor.Services[0]; }
     }
 
-    /// <summary>Client for TestService</summary>
-    [System.Obsolete("Client side interfaced will be removed in the next release. Use client class directly.")]
-    public interface ITestServiceClient
-    {
-      global::Google.Api.Gax.IntegrationTests.SimpleResponse DoSimple(global::Google.Api.Gax.IntegrationTests.SimpleRequest request, Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default(CancellationToken));
-      global::Google.Api.Gax.IntegrationTests.SimpleResponse DoSimple(global::Google.Api.Gax.IntegrationTests.SimpleRequest request, CallOptions options);
-      AsyncUnaryCall<global::Google.Api.Gax.IntegrationTests.SimpleResponse> DoSimpleAsync(global::Google.Api.Gax.IntegrationTests.SimpleRequest request, Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default(CancellationToken));
-      AsyncUnaryCall<global::Google.Api.Gax.IntegrationTests.SimpleResponse> DoSimpleAsync(global::Google.Api.Gax.IntegrationTests.SimpleRequest request, CallOptions options);
-    }
-
-    /// <summary>Interface of server-side implementations of TestService</summary>
-    [System.Obsolete("Service implementations should inherit from the generated abstract base class instead.")]
-    public interface ITestService
-    {
-      global::System.Threading.Tasks.Task<global::Google.Api.Gax.IntegrationTests.SimpleResponse> DoSimple(global::Google.Api.Gax.IntegrationTests.SimpleRequest request, ServerCallContext context);
-    }
-
     /// <summary>Base class for server-side implementations of TestService</summary>
     public abstract class TestServiceBase
     {
@@ -63,21 +46,24 @@ namespace Google.Api.Gax.IntegrationTests {
     }
 
     /// <summary>Client for TestService</summary>
-    #pragma warning disable 0618
-    public class TestServiceClient : ClientBase<TestServiceClient>, ITestServiceClient
-    #pragma warning restore 0618
+    public class TestServiceClient : ClientBase<TestServiceClient>
     {
+      /// <summary>Creates a new client for TestService</summary>
+      /// <param name="channel">The channel to use to make remote calls.</param>
       public TestServiceClient(Channel channel) : base(channel)
       {
       }
+      /// <summary>Creates a new client for TestService that uses a custom <c>CallInvoker</c>.</summary>
+      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
       public TestServiceClient(CallInvoker callInvoker) : base(callInvoker)
       {
       }
-      ///<summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
       protected TestServiceClient() : base()
       {
       }
-      ///<summary>Protected constructor to allow creation of configured clients.</summary>
+      /// <summary>Protected constructor to allow creation of configured clients.</summary>
+      /// <param name="configuration">The client configuration.</param>
       protected TestServiceClient(ClientBaseConfiguration configuration) : base(configuration)
       {
       }
@@ -104,27 +90,10 @@ namespace Google.Api.Gax.IntegrationTests {
       }
     }
 
-    /// <summary>Creates a new client for TestService</summary>
-    public static TestServiceClient NewClient(Channel channel)
-    {
-      return new TestServiceClient(channel);
-    }
-
     /// <summary>Creates service definition that can be registered with a server</summary>
-    #pragma warning disable 0618
-    public static ServerServiceDefinition BindService(ITestService serviceImpl)
-    #pragma warning restore 0618
-    {
-      return ServerServiceDefinition.CreateBuilder(__ServiceName)
-          .AddMethod(__Method_DoSimple, serviceImpl.DoSimple).Build();
-    }
-
-    /// <summary>Creates service definition that can be registered with a server</summary>
-    #pragma warning disable 0618
     public static ServerServiceDefinition BindService(TestServiceBase serviceImpl)
-    #pragma warning restore 0618
     {
-      return ServerServiceDefinition.CreateBuilder(__ServiceName)
+      return ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_DoSimple, serviceImpl.DoSimple).Build();
     }
 

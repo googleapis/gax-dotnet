@@ -43,10 +43,9 @@ namespace Google.Api.Gax.IntegrationTests
             using (var fixture = new TestServiceFixture())
             {
                 var channel = pool.GetChannel(fixture.Endpoint);
-                Assert.NotEqual(ChannelState.FatalFailure, channel.State);
+                Assert.NotEqual(ChannelState.Shutdown, channel.State);
                 await pool.ShutdownChannelsAsync();
-                // TODO: Assert it's shut down.
-                // See https://github.com/grpc/grpc/issues/6426
+                Assert.Equal(ChannelState.Shutdown, channel.State);
             }
         }
 

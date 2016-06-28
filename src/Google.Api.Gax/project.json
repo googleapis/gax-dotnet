@@ -14,9 +14,9 @@
     "Google.Apis.Auth": "1.13.0",
     "Google.Protobuf": "3.0.0-beta3",
     "Google.Protobuf.Tools": { "version": "3.0.0-beta3", "type": "build" },
-    "Grpc.Auth": "0.14.0",
-    "Grpc.Core": "0.14.0",
-    "Grpc.Tools": { "version": "0.14.0", "type": "build" },
+    "Grpc.Auth": "0.15.0",
+    "Grpc.Core": "0.15.0",
+    "Grpc.Tools": { "version": "0.15.0", "type": "build" },
     "Ix-Async": "1.2.5"
   },
   "frameworks": {
