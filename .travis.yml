@@ -1,14 +1,31 @@
 language: csharp
 
+sudo: required
+dist: trusty
+
+env:
+  - CLI_VERSION=latest
+
+addons:
+  apt:
+    packages:
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+
 mono:
   - latest
 
 install:
-  - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
-  - dnvm upgrade
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
 
 script:
-  - dnu restore
-  - dnu build src/*
-  - dnu build test/*
-  - for project in `find . -name '*.Tests'`; do dnx -p $project test -parallel none; done
+  - dotnet restore
+  - dotnet restore linuxtest
+  - dotnet build src/*
+  - dotnet build test/*
+  - for project in `find test -maxdepth 1 -type d -name '*.Tests' | xargs basename`; do echo $project; mono ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe test/$project/bin/Debug/net451/ubuntu.14.04-x64/$project.dll -parallel none; done

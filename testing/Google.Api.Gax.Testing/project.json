@@ -1,18 +1,23 @@
 ﻿{
   "version": "0.1.0-*",
-  "title": "Testing support for Google.Api.Gax",
-  "description": "Testing support for Google.Api.Gax",
-  "authors": [ "Google Inc." ],
-  "owners": [ "googleapis-packages" ],
-  "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
-  "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
-  "tags": [ "Google" ],
-  "compilationOptions": {
+
+  "packOptions": {
+    "title": "Testing support for Google.Api.Gax",
+    "description": "Testing support for Google.Api.Gax",
+    "authors": [ "Google Inc." ],
+    "owners": [ "googleapis-packages" ],
+    "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+    "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+    "tags": [ "Google" ],
+  },
+
+  "buildOptions": {
     "keyFile": "../../Gax.snk"
   },
 
   "dependencies": {
-    "Google.Api.Gax": ""
+    "Google.Api.Gax": { "target": "project" },
+    "System.Threading.Tasks": "4.0.0"
   },
   "frameworks": {
     "net45": {
