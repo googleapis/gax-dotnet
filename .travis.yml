@@ -1,14 +1,19 @@
 language: csharp
 
+dist: trusty
+
 mono:
   - latest
 
 install:
-  - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
-  - dnvm upgrade
+  - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+  - sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+  - sudo apt-get -qq update
+  - sudo apt-get install -qq dotnet-dev-1.0.0-preview2-003121
 
 script:
-  - dnu restore
-  - dnu build src/*
-  - dnu build test/*
-  - for project in `find . -name '*.Tests'`; do dnx -p $project test -parallel none; done
+  - dotnet restore
+  - dotnet build src/*
+  - dotnet build test/*
+  - cd test; for project in *.Tests; do DIR=$project/bin/Debug/net451/ubuntu.14.04-x64; mono $DIR/dotnet-test-xunit.exe $DIR/$project.dll; done
+  - cd ..; dotnet test -f netcoreapp1.0 test/Google.Api.Gax.Rest.Tests

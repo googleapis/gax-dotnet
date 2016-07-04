@@ -291,7 +291,7 @@ namespace Google.Api.Gax.Rest
             var paged = server.PagedAsync(request);
             var fixedSize = paged.AsPages().WithFixedSize(1);
             var ex = await Record.ExceptionAsync(() => fixedSize.First());
-            Assert.IsType<NotSupportedException>(ex.InnerException);
+            Assert.IsType<NotSupportedException>(ex);
         }
 
 
