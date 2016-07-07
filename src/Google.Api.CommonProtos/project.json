@@ -1,0 +1,29 @@
+﻿{
+  "version": "0.1.0-*",
+  "title": "Google API Common Protos",
+  "description": "Common Protocol Buffer messages for Google APIs",
+  "authors": [ "Google Inc." ],
+  "owners": [ "googleapis-packages" ],
+  "projectUrl": "https://github.com/googleapis/gax-dotnet",
+  "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
+  "tags": [ "Google" ],
+  "compilationOptions": {
+    "keyFile": "../../Gax.snk"
+  },
+  "dependencies": {
+    "Google.Protobuf": "3.0.0-beta3",
+    "Google.Protobuf.Tools": { "version": "3.0.0-beta3", "type": "build" }
+  },
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.IO": {
+          "type": "build"
+        },
+        "System.Runtime": {
+          "type": "build"
+        }
+      }
+    }
+  }
+}
