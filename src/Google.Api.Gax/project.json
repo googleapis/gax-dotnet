@@ -4,7 +4,7 @@
   "description": "Support classes for Google API client libraries",
   "authors": [ "Google Inc." ],
   "owners": [ "googleapis-packages" ],
-  "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+  "projectUrl": "https://github.com/googleapis/gax-dotnet",
   "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
   "tags": [ "Google" ],
   "compilationOptions": {
@@ -13,7 +13,6 @@
   "dependencies": {
     "Google.Apis.Auth": "1.13.0",
     "Google.Protobuf": "3.0.0-beta3",
-    "Google.Protobuf.Tools": { "version": "3.0.0-beta3", "type": "build" },
     "Grpc.Auth": "0.15.0",
     "Grpc.Core": "0.15.0",
     "Grpc.Tools": { "version": "0.15.0", "type": "build" },
