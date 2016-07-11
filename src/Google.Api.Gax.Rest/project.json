@@ -1,5 +1,5 @@
 ﻿{
-  "version": "0.1.0-*",
+  "version": "1.0.0-*",
   "title": "Google REST API Extensions",
   "description": "Additional support classes for Google REST API client libraries",
   "authors": [ "Google Inc." ],
@@ -11,8 +11,8 @@
     "keyFile": "../../Gax.snk"
   },
   "dependencies": {
-    "Google.Apis.Auth": "1.13.0",
-    "Google.Apis": "1.13.0",
+    "Google.Apis.Auth": "1.14.0",
+    "Google.Apis": "1.14.0",
     "Ix-Async": "1.2.5"
   },
   "frameworks": {
