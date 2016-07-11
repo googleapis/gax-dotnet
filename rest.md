@@ -8,7 +8,7 @@ REST/JSON/HTTP1.1. These have their own [support
 library](https://github.com/google/google-api-dotnet-client).
 However, that support library does not provide functionality
 required by some of the [wrapper client
-libraries](https://github.com/google-cloud-platform/gcloud-dotnet).
+libraries](https://github.com/google-cloud-platform/google-cloud-dotnet).
 The `Google.Api.Gax.Rest` library fills in these blanks, providing
 some similar APIs to those in `Google.Api.Gax`.
 
