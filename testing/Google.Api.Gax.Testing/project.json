@@ -1,5 +1,5 @@
 ﻿{
-  "version": "0.1.0-*",
+  "version": "1.0.0-*",
   "title": "Testing support for Google.Api.Gax",
   "description": "Testing support for Google.Api.Gax",
   "authors": [ "Google Inc." ],
