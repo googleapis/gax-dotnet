@@ -10,7 +10,7 @@ for %%P in (%PROJECTS%) do (
 
 for %%P in (%TESTS%) do (
   call dnu build --configuration %Configuration% %%P || goto error
-  call dnx --configuration %Configuration% -p %%P test || goto error
+  dnx --configuration %Configuration% -p %%P test || goto error
 )
 
 for %%P in (%PROJECTS%) do (
