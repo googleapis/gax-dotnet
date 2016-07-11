@@ -1,5 +1,5 @@
 ﻿{
-  "version": "0.1.0-*",
+  "version": "1.0.0-*",
   "title": "Google API Common Protos",
   "description": "Common Protocol Buffer messages for Google APIs",
   "authors": [ "Google Inc." ],
