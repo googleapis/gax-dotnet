@@ -63,8 +63,18 @@ namespace Google.Api.Gax
         public Channel GetChannel(ServiceEndpoint endpoint)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = s_lazyDefaultChannelCredentials.Value.Result;
-            return GetChannel(endpoint, credentials);
+            try
+            {
+                var credentials = s_lazyDefaultChannelCredentials.Value.Result;
+                return GetChannel(endpoint, credentials);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exceptions,
+                // but let's handle it relatively gracefully.
+                throw e.InnerExceptions.FirstOrDefault() ?? e;
+            }
         }
 
         /// <summary>
