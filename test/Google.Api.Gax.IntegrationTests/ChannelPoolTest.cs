@@ -5,6 +5,8 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 using Grpc.Core;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,10 +14,12 @@ namespace Google.Api.Gax.IntegrationTests
 {
     public class ChannelPoolTest
     {
+        private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
+
         [Fact]
         public void SameEndpoint_SameChannel()
         {
-            var pool = new ChannelPool();
+            var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(fixture.Endpoint);
@@ -27,7 +31,7 @@ namespace Google.Api.Gax.IntegrationTests
         [Fact]
         public void DifferentEndpoint_DifferentChannel()
         {
-            var pool = new ChannelPool();
+            var pool = new ChannelPool(EmptyScopes);
             using (TestServiceFixture fixture1 = new TestServiceFixture(), fixture2 = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(fixture1.Endpoint);
@@ -39,7 +43,7 @@ namespace Google.Api.Gax.IntegrationTests
         [Fact]
         public async Task ShutdownAsync_ShutsDownChannel()
         {
-            var pool = new ChannelPool();
+            var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
                 var channel = pool.GetChannel(fixture.Endpoint);
@@ -52,7 +56,7 @@ namespace Google.Api.Gax.IntegrationTests
         [Fact]
         public void ShutdownAsync_EmptiesPool()
         {
-            var pool = new ChannelPool();
+            var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(fixture.Endpoint);

@@ -22,20 +22,46 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class ChannelPool
     {
+        private readonly IEnumerable<string> _scopes;
+
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
         /// task can be used whenever channel credentials are required. The returned task always runs in the
         /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
-        /// The same channel credentials are used by all pools.
+        /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
+        /// _scopes, and you can't refer to an instance field within an instance field initializer.
         /// </summary>
-        private static readonly Lazy<Task<ChannelCredentials>> s_lazyDefaultChannelCredentials
-            = new Lazy<Task<ChannelCredentials>>(
-                () => Task.Run(async () => (await GoogleCredential.GetApplicationDefaultAsync()).ToChannelCredentials()));
+        private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
 
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
         // "clear and fetch values" for shutdown.
         private readonly Dictionary<ServiceEndpoint, Channel> _channels = new Dictionary<ServiceEndpoint, Channel>();
         private readonly object _lock = new object();
+
+        /// <summary>
+        /// Creates a channel pool which will apply the specified scopes to the default application credentials
+        /// if they require any.
+        /// </summary>
+        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
+        public ChannelPool(IEnumerable<string> scopes)
+        {
+            // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
+            _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
+            GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+            // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
+            // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
+            _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
+        }
+
+        private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
+        {
+            var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync();
+            if (appDefaultCredentials.IsCreateScopedRequired)
+            {
+                appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
+            }
+            return appDefaultCredentials.ToChannelCredentials();
+        }
 
         /// <summary>
         /// Shuts down all the currently-allocated channels asynchronously. This does not prevent the channel
@@ -65,7 +91,7 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             try
             {
-                var credentials = s_lazyDefaultChannelCredentials.Value.Result;
+                var credentials = _lazyScopedDefaultChannelCredentials.Value.Result;
                 return GetChannel(endpoint, credentials);
             }
             catch (AggregateException e)
@@ -87,7 +113,7 @@ namespace Google.Api.Gax
         public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await s_lazyDefaultChannelCredentials.Value;
+            var credentials = await _lazyScopedDefaultChannelCredentials.Value;
             return GetChannel(endpoint, credentials);
         }
 
