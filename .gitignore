@@ -4,6 +4,7 @@
 obj
 bin
 project.lock.json
+.cr
 
 # Used by docfx as the conventional output directory.
 # (We could put this under obj if that became simpler; see
