@@ -7,18 +7,17 @@ set TESTS=test\Google.Api.Gax.Tests test\Google.Api.Gax.Rest.Tests
 
 for %%P in (%PROJECTS%) do (
   echo Building %%P
-  dotnet build --configuration %Configuration% %%P || goto error
+  dotnet build --version-suffix %PrereleaseTag% --configuration %Configuration% %%P || goto error
 )
 
 for %%P in (%TESTS%) do (
   echo Testing %%P
-  dotnet build --configuration %Configuration% %%P || goto error
   dotnet test --configuration %Configuration% %%P || goto error
 )
 
 for %%P in (%PROJECTS%) do (
   echo Packing %%P
-  dotnet pack --configuration %Configuration% %%P || goto error
+  dotnet pack --version-suffix %PrereleaseTag% --configuration %Configuration% %%P || goto error
 )
 
 echo Done!
