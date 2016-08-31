@@ -22,7 +22,7 @@ namespace Google.Api.Gax
         /// <summary>
         /// The name of the header to set in gRPC calls.
         /// </summary>
-        internal const string HeaderName = "X-Goog-Api-Client";
+        internal const string HeaderName = "x-goog-api-client";
         private readonly List<string> _values = new List<string>();
 
         /// <summary>
