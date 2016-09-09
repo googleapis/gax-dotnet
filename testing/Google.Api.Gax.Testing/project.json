@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta01",
+  "version": "1.0.0-beta01-*",
 
   "packOptions": {
     "title": "Testing support for Google.Api.Gax",
