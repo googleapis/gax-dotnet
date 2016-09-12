@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta01-*",
+  "version": "1.0.0-beta02-*",
 
   "packOptions": {
     "title": "Google API Extensions",
@@ -16,7 +16,7 @@
   },
 
   "dependencies": {
-    "Google.Apis.Auth": "1.15.0",
+    "Google.Apis.Auth": "1.16.0",
     "Google.Protobuf": "3.0.0",
     "Google.Protobuf.Tools": { "version": "3.0.0", "type": "build" },
     "Grpc.Auth": "1.0.0",
