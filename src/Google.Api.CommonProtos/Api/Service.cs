@@ -32,44 +32,42 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL3NlcnZpY2UucHJvdG8SCmdvb2dsZS5hcGkaHGdvb2ds",
             "ZS9hcGkvYW5ub3RhdGlvbnMucHJvdG8aFWdvb2dsZS9hcGkvYXV0aC5wcm90",
-            "bxoYZ29vZ2xlL2FwaS9iYWNrZW5kLnByb3RvGhhnb29nbGUvYXBpL2JpbGxp",
-            "bmcucHJvdG8aGWdvb2dsZS9hcGkvY29uc3VtZXIucHJvdG8aGGdvb2dsZS9h",
-            "cGkvY29udGV4dC5wcm90bxoYZ29vZ2xlL2FwaS9jb250cm9sLnByb3RvGh5n",
-            "b29nbGUvYXBpL2RvY3VtZW50YXRpb24ucHJvdG8aFWdvb2dsZS9hcGkvaHR0",
-            "cC5wcm90bxoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90bxoUZ29vZ2xlL2FwaS9s",
-            "b2cucHJvdG8aGGdvb2dsZS9hcGkvbG9nZ2luZy5wcm90bxoXZ29vZ2xlL2Fw",
-            "aS9tZXRyaWMucHJvdG8aI2dvb2dsZS9hcGkvbW9uaXRvcmVkX3Jlc291cmNl",
-            "LnByb3RvGhtnb29nbGUvYXBpL21vbml0b3JpbmcucHJvdG8aIWdvb2dsZS9h",
-            "cGkvc3lzdGVtX3BhcmFtZXRlci5wcm90bxoWZ29vZ2xlL2FwaS91c2FnZS5w",
-            "cm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90bxoZZ29vZ2xlL3Byb3Rv",
-            "YnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3RvYnVmL3R5cGUucHJvdG8aHmdv",
-            "b2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byKZBwoHU2VydmljZRI0Cg5j",
-            "b25maWdfdmVyc2lvbhgUIAEoCzIcLmdvb2dsZS5wcm90b2J1Zi5VSW50MzJW",
-            "YWx1ZRIMCgRuYW1lGAEgASgJEgoKAmlkGCEgASgJEg0KBXRpdGxlGAIgASgJ",
-            "EhsKE3Byb2R1Y2VyX3Byb2plY3RfaWQYFiABKAkSIgoEYXBpcxgDIAMoCzIU",
-            "Lmdvb2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsyFS5nb29nbGUu",
-            "cHJvdG9idWYuVHlwZRIkCgVlbnVtcxgFIAMoCzIVLmdvb2dsZS5wcm90b2J1",
-            "Zi5FbnVtEjAKDWRvY3VtZW50YXRpb24YBiABKAsyGS5nb29nbGUuYXBpLkRv",
-            "Y3VtZW50YXRpb24SJAoHYmFja2VuZBgIIAEoCzITLmdvb2dsZS5hcGkuQmFj",
-            "a2VuZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xlLmFwaS5IdHRwEjIKDmF1dGhl",
-            "bnRpY2F0aW9uGAsgASgLMhouZ29vZ2xlLmFwaS5BdXRoZW50aWNhdGlvbhIk",
-            "Cgdjb250ZXh0GAwgASgLMhMuZ29vZ2xlLmFwaS5Db250ZXh0EiAKBXVzYWdl",
-            "GA8gASgLMhEuZ29vZ2xlLmFwaS5Vc2FnZRI5ChJwcm9qZWN0X3Byb3BlcnRp",
-            "ZXMYESABKAsyHS5nb29nbGUuYXBpLlByb2plY3RQcm9wZXJ0aWVzEiQKB2Nv",
-            "bnRyb2wYFSABKAsyEy5nb29nbGUuYXBpLkNvbnRyb2wSJwoEbG9ncxgXIAMo",
-            "CzIZLmdvb2dsZS5hcGkuTG9nRGVzY3JpcHRvchItCgdtZXRyaWNzGBggAygL",
-            "MhwuZ29vZ2xlLmFwaS5NZXRyaWNEZXNjcmlwdG9yEkQKE21vbml0b3JlZF9y",
-            "ZXNvdXJjZXMYGSADKAsyJy5nb29nbGUuYXBpLk1vbml0b3JlZFJlc291cmNl",
-            "RGVzY3JpcHRvchIkCgdiaWxsaW5nGBogASgLMhMuZ29vZ2xlLmFwaS5CaWxs",
-            "aW5nEiQKB2xvZ2dpbmcYGyABKAsyEy5nb29nbGUuYXBpLkxvZ2dpbmcSKgoK",
-            "bW9uaXRvcmluZxgcIAEoCzIWLmdvb2dsZS5hcGkuTW9uaXRvcmluZxI3ChFz",
-            "eXN0ZW1fcGFyYW1ldGVycxgdIAEoCzIcLmdvb2dsZS5hcGkuU3lzdGVtUGFy",
-            "YW1ldGVyc0IgCg5jb20uZ29vZ2xlLmFwaUIMU2VydmljZVByb3RvUAFiBnBy",
-            "b3RvMw=="));
+            "bxoYZ29vZ2xlL2FwaS9iYWNrZW5kLnByb3RvGhhnb29nbGUvYXBpL2NvbnRl",
+            "eHQucHJvdG8aGGdvb2dsZS9hcGkvY29udHJvbC5wcm90bxoeZ29vZ2xlL2Fw",
+            "aS9kb2N1bWVudGF0aW9uLnByb3RvGhlnb29nbGUvYXBpL2VuZHBvaW50LnBy",
+            "b3RvGhVnb29nbGUvYXBpL2h0dHAucHJvdG8aFmdvb2dsZS9hcGkvbGFiZWwu",
+            "cHJvdG8aFGdvb2dsZS9hcGkvbG9nLnByb3RvGhhnb29nbGUvYXBpL2xvZ2dp",
+            "bmcucHJvdG8aF2dvb2dsZS9hcGkvbWV0cmljLnByb3RvGiNnb29nbGUvYXBp",
+            "L21vbml0b3JlZF9yZXNvdXJjZS5wcm90bxobZ29vZ2xlL2FwaS9tb25pdG9y",
+            "aW5nLnByb3RvGiFnb29nbGUvYXBpL3N5c3RlbV9wYXJhbWV0ZXIucHJvdG8a",
+            "Fmdvb2dsZS9hcGkvdXNhZ2UucHJvdG8aGWdvb2dsZS9wcm90b2J1Zi9hbnku",
+            "cHJvdG8aGWdvb2dsZS9wcm90b2J1Zi9hcGkucHJvdG8aGmdvb2dsZS9wcm90",
+            "b2J1Zi90eXBlLnByb3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJv",
+            "dG8i4QYKB1NlcnZpY2USNAoOY29uZmlnX3ZlcnNpb24YFCABKAsyHC5nb29n",
+            "bGUucHJvdG9idWYuVUludDMyVmFsdWUSDAoEbmFtZRgBIAEoCRIKCgJpZBgh",
+            "IAEoCRINCgV0aXRsZRgCIAEoCRIbChNwcm9kdWNlcl9wcm9qZWN0X2lkGBYg",
+            "ASgJEiIKBGFwaXMYAyADKAsyFC5nb29nbGUucHJvdG9idWYuQXBpEiQKBXR5",
+            "cGVzGAQgAygLMhUuZ29vZ2xlLnByb3RvYnVmLlR5cGUSJAoFZW51bXMYBSAD",
+            "KAsyFS5nb29nbGUucHJvdG9idWYuRW51bRIwCg1kb2N1bWVudGF0aW9uGAYg",
+            "ASgLMhkuZ29vZ2xlLmFwaS5Eb2N1bWVudGF0aW9uEiQKB2JhY2tlbmQYCCAB",
+            "KAsyEy5nb29nbGUuYXBpLkJhY2tlbmQSHgoEaHR0cBgJIAEoCzIQLmdvb2ds",
+            "ZS5hcGkuSHR0cBIyCg5hdXRoZW50aWNhdGlvbhgLIAEoCzIaLmdvb2dsZS5h",
+            "cGkuQXV0aGVudGljYXRpb24SJAoHY29udGV4dBgMIAEoCzITLmdvb2dsZS5h",
+            "cGkuQ29udGV4dBIgCgV1c2FnZRgPIAEoCzIRLmdvb2dsZS5hcGkuVXNhZ2US",
+            "JwoJZW5kcG9pbnRzGBIgAygLMhQuZ29vZ2xlLmFwaS5FbmRwb2ludBIkCgdj",
+            "b250cm9sGBUgASgLMhMuZ29vZ2xlLmFwaS5Db250cm9sEicKBGxvZ3MYFyAD",
+            "KAsyGS5nb29nbGUuYXBpLkxvZ0Rlc2NyaXB0b3ISLQoHbWV0cmljcxgYIAMo",
+            "CzIcLmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvchJEChNtb25pdG9yZWRf",
+            "cmVzb3VyY2VzGBkgAygLMicuZ29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJj",
+            "ZURlc2NyaXB0b3ISJAoHbG9nZ2luZxgbIAEoCzITLmdvb2dsZS5hcGkuTG9n",
+            "Z2luZxIqCgptb25pdG9yaW5nGBwgASgLMhYuZ29vZ2xlLmFwaS5Nb25pdG9y",
+            "aW5nEjcKEXN5c3RlbV9wYXJhbWV0ZXJzGB0gASgLMhwuZ29vZ2xlLmFwaS5T",
+            "eXN0ZW1QYXJhbWV0ZXJzQicKDmNvbS5nb29nbGUuYXBpQgxTZXJ2aWNlUHJv",
+            "dG9QAaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ConsumerReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Authentication", "Context", "Usage", "ProjectProperties", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Logging", "Monitoring", "SystemParameters" }, null, null, null)
           }));
     }
     #endregion
@@ -129,12 +127,11 @@ namespace Google.Api {
       Authentication = other.authentication_ != null ? other.Authentication.Clone() : null;
       Context = other.context_ != null ? other.Context.Clone() : null;
       Usage = other.usage_ != null ? other.Usage.Clone() : null;
-      ProjectProperties = other.projectProperties_ != null ? other.ProjectProperties.Clone() : null;
+      endpoints_ = other.endpoints_.Clone();
       Control = other.control_ != null ? other.Control.Clone() : null;
       logs_ = other.logs_.Clone();
       metrics_ = other.metrics_.Clone();
       monitoredResources_ = other.monitoredResources_.Clone();
-      Billing = other.billing_ != null ? other.Billing.Clone() : null;
       Logging = other.logging_ != null ? other.Logging.Clone() : null;
       Monitoring = other.monitoring_ != null ? other.Monitoring.Clone() : null;
       SystemParameters = other.systemParameters_ != null ? other.SystemParameters.Clone() : null;
@@ -349,17 +346,18 @@ namespace Google.Api {
       }
     }
 
-    /// <summary>Field number for the "project_properties" field.</summary>
-    public const int ProjectPropertiesFieldNumber = 17;
-    private global::Google.Api.ProjectProperties projectProperties_;
+    /// <summary>Field number for the "endpoints" field.</summary>
+    public const int EndpointsFieldNumber = 18;
+    private static readonly pb::FieldCodec<global::Google.Api.Endpoint> _repeated_endpoints_codec
+        = pb::FieldCodec.ForMessage(146, global::Google.Api.Endpoint.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.Endpoint> endpoints_ = new pbc::RepeatedField<global::Google.Api.Endpoint>();
     /// <summary>
-    ///  Configuration of per-consumer project properties.
+    ///  Configuration for network endpoints.  If this is empty, then an endpoint
+    ///  with the same name as the service is automatically generated to service all
+    ///  defined APIs.
     /// </summary>
-    public global::Google.Api.ProjectProperties ProjectProperties {
-      get { return projectProperties_; }
-      set {
-        projectProperties_ = value;
-      }
+    public pbc::RepeatedField<global::Google.Api.Endpoint> Endpoints {
+      get { return endpoints_; }
     }
 
     /// <summary>Field number for the "control" field.</summary>
@@ -410,19 +408,6 @@ namespace Google.Api {
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.MonitoredResourceDescriptor> MonitoredResources {
       get { return monitoredResources_; }
-    }
-
-    /// <summary>Field number for the "billing" field.</summary>
-    public const int BillingFieldNumber = 26;
-    private global::Google.Api.Billing billing_;
-    /// <summary>
-    ///  Billing configuration of the service.
-    /// </summary>
-    public global::Google.Api.Billing Billing {
-      get { return billing_; }
-      set {
-        billing_ = value;
-      }
     }
 
     /// <summary>Field number for the "logging" field.</summary>
@@ -489,12 +474,11 @@ namespace Google.Api {
       if (!object.Equals(Authentication, other.Authentication)) return false;
       if (!object.Equals(Context, other.Context)) return false;
       if (!object.Equals(Usage, other.Usage)) return false;
-      if (!object.Equals(ProjectProperties, other.ProjectProperties)) return false;
+      if(!endpoints_.Equals(other.endpoints_)) return false;
       if (!object.Equals(Control, other.Control)) return false;
       if(!logs_.Equals(other.logs_)) return false;
       if(!metrics_.Equals(other.metrics_)) return false;
       if(!monitoredResources_.Equals(other.monitoredResources_)) return false;
-      if (!object.Equals(Billing, other.Billing)) return false;
       if (!object.Equals(Logging, other.Logging)) return false;
       if (!object.Equals(Monitoring, other.Monitoring)) return false;
       if (!object.Equals(SystemParameters, other.SystemParameters)) return false;
@@ -517,12 +501,11 @@ namespace Google.Api {
       if (authentication_ != null) hash ^= Authentication.GetHashCode();
       if (context_ != null) hash ^= Context.GetHashCode();
       if (usage_ != null) hash ^= Usage.GetHashCode();
-      if (projectProperties_ != null) hash ^= ProjectProperties.GetHashCode();
+      hash ^= endpoints_.GetHashCode();
       if (control_ != null) hash ^= Control.GetHashCode();
       hash ^= logs_.GetHashCode();
       hash ^= metrics_.GetHashCode();
       hash ^= monitoredResources_.GetHashCode();
-      if (billing_ != null) hash ^= Billing.GetHashCode();
       if (logging_ != null) hash ^= Logging.GetHashCode();
       if (monitoring_ != null) hash ^= Monitoring.GetHashCode();
       if (systemParameters_ != null) hash ^= SystemParameters.GetHashCode();
@@ -569,10 +552,7 @@ namespace Google.Api {
         output.WriteRawTag(122);
         output.WriteMessage(Usage);
       }
-      if (projectProperties_ != null) {
-        output.WriteRawTag(138, 1);
-        output.WriteMessage(ProjectProperties);
-      }
+      endpoints_.WriteTo(output, _repeated_endpoints_codec);
       if (configVersion_ != null) {
         _single_configVersion_codec.WriteTagAndValue(output, ConfigVersion);
       }
@@ -587,10 +567,6 @@ namespace Google.Api {
       logs_.WriteTo(output, _repeated_logs_codec);
       metrics_.WriteTo(output, _repeated_metrics_codec);
       monitoredResources_.WriteTo(output, _repeated_monitoredResources_codec);
-      if (billing_ != null) {
-        output.WriteRawTag(210, 1);
-        output.WriteMessage(Billing);
-      }
       if (logging_ != null) {
         output.WriteRawTag(218, 1);
         output.WriteMessage(Logging);
@@ -647,18 +623,13 @@ namespace Google.Api {
       if (usage_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Usage);
       }
-      if (projectProperties_ != null) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ProjectProperties);
-      }
+      size += endpoints_.CalculateSize(_repeated_endpoints_codec);
       if (control_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(Control);
       }
       size += logs_.CalculateSize(_repeated_logs_codec);
       size += metrics_.CalculateSize(_repeated_metrics_codec);
       size += monitoredResources_.CalculateSize(_repeated_monitoredResources_codec);
-      if (billing_ != null) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(Billing);
-      }
       if (logging_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(Logging);
       }
@@ -731,12 +702,7 @@ namespace Google.Api {
         }
         Usage.MergeFrom(other.Usage);
       }
-      if (other.projectProperties_ != null) {
-        if (projectProperties_ == null) {
-          projectProperties_ = new global::Google.Api.ProjectProperties();
-        }
-        ProjectProperties.MergeFrom(other.ProjectProperties);
-      }
+      endpoints_.Add(other.endpoints_);
       if (other.control_ != null) {
         if (control_ == null) {
           control_ = new global::Google.Api.Control();
@@ -746,12 +712,6 @@ namespace Google.Api {
       logs_.Add(other.logs_);
       metrics_.Add(other.metrics_);
       monitoredResources_.Add(other.monitoredResources_);
-      if (other.billing_ != null) {
-        if (billing_ == null) {
-          billing_ = new global::Google.Api.Billing();
-        }
-        Billing.MergeFrom(other.Billing);
-      }
       if (other.logging_ != null) {
         if (logging_ == null) {
           logging_ = new global::Google.Api.Logging();
@@ -841,11 +801,8 @@ namespace Google.Api {
             input.ReadMessage(usage_);
             break;
           }
-          case 138: {
-            if (projectProperties_ == null) {
-              projectProperties_ = new global::Google.Api.ProjectProperties();
-            }
-            input.ReadMessage(projectProperties_);
+          case 146: {
+            endpoints_.AddEntriesFrom(input, _repeated_endpoints_codec);
             break;
           }
           case 162: {
@@ -876,13 +833,6 @@ namespace Google.Api {
           }
           case 202: {
             monitoredResources_.AddEntriesFrom(input, _repeated_monitoredResources_codec);
-            break;
-          }
-          case 210: {
-            if (billing_ == null) {
-              billing_ = new global::Google.Api.Billing();
-            }
-            input.ReadMessage(billing_);
             break;
           }
           case 218: {

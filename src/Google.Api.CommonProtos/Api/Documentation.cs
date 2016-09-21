@@ -38,8 +38,8 @@ namespace Google.Api {
             "UnVsZRIQCghzZWxlY3RvchgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIf",
             "ChdkZXByZWNhdGlvbl9kZXNjcmlwdGlvbhgDIAEoCSJJCgRQYWdlEgwKBG5h",
             "bWUYASABKAkSDwoHY29udGVudBgCIAEoCRIiCghzdWJwYWdlcxgDIAMoCzIQ",
-            "Lmdvb2dsZS5hcGkuUGFnZUImCg5jb20uZ29vZ2xlLmFwaUISRG9jdW1lbnRh",
-            "dGlvblByb3RvUAFiBnByb3RvMw=="));
+            "Lmdvb2dsZS5hcGkuUGFnZUItCg5jb20uZ29vZ2xlLmFwaUISRG9jdW1lbnRh",
+            "dGlvblByb3RvUAGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -174,7 +174,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(26, global::Google.Api.DocumentationRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.DocumentationRule> rules_ = new pbc::RepeatedField<global::Google.Api.DocumentationRule>();
     /// <summary>
-    ///  Documentation rules for individual elements of the service.
+    ///  A list of documentation rules that apply to individual API elements.
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.DocumentationRule> Rules {
       get { return rules_; }

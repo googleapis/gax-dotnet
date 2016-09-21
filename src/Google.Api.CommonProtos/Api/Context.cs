@@ -33,8 +33,8 @@ namespace Google.Api {
             "Chhnb29nbGUvYXBpL2NvbnRleHQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQ29u",
             "dGV4dBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQ29udGV4dFJ1bGUi",
             "RAoLQ29udGV4dFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSEQoJcmVxdWVzdGVk",
-            "GAIgAygJEhAKCHByb3ZpZGVkGAMgAygJQiAKDmNvbS5nb29nbGUuYXBpQgxD",
-            "b250ZXh0UHJvdG9QAWIGcHJvdG8z"));
+            "GAIgAygJEhAKCHByb3ZpZGVkGAMgAygJQicKDmNvbS5nb29nbGUuYXBpQgxD",
+            "b250ZXh0UHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -98,7 +98,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.ContextRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.ContextRule> rules_ = new pbc::RepeatedField<global::Google.Api.ContextRule>();
     /// <summary>
-    ///  List of rules for context, applicable to methods.
+    ///  A list of RPC context rules that apply to individual API methods.
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.ContextRule> Rules {
       get { return rules_; }

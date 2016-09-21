@@ -33,8 +33,8 @@ namespace Google.Api {
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
             "QgoLQmFja2VuZFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDwoHYWRkcmVzcxgC",
-            "IAEoCRIQCghkZWFkbGluZRgDIAEoAUIgCg5jb20uZ29vZ2xlLmFwaUIMQmFj",
-            "a2VuZFByb3RvUAFiBnByb3RvMw=="));
+            "IAEoCRIQCghkZWFkbGluZRgDIAEoAUInCg5jb20uZ29vZ2xlLmFwaUIMQmFj",
+            "a2VuZFByb3RvUAGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -82,8 +82,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.BackendRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.BackendRule> rules_ = new pbc::RepeatedField<global::Google.Api.BackendRule>();
     /// <summary>
-    ///  A list of backend rules providing configuration for individual API
-    ///  elements.
+    ///  A list of API backend rules that apply to individual API methods.
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.BackendRule> Rules {
       get { return rules_; }

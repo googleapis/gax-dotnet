@@ -41,8 +41,8 @@ namespace Google.Api {
             "ZGVyEgoKAmlkGAEgASgJEg4KBmlzc3VlchgCIAEoCRIQCghqd2tzX3VyaRgD",
             "IAEoCSItChFPQXV0aFJlcXVpcmVtZW50cxIYChBjYW5vbmljYWxfc2NvcGVz",
             "GAEgASgJIjkKD0F1dGhSZXF1aXJlbWVudBITCgtwcm92aWRlcl9pZBgBIAEo",
-            "CRIRCglhdWRpZW5jZXMYAiABKAlCHQoOY29tLmdvb2dsZS5hcGlCCUF1dGhQ",
-            "cm90b1ABYgZwcm90bzM="));
+            "CRIRCglhdWRpZW5jZXMYAiABKAlCJAoOY29tLmdvb2dsZS5hcGlCCUF1dGhQ",
+            "cm90b1ABogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -107,7 +107,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(26, global::Google.Api.AuthenticationRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.AuthenticationRule> rules_ = new pbc::RepeatedField<global::Google.Api.AuthenticationRule>();
     /// <summary>
-    ///  Individual rules for authentication.
+    ///  A list of authentication rules that apply to individual API methods.
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.AuthenticationRule> Rules {
       get { return rules_; }
@@ -266,8 +268,13 @@ namespace Google.Api {
     public const int AllowWithoutCredentialFieldNumber = 5;
     private bool allowWithoutCredential_;
     /// <summary>
-    ///  Whether to allow requests without a credential.  If quota is enabled, an
-    ///  API key is required for such request to pass the quota check.
+    ///  Whether to allow requests without a credential. The credential can be
+    ///  an OAuth token, Google cookies (first-party auth) or EndUserCreds.
+    ///
+    ///  For requests without credentials, if the service control environment is
+    ///  specified, each incoming request **must** be associated with a service
+    ///  consumer. This can be done by passing an API key that belongs to a consumer
+    ///  project.
     /// </summary>
     public bool AllowWithoutCredential {
       get { return allowWithoutCredential_; }

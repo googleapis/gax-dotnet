@@ -44,8 +44,8 @@ namespace Google.Api {
             "UklORxAEEhAKDERJU1RSSUJVVElPThAFEgkKBU1PTkVZEAYidQoGTWV0cmlj",
             "EgwKBHR5cGUYAyABKAkSLgoGbGFiZWxzGAIgAygLMh4uZ29vZ2xlLmFwaS5N",
             "ZXRyaWMuTGFiZWxzRW50cnkaLQoLTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJ",
-            "Eg0KBXZhbHVlGAIgASgJOgI4AUIfCg5jb20uZ29vZ2xlLmFwaUILTWV0cmlj",
-            "UHJvdG9QAWIGcHJvdG8z"));
+            "Eg0KBXZhbHVlGAIgASgJOgI4AUImCg5jb20uZ29vZ2xlLmFwaUILTWV0cmlj",
+            "UHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -462,16 +462,19 @@ namespace Google.Api {
         /// </summary>
         [pbr::OriginalName("METRIC_KIND_UNSPECIFIED")] Unspecified = 0,
         /// <summary>
-        ///  Instantaneous measurements of a varying quantity.
+        ///  An instantaneous measurement of a value.
         /// </summary>
         [pbr::OriginalName("GAUGE")] Gauge = 1,
         /// <summary>
-        ///  Changes over non-overlapping time intervals.
+        ///  The change in a value during a time interval.
         /// </summary>
         [pbr::OriginalName("DELTA")] Delta = 2,
         /// <summary>
-        ///  Cumulative value over time intervals that can overlap.
-        ///  The overlapping intervals must have the same start time.
+        ///  A value accumulated over a time interval.  Cumulative
+        ///  measurements in a time series should have the same start time
+        ///  and increasing end times, until an event resets the cumulative
+        ///  value to zero and sets a new start time for the following
+        ///  points.
         /// </summary>
         [pbr::OriginalName("CUMULATIVE")] Cumulative = 3,
       }

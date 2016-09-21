@@ -38,8 +38,8 @@ namespace Google.Api {
             "dG9tSHR0cFBhdHRlcm5IABIMCgRib2R5GAcgASgJEjEKE2FkZGl0aW9uYWxf",
             "YmluZGluZ3MYCyADKAsyFC5nb29nbGUuYXBpLkh0dHBSdWxlQgkKB3BhdHRl",
             "cm4iLwoRQ3VzdG9tSHR0cFBhdHRlcm4SDAoEa2luZBgBIAEoCRIMCgRwYXRo",
-            "GAIgASgJQiAKDmNvbS5nb29nbGUuYXBpQglIdHRwUHJvdG9QAfgBAWIGcHJv",
-            "dG8z"));
+            "GAIgASgJQicKDmNvbS5nb29nbGUuYXBpQglIdHRwUHJvdG9QAfgBAaICBEdB",
+            "UEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -90,7 +90,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.HttpRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.HttpRule> rules_ = new pbc::RepeatedField<global::Google.Api.HttpRule>();
     /// <summary>
-    ///  A list of HTTP rules for configuring the HTTP REST API methods.
+    ///  A list of HTTP configuration rules that apply to individual API methods.
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.HttpRule> Rules {
       get { return rules_; }
@@ -507,7 +509,8 @@ namespace Google.Api {
     /// <summary>
     ///  The name of the request field whose value is mapped to the HTTP body, or
     ///  `*` for mapping all fields not captured by the path pattern to the HTTP
-    ///  body. NOTE: the referred field must not be a repeated field.
+    ///  body. NOTE: the referred field must not be a repeated field and must be
+    ///  present at the top-level of response message type.
     /// </summary>
     public string Body {
       get { return body_; }
