@@ -38,8 +38,9 @@ namespace Google.Api {
             "EU1vbml0b3JlZFJlc291cmNlEgwKBHR5cGUYASABKAkSOQoGbGFiZWxzGAIg",
             "AygLMikuZ29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZS5MYWJlbHNFbnRy",
             "eRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6",
-            "AjgBQioKDmNvbS5nb29nbGUuYXBpQhZNb25pdG9yZWRSZXNvdXJjZVByb3Rv",
-            "UAFiBnByb3RvMw=="));
+            "AjgBQmwKDmNvbS5nb29nbGUuYXBpQhZNb25pdG9yZWRSZXNvdXJjZVByb3Rv",
+            "UAFaNmdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
+            "L21vbml0b3JlZHJlc/gBAaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -117,6 +118,7 @@ namespace Google.Api {
     /// <summary>
     ///  Required. The monitored resource type. For example, the type
     ///  `"cloudsql_database"` represents databases in Google Cloud SQL.
+    ///  The maximum length of this value is 256 characters.
     /// </summary>
     public string Type {
       get { return type_; }
@@ -130,7 +132,9 @@ namespace Google.Api {
     private string displayName_ = "";
     /// <summary>
     ///  Optional. A concise name for the monitored resource type that might be
-    ///  displayed in user interfaces. For example, `"Google Cloud SQL Database"`.
+    ///  displayed in user interfaces. It should be a Title Cased Noun Phrase,
+    ///  without any article or other determiners. For example,
+    ///  `"Google Cloud SQL Database"`.
     /// </summary>
     public string DisplayName {
       get { return displayName_; }
@@ -302,7 +306,7 @@ namespace Google.Api {
   ///  `"instance_id"` and `"zone"`:
   ///
   ///      { "type": "gce_instance",
-  ///        "labels": { "instance_id": "my-instance",
+  ///        "labels": { "instance_id": "12345678901234",
   ///                    "zone": "us-central1-a" }}
   /// </summary>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

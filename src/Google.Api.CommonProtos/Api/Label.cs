@@ -34,8 +34,8 @@ namespace Google.Api {
             "bERlc2NyaXB0b3ISCwoDa2V5GAEgASgJEjkKCnZhbHVlX3R5cGUYAiABKA4y",
             "JS5nb29nbGUuYXBpLkxhYmVsRGVzY3JpcHRvci5WYWx1ZVR5cGUSEwoLZGVz",
             "Y3JpcHRpb24YAyABKAkiLAoJVmFsdWVUeXBlEgoKBlNUUklORxAAEggKBEJP",
-            "T0wQARIJCgVJTlQ2NBACQh4KDmNvbS5nb29nbGUuYXBpQgpMYWJlbFByb3Rv",
-            "UAFiBnByb3RvMw=="));
+            "T0wQARIJCgVJTlQ2NBACQigKDmNvbS5nb29nbGUuYXBpQgpMYWJlbFByb3Rv",
+            "UAH4AQGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {

@@ -32,8 +32,8 @@ namespace Google.Type {
           string.Concat(
             "Chtnb29nbGUvdHlwZS90aW1lb2ZkYXkucHJvdG8SC2dvb2dsZS50eXBlIksK",
             "CVRpbWVPZkRheRINCgVob3VycxgBIAEoBRIPCgdtaW51dGVzGAIgASgFEg8K",
-            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCLAoPY29tLmdvb2dsZS50",
-            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABoAEBogIDR1RQYgZwcm90bzM="));
+            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCKQoPY29tLmdvb2dsZS50",
+            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABogIDR1RQYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {

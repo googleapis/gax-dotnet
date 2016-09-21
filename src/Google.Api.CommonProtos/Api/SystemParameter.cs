@@ -36,8 +36,8 @@ namespace Google.Api {
             "dWxlEhAKCHNlbGVjdG9yGAEgASgJEi8KCnBhcmFtZXRlcnMYAiADKAsyGy5n",
             "b29nbGUuYXBpLlN5c3RlbVBhcmFtZXRlciJRCg9TeXN0ZW1QYXJhbWV0ZXIS",
             "DAoEbmFtZRgBIAEoCRITCgtodHRwX2hlYWRlchgCIAEoCRIbChN1cmxfcXVl",
-            "cnlfcGFyYW1ldGVyGAMgASgJQigKDmNvbS5nb29nbGUuYXBpQhRTeXN0ZW1Q",
-            "YXJhbWV0ZXJQcm90b1ABYgZwcm90bzM="));
+            "cnlfcGFyYW1ldGVyGAMgASgJQi8KDmNvbS5nb29nbGUuYXBpQhRTeXN0ZW1Q",
+            "YXJhbWV0ZXJQcm90b1ABogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -100,7 +100,7 @@ namespace Google.Api {
     ///
     ///  Example: define api key and alt name for all methods
     ///
-    ///  SystemParameters
+    ///  system_parameters
     ///    rules:
     ///      - selector: "*"
     ///        parameters:
@@ -111,7 +111,7 @@ namespace Google.Api {
     ///
     ///  Example: define 2 api key names for a specific method.
     ///
-    ///  SystemParameters
+    ///  system_parameters
     ///    rules:
     ///      - selector: "/ListShelves"
     ///        parameters:
@@ -119,6 +119,8 @@ namespace Google.Api {
     ///            http_header: Api-Key1
     ///          - name: api_key
     ///            http_header: Api-Key2
+    ///
+    ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     public pbc::RepeatedField<global::Google.Api.SystemParameterRule> Rules {
       get { return rules_; }

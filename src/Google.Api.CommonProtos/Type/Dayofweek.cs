@@ -33,9 +33,9 @@ namespace Google.Type {
             "Chtnb29nbGUvdHlwZS9kYXlvZndlZWsucHJvdG8SC2dvb2dsZS50eXBlKoQB",
             "CglEYXlPZldlZWsSGwoXREFZX09GX1dFRUtfVU5TUEVDSUZJRUQQABIKCgZN",
             "T05EQVkQARILCgdUVUVTREFZEAISDQoJV0VETkVTREFZEAMSDAoIVEhVUlNE",
-            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQiwK",
-            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAaABAaICA0dUUGIG",
-            "cHJvdG8z"));
+            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQikK",
+            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAaICA0dUUGIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Type.DayOfWeek), }, null));

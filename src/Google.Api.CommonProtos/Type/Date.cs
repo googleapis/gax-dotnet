@@ -31,9 +31,8 @@ namespace Google.Type {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChZnb29nbGUvdHlwZS9kYXRlLnByb3RvEgtnb29nbGUudHlwZSIwCgREYXRl",
-            "EgwKBHllYXIYASABKAUSDQoFbW9udGgYAiABKAUSCwoDZGF5GAMgASgFQicK",
-            "D2NvbS5nb29nbGUudHlwZUIJRGF0ZVByb3RvUAGgAQGiAgNHVFBiBnByb3Rv",
-            "Mw=="));
+            "EgwKBHllYXIYASABKAUSDQoFbW9udGgYAiABKAUSCwoDZGF5GAMgASgFQiQK",
+            "D2NvbS5nb29nbGUudHlwZUIJRGF0ZVByb3RvUAGiAgNHVFBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
