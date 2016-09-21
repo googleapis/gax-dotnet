@@ -8,7 +8,7 @@
     "owners": [ "googleapis-packages" ],
     "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
     "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
-    "tags": [ "Google" ],
+    "tags": [ "Google" ]
   },
 
   "buildOptions": {
