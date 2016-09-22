@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -18,9 +17,9 @@ namespace Google.Api.Gax
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Templates use a subset of the syntax of the API platform. See the protobuf of <see cref="HttpRule"/> for
-    /// details of the API platform. (The source for <c>HttpRule</c> is at
-    /// https://github.com/googleapis/googleapis/blob/master/google/api/http.proto)
+    /// Templates use a subset of the syntax of the API platform. See
+    /// https://github.com/googleapis/googleapis/blob/master/google/api/http.proto
+    /// for details of the API platform.
     /// </para>
     /// <para>
     /// This class performs no URL escaping or unescaping. It is designed for use within GRPC, where no
