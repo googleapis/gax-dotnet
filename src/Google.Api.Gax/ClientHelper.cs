@@ -15,7 +15,6 @@ namespace Google.Api.Gax
     /// </summary>
     public class ClientHelper
     {
-        private readonly IClock _clock;
         private readonly CallSettings _clientCallSettings;
         private readonly string _userAgent;
 
@@ -27,10 +26,25 @@ namespace Google.Api.Gax
         public ClientHelper(ServiceSettingsBase settings)
         {
             GaxPreconditions.CheckNotNull(settings, nameof(settings));
-            _clock = settings.Clock ?? SystemClock.Instance;
+            Clock = settings.Clock ?? SystemClock.Instance;
+            Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
             _userAgent = settings.UserAgent;
         }
+
+        /// <summary>
+        /// The clock used for timing of retries and deadlines. This is never
+        /// null; if the clock isn't specified in the settings, this property
+        /// will return the <see cref="SystemClock"/> instance.
+        /// </summary>
+        public IClock Clock { get; }
+
+        /// <summary>
+        /// The scheduler used for delays of retries. This is never
+        /// null; if the scheduler isn't specified in the settings, this property
+        /// will return the <see cref="SystemScheduler"/> instance.
+        /// </summary>
+        public IScheduler Scheduler { get; }
 
         /// <summary>
         /// Builds an <see cref="ApiCall"/> given suitable underlying async and sync calls.
@@ -52,8 +66,8 @@ namespace Google.Api.Gax
                 .Merge(_clientCallSettings);
             // These operations are applied in reverse order.
             // I.e. User-agent is added first, then retry is performed.
-            return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, _clock)
-                .WithRetry(_clock, SystemScheduler.Instance)
+            return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
+                .WithRetry(Clock, Scheduler)
                 .WithUserAgent(_userAgent);
         }
     }
