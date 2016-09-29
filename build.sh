@@ -2,6 +2,13 @@
 
 set -e
 
+# Myget has sometimes used caps and sometimes not for
+# its environment variables...
+if [ -n "$PrereleaseTag" -a -z "$PRERELEASETAG" ]
+then
+  PRERELEASETAG="$PrereleaseTag"
+fi
+
 if [ $(dotnet --info | grep "OS Platform" | grep -c Windows) -ne 0 ]
 then
   OS=Windows
