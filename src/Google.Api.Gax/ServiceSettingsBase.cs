@@ -39,6 +39,7 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(existing, nameof(existing));
             CallSettings = existing.CallSettings?.Clone();
             Clock = existing.Clock;
+            Scheduler = existing.Scheduler;
             UserAgent = existing.UserAgent;
         }
 
@@ -58,5 +59,15 @@ namespace Google.Api.Gax
         /// In production code generally leave this unset to use the <see cref="SystemClock"/>.
         /// </remarks>
         public IClock Clock { get; set; }
+
+        /// <summary>
+        /// If not null, the scheduler used for delays between operations (e.g. for retry).
+        /// If null or unset, the <see cref="SystemScheduler"/> is used.
+        /// </summary>
+        /// <remarks>
+        /// This is primarily only to be set for testing.
+        /// In production code generally leave this unset to use the <see cref="SystemScheduler"/>.
+        /// </remarks>
+        public IScheduler Scheduler { get; set; }
     }
 }
