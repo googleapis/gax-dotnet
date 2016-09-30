@@ -81,7 +81,11 @@ namespace Google.Api.Gax
         /// </summary>
         public CallTimingType Type =>
             Retry != null ? CallTimingType.Retry : CallTimingType.Expiration;
-
+        
+        /// <summary>
+        /// Creates a deep clone of this object.
+        /// </summary>
+        /// <returns>A clone of this <see cref="CallTiming"/>.</returns>
         public CallTiming Clone() => new CallTiming(Retry?.Clone(), Expiration);
     }
 

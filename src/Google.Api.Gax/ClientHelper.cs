@@ -53,7 +53,8 @@ namespace Google.Api.Gax
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
         /// <param name="asyncGrpcCall">The underlying synchronous gRPC call.</param>
         /// <param name="syncGrpcCall">The underlying asynchronous gRPC call.</param>
-        /// <returns></returns>
+        /// <param name="perMethodCallSettings">The default method call settings.</param>
+        /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,

@@ -158,6 +158,7 @@ namespace Google.Api.Gax
         /// <summary>
         /// Returns a string representation of the template with parameters replaced by resource IDs.
         /// </summary>
+        /// <param name="serviceName">The name of the service, for full resource names. May be null, to produce a relative resource name.</param>
         /// <param name="resourceIds">Resource IDs to interpolate the template with. Expected to have been validated already.</param>
         internal string ReplaceParameters(string serviceName, string[] resourceIds)
         {

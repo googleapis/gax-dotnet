@@ -73,7 +73,7 @@ namespace Google.Api.Gax
         /// <summary>
         /// Determines equality between this endpoint and <paramref name="other"/>.
         /// </summary>
-        /// <param name="obj">The object to compare with this one.</param>
+        /// <param name="other">The object to compare with this one.</param>
         /// <returns><c>true</c> if <paramref name="other"/> is a <see cref="ServiceEndpoint"/>
         /// with the same host and port; <c>false</c> otherwise.</returns>
         public bool Equals(ServiceEndpoint other) => other != null && other.Host == Host && other.Port == Port;

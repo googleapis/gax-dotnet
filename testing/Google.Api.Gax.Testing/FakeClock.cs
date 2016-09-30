@@ -52,9 +52,6 @@ namespace Google.Api.Gax.Testing
         /// <summary>
         /// Advances the clock to the given time.
         /// </summary>
-        /// <remarks>
-        /// This will raise the <see cref="TimeChanged"/> event, synchronously.
-        /// </remarks>
         /// <param name="dateTime">The time to advance to.</param>
         public void AdvanceTo(DateTime dateTime)
         {
@@ -64,9 +61,6 @@ namespace Google.Api.Gax.Testing
         /// <summary>
         /// Advances the clock by the given number of ticks.
         /// </summary>
-        /// <remarks>
-        /// This will raise the <see cref="TimeChanged"/> event, synchronously.
-        /// </remarks>
         /// <param name="ticks">Ticks to advance the clock by.</param>
         public void Advance(long ticks)
         {

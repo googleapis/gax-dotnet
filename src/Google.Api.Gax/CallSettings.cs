@@ -15,6 +15,9 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class CallSettings
     {
+        /// <summary>
+        /// Constructs an instance with no settings applied.
+        /// </summary>
         public CallSettings() { }
 
         internal CallSettings(CallSettings other)
@@ -32,7 +35,6 @@ namespace Google.Api.Gax
         /// <summary>
         /// Headers to send at the beginning of the call.
         /// </summary>
-        //public Metadata Headers
         public Metadata Headers { get; set; }
 
         /// <summary>
