@@ -12,7 +12,8 @@
   },
 
   "buildOptions": {
-    "keyFile": "../../Gax.snk"
+    "keyFile": "../../Gax.snk",
+    "xmlDoc": true
   },
 
   "dependencies": {

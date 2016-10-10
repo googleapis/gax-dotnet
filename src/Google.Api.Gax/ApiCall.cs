@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
-    public static class ApiCall
+    internal static class ApiCall
     {
         internal static ApiCall<TRequest, TResponse> Create<TRequest, TResponse>(
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
@@ -29,6 +29,12 @@ namespace Google.Api.Gax
         }
     }
 
+    /// <summary>
+    /// Bridge between an RPC method (with synchronous and asynchronous variants) and higher level
+    /// abstractions, applying call settings as required.
+    /// </summary>
+    /// <typeparam name="TRequest">RPC request type</typeparam>
+    /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiCall<TRequest, TResponse>
         where TRequest : class, IMessage<TRequest>
         where TResponse : class, IMessage<TResponse>
@@ -55,9 +61,24 @@ namespace Google.Api.Gax
             return fn(callSettings);
         }
 
+        /// <summary>
+        /// Performs an RPC call asynchronously.
+        /// </summary>
+        /// <param name="request">The RPC request.</param>
+        /// <param name="perCallCallSettings">The call settings to apply to this specific call,
+        /// overriding defaults where necessary.</param>
+        /// <returns>A task representing the asynchronous operation. The result of the completed task
+        /// will be the RPC response.</returns>
         public Task<TResponse> Async(TRequest request, CallSettings perCallCallSettings) =>
             Call(request, perCallCallSettings, callSettings => _asyncCall(request, callSettings));
 
+        /// <summary>
+        /// Performs an RPC call synchronously.
+        /// </summary>
+        /// <param name="request">The RPC request.</param>
+        /// <param name="perCallCallSettings">The call settings to apply to this specific call,
+        /// overriding defaults where necessary.</param>
+        /// <returns>The RPC response.</returns>
         public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
             Call(request, perCallCallSettings, callSettings => _syncCall(request, callSettings));
 

@@ -77,6 +77,7 @@ namespace Google.Api.Gax.Rest
         /// Advance to the next page in the sequence, requesting the specified page size.
         /// </summary>
         /// <param name="pageSize">The number of resources to include in the next page.</param>
+        /// <param name="cancellationToken">A cancellation token for the asynchronous operation.</param>
         /// <returns>A task with a result of <c>true</c> if the enumerator was successfully advanced to the next element or
         /// <c>false</c> if the enumerator has passed the end of the collection.</returns>
         Task<bool> MoveNext(int pageSize, CancellationToken cancellationToken);

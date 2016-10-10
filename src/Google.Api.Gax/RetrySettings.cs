@@ -33,6 +33,9 @@ namespace Google.Api.Gax
         /// </remarks>
         public BackoffSettings TimeoutBackoff { get; set; }
 
+        /// <summary>
+        /// The total expiration, across all retries.
+        /// </summary>
         public Expiration TotalExpiration { get; set; }
 
         /// <summary>

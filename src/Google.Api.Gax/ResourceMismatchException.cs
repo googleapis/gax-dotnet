@@ -15,6 +15,10 @@ namespace Google.Api.Gax
     /// </summary>
     public class ResourceMismatchException : Exception
     {
+        /// <summary>
+        /// Constructs a new instance of the exception.
+        /// </summary>
+        /// <param name="message">The error message for the exception.</param>
         public ResourceMismatchException(string message) : base(message)
         {
         }
