@@ -205,5 +205,20 @@ namespace Google.Api.Gax
                 "Value {0} not defined in enum {1}", value, typeof(T).Name);
             return value;
         }
+
+        /// <summary>
+        /// Checks that the given <see cref="TimeSpan"/> used as a delay is non-negative. This is internal
+        /// as it's very specialized.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <param name="paramName">The name of the parameter whose value is being tested.</param>
+        internal static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName)
+        {
+            if (value < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative");
+            }
+            return value;
+        }
     }
 }
