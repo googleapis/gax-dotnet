@@ -29,14 +29,7 @@ namespace Google.Api.Gax
         public TimeSpan Delay
         {
             get { return _delay; }
-            set
-            {
-                if (value < TimeSpan.Zero)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative");
-                }
-                _delay = value;
-            }
+            set { _delay = GaxPreconditions.CheckNonNegativeDelay(value, nameof(value)); }
         }
 
         /// <summary>
