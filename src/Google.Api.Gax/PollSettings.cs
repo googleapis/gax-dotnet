@@ -13,11 +13,10 @@ namespace Google.Api.Gax
     /// Settings controlling repeated polling, for example when waiting for a long-running operation
     /// to complete.
     /// </summary>
-    public class PollSettings
+    public sealed class PollSettings
     {
         /// <summary>
-        /// Settings to override the <see cref="OperationsClient"/> call settings
-        /// when polling, if any.
+        /// Settings to override the default call settings when polling, if any.
         /// </summary>
         public CallSettings CallSettings { get; set; }
 
@@ -45,6 +44,11 @@ namespace Google.Api.Gax
             }
         }
 
+        /// <summary>
+        /// Returns a deep clone of this object.
+        /// </summary>
+        /// <returns>A deep clone of this object.</returns>
+        public PollSettings Clone() => new PollSettings(Expiration, Delay, CallSettings?.Clone());
 
         /// <summary>
         /// Creates poll settings from the given expiration, delay and call settings.
