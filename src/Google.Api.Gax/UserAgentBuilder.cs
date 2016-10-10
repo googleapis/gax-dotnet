@@ -43,19 +43,23 @@ namespace Google.Api.Gax
         internal UserAgentBuilder AppendAssemblyVersion(string name, System.Type type)
             => AppendVersion(name, FormatAssemblyVersion(type));
 
-        // TODO: This probably won't work as-is on .NET Core.
         /// <summary>
         /// Appends the .NET environment information to the list.
         /// </summary>
         internal UserAgentBuilder AppendDotNetEnvironment()
+#if NETSTANDARD1_5
+            // TODO: Improve this if we can.
+            => AppendVersion("dotnet", "unknown");
+#else
             => AppendVersion("dotnet", FormatVersion(Environment.Version));
+#endif
 
         private static string FormatAssemblyVersion(System.Type type)
         {
             // Prefer AssemblyInformationalVersion, then AssemblyFileVersion,
             // then AssemblyVersion.
 
-            var assembly = type.Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             var info = assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault()?.InformationalVersion;
             if (info != null)
             {
@@ -66,7 +70,7 @@ namespace Google.Api.Gax
             {
                 return string.Join(".", file.Split('.').Take(3));
             }
-            return FormatVersion(type.Assembly.GetName().Version);
+            return FormatVersion(assembly.GetName().Version);
         }
 
         private static string FormatVersion(Version version) => $"{version.Major}.{version.Minor}.{version.Build}";
