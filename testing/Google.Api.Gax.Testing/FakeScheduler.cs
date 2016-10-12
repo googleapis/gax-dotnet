@@ -18,9 +18,14 @@ namespace Google.Api.Gax.Testing
     /// </summary>
     public sealed class FakeScheduler : IScheduler
     {
-        // TODO: If we can possibly remove this, we should do so. As we expect a lot of things to involve
-        // asynchrony, that's tricky. This could easily end up as a source of flakiness.
-        private static readonly TimeSpan PauseTime = TimeSpan.FromMilliseconds(100);
+        /// <summary>
+        /// How long the scheduler can run in real time before timing out.
+        /// </summary>
+        public TimeSpan RealTimeTimeout { get; set; } = TimeSpan.FromSeconds(10);
+        /// <summary>
+        /// How long the scheduler can run in simulated time before timing out.
+        /// </summary>
+        private TimeSpan SimulatedTimeTimeout { get; set; } = TimeSpan.FromDays(10);
 
         /// <summary>
         /// The clock associated with this scheduler. The clock is advanced as the scheduler runs.
@@ -29,6 +34,7 @@ namespace Google.Api.Gax.Testing
 
         private readonly object _monitor = new object();
         private LinkedList<ScheduledAction> _actions = new LinkedList<ScheduledAction>();
+        private bool _stopped;
 
         /// <summary>
         /// Constructs a fake scheduler which works with the given clock.
@@ -47,11 +53,7 @@ namespace Google.Api.Gax.Testing
         }
 
         /// <inheritdoc />
-        public Task Delay(TimeSpan delay)
-        {
-            Task task = Schedule(delegate { }, delay);
-            return task;
-        }
+        public Task Delay(TimeSpan delay) => Schedule(delegate { }, delay);
 
         /// <inheritdoc />
         public void Sleep(TimeSpan delay) => Delay(delay).Wait();
@@ -64,6 +66,184 @@ namespace Google.Api.Gax.Testing
             return tcs.Task;
         }
 
+        /// <summary>
+        /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
+        /// </summary>
+        /// <remarks>
+        /// If you pass in a delegate which returns a task, that's almost always because you want to run it
+        /// until that task completes - which is what <see cref="RunAsync(Func{Task})"/> does.
+        /// </remarks>
+        /// <param name="taskProvider">A task provider.</param>
+        [Obsolete("Use RunAsync to run a function returning a task", true)]
+        public void Run(Func<Task> taskProvider)
+        {
+            throw new InvalidOperationException("Use RunAsync to run a function returning a task");
+        }
+
+        /// <summary>
+        /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
+        /// </summary>
+        /// <remarks>
+        /// If you pass in a delegate which returns a task, that's almost always because you want to run it
+        /// until that task completes - which is what <see cref="RunAsync{T}(Func{Task{T}})"/> does.
+        /// </remarks>
+        /// <param name="taskProvider">A task provider.</param>
+        [Obsolete("Use RunAsync to run a function returning a task", true)]
+        public void Run<T>(Func<Task<T>> taskProvider)
+        {
+            throw new InvalidOperationException("Use RunAsync to run a function returning a task");
+        }
+
+        /// <summary>
+        /// <para>
+        /// Invokes the given action in a separate thread, and then runs the scheduler until one of four conditions is met:
+        /// </para>
+        /// <list type="bullet">
+        ///   <item>The action completes successfully</item>
+        ///   <item>The action completes with an exception</item>
+        ///   <item><see cref="RealTimeTimeout"/> of real time has elapsed</item>
+        ///   <item><see cref="SimulatedTimeTimeout"/> of simulated time has elapsed</item>
+        /// </list>
+        /// <para>
+        /// Only the first of these results in the method completing normally; otherwise, an exception is thrown.
+        /// If the action completes with an exception, that exception is the result of the method.
+        /// If the action has effectively hung, the thread is not terminated; it is expected that the test will
+        /// fail without the broken method causing any more harm.
+        /// </para>
+        /// </summary>
+        /// <exception cref="SchedulerTimeoutException">The scheduler timed out.</exception>
+        /// <param name="action">The action to execute with the scheduler.</param>
+        public void Run(Action action) => Run(() => { action(); return 1; });
+
+        /// <summary>
+        /// <para>
+        /// Invokes the given action in a separate thread, and then runs the scheduler until one of four conditions is met:
+        /// </para>
+        /// <list type="bullet">
+        ///   <item>The action completes successfully</item>
+        ///   <item>The action completes with an exception</item>
+        ///   <item><see cref="RealTimeTimeout"/> of real time has elapsed</item>
+        ///   <item><see cref="SimulatedTimeTimeout"/> of simulated time has elapsed</item>
+        /// </list>
+        /// <para>
+        /// Only the first of these results in the method completing normally; otherwise, an exception is thrown.
+        /// If the action completes with an exception, that exception is the result of the method.
+        /// If the action has effectively hung, the thread is not terminated; it is expected that the test will
+        /// fail without the broken method causing any more harm.
+        /// </para>
+        /// </summary>
+        /// <exception cref="SchedulerTimeoutException">The scheduler timed out.</exception>
+        /// <param name="func">The function to execute with the scheduler.</param>
+        public T Run<T>(Func<T> func) => RunAsync(() => Task.FromResult(func())).Result;
+
+        /// <summary>
+        /// <para>
+        /// Invokes the given action in a separate thread, and then runs the scheduler until one of four conditions is met:
+        /// </para>
+        /// <list type="bullet">
+        ///   <item>The action completes successfully</item>
+        ///   <item>The action completes with an exception</item>
+        ///   <item><see cref="RealTimeTimeout"/> of real time has elapsed</item>
+        ///   <item><see cref="SimulatedTimeTimeout"/> of simulated time has elapsed</item>
+        /// </list>
+        /// <para>
+        /// Only the first of these results in the method completing normally; otherwise, an exception is thrown.
+        /// If the action completes with an exception, that exception is the result of the method.
+        /// If the action has effectively hung, the thread is not terminated; it is expected that the test will
+        /// fail without the broken method causing any more harm.
+        /// </para>
+        /// </summary>
+        /// <exception cref="SchedulerTimeoutException">The scheduler timed out.</exception>
+        /// <param name="taskProvider">A delegate providing an asynchronous action to execute with the scheduler.</param>
+        public Task RunAsync(Func<Task> taskProvider) => RunAsync(async () => { await taskProvider(); return 0; });
+
+        /// <summary>
+        /// Runs a task in a separate thread, and the scheduler alongside it to simulate sleeping and delaying.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The task provider is run in a separate thread, so that even synchronous task providers (e.g. using 
+        /// <see cref="Task.FromResult{TResult}(TResult)"/>) work appropriately. The scheduler is run
+        /// until one of four conditions is met:
+        /// </para>
+        /// <list type="bullet">
+        ///   <item>The task completes successfully</item>
+        ///   <item>The task completes with an exception</item>
+        ///   <item><see cref="RealTimeTimeout"/> of real time has elapsed</item>
+        ///   <item><see cref="SimulatedTimeTimeout"/> of simulated time has elapsed</item>
+        /// </list>
+        /// <para>
+        /// Only the first of these results in the method completing normally; otherwise, an exception is thrown.
+        /// If the task completes with an exception, that exception is the result of the method.
+        /// If the task has effectively hung, the thread is not terminated; it is expected that the test will
+        /// fail without the broken method causing any more harm.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="SchedulerTimeoutException">The scheduler timed out.</exception>
+        /// <param name="taskProvider">A delegate providing an asynchronous function to execute with the scheduler.</param>
+        public async Task<T> RunAsync<T>(Func<Task<T>> taskProvider)
+        {
+            var funcTask = Task.Run(taskProvider);
+            var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + SimulatedTimeTimeout);
+            var delayTask = Task.Delay(RealTimeTimeout);
+            var completedTask = await Task.WhenAny(funcTask, simulatedTimeTask, delayTask);
+            lock (_monitor)
+            {
+                _stopped = true;
+                Monitor.PulseAll(_monitor);
+            }
+            if (completedTask == funcTask)
+            {
+                return await funcTask;
+            }
+            else if (completedTask == delayTask)
+            {
+                throw new SchedulerTimeoutException("Real time time-out; deadlock in user code?");
+            }
+            else if (completedTask == simulatedTimeTask)
+            {
+                throw new SchedulerTimeoutException("Simulated time time-out; busy loop in user code?");
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unexpected return value from Task.WhenAny - none of the expected tasks");
+            }
+        }
+
+        private Task StartLoopAsync(DateTime simulatedTimeout)
+        {
+            return Task.Run(() =>
+            {
+                // Make sure that if real time elapses, the delay task completes first.
+                TimeSpan monitorTimeout = RealTimeTimeout + TimeSpan.FromSeconds(2);
+                while (Clock.GetCurrentDateTimeUtc() < simulatedTimeout)
+                {
+                    ScheduledAction next;
+                    lock (_monitor)
+                    {
+                        while (!_stopped && _actions.Count == 0)
+                        {
+                            if (!Monitor.Wait(_monitor, monitorTimeout))
+                            {
+                                // The test will already have failed by now.
+                                return;
+                            }
+                        }
+                        // Test completed already (not necessarily successfully)
+                        if (_stopped)
+                        {
+                            return;
+                        }
+                        next = _actions.First.Value;
+                        _actions.RemoveFirst();
+                    }
+                    Clock.AdvanceTo(next.ScheduledTime);
+                    Task.Run(next.Action);
+                    next.CompletionSource.SetResult(0);                    
+                }
+            });
+        }
+        
         private void AddScheduledAction(ScheduledAction scheduledAction)
         {
             lock (_monitor)
@@ -82,76 +262,8 @@ namespace Google.Api.Gax.Testing
                 {
                     _actions.AddLast(scheduledAction);
                 }
+                Monitor.PulseAll(_monitor);
             }
-        }
-
-        /// <summary>
-        /// Shorthand method for "run for a logical day". See <see cref="RunUntil(DateTime)"/> for details.
-        /// </summary>
-        public void Run() => RunFor(TimeSpan.FromDays(1));
-
-        /// <summary>
-        /// Runs the scheduler for the given time. See <see cref="RunUntil(DateTime)"/> for details.
-        /// </summary>
-        /// <param name="timeout">How long to run the scheduler for.</param>
-        public void RunFor(TimeSpan timeout) => RunUntil(Clock.GetCurrentDateTimeUtc() + timeout);
-
-        /// <summary>
-        /// Runs the scheduler until the given deadline.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The scheduler maintains a queue of scheduled tasks (including "complete a delaying task")
-        /// and moves through that queue, executing the tasks as it goes. As tasks are expected to schedule
-        /// new tasks, but they're executed on the threadpool, the scheduler pauses for a short period
-        /// after each scheduled task to allow the system to go back to an "idle" state before next consulting the
-        /// queue.
-        /// </para>
-        /// <para>
-        /// This method returns when either the deadline has been reached, or the scheduler queue is empty.
-        /// </para>
-        /// </remarks>
-        /// <param name="deadline">Logical deadline to run the scheduler until.</param>
-        public void RunUntil(DateTime deadline)
-        {
-            GaxPreconditions.CheckArgument(deadline.Kind == DateTimeKind.Utc, nameof(deadline), "Deadline must have a Kind of Utc");
-            while (Clock.GetCurrentDateTimeUtc() < deadline)
-            {
-                ScheduledAction next;
-                lock (_monitor)
-                {
-                    if (_actions.Count == 0)
-                    {
-                        return;
-                    }
-                    next = _actions.First.Value;
-                    _actions.RemoveFirst();
-                }
-                Clock.AdvanceTo(next.ScheduledTime);
-                Task.Run(next.Action);
-                next.CompletionSource.SetResult(0);
-                // Give the scheduled tasks time to complete. This is horrible, but
-                // hard to avoid given the nature of tasks executing on the threadpool.
-                // TODO: If nothing else, we could execute all the co-scheduled tasks together before pausing...
-                Thread.Sleep(PauseTime);
-            }
-        }
-
-        /// <summary>
-        /// Runs the scheduler whilst the specified function is executing.
-        /// </summary>
-        /// <typeparam name="T">The return type of the function.</typeparam>
-        /// <param name="fn">The function to execute within this scheduler.</param>
-        /// <returns>The value returned from the function.</returns>
-        /// <remarks>
-        /// This scheduler is executed using the <see cref="Run()"/> method.
-        /// </remarks>
-        public T Run<T>(Func<T> fn)
-        {
-            Task<T> task = Task.Run(fn);
-            Thread.Sleep(PauseTime);
-            Run();
-            return task.Result;
         }
 
         private sealed class ScheduledAction
@@ -165,6 +277,23 @@ namespace Google.Api.Gax.Testing
                 Action = action;
                 ScheduledTime = scheduledTime;
                 CompletionSource = tcs;
+            }
+        }
+
+        /// <summary>
+        /// Exception designed not to be caught by tests (which may deliberately expect a timeout of another kind, for example).
+        /// This exception indicates that the scheduler timed out either in simulated time (e.g. a busy loop with a condition
+        /// never being satisfied) or in wall time (e.g. user code was waiting for a task which was never going to complete, due
+        /// to a deadlock).
+        /// </summary>
+        public sealed class SchedulerTimeoutException : Exception
+        {
+            /// <summary>
+            /// Constructs a new exception with the given message.
+            /// </summary>
+            /// <param name="message">Message for the exception.</param>
+            public SchedulerTimeoutException(string message) : base(message)
+            {
             }
         }
     }

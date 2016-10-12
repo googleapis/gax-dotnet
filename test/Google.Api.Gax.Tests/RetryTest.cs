@@ -41,7 +41,8 @@ namespace Google.Api.Gax.Tests
             {
                 return call.Async(request, callSettings);
             }
-            try {
+            try
+            {
                 return Task.FromResult(call.Sync(request, callSettings));
             }
             catch (Exception e)
@@ -56,7 +57,7 @@ namespace Google.Api.Gax.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void FirstCallSucceeds(bool async)
+        public async Task FirstCallSucceeds(bool async)
         {
             var name = "name"; // Copied from request to response
             var scheduler = new FakeScheduler();
@@ -70,29 +71,25 @@ namespace Google.Api.Gax.Tests
                 DelayJitter = RetrySettings.NoJitter
             };
 
-            var rpcTask = scheduler.Run(() =>
+            await scheduler.RunAsync(async () =>
             {
                 var callSettings = new CallSettings {
                     Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
+                var result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
+                Assert.Equal(name, result.Name);
             });
 
             server.AssertCallTimes(0L);
             // Time of last action was when the call returned
             Assert.Equal(300, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
-
-            Assert.Equal(TaskStatus.RanToCompletion, rpcTask.Status);
-
-            // And the response is propagated
-            Assert.Equal(name, rpcTask.Result.Name);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void MultipleCallsEventualSuccess(bool async)
+        public async Task MultipleCallsEventualSuccess(bool async)
         {
             var callDuration = 300;
             var failures = 4; // Fifth call will succeed
@@ -108,13 +105,14 @@ namespace Google.Api.Gax.Tests
                 DelayJitter = RetrySettings.NoJitter
             };
 
-            var rpcTask = scheduler.Run(() =>
+            await scheduler.RunAsync(async () =>
             {
                 var callSettings = new CallSettings {
                     Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
+                var result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
+                Assert.Equal(name, result.Name);
             });
 
             var firstCall = 0L;
@@ -126,17 +124,12 @@ namespace Google.Api.Gax.Tests
             server.AssertCallTimes(firstCall, secondCall, thirdCall, fourthCall, fifthCall);
             // Time of last action was when the call returned
             Assert.Equal(fifthCall + callDuration, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
-
-            Assert.Equal(TaskStatus.RanToCompletion, rpcTask.Status);
-
-            // And the response is propagated
-            Assert.Equal(name, rpcTask.Result.Name);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void CallSettingsDeadlineIsObserved(bool async)
+        public async Task CallSettingsDeadlineIsObserved(bool async)
         {
             var callDuration = 300;
             var failures = 4; // Fifth call would succeed, but we won't get that far.
@@ -151,15 +144,16 @@ namespace Google.Api.Gax.Tests
                 DelayJitter = RetrySettings.NoJitter
             };
 
-            var rpcTask = scheduler.Run(() =>
+            var task = scheduler.RunAsync(async () =>
             {
                 // Expiration makes it fail while waiting to make third call
                 var callSettings = new CallSettings {
                     Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
+                await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
+            await Assert.ThrowsAsync<RpcException>(() => task);
 
             var firstCall = 0L;
             var secondCall = callDuration + 1000;
@@ -168,15 +162,12 @@ namespace Google.Api.Gax.Tests
             // We fail immediately when we work out that we would time out before we make the third
             // call - so this is before the actual total timeout.
             Assert.Equal(secondCall + callDuration, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
-
-            Assert.Equal(TaskStatus.Faulted, rpcTask.Status);
-            Assert.IsType<RpcException>(rpcTask.Exception.InnerExceptions[0]);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void ExponentialTimeouts(bool async)
+        public async Task ExponentialTimeouts(bool async)
         {
             var callDuration = 300;
             var failures = 2;
@@ -191,7 +182,7 @@ namespace Google.Api.Gax.Tests
                 DelayJitter = RetrySettings.NoJitter
             };
 
-            var rpcTask = scheduler.Run(() =>
+            await scheduler.RunAsync(async () =>
             {
                 // Expiration truncates the third timeout. We expect:
                 // Call 1: t=0, deadline=1000, completes at 300
@@ -201,24 +192,18 @@ namespace Google.Api.Gax.Tests
                     Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
+                await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
 
             server.AssertCallTimes(0L, 1800L, 3600L);
             server.AssertDeadlines(1000L, 3800L, 4500L);
-
-            Assert.Equal(TaskStatus.RanToCompletion, rpcTask.Status);
             Assert.Equal(3900L, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
         }
 
         [Theory]
-        [InlineData(true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
-        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, true)]
-        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
-        [InlineData(false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
-        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, true)]
-        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
-        public void RetryFilter(bool async, StatusCode failureCode, StatusCode[] filterCodes, bool expectedToRetry)
+        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        public async Task RetryFilter_EventualSuccess(bool async, StatusCode failureCode, StatusCode[] filterCodes)
         {
             var callDuration = 100;
             var failures = 1;
@@ -234,17 +219,50 @@ namespace Google.Api.Gax.Tests
                 RetryFilter = RetrySettings.FilterForStatusCodes(filterCodes)
             };
 
-            var rpcTask = scheduler.Run(() =>
+            await scheduler.RunAsync(async () =>
             {
                 var callSettings = new CallSettings {
                     Timing = CallTiming.FromRetry(retrySettings)
                 };
                 var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
+                await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
 
-            bool retried = server.CallTimes.Count() > 1;
-            Assert.Equal(expectedToRetry, retried);
+            Assert.True(server.CallTimes.Count() > 1);
+        }
+
+        [InlineData(true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
+        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
+        [InlineData(false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
+        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
+        public async Task RetryFilter_EventualFailure(bool async, StatusCode failureCode, StatusCode[] filterCodes)
+        {
+            var callDuration = 100;
+            var failures = 1;
+            var scheduler = new FakeScheduler();
+            var server = new Server(failures, callDuration, scheduler, failureCode);
+            // We're not really interested in the timing in this test.
+            var retrySettings = new RetrySettings
+            {
+                RetryBackoff = ConstantBackoff,
+                TimeoutBackoff = ConstantBackoff,
+                DelayJitter = RetrySettings.NoJitter,
+                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
+                RetryFilter = RetrySettings.FilterForStatusCodes(filterCodes)
+            };
+
+            var task = scheduler.RunAsync(async () =>
+            {
+                var callSettings = new CallSettings
+                {
+                    Timing = CallTiming.FromRetry(retrySettings)
+                };
+                var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
+                await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
+            });
+            await Assert.ThrowsAsync<RpcException>(() => task);
+
+            Assert.Equal(1, server.CallTimes.Count());
         }
 
         private class Server

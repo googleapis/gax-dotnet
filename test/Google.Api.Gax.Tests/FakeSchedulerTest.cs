@@ -7,8 +7,6 @@
 
 using Google.Api.Gax.Testing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,24 +18,24 @@ namespace Google.Api.Gax.Tests
         public void ScheduleMultipleEvents()
         {
             var scheduler = new FakeScheduler();
-            int a = 0;
-            int b = 0;
-            scheduler.Schedule(() => a = 1, TimeSpan.FromSeconds(1));
-            scheduler.Schedule(() => b = 2, TimeSpan.FromSeconds(2));
-            scheduler.Run();
-            Assert.Equal(1, a);
-            Assert.Equal(2, b);
+            var tcs1 = new TaskCompletionSource<int>();
+            var tcs2 = new TaskCompletionSource<int>();
+            // The scheduler will start each action at the right fake time, but
+            // because nothing is sleeping, we need to be careful to wait until the
+            // actions have *finished* before our overall action completes.
+            scheduler.Schedule(() => tcs1.SetResult(1), TimeSpan.FromSeconds(1));
+            scheduler.Schedule(() => tcs2.SetResult(2), TimeSpan.FromSeconds(2));
+            scheduler.Run(() => Task.WaitAll(tcs1.Task, tcs2.Task));
+            Assert.Equal(1, tcs1.Task.Result);
+            Assert.Equal(2, tcs2.Task.Result);
+            Assert.Equal(TimeSpan.FromSeconds(2).Ticks, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
         }
 
         [Fact]
         public void SynchronousSleep()
         {
             var scheduler = new FakeScheduler();
-            scheduler.Run<Object>(() =>
-            {
-                scheduler.Sleep(TimeSpan.FromTicks(1000));
-                return null;
-            });
+            scheduler.Run(() => scheduler.Sleep(TimeSpan.FromTicks(1000)));
             Assert.Equal(1000, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
         }
     }

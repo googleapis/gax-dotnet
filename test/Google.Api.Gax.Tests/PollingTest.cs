@@ -24,7 +24,6 @@ namespace Google.Api.Gax.Tests
                 var result = pollSource.PollRepeatedly(pollSettings);
                 Assert.Equal(5, result);
                 Assert.Equal(TimeSpan.FromSeconds(4), pollSource.RunningTime);
-                return 0; // TODO: Remove the need for this, by improving FakeScheduler.
             });
         }
 
@@ -38,37 +37,32 @@ namespace Google.Api.Gax.Tests
                 Assert.Throws<TimeoutException>(() => pollSource.PollRepeatedly(pollSettings));
                 // We give up at t=4 because the next call would be after the expiration.
                 Assert.Equal(TimeSpan.FromSeconds(4), pollSource.RunningTime);
-                return 0; // TODO: Remove the need for this, by improving FakeScheduler.
             });
         }
 
-        // FIXME: These tests being non-async is all kinds of wrong...
         [Fact]
-        public void PollToCompletionAsync_Success()
+        public async Task PollToCompletionAsync_Success()
         {
             var pollSource = new PollSource(TimeSpan.FromSeconds(3), 5);
             var pollSettings = new PollSettings(Expiration.FromTimeout(TimeSpan.FromSeconds(5)), TimeSpan.FromSeconds(2));
-            pollSource.Scheduler.Run(() =>
+            await pollSource.Scheduler.RunAsync(async () =>
             {
-                var result = pollSource.PollRepeatedlyAsync(pollSettings).Result;
+                var result = await pollSource.PollRepeatedlyAsync(pollSettings);
                 Assert.Equal(5, result);
                 Assert.Equal(TimeSpan.FromSeconds(4), pollSource.RunningTime);
-                return 0; // TODO: Remove the need for this, by improving FakeScheduler.
             });
         }
 
         [Fact]
-        public void PollToCompletionAsync_Timeout()
+        public async Task PollToCompletionAsync_Timeout()
         {
             var pollSource = new PollSource(TimeSpan.FromSeconds(10), 5);
             var pollSettings = new PollSettings(Expiration.FromTimeout(TimeSpan.FromSeconds(5)), TimeSpan.FromSeconds(2));
-            pollSource.Scheduler.Run(() =>
+            await pollSource.Scheduler.RunAsync(async () =>
             {
-                var aggregate = Assert.Throws<AggregateException>(() => pollSource.PollRepeatedlyAsync(pollSettings).Result);
-                Assert.IsType<TimeoutException>(aggregate.InnerException);
+                await Assert.ThrowsAsync<TimeoutException>(() => pollSource.PollRepeatedlyAsync(pollSettings));
                 // We give up at t=4 because the next call would be after the expiration.
                 Assert.Equal(TimeSpan.FromSeconds(4), pollSource.RunningTime);
-                return 0; // TODO: Remove the need for this, by improving FakeScheduler.
             });
         }
 
