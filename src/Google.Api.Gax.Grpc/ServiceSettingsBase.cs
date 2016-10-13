@@ -37,7 +37,7 @@ namespace Google.Api.Gax.Grpc
         protected ServiceSettingsBase(ServiceSettingsBase existing)
         {
             GaxPreconditions.CheckNotNull(existing, nameof(existing));
-            CallSettings = existing.CallSettings?.Clone();
+            CallSettings = existing.CallSettings;
             Clock = existing.Clock;
             Scheduler = existing.Scheduler;
             UserAgent = existing.UserAgent;

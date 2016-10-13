@@ -23,8 +23,8 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             return new ApiCall<TRequest, TResponse>(
-                asyncGrpcCall.WithTaskTransform().MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
-                syncGrpcCall.MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
+                asyncGrpcCall.WithTaskTransform().MapArg((CallSettings cs) => cs?.ToCallOptions(clock) ?? default(CallOptions)),
+                syncGrpcCall.MapArg((CallSettings cs) => cs?.ToCallOptions(clock) ?? default(CallOptions)),
                 baseCallSettings);
         }
     }
@@ -46,7 +46,7 @@ namespace Google.Api.Gax.Grpc
         {
             _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
             _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
-            _baseCallSettings = GaxPreconditions.CheckNotNull(baseCallSettings, nameof(baseCallSettings));
+            _baseCallSettings = baseCallSettings;
         }
 
         private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
@@ -55,9 +55,7 @@ namespace Google.Api.Gax.Grpc
 
         private T Call<T>(TRequest request, CallSettings perCallCallSettings, Func<CallSettings, T> fn)
         {
-            CallSettings callSettings = _baseCallSettings
-                .Clone()
-                .Merge(perCallCallSettings);
+            CallSettings callSettings = CallSettings.Merge(_baseCallSettings, perCallCallSettings);
             return fn(callSettings);
         }
 
@@ -85,9 +83,9 @@ namespace Google.Api.Gax.Grpc
         internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent)
         {
             return new ApiCall<TRequest, TResponse>(
-                _asyncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
-                _syncCall.MapArg(callSettings => callSettings.AddUserAgent(userAgent)),
-                _baseCallSettings);
+                _asyncCall,
+                _syncCall,
+                CallSettings.Merge(CallSettings.ForUserAgent(userAgent), _baseCallSettings));
         }
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler)

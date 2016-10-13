@@ -11,51 +11,61 @@ using System.Threading;
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// Settings to determine how an RPC operates.
+    /// Settings to determine how an RPC operates. This type is immutable.
     /// </summary>
     public sealed class CallSettings
     {
         /// <summary>
-        /// Constructs an instance with no settings applied.
+        /// Constructs an instance with the specified settings.
         /// </summary>
-        public CallSettings() { }
-
-        internal CallSettings(CallSettings other)
+        /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
+        /// <param name="credentials">Credentials to use for the call.</param>
+        /// <param name="timing"><see cref="CallTiming"/> to use, or null for default retry/expiration behavior.</param>
+        /// <param name="headers">Headers to send at the beginning of the call.</param>
+        /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
+        /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
+        public CallSettings(
+            CancellationToken? cancellationToken,
+            CallCredentials credentials,
+            CallTiming timing,
+            Metadata headers,
+            WriteOptions writeOptions,
+            ContextPropagationToken propagationToken)
         {
-            if (other != null)
-            {
-                Headers = other.Headers?.Clone();
-                CancellationToken = other.CancellationToken;
-                WriteOptions = other.WriteOptions;
-                PropagationToken = other.PropagationToken;
-                Credentials = other.Credentials;
-                Timing = other.Timing?.Clone();
-            }
+            CancellationToken = cancellationToken;
+            Credentials = credentials;
+            Timing = timing;
+            Headers = headers;
+            WriteOptions = writeOptions;
+            PropagationToken = propagationToken;
         }
+
+        // TODO: Modify this to be an Action<Metadata>, for flexibility and immutability.
+
         /// <summary>
         /// Headers to send at the beginning of the call.
         /// </summary>
-        public Metadata Headers { get; set; }
+        public Metadata Headers { get; }
 
         /// <summary>
         /// Cancellation token that can be used for cancelling the call.
         /// </summary>
-        public CancellationToken? CancellationToken { get; set; }
+        public CancellationToken? CancellationToken { get; }
 
         /// <summary>
         /// <see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.
         /// </summary>
-        public WriteOptions WriteOptions { get; set; }
+        public WriteOptions WriteOptions { get; }
 
         /// <summary>
         /// <see cref="ContextPropagationToken"/> for propagating settings from a parent call.
         /// </summary>
-        public ContextPropagationToken PropagationToken { get; set; }
+        public ContextPropagationToken PropagationToken { get; }
 
         /// <summary>
         /// Credentials to use for the call.
         /// </summary>
-        public CallCredentials Credentials { get; set; }
+        public CallCredentials Credentials { get; }
 
         /// <summary>
         /// <see cref="CallTiming"/> to use, or null for default retry/expiration behavior.
@@ -63,41 +73,37 @@ namespace Google.Api.Gax.Grpc
         /// <remarks>
         /// Allows selecting between retry and simple expiration.
         /// </remarks>
-        public CallTiming Timing { get; set; }
+        public CallTiming Timing { get; }
+
+        // TODO: Expose this?
 
         /// <summary>
-        /// Creates a clone of this object, with all the same property values.
+        /// Merges the settings in <paramref name="overlaid"/> with those in
+        /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
+        /// If both arguments are null, the result is null. If one argument is null,
+        /// the other argument is returned. Otherwise, a new object is created with a property-wise
+        /// overlay.
         /// </summary>
-        /// <returns>A clone of these <see cref="CallSettings"/>.</returns>
-        /// <remarks>
-        /// The <see cref="Headers"/> are deep-cloned, so changes to the original Headers
-        /// will not affect the cloned Headers.
-        /// </remarks>
-        public CallSettings Clone() => new CallSettings(this);
-
-        /// <summary>
-        /// Merge the specified <see cref="CallSettings"/> into this.
-        /// </summary>
-        /// <param name="other">The <see cref="CallSettings"/> to merge into this.</param>
-        /// <returns>This, with the other <see cref="CallSettings"/>merged.</returns>
-        /// <remarks>
-        /// This is mutated. The other <see cref="CallSettings"/> is not mutated.
-        /// </remarks>
-        internal CallSettings Merge(CallSettings other)
+        /// <param name="original">Original settings. May be null.</param>
+        /// <param name="overlaid">Settings to overlay. May be null.</param>
+        /// <returns>A merged set of call settings.</returns>
+        internal static CallSettings Merge(CallSettings original, CallSettings overlaid)
         {
-            if (other == null)
+            if (original == null)
             {
-                return this;
+                return overlaid;
             }
-            // Should a merge of Headers be additive, instead of overridding?
-            // If additive, how to remove headers during an override?
-            Headers = other.Headers ?? Headers;
-            CancellationToken = other.CancellationToken ?? CancellationToken;
-            WriteOptions = other.WriteOptions ?? WriteOptions;
-            PropagationToken = other.PropagationToken ?? PropagationToken;
-            Credentials = other.Credentials ?? Credentials;
-            Timing = other.Timing ?? Timing;
-            return this;
+            if (overlaid == null)
+            {
+                return original;
+            }
+            return new CallSettings(
+                overlaid.CancellationToken ?? original.CancellationToken,
+                overlaid.Credentials ?? original.Credentials,
+                overlaid.Timing ?? original.Timing,
+                overlaid.Headers ?? original.Headers,
+                overlaid.WriteOptions ?? original.WriteOptions,
+                overlaid.PropagationToken ?? original.PropagationToken);
         }
 
         /// <summary>
@@ -114,19 +120,34 @@ namespace Google.Api.Gax.Grpc
             credentials: Credentials);
 
         /// <summary>
-        /// Adds the specified user agent to <see cref="Metadata"/> <see cref="Headers"/>.
-        /// Will instantiate a <see cref="Metadata"/> object if required.
+        /// Creates a <see cref="CallSettings"/> for the specified user agent.
         /// </summary>
-        /// <param name="userAgent">The user agent string to add to headers.</param>
-        /// <returns>This</returns>
-        internal CallSettings AddUserAgent(string userAgent)
-        {
-            if (Headers == null)
-            {
-                Headers = new Metadata();
-            }
-            Headers.Add(UserAgentBuilder.HeaderName, userAgent);
-            return this;
-        }
+        internal static CallSettings ForUserAgent(string userAgent) =>
+            new CallSettings(null, null, null, new Metadata { { UserAgentBuilder.HeaderName, userAgent } }, null, null);
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified cancellation token.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token for the new settings.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromCancellationToken(CancellationToken cancellationToken) =>
+            new CallSettings(cancellationToken, null, null, null, null, null);
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified call credentials.
+        /// </summary>
+        /// <param name="credentials">The call credentials for the new settings.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromCallCredentials(CallCredentials credentials) =>
+            new CallSettings(null, credentials, null, null, null, null);
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified call timing.
+        /// </summary>
+        /// <param name="timing">The call timing for the new settings.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromCallTiming(CallTiming timing) =>
+            new CallSettings(null, null, timing, null, null, null);
+        
     }
 }

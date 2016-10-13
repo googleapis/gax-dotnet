@@ -62,9 +62,7 @@ namespace Google.Api.Gax.Grpc
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
-            CallSettings baseCallSettings =
-                (perMethodCallSettings?.Clone() ?? new CallSettings())
-                .Merge(_clientCallSettings);
+            CallSettings baseCallSettings = CallSettings.Merge(_clientCallSettings, perMethodCallSettings);
             // These operations are applied in reverse order.
             // I.e. User-agent is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
