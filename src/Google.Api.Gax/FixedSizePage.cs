@@ -15,7 +15,7 @@ namespace Google.Api.Gax
     /// there is no more data to fetch.
     /// </summary>
     /// <typeparam name="TResource">The type of resource within the page.</typeparam>
-    public sealed class FixedSizePage<TResource> : IPageResponse<TResource>
+    public sealed class FixedSizePage<TResource> : IEnumerable<TResource>
     {
         private readonly IEnumerable<TResource> _resources;
 

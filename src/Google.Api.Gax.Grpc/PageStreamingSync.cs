@@ -5,7 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Apis.Requests;
+using Google.Protobuf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Linq;
 // Interfaces and implementations of synchronous page streaming. These are gathered into a single file
 // for convenience.
 
-namespace Google.Api.Gax.Rest
+namespace Google.Api.Gax.Grpc
 {
     /// <summary>
     /// A sequence of resources, obtained lazily via API operations which retrieve a page at a time.
@@ -23,30 +23,29 @@ namespace Google.Api.Gax.Rest
     /// <typeparam name="TResponse">The API response type. Each response contains a page of resources.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
     public sealed class PagedEnumerable<TRequest, TResponse, TResource> : IPagedEnumerable<TResponse, TResource>
-        where TRequest : class, IClientServiceRequest<TResponse>
-        where TResponse : class
+        where TRequest : class, IPageRequest, IMessage<TRequest>
+        where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
         private readonly IResponseEnumerable<TResponse, TResource> _pages;
-        private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
 
         /// <summary>
         /// Creates a new lazily-evaluated sequence from the given API call, initial request, and call settings.
         /// </summary>
-        /// <param name="requestProvider">A factory used to create an initial request each time the sequence is iterated over.</param>
-        /// <param name="pageManager">A manager to work with the requests and responses.</param>
-        public PagedEnumerable(Func<TRequest> requestProvider,
-            IPageManager<TRequest, TResponse, TResource> pageManager)
+        /// <remarks>The request is cloned each time the sequence is evaluated.</remarks>
+        /// <param name="apiCall">The API call made each time a page is required.</param>
+        /// <param name="request">The initial request.</param>
+        /// <param name="callSettings">The settings to apply to each API call.</param>
+        public PagedEnumerable(ApiCall<TRequest, TResponse> apiCall,
+            TRequest request, CallSettings callSettings)
         {
-            _pages = new ResponseEnumerable<TRequest, TResponse, TResource>(requestProvider, pageManager);
-            _pageManager = pageManager;
+            _pages = new ResponseEnumerable<TRequest, TResponse, TResource>(apiCall, request, callSettings);
         }
 
         /// <inheritdoc/>
         public IResponseEnumerable<TResponse, TResource> AsPages() => _pages;
 
         /// <inheritdoc/>
-        public IEnumerator<TResource> GetEnumerator() =>
-            _pages.SelectMany(page => _pageManager.GetResourcesEmptyIfNull(page)).GetEnumerator();
+        public IEnumerator<TResource> GetEnumerator() => _pages.SelectMany(page => page).GetEnumerator();
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -59,25 +58,26 @@ namespace Google.Api.Gax.Rest
     /// <typeparam name="TResponse">The API response type.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
     internal sealed class ResponseEnumerable<TRequest, TResponse, TResource> : IResponseEnumerable<TResponse, TResource>
-        where TRequest : class, IClientServiceRequest<TResponse>
-        where TResponse : class
+        where TRequest : class, IPageRequest, IMessage<TRequest>
+        where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
-        private readonly Func<TRequest> _requestProvider;
-        private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
+        private readonly CallSettings _callSettings;
+        private readonly TRequest _request;
+        private readonly ApiCall<TRequest, TResponse> _apiCall;
 
-        public ResponseEnumerable(Func<TRequest> requestProvider,
-            IPageManager<TRequest, TResponse, TResource> pageManager)
+        internal ResponseEnumerable(ApiCall<TRequest, TResponse> apiCall, TRequest request, CallSettings callSettings)
         {
-            _requestProvider = GaxPreconditions.CheckNotNull(requestProvider, nameof(requestProvider));
-            _pageManager = GaxPreconditions.CheckNotNull(pageManager, nameof(pageManager));
+            _callSettings = callSettings;
+            _request = request;
+            _apiCall = apiCall;
         }
 
         /// <inheritdoc />
-        public IResponseEnumerator<TResponse> GetEnumerator() => new ResponseEnumerator(_requestProvider(), _pageManager);
+        public IResponseEnumerator<TResponse> GetEnumerator() =>
+            new ResponseEnumerator(_callSettings, _request.Clone(), _apiCall);
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
         /// <inheritdoc />
         IEnumerator<TResponse> IEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
 
@@ -99,17 +99,16 @@ namespace Google.Api.Gax.Rest
                         {
                             break;
                         }
-                        var resources = _pageManager.GetResourcesEmptyIfNull(enumerator.Current);
-                        items.AddRange(resources);
+                        items.AddRange(enumerator.Current);
                         if (items.Count > pageSize)
                         {
                             throw new NotSupportedException("Invalid server response: " +
-                                $"requested {requestCount} items, received {resources.Count()} items");
+                                $"requested {requestCount} items, received {enumerator.Current.Count()} items");
                         }
                     }
                     if (items.Count != 0)
                     {
-                        yield return new FixedSizePage<TResource>(items, _pageManager.GetNextPageToken(enumerator.Current));
+                        yield return new FixedSizePage<TResource>(items, enumerator.Current.NextPageToken);
                     }
                 }
             }
@@ -117,14 +116,17 @@ namespace Google.Api.Gax.Rest
 
         private class ResponseEnumerator : IResponseEnumerator<TResponse>
         {
+            private readonly CallSettings _callSettings;
+            private readonly ApiCall<TRequest, TResponse> _apiCall;
             private readonly TRequest _request; // This is mutated during iteration
-            private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
             private bool _finished;
 
-            public ResponseEnumerator(TRequest request, IPageManager<TRequest, TResponse, TResource> pageManager)
+            public ResponseEnumerator(CallSettings callSettings,
+                TRequest request, ApiCall<TRequest, TResponse> apiCall)
             {
+                _callSettings = callSettings;
                 _request = request;
-                _pageManager = pageManager;
+                _apiCall = apiCall;
             }
 
             public TResponse Current { get; private set; }
@@ -137,20 +139,21 @@ namespace Google.Api.Gax.Rest
                 {
                     return false;
                 }
-                Current = _request.Execute();
-                var nextPageToken = _pageManager.GetNextPageToken(Current);
-                if (nextPageToken == null)
+                Current = _apiCall.Sync(_request, _callSettings);
+                var nextPageToken = Current.NextPageToken;
+                if (nextPageToken == "")
                 {
                     _finished = true;
                 }
                 // Prepare the next request...
-                _pageManager.SetPageToken(_request, nextPageToken);
+                _request.PageToken = nextPageToken;
                 return true;
             }
 
             public bool MoveNext(int pageSize)
             {
-                _pageManager.SetPageSize(_request, pageSize);
+                GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
+                _request.PageSize = pageSize;
                 return MoveNext();
             }
 
@@ -162,4 +165,5 @@ namespace Google.Api.Gax.Rest
             public void Dispose() { }
         }
     }
+
 }
