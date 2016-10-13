@@ -10,7 +10,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Google.Api.Gax.Grpc.Tests
+namespace Google.Api.Gax.Tests
 {
     public class PollingTest
     {
@@ -82,9 +82,9 @@ namespace Google.Api.Gax.Grpc.Tests
                 FinalResult = finalResult;
             }
 
-            private int Poll(CallSettings callSettings) => Clock.GetCurrentDateTimeUtc() < CompletionTime ? 0 : FinalResult;
+            private int Poll(DateTime? deadline) => Clock.GetCurrentDateTimeUtc() < CompletionTime ? 0 : FinalResult;
 
-            private Task<int> PollAsync(CallSettings callSettings) => Task.FromResult(Poll(callSettings));
+            private Task<int> PollAsync(DateTime? deadline) => Task.FromResult(Poll(deadline));
 
             // Simple predicate for whether an integer is positive.
             private static bool IsPositive(int input) => input > 0;
