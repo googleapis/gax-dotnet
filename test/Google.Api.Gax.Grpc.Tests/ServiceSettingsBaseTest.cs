@@ -7,6 +7,7 @@
 
 using Moq;
 using System;
+using System.Threading;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -34,7 +35,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void Clone()
         {
             var clock = new Mock<IClock>();
-            var callSettings = new CallSettings();
+            var callSettings = new CallSettings(new CancellationTokenSource().Token, null, null, null, null, null);
             var settings = new TestSettings
             {
                 CallSettings = callSettings,
@@ -42,7 +43,8 @@ namespace Google.Api.Gax.Grpc.Tests
             };
             var clonedSettings = settings.Clone();
             Assert.NotSame(settings, clonedSettings);
-            Assert.NotSame(callSettings, clonedSettings.CallSettings);
+            // CallSettings is immutable, so just a reference copy is fine.
+            Assert.Same(callSettings, clonedSettings.CallSettings);
             Assert.Equal(settings.UserAgent, clonedSettings.UserAgent);
             Assert.Equal(clock.Object, clonedSettings.Clock);
         }

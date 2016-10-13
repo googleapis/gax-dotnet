@@ -13,6 +13,8 @@ using System.Threading;
 
 namespace Google.Api.Gax.Grpc
 {
+    // FIXME: This should be made immutable.
+
     /// <summary>
     /// Settings for retrying RPCs.
     /// </summary>

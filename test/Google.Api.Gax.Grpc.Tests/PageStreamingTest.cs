@@ -156,7 +156,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             Assert.Equal(pagedResource.Resource, paged.AsPages().Select(x => x.ToArray()).ToArray());
         }
 
@@ -165,7 +165,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             Assert.Equal(pagedResource.Resource, await paged.AsPages().Select(x => x.ToArray()).ToArray());
         }
 
@@ -174,7 +174,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0, PageToken = "1:0" };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             Assert.Equal(s_resourceA.Resource.Skip(1), paged.AsPages().Select(x => x.ToArray()));
         }
 
@@ -183,7 +183,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0, PageToken = "1:0" };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             Assert.Equal(s_resourceA.Resource.Skip(1), await paged.AsPages().Select(x => x.ToArray()).ToArray());
         }
 
@@ -196,7 +196,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = pageSize };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             Assert.Equal(pagedResource.All, paged);
         }
 
@@ -205,7 +205,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = pageSize };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             Assert.Equal(pagedResource.All, await paged.ToArray());
         }
 
@@ -218,7 +218,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = pageSize };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             var fixedSizePages = paged.AsPages().WithFixedSize(pageSize).Select(page => page.ToArray()).ToArray();
             var expectedPages = pagedResource.Fixed(pageSize);
             Assert.Equal(expectedPages, fixedSizePages);
@@ -229,7 +229,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest { PageSize = pageSize };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             var fixedSizePages = await paged.AsPages().WithFixedSize(pageSize).Select(page => page.ToArray()).ToArray();
             var expectedPages = pagedResource.Fixed(pageSize);
             Assert.Equal(expectedPages, fixedSizePages);
@@ -241,7 +241,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var noDataResource = new PagedResource();
             var server = new FakeServer(noDataResource);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             // Natural pages
             Assert.Equal(1, paged.AsPages().Count());
             var page1 = paged.AsPages().First();
@@ -258,7 +258,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var noDataResource = new PagedResource();
             var server = new FakeServer(noDataResource);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             // Natural pages
             Assert.Equal(1, await paged.AsPages().Count());
             var page1 = await paged.AsPages().First();
@@ -274,7 +274,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedSync(new CallSettings(), null, request);
+            var paged = server.PagedSync(null, null, request);
             var fixedSize = paged.AsPages().WithFixedSize(1);
             Assert.Throws<NotSupportedException>(() => fixedSize.First());
         }
@@ -284,7 +284,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0 };
-            var paged = server.PagedAsync(new CallSettings(), null, request);
+            var paged = server.PagedAsync(null, null, request);
             var fixedSize = paged.AsPages().WithFixedSize(1);
             var ex = await Record.ExceptionAsync(() => fixedSize.First());
             Assert.IsType<NotSupportedException>(ex);

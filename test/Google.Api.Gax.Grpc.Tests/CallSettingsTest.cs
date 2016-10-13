@@ -17,54 +17,10 @@ namespace Google.Api.Gax.Grpc.Tests
     public class CallSettingsTest
     {
         [Fact]
-        public void DefaultsToNull()
-        {
-            var callSettings = new CallSettings();
-            Assert.Null(callSettings.Headers);
-            Assert.Null(callSettings.Timing);
-            Assert.Null(callSettings.CancellationToken);
-            Assert.Null(callSettings.WriteOptions);
-            Assert.Null(callSettings.PropagationToken);
-            Assert.Null(callSettings.Credentials);
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            var callSettings = new CallSettings
-            {
-                Headers = new Metadata { new Metadata.Entry("1", "one") },
-                Timing = CallTiming.FromExpiration(Expiration.None),
-                CancellationToken = CancellationToken.None,
-                WriteOptions = new WriteOptions(WriteFlags.NoCompress),
-                PropagationToken = null, // Not possible to create/mock
-                Credentials = null, // Not possible to create/mock
-            };
-            var clone = callSettings.Clone();
-            Assert.NotSame(callSettings, clone);
-            Assert.NotSame(callSettings.Headers, clone.Headers);
-            Assert.Equal(callSettings.Headers, clone.Headers);
-            Assert.NotNull(clone.Headers);
-            Assert.Same(callSettings.Timing.Expiration, clone.Timing.Expiration);
-            Assert.Equal(callSettings.CancellationToken, clone.CancellationToken);
-            Assert.Same(callSettings.WriteOptions, clone.WriteOptions);
-            Assert.Same(callSettings.PropagationToken, clone.PropagationToken);
-            Assert.Same(callSettings.Credentials, clone.Credentials);
-        }
-
-        [Fact]
-        public void CloneNullHeaders()
-        {
-            var callSettings = new CallSettings { Headers = null };
-            var clone = callSettings.Clone();
-            Assert.Null(clone.Headers);
-        }
-
-        [Fact]
         public void ToCallOptions_CallTimingNull()
         {
             var mockClock = new Mock<IClock>();
-            CallSettings callSettings = new CallSettings();
+            CallSettings callSettings = CallSettings.FromCallTiming(null);
             var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
@@ -75,9 +31,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
-            var callSettings = new CallSettings {
-                Timing = CallTiming.FromExpiration(Expiration.FromTimeout(timeout))
-            };
+            CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(timeout)));
             var options = callSettings.ToCallOptions(clock);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, clock.GetCurrentDateTimeUtc() + timeout);
@@ -88,9 +42,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
             var mockClock = new Mock<IClock>();
-            var callSettings = new CallSettings {
-                Timing = CallTiming.FromExpiration(Expiration.FromDeadline(deadline))
-            };
+            CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(deadline)));
             var options = callSettings.ToCallOptions(mockClock.Object);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, deadline);
@@ -101,14 +53,12 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ToCallOptions_CallTimingRetry()
         {
             var mockClock = new Mock<IClock>();
-            var callSettings = new CallSettings
+            var timing = CallTiming.FromRetry(new RetrySettings
             {
-                Timing = CallTiming.FromRetry(new RetrySettings
-                {
-                    RetryBackoff = new BackoffSettings(),
-                    TimeoutBackoff = new BackoffSettings(),
-                })
-            };
+                RetryBackoff = new BackoffSettings(),
+                TimeoutBackoff = new BackoffSettings(),
+            });
+            var callSettings = CallSettings.FromCallTiming(timing);
             Assert.Throws<InvalidOperationException>(() =>
                 callSettings.ToCallOptions(mockClock.Object));
         }
@@ -118,14 +68,14 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var mockClock = new Mock<IClock>();
             var callSettings = new CallSettings
-            {
-                Headers = new Metadata { new Metadata.Entry("1", "one") },
-                Timing = CallTiming.FromExpiration(Expiration.None),
-                CancellationToken = new CancellationTokenSource().Token,
-                WriteOptions = new WriteOptions(WriteFlags.NoCompress),
-                PropagationToken = null, // Not possible to create/mock
-                Credentials = null, // Not possible to create/mock
-            };
+            (
+                headers: new Metadata { new Metadata.Entry("1", "one") },
+                timing: CallTiming.FromExpiration(Expiration.None),
+                cancellationToken: new CancellationTokenSource().Token,
+                writeOptions: new WriteOptions(WriteFlags.NoCompress),
+                propagationToken: null, // Not possible to create/mock
+                credentials: null // Not possible to create/mock
+            );
             var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Same(callSettings.Headers, options.Headers);
             Assert.Null(options.Deadline);

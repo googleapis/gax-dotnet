@@ -73,9 +73,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = new CallSettings {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 var result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
                 Assert.Equal(name, result.Name);
@@ -107,9 +105,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = new CallSettings {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 var result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
                 Assert.Equal(name, result.Name);
@@ -147,9 +143,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var task = scheduler.RunAsync(async () =>
             {
                 // Expiration makes it fail while waiting to make third call
-                var callSettings = new CallSettings {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
@@ -188,9 +182,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 // Call 1: t=0, deadline=1000, completes at 300
                 // Call 2: t=1800, deadline=3800 (2000+1800), completes at 2100
                 // Call 3, t=3600, deadline=4500 (would be 7600, but overall deadline truncates), completes at 3900 (with success)
-                var callSettings = new CallSettings {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = callable.WithRetry(scheduler.Clock, scheduler);
                 await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
@@ -221,9 +213,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = new CallSettings {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
                 await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
@@ -253,10 +243,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             var task = scheduler.RunAsync(async () =>
             {
-                var callSettings = new CallSettings
-                {
-                    Timing = CallTiming.FromRetry(retrySettings)
-                };
+                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
                 var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
                 await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
             });
@@ -285,7 +272,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public async Task<SimpleResponse> MethodAsync(SimpleRequest request, CallSettings callSettings)
             {
                 CallTimes.Add(scheduler.Clock.GetCurrentDateTimeUtc());
-                CallSettingsReceived.Add(callSettings.Clone());
+                CallSettingsReceived.Add(callSettings);
                 await scheduler.Delay(callDuration);
                 if (failuresToReturn > 0)
                 {
@@ -299,7 +286,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public SimpleResponse MethodSync(SimpleRequest request, CallSettings callSettings)
             {
                 CallTimes.Add(scheduler.Clock.GetCurrentDateTimeUtc());
-                CallSettingsReceived.Add(callSettings.Clone());
+                CallSettingsReceived.Add(callSettings);
                 scheduler.Sleep(callDuration);
                 if (failuresToReturn > 0)
                 {
@@ -310,7 +297,7 @@ namespace Google.Api.Gax.Grpc.Tests
             }
 
             public ApiCall<SimpleRequest, SimpleResponse> Callable =>
-                new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync, new CallSettings());
+                new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync, null);
 
             public void AssertCallTimes(params long[] ticks)
             {

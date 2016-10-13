@@ -17,10 +17,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void BuildApiCall_ClientSettings()
         {
-            var clientSettings = new CallSettings
-            {
-                CancellationToken = new CancellationTokenSource().Token
-            };
+            var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new DummySettings
             {
                 CallSettings = clientSettings
@@ -35,10 +32,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void BuildApiCall_PerMethodSettings()
         {
-            var perMethodSettings = new CallSettings
-            {
-                CancellationToken = new CancellationTokenSource().Token
-            };
+            var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new DummySettings());
             var server = new DummyServer();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
@@ -50,10 +44,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void BuildApiCall_PerCallSettings()
         {
-            var perCallSettings = new CallSettings
-            {
-                CancellationToken = new CancellationTokenSource().Token
-            };
+            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new DummySettings());
             var server = new DummyServer();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
