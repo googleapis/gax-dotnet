@@ -8,7 +8,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Google.Api.Gax.Grpc
+namespace Google.Api.Gax
 {
     /// <summary>
     /// Helper methods for polling scenarios.
@@ -20,7 +20,9 @@ namespace Google.Api.Gax.Grpc
         /// until a given condition is met in the response.
         /// </summary>
         /// <typeparam name="TResponse">The response type. Must not be null.</typeparam>
-        /// <param name="pollAction">The poll action, typically performing an RPC. </param>
+        /// <param name="pollAction">The poll action, typically performing an RPC. The value passed to the
+        /// action is the overall deadline, so that the RPC settings can be adjusted accordingly. A null value
+        /// indicates no deadline.</param>
         /// <param name="completionPredicate">The test for whether to return the response (<c>true</c>) or continue
         /// polling (<c>false</c>). Must not be null.</param>
         /// <param name="clock">The clock to use for determining deadlines. Must not be null.</param>
@@ -29,7 +31,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>The completed response.</returns>
         /// <exception cref="TimeoutException">The timeout specified in the poll settings expired.</exception>
         public static TResponse PollRepeatedly<TResponse>(
-            Func<CallSettings, TResponse> pollAction,
+            Func<DateTime?, TResponse> pollAction,
             Predicate<TResponse> completionPredicate,
             IClock clock,
             IScheduler scheduler,
@@ -44,9 +46,7 @@ namespace Google.Api.Gax.Grpc
             var deadline = pollSettings.Expiration.CalculateDeadline(clock);
             while (true)
             {
-                // FIXME: Override the RPC deadline if it's before the one we would use?
-                // Or just tweak the documentation for Expiration...
-                var latest = pollAction(pollSettings.CallSettings);
+                var latest = pollAction(deadline);
                 if (completionPredicate(latest))
                 {
                     return latest;
@@ -65,7 +65,9 @@ namespace Google.Api.Gax.Grpc
         /// until a given condition is met in the response.
         /// </summary>
         /// <typeparam name="TResponse">The response type. Must not be null.</typeparam>
-        /// <param name="pollAction">The poll action, typically performing an RPC. </param>
+        /// <param name="pollAction">The poll action, typically performing an RPC. The value passed to the
+        /// action is the overall deadline, so that the RPC settings can be adjusted accordingly. A null
+        /// value indicates no deadline.</param>
         /// <param name="completionPredicate">The test for whether to return the response (<c>true</c>) or continue
         /// polling (<c>false</c>). Must not be null.</param>
         /// <param name="clock">The clock to use for determining deadlines. Must not be null.</param>
@@ -73,7 +75,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="pollSettings">The poll settings, controlling timeouts, call settings and delays.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task will be the completed response.</returns>
         public static async Task<TResponse> PollRepeatedlyAsync<TResponse>(
-            Func<CallSettings, Task<TResponse>> pollAction,
+            Func<DateTime?, Task<TResponse>> pollAction,
             Predicate<TResponse> completionPredicate,
             IClock clock,
             IScheduler scheduler,
@@ -88,9 +90,7 @@ namespace Google.Api.Gax.Grpc
             var deadline = pollSettings.Expiration.CalculateDeadline(clock);
             while (true)
             {
-                // FIXME: Override the RPC deadline if it's before the one we would use?
-                // Or just tweak the documentation for Expiration...
-                var latest = await pollAction(pollSettings.CallSettings).ConfigureAwait(false);
+                var latest = await pollAction(deadline).ConfigureAwait(false);
                 if (completionPredicate(latest))
                 {
                     return latest;
