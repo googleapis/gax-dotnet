@@ -5,7 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Apis.Requests;
+using Google.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 // Interfaces and implementations of asynchronous page streaming. These are gathered into a single file
 // for convenience.
 
-namespace Google.Api.Gax.Rest
+namespace Google.Api.Gax.Grpc
 {
     /// <summary>
     /// An asynchronous sequence of resources, obtained lazily via API operations which retrieve a page at a time.
@@ -24,30 +24,29 @@ namespace Google.Api.Gax.Rest
     /// <typeparam name="TResponse">The API response type. Each response contains a page of resources.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
     public sealed class PagedAsyncEnumerable<TRequest, TResponse, TResource> : IPagedAsyncEnumerable<TResponse, TResource>
-        where TRequest : class, IClientServiceRequest<TResponse>
-        where TResponse : class
+        where TRequest : class, IPageRequest, IMessage<TRequest>
+        where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
         private readonly IResponseAsyncEnumerable<TResponse, TResource> _pages;
-        private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
 
         /// <summary>
-        /// Creates a new lazily-evaluated sequence from the given API call, initial request, and call settings.
+        /// Creates a new lazily-evaluated asynchronous sequence from the given API call, initial request, and call settings.
         /// </summary>
-        /// <param name="requestProvider">A factory used to create an initial request each time the sequence is iterated over.</param>
-        /// <param name="pageManager">A manager to work with the requests and responses.</param>
-        public PagedAsyncEnumerable(Func<TRequest> requestProvider,
-            IPageManager<TRequest, TResponse, TResource> pageManager)
+        /// <remarks>The request is cloned each time the sequence is evaluated.</remarks>
+        /// <param name="apiCall">The API call made each time a page is required.</param>
+        /// <param name="request">The initial request.</param>
+        /// <param name="callSettings">The settings to apply to each API call.</param>
+        public PagedAsyncEnumerable(ApiCall<TRequest, TResponse> apiCall,
+            TRequest request, CallSettings callSettings)
         {
-            _pages = new ResponseAsyncEnumerable<TRequest, TResponse, TResource>(requestProvider, pageManager);
-            _pageManager = pageManager;
+            _pages = new ResponseAsyncEnumerable<TRequest, TResponse, TResource>(apiCall, request, callSettings);
         }
 
         /// <inheritdoc/>
         public IResponseAsyncEnumerable<TResponse, TResource> AsPages() => _pages;
 
         /// <inheritdoc/>
-        public IAsyncEnumerator<TResource> GetEnumerator() =>
-            _pages.SelectMany(page => _pageManager.GetResourcesEmptyIfNull(page).ToAsyncEnumerable()).GetEnumerator();
+        public IAsyncEnumerator<TResource> GetEnumerator() => _pages.SelectMany(page => page.ToAsyncEnumerable()).GetEnumerator();
     }
 
     /// <summary>
@@ -57,39 +56,43 @@ namespace Google.Api.Gax.Rest
     /// <typeparam name="TResponse">The API response type.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
     internal sealed class ResponseAsyncEnumerable<TRequest, TResponse, TResource> : IResponseAsyncEnumerable<TResponse, TResource>
-        where TRequest : class, IClientServiceRequest<TResponse>
-        where TResponse : class
+        where TRequest : class, IPageRequest, IMessage<TRequest>
+        where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
-        private readonly Func<TRequest> _requestProvider;
-        private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
+        private readonly CallSettings _callSettings;
+        private readonly TRequest _request;
+        private readonly ApiCall<TRequest, TResponse> _apiCall;
 
-        public ResponseAsyncEnumerable(Func<TRequest> requestProvider,
-            IPageManager<TRequest, TResponse, TResource> pageManager)
+        public ResponseAsyncEnumerable(ApiCall<TRequest, TResponse> apiCall,
+            TRequest request, CallSettings callSettings)
         {
-            _requestProvider = GaxPreconditions.CheckNotNull(requestProvider, nameof(requestProvider));
-            _pageManager = GaxPreconditions.CheckNotNull(pageManager, nameof(pageManager));
+            _callSettings = callSettings;
+            _request = request;
+            _apiCall = apiCall;
         }
 
-
         public IResponseAsyncEnumerator<TResponse> GetEnumerator() =>
-            new ResponseAsyncEnumerator(_requestProvider(), _pageManager);
+            new ResponseAsyncEnumerator(_callSettings, _request.Clone(), _apiCall);
 
         IAsyncEnumerator<TResponse> IAsyncEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
         public IAsyncEnumerable<FixedSizePage<TResource>> WithFixedSize(int pageSize) =>
-            new FixedPageSizeAsyncEnumerable(this, _pageManager, pageSize);
+            new FixedPageSizeAsyncEnumerable(this, pageSize);
 
         private class ResponseAsyncEnumerator : IResponseAsyncEnumerator<TResponse>
         {
+            private readonly CallSettings _callSettings;
+            private readonly ApiCall<TRequest, TResponse> _apiCall;
             private readonly TRequest _request; // This is mutated during iteration
-            private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
             private bool _finished;
 
-            public ResponseAsyncEnumerator(TRequest request, IPageManager<TRequest, TResponse, TResource> pageManager)
+            public ResponseAsyncEnumerator(CallSettings callSettings,
+                TRequest request, ApiCall<TRequest, TResponse> apiCall)
             {
+                _callSettings = callSettings;
                 _request = request;
-                _pageManager = pageManager;
+                _apiCall = apiCall;
             }
 
             public TResponse Current { get; private set; }
@@ -101,21 +104,26 @@ namespace Google.Api.Gax.Rest
                 {
                     return false;
                 }
-                Current = await _request.ExecuteAsync(cancellationToken);
-                var nextPageToken = _pageManager.GetNextPageToken(Current);
-                if (nextPageToken == null)
+                CallSettings effectiveCallSettings = _callSettings;
+                if (cancellationToken != default(CancellationToken))
+                {
+                    effectiveCallSettings = new CallSettings(_callSettings) { CancellationToken = cancellationToken };
+                }
+                Current = await _apiCall.Async(_request, effectiveCallSettings);
+                var nextPageToken = Current.NextPageToken;
+                if (nextPageToken == "")
                 {
                     _finished = true;
                 }
                 // Prepare the next request...
-                _pageManager.SetPageToken(_request, nextPageToken);
+                _request.PageToken = nextPageToken;
                 return true;
             }
 
             public Task<bool> MoveNext(int pageSize, CancellationToken cancellationToken)
             {
                 GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
-                _pageManager.SetPageSize(_request, pageSize);
+                _request.PageSize = pageSize;
                 return MoveNext(cancellationToken);
             }
 
@@ -125,36 +133,28 @@ namespace Google.Api.Gax.Rest
         private class FixedPageSizeAsyncEnumerable : IAsyncEnumerable<FixedSizePage<TResource>>
         {
             private readonly IResponseAsyncEnumerable<TResponse, TResource> _source;
-            private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
             private readonly int _pageSize;
 
             internal FixedPageSizeAsyncEnumerable(
-                IResponseAsyncEnumerable<TResponse, TResource> source,
-                IPageManager<TRequest, TResponse, TResource> pageManager,
-                int pageSize)
+                IResponseAsyncEnumerable<TResponse, TResource> source, int pageSize)
             {
                 GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
                 _source = source;
-                _pageManager = pageManager;
                 _pageSize = pageSize;
             }
 
             public IAsyncEnumerator<FixedSizePage<TResource>> GetEnumerator() =>
-                new Enumerator(_source.GetEnumerator(), _pageManager, _pageSize);
+                new Enumerator(_source.GetEnumerator(), _pageSize);
 
             private class Enumerator : IAsyncEnumerator<FixedSizePage<TResource>>
             {
                 private readonly IResponseAsyncEnumerator<TResponse> _enumerator;
-                private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
                 private readonly int _pageSize;
 
                 internal Enumerator(
-                    IResponseAsyncEnumerator<TResponse> enumerator,
-                    IPageManager<TRequest, TResponse, TResource> pageManager,
-                    int pageSize)
+                    IResponseAsyncEnumerator<TResponse> enumerator, int pageSize)
                 {
                     _enumerator = enumerator;
-                    _pageManager = pageManager;
                     _pageSize = pageSize;
                 }
 
@@ -172,18 +172,17 @@ namespace Google.Api.Gax.Rest
                         {
                             break;
                         }
-                        var resources = _pageManager.GetResourcesEmptyIfNull(_enumerator.Current);
-                        items.AddRange(resources);
+                        items.AddRange(_enumerator.Current);
                         if (items.Count > _pageSize)
                         {
                             // TODO: Better exception type?
                             throw new NotSupportedException("Invalid server response: " +
-                                $"requested {requestCount} items, received {resources.Count()} items");
+                                $"requested {requestCount} items, received {_enumerator.Current.Count()} items");
                         }
                     }
                     if (items.Count != 0)
                     {
-                        Current = new FixedSizePage<TResource>(items, _pageManager.GetNextPageToken(_enumerator.Current));
+                        Current = new FixedSizePage<TResource>(items, _enumerator.Current.NextPageToken);
                         return true;
                     }
                     Current = null;
