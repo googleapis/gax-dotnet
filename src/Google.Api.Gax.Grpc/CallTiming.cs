@@ -36,7 +36,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="retry">The <see cref="RetrySettings"/> for a call.</param>
         /// <returns>A <see cref="CallTiming"/> with the specified retry settings.</returns>
         public static CallTiming FromRetry(RetrySettings retry) =>
-            new CallTiming(GaxPreconditions.CheckNotNull(retry, nameof(retry)).Validate(nameof(retry)), null);
+            new CallTiming(GaxPreconditions.CheckNotNull(retry, nameof(retry)), null);
 
         /// <summary>
         /// Create a <see cref="CallTiming"/> with a simple expiration; no retry.

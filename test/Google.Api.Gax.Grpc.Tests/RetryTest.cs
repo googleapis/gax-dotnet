@@ -18,19 +18,11 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class RetryTest
     {
-        private static readonly BackoffSettings DoublingBackoff = new BackoffSettings
-        {
-            Delay = TimeSpan.FromTicks(1000),
-            DelayMultiplier = 2.0,
-            MaxDelay = TimeSpan.FromTicks(5000)
-        };
+        private static readonly BackoffSettings DoublingBackoff =
+            new BackoffSettings(TimeSpan.FromTicks(1000), TimeSpan.FromTicks(5000), 2.0);
 
-        private static readonly BackoffSettings ConstantBackoff = new BackoffSettings
-        {
-            Delay = TimeSpan.FromTicks(1500),
-            DelayMultiplier = 1.0,
-            MaxDelay = TimeSpan.FromTicks(6000) // Irrelevant
-        };
+        private static readonly BackoffSettings ConstantBackoff =
+            new BackoffSettings(TimeSpan.FromTicks(1500), TimeSpan.FromTicks(6000), 1.0);
 
         private static Task<TResponse> Call<TRequest, TResponse>(
             bool async, ApiCall<TRequest, TResponse> call, TRequest request, CallSettings callSettings)
@@ -63,13 +55,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(0, 300, scheduler);
             var callable = server.Callable;
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = DoublingBackoff,
-                TimeoutBackoff = ConstantBackoff,
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                DelayJitter = RetrySettings.NoJitter
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: DoublingBackoff,
+                timeoutBackoff: ConstantBackoff,
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
+                retryFilter: null,
+                delayJitter: RetrySettings.NoJitter);
 
             await scheduler.RunAsync(async () =>
             {
@@ -95,13 +86,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler);
             var callable = server.Callable;
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = DoublingBackoff,
-                TimeoutBackoff = ConstantBackoff,
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                DelayJitter = RetrySettings.NoJitter
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: DoublingBackoff,
+                timeoutBackoff: ConstantBackoff,
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
+                retryFilter: null,
+                delayJitter: RetrySettings.NoJitter);
 
             await scheduler.RunAsync(async () =>
             {
@@ -132,13 +122,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler);
             var callable = server.Callable;
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = DoublingBackoff,
-                TimeoutBackoff = ConstantBackoff,
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromTicks(2500)),
-                DelayJitter = RetrySettings.NoJitter
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: DoublingBackoff,
+                timeoutBackoff: ConstantBackoff,
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromTicks(2500)),
+                retryFilter: null,
+                delayJitter: RetrySettings.NoJitter);
 
             var task = scheduler.RunAsync(async () =>
             {
@@ -168,13 +157,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler);
             var callable = server.Callable;
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = ConstantBackoff, // 1500 ticks always
-                TimeoutBackoff = DoublingBackoff, // 1000, then 2000, then 4000
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromTicks(4500)),
-                DelayJitter = RetrySettings.NoJitter
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: ConstantBackoff, // 1500 ticks always
+                timeoutBackoff: DoublingBackoff, // 1000, then 2000, then 4000
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromTicks(4500)),
+                retryFilter: null,
+                delayJitter: RetrySettings.NoJitter);
 
             await scheduler.RunAsync(async () =>
             {
@@ -202,14 +190,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler, failureCode);
             // We're not really interested in the timing in this test.
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = ConstantBackoff,
-                TimeoutBackoff = ConstantBackoff,
-                DelayJitter = RetrySettings.NoJitter,
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                RetryFilter = RetrySettings.FilterForStatusCodes(filterCodes)
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: ConstantBackoff,
+                timeoutBackoff: ConstantBackoff,
+                delayJitter: RetrySettings.NoJitter,
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
+                retryFilter: RetrySettings.FilterForStatusCodes(filterCodes));
 
             await scheduler.RunAsync(async () =>
             {
@@ -232,14 +218,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler, failureCode);
             // We're not really interested in the timing in this test.
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = ConstantBackoff,
-                TimeoutBackoff = ConstantBackoff,
-                DelayJitter = RetrySettings.NoJitter,
-                TotalExpiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                RetryFilter = RetrySettings.FilterForStatusCodes(filterCodes)
-            };
+            var retrySettings = new RetrySettings(
+                retryBackoff: ConstantBackoff,
+                timeoutBackoff: ConstantBackoff,
+                delayJitter: RetrySettings.NoJitter,
+                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
+                retryFilter: RetrySettings.FilterForStatusCodes(filterCodes));
 
             var task = scheduler.RunAsync(async () =>
             {
