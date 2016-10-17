@@ -82,6 +82,9 @@ namespace Google.Api.Gax.Grpc
 
         internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent)
         {
+            // TODO: Check that this is what we want. It allows call settings to remove our
+            // user agent header. The caller can always do this manually anyway, of course, so
+            // I'm tempted to leave it...
             return new ApiCall<TRequest, TResponse>(
                 _asyncCall,
                 _syncCall,

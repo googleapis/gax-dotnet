@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using System;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc
@@ -21,31 +22,30 @@ namespace Google.Api.Gax.Grpc
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
         /// <param name="credentials">Credentials to use for the call.</param>
         /// <param name="timing"><see cref="CallTiming"/> to use, or null for default retry/expiration behavior.</param>
-        /// <param name="headers">Headers to send at the beginning of the call.</param>
+        /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
         /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
         /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
         public CallSettings(
             CancellationToken? cancellationToken,
             CallCredentials credentials,
             CallTiming timing,
-            Metadata headers,
+            Action<Metadata> headerMutation,
             WriteOptions writeOptions,
             ContextPropagationToken propagationToken)
         {
             CancellationToken = cancellationToken;
             Credentials = credentials;
             Timing = timing;
-            Headers = headers;
+            HeaderMutation = headerMutation;
             WriteOptions = writeOptions;
             PropagationToken = propagationToken;
         }
 
-        // TODO: Modify this to be an Action<Metadata>, for flexibility and immutability.
-
         /// <summary>
-        /// Headers to send at the beginning of the call.
+        /// Delegate to mutate the metadata which will be sent at the start of the call,
+        /// typically to add custom headers.
         /// </summary>
-        public Metadata Headers { get; }
+        public Action<Metadata> HeaderMutation { get; }
 
         /// <summary>
         /// Cancellation token that can be used for cancelling the call.
@@ -82,7 +82,8 @@ namespace Google.Api.Gax.Grpc
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
         /// If both arguments are null, the result is null. If one argument is null,
         /// the other argument is returned. Otherwise, a new object is created with a property-wise
-        /// overlay.
+        /// overlay. Any header mutations are combined, however: the mutation from the original is
+        /// performed, then the mutation in the overlay.
         /// </summary>
         /// <param name="original">Original settings. May be null.</param>
         /// <param name="overlaid">Settings to overlay. May be null.</param>
@@ -101,7 +102,9 @@ namespace Google.Api.Gax.Grpc
                 overlaid.CancellationToken ?? original.CancellationToken,
                 overlaid.Credentials ?? original.Credentials,
                 overlaid.Timing ?? original.Timing,
-                overlaid.Headers ?? original.Headers,
+                // Combine mutations so that the overlaid mutation happens last; it can overwrite
+                // anything that the previous mutation does.
+                original.HeaderMutation + overlaid.HeaderMutation,
                 overlaid.WriteOptions ?? original.WriteOptions,
                 overlaid.PropagationToken ?? original.PropagationToken);
         }
@@ -116,22 +119,26 @@ namespace Google.Api.Gax.Grpc
         internal static CallOptions ToCallOptions(CallSettings baseSettings, CallSettings callSettings, IClock clock)
         {
             CallSettings effectiveSettings = CallSettings.Merge(baseSettings, callSettings);
-            return effectiveSettings == null
-                ? default(CallOptions)
-                : new CallOptions(
-                    headers: effectiveSettings.Headers,
-                    deadline: effectiveSettings.Timing.CalculateDeadline(clock),
-                    cancellationToken: effectiveSettings.CancellationToken ?? default(CancellationToken),
-                    writeOptions: effectiveSettings.WriteOptions,
-                    propagationToken: effectiveSettings.PropagationToken,
-                    credentials: effectiveSettings.Credentials);
+            if (effectiveSettings == null)
+            {
+                return default(CallOptions);
+            }
+            var metadata = new Metadata();
+            effectiveSettings.HeaderMutation?.Invoke(metadata);
+            return new CallOptions(
+                headers: metadata,
+                deadline: effectiveSettings.Timing.CalculateDeadline(clock),
+                cancellationToken: effectiveSettings.CancellationToken ?? default(CancellationToken),
+                writeOptions: effectiveSettings.WriteOptions,
+                propagationToken: effectiveSettings.PropagationToken,
+                credentials: effectiveSettings.Credentials);
         }
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified user agent.
         /// </summary>
         internal static CallSettings ForUserAgent(string userAgent) =>
-            new CallSettings(null, null, null, new Metadata { { UserAgentBuilder.HeaderName, userAgent } }, null, null);
+            new CallSettings(null, null, null, metadata => metadata.Add(UserAgentBuilder.HeaderName, userAgent), null, null);
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified cancellation token.
