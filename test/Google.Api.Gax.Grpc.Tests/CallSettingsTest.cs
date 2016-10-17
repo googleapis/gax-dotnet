@@ -17,6 +17,29 @@ namespace Google.Api.Gax.Grpc.Tests
     public class CallSettingsTest
     {
         [Fact]
+        public void Merge_HeaderMutationOrdering()
+        {
+            Action<Metadata> clearAndAddFoo = m => { m.Clear(); m.Add("foo", "bar"); };
+            Action<Metadata> addSample = m => m.Add("sample", "value");
+
+            CallSettings clearAndAddFooSettings = new CallSettings(null, null, null, clearAndAddFoo, null, null);
+            CallSettings addSampleSettings = new CallSettings(null, null, null, addSample, null, null);
+
+            var merged1 = CallSettings.Merge(clearAndAddFooSettings, addSampleSettings);
+            var merged2 = CallSettings.Merge(addSampleSettings, clearAndAddFooSettings);
+
+            // Original should be called first, so merged1 should end up with foo and sample;
+            // merged2 should end up with just foo.
+            var metadata = new Metadata();
+            merged1.HeaderMutation(metadata);
+            Assert.Equal(2, metadata.Count);
+
+            metadata = new Metadata();
+            merged2.HeaderMutation(metadata);
+            Assert.Equal(1, metadata.Count);
+        }
+
+        [Fact]
         public void ToCallOptions_CallTimingNull()
         {
             var mockClock = new Mock<IClock>();
@@ -55,7 +78,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var mockClock = new Mock<IClock>();
             var callSettings = new CallSettings
             (
-                headers: new Metadata { new Metadata.Entry("1", "one") },
+                headerMutation: metadata => metadata.Add(new Metadata.Entry("1", "one")),
                 timing: CallTiming.FromExpiration(Expiration.None),
                 cancellationToken: new CancellationTokenSource().Token,
                 writeOptions: new WriteOptions(WriteFlags.NoCompress),
@@ -63,7 +86,8 @@ namespace Google.Api.Gax.Grpc.Tests
                 credentials: null // Not possible to create/mock
             );
             var options = CallSettings.ToCallOptions(callSettings, null, mockClock.Object);
-            Assert.Same(callSettings.Headers, options.Headers);
+            Assert.Equal(1, options.Headers.Count);
+            Assert.Equal("[Entry: key=1, value=one]", options.Headers[0].ToString());
             Assert.Null(options.Deadline);
             Assert.Equal(callSettings.CancellationToken, options.CancellationToken);
             Assert.Same(callSettings.WriteOptions, options.WriteOptions);
