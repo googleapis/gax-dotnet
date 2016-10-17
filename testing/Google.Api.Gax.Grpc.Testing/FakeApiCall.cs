@@ -39,8 +39,8 @@ namespace Google.Api.Gax.Grpc.Testing
         {
             clock = clock ?? new FakeClock();
             return new ApiCall<TRequest, TResponse>(
-                asyncCall.MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
-                syncCall.MapArg((CallSettings cs) => cs.ToCallOptions(clock)),
+                (req, cs) => asyncCall(req, CallSettings.ToCallOptions(baseCallSettings, cs, clock)),
+                (req, cs) => syncCall(req, CallSettings.ToCallOptions(baseCallSettings, cs, clock)),
                 baseCallSettings);
         }
 
