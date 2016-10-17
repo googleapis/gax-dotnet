@@ -9,12 +9,9 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace Google.Api.Gax.Grpc
 {
-    // FIXME: This should be made immutable.
-
     /// <summary>
     /// Settings for retrying RPCs.
     /// </summary>
@@ -23,7 +20,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// The backoff policy for the time between retries.
         /// </summary>
-        public BackoffSettings RetryBackoff { get; set; }
+        public BackoffSettings RetryBackoff { get; }
 
         /// <summary>
         /// The backoff policy for timeouts of retries.
@@ -33,18 +30,18 @@ namespace Google.Api.Gax.Grpc
         /// then allowing a bit more time, then a bit more, and so on. However,
         /// the timeout will also be adjusted to accommodate <see cref="TotalExpiration"/>.
         /// </remarks>
-        public BackoffSettings TimeoutBackoff { get; set; }
+        public BackoffSettings TimeoutBackoff { get; }
 
         /// <summary>
         /// The total expiration, across all retries.
         /// </summary>
-        public Expiration TotalExpiration { get; set; }
+        public Expiration TotalExpiration { get; }
 
         /// <summary>
         /// A predicate to determine whether or not a particular exception should cause the operation to be retried.
         /// Usually this is simply a matter of checking the status codes.
         /// </summary>
-        public Predicate<RpcException> RetryFilter { get; set; } = DefaultFilter;
+        public Predicate<RpcException> RetryFilter { get; }
 
         /// <summary>
         /// The delay jitter to apply for delays, defaulting to <see cref="RandomJitter"/>.
@@ -56,36 +53,59 @@ namespace Google.Api.Gax.Grpc
         /// and returns an actual delay which is a uniformly random value between 0 and the maximum. This
         /// is good enough for most applications, but makes precise testing difficult.
         /// </remarks>
-        public IJitter DelayJitter { get; set; } = RandomJitter;
+        public IJitter DelayJitter { get; }
 
         /// <summary>
-        /// Creates a deep clone of this instance. No validation is performed.
-        /// It is assumed that the delay jitter does not require deep cloning.
+        /// Constructs an instance with the given backoff configuration, the default RPC filter and
+        /// jitter.
         /// </summary>
-        /// <returns>A deep clone of this instance.</returns>
-        public RetrySettings Clone() =>
-            new RetrySettings
-            {
-                RetryBackoff = RetryBackoff?.Clone(),
-                TimeoutBackoff = TimeoutBackoff?.Clone(),
-                TotalExpiration = TotalExpiration,
-                DelayJitter = DelayJitter,
-                RetryFilter = RetryFilter
-            };
-
-        /// <summary>
-        /// Validates the settings.
-        /// </summary>
-        /// <returns>A reference to this instance, for use in chaining calls.</returns>
-        /// <param name="paramName">The parameter name to use in any exception thrown.</param>
-        /// <exception cref="ArgumentException">The settings are invalid.</exception>
-        public RetrySettings Validate(string paramName)
+        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
+        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
+        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
+        public RetrySettings(
+            BackoffSettings retryBackoff,
+            BackoffSettings timeoutBackoff,
+            Expiration totalExpiration) : this(retryBackoff, timeoutBackoff, totalExpiration, null, null)
         {
-            GaxPreconditions.CheckArgument(RetryBackoff != null, paramName, "No retry backoff specified");
-            GaxPreconditions.CheckArgument(TimeoutBackoff != null, paramName, "No timeout backoff specified");
-            GaxPreconditions.CheckArgument(DelayJitter != null, paramName, "No delay jitter specified");
-            GaxPreconditions.CheckArgument(RetryFilter != null, paramName, "No retry filter specified");
-            return this;
+        }
+
+        /// <summary>
+        /// Constructs an instance with the given configuration, and the default jitter.
+        /// </summary>
+        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
+        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
+        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
+        /// <param name="retryFilter">A predicate to determine whether or not a particular exception should cause the operation to be retried,
+        /// or null for the default filter.</param>
+        public RetrySettings(
+            BackoffSettings retryBackoff,
+            BackoffSettings timeoutBackoff,
+            Expiration totalExpiration,
+            Predicate<RpcException> retryFilter) : this(retryBackoff, timeoutBackoff, totalExpiration, retryFilter, null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance with the given configuration.
+        /// </summary>
+        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
+        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
+        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
+        /// <param name="retryFilter">A predicate to determine whether or not a particular exception should cause the operation to be retried,
+        /// or null for the default filter.</param>
+        /// <param name="delayJitter">The delay jitter to apply for delays, or null for the defautl (random) jitter.</param>
+        public RetrySettings(
+            BackoffSettings retryBackoff,
+            BackoffSettings timeoutBackoff,
+            Expiration totalExpiration,
+            Predicate<RpcException> retryFilter,
+            IJitter delayJitter)
+        {
+            RetryBackoff = GaxPreconditions.CheckNotNull(retryBackoff, nameof(retryBackoff));
+            TimeoutBackoff = GaxPreconditions.CheckNotNull(timeoutBackoff, nameof(timeoutBackoff));
+            TotalExpiration = GaxPreconditions.CheckNotNull(totalExpiration, nameof(totalExpiration));
+            RetryFilter = retryFilter ?? DefaultFilter;
+            DelayJitter = delayJitter ?? RandomJitter;
         }
 
         /// <summary>

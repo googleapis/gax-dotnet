@@ -1,69 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+using System;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
     public class RetrySettingsTest
     {
-        [Fact]
-        public void InvalidWithoutRetryBackoff()
-        {
-            var retrySettings = new RetrySettings
-            {
-                TimeoutBackoff = new BackoffSettings()
-            };
-            Assert.Throws<ArgumentException>(() =>
-                retrySettings.Validate(""));
-        }
+        private static BackoffSettings s_sampleBackoff = new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
         [Fact]
-        public void InvalidWithoutTimeoutBackoff()
+        public void NullChecking()
         {
-            var retrySettings = new RetrySettings
-            {
-                RetryBackoff = new BackoffSettings()
-            };
-            Assert.Throws<ArgumentException>(() =>
-                retrySettings.Validate(""));
-        }
+            Assert.Throws<ArgumentNullException>(() => new RetrySettings(null, s_sampleBackoff, Expiration.None).ToString());
+            Assert.Throws<ArgumentNullException>(() => new RetrySettings(s_sampleBackoff, null, Expiration.None).ToString());
+            Assert.Throws<ArgumentNullException>(() => new RetrySettings(s_sampleBackoff, s_sampleBackoff, null).ToString());
 
-        [Fact]
-        public void Validity()
-        {
-            var retrySettings = new RetrySettings
-            {
-                TimeoutBackoff = new BackoffSettings(),
-                RetryBackoff = new BackoffSettings(),
-            };
-            // Test passes if this doesn't throw
-            retrySettings.Validate("");
-        }
-
-        class DummyJitter : RetrySettings.IJitter
-        {
-            public TimeSpan GetDelay(TimeSpan maxDelay) => TimeSpan.Zero;
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            var retrySettings = new RetrySettings
-            {
-                TimeoutBackoff = new BackoffSettings { DelayMultiplier = 1.0 },
-                RetryBackoff = new BackoffSettings { DelayMultiplier = 2.0 },
-                TotalExpiration = Expiration.None,
-                RetryFilter = x => false,
-                DelayJitter = new DummyJitter()
-            };
-            var clone = retrySettings.Clone();
-            Assert.Equal(retrySettings.TimeoutBackoff.DelayMultiplier, clone.TimeoutBackoff.DelayMultiplier);
-            Assert.Equal(retrySettings.RetryBackoff.DelayMultiplier, clone.RetryBackoff.DelayMultiplier);
-            Assert.Same(retrySettings.TotalExpiration, clone.TotalExpiration);
-            Assert.Same(retrySettings.RetryFilter, clone.RetryFilter);
-            Assert.Same(retrySettings.DelayJitter, clone.DelayJitter);
+            // No exceptions here...
+            var settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null);
+            settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null, null);
         }
     }
 }

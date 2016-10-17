@@ -15,30 +15,21 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class BackoffSettings
     {
-        private TimeSpan _delay;
-        private TimeSpan _maxDelay;
-        private double _delayMultiplier = 1.0;
-
         /// <summary>
         /// The initial delay, either for the first retry or as the initial RPC timeout.
         /// </summary>
-        /// <remarks>
-        /// The default value of this property is <see cref="TimeSpan.Zero"/>.
-        /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">The value is negative.</exception>
-        public TimeSpan Delay
-        {
-            get { return _delay; }
-            set { _delay = GaxPreconditions.CheckNonNegativeDelay(value, nameof(value)); }
-        }
+        public TimeSpan Delay { get; }
+
+        /// <summary>
+        /// The maximum delay to use. If the increasing delay due to the delay multiplier exceeds this,
+        /// this maximum is used instead.
+        /// </summary>
+        public TimeSpan MaxDelay { get; }
 
         /// <summary>
         /// The multiplier to apply to the delay on each iteration; must be greater than or equal to 1.0.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// The default value of this property is 1.0.
-        /// </para>
         /// <para>
         /// As an example, a multiplier of 2.0 with a delay of 0.1s on an RPC which fails three times before
         /// succeeding would lead to an initial delay between the first response and the second request
@@ -46,53 +37,29 @@ namespace Google.Api.Gax.Grpc
         /// between the third response and the fourth request.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">The value is not a number, or is less than 1.</exception>
-        public double DelayMultiplier
-        {
-            get { return _delayMultiplier; }
-            set
-            {
-                if (value < 1.0 || double.IsNaN(value))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), value, "Delay multiplier must be a real number greater than or equal to 1");
-                }
-                _delayMultiplier = value;
-            }
-        }
+        public double DelayMultiplier { get; } = 1.0;
 
         /// <summary>
-        /// The maximum delay to use. If the increasing delay due to the delay multiplier exceeds this,
-        /// this maximum is used instead.
+        /// Creates a new instance with the specified settings.
         /// </summary>
-        /// <remarks>
-        /// The default value of this property is <see cref="TimeSpan.Zero"/>.
-        /// </remarks>
-        /// <value>The maximum delay. Must not be negative.</value>
-        /// <exception cref="ArgumentOutOfRangeException">The value is negative.</exception>
-        public TimeSpan MaxDelay
+        /// <param name="delay">The initial delay, either for the first retry or as the initial RPC timeout.</param>
+        /// <param name="maxDelay">The maximum delay to use. If the increasing delay due to the delay multiplier exceeds this,
+        /// this maximum is used instead.</param>
+        /// <param name="delayMultiplier">The multiplier to apply to the delay on each iteration; must be greater than or equal to 1.0.
+        /// Defaults to 1.0.</param>
+        public BackoffSettings(TimeSpan delay, TimeSpan maxDelay, double delayMultiplier = 1.0)
         {
-            get { return _maxDelay; }
-            set
+            GaxPreconditions.CheckNonNegativeDelay(delay, nameof(delay));
+            GaxPreconditions.CheckNonNegativeDelay(maxDelay, nameof(maxDelay));
+            if (delayMultiplier < 1.0 || double.IsNaN(delayMultiplier))
             {
-                if (value < TimeSpan.Zero)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), value, "Maximum delay must not be negative");
-                }
-                _maxDelay = value;
+                throw new ArgumentOutOfRangeException(nameof(delayMultiplier), delayMultiplier,
+                    "Delay multiplier must be a real number greater than or equal to 1");
             }
+            Delay = delay;
+            MaxDelay = maxDelay;
+            DelayMultiplier = delayMultiplier;
         }
-
-        /// <summary>
-        /// Creates a clone of this instance.
-        /// </summary>
-        /// <returns>A clone of this instance.</returns>
-        public BackoffSettings Clone() =>
-            new BackoffSettings
-            {
-                Delay = Delay,
-                DelayMultiplier = DelayMultiplier,
-                MaxDelay = MaxDelay
-            };
 
         /// <summary>
         /// Works out the next delay from the current one, based on the multiplier and maximum.
