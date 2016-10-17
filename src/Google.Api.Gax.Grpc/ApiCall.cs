@@ -23,8 +23,8 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             return new ApiCall<TRequest, TResponse>(
-                asyncGrpcCall.WithTaskTransform().MapArg((CallSettings cs) => cs?.ToCallOptions(clock) ?? default(CallOptions)),
-                syncGrpcCall.MapArg((CallSettings cs) => cs?.ToCallOptions(clock) ?? default(CallOptions)),
+                (req, cs) => asyncGrpcCall(req, CallSettings.ToCallOptions(baseCallSettings, cs, clock)).ResponseAsync,
+                (req, cs) => syncGrpcCall(req, CallSettings.ToCallOptions(baseCallSettings, cs, clock)),
                 baseCallSettings);
         }
     }

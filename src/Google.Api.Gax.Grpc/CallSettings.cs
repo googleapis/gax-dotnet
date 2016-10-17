@@ -109,15 +109,23 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Transfers settings contained in this into a <see cref="CallOptions"/>.
         /// </summary>
+        /// <param name="baseSettings">The base settings for the call. May be null.</param>
+        /// <param name="callSettings">The settings for the specific call. May be null.</param>
         /// <param name="clock">The clock to use for deadline calculation.</param>
         /// <returns>A <see cref="CallOptions"/> configured from this <see cref="CallSettings"/>.</returns>
-        internal CallOptions ToCallOptions(IClock clock) => new CallOptions(
-            headers: Headers,
-            deadline: Timing.CalculateDeadline(clock),
-            cancellationToken: CancellationToken ?? default(CancellationToken),
-            writeOptions: WriteOptions,
-            propagationToken: PropagationToken,
-            credentials: Credentials);
+        internal static CallOptions ToCallOptions(CallSettings baseSettings, CallSettings callSettings, IClock clock)
+        {
+            CallSettings effectiveSettings = CallSettings.Merge(baseSettings, callSettings);
+            return effectiveSettings == null
+                ? default(CallOptions)
+                : new CallOptions(
+                    headers: effectiveSettings.Headers,
+                    deadline: effectiveSettings.Timing.CalculateDeadline(clock),
+                    cancellationToken: effectiveSettings.CancellationToken ?? default(CancellationToken),
+                    writeOptions: effectiveSettings.WriteOptions,
+                    propagationToken: effectiveSettings.PropagationToken,
+                    credentials: effectiveSettings.Credentials);
+        }
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified user agent.
