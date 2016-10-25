@@ -34,8 +34,7 @@ namespace Google.Api.Gax.Grpc
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    CallSettings attemptCallSettings = CallSettings.Merge
-                        (callSettings, CallSettings.FromCallTiming(CallTiming.FromDeadline(combinedDeadline)));
+                    CallSettings attemptCallSettings = callSettings.WithCallTiming(CallTiming.FromDeadline(combinedDeadline));
                     try
                     {
                         return await fn(request, attemptCallSettings);
@@ -74,8 +73,7 @@ namespace Google.Api.Gax.Grpc
                     DateTime attemptDeadline = clock.GetCurrentDateTimeUtc() + callTimeout;
                     // Note: this handles a null total deadline due to "<" returning false if overallDeadline is null.
                     DateTime combinedDeadline = overallDeadline < attemptDeadline ? overallDeadline.Value : attemptDeadline;
-                    CallSettings attemptCallSettings = CallSettings.Merge
-                        (callSettings, CallSettings.FromCallTiming(CallTiming.FromDeadline(combinedDeadline)));
+                    CallSettings attemptCallSettings = callSettings.WithCallTiming(CallTiming.FromDeadline(combinedDeadline));
                     try
                     {
                         return fn(request, attemptCallSettings);
@@ -97,4 +95,3 @@ namespace Google.Api.Gax.Grpc
 
     }
 }
-

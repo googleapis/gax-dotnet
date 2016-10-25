@@ -107,7 +107,7 @@ namespace Google.Api.Gax.Grpc
                 CallSettings effectiveCallSettings = _callSettings;
                 if (cancellationToken != default(CancellationToken))
                 {
-                    effectiveCallSettings = CallSettings.Merge(_callSettings, CallSettings.FromCancellationToken(cancellationToken));
+                    effectiveCallSettings = _callSettings.WithCancellationToken(cancellationToken);
                 }
                 Current = await _apiCall.Async(_request, effectiveCallSettings);
                 var nextPageToken = Current.NextPageToken;
