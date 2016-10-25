@@ -136,7 +136,7 @@ namespace Google.Api.Gax.Grpc
         /// Creates a <see cref="CallSettings"/> for the specified user agent.
         /// </summary>
         internal static CallSettings ForUserAgent(string userAgent) =>
-            new CallSettings(null, null, null, metadata => metadata.Add(UserAgentBuilder.HeaderName, userAgent), null, null);
+            FromHeaderMutation(metadata => metadata.Add(UserAgentBuilder.HeaderName, userAgent));
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified cancellation token.
@@ -161,6 +161,14 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A new instance.</returns>
         public static CallSettings FromCallTiming(CallTiming timing) =>
             new CallSettings(null, null, timing, null, null, null);
-        
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified header mutation.
+        /// </summary>
+        /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromHeaderMutation(Action<Metadata> headerMutation) =>
+            new CallSettings(null, null, null, headerMutation, null, null);
+
     }
 }
