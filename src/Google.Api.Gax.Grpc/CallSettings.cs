@@ -108,31 +108,6 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Transfers settings contained in this into a <see cref="CallOptions"/>.
-        /// </summary>
-        /// <param name="baseSettings">The base settings for the call. May be null.</param>
-        /// <param name="callSettings">The settings for the specific call. May be null.</param>
-        /// <param name="clock">The clock to use for deadline calculation.</param>
-        /// <returns>A <see cref="CallOptions"/> configured from this <see cref="CallSettings"/>.</returns>
-        internal static CallOptions ToCallOptions(CallSettings baseSettings, CallSettings callSettings, IClock clock)
-        {
-            CallSettings effectiveSettings = CallSettings.Merge(baseSettings, callSettings);
-            if (effectiveSettings == null)
-            {
-                return default(CallOptions);
-            }
-            var metadata = new Metadata();
-            effectiveSettings.HeaderMutation?.Invoke(metadata);
-            return new CallOptions(
-                headers: metadata,
-                deadline: effectiveSettings.Timing.CalculateDeadline(clock),
-                cancellationToken: effectiveSettings.CancellationToken ?? default(CancellationToken),
-                writeOptions: effectiveSettings.WriteOptions,
-                propagationToken: effectiveSettings.PropagationToken,
-                credentials: effectiveSettings.Credentials);
-        }
-
-        /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified user agent.
         /// </summary>
         internal static CallSettings ForUserAgent(string userAgent) =>
@@ -147,28 +122,43 @@ namespace Google.Api.Gax.Grpc
             new CallSettings(cancellationToken, null, null, null, null, null);
 
         /// <summary>
-        /// Creates a <see cref="CallSettings"/> for the specified call credentials.
+        /// Creates a <see cref="CallSettings"/> for the specified call credentials, or returns null
+        /// if <paramref name="credentials"/> is null.
         /// </summary>
         /// <param name="credentials">The call credentials for the new settings.</param>
-        /// <returns>A new instance.</returns>
+        /// <returns>A new instance, or null if <paramref name="credentials"/> is null.</returns>
         public static CallSettings FromCallCredentials(CallCredentials credentials) =>
-            new CallSettings(null, credentials, null, null, null, null);
+            credentials == null ? null : new CallSettings(null, credentials, null, null, null, null);
 
         /// <summary>
-        /// Creates a <see cref="CallSettings"/> for the specified call timing.
+        /// Creates a <see cref="CallSettings"/> for the specified call timing, or returns null
+        /// if <paramref name="timing"/> is null.
         /// </summary>
         /// <param name="timing">The call timing for the new settings.</param>
-        /// <returns>A new instance.</returns>
+        /// <returns>A new instance or null if <paramref name="timing"/> is null..</returns>
         public static CallSettings FromCallTiming(CallTiming timing) =>
-            new CallSettings(null, null, timing, null, null, null);
+            timing == null ? null : new CallSettings(null, null, timing, null, null, null);
 
         /// <summary>
-        /// Creates a <see cref="CallSettings"/> for the specified header mutation.
+        /// Creates a <see cref="CallSettings"/> for the specified header mutation, or returns null
+        /// if <paramref name="headerMutation"/> is null.
         /// </summary>
         /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
-        /// <returns>A new instance.</returns>
+        /// <returns>A new instance, or null if <paramref name="headerMutation"/> is null..</returns>
         public static CallSettings FromHeaderMutation(Action<Metadata> headerMutation) =>
-            new CallSettings(null, null, null, headerMutation, null, null);
+            headerMutation == null ? null : new CallSettings(null, null, null, headerMutation, null, null);
 
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified header name and value.
+        /// </summary>
+        /// <param name="name">The name of the header to add. Must not be null.</param>
+        /// <param name="value">The value of the header to add. Must not be null.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromHeader(string name, string value)
+        {
+            GaxPreconditions.CheckNotNull(name, nameof(name));
+            GaxPreconditions.CheckNotNull(value, nameof(value));
+            return FromHeaderMutation(metadata => metadata.Add(name, value));
+        }
     }
 }
