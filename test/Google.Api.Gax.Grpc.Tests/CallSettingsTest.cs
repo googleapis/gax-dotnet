@@ -10,6 +10,7 @@ using Grpc.Core;
 using Moq;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -44,7 +45,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var mockClock = new Mock<IClock>();
             CallSettings callSettings = CallSettings.FromCallTiming(null);
-            var options = CallSettings.ToCallOptions(callSettings, null, mockClock.Object);
+            var options = callSettings.ToCallOptions(null, mockClock.Object);
             Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
         }
@@ -55,7 +56,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
             CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(timeout)));
-            var options = CallSettings.ToCallOptions(callSettings, null, clock);
+            var options = callSettings.ToCallOptions(null, clock);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, clock.GetCurrentDateTimeUtc() + timeout);
         }
@@ -66,7 +67,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
             var mockClock = new Mock<IClock>();
             CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(deadline)));
-            var options = CallSettings.ToCallOptions(callSettings, null, mockClock.Object);
+            var options = callSettings.ToCallOptions(null, mockClock.Object);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
@@ -85,12 +86,58 @@ namespace Google.Api.Gax.Grpc.Tests
                 propagationToken: null, // Not possible to create/mock
                 credentials: null // Not possible to create/mock
             );
-            var options = CallSettings.ToCallOptions(callSettings, null, mockClock.Object);
+            var options = callSettings.ToCallOptions(null, mockClock.Object);
             Assert.Equal(1, options.Headers.Count);
             Assert.Equal("[Entry: key=1, value=one]", options.Headers[0].ToString());
             Assert.Null(options.Deadline);
             Assert.Equal(callSettings.CancellationToken, options.CancellationToken);
             Assert.Same(callSettings.WriteOptions, options.WriteOptions);
+        }
+
+        [Fact]
+        public void FromCancellationToken()
+        {
+            var token = new CancellationTokenSource().Token;
+            var settings = CallSettings.FromCancellationToken(token);
+            Assert.Equal(token, settings.CancellationToken);
+        }
+
+        [Fact]
+        public void FromCallTiming()
+        {
+            Assert.Null(CallSettings.FromCallTiming(null));
+            var timing = CallTiming.FromExpiration(Expiration.None);
+            var settings = CallSettings.FromCallTiming(timing);
+            Assert.Same(timing, settings.Timing);
+        }
+
+        [Fact]
+        public void FromCredential()
+        {
+            Assert.Null(CallSettings.FromCallCredentials(null));
+            AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
+            var credential = CallCredentials.FromInterceptor(interceptor);
+            var settings = CallSettings.FromCallCredentials(credential);
+            Assert.Same(credential, settings.Credentials);
+        }
+
+        [Fact]
+        public void FromHeaderMutation()
+        {
+            Assert.Null(CallSettings.FromHeaderMutation(null));
+            Action<Metadata> action = metadata => { }; // No-op, but still an action...
+            var settings = CallSettings.FromHeaderMutation(action);
+            Assert.Same(action, settings.HeaderMutation);
+        }
+
+        [Fact]
+        public void FromHeader()
+        {
+            var settings = CallSettings.FromHeader("name", "value");
+            var metadata = new Metadata();
+            settings.HeaderMutation(metadata);
+            Assert.Equal("name", metadata[0].Key);
+            Assert.Equal("value", metadata[0].Value);
         }
     }
 }
