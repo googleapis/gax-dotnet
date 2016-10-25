@@ -54,10 +54,7 @@ namespace Google.Api.Gax.Grpc
         private readonly CallSettings _baseCallSettings;
 
         private T Call<T>(TRequest request, CallSettings perCallCallSettings, Func<CallSettings, T> fn)
-        {
-            CallSettings callSettings = CallSettings.Merge(_baseCallSettings, perCallCallSettings);
-            return fn(callSettings);
-        }
+            => fn(_baseCallSettings.MergedWith(perCallCallSettings));
 
         /// <summary>
         /// Performs an RPC call asynchronously.
@@ -80,23 +77,20 @@ namespace Google.Api.Gax.Grpc
         public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
             Call(request, perCallCallSettings, callSettings => _syncCall(request, callSettings));
 
-        internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent)
-        {
+        internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
             // TODO: Check that this is what we want. It allows call settings to remove our
             // user agent header. The caller can always do this manually anyway, of course, so
             // I'm tempted to leave it...
-            return new ApiCall<TRequest, TResponse>(
+            new ApiCall<TRequest, TResponse>(
                 _asyncCall,
                 _syncCall,
-                CallSettings.Merge(CallSettings.ForUserAgent(userAgent), _baseCallSettings));
-        }
+                CallSettings.FromHeader(UserAgentBuilder.HeaderName, userAgent)
+                    .MergedWith(_baseCallSettings));
 
-        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler)
-        {
-            return new ApiCall<TRequest, TResponse>(
+        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
+            new ApiCall<TRequest, TResponse>(
                 _asyncCall.WithRetry(clock, scheduler),
                 _syncCall.WithRetry(clock, scheduler),
                 _baseCallSettings);
-        }
     }
 }

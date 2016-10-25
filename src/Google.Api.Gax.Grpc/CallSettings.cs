@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="original">Original settings. May be null.</param>
         /// <param name="overlaid">Settings to overlay. May be null.</param>
         /// <returns>A merged set of call settings.</returns>
-        public static CallSettings Merge(CallSettings original, CallSettings overlaid)
+        internal static CallSettings Merge(CallSettings original, CallSettings overlaid)
         {
             if (original == null)
             {
@@ -106,12 +106,6 @@ namespace Google.Api.Gax.Grpc
                 overlaid.WriteOptions ?? original.WriteOptions,
                 overlaid.PropagationToken ?? original.PropagationToken);
         }
-
-        /// <summary>
-        /// Creates a <see cref="CallSettings"/> for the specified user agent.
-        /// </summary>
-        internal static CallSettings ForUserAgent(string userAgent) =>
-            FromHeaderMutation(metadata => metadata.Add(UserAgentBuilder.HeaderName, userAgent));
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified cancellation token.

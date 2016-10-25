@@ -16,16 +16,14 @@ namespace Google.Api.Gax.Grpc
     public static class CallSettingsExtensions
     {
         /// <summary>
-        /// Shorthand for calling <see cref="CallSettings.Merge(CallSettings, CallSettings)"/>.
-        /// </summary>
-        /// <remarks>
         /// This method merges the settings in <paramref name="overlaid"/> with those in
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
         /// If both arguments are null, the result is null. If one argument is null,
         /// the other argument is returned. Otherwise, a new object is created with a property-wise
-        /// overlay. Any header mutations are combined, however: the mutation from the original is
+        /// overlay, where null values do not override non-null values.
+        /// Any header mutations are combined, however: the mutation from the original is
         /// performed, then the mutation in the overlay.
-        /// </remarks>
+        /// </summary>
         /// <param name="original">Original settings. May be null.</param>
         /// <param name="overlaid">Settings to overlay. May be null.</param>
         /// <returns>A merged set of call settings, or null if both parameters are null.</returns>
