@@ -75,8 +75,6 @@ namespace Google.Api.Gax.Grpc
         /// </remarks>
         public CallTiming Timing { get; }
 
-        // TODO: Expose this?
-
         /// <summary>
         /// Merges the settings in <paramref name="overlaid"/> with those in
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
@@ -88,7 +86,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="original">Original settings. May be null.</param>
         /// <param name="overlaid">Settings to overlay. May be null.</param>
         /// <returns>A merged set of call settings.</returns>
-        internal static CallSettings Merge(CallSettings original, CallSettings overlaid)
+        public static CallSettings Merge(CallSettings original, CallSettings overlaid)
         {
             if (original == null)
             {
