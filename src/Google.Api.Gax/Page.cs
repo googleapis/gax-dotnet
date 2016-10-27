@@ -15,11 +15,18 @@ namespace Google.Api.Gax
     /// there is no more data to fetch.
     /// </summary>
     /// <typeparam name="TResource">The type of resource within the page.</typeparam>
-    public sealed class FixedSizePage<TResource> : IEnumerable<TResource>
+    public sealed class Page<TResource> : IEnumerable<TResource>
     {
         private readonly IEnumerable<TResource> _resources;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The page token to use to fetch the next set of resources.
+        /// </summary>
+        /// <remarks>
+        /// gRPC-based APIs use an empty string as a "no page token", whereas REST-based APIs
+        /// use a null reference instead. The value here will be consistent with the value returned
+        /// by the API itself.
+        /// </remarks>
         public string NextPageToken { get; }
 
         /// <summary>
@@ -27,7 +34,7 @@ namespace Google.Api.Gax
         /// </summary>
         /// <param name="resources">The resources in the page.</param>
         /// <param name="nextPageToken">The next page token.</param>
-        public FixedSizePage(IEnumerable<TResource> resources, string nextPageToken)
+        public Page(IEnumerable<TResource> resources, string nextPageToken)
         {
             _resources = resources;
             NextPageToken = nextPageToken;
