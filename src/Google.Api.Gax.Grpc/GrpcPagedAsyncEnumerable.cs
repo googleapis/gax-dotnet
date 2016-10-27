@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Api.Gax;
 
 // Interfaces and implementations of asynchronous page streaming. These are gathered into a single file
 // for convenience.
@@ -23,11 +24,11 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TRequest">The API request type.</typeparam>
     /// <typeparam name="TResponse">The API response type. Each response contains a page of resources.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
-    public sealed class PagedAsyncEnumerable<TRequest, TResponse, TResource> : IPagedAsyncEnumerable<TResponse, TResource>
+    public sealed class GrpcPagedAsyncEnumerable<TRequest, TResponse, TResource> : PagedAsyncEnumerable<TResponse, TResource>
         where TRequest : class, IPageRequest, IMessage<TRequest>
         where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
-        private readonly IResponseAsyncEnumerable<TResponse, TResource> _pages;
+        private readonly ResponseAsyncEnumerable<TRequest, TResponse, TResource> _pages;
 
         /// <summary>
         /// Creates a new lazily-evaluated asynchronous sequence from the given API call, initial request, and call settings.
@@ -36,17 +37,22 @@ namespace Google.Api.Gax.Grpc
         /// <param name="apiCall">The API call made each time a page is required.</param>
         /// <param name="request">The initial request.</param>
         /// <param name="callSettings">The settings to apply to each API call.</param>
-        public PagedAsyncEnumerable(ApiCall<TRequest, TResponse> apiCall,
+        public GrpcPagedAsyncEnumerable(ApiCall<TRequest, TResponse> apiCall,
             TRequest request, CallSettings callSettings)
         {
             _pages = new ResponseAsyncEnumerable<TRequest, TResponse, TResource>(apiCall, request, callSettings);
         }
 
         /// <inheritdoc/>
-        public IResponseAsyncEnumerable<TResponse, TResource> AsPages() => _pages;
+        public override IAsyncEnumerable<TResponse> AsRawResponses() => _pages;
 
         /// <inheritdoc/>
-        public IAsyncEnumerator<TResource> GetEnumerator() => _pages.SelectMany(page => page.ToAsyncEnumerable()).GetEnumerator();
+        public override Task<Page<TResource>> ReadPageAsync(
+            int pageSize, CancellationToken cancellationToken = default(CancellationToken)) =>
+            _pages.GetCompletePageAsync(pageSize, cancellationToken);
+
+        /// <inheritdoc/>
+        public override IAsyncEnumerator<TResource> GetEnumerator() => _pages.SelectMany(page => page.ToAsyncEnumerable()).GetEnumerator();
     }
 
     /// <summary>
@@ -55,7 +61,7 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TRequest">The API request type.</typeparam>
     /// <typeparam name="TResponse">The API response type.</typeparam>
     /// <typeparam name="TResource">The resource type contained within the response.</typeparam>
-    internal sealed class ResponseAsyncEnumerable<TRequest, TResponse, TResource> : IResponseAsyncEnumerable<TResponse, TResource>
+    internal sealed class ResponseAsyncEnumerable<TRequest, TResponse, TResource> : IAsyncEnumerable<TResponse>
         where TRequest : class, IPageRequest, IMessage<TRequest>
         where TResponse : class, IPageResponse<TResource>, IMessage<TResponse>
     {
@@ -71,16 +77,47 @@ namespace Google.Api.Gax.Grpc
             _apiCall = apiCall;
         }
 
-        public IResponseAsyncEnumerator<TResponse> GetEnumerator() =>
+        /// <inheritdoc />
+        public IAsyncEnumerator<TResponse> GetEnumerator() =>
             new ResponseAsyncEnumerator(_callSettings, _request.Clone(), _apiCall);
 
-        IAsyncEnumerator<TResponse> IAsyncEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
+        internal async Task<Page<TResource>> GetCompletePageAsync(
+            int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = _request.Clone();
+            var items = new List<TResource>(pageSize);
+            string nextPageToken = "";
+            while (items.Count < pageSize)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                int requestCount = pageSize - items.Count;
+                request.PageSize = requestCount;
+                CallSettings effectiveCallSettings = _callSettings;
+                if (cancellationToken != default(CancellationToken))
+                {
+                    effectiveCallSettings = _callSettings.WithCancellationToken(cancellationToken);
+                }
 
-        /// <inheritdoc />
-        public IAsyncEnumerable<FixedSizePage<TResource>> WithFixedSize(int pageSize) =>
-            new FixedPageSizeAsyncEnumerable(this, pageSize);
+                var current = await _apiCall.Async(request, effectiveCallSettings).ConfigureAwait(false);
+                items.AddRange(current);
+                if (items.Count > pageSize)
+                {
+                    // TODO: Better exception type?
+                    throw new NotSupportedException("Invalid server response: " +
+                        $"requested {requestCount} items, received {current.Count()} items");
+                }
+                nextPageToken = current.NextPageToken;
+                if (nextPageToken == "")
+                {
+                    break;
+                }
+                // Prepare the next request...
+                request.PageToken = nextPageToken;
+            }
+            return new Page<TResource>(items, nextPageToken);
+        }
 
-        private class ResponseAsyncEnumerator : IResponseAsyncEnumerator<TResponse>
+        private class ResponseAsyncEnumerator : IAsyncEnumerator<TResponse>
         {
             private readonly CallSettings _callSettings;
             private readonly ApiCall<TRequest, TResponse> _apiCall;
@@ -120,80 +157,7 @@ namespace Google.Api.Gax.Grpc
                 return true;
             }
 
-            public Task<bool> MoveNext(int pageSize, CancellationToken cancellationToken)
-            {
-                GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
-                _request.PageSize = pageSize;
-                return MoveNext(cancellationToken);
-            }
-
             public void Dispose() { }
-        }
-
-        private class FixedPageSizeAsyncEnumerable : IAsyncEnumerable<FixedSizePage<TResource>>
-        {
-            private readonly IResponseAsyncEnumerable<TResponse, TResource> _source;
-            private readonly int _pageSize;
-
-            internal FixedPageSizeAsyncEnumerable(
-                IResponseAsyncEnumerable<TResponse, TResource> source, int pageSize)
-            {
-                GaxPreconditions.CheckArgument(pageSize > 0, nameof(pageSize), "Must be greater than 0");
-                _source = source;
-                _pageSize = pageSize;
-            }
-
-            public IAsyncEnumerator<FixedSizePage<TResource>> GetEnumerator() =>
-                new Enumerator(_source.GetEnumerator(), _pageSize);
-
-            private class Enumerator : IAsyncEnumerator<FixedSizePage<TResource>>
-            {
-                private readonly IResponseAsyncEnumerator<TResponse> _enumerator;
-                private readonly int _pageSize;
-
-                internal Enumerator(
-                    IResponseAsyncEnumerator<TResponse> enumerator, int pageSize)
-                {
-                    _enumerator = enumerator;
-                    _pageSize = pageSize;
-                }
-
-                public FixedSizePage<TResource> Current { get; private set; }
-
-                public async Task<bool> MoveNext(CancellationToken cancellationToken)
-                {
-                    var items = new List<TResource>(_pageSize);
-                    while (items.Count < _pageSize)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        int requestCount = _pageSize - items.Count;
-                        var done = !(await _enumerator.MoveNext(requestCount, cancellationToken).ConfigureAwait(false));
-                        if (done)
-                        {
-                            break;
-                        }
-                        items.AddRange(_enumerator.Current);
-                        if (items.Count > _pageSize)
-                        {
-                            // TODO: Better exception type?
-                            throw new NotSupportedException("Invalid server response: " +
-                                $"requested {requestCount} items, received {_enumerator.Current.Count()} items");
-                        }
-                    }
-                    if (items.Count != 0)
-                    {
-                        Current = new FixedSizePage<TResource>(items, _enumerator.Current.NextPageToken);
-                        return true;
-                    }
-                    Current = null;
-                    return false;
-                }
-
-                public void Dispose()
-                {
-                    _enumerator.Dispose();
-                }
-            }
         }
     }
 }

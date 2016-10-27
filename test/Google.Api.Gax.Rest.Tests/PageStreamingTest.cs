@@ -39,7 +39,7 @@ namespace Google.Api.Gax.Rest
             {
                 int page = 0;
                 int pageOffset = 0;
-                if (request.PageToken != "")
+                if (request.PageToken != null)
                 {
                     var pageToken = request.PageToken.Split(':').Select(i => int.Parse(i)).ToArray();
                     page = pageToken[0];
@@ -71,11 +71,11 @@ namespace Google.Api.Gax.Rest
                 };
             }
 
-            internal PagedAsyncEnumerable<PageStreamingRequest, PageStreamingResponse, int> PagedAsync(PageStreamingRequest request) =>
-                new PagedAsyncEnumerable<PageStreamingRequest, PageStreamingResponse, int>(CreateRequestProvider(request), new PageManager());
+            internal RestPagedAsyncEnumerable<PageStreamingRequest, PageStreamingResponse, int> PagedAsync(PageStreamingRequest request) =>
+                new RestPagedAsyncEnumerable<PageStreamingRequest, PageStreamingResponse, int>(CreateRequestProvider(request), new PageManager());
 
-            internal PagedEnumerable<PageStreamingRequest, PageStreamingResponse, int> PagedSync(PageStreamingRequest request) =>
-                new PagedEnumerable<PageStreamingRequest, PageStreamingResponse, int>(CreateRequestProvider(request), new PageManager());
+            internal RestPagedEnumerable<PageStreamingRequest, PageStreamingResponse, int> PagedSync(PageStreamingRequest request) =>
+                new RestPagedEnumerable<PageStreamingRequest, PageStreamingResponse, int>(CreateRequestProvider(request), new PageManager());
 
             // We can't just return request each time, as otherwise if a PagedEnumerable is used twice,
             // we'll end up reusing the page token.
@@ -102,7 +102,7 @@ namespace Google.Api.Gax.Rest
 
             public int[] All => Resource.SelectMany(resources => resources).ToArray();
 
-            public int[][] Fixed(int pageSize)
+            public int[][] ToFullPages(int pageSize)
             {
                 List<int[]> ret = new List<int[]>();
                 IEnumerable<int> values = All;
@@ -161,7 +161,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedSync(request);
-            Assert.Equal(pagedResource.Resource, paged.AsPages().Select(x => x.Items.ToArray()).ToArray());
+            Assert.Equal(pagedResource.Resource, paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArray());
         }
 
         [Theory, MemberData(nameof(s_naturalPages))]
@@ -170,7 +170,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
-            Assert.Equal(pagedResource.Resource, await paged.AsPages().Select(x => x.Items.ToArray()).ToArray());
+            Assert.Equal(pagedResource.Resource, await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArray());
         }
 
         [Fact]
@@ -179,7 +179,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0, PageToken = "1:0" };
             var paged = server.PagedSync(request);
-            Assert.Equal(s_resourceA.Resource.Skip(1), paged.AsPages().Select(x => x.Items.ToArray()));
+            Assert.Equal(s_resourceA.Resource.Skip(1), paged.AsRawResponses().Select(x => x.Items.ToArray()));
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0, PageToken = "1:0" };
             var paged = server.PagedAsync(request);
-            Assert.Equal(s_resourceA.Resource.Skip(1), await paged.AsPages().Select(x => x.Items.ToArray()).ToArray());
+            Assert.Equal(s_resourceA.Resource.Skip(1), await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArray());
         }
 
         public static MatrixTheoryData<PagedResource, int> s_flatten = MatrixTheoryData.Create(
@@ -218,25 +218,39 @@ namespace Google.Api.Gax.Rest
             new[] { 1, 2, 3, 4, 20 });
 
         [Theory, MemberData(nameof(s_fixedPageSize))]
-        public void FixedPageSize(PagedResource pagedResource, int pageSize)
+        public void ReadPage(PagedResource pagedResource, int pageSize)
         {
             var server = new FakeServer(pagedResource);
-            var request = new PageStreamingRequest(server) { PageSize = pageSize };
-            var paged = server.PagedSync(request);
-            var fixedSizePages = paged.AsPages().WithFixedSize(pageSize).Select(page => page.ToArray()).ToArray();
-            var expectedPages = pagedResource.Fixed(pageSize);
-            Assert.Equal(expectedPages, fixedSizePages);
+            string pageToken = null;
+            var actualPages = new List<Page<int>>();
+            do
+            {
+                var request = new PageStreamingRequest(server) { PageSize = pageSize, PageToken = pageToken };
+                var paged = server.PagedSync(request);
+                actualPages.Add(paged.ReadPage(pageSize));
+            } while ((pageToken = actualPages.Last().NextPageToken) != null);
+            var expectedPages = pagedResource.ToFullPages(pageSize);
+            // Ignore trailing empty pages; we could change the fake server to avoid returning a page
+            // token when we've reached (but not gone past) the end.
+            Assert.Equal(expectedPages, actualPages.TakeWhile(p => p.Any()).Select(p => p.ToArray()).ToArray());
         }
 
         [Theory, MemberData(nameof(s_fixedPageSize))]
-        public async Task FixedPageSizeAsync(PagedResource pagedResource, int pageSize)
+        public async Task ReadPageAsync(PagedResource pagedResource, int pageSize)
         {
             var server = new FakeServer(pagedResource);
-            var request = new PageStreamingRequest(server) { PageSize = pageSize };
-            var paged = server.PagedAsync(request);
-            var fixedSizePages = await paged.AsPages().WithFixedSize(pageSize).Select(page => page.ToArray()).ToArray();
-            var expectedPages = pagedResource.Fixed(pageSize);
-            Assert.Equal(expectedPages, fixedSizePages);
+            string pageToken = null;
+            var actualPages = new List<Page<int>>();
+            do
+            {
+                var request = new PageStreamingRequest(server) { PageSize = pageSize, PageToken = pageToken };
+                var paged = server.PagedAsync(request);
+                actualPages.Add(await paged.ReadPageAsync(pageSize));
+            } while ((pageToken = actualPages.Last().NextPageToken) != null);
+            var expectedPages = pagedResource.ToFullPages(pageSize);
+            // Ignore trailing empty pages; we could change the fake server to avoid returning a page
+            // token when we've reached (but not gone past) the end.
+            Assert.Equal(expectedPages, actualPages.TakeWhile(p => p.Any()).Select(p => p.ToArray()).ToArray());
         }
 
         [Fact]
@@ -247,13 +261,13 @@ namespace Google.Api.Gax.Rest
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedSync(request);
             // Natural pages
-            Assert.Equal(1, paged.AsPages().Count());
-            var page1 = paged.AsPages().First();
+            Assert.Equal(1, paged.AsRawResponses().Count());
+            var page1 = paged.AsRawResponses().First();
             Assert.Null(page1.Items);
             Assert.Null(page1.NextPageToken);
             // Unnatural things
             Assert.Empty(paged);
-            Assert.Empty(paged.AsPages().WithFixedSize(1));
+            Assert.Empty(paged.ReadPage(1));
         }
 
         [Fact]
@@ -264,13 +278,13 @@ namespace Google.Api.Gax.Rest
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
             // Natural pages
-            Assert.Equal(1, await paged.AsPages().Count());
-            var page1 = await paged.AsPages().First();
+            Assert.Equal(1, await paged.AsRawResponses().Count());
+            var page1 = await paged.AsRawResponses().First();
             Assert.Null(page1.Items);
             Assert.Null(page1.NextPageToken);
             // Unnatural things
             Assert.Empty(await paged.ToArray());
-            Assert.Empty(await paged.AsPages().WithFixedSize(1).ToArray());
+            Assert.Empty(await paged.ReadPageAsync(1));
         }
 
         [Fact]
@@ -279,8 +293,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedSync(request);
-            var fixedSize = paged.AsPages().WithFixedSize(1);
-            Assert.Throws<NotSupportedException>(() => fixedSize.First());
+            Assert.Throws<NotSupportedException>(() => paged.ReadPage(1));
         }
 
         [Fact]
@@ -289,16 +302,13 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
-            var fixedSize = paged.AsPages().WithFixedSize(1);
-            var ex = await Record.ExceptionAsync(() => fixedSize.First());
-            Assert.IsType<NotSupportedException>(ex);
+            await Assert.ThrowsAsync<NotSupportedException>(() => paged.ReadPageAsync(1));
         }
-
 
         private class PageStreamingRequest : IClientServiceRequest<PageStreamingResponse>
         {
             public FakeServer Server { get; }
-            public string PageToken { get; set; } = "";
+            public string PageToken { get; set; }
             public int PageSize { get; set; }
 
             internal PageStreamingRequest(FakeServer server)
