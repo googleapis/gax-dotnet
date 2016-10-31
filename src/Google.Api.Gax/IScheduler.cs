@@ -33,17 +33,5 @@ namespace Google.Api.Gax
         /// </summary>
         /// <param name="delay">Time to sleep for. Must not be negative.</param>
         void Sleep(TimeSpan delay);
-
-        /// <summary>
-        /// Schedules an action to be executed in another thread.
-        /// </summary>
-        /// <remarks>
-        /// Implementations must guarantee that the action will not be executed synchronously,
-        /// even if <paramref name="delay"/> is zero.
-        /// </remarks>
-        /// <param name="action">Action to execute after a delay.</param>
-        /// <param name="delay">Time to delay before executing the action. Must not be negative.</param>
-        /// <returns>A task which will complete after the action has executed.</returns>
-        Task Schedule(Action action, TimeSpan delay);
     }
 }

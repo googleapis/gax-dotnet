@@ -33,7 +33,7 @@ namespace Google.Api.Gax.Testing
         public FakeClock Clock { get; }
 
         private readonly object _monitor = new object();
-        private LinkedList<ScheduledAction> _actions = new LinkedList<ScheduledAction>();
+        private LinkedList<DelayTimer> _actions = new LinkedList<DelayTimer>();
         private bool _stopped;
 
         /// <summary>
@@ -53,18 +53,10 @@ namespace Google.Api.Gax.Testing
         }
 
         /// <inheritdoc />
-        public Task Delay(TimeSpan delay) => Schedule(delegate { }, delay);
+        public Task Delay(TimeSpan delay) => AddTimer(Clock.GetCurrentDateTimeUtc() + delay);
 
         /// <inheritdoc />
         public void Sleep(TimeSpan delay) => Delay(delay).Wait();
-
-        /// <inheritdoc />
-        public Task Schedule(Action action, TimeSpan delay)
-        {
-            var tcs = new TaskCompletionSource<int>();
-            AddScheduledAction(new ScheduledAction(action, Clock.GetCurrentDateTimeUtc() + delay, tcs));
-            return tcs.Task;
-        }
 
         /// <summary>
         /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
@@ -218,7 +210,7 @@ namespace Google.Api.Gax.Testing
                 TimeSpan monitorTimeout = RealTimeTimeout + TimeSpan.FromSeconds(2);
                 while (Clock.GetCurrentDateTimeUtc() < simulatedTimeout)
                 {
-                    ScheduledAction next;
+                    DelayTimer next;
                     lock (_monitor)
                     {
                         while (!_stopped && _actions.Count == 0)
@@ -238,43 +230,42 @@ namespace Google.Api.Gax.Testing
                         _actions.RemoveFirst();
                     }
                     Clock.AdvanceTo(next.ScheduledTime);
-                    Task.Run(next.Action);
                     next.CompletionSource.SetResult(0);                    
                 }
             });
         }
         
-        private void AddScheduledAction(ScheduledAction scheduledAction)
+        private Task AddTimer(DateTime scheduledTime)
         {
+            var timer = new DelayTimer(scheduledTime, new TaskCompletionSource<int>());
             lock (_monitor)
             {
                 var node = _actions.First;
                 while (node != null)
                 {
-                    if (node.Value.ScheduledTime > scheduledAction.ScheduledTime)
+                    if (node.Value.ScheduledTime > scheduledTime)
                     {
-                        _actions.AddBefore(node, scheduledAction);
+                        _actions.AddBefore(node, timer);
                         break;
                     }
                     node = node.Next;
                 }
                 if (node == null)
                 {
-                    _actions.AddLast(scheduledAction);
+                    _actions.AddLast(timer);
                 }
                 Monitor.PulseAll(_monitor);
             }
+            return timer.CompletionSource.Task;
         }
 
-        private sealed class ScheduledAction
+        private sealed class DelayTimer
         {
-            internal Action Action { get; }
             internal DateTime ScheduledTime { get; }
             internal TaskCompletionSource<int> CompletionSource { get; }
 
-            internal ScheduledAction(Action action, DateTime scheduledTime, TaskCompletionSource<int> tcs)
+            internal DelayTimer(DateTime scheduledTime, TaskCompletionSource<int> tcs)
             {
-                Action = action;
                 ScheduledTime = scheduledTime;
                 CompletionSource = tcs;
             }

@@ -15,23 +15,6 @@ namespace Google.Api.Gax.Tests
     public class FakeSchedulerTest
     {
         [Fact]
-        public void ScheduleMultipleEvents()
-        {
-            var scheduler = new FakeScheduler();
-            var tcs1 = new TaskCompletionSource<int>();
-            var tcs2 = new TaskCompletionSource<int>();
-            // The scheduler will start each action at the right fake time, but
-            // because nothing is sleeping, we need to be careful to wait until the
-            // actions have *finished* before our overall action completes.
-            scheduler.Schedule(() => tcs1.SetResult(1), TimeSpan.FromSeconds(1));
-            scheduler.Schedule(() => tcs2.SetResult(2), TimeSpan.FromSeconds(2));
-            scheduler.Run(() => Task.WaitAll(tcs1.Task, tcs2.Task));
-            Assert.Equal(1, tcs1.Task.Result);
-            Assert.Equal(2, tcs2.Task.Result);
-            Assert.Equal(TimeSpan.FromSeconds(2).Ticks, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
-        }
-
-        [Fact]
         public void SynchronousSleep()
         {
             var scheduler = new FakeScheduler();
