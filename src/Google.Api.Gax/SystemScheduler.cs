@@ -22,13 +22,5 @@ namespace Google.Api.Gax
 
         /// <inheritdoc />
         public void Sleep(TimeSpan timeSpan) => Thread.Sleep(timeSpan);
-
-        /// <inheritdoc />
-        public Task Schedule(Action action, TimeSpan timeSpan) =>
-            Task.Run(async () =>
-            {
-                await Delay(timeSpan);
-                action();
-            });
     }
 }
