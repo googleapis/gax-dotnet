@@ -5,8 +5,7 @@
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Google.Api.Gax.Grpc": { "target": "project" },
     "Google.Api.Gax.Testing": { "target": "project" },
-    "Moq": "4.6.36-alpha",
-    "System.Interactive.Async": "3.0.0"
+    "Moq": "4.6.36-alpha"
   },
   "testRunner": "xunit",
   "buildOptions": {

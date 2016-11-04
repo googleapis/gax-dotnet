@@ -18,9 +18,8 @@
 
   "dependencies": {
     "Google.Api.Gax": { "target": "project" },
-    "Google.Apis.Auth": "1.16.0",
-    "Google.Apis": "1.16.0",
-    "System.Interactive.Async": "3.0.0"
+    "Google.Apis.Auth": "1.18.0",
+    "Google.Apis": "1.18.0"
   },
   "frameworks": {
     "net45": { },
