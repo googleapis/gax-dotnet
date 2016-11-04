@@ -6,8 +6,6 @@
     "Google.Api.Gax": { "target": "project" },
     "Google.Api.Gax.Grpc": { "target": "project" },
     "Google.Api.Gax.Testing": { "target": "project" },
-    "System.Interactive.Async": "3.0.0",
-    "Grpc.Core": "1.0.1-pre1",
     "Moq": "4.6.36-alpha"
   },
   "testRunner": "xunit",
