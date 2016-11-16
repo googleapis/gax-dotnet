@@ -17,6 +17,7 @@
   },
 
   "dependencies": {
+    "Google.Apis.Auth": "1.18.0",
     "System.Interactive.Async": "3.1.0"
   },
   "frameworks": {
