@@ -8,7 +8,7 @@
 namespace Google.Api.Gax
 {
     /// <summary>
-    /// The kind of resource-name.
+    /// The kind of resource name.
     /// </summary>
     public enum ResourceNameKind
     {
@@ -18,12 +18,12 @@ namespace Google.Api.Gax
         Simple,
 
         /// <summary>
-        /// One of a selection of resource-names.
+        /// One of a selection of resource names.
         /// </summary>
         Oneof,
 
         /// <summary>
-        /// A fixed string instead of a resource-name.
+        /// A fixed string instead of a resource name.
         /// </summary>
         Fixed,
 

@@ -56,7 +56,6 @@ namespace Google.Api.Gax.Tests
             Assert.False(name3.Equals((object)name1));
             Assert.False(name1 == name3);
             Assert.True(name1 != name3);
-
         }
     }
 }

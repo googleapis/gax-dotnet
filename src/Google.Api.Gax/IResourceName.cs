@@ -8,19 +8,19 @@
 namespace Google.Api.Gax
 {
     /// <summary>
-    /// A resource-name.
+    /// A resource name.
     /// </summary>
     public interface IResourceName
     {
         /// <summary>
-        /// The kind of resource-name.
+        /// The kind of resource name.
         /// </summary>
         ResourceNameKind Kind { get; }
 
         /// <summary>
-        /// The string representation of the resource-name.
+        /// The string representation of the resource name.
         /// </summary>
-        /// <returns>The string representation of the resource-name.</returns>
+        /// <returns>The string representation of the resource name.</returns>
         string ToString();
     }
 }

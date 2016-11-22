@@ -19,8 +19,8 @@ namespace Google.Api.Gax.Tests
             new ResourceNameList<UnknownResourceName>(list, s => new UnknownResourceName(s));
 
 
-    [Fact]
-    public void Cound()
+        [Fact]
+        public void Count()
         {
             Assert.Equal(2, ResourceList(List("a", "b")).Count);
         }
@@ -48,6 +48,13 @@ namespace Google.Api.Gax.Tests
             var resourceList = ResourceList(list);
             resourceList.Add(new UnknownResourceName("c"));
             Assert.Equal(List("a", "b", "c"), list);
+        }
+
+        [Fact]
+        public void Add_NullElement()
+        {
+            var resourceList = ResourceList(List());
+            Assert.Throws<ArgumentNullException>(() => resourceList.Add(null));
         }
 
         [Fact]
@@ -119,13 +126,6 @@ namespace Google.Api.Gax.Tests
             var list = List("a", "b");
             ResourceList(list).RemoveAt(1);
             Assert.Equal(List("a"), list);
-        }
-
-        [Fact]
-        public void Null()
-        {
-            var resourceList = ResourceList(List());
-            Assert.Throws<ArgumentNullException>(() => resourceList.Add(null));
         }
     }
 }

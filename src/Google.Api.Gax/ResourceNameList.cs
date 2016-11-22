@@ -13,10 +13,10 @@ using System.Linq;
 namespace Google.Api.Gax
 {
     /// <summary>
-    /// A list of resource-names of a specific type, that delegates all operations to an
-    /// underlying list of string-based resource-names.
+    /// A list of resource names of a specific type, that delegates all operations to an
+    /// underlying list of string-based resource names.
     /// </summary>
-    /// <typeparam name="TName">The type of the resource-name contained in this list.</typeparam>
+    /// <typeparam name="TName">The type of the resource name contained in this list.</typeparam>
     public sealed class ResourceNameList<TName> : IList<TName> where TName : class, IResourceName
     {
         private readonly IList<String> _underlyingList;
@@ -25,7 +25,7 @@ namespace Google.Api.Gax
 
         /// <summary>
         /// Constructs a <see cref="ResourceNameList{TName}"/> from an underlying string-based list
-        /// and a resource-name parser.
+        /// and a resource name parser.
         /// </summary>
         /// <param name="underlyingList"></param>
         /// <param name="stringToName"></param>

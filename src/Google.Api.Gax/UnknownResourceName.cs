@@ -10,25 +10,25 @@ using System;
 namespace Google.Api.Gax
 {
     /// <summary>
-    /// A resource-name in which nothing is known about the name structure.
+    /// A resource name in which nothing is known about the name structure.
     /// </summary>
     public sealed class UnknownResourceName : IResourceName, IEquatable<UnknownResourceName>
     {
         /// <summary>
-        /// Parse a resource-name into an <see cref="UnknownResourceName"/>.
-        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource-name string.
+        /// Parse a resource name into an <see cref="UnknownResourceName"/>.
+        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource name string.
         /// </summary>
-        /// <param name="name">A resource-name.</param>
+        /// <param name="name">A resource name.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="name"/> is an invalid resource-name.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is an invalid resource name.</exception>
         /// <returns>An <see cref="UnknownResourceName"/> representing the given string.</returns>
         public static UnknownResourceName Parse(string name) => new UnknownResourceName(name);
 
         /// <summary>
-        /// Tries to parse the given resource-name into an <see cref="UnknownResourceName"/>.
-        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource-name string.
+        /// Tries to parse the given resource name into an <see cref="UnknownResourceName"/>.
+        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource name string.
         /// </summary>
-        /// <param name="name">A resource-name.</param>
+        /// <param name="name">A resource name.</param>
         /// <param name="result">The <see cref="UnknownResourceName"/> result if parsing is successful, otherwise <c>null</c>.</param>
         /// <returns><c>true</c> if <paramref name="name"/> was successfully parsed, otherwise <c>false</c>.</returns>
         public static bool TryParse(string name, out UnknownResourceName result)
@@ -48,13 +48,13 @@ namespace Google.Api.Gax
         private readonly string _name;
 
         /// <summary>
-        /// Creates an unkown resource-name from the given resource-name string.
-        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource-name string.
+        /// Creates an unkown resource name from the given resource name string.
+        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource name string.
         /// </summary>
         /// <param name="name"></param>
         public UnknownResourceName(string name)
         {
-            // TODO: Verify it looks like a resource-name.
+            // TODO: Verify it looks like a resource name.
             _name = GaxPreconditions.CheckNotNullOrEmpty(name, nameof(name));
         }
 
