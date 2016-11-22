@@ -207,7 +207,7 @@ namespace Google.Api.Gax
         /// <param name="name">The resource name to parse against this template. Must not be null.</param>
         /// <param name="result">When this method returns, the parsed resource name or <c>null</c> if parsing fails.</param>
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
-        public bool TryParseName(string name, out ResourceName result)
+        public bool TryParseName(string name, out TemplatedResourceName result)
         {
             return TryParseNameInternal(name, out result) == null;
         }
@@ -216,10 +216,10 @@ namespace Google.Api.Gax
         /// Attempts to parse the given resource name against this template, throwing <see cref="ArgumentException" /> on failure.
         /// </summary>
         /// <param name="name">The resource name to parse against this template. Must not be null.</param>
-        /// <returns>The parsed name as a <see cref="ResourceName"/>.</returns>
-        public ResourceName ParseName(string name)
+        /// <returns>The parsed name as a <see cref="TemplatedResourceName"/>.</returns>
+        public TemplatedResourceName ParseName(string name)
         {
-            ResourceName resourceName;
+            TemplatedResourceName resourceName;
             string errorText = TryParseNameInternal(name, out resourceName);
             if (resourceName == null)
             {
@@ -231,7 +231,7 @@ namespace Google.Api.Gax
         /// <summary>
         /// Implementation of parsing, returning the error message for a FormatException if parsing fails.
         /// </summary>
-        private string TryParseNameInternal(string name, out ResourceName result)
+        private string TryParseNameInternal(string name, out TemplatedResourceName result)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             string serviceName = null;
@@ -313,7 +313,7 @@ namespace Google.Api.Gax
                         break;
                 }
             }
-            result = ResourceName.CreateWithShallowCopy(this, serviceName, resourceIds);
+            result = TemplatedResourceName.CreateWithShallowCopy(this, serviceName, resourceIds);
             return null; // Success!
         }
 
