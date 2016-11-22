@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Google.Api.Gax
 {
@@ -21,7 +20,7 @@ namespace Google.Api.Gax
     /// modified, but only within the same template.
     /// </para>
     /// </remarks>
-    public sealed class ResourceName
+    public sealed class TemplatedResourceName : IResourceName, IEquatable<TemplatedResourceName>
     {
         /// <summary>
         /// The template this resource name is associated with. Never null.
@@ -93,7 +92,7 @@ namespace Google.Api.Gax
         /// </summary>
         /// <param name="template">The template for the new resource name. Must not be null.</param>
         /// <param name="resourceIds">The resource IDs to populate template parameters with. Must not be null.</param>
-        public ResourceName(PathTemplate template, params string[] resourceIds)
+        public TemplatedResourceName(PathTemplate template, params string[] resourceIds)
         {
             Template = GaxPreconditions.CheckNotNull(template, nameof(Template));
             GaxPreconditions.CheckNotNull(resourceIds, nameof(resourceIds));
@@ -107,25 +106,28 @@ namespace Google.Api.Gax
         /// Creates a clone of this resource name, which is then independent of the original.
         /// </summary>
         /// <returns>A clone of this resource name.</returns>
-        public ResourceName Clone()
+        public TemplatedResourceName Clone()
         {
-            return new ResourceName(Template, ServiceName, (string[]) _resourceIds.Clone(), true);
+            return new TemplatedResourceName(Template, ServiceName, (string[]) _resourceIds.Clone(), true);
         }
 
         /// <summary>
         /// Private constructor used by internal code to avoid repeated cloning and validation.
         /// </summary>
-        private ResourceName(PathTemplate template, string serviceName, string[] resourceIds, bool ignored)
+        private TemplatedResourceName(PathTemplate template, string serviceName, string[] resourceIds, bool ignored)
         {
             Template = GaxPreconditions.CheckNotNull(template, nameof(template));
             ServiceName = serviceName;
             this._resourceIds = resourceIds;
         }
 
-        internal static ResourceName CreateWithShallowCopy(PathTemplate template, string serviceName, string[] resourceIds)
+        internal static TemplatedResourceName CreateWithShallowCopy(PathTemplate template, string serviceName, string[] resourceIds)
         {
-            return new ResourceName(template, serviceName, resourceIds, true);
+            return new TemplatedResourceName(template, serviceName, resourceIds, true);
         }
+
+        /// <inheritdoc />
+        public ResourceNameKind Kind => ResourceNameKind.Templated;
 
         /// <summary>
         /// Returns a string representation of this resource name, expanding the template
@@ -133,5 +135,20 @@ namespace Google.Api.Gax
         /// </summary>
         /// <returns>A string representation of this resource name.</returns>
         public override string ToString() => Template.ReplaceParameters(ServiceName, _resourceIds);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => ToString().GetHashCode();
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as TemplatedResourceName);
+
+        /// <inheritdoc />
+        public bool Equals(TemplatedResourceName other) => ToString() == other?.ToString();
+
+        /// <inheritdoc />
+        public static bool operator ==(TemplatedResourceName a, TemplatedResourceName b) => ReferenceEquals(a, b) || (a?.Equals(b) ?? false);
+
+        /// <inheritdoc />
+        public static bool operator !=(TemplatedResourceName a, TemplatedResourceName b) => !(a == b);
     }
 }

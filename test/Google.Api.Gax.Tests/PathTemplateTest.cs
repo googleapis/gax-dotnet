@@ -56,7 +56,7 @@ namespace Google.Api.Gax.Tests
         {
             var template = new PathTemplate(templateText);
             Assert.Throws<FormatException>(() => template.ParseName(name));
-            ResourceName result;
+            TemplatedResourceName result;
             Assert.False(template.TryParseName(name, out result));
             Assert.Null(result);
         }
@@ -87,7 +87,7 @@ namespace Google.Api.Gax.Tests
             Assert.Equal(name, resourceName.ToString());
 
             // And TryParse...
-            ResourceName result;
+            TemplatedResourceName result;
             Assert.True(template.TryParseName(name, out result));
             Assert.NotNull(result);
         }
