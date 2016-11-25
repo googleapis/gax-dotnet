@@ -13,9 +13,14 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Testing
 {
     /// <summary>
-    /// Fake implementation of <see cref="IScheduler" />, designed to work with
+    /// Experimental - please read reamarks. Fake implementation of <see cref="IScheduler" />, designed to work with
     /// <see cref="FakeClock"/>.
     /// </summary>
+    /// <remarks>
+    /// This class is currently hard to use robustly, and cancellation in particular is hard.
+    /// The API and behavior may change in future versions without a major version bump - in other words,
+    /// this is not considered part of the stable API of the package.
+    /// </remarks>
     public sealed class FakeScheduler : IScheduler
     {
         /// <summary>
@@ -56,19 +61,6 @@ namespace Google.Api.Gax.Testing
         /// <inheritdoc />
         public Task Delay(TimeSpan delay, CancellationToken cancellationToken = default(CancellationToken)) =>
             AddTimer(Clock.GetCurrentDateTimeUtc() + delay, cancellationToken);
-
-        /// <summary>
-        /// Schedules tokens from the given source to be cancelled in the future. Use of this method
-        /// ensures that any tasks depending on tokens from this source will be cancelled before the clock advances further.
-        /// </summary>
-        /// <param name="delay">The delay in cancelling (i.e. when we should cancel)</param>
-        /// <param name="cts">The cancellation token source to cancel.</param>
-        public void ScheduleCancellation(TimeSpan delay, CancellationTokenSource cts)
-        {
-            // We need to execute synchronously so that any tasks will really be cancelled before
-            // the clock advances again.
-            Delay(delay).ContinueWith(_ => cts.Cancel(), TaskContinuationOptions.ExecuteSynchronously);
-        }
 
         /// <summary>
         /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
