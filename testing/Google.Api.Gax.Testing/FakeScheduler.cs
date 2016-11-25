@@ -52,11 +52,23 @@ namespace Google.Api.Gax.Testing
         {
         }
 
+        // Defaulting cancellation token makes it simpler to use for some tests.
         /// <inheritdoc />
-        public Task Delay(TimeSpan delay) => AddTimer(Clock.GetCurrentDateTimeUtc() + delay);
+        public Task Delay(TimeSpan delay, CancellationToken cancellationToken = default(CancellationToken)) =>
+            AddTimer(Clock.GetCurrentDateTimeUtc() + delay, cancellationToken);
 
-        /// <inheritdoc />
-        public void Sleep(TimeSpan delay) => Delay(delay).Wait();
+        /// <summary>
+        /// Schedules tokens from the given source to be cancelled in the future. Use of this method
+        /// ensures that any tasks depending on tokens from this source will be cancelled before the clock advances further.
+        /// </summary>
+        /// <param name="delay">The delay in cancelling (i.e. when we should cancel)</param>
+        /// <param name="cts">The cancellation token source to cancel.</param>
+        public void ScheduleCancellation(TimeSpan delay, CancellationTokenSource cts)
+        {
+            // We need to execute synchronously so that any tasks will really be cancelled before
+            // the clock advances again.
+            Delay(delay).ContinueWith(_ => cts.Cancel(), TaskContinuationOptions.ExecuteSynchronously);
+        }
 
         /// <summary>
         /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
@@ -229,15 +241,24 @@ namespace Google.Api.Gax.Testing
                         next = _actions.First.Value;
                         _actions.RemoveFirst();
                     }
-                    Clock.AdvanceTo(next.ScheduledTime);
-                    next.CompletionSource.SetResult(0);                    
+                    // Ignore cancelled tasks. (They can't be faulted or run to completion yet.)
+                    if (!next.CompletionSource.Task.IsCanceled)
+                    {
+                        Clock.AdvanceTo(next.ScheduledTime);
+                        next.CompletionSource.SetResult(0);
+                    }
                 }
             });
         }
-        
-        private Task AddTimer(DateTime scheduledTime)
+
+        private void WaitForCancellationPropagation()
         {
-            var timer = new DelayTimer(scheduledTime, new TaskCompletionSource<int>());
+        }
+        
+        private Task AddTimer(DateTime scheduledTime, CancellationToken cancellationToken)
+        {
+            var timer = new DelayTimer(scheduledTime, new TaskCompletionSource<int>(), cancellationToken);
+
             lock (_monitor)
             {
                 var node = _actions.First;
@@ -264,10 +285,14 @@ namespace Google.Api.Gax.Testing
             internal DateTime ScheduledTime { get; }
             internal TaskCompletionSource<int> CompletionSource { get; }
 
-            internal DelayTimer(DateTime scheduledTime, TaskCompletionSource<int> tcs)
+            internal DelayTimer(DateTime scheduledTime, TaskCompletionSource<int> tcs, CancellationToken cancellationToken)
             {
                 ScheduledTime = scheduledTime;
                 CompletionSource = tcs;
+                if (cancellationToken.CanBeCanceled)
+                {
+                    cancellationToken.Register(() => CompletionSource.TrySetCanceled());
+                }
             }
         }
 

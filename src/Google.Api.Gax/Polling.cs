@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
@@ -28,6 +29,7 @@ namespace Google.Api.Gax
         /// <param name="clock">The clock to use for determining deadlines. Must not be null.</param>
         /// <param name="scheduler">The scheduler to use for delaying between calls. Must not be null.</param>
         /// <param name="pollSettings">The poll settings, controlling timeouts, call settings and delays.</param>
+        /// <param name="cancellationToken">The cancellation token used to cancel delays, if any.</param>
         /// <returns>The completed response.</returns>
         /// <exception cref="TimeoutException">The timeout specified in the poll settings expired.</exception>
         public static TResponse PollRepeatedly<TResponse>(
@@ -35,7 +37,8 @@ namespace Google.Api.Gax
             Predicate<TResponse> completionPredicate,
             IClock clock,
             IScheduler scheduler,
-            PollSettings pollSettings)
+            PollSettings pollSettings,
+            CancellationToken cancellationToken)
         {
             GaxPreconditions.CheckNotNull(pollAction, nameof(pollAction));
             GaxPreconditions.CheckNotNull(completionPredicate, nameof(completionPredicate));
@@ -56,7 +59,7 @@ namespace Google.Api.Gax
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                scheduler.Sleep(pollSettings.Delay);
+                scheduler.Sleep(pollSettings.Delay, cancellationToken);
             }
         }
 
@@ -73,13 +76,15 @@ namespace Google.Api.Gax
         /// <param name="clock">The clock to use for determining deadlines. Must not be null.</param>
         /// <param name="scheduler">The scheduler to use for delaying between calls. Must not be null.</param>
         /// <param name="pollSettings">The poll settings, controlling timeouts, call settings and delays.</param>
+        /// <param name="cancellationToken">The cancellation token used to cancel delays, if any.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task will be the completed response.</returns>
         public static async Task<TResponse> PollRepeatedlyAsync<TResponse>(
             Func<DateTime?, Task<TResponse>> pollAction,
             Predicate<TResponse> completionPredicate,
             IClock clock,
             IScheduler scheduler,
-            PollSettings pollSettings)
+            PollSettings pollSettings,
+            CancellationToken cancellationToken)
         {
             GaxPreconditions.CheckNotNull(pollAction, nameof(pollAction));
             GaxPreconditions.CheckNotNull(completionPredicate, nameof(completionPredicate));
@@ -100,10 +105,7 @@ namespace Google.Api.Gax
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                // TODO: Use a cancellation token if we have one. Not clear where we'd get it from though,
-                // as it could be in the underlying call settings which we don't have access to. Maybe
-                // only use a cancellation token if it's specified in pollSettings.CallSettings?
-                await scheduler.Delay(pollSettings.Delay).ConfigureAwait(false);
+                await scheduler.Delay(pollSettings.Delay, cancellationToken).ConfigureAwait(false);
             }
         }
     }

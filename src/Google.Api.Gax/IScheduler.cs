@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
@@ -25,13 +26,27 @@ namespace Google.Api.Gax
         /// (A test implementation may capture the current context to enable reliable testing.)
         /// </summary>
         /// <param name="delay">Time to delay for. Must not be negative.</param>
+        /// <param name="cancellationToken">The cancellation token that will be checked prior to completing the returned task.</param>
         /// <returns>A task which will complete after the given delay.</returns>
-        Task Delay(TimeSpan delay);
+        Task Delay(TimeSpan delay, CancellationToken cancellationToken);
+    }
 
+    /// <summary>
+    /// Extension methods for <see cref="IScheduler"/>.
+    /// </summary>
+    public static class SchedulerExtensions
+    {
         /// <summary>
-        /// Synchronously sleeps for the given delay.
+        /// Simulates a synchronous delay by calling <see cref="IScheduler.Delay(TimeSpan, CancellationToken)"/> on
+        /// <paramref name="scheduler"/>, and unwrapping any exceptions generated (typically cancellation).
         /// </summary>
+        /// <param name="scheduler">The scheduler to use for the sleep operation.</param>
         /// <param name="delay">Time to sleep for. Must not be negative.</param>
-        void Sleep(TimeSpan delay);
+        /// <param name="cancellationToken">The cancellation token that will be watched during the sleep operation.</param>
+        /// <exception cref="OperationCanceledException">The cancellation token was cancelled during the sleep.</exception>
+        public static void Sleep(this IScheduler scheduler, TimeSpan delay, CancellationToken cancellationToken)
+            => GaxPreconditions.CheckNotNull(scheduler, nameof(scheduler))
+                .Delay(delay, cancellationToken)
+                .WaitWithUnwrappedExceptions();
     }
 }

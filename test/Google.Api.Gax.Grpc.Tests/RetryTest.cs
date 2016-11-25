@@ -271,7 +271,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 CallTimes.Add(scheduler.Clock.GetCurrentDateTimeUtc());
                 CallSettingsReceived.Add(callSettings);
-                scheduler.Sleep(callDuration);
+                scheduler.Delay(callDuration).Wait();
                 if (failuresToReturn > 0)
                 {
                     failuresToReturn--;

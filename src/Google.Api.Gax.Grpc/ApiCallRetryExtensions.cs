@@ -47,7 +47,7 @@ namespace Google.Api.Gax.Grpc
                         {
                             throw;
                         }
-                        await scheduler.Delay(actualDelay);
+                        await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
                         retryDelay = retrySettings.RetryBackoff.NextDelay(retryDelay);
                         callTimeout = retrySettings.TimeoutBackoff.NextDelay(callTimeout);
                     }
@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc
                         {
                             throw;
                         }
-                        scheduler.Sleep(actualDelay);
+                        scheduler.Sleep(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
                         retryDelay = retrySettings.RetryBackoff.NextDelay(retryDelay);
                         callTimeout = retrySettings.TimeoutBackoff.NextDelay(callTimeout);
                     }
