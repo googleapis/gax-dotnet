@@ -47,25 +47,11 @@ namespace Google.Api.Gax
         /// in which case the default application credentials will be used.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task
         /// is the scoped credentials.</returns>
-        public GoogleCredential GetCredentials(GoogleCredential credentials)
-        {
-            if (credentials != null)
-            {
-                return ApplyScopes(credentials);
-            }
-            try
-            {
+        public GoogleCredential GetCredentials(GoogleCredential credentials) =>
+            credentials == null
                 // No need to apply scopes here - they're already applied.
-                return _lazyScopedDefaultCredentials.Value.Result;
-            }
-            catch (AggregateException e)
-            {
-                // Unwrap the first exception, a bit like await would.
-                // It's very unlikely that we'd ever see an AggregateException without an inner exceptions,
-                // but let's handle it relatively gracefully.
-                throw e.InnerExceptions.FirstOrDefault() ?? e;
-            }
-        }
+                ? _lazyScopedDefaultCredentials.Value.ResultWithUnwrappedExceptions()
+                : ApplyScopes(credentials);
 
         /// <summary>
         /// Asynchronously returns credentials with the scopes applied if required.

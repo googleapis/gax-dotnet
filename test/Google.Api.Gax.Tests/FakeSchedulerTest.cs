@@ -7,6 +7,7 @@
 
 using Google.Api.Gax.Testing;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,11 +16,25 @@ namespace Google.Api.Gax.Tests
     public class FakeSchedulerTest
     {
         [Fact]
-        public void SynchronousSleep()
+        public async Task SimpleDelay()
         {
             var scheduler = new FakeScheduler();
-            scheduler.Run(() => scheduler.Sleep(TimeSpan.FromTicks(1000)));
+            await scheduler.RunAsync(() => scheduler.Delay(TimeSpan.FromTicks(1000)));
             Assert.Equal(1000, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
+        }
+
+        [Fact]
+        public async Task Cancellation()
+        {
+            var scheduler = new FakeScheduler();
+            await scheduler.RunAsync(async () =>
+            {
+                var cts = new CancellationTokenSource();
+                scheduler.ScheduleCancellation(TimeSpan.FromTicks(500), cts);
+                var task = scheduler.Delay(TimeSpan.FromTicks(1000), cts.Token);
+                await Assert.ThrowsAsync<TaskCanceledException>(() => scheduler.Delay(TimeSpan.FromTicks(1000), cts.Token));
+            });
+            Assert.Equal(500, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
         }
     }
 }
