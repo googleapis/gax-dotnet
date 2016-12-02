@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/endpoint.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class EndpointReflection {
 
     #region Descriptor
@@ -85,25 +84,29 @@ namespace Google.Api {
   ///        }]
   ///      }
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Endpoint : pb::IMessage<Endpoint> {
     private static readonly pb::MessageParser<Endpoint> _parser = new pb::MessageParser<Endpoint>(() => new Endpoint());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Endpoint> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.EndpointReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Endpoint() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Endpoint(Endpoint other) : this() {
       name_ = other.name_;
       aliases_ = other.aliases_.Clone();
@@ -112,6 +115,7 @@ namespace Google.Api {
       allowCors_ = other.allowCors_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Endpoint Clone() {
       return new Endpoint(this);
     }
@@ -122,6 +126,7 @@ namespace Google.Api {
     /// <summary>
     ///  The canonical name of this endpoint.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -141,6 +146,7 @@ namespace Google.Api {
     ///
     ///  Additional names that this endpoint will be hosted on.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Aliases {
       get { return aliases_; }
     }
@@ -153,6 +159,7 @@ namespace Google.Api {
     /// <summary>
     ///  The list of APIs served by this endpoint.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Apis {
       get { return apis_; }
     }
@@ -165,6 +172,7 @@ namespace Google.Api {
     /// <summary>
     ///  The list of features enabled on this endpoint.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Features {
       get { return features_; }
     }
@@ -180,6 +188,7 @@ namespace Google.Api {
     ///  the browser to determine whether the subsequent cross-origin request is
     ///  allowed to proceed.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowCors {
       get { return allowCors_; }
       set {
@@ -187,10 +196,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Endpoint);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Endpoint other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -206,6 +217,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -216,10 +228,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -234,6 +248,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -248,6 +263,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Endpoint other) {
       if (other == null) {
         return;
@@ -263,6 +279,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

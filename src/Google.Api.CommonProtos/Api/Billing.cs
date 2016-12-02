@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/billing.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class BillingReflection {
 
     #region Descriptor
@@ -86,30 +85,35 @@ namespace Google.Api {
   ///  statuses when serving read-only requests to resources. If there's no
   ///  matching selector for operation, no billing status check will be performed.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Billing : pb::IMessage<Billing> {
     private static readonly pb::MessageParser<Billing> _parser = new pb::MessageParser<Billing>(() => new Billing());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Billing> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.BillingReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Billing() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Billing(Billing other) : this() {
       metrics_ = other.metrics_.Clone();
       rules_ = other.rules_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Billing Clone() {
       return new Billing(this);
     }
@@ -123,6 +127,7 @@ namespace Google.Api {
     ///  Names of the metrics to report to billing. Each name must
     ///  be defined in [Service.metrics][google.api.Service.metrics] section.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Metrics {
       get { return metrics_; }
     }
@@ -135,14 +140,17 @@ namespace Google.Api {
     /// <summary>
     ///  A list of billing status rules for configuring billing status check.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.BillingStatusRule> Rules {
       get { return rules_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Billing);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Billing other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -155,6 +163,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= metrics_.GetHashCode();
@@ -162,15 +171,18 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       metrics_.WriteTo(output, _repeated_metrics_codec);
       rules_.WriteTo(output, _repeated_rules_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += metrics_.CalculateSize(_repeated_metrics_codec);
@@ -178,6 +190,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Billing other) {
       if (other == null) {
         return;
@@ -186,6 +199,7 @@ namespace Google.Api {
       rules_.Add(other.rules_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -224,30 +238,35 @@ namespace Google.Api {
   ///  statuses when serving read-only requests to resources. If the list of
   ///  allowed_statuses is empty, it means no billing requirement.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class BillingStatusRule : pb::IMessage<BillingStatusRule> {
     private static readonly pb::MessageParser<BillingStatusRule> _parser = new pb::MessageParser<BillingStatusRule>(() => new BillingStatusRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<BillingStatusRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.BillingReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BillingStatusRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BillingStatusRule(BillingStatusRule other) : this() {
       selector_ = other.selector_;
       allowedStatuses_ = other.allowedStatuses_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BillingStatusRule Clone() {
       return new BillingStatusRule(this);
     }
@@ -259,6 +278,7 @@ namespace Google.Api {
     ///  Selects the operation names to which this rule applies.
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -275,14 +295,17 @@ namespace Google.Api {
     ///  Allowed billing statuses. The billing status check passes if the actual
     ///  billing status matches any of the provided values here.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> AllowedStatuses {
       get { return allowedStatuses_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as BillingStatusRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(BillingStatusRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -295,6 +318,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -302,10 +326,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -314,6 +340,7 @@ namespace Google.Api {
       allowedStatuses_.WriteTo(output, _repeated_allowedStatuses_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -323,6 +350,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(BillingStatusRule other) {
       if (other == null) {
         return;
@@ -333,6 +361,7 @@ namespace Google.Api {
       allowedStatuses_.Add(other.allowedStatuses_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

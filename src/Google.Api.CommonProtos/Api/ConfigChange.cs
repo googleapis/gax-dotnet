@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/config_change.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ConfigChangeReflection {
 
     #region Descriptor
@@ -87,25 +86,29 @@ namespace Google.Api {
   ///  applicable advice about potential consequences for the change, such as
   ///  backwards-incompatibility.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class ConfigChange : pb::IMessage<ConfigChange> {
     private static readonly pb::MessageParser<ConfigChange> _parser = new pb::MessageParser<ConfigChange>(() => new ConfigChange());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<ConfigChange> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ConfigChangeReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ConfigChange() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ConfigChange(ConfigChange other) : this() {
       element_ = other.element_;
       oldValue_ = other.oldValue_;
@@ -114,6 +117,7 @@ namespace Google.Api {
       advices_ = other.advices_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ConfigChange Clone() {
       return new ConfigChange(this);
     }
@@ -132,6 +136,7 @@ namespace Google.Api {
     ///  - quota.metric_rules[selector=="google"].metric_costs[key=="reads"].value
     ///  - logging.producer_destinations[0]
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Element {
       get { return element_; }
       set {
@@ -146,6 +151,7 @@ namespace Google.Api {
     ///  Value of the changed object in the old Service configuration,
     ///  in JSON format. This field will not be populated if ChangeType == ADDED.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string OldValue {
       get { return oldValue_; }
       set {
@@ -160,6 +166,7 @@ namespace Google.Api {
     ///  Value of the changed object in the new Service configuration,
     ///  in JSON format. This field will not be populated if ChangeType == REMOVED.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string NewValue {
       get { return newValue_; }
       set {
@@ -173,6 +180,7 @@ namespace Google.Api {
     /// <summary>
     ///  The type for this change, either ADDED, REMOVED, or MODIFIED.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.ChangeType ChangeType {
       get { return changeType_; }
       set {
@@ -189,14 +197,17 @@ namespace Google.Api {
     ///  Collection of advice provided for this change, useful for determining the
     ///  possible impact of this change.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Advice> Advices {
       get { return advices_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ConfigChange);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(ConfigChange other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -212,6 +223,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Element.Length != 0) hash ^= Element.GetHashCode();
@@ -222,10 +234,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Element.Length != 0) {
         output.WriteRawTag(10);
@@ -246,6 +260,7 @@ namespace Google.Api {
       advices_.WriteTo(output, _repeated_advices_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Element.Length != 0) {
@@ -264,6 +279,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(ConfigChange other) {
       if (other == null) {
         return;
@@ -283,6 +299,7 @@ namespace Google.Api {
       advices_.Add(other.advices_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -320,29 +337,34 @@ namespace Google.Api {
   ///  Generated advice about this change, used for providing more
   ///  information about how a change will affect the existing service.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Advice : pb::IMessage<Advice> {
     private static readonly pb::MessageParser<Advice> _parser = new pb::MessageParser<Advice>(() => new Advice());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Advice> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ConfigChangeReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Advice() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Advice(Advice other) : this() {
       description_ = other.description_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Advice Clone() {
       return new Advice(this);
     }
@@ -354,6 +376,7 @@ namespace Google.Api {
     ///  Useful description for why this advice was applied and what actions should
     ///  be taken to mitigate any implied risks.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -361,10 +384,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Advice);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Advice other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -376,16 +401,19 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Description.Length != 0) {
         output.WriteRawTag(18);
@@ -393,6 +421,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Description.Length != 0) {
@@ -401,6 +430,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Advice other) {
       if (other == null) {
         return;
@@ -410,6 +440,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

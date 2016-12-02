@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/consumer.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ConsumerReflection {
 
     #region Descriptor
@@ -67,29 +66,34 @@ namespace Google.Api {
   ///       - name: EXTENDED_TILE_CACHE_PERIOD
   ///         type: INT64
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class ProjectProperties : pb::IMessage<ProjectProperties> {
     private static readonly pb::MessageParser<ProjectProperties> _parser = new pb::MessageParser<ProjectProperties>(() => new ProjectProperties());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<ProjectProperties> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ConsumerReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProjectProperties() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProjectProperties(ProjectProperties other) : this() {
       properties_ = other.properties_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProjectProperties Clone() {
       return new ProjectProperties(this);
     }
@@ -102,14 +106,17 @@ namespace Google.Api {
     /// <summary>
     ///  List of per consumer project-specific properties.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Property> Properties {
       get { return properties_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ProjectProperties);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(ProjectProperties other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -121,26 +128,31 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= properties_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       properties_.WriteTo(output, _repeated_properties_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += properties_.CalculateSize(_repeated_properties_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(ProjectProperties other) {
       if (other == null) {
         return;
@@ -148,6 +160,7 @@ namespace Google.Api {
       properties_.Add(other.properties_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -177,31 +190,36 @@ namespace Google.Api {
   ///  These values can be set via API producer console. Only API providers can
   ///  define and set these properties.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Property : pb::IMessage<Property> {
     private static readonly pb::MessageParser<Property> _parser = new pb::MessageParser<Property>(() => new Property());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Property> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ConsumerReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Property() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Property(Property other) : this() {
       name_ = other.name_;
       type_ = other.type_;
       description_ = other.description_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Property Clone() {
       return new Property(this);
     }
@@ -212,6 +230,7 @@ namespace Google.Api {
     /// <summary>
     ///  The name of the property (a.k.a key).
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -225,6 +244,7 @@ namespace Google.Api {
     /// <summary>
     ///  The type of this property.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Property.Types.PropertyType Type {
       get { return type_; }
       set {
@@ -238,6 +258,7 @@ namespace Google.Api {
     /// <summary>
     ///  The description of the property
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -245,10 +266,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Property);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Property other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -262,6 +285,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -270,10 +294,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -289,6 +315,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -303,6 +330,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Property other) {
       if (other == null) {
         return;
@@ -318,6 +346,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -343,7 +372,7 @@ namespace Google.Api {
 
     #region Nested types
     /// <summary>Container for nested types declared in the Property message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  Supported data type of the property values

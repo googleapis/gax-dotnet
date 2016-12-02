@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/context.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ContextReflection {
 
     #region Descriptor
@@ -65,29 +64,34 @@ namespace Google.Api {
   ///  Available context types are defined in package
   ///  `google.rpc.context`.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Context : pb::IMessage<Context> {
     private static readonly pb::MessageParser<Context> _parser = new pb::MessageParser<Context>(() => new Context());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Context> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ContextReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Context() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Context(Context other) : this() {
       rules_ = other.rules_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Context Clone() {
       return new Context(this);
     }
@@ -102,14 +106,17 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.ContextRule> Rules {
       get { return rules_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Context);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Context other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -121,26 +128,31 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= rules_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       rules_.WriteTo(output, _repeated_rules_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += rules_.CalculateSize(_repeated_rules_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Context other) {
       if (other == null) {
         return;
@@ -148,6 +160,7 @@ namespace Google.Api {
       rules_.Add(other.rules_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -169,31 +182,36 @@ namespace Google.Api {
   ///  A context rule provides information about the context for an individual API
   ///  element.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class ContextRule : pb::IMessage<ContextRule> {
     private static readonly pb::MessageParser<ContextRule> _parser = new pb::MessageParser<ContextRule>(() => new ContextRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<ContextRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ContextReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ContextRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ContextRule(ContextRule other) : this() {
       selector_ = other.selector_;
       requested_ = other.requested_.Clone();
       provided_ = other.provided_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ContextRule Clone() {
       return new ContextRule(this);
     }
@@ -206,6 +224,7 @@ namespace Google.Api {
     ///
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -221,6 +240,7 @@ namespace Google.Api {
     /// <summary>
     ///  A list of full type names of requested contexts.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Requested {
       get { return requested_; }
     }
@@ -233,14 +253,17 @@ namespace Google.Api {
     /// <summary>
     ///  A list of full type names of provided contexts.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Provided {
       get { return provided_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ContextRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(ContextRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -254,6 +277,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -262,10 +286,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -275,6 +301,7 @@ namespace Google.Api {
       provided_.WriteTo(output, _repeated_provided_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -285,6 +312,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(ContextRule other) {
       if (other == null) {
         return;
@@ -296,6 +324,7 @@ namespace Google.Api {
       provided_.Add(other.provided_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

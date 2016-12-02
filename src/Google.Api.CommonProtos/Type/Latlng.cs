@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Type {
 
   /// <summary>Holder for reflection information generated from google/type/latlng.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class LatlngReflection {
 
     #region Descriptor
@@ -84,30 +83,35 @@ namespace Google.Type {
   ///      assert (-90.0, 10.0) == NormalizeLatLng(270.0, 10.0)
   ///      assert (90.0, 10.0) == NormalizeLatLng(-270.0, 10.0)
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class LatLng : pb::IMessage<LatLng> {
     private static readonly pb::MessageParser<LatLng> _parser = new pb::MessageParser<LatLng>(() => new LatLng());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<LatLng> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Type.LatlngReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LatLng() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LatLng(LatLng other) : this() {
       latitude_ = other.latitude_;
       longitude_ = other.longitude_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LatLng Clone() {
       return new LatLng(this);
     }
@@ -118,6 +122,7 @@ namespace Google.Type {
     /// <summary>
     ///  The latitude in degrees. It must be in the range [-90.0, +90.0].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Latitude {
       get { return latitude_; }
       set {
@@ -131,6 +136,7 @@ namespace Google.Type {
     /// <summary>
     ///  The longitude in degrees. It must be in the range [-180.0, +180.0].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Longitude {
       get { return longitude_; }
       set {
@@ -138,10 +144,12 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as LatLng);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(LatLng other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -154,6 +162,7 @@ namespace Google.Type {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Latitude != 0D) hash ^= Latitude.GetHashCode();
@@ -161,10 +170,12 @@ namespace Google.Type {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Latitude != 0D) {
         output.WriteRawTag(9);
@@ -176,6 +187,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Latitude != 0D) {
@@ -187,6 +199,7 @@ namespace Google.Type {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(LatLng other) {
       if (other == null) {
         return;
@@ -199,6 +212,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Type {
 
   /// <summary>Holder for reflection information generated from google/type/color.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ColorReflection {
 
     #region Descriptor
@@ -161,25 +160,29 @@ namespace Google.Type {
   ///
   ///      // ...
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Color : pb::IMessage<Color> {
     private static readonly pb::MessageParser<Color> _parser = new pb::MessageParser<Color>(() => new Color());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Color> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Type.ColorReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Color() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Color(Color other) : this() {
       red_ = other.red_;
       green_ = other.green_;
@@ -187,6 +190,7 @@ namespace Google.Type {
       Alpha = other.Alpha;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Color Clone() {
       return new Color(this);
     }
@@ -197,6 +201,7 @@ namespace Google.Type {
     /// <summary>
     ///  The amount of red in the color as a value in the interval [0, 1].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float Red {
       get { return red_; }
       set {
@@ -210,6 +215,7 @@ namespace Google.Type {
     /// <summary>
     ///  The amount of green in the color as a value in the interval [0, 1].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float Green {
       get { return green_; }
       set {
@@ -223,6 +229,7 @@ namespace Google.Type {
     /// <summary>
     ///  The amount of blue in the color as a value in the interval [0, 1].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float Blue {
       get { return blue_; }
       set {
@@ -247,6 +254,7 @@ namespace Google.Type {
     ///  If omitted, this color object is to be rendered as a solid color
     ///  (as if the alpha value had been explicitly given with a value of 1.0).
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float? Alpha {
       get { return alpha_; }
       set {
@@ -254,10 +262,12 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Color);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Color other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -272,6 +282,7 @@ namespace Google.Type {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Red != 0F) hash ^= Red.GetHashCode();
@@ -281,10 +292,12 @@ namespace Google.Type {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Red != 0F) {
         output.WriteRawTag(13);
@@ -303,6 +316,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Red != 0F) {
@@ -320,6 +334,7 @@ namespace Google.Type {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Color other) {
       if (other == null) {
         return;
@@ -340,6 +355,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

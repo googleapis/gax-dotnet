@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/backend.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class BackendReflection {
 
     #region Descriptor
@@ -49,29 +48,34 @@ namespace Google.Api {
   /// <summary>
   ///  `Backend` defines the backend configuration for a service.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Backend : pb::IMessage<Backend> {
     private static readonly pb::MessageParser<Backend> _parser = new pb::MessageParser<Backend>(() => new Backend());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Backend> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.BackendReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Backend() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Backend(Backend other) : this() {
       rules_ = other.rules_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Backend Clone() {
       return new Backend(this);
     }
@@ -86,14 +90,17 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.BackendRule> Rules {
       get { return rules_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Backend);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Backend other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -105,26 +112,31 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= rules_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       rules_.WriteTo(output, _repeated_rules_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += rules_.CalculateSize(_repeated_rules_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Backend other) {
       if (other == null) {
         return;
@@ -132,6 +144,7 @@ namespace Google.Api {
       rules_.Add(other.rules_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -152,31 +165,36 @@ namespace Google.Api {
   /// <summary>
   ///  A backend rule provides configuration for an individual API element.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class BackendRule : pb::IMessage<BackendRule> {
     private static readonly pb::MessageParser<BackendRule> _parser = new pb::MessageParser<BackendRule>(() => new BackendRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<BackendRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.BackendReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BackendRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BackendRule(BackendRule other) : this() {
       selector_ = other.selector_;
       address_ = other.address_;
       deadline_ = other.deadline_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BackendRule Clone() {
       return new BackendRule(this);
     }
@@ -189,6 +207,7 @@ namespace Google.Api {
     ///
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -202,6 +221,7 @@ namespace Google.Api {
     /// <summary>
     ///  The address of the API backend.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Address {
       get { return address_; }
       set {
@@ -216,6 +236,7 @@ namespace Google.Api {
     ///  The number of seconds to wait for a response from a request.  The
     ///  default depends on the deployment context.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Deadline {
       get { return deadline_; }
       set {
@@ -223,10 +244,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as BackendRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(BackendRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -240,6 +263,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -248,10 +272,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -267,6 +293,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -281,6 +308,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(BackendRule other) {
       if (other == null) {
         return;
@@ -296,6 +324,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

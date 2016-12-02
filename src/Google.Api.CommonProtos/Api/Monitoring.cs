@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/monitoring.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class MonitoringReflection {
 
     #region Descriptor
@@ -88,30 +87,35 @@ namespace Google.Api {
   ///          - library.googleapis.com/book/returned_count
   ///          - library.googleapis.com/book/overdue_count
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Monitoring : pb::IMessage<Monitoring> {
     private static readonly pb::MessageParser<Monitoring> _parser = new pb::MessageParser<Monitoring>(() => new Monitoring());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Monitoring> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.MonitoringReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Monitoring() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Monitoring(Monitoring other) : this() {
       producerDestinations_ = other.producerDestinations_.Clone();
       consumerDestinations_ = other.consumerDestinations_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Monitoring Clone() {
       return new Monitoring(this);
     }
@@ -127,6 +131,7 @@ namespace Google.Api {
     ///  different monitored resource type. A metric can be used in at most
     ///  one producer destination.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ProducerDestinations {
       get { return producerDestinations_; }
     }
@@ -142,14 +147,17 @@ namespace Google.Api {
     ///  different monitored resource type. A metric can be used in at most
     ///  one consumer destination.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ConsumerDestinations {
       get { return consumerDestinations_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Monitoring);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Monitoring other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -162,6 +170,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= producerDestinations_.GetHashCode();
@@ -169,15 +178,18 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       producerDestinations_.WriteTo(output, _repeated_producerDestinations_codec);
       consumerDestinations_.WriteTo(output, _repeated_consumerDestinations_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += producerDestinations_.CalculateSize(_repeated_producerDestinations_codec);
@@ -185,6 +197,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Monitoring other) {
       if (other == null) {
         return;
@@ -193,6 +206,7 @@ namespace Google.Api {
       consumerDestinations_.Add(other.consumerDestinations_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -214,36 +228,41 @@ namespace Google.Api {
 
     #region Nested types
     /// <summary>Container for nested types declared in the Monitoring message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  Configuration of a specific monitoring destination (the producer project
       ///  or the consumer project).
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class MonitoringDestination : pb::IMessage<MonitoringDestination> {
         private static readonly pb::MessageParser<MonitoringDestination> _parser = new pb::MessageParser<MonitoringDestination>(() => new MonitoringDestination());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<MonitoringDestination> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Api.Monitoring.Descriptor.NestedTypes[0]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public MonitoringDestination() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public MonitoringDestination(MonitoringDestination other) : this() {
           monitoredResource_ = other.monitoredResource_;
           metrics_ = other.metrics_.Clone();
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public MonitoringDestination Clone() {
           return new MonitoringDestination(this);
         }
@@ -255,6 +274,7 @@ namespace Google.Api {
         ///  The monitored resource type. The type must be defined in
         ///  [Service.monitored_resources][google.api.Service.monitored_resources] section.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MonitoredResource {
           get { return monitoredResource_; }
           set {
@@ -271,14 +291,17 @@ namespace Google.Api {
         ///  Names of the metrics to report to this monitoring destination.
         ///  Each name must be defined in [Service.metrics][google.api.Service.metrics] section.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Metrics {
           get { return metrics_; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as MonitoringDestination);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(MonitoringDestination other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -291,6 +314,7 @@ namespace Google.Api {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (MonitoredResource.Length != 0) hash ^= MonitoredResource.GetHashCode();
@@ -298,10 +322,12 @@ namespace Google.Api {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (MonitoredResource.Length != 0) {
             output.WriteRawTag(10);
@@ -310,6 +336,7 @@ namespace Google.Api {
           metrics_.WriteTo(output, _repeated_metrics_codec);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (MonitoredResource.Length != 0) {
@@ -319,6 +346,7 @@ namespace Google.Api {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(MonitoringDestination other) {
           if (other == null) {
             return;
@@ -329,6 +357,7 @@ namespace Google.Api {
           metrics_.Add(other.metrics_);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {

@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Type {
 
   /// <summary>Holder for reflection information generated from google/type/date.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class DateReflection {
 
     #region Descriptor
@@ -52,31 +51,36 @@ namespace Google.Type {
   ///  of year, e.g. anniversary date. Related types are [google.type.TimeOfDay][google.type.TimeOfDay]
   ///  and `google.protobuf.Timestamp`.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Date : pb::IMessage<Date> {
     private static readonly pb::MessageParser<Date> _parser = new pb::MessageParser<Date>(() => new Date());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Date> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Type.DateReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Date() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Date(Date other) : this() {
       year_ = other.year_;
       month_ = other.month_;
       day_ = other.day_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Date Clone() {
       return new Date(this);
     }
@@ -88,6 +92,7 @@ namespace Google.Type {
     ///  Year of date. Must be from 1 to 9999, or 0 if specifying a date without
     ///  a year.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Year {
       get { return year_; }
       set {
@@ -101,6 +106,7 @@ namespace Google.Type {
     /// <summary>
     ///  Month of year. Must be from 1 to 12.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Month {
       get { return month_; }
       set {
@@ -115,6 +121,7 @@ namespace Google.Type {
     ///  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
     ///  if specifying a year/month where the day is not significant.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Day {
       get { return day_; }
       set {
@@ -122,10 +129,12 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Date);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Date other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -139,6 +148,7 @@ namespace Google.Type {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Year != 0) hash ^= Year.GetHashCode();
@@ -147,10 +157,12 @@ namespace Google.Type {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Year != 0) {
         output.WriteRawTag(8);
@@ -166,6 +178,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Year != 0) {
@@ -180,6 +193,7 @@ namespace Google.Type {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Date other) {
       if (other == null) {
         return;
@@ -195,6 +209,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

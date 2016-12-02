@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/distribution.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class DistributionReflection {
 
     #region Descriptor
@@ -80,25 +79,29 @@ namespace Google.Api {
   ///  non-finite values (infinities or NaNs) in the population of values, as this
   ///  will render the `mean` and `sum_of_squared_deviation` fields meaningless.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Distribution : pb::IMessage<Distribution> {
     private static readonly pb::MessageParser<Distribution> _parser = new pb::MessageParser<Distribution>(() => new Distribution());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Distribution> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.DistributionReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Distribution() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Distribution(Distribution other) : this() {
       count_ = other.count_;
       mean_ = other.mean_;
@@ -108,6 +111,7 @@ namespace Google.Api {
       bucketCounts_ = other.bucketCounts_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Distribution Clone() {
       return new Distribution(this);
     }
@@ -118,6 +122,7 @@ namespace Google.Api {
     /// <summary>
     ///  The number of values in the population. Must be non-negative.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Count {
       get { return count_; }
       set {
@@ -132,6 +137,7 @@ namespace Google.Api {
     ///  The arithmetic mean of the values in the population. If `count` is zero
     ///  then this field must be zero.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Mean {
       get { return mean_; }
       set {
@@ -153,6 +159,7 @@ namespace Google.Api {
     ///
     ///  If `count` is zero then this field must be zero.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double SumOfSquaredDeviation {
       get { return sumOfSquaredDeviation_; }
       set {
@@ -167,6 +174,7 @@ namespace Google.Api {
     ///  If specified, contains the range of the population values. The field
     ///  must not be present if the `count` is zero.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Distribution.Types.Range Range {
       get { return range_; }
       set {
@@ -180,6 +188,7 @@ namespace Google.Api {
     /// <summary>
     ///  Defines the histogram bucket boundaries.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Distribution.Types.BucketOptions BucketOptions {
       get { return bucketOptions_; }
       set {
@@ -206,14 +215,17 @@ namespace Google.Api {
     ///
     ///  Any suffix of trailing zero bucket_count fields may be omitted.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<long> BucketCounts {
       get { return bucketCounts_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Distribution);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Distribution other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -230,6 +242,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Count != 0L) hash ^= Count.GetHashCode();
@@ -241,10 +254,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Count != 0L) {
         output.WriteRawTag(8);
@@ -269,6 +284,7 @@ namespace Google.Api {
       bucketCounts_.WriteTo(output, _repeated_bucketCounts_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Count != 0L) {
@@ -290,6 +306,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Distribution other) {
       if (other == null) {
         return;
@@ -318,6 +335,7 @@ namespace Google.Api {
       bucketCounts_.Add(other.bucketCounts_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -362,35 +380,40 @@ namespace Google.Api {
 
     #region Nested types
     /// <summary>Container for nested types declared in the Distribution message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  The range of the population values.
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class Range : pb::IMessage<Range> {
         private static readonly pb::MessageParser<Range> _parser = new pb::MessageParser<Range>(() => new Range());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<Range> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Api.Distribution.Descriptor.NestedTypes[0]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Range() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Range(Range other) : this() {
           min_ = other.min_;
           max_ = other.max_;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Range Clone() {
           return new Range(this);
         }
@@ -401,6 +424,7 @@ namespace Google.Api {
         /// <summary>
         ///  The minimum of the population values.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public double Min {
           get { return min_; }
           set {
@@ -414,6 +438,7 @@ namespace Google.Api {
         /// <summary>
         ///  The maximum of the population values.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public double Max {
           get { return max_; }
           set {
@@ -421,10 +446,12 @@ namespace Google.Api {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Range);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(Range other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -437,6 +464,7 @@ namespace Google.Api {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (Min != 0D) hash ^= Min.GetHashCode();
@@ -444,10 +472,12 @@ namespace Google.Api {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (Min != 0D) {
             output.WriteRawTag(9);
@@ -459,6 +489,7 @@ namespace Google.Api {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (Min != 0D) {
@@ -470,6 +501,7 @@ namespace Google.Api {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(Range other) {
           if (other == null) {
             return;
@@ -482,6 +514,7 @@ namespace Google.Api {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
@@ -528,25 +561,29 @@ namespace Google.Api {
       ///
       ///  If `bucket_boundaries` is not given, then no `bucket_counts` may be given.
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class BucketOptions : pb::IMessage<BucketOptions> {
         private static readonly pb::MessageParser<BucketOptions> _parser = new pb::MessageParser<BucketOptions>(() => new BucketOptions());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<BucketOptions> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Api.Distribution.Descriptor.NestedTypes[1]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public BucketOptions() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public BucketOptions(BucketOptions other) : this() {
           switch (other.OptionsCase) {
             case OptionsOneofCase.LinearBuckets:
@@ -562,6 +599,7 @@ namespace Google.Api {
 
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public BucketOptions Clone() {
           return new BucketOptions(this);
         }
@@ -571,6 +609,7 @@ namespace Google.Api {
         /// <summary>
         ///  The linear bucket.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Linear LinearBuckets {
           get { return optionsCase_ == OptionsOneofCase.LinearBuckets ? (global::Google.Api.Distribution.Types.BucketOptions.Types.Linear) options_ : null; }
           set {
@@ -584,6 +623,7 @@ namespace Google.Api {
         /// <summary>
         ///  The exponential buckets.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential ExponentialBuckets {
           get { return optionsCase_ == OptionsOneofCase.ExponentialBuckets ? (global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential) options_ : null; }
           set {
@@ -597,6 +637,7 @@ namespace Google.Api {
         /// <summary>
         ///  The explicit buckets.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit ExplicitBuckets {
           get { return optionsCase_ == OptionsOneofCase.ExplicitBuckets ? (global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit) options_ : null; }
           set {
@@ -614,19 +655,23 @@ namespace Google.Api {
           ExplicitBuckets = 3,
         }
         private OptionsOneofCase optionsCase_ = OptionsOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public OptionsOneofCase OptionsCase {
           get { return optionsCase_; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void ClearOptions() {
           optionsCase_ = OptionsOneofCase.None;
           options_ = null;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as BucketOptions);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(BucketOptions other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -641,6 +686,7 @@ namespace Google.Api {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (optionsCase_ == OptionsOneofCase.LinearBuckets) hash ^= LinearBuckets.GetHashCode();
@@ -650,10 +696,12 @@ namespace Google.Api {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (optionsCase_ == OptionsOneofCase.LinearBuckets) {
             output.WriteRawTag(10);
@@ -669,6 +717,7 @@ namespace Google.Api {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (optionsCase_ == OptionsOneofCase.LinearBuckets) {
@@ -683,6 +732,7 @@ namespace Google.Api {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(BucketOptions other) {
           if (other == null) {
             return;
@@ -701,6 +751,7 @@ namespace Google.Api {
 
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
@@ -741,7 +792,7 @@ namespace Google.Api {
 
         #region Nested types
         /// <summary>Container for nested types declared in the BucketOptions message type.</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static partial class Types {
           /// <summary>
           ///  Specify a sequence of buckets that all have the same width (except
@@ -754,31 +805,36 @@ namespace Google.Api {
           ///     Upper bound (0 &lt;= i &lt; N-1):     offset + (width * i).
           ///     Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
           /// </summary>
-          [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
           public sealed partial class Linear : pb::IMessage<Linear> {
             private static readonly pb::MessageParser<Linear> _parser = new pb::MessageParser<Linear>(() => new Linear());
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pb::MessageParser<Linear> Parser { get { return _parser; } }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pbr::MessageDescriptor Descriptor {
               get { return global::Google.Api.Distribution.Types.BucketOptions.Descriptor.NestedTypes[0]; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             pbr::MessageDescriptor pb::IMessage.Descriptor {
               get { return Descriptor; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Linear() {
               OnConstruction();
             }
 
             partial void OnConstruction();
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Linear(Linear other) : this() {
               numFiniteBuckets_ = other.numFiniteBuckets_;
               width_ = other.width_;
               offset_ = other.offset_;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Linear Clone() {
               return new Linear(this);
             }
@@ -789,6 +845,7 @@ namespace Google.Api {
             /// <summary>
             ///  Must be greater than 0.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int NumFiniteBuckets {
               get { return numFiniteBuckets_; }
               set {
@@ -802,6 +859,7 @@ namespace Google.Api {
             /// <summary>
             ///  Must be greater than 0.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Width {
               get { return width_; }
               set {
@@ -815,6 +873,7 @@ namespace Google.Api {
             /// <summary>
             ///  Lower bound of the first bucket.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Offset {
               get { return offset_; }
               set {
@@ -822,10 +881,12 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override bool Equals(object other) {
               return Equals(other as Linear);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public bool Equals(Linear other) {
               if (ReferenceEquals(other, null)) {
                 return false;
@@ -839,6 +900,7 @@ namespace Google.Api {
               return true;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override int GetHashCode() {
               int hash = 1;
               if (NumFiniteBuckets != 0) hash ^= NumFiniteBuckets.GetHashCode();
@@ -847,10 +909,12 @@ namespace Google.Api {
               return hash;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override string ToString() {
               return pb::JsonFormatter.ToDiagnosticString(this);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void WriteTo(pb::CodedOutputStream output) {
               if (NumFiniteBuckets != 0) {
                 output.WriteRawTag(8);
@@ -866,6 +930,7 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int CalculateSize() {
               int size = 0;
               if (NumFiniteBuckets != 0) {
@@ -880,6 +945,7 @@ namespace Google.Api {
               return size;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(Linear other) {
               if (other == null) {
                 return;
@@ -895,6 +961,7 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(pb::CodedInputStream input) {
               uint tag;
               while ((tag = input.ReadTag()) != 0) {
@@ -931,31 +998,36 @@ namespace Google.Api {
           ///     Upper bound (0 &lt;= i &lt; N-1):     scale * (growth_factor ^ i).
           ///     Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
           /// </summary>
-          [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
           public sealed partial class Exponential : pb::IMessage<Exponential> {
             private static readonly pb::MessageParser<Exponential> _parser = new pb::MessageParser<Exponential>(() => new Exponential());
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pb::MessageParser<Exponential> Parser { get { return _parser; } }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pbr::MessageDescriptor Descriptor {
               get { return global::Google.Api.Distribution.Types.BucketOptions.Descriptor.NestedTypes[1]; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             pbr::MessageDescriptor pb::IMessage.Descriptor {
               get { return Descriptor; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Exponential() {
               OnConstruction();
             }
 
             partial void OnConstruction();
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Exponential(Exponential other) : this() {
               numFiniteBuckets_ = other.numFiniteBuckets_;
               growthFactor_ = other.growthFactor_;
               scale_ = other.scale_;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Exponential Clone() {
               return new Exponential(this);
             }
@@ -966,6 +1038,7 @@ namespace Google.Api {
             /// <summary>
             ///  Must be greater than 0.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int NumFiniteBuckets {
               get { return numFiniteBuckets_; }
               set {
@@ -979,6 +1052,7 @@ namespace Google.Api {
             /// <summary>
             ///  Must be greater than 1.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double GrowthFactor {
               get { return growthFactor_; }
               set {
@@ -992,6 +1066,7 @@ namespace Google.Api {
             /// <summary>
             ///  Must be greater than 0.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Scale {
               get { return scale_; }
               set {
@@ -999,10 +1074,12 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override bool Equals(object other) {
               return Equals(other as Exponential);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public bool Equals(Exponential other) {
               if (ReferenceEquals(other, null)) {
                 return false;
@@ -1016,6 +1093,7 @@ namespace Google.Api {
               return true;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override int GetHashCode() {
               int hash = 1;
               if (NumFiniteBuckets != 0) hash ^= NumFiniteBuckets.GetHashCode();
@@ -1024,10 +1102,12 @@ namespace Google.Api {
               return hash;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override string ToString() {
               return pb::JsonFormatter.ToDiagnosticString(this);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void WriteTo(pb::CodedOutputStream output) {
               if (NumFiniteBuckets != 0) {
                 output.WriteRawTag(8);
@@ -1043,6 +1123,7 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int CalculateSize() {
               int size = 0;
               if (NumFiniteBuckets != 0) {
@@ -1057,6 +1138,7 @@ namespace Google.Api {
               return size;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(Exponential other) {
               if (other == null) {
                 return;
@@ -1072,6 +1154,7 @@ namespace Google.Api {
               }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(pb::CodedInputStream input) {
               uint tag;
               while ((tag = input.ReadTag()) != 0) {
@@ -1110,29 +1193,34 @@ namespace Google.Api {
           ///  element, there are no finite buckets, and that single element is the
           ///  common boundary of the overflow and underflow buckets.
           /// </summary>
-          [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
           public sealed partial class Explicit : pb::IMessage<Explicit> {
             private static readonly pb::MessageParser<Explicit> _parser = new pb::MessageParser<Explicit>(() => new Explicit());
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pb::MessageParser<Explicit> Parser { get { return _parser; } }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public static pbr::MessageDescriptor Descriptor {
               get { return global::Google.Api.Distribution.Types.BucketOptions.Descriptor.NestedTypes[2]; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             pbr::MessageDescriptor pb::IMessage.Descriptor {
               get { return Descriptor; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Explicit() {
               OnConstruction();
             }
 
             partial void OnConstruction();
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Explicit(Explicit other) : this() {
               bounds_ = other.bounds_.Clone();
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public Explicit Clone() {
               return new Explicit(this);
             }
@@ -1145,14 +1233,17 @@ namespace Google.Api {
             /// <summary>
             ///  The values must be monotonically increasing.
             /// </summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public pbc::RepeatedField<double> Bounds {
               get { return bounds_; }
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override bool Equals(object other) {
               return Equals(other as Explicit);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public bool Equals(Explicit other) {
               if (ReferenceEquals(other, null)) {
                 return false;
@@ -1164,26 +1255,31 @@ namespace Google.Api {
               return true;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override int GetHashCode() {
               int hash = 1;
               hash ^= bounds_.GetHashCode();
               return hash;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override string ToString() {
               return pb::JsonFormatter.ToDiagnosticString(this);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void WriteTo(pb::CodedOutputStream output) {
               bounds_.WriteTo(output, _repeated_bounds_codec);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int CalculateSize() {
               int size = 0;
               size += bounds_.CalculateSize(_repeated_bounds_codec);
               return size;
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(Explicit other) {
               if (other == null) {
                 return;
@@ -1191,6 +1287,7 @@ namespace Google.Api {
               bounds_.Add(other.bounds_);
             }
 
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void MergeFrom(pb::CodedInputStream input) {
               uint tag;
               while ((tag = input.ReadTag()) != 0) {

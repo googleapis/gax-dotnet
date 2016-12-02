@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/usage.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class UsageReflection {
 
     #region Descriptor
@@ -50,30 +49,35 @@ namespace Google.Api {
   /// <summary>
   ///  Configuration controlling usage of a service.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Usage : pb::IMessage<Usage> {
     private static readonly pb::MessageParser<Usage> _parser = new pb::MessageParser<Usage>(() => new Usage());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Usage> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.UsageReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Usage() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Usage(Usage other) : this() {
       requirements_ = other.requirements_.Clone();
       rules_ = other.rules_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Usage Clone() {
       return new Usage(this);
     }
@@ -88,6 +92,7 @@ namespace Google.Api {
     ///  service. Each requirement is of the form &lt;service.name>/&lt;requirement-id>;
     ///  for example 'serviceusage.googleapis.com/billing-enabled'.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Requirements {
       get { return requirements_; }
     }
@@ -102,14 +107,17 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.UsageRule> Rules {
       get { return rules_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Usage);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Usage other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -122,6 +130,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= requirements_.GetHashCode();
@@ -129,15 +138,18 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       requirements_.WriteTo(output, _repeated_requirements_codec);
       rules_.WriteTo(output, _repeated_rules_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += requirements_.CalculateSize(_repeated_requirements_codec);
@@ -145,6 +157,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Usage other) {
       if (other == null) {
         return;
@@ -153,6 +166,7 @@ namespace Google.Api {
       rules_.Add(other.rules_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -200,30 +214,35 @@ namespace Google.Api {
   ///        - selector: "google.example.library.v1.LibraryService.CreateBook"
   ///          allow_unregistered_calls: true
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class UsageRule : pb::IMessage<UsageRule> {
     private static readonly pb::MessageParser<UsageRule> _parser = new pb::MessageParser<UsageRule>(() => new UsageRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<UsageRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.UsageReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UsageRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UsageRule(UsageRule other) : this() {
       selector_ = other.selector_;
       allowUnregisteredCalls_ = other.allowUnregisteredCalls_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UsageRule Clone() {
       return new UsageRule(this);
     }
@@ -237,6 +256,7 @@ namespace Google.Api {
     ///
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -250,6 +270,7 @@ namespace Google.Api {
     /// <summary>
     ///  True, if the method allows unregistered calls; false otherwise.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowUnregisteredCalls {
       get { return allowUnregisteredCalls_; }
       set {
@@ -257,10 +278,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as UsageRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(UsageRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -273,6 +296,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -280,10 +304,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -295,6 +321,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -306,6 +333,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(UsageRule other) {
       if (other == null) {
         return;
@@ -318,6 +346,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

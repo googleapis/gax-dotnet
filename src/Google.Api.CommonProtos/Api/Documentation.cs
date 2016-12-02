@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/documentation.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class DocumentationReflection {
 
     #region Descriptor
@@ -111,25 +110,29 @@ namespace Google.Api {
   ///  The directive `suppress_warning` does not directly affect documentation
   ///  and is documented together with service config validation.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Documentation : pb::IMessage<Documentation> {
     private static readonly pb::MessageParser<Documentation> _parser = new pb::MessageParser<Documentation>(() => new Documentation());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Documentation> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.DocumentationReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Documentation() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Documentation(Documentation other) : this() {
       summary_ = other.summary_;
       pages_ = other.pages_.Clone();
@@ -138,6 +141,7 @@ namespace Google.Api {
       overview_ = other.overview_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Documentation Clone() {
       return new Documentation(this);
     }
@@ -149,6 +153,7 @@ namespace Google.Api {
     ///  A short summary of what the service does. Can only be provided by
     ///  plain text.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Summary {
       get { return summary_; }
       set {
@@ -164,6 +169,7 @@ namespace Google.Api {
     /// <summary>
     ///  The top level pages for the documentation set.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Page> Pages {
       get { return pages_; }
     }
@@ -178,6 +184,7 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.DocumentationRule> Rules {
       get { return rules_; }
     }
@@ -188,6 +195,7 @@ namespace Google.Api {
     /// <summary>
     ///  The URL to the root of documentation.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DocumentationRootUrl {
       get { return documentationRootUrl_; }
       set {
@@ -213,6 +221,7 @@ namespace Google.Api {
     ///  &lt;/code>&lt;/pre>
     ///  Note: you cannot specify both `overview` field and `pages` field.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Overview {
       get { return overview_; }
       set {
@@ -220,10 +229,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Documentation);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Documentation other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -239,6 +250,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Summary.Length != 0) hash ^= Summary.GetHashCode();
@@ -249,10 +261,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Summary.Length != 0) {
         output.WriteRawTag(10);
@@ -270,6 +284,7 @@ namespace Google.Api {
       pages_.WriteTo(output, _repeated_pages_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Summary.Length != 0) {
@@ -286,6 +301,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Documentation other) {
       if (other == null) {
         return;
@@ -303,6 +319,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -339,31 +356,36 @@ namespace Google.Api {
   /// <summary>
   ///  A documentation rule provides information about individual API elements.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class DocumentationRule : pb::IMessage<DocumentationRule> {
     private static readonly pb::MessageParser<DocumentationRule> _parser = new pb::MessageParser<DocumentationRule>(() => new DocumentationRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<DocumentationRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.DocumentationReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DocumentationRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DocumentationRule(DocumentationRule other) : this() {
       selector_ = other.selector_;
       description_ = other.description_;
       deprecationDescription_ = other.deprecationDescription_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DocumentationRule Clone() {
       return new DocumentationRule(this);
     }
@@ -379,6 +401,7 @@ namespace Google.Api {
     ///  specify a default for all applicable elements, the whole pattern "*"
     ///  is used.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -392,6 +415,7 @@ namespace Google.Api {
     /// <summary>
     ///  Description of the selected API(s).
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -406,6 +430,7 @@ namespace Google.Api {
     ///  Deprecation description of the selected element(s). It can be provided if an
     ///  element is marked as `deprecated`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DeprecationDescription {
       get { return deprecationDescription_; }
       set {
@@ -413,10 +438,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DocumentationRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(DocumentationRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -430,6 +457,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -438,10 +466,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -457,6 +487,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -471,6 +502,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(DocumentationRule other) {
       if (other == null) {
         return;
@@ -486,6 +518,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -515,31 +548,36 @@ namespace Google.Api {
   ///  Represents a documentation page. A page can contain subpages to represent
   ///  nested documentation set structure.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Page : pb::IMessage<Page> {
     private static readonly pb::MessageParser<Page> _parser = new pb::MessageParser<Page>(() => new Page());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Page> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.DocumentationReflection.Descriptor.MessageTypes[2]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Page() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Page(Page other) : this() {
       name_ = other.name_;
       content_ = other.content_;
       subpages_ = other.subpages_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Page Clone() {
       return new Page(this);
     }
@@ -563,6 +601,7 @@ namespace Google.Api {
     ///  You can reference `Java` page using Markdown reference link syntax:
     ///  `[Java][Tutorial.Java]`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -577,6 +616,7 @@ namespace Google.Api {
     ///  The Markdown content of the page. You can use &lt;code>&amp;#40;== include {path} ==&amp;#41;&lt;/code>
     ///  to include content from a Markdown file.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Content {
       get { return content_; }
       set {
@@ -593,14 +633,17 @@ namespace Google.Api {
     ///  Subpages of this page. The order of subpages specified here will be
     ///  honored in the generated docset.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Page> Subpages {
       get { return subpages_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Page);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Page other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -614,6 +657,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -622,10 +666,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -638,6 +684,7 @@ namespace Google.Api {
       subpages_.WriteTo(output, _repeated_subpages_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -650,6 +697,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Page other) {
       if (other == null) {
         return;
@@ -663,6 +711,7 @@ namespace Google.Api {
       subpages_.Add(other.subpages_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

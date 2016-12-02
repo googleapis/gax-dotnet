@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/http.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class HttpReflection {
 
     #region Descriptor
@@ -57,29 +56,34 @@ namespace Google.Api {
   ///  [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
   ///  to one or more HTTP REST API methods.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Http : pb::IMessage<Http> {
     private static readonly pb::MessageParser<Http> _parser = new pb::MessageParser<Http>(() => new Http());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Http> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Http() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Http(Http other) : this() {
       rules_ = other.rules_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Http Clone() {
       return new Http(this);
     }
@@ -94,14 +98,17 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.HttpRule> Rules {
       get { return rules_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Http);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Http other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -113,26 +120,31 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= rules_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       rules_.WriteTo(output, _repeated_rules_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += rules_.CalculateSize(_repeated_rules_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Http other) {
       if (other == null) {
         return;
@@ -140,6 +152,7 @@ namespace Google.Api {
       rules_.Add(other.rules_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -360,25 +373,29 @@ namespace Google.Api {
   ///  a given URL path rule. The wild-card rule is useful for services that provide
   ///  content to Web (HTML) clients.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class HttpRule : pb::IMessage<HttpRule> {
     private static readonly pb::MessageParser<HttpRule> _parser = new pb::MessageParser<HttpRule>(() => new HttpRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<HttpRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public HttpRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public HttpRule(HttpRule other) : this() {
       selector_ = other.selector_;
       body_ = other.body_;
@@ -406,6 +423,7 @@ namespace Google.Api {
 
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public HttpRule Clone() {
       return new HttpRule(this);
     }
@@ -418,6 +436,7 @@ namespace Google.Api {
     ///
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -430,6 +449,7 @@ namespace Google.Api {
     /// <summary>
     ///  Used for listing and getting information about resources.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Get {
       get { return patternCase_ == PatternOneofCase.Get ? (string) pattern_ : ""; }
       set {
@@ -443,6 +463,7 @@ namespace Google.Api {
     /// <summary>
     ///  Used for updating a resource.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Put {
       get { return patternCase_ == PatternOneofCase.Put ? (string) pattern_ : ""; }
       set {
@@ -456,6 +477,7 @@ namespace Google.Api {
     /// <summary>
     ///  Used for creating a resource.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Post {
       get { return patternCase_ == PatternOneofCase.Post ? (string) pattern_ : ""; }
       set {
@@ -469,6 +491,7 @@ namespace Google.Api {
     /// <summary>
     ///  Used for deleting a resource.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Delete {
       get { return patternCase_ == PatternOneofCase.Delete ? (string) pattern_ : ""; }
       set {
@@ -482,6 +505,7 @@ namespace Google.Api {
     /// <summary>
     ///  Used for updating a resource.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Patch {
       get { return patternCase_ == PatternOneofCase.Patch ? (string) pattern_ : ""; }
       set {
@@ -495,6 +519,7 @@ namespace Google.Api {
     /// <summary>
     ///  Custom pattern is used for defining custom verbs.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.CustomHttpPattern Custom {
       get { return patternCase_ == PatternOneofCase.Custom ? (global::Google.Api.CustomHttpPattern) pattern_ : null; }
       set {
@@ -512,6 +537,7 @@ namespace Google.Api {
     ///  body. NOTE: the referred field must not be a repeated field and must be
     ///  present at the top-level of response message type.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Body {
       get { return body_; }
       set {
@@ -529,6 +555,7 @@ namespace Google.Api {
     ///  not contain an `additional_bindings` field themselves (that is,
     ///  the nesting may only be one level deep).
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.HttpRule> AdditionalBindings {
       get { return additionalBindings_; }
     }
@@ -545,19 +572,23 @@ namespace Google.Api {
       Custom = 8,
     }
     private PatternOneofCase patternCase_ = PatternOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PatternOneofCase PatternCase {
       get { return patternCase_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void ClearPattern() {
       patternCase_ = PatternOneofCase.None;
       pattern_ = null;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as HttpRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(HttpRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -578,6 +609,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -593,10 +625,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -633,6 +667,7 @@ namespace Google.Api {
       additionalBindings_.WriteTo(output, _repeated_additionalBindings_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -663,6 +698,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(HttpRule other) {
       if (other == null) {
         return;
@@ -697,6 +733,7 @@ namespace Google.Api {
 
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -754,30 +791,35 @@ namespace Google.Api {
   /// <summary>
   ///  A custom pattern is used for defining custom HTTP verb.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class CustomHttpPattern : pb::IMessage<CustomHttpPattern> {
     private static readonly pb::MessageParser<CustomHttpPattern> _parser = new pb::MessageParser<CustomHttpPattern>(() => new CustomHttpPattern());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<CustomHttpPattern> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.HttpReflection.Descriptor.MessageTypes[2]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CustomHttpPattern() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CustomHttpPattern(CustomHttpPattern other) : this() {
       kind_ = other.kind_;
       path_ = other.path_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CustomHttpPattern Clone() {
       return new CustomHttpPattern(this);
     }
@@ -788,6 +830,7 @@ namespace Google.Api {
     /// <summary>
     ///  The name of this custom HTTP verb.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Kind {
       get { return kind_; }
       set {
@@ -801,6 +844,7 @@ namespace Google.Api {
     /// <summary>
     ///  The path matched by this custom verb.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Path {
       get { return path_; }
       set {
@@ -808,10 +852,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as CustomHttpPattern);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(CustomHttpPattern other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -824,6 +870,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Kind.Length != 0) hash ^= Kind.GetHashCode();
@@ -831,10 +878,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Kind.Length != 0) {
         output.WriteRawTag(10);
@@ -846,6 +895,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Kind.Length != 0) {
@@ -857,6 +907,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(CustomHttpPattern other) {
       if (other == null) {
         return;
@@ -869,6 +920,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

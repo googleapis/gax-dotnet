@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/service.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ServiceReflection {
 
     #region Descriptor
@@ -93,25 +92,29 @@ namespace Google.Api {
   ///        - selector: "*"
   ///          address: calendar.example.com
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Service : pb::IMessage<Service> {
     private static readonly pb::MessageParser<Service> _parser = new pb::MessageParser<Service>(() => new Service());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Service> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.ServiceReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Service() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Service(Service other) : this() {
       ConfigVersion = other.ConfigVersion;
       name_ = other.name_;
@@ -137,6 +140,7 @@ namespace Google.Api {
       SystemParameters = other.systemParameters_ != null ? other.SystemParameters.Clone() : null;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Service Clone() {
       return new Service(this);
     }
@@ -151,6 +155,7 @@ namespace Google.Api {
     ///  determine defaults. This is documented together with applicable
     ///  options. The current default for the config version itself is `3`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public uint? ConfigVersion {
       get { return configVersion_; }
       set {
@@ -165,6 +170,7 @@ namespace Google.Api {
     ///  The DNS address at which this service is available,
     ///  e.g. `calendar.googleapis.com`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -180,6 +186,7 @@ namespace Google.Api {
     ///  by the client for tracking purpose. If empty, the server may choose to
     ///  generate one instead.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Id {
       get { return id_; }
       set {
@@ -193,6 +200,7 @@ namespace Google.Api {
     /// <summary>
     ///  The product title associated with this service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Title {
       get { return title_; }
       set {
@@ -208,6 +216,7 @@ namespace Google.Api {
     ///  Members of this project can manage the service configuration,
     ///  manage consumption of the service, etc.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ProducerProjectId {
       get { return producerProjectId_; }
       set {
@@ -227,6 +236,7 @@ namespace Google.Api {
     ///  normalization process. It is an error to specify an API interface here
     ///  which cannot be resolved against the associated IDL files.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Api> Apis {
       get { return apis_; }
     }
@@ -246,6 +256,7 @@ namespace Google.Api {
     ///      types:
     ///      - name: google.protobuf.Int32
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Type> Types_ {
       get { return types_; }
     }
@@ -264,6 +275,7 @@ namespace Google.Api {
     ///      enums:
     ///      - name: google.someapi.v1.SomeEnum
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Enum> Enums {
       get { return enums_; }
     }
@@ -274,6 +286,7 @@ namespace Google.Api {
     /// <summary>
     ///  Additional API documentation.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Documentation Documentation {
       get { return documentation_; }
       set {
@@ -287,6 +300,7 @@ namespace Google.Api {
     /// <summary>
     ///  API backend configuration.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Backend Backend {
       get { return backend_; }
       set {
@@ -300,6 +314,7 @@ namespace Google.Api {
     /// <summary>
     ///  HTTP configuration.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Http Http {
       get { return http_; }
       set {
@@ -313,6 +328,7 @@ namespace Google.Api {
     /// <summary>
     ///  Auth configuration.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Authentication Authentication {
       get { return authentication_; }
       set {
@@ -326,6 +342,7 @@ namespace Google.Api {
     /// <summary>
     ///  Context configuration.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Context Context {
       get { return context_; }
       set {
@@ -339,6 +356,7 @@ namespace Google.Api {
     /// <summary>
     ///  Configuration controlling usage of this service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Usage Usage {
       get { return usage_; }
       set {
@@ -356,6 +374,7 @@ namespace Google.Api {
     ///  with the same name as the service is automatically generated to service all
     ///  defined APIs.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Endpoint> Endpoints {
       get { return endpoints_; }
     }
@@ -366,6 +385,7 @@ namespace Google.Api {
     /// <summary>
     ///  Configuration for the service control plane.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Control Control {
       get { return control_; }
       set {
@@ -381,6 +401,7 @@ namespace Google.Api {
     /// <summary>
     ///  Defines the logs used by this service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LogDescriptor> Logs {
       get { return logs_; }
     }
@@ -393,6 +414,7 @@ namespace Google.Api {
     /// <summary>
     ///  Defines the metrics used by this service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.MetricDescriptor> Metrics {
       get { return metrics_; }
     }
@@ -406,6 +428,7 @@ namespace Google.Api {
     ///  Defines the monitored resources used by this service. This is required
     ///  by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.MonitoredResourceDescriptor> MonitoredResources {
       get { return monitoredResources_; }
     }
@@ -416,6 +439,7 @@ namespace Google.Api {
     /// <summary>
     ///  Logging configuration of the service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Logging Logging {
       get { return logging_; }
       set {
@@ -429,6 +453,7 @@ namespace Google.Api {
     /// <summary>
     ///  Monitoring configuration of the service.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Monitoring Monitoring {
       get { return monitoring_; }
       set {
@@ -442,6 +467,7 @@ namespace Google.Api {
     /// <summary>
     ///  Configuration for system parameters.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.SystemParameters SystemParameters {
       get { return systemParameters_; }
       set {
@@ -449,10 +475,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Service);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Service other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -485,6 +513,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (configVersion_ != null) hash ^= ConfigVersion.GetHashCode();
@@ -512,10 +541,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -585,6 +616,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (configVersion_ != null) {
@@ -642,6 +674,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Service other) {
       if (other == null) {
         return;
@@ -732,6 +765,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

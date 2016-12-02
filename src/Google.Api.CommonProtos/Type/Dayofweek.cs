@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Type {
 
   /// <summary>Holder for reflection information generated from google/type/dayofweek.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class DayofweekReflection {
 
     #region Descriptor
