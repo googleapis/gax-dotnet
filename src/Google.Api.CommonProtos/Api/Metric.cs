@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/metric.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class MetricReflection {
 
     #region Descriptor
@@ -60,25 +59,29 @@ namespace Google.Api {
   /// <summary>
   ///  Defines a metric type and its schema.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor> {
     private static readonly pb::MessageParser<MetricDescriptor> _parser = new pb::MessageParser<MetricDescriptor>(() => new MetricDescriptor());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<MetricDescriptor> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.MetricReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MetricDescriptor() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MetricDescriptor(MetricDescriptor other) : this() {
       name_ = other.name_;
       type_ = other.type_;
@@ -90,6 +93,7 @@ namespace Google.Api {
       displayName_ = other.displayName_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MetricDescriptor Clone() {
       return new MetricDescriptor(this);
     }
@@ -104,6 +108,7 @@ namespace Google.Api {
     ///      projects/{project_id}/metricDescriptors/{type=**}
     ///      metricDescriptors/{type=**}
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -128,6 +133,7 @@ namespace Google.Api {
     ///  dashboards, alerting rules and quota limits. Therefore, once a metric has
     ///  been published, its type should be immutable.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
       get { return type_; }
       set {
@@ -147,6 +153,7 @@ namespace Google.Api {
     ///  has a label, `loadbalanced`, that specifies whether the traffic was
     ///  received through a load balanced IP address.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LabelDescriptor> Labels {
       get { return labels_; }
     }
@@ -157,6 +164,7 @@ namespace Google.Api {
     /// <summary>
     ///  Whether the metric records instantaneous values, changes to a value, etc.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.MetricDescriptor.Types.MetricKind MetricKind {
       get { return metricKind_; }
       set {
@@ -170,6 +178,7 @@ namespace Google.Api {
     /// <summary>
     ///  Whether the measurement is an integer, a floating-point number, etc.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.MetricDescriptor.Types.ValueType ValueType {
       get { return valueType_; }
       set {
@@ -246,6 +255,7 @@ namespace Google.Api {
     ///  * `NAME` is a sequence of non-blank printable ASCII characters not
     ///     containing '{' or '}'.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Unit {
       get { return unit_; }
       set {
@@ -259,6 +269,7 @@ namespace Google.Api {
     /// <summary>
     ///  A detailed description of the metric, which can be used in documentation.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -273,6 +284,7 @@ namespace Google.Api {
     ///  A concise name for the metric, which can be displayed in user interfaces.
     ///  Use sentence case without an ending period, for example "Request count".
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {
       get { return displayName_; }
       set {
@@ -280,10 +292,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MetricDescriptor);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(MetricDescriptor other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -302,6 +316,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -315,10 +330,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -351,6 +368,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -378,6 +396,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(MetricDescriptor other) {
       if (other == null) {
         return;
@@ -406,6 +425,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -451,7 +471,7 @@ namespace Google.Api {
 
     #region Nested types
     /// <summary>Container for nested types declared in the MetricDescriptor message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  The kind of measurement. It describes how the data is reported.
@@ -524,30 +544,35 @@ namespace Google.Api {
   ///  A specific metric identified by specifying values for all of the
   ///  labels of a [`MetricDescriptor`][google.api.MetricDescriptor].
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Metric : pb::IMessage<Metric> {
     private static readonly pb::MessageParser<Metric> _parser = new pb::MessageParser<Metric>(() => new Metric());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Metric> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.MetricReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Metric() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Metric(Metric other) : this() {
       type_ = other.type_;
       labels_ = other.labels_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Metric Clone() {
       return new Metric(this);
     }
@@ -559,6 +584,7 @@ namespace Google.Api {
     ///  An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].
     ///  For example, `compute.googleapis.com/instance/cpu/usage_time`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
       get { return type_; }
       set {
@@ -576,14 +602,17 @@ namespace Google.Api {
     ///  metric, all labels enumerated in the `MetricDescriptor` must be
     ///  assigned values.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> Labels {
       get { return labels_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Metric);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Metric other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -596,6 +625,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Type.Length != 0) hash ^= Type.GetHashCode();
@@ -603,10 +633,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       labels_.WriteTo(output, _map_labels_codec);
       if (Type.Length != 0) {
@@ -615,6 +647,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Type.Length != 0) {
@@ -624,6 +657,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Metric other) {
       if (other == null) {
         return;
@@ -634,6 +668,7 @@ namespace Google.Api {
       labels_.Add(other.labels_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

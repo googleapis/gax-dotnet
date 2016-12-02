@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Rpc {
 
   /// <summary>Holder for reflection information generated from google/rpc/status.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class StatusReflection {
 
     #region Descriptor
@@ -33,8 +32,9 @@ namespace Google.Rpc {
             "Chdnb29nbGUvcnBjL3N0YXR1cy5wcm90bxIKZ29vZ2xlLnJwYxoZZ29vZ2xl",
             "L3Byb3RvYnVmL2FueS5wcm90byJOCgZTdGF0dXMSDAoEY29kZRgBIAEoBRIP",
             "CgdtZXNzYWdlGAIgASgJEiUKB2RldGFpbHMYAyADKAsyFC5nb29nbGUucHJv",
-            "dG9idWYuQW55Qh8KDmNvbS5nb29nbGUucnBjQgtTdGF0dXNQcm90b1ABYgZw",
-            "cm90bzM="));
+            "dG9idWYuQW55Ql4KDmNvbS5nb29nbGUucnBjQgtTdGF0dXNQcm90b1ABWjdn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3JwYy9zdGF0",
+            "dXM7c3RhdHVzogIDUlBDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -99,31 +99,36 @@ namespace Google.Rpc {
   ///  - Logging. If some API errors are stored in logs, the message `Status` could
   ///      be used directly after any stripping needed for security/privacy reasons.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Status : pb::IMessage<Status> {
     private static readonly pb::MessageParser<Status> _parser = new pb::MessageParser<Status>(() => new Status());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Status> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.StatusReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Status() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Status(Status other) : this() {
       code_ = other.code_;
       message_ = other.message_;
       details_ = other.details_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Status Clone() {
       return new Status(this);
     }
@@ -134,6 +139,7 @@ namespace Google.Rpc {
     /// <summary>
     ///  The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Code {
       get { return code_; }
       set {
@@ -149,6 +155,7 @@ namespace Google.Rpc {
     ///  user-facing error message should be localized and sent in the
     ///  [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Message {
       get { return message_; }
       set {
@@ -165,14 +172,17 @@ namespace Google.Rpc {
     ///  A list of messages that carry the error details.  There will be a
     ///  common set of message types for APIs to use.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> Details {
       get { return details_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Status);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Status other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -186,6 +196,7 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Code != 0) hash ^= Code.GetHashCode();
@@ -194,10 +205,12 @@ namespace Google.Rpc {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Code != 0) {
         output.WriteRawTag(8);
@@ -210,6 +223,7 @@ namespace Google.Rpc {
       details_.WriteTo(output, _repeated_details_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Code != 0) {
@@ -222,6 +236,7 @@ namespace Google.Rpc {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Status other) {
       if (other == null) {
         return;
@@ -235,6 +250,7 @@ namespace Google.Rpc {
       details_.Add(other.details_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

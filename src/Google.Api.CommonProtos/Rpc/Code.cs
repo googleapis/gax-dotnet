@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Rpc {
 
   /// <summary>Holder for reflection information generated from google/rpc/code.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class CodeReflection {
 
     #region Descriptor
@@ -37,8 +36,9 @@ namespace Google.Rpc {
             "RBAHEhMKD1VOQVVUSEVOVElDQVRFRBAQEhYKElJFU09VUkNFX0VYSEFVU1RF",
             "RBAIEhcKE0ZBSUxFRF9QUkVDT05ESVRJT04QCRILCgdBQk9SVEVEEAoSEAoM",
             "T1VUX09GX1JBTkdFEAsSEQoNVU5JTVBMRU1FTlRFRBAMEgwKCElOVEVSTkFM",
-            "EA0SDwoLVU5BVkFJTEFCTEUQDhINCglEQVRBX0xPU1MQD0IdCg5jb20uZ29v",
-            "Z2xlLnJwY0IJQ29kZVByb3RvUAFiBnByb3RvMw=="));
+            "EA0SDwoLVU5BVkFJTEFCTEUQDhINCglEQVRBX0xPU1MQD0JYCg5jb20uZ29v",
+            "Z2xlLnJwY0IJQ29kZVByb3RvUAFaM2dvb2dsZS5nb2xhbmcub3JnL2dlbnBy",
+            "b3RvL2dvb2dsZWFwaXMvcnBjL2NvZGU7Y29kZaICA1JQQ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Rpc.Code), }, null));
@@ -49,11 +49,6 @@ namespace Google.Rpc {
   #region Enums
   /// <summary>
   ///  The canonical error codes for Google APIs.
-  ///  Warnings:
-  ///
-  ///  -   Do not change any numeric assignments.
-  ///  -   Changes to this list should be made only if there is a compelling
-  ///      need that can't be satisfied in another way.
   ///
   ///  Sometimes multiple error codes may apply.  Services should return
   ///  the most specific error code that applies.  For example, prefer
@@ -104,8 +99,9 @@ namespace Google.Rpc {
     [pbr::OriginalName("DEADLINE_EXCEEDED")] DeadlineExceeded = 4,
     /// <summary>
     ///  Some requested entity (e.g., file or directory) was not found.
-    ///  For privacy reasons, this code *might* be returned when the client
-    ///  does not have the access rights to the entity.
+    ///  For privacy reasons, this code *may* be returned when the client
+    ///  does not have the access rights to the entity, though such usage is
+    ///  discouraged.
     ///
     ///  HTTP Mapping: 404 Not Found
     /// </summary>
@@ -158,17 +154,8 @@ namespace Google.Rpc {
     ///       fails because the directory is non-empty, `FAILED_PRECONDITION`
     ///       should be returned since the client should not retry unless
     ///       the files are deleted from the directory.
-    ///   (d) Use `FAILED_PRECONDITION` if the client performs conditional
-    ///       REST Get/Update/Delete on a resource and the resource on the
-    ///       server does not match the condition. E.g., conflicting
-    ///       read-modify-write on the same resource.
     ///
     ///  HTTP Mapping: 400 Bad Request
-    ///
-    ///  NOTE: HTTP spec says `412 Precondition Failed` should be used only if
-    ///  the request contains Etag-related headers. So if the server does see
-    ///  Etag-related headers in the request, it may choose to return 412
-    ///  instead of 400 for this error code.
     /// </summary>
     [pbr::OriginalName("FAILED_PRECONDITION")] FailedPrecondition = 9,
     /// <summary>

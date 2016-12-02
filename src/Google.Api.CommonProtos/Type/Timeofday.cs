@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Type {
 
   /// <summary>Holder for reflection information generated from google/type/timeofday.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class TimeofdayReflection {
 
     #region Descriptor
@@ -49,25 +48,29 @@ namespace Google.Type {
   ///  or are specified elsewhere. An API may chose to allow leap seconds. Related
   ///  types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class TimeOfDay : pb::IMessage<TimeOfDay> {
     private static readonly pb::MessageParser<TimeOfDay> _parser = new pb::MessageParser<TimeOfDay>(() => new TimeOfDay());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<TimeOfDay> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Type.TimeofdayReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TimeOfDay() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TimeOfDay(TimeOfDay other) : this() {
       hours_ = other.hours_;
       minutes_ = other.minutes_;
@@ -75,6 +78,7 @@ namespace Google.Type {
       nanos_ = other.nanos_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TimeOfDay Clone() {
       return new TimeOfDay(this);
     }
@@ -86,6 +90,7 @@ namespace Google.Type {
     ///  Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
     ///  to allow the value "24:00:00" for scenarios like business closing time.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Hours {
       get { return hours_; }
       set {
@@ -99,6 +104,7 @@ namespace Google.Type {
     /// <summary>
     ///  Minutes of hour of day. Must be from 0 to 59.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Minutes {
       get { return minutes_; }
       set {
@@ -113,6 +119,7 @@ namespace Google.Type {
     ///  Seconds of minutes of the time. Must normally be from 0 to 59. An API may
     ///  allow the value 60 if it allows leap-seconds.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Seconds {
       get { return seconds_; }
       set {
@@ -126,6 +133,7 @@ namespace Google.Type {
     /// <summary>
     ///  Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Nanos {
       get { return nanos_; }
       set {
@@ -133,10 +141,12 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as TimeOfDay);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(TimeOfDay other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -151,6 +161,7 @@ namespace Google.Type {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Hours != 0) hash ^= Hours.GetHashCode();
@@ -160,10 +171,12 @@ namespace Google.Type {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Hours != 0) {
         output.WriteRawTag(8);
@@ -183,6 +196,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Hours != 0) {
@@ -200,6 +214,7 @@ namespace Google.Type {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(TimeOfDay other) {
       if (other == null) {
         return;
@@ -218,6 +233,7 @@ namespace Google.Type {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

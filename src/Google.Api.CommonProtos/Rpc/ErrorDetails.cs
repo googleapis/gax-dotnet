@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Rpc {
 
   /// <summary>Holder for reflection information generated from google/rpc/error_details.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class ErrorDetailsReflection {
 
     #region Descriptor
@@ -45,8 +44,11 @@ namespace Google.Rpc {
             "KAkSFQoNcmVzb3VyY2VfbmFtZRgCIAEoCRINCgVvd25lchgDIAEoCRITCgtk",
             "ZXNjcmlwdGlvbhgEIAEoCSJWCgRIZWxwEiQKBWxpbmtzGAEgAygLMhUuZ29v",
             "Z2xlLnJwYy5IZWxwLkxpbmsaKAoETGluaxITCgtkZXNjcmlwdGlvbhgBIAEo",
-            "CRILCgN1cmwYAiABKAlCJQoOY29tLmdvb2dsZS5ycGNCEUVycm9yRGV0YWls",
-            "c1Byb3RvUAFiBnByb3RvMw=="));
+            "CRILCgN1cmwYAiABKAkiMwoQTG9jYWxpemVkTWVzc2FnZRIOCgZsb2NhbGUY",
+            "ASABKAkSDwoHbWVzc2FnZRgCIAEoCUJsCg5jb20uZ29vZ2xlLnJwY0IRRXJy",
+            "b3JEZXRhaWxzUHJvdG9QAVo/Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8v",
+            "Z29vZ2xlYXBpcy9ycGMvZXJyZGV0YWlscztlcnJkZXRhaWxzogIDUlBDYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -56,7 +58,8 @@ namespace Google.Rpc {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ResourceInfo), global::Google.Rpc.ResourceInfo.Parser, new[]{ "ResourceType", "ResourceName", "Owner", "Description" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help), global::Google.Rpc.Help.Parser, new[]{ "Links" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help.Types.Link), global::Google.Rpc.Help.Types.Link.Parser, new[]{ "Description", "Url" }, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help), global::Google.Rpc.Help.Parser, new[]{ "Links" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help.Types.Link), global::Google.Rpc.Help.Types.Link.Parser, new[]{ "Description", "Url" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.LocalizedMessage), global::Google.Rpc.LocalizedMessage.Parser, new[]{ "Locale", "Message" }, null, null, null)
           }));
     }
     #endregion
@@ -78,29 +81,34 @@ namespace Google.Rpc {
   ///  number of retires have been reached or a maximum retry delay cap has been
   ///  reached.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class RetryInfo : pb::IMessage<RetryInfo> {
     private static readonly pb::MessageParser<RetryInfo> _parser = new pb::MessageParser<RetryInfo>(() => new RetryInfo());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<RetryInfo> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RetryInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RetryInfo(RetryInfo other) : this() {
       RetryDelay = other.retryDelay_ != null ? other.RetryDelay.Clone() : null;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RetryInfo Clone() {
       return new RetryInfo(this);
     }
@@ -111,6 +119,7 @@ namespace Google.Rpc {
     /// <summary>
     ///  Clients should wait at least this long between retrying the same request.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.WellKnownTypes.Duration RetryDelay {
       get { return retryDelay_; }
       set {
@@ -118,10 +127,12 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as RetryInfo);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(RetryInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -133,16 +144,19 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (retryDelay_ != null) hash ^= RetryDelay.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (retryDelay_ != null) {
         output.WriteRawTag(10);
@@ -150,6 +164,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (retryDelay_ != null) {
@@ -158,6 +173,7 @@ namespace Google.Rpc {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(RetryInfo other) {
       if (other == null) {
         return;
@@ -170,6 +186,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -193,30 +210,35 @@ namespace Google.Rpc {
   /// <summary>
   ///  Describes additional debugging info.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class DebugInfo : pb::IMessage<DebugInfo> {
     private static readonly pb::MessageParser<DebugInfo> _parser = new pb::MessageParser<DebugInfo>(() => new DebugInfo());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<DebugInfo> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DebugInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DebugInfo(DebugInfo other) : this() {
       stackEntries_ = other.stackEntries_.Clone();
       detail_ = other.detail_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DebugInfo Clone() {
       return new DebugInfo(this);
     }
@@ -229,6 +251,7 @@ namespace Google.Rpc {
     /// <summary>
     ///  The stack trace entries indicating where the error occurred.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> StackEntries {
       get { return stackEntries_; }
     }
@@ -239,6 +262,7 @@ namespace Google.Rpc {
     /// <summary>
     ///  Additional debugging information provided by the server.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Detail {
       get { return detail_; }
       set {
@@ -246,10 +270,12 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DebugInfo);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(DebugInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -262,6 +288,7 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= stackEntries_.GetHashCode();
@@ -269,10 +296,12 @@ namespace Google.Rpc {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       stackEntries_.WriteTo(output, _repeated_stackEntries_codec);
       if (Detail.Length != 0) {
@@ -281,6 +310,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += stackEntries_.CalculateSize(_repeated_stackEntries_codec);
@@ -290,6 +320,7 @@ namespace Google.Rpc {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(DebugInfo other) {
       if (other == null) {
         return;
@@ -300,6 +331,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -334,29 +366,34 @@ namespace Google.Rpc {
   ///  Also see RetryDetail and Help types for other details about handling a
   ///  quota failure.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class QuotaFailure : pb::IMessage<QuotaFailure> {
     private static readonly pb::MessageParser<QuotaFailure> _parser = new pb::MessageParser<QuotaFailure>(() => new QuotaFailure());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<QuotaFailure> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[2]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QuotaFailure() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QuotaFailure(QuotaFailure other) : this() {
       violations_ = other.violations_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QuotaFailure Clone() {
       return new QuotaFailure(this);
     }
@@ -369,14 +406,17 @@ namespace Google.Rpc {
     /// <summary>
     ///  Describes all quota violations.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.QuotaFailure.Types.Violation> Violations {
       get { return violations_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as QuotaFailure);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(QuotaFailure other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -388,26 +428,31 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= violations_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       violations_.WriteTo(output, _repeated_violations_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += violations_.CalculateSize(_repeated_violations_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(QuotaFailure other) {
       if (other == null) {
         return;
@@ -415,6 +460,7 @@ namespace Google.Rpc {
       violations_.Add(other.violations_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -432,36 +478,41 @@ namespace Google.Rpc {
 
     #region Nested types
     /// <summary>Container for nested types declared in the QuotaFailure message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  A message type used to describe a single quota violation.  For example, a
       ///  daily quota or a custom quota that was exceeded.
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class Violation : pb::IMessage<Violation> {
         private static readonly pb::MessageParser<Violation> _parser = new pb::MessageParser<Violation>(() => new Violation());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<Violation> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Rpc.QuotaFailure.Descriptor.NestedTypes[0]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Violation() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Violation(Violation other) : this() {
           subject_ = other.subject_;
           description_ = other.description_;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Violation Clone() {
           return new Violation(this);
         }
@@ -474,6 +525,7 @@ namespace Google.Rpc {
         ///  For example, "clientip:&lt;ip address of client>" or "project:&lt;Google
         ///  developer project id>".
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Subject {
           get { return subject_; }
           set {
@@ -493,6 +545,7 @@ namespace Google.Rpc {
         ///  For example: "Service disabled" or "Daily Limit for read operations
         ///  exceeded".
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
           get { return description_; }
           set {
@@ -500,10 +553,12 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Violation);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(Violation other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -516,6 +571,7 @@ namespace Google.Rpc {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (Subject.Length != 0) hash ^= Subject.GetHashCode();
@@ -523,10 +579,12 @@ namespace Google.Rpc {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (Subject.Length != 0) {
             output.WriteRawTag(10);
@@ -538,6 +596,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (Subject.Length != 0) {
@@ -549,6 +608,7 @@ namespace Google.Rpc {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(Violation other) {
           if (other == null) {
             return;
@@ -561,6 +621,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
@@ -591,29 +652,34 @@ namespace Google.Rpc {
   ///  Describes violations in a client request. This error type focuses on the
   ///  syntactic aspects of the request.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class BadRequest : pb::IMessage<BadRequest> {
     private static readonly pb::MessageParser<BadRequest> _parser = new pb::MessageParser<BadRequest>(() => new BadRequest());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<BadRequest> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[3]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BadRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BadRequest(BadRequest other) : this() {
       fieldViolations_ = other.fieldViolations_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BadRequest Clone() {
       return new BadRequest(this);
     }
@@ -626,14 +692,17 @@ namespace Google.Rpc {
     /// <summary>
     ///  Describes all violations in a client request.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.BadRequest.Types.FieldViolation> FieldViolations {
       get { return fieldViolations_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as BadRequest);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(BadRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -645,26 +714,31 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= fieldViolations_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       fieldViolations_.WriteTo(output, _repeated_fieldViolations_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += fieldViolations_.CalculateSize(_repeated_fieldViolations_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(BadRequest other) {
       if (other == null) {
         return;
@@ -672,6 +746,7 @@ namespace Google.Rpc {
       fieldViolations_.Add(other.fieldViolations_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -689,35 +764,40 @@ namespace Google.Rpc {
 
     #region Nested types
     /// <summary>Container for nested types declared in the BadRequest message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  A message type used to describe a single bad request field.
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class FieldViolation : pb::IMessage<FieldViolation> {
         private static readonly pb::MessageParser<FieldViolation> _parser = new pb::MessageParser<FieldViolation>(() => new FieldViolation());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<FieldViolation> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Rpc.BadRequest.Descriptor.NestedTypes[0]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public FieldViolation() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public FieldViolation(FieldViolation other) : this() {
           field_ = other.field_;
           description_ = other.description_;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public FieldViolation Clone() {
           return new FieldViolation(this);
         }
@@ -728,8 +808,9 @@ namespace Google.Rpc {
         /// <summary>
         ///  A path leading to a field in the request body. The value will be a
         ///  sequence of dot-separated identifiers that identify a protocol buffer
-        ///  field. E.g., "violations.field" would identify this field.
+        ///  field. E.g., "field_violations.field" would identify this field.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Field {
           get { return field_; }
           set {
@@ -743,6 +824,7 @@ namespace Google.Rpc {
         /// <summary>
         ///  A description of why the request element is bad.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
           get { return description_; }
           set {
@@ -750,10 +832,12 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as FieldViolation);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(FieldViolation other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -766,6 +850,7 @@ namespace Google.Rpc {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (Field.Length != 0) hash ^= Field.GetHashCode();
@@ -773,10 +858,12 @@ namespace Google.Rpc {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (Field.Length != 0) {
             output.WriteRawTag(10);
@@ -788,6 +875,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (Field.Length != 0) {
@@ -799,6 +887,7 @@ namespace Google.Rpc {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(FieldViolation other) {
           if (other == null) {
             return;
@@ -811,6 +900,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
@@ -841,30 +931,35 @@ namespace Google.Rpc {
   ///  Contains metadata about the request that clients can attach when filing a bug
   ///  or providing other forms of feedback.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class RequestInfo : pb::IMessage<RequestInfo> {
     private static readonly pb::MessageParser<RequestInfo> _parser = new pb::MessageParser<RequestInfo>(() => new RequestInfo());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<RequestInfo> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[4]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RequestInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RequestInfo(RequestInfo other) : this() {
       requestId_ = other.requestId_;
       servingData_ = other.servingData_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RequestInfo Clone() {
       return new RequestInfo(this);
     }
@@ -876,6 +971,7 @@ namespace Google.Rpc {
     ///  An opaque string that should only be interpreted by the service generating
     ///  it. For example, it can be used to identify requests in the service's logs.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string RequestId {
       get { return requestId_; }
       set {
@@ -890,6 +986,7 @@ namespace Google.Rpc {
     ///  Any data that was used to serve this request. For example, an encrypted
     ///  stack trace that can be sent back to the service provider for debugging.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ServingData {
       get { return servingData_; }
       set {
@@ -897,10 +994,12 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as RequestInfo);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(RequestInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -913,6 +1012,7 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (RequestId.Length != 0) hash ^= RequestId.GetHashCode();
@@ -920,10 +1020,12 @@ namespace Google.Rpc {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (RequestId.Length != 0) {
         output.WriteRawTag(10);
@@ -935,6 +1037,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (RequestId.Length != 0) {
@@ -946,6 +1049,7 @@ namespace Google.Rpc {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(RequestInfo other) {
       if (other == null) {
         return;
@@ -958,6 +1062,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -982,25 +1087,29 @@ namespace Google.Rpc {
   /// <summary>
   ///  Describes the resource that is being accessed.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class ResourceInfo : pb::IMessage<ResourceInfo> {
     private static readonly pb::MessageParser<ResourceInfo> _parser = new pb::MessageParser<ResourceInfo>(() => new ResourceInfo());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<ResourceInfo> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[5]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ResourceInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ResourceInfo(ResourceInfo other) : this() {
       resourceType_ = other.resourceType_;
       resourceName_ = other.resourceName_;
@@ -1008,6 +1117,7 @@ namespace Google.Rpc {
       description_ = other.description_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ResourceInfo Clone() {
       return new ResourceInfo(this);
     }
@@ -1020,6 +1130,7 @@ namespace Google.Rpc {
     ///  "cloud storage bucket", "file", "Google calendar"; or the type URL
     ///  of the resource: e.g. "type.googleapis.com/google.pubsub.v1.Topic".
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceType {
       get { return resourceType_; }
       set {
@@ -1035,6 +1146,7 @@ namespace Google.Rpc {
     ///  name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
     ///  error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceName {
       get { return resourceName_; }
       set {
@@ -1050,6 +1162,7 @@ namespace Google.Rpc {
     ///  For example, "user:&lt;owner email>" or "project:&lt;Google developer project
     ///  id>".
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Owner {
       get { return owner_; }
       set {
@@ -1065,6 +1178,7 @@ namespace Google.Rpc {
     ///  For example, updating a cloud project may require the `writer` permission
     ///  on the developer console project.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -1072,10 +1186,12 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ResourceInfo);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(ResourceInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -1090,6 +1206,7 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (ResourceType.Length != 0) hash ^= ResourceType.GetHashCode();
@@ -1099,10 +1216,12 @@ namespace Google.Rpc {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (ResourceType.Length != 0) {
         output.WriteRawTag(10);
@@ -1122,6 +1241,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (ResourceType.Length != 0) {
@@ -1139,6 +1259,7 @@ namespace Google.Rpc {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(ResourceInfo other) {
       if (other == null) {
         return;
@@ -1157,6 +1278,7 @@ namespace Google.Rpc {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -1193,29 +1315,34 @@ namespace Google.Rpc {
   ///  project hasn't enabled the accessed service, this can contain a URL pointing
   ///  directly to the right place in the developer console to flip the bit.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Help : pb::IMessage<Help> {
     private static readonly pb::MessageParser<Help> _parser = new pb::MessageParser<Help>(() => new Help());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Help> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[6]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Help() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Help(Help other) : this() {
       links_ = other.links_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Help Clone() {
       return new Help(this);
     }
@@ -1228,14 +1355,17 @@ namespace Google.Rpc {
     /// <summary>
     ///  URL(s) pointing to additional information on handling the current error.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.Help.Types.Link> Links {
       get { return links_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Help);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Help other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -1247,26 +1377,31 @@ namespace Google.Rpc {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= links_.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       links_.WriteTo(output, _repeated_links_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += links_.CalculateSize(_repeated_links_codec);
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Help other) {
       if (other == null) {
         return;
@@ -1274,6 +1409,7 @@ namespace Google.Rpc {
       links_.Add(other.links_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -1291,35 +1427,40 @@ namespace Google.Rpc {
 
     #region Nested types
     /// <summary>Container for nested types declared in the Help message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  Describes a URL link.
       /// </summary>
-      [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
       public sealed partial class Link : pb::IMessage<Link> {
         private static readonly pb::MessageParser<Link> _parser = new pb::MessageParser<Link>(() => new Link());
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<Link> Parser { get { return _parser; } }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
           get { return global::Google.Rpc.Help.Descriptor.NestedTypes[0]; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor {
           get { return Descriptor; }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Link() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Link(Link other) : this() {
           description_ = other.description_;
           url_ = other.url_;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Link Clone() {
           return new Link(this);
         }
@@ -1330,6 +1471,7 @@ namespace Google.Rpc {
         /// <summary>
         ///  Describes what the link offers.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
           get { return description_; }
           set {
@@ -1343,6 +1485,7 @@ namespace Google.Rpc {
         /// <summary>
         ///  The URL of the link.
         /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Url {
           get { return url_; }
           set {
@@ -1350,10 +1493,12 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Link);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(Link other) {
           if (ReferenceEquals(other, null)) {
             return false;
@@ -1366,6 +1511,7 @@ namespace Google.Rpc {
           return true;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
           if (Description.Length != 0) hash ^= Description.GetHashCode();
@@ -1373,10 +1519,12 @@ namespace Google.Rpc {
           return hash;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString() {
           return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
           if (Description.Length != 0) {
             output.WriteRawTag(10);
@@ -1388,6 +1536,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
           if (Description.Length != 0) {
@@ -1399,6 +1548,7 @@ namespace Google.Rpc {
           return size;
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(Link other) {
           if (other == null) {
             return;
@@ -1411,6 +1561,7 @@ namespace Google.Rpc {
           }
         }
 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
@@ -1434,6 +1585,163 @@ namespace Google.Rpc {
 
     }
     #endregion
+
+  }
+
+  /// <summary>
+  ///  Provides a localized error message that is safe to return to the user
+  ///  which can be attached to an RPC error.
+  /// </summary>
+  public sealed partial class LocalizedMessage : pb::IMessage<LocalizedMessage> {
+    private static readonly pb::MessageParser<LocalizedMessage> _parser = new pb::MessageParser<LocalizedMessage>(() => new LocalizedMessage());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<LocalizedMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LocalizedMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LocalizedMessage(LocalizedMessage other) : this() {
+      locale_ = other.locale_;
+      message_ = other.message_;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LocalizedMessage Clone() {
+      return new LocalizedMessage(this);
+    }
+
+    /// <summary>Field number for the "locale" field.</summary>
+    public const int LocaleFieldNumber = 1;
+    private string locale_ = "";
+    /// <summary>
+    ///  The locale used following the specification defined at
+    ///  http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
+    ///  Examples are: "en-US", "fr-CH", "es-MX"
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Locale {
+      get { return locale_; }
+      set {
+        locale_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 2;
+    private string message_ = "";
+    /// <summary>
+    ///  The localized error message in the above locale.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as LocalizedMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(LocalizedMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Locale != other.Locale) return false;
+      if (Message != other.Message) return false;
+      return true;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Locale.Length != 0) hash ^= Locale.GetHashCode();
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Locale.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Locale);
+      }
+      if (Message.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Message);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Locale.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Locale);
+      }
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(LocalizedMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Locale.Length != 0) {
+        Locale = other.Locale;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            Locale = input.ReadString();
+            break;
+          }
+          case 18: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
 
   }
 

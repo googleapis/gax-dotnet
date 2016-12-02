@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/log.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class LogReflection {
 
     #region Descriptor
@@ -55,25 +54,29 @@ namespace Google.Api {
   ///        - key: /customer_id
   ///          description: Identifier of a library customer
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class LogDescriptor : pb::IMessage<LogDescriptor> {
     private static readonly pb::MessageParser<LogDescriptor> _parser = new pb::MessageParser<LogDescriptor>(() => new LogDescriptor());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<LogDescriptor> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.LogReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LogDescriptor() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LogDescriptor(LogDescriptor other) : this() {
       name_ = other.name_;
       labels_ = other.labels_.Clone();
@@ -81,6 +84,7 @@ namespace Google.Api {
       displayName_ = other.displayName_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LogDescriptor Clone() {
       return new LogDescriptor(this);
     }
@@ -94,6 +98,7 @@ namespace Google.Api {
     ///  characters [A-Za-z0-9], and punctuation characters including
     ///  slash, underscore, hyphen, period [/_-.].
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -111,6 +116,7 @@ namespace Google.Api {
     ///  Runtime requests that contain labels not specified here are
     ///  considered invalid.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LabelDescriptor> Labels {
       get { return labels_; }
     }
@@ -122,6 +128,7 @@ namespace Google.Api {
     ///  A human-readable description of this log. This information appears in
     ///  the documentation and can contain details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -136,6 +143,7 @@ namespace Google.Api {
     ///  The human-readable name for this log. This information appears on
     ///  the user interface and should be concise.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {
       get { return displayName_; }
       set {
@@ -143,10 +151,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as LogDescriptor);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(LogDescriptor other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -161,6 +171,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -170,10 +181,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Name.Length != 0) {
         output.WriteRawTag(10);
@@ -190,6 +203,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -205,6 +219,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(LogDescriptor other) {
       if (other == null) {
         return;
@@ -221,6 +236,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

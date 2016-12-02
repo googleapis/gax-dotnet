@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/monitored_resource.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class MonitoredResourceReflection {
 
     #region Descriptor
@@ -63,25 +62,29 @@ namespace Google.Api {
   ///  provide a `list` method that returns the monitored resource descriptors used
   ///  by the API.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class MonitoredResourceDescriptor : pb::IMessage<MonitoredResourceDescriptor> {
     private static readonly pb::MessageParser<MonitoredResourceDescriptor> _parser = new pb::MessageParser<MonitoredResourceDescriptor>(() => new MonitoredResourceDescriptor());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<MonitoredResourceDescriptor> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.MonitoredResourceReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResourceDescriptor() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResourceDescriptor(MonitoredResourceDescriptor other) : this() {
       name_ = other.name_;
       type_ = other.type_;
@@ -90,6 +93,7 @@ namespace Google.Api {
       labels_ = other.labels_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResourceDescriptor Clone() {
       return new MonitoredResourceDescriptor(this);
     }
@@ -105,6 +109,7 @@ namespace Google.Api {
     ///  accessing the type.  APIs that do not use project information can use the
     ///  resource name format `"monitoredResourceDescriptors/{type}"`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
       get { return name_; }
       set {
@@ -120,6 +125,7 @@ namespace Google.Api {
     ///  `"cloudsql_database"` represents databases in Google Cloud SQL.
     ///  The maximum length of this value is 256 characters.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
       get { return type_; }
       set {
@@ -136,6 +142,7 @@ namespace Google.Api {
     ///  without any article or other determiners. For example,
     ///  `"Google Cloud SQL Database"`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {
       get { return displayName_; }
       set {
@@ -150,6 +157,7 @@ namespace Google.Api {
     ///  Optional. A detailed description of the monitored resource type that might
     ///  be used in documentation.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -167,14 +175,17 @@ namespace Google.Api {
     ///  resource type. For example, an individual Google Cloud SQL database is
     ///  identified by values for the labels `"database_id"` and `"zone"`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LabelDescriptor> Labels {
       get { return labels_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MonitoredResourceDescriptor);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(MonitoredResourceDescriptor other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -190,6 +201,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
@@ -200,10 +212,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Type.Length != 0) {
         output.WriteRawTag(10);
@@ -224,6 +238,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Name.Length != 0) {
@@ -242,6 +257,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(MonitoredResourceDescriptor other) {
       if (other == null) {
         return;
@@ -261,6 +277,7 @@ namespace Google.Api {
       labels_.Add(other.labels_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -309,30 +326,35 @@ namespace Google.Api {
   ///        "labels": { "instance_id": "12345678901234",
   ///                    "zone": "us-central1-a" }}
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource> {
     private static readonly pb::MessageParser<MonitoredResource> _parser = new pb::MessageParser<MonitoredResource>(() => new MonitoredResource());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<MonitoredResource> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.MonitoredResourceReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResource() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResource(MonitoredResource other) : this() {
       type_ = other.type_;
       labels_ = other.labels_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResource Clone() {
       return new MonitoredResource(this);
     }
@@ -345,6 +367,7 @@ namespace Google.Api {
     ///  the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
     ///  example, the type of a Cloud SQL database is `"cloudsql_database"`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
       get { return type_; }
       set {
@@ -362,14 +385,17 @@ namespace Google.Api {
     ///  resource descriptor. For example, Cloud SQL databases use the labels
     ///  `"database_id"` and `"zone"`.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> Labels {
       get { return labels_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MonitoredResource);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(MonitoredResource other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -382,6 +408,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Type.Length != 0) hash ^= Type.GetHashCode();
@@ -389,10 +416,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Type.Length != 0) {
         output.WriteRawTag(10);
@@ -401,6 +430,7 @@ namespace Google.Api {
       labels_.WriteTo(output, _map_labels_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Type.Length != 0) {
@@ -410,6 +440,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(MonitoredResource other) {
       if (other == null) {
         return;
@@ -420,6 +451,7 @@ namespace Google.Api {
       labels_.Add(other.labels_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {

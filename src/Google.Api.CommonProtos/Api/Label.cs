@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/label.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class LabelReflection {
 
     #region Descriptor
@@ -49,31 +48,36 @@ namespace Google.Api {
   /// <summary>
   ///  A description of a label.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class LabelDescriptor : pb::IMessage<LabelDescriptor> {
     private static readonly pb::MessageParser<LabelDescriptor> _parser = new pb::MessageParser<LabelDescriptor>(() => new LabelDescriptor());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<LabelDescriptor> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.LabelReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LabelDescriptor() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LabelDescriptor(LabelDescriptor other) : this() {
       key_ = other.key_;
       valueType_ = other.valueType_;
       description_ = other.description_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LabelDescriptor Clone() {
       return new LabelDescriptor(this);
     }
@@ -84,6 +88,7 @@ namespace Google.Api {
     /// <summary>
     ///  The label key.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Key {
       get { return key_; }
       set {
@@ -97,6 +102,7 @@ namespace Google.Api {
     /// <summary>
     ///  The type of data that can be assigned to the label.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.LabelDescriptor.Types.ValueType ValueType {
       get { return valueType_; }
       set {
@@ -110,6 +116,7 @@ namespace Google.Api {
     /// <summary>
     ///  A human-readable description for the label.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
       get { return description_; }
       set {
@@ -117,10 +124,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as LabelDescriptor);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(LabelDescriptor other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -134,6 +143,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Key.Length != 0) hash ^= Key.GetHashCode();
@@ -142,10 +152,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Key.Length != 0) {
         output.WriteRawTag(10);
@@ -161,6 +173,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Key.Length != 0) {
@@ -175,6 +188,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(LabelDescriptor other) {
       if (other == null) {
         return;
@@ -190,6 +204,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -215,7 +230,7 @@ namespace Google.Api {
 
     #region Nested types
     /// <summary>Container for nested types declared in the LabelDescriptor message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
       ///  Value types that can be used as label values.

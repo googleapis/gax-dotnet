@@ -17,7 +17,6 @@ using scg = global::System.Collections.Generic;
 namespace Google.Api {
 
   /// <summary>Holder for reflection information generated from google/api/auth.proto</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public static partial class AuthReflection {
 
     #region Descriptor
@@ -73,30 +72,35 @@ namespace Google.Api {
   ///          oauth:
   ///            canonical_scopes: https://www.googleapis.com/auth/calendar.read
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class Authentication : pb::IMessage<Authentication> {
     private static readonly pb::MessageParser<Authentication> _parser = new pb::MessageParser<Authentication>(() => new Authentication());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<Authentication> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[0]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Authentication() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Authentication(Authentication other) : this() {
       rules_ = other.rules_.Clone();
       providers_ = other.providers_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Authentication Clone() {
       return new Authentication(this);
     }
@@ -111,6 +115,7 @@ namespace Google.Api {
     ///
     ///  **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.AuthenticationRule> Rules {
       get { return rules_; }
     }
@@ -123,14 +128,17 @@ namespace Google.Api {
     /// <summary>
     ///  Defines a set of authentication providers that a service supports.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.AuthProvider> Providers {
       get { return providers_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Authentication);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(Authentication other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -143,6 +151,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= rules_.GetHashCode();
@@ -150,15 +159,18 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       rules_.WriteTo(output, _repeated_rules_codec);
       providers_.WriteTo(output, _repeated_providers_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += rules_.CalculateSize(_repeated_rules_codec);
@@ -166,6 +178,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(Authentication other) {
       if (other == null) {
         return;
@@ -174,6 +187,7 @@ namespace Google.Api {
       providers_.Add(other.providers_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -206,25 +220,29 @@ namespace Google.Api {
   ///  If a method doesn't have any auth requirements, request credentials will be
   ///  ignored.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class AuthenticationRule : pb::IMessage<AuthenticationRule> {
     private static readonly pb::MessageParser<AuthenticationRule> _parser = new pb::MessageParser<AuthenticationRule>(() => new AuthenticationRule());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<AuthenticationRule> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[1]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthenticationRule() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthenticationRule(AuthenticationRule other) : this() {
       selector_ = other.selector_;
       Oauth = other.oauth_ != null ? other.Oauth.Clone() : null;
@@ -232,6 +250,7 @@ namespace Google.Api {
       requirements_ = other.requirements_.Clone();
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthenticationRule Clone() {
       return new AuthenticationRule(this);
     }
@@ -244,6 +263,7 @@ namespace Google.Api {
     ///
     ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
       get { return selector_; }
       set {
@@ -257,6 +277,7 @@ namespace Google.Api {
     /// <summary>
     ///  The requirements for OAuth credentials.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.OAuthRequirements Oauth {
       get { return oauth_; }
       set {
@@ -276,6 +297,7 @@ namespace Google.Api {
     ///  consumer. This can be done by passing an API key that belongs to a consumer
     ///  project.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowWithoutCredential {
       get { return allowWithoutCredential_; }
       set {
@@ -291,14 +313,17 @@ namespace Google.Api {
     /// <summary>
     ///  Requirements for additional authentication providers.
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.AuthRequirement> Requirements {
       get { return requirements_; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AuthenticationRule);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(AuthenticationRule other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -313,6 +338,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
@@ -322,10 +348,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
@@ -342,6 +370,7 @@ namespace Google.Api {
       requirements_.WriteTo(output, _repeated_requirements_codec);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Selector.Length != 0) {
@@ -357,6 +386,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(AuthenticationRule other) {
       if (other == null) {
         return;
@@ -376,6 +406,7 @@ namespace Google.Api {
       requirements_.Add(other.requirements_);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -412,31 +443,36 @@ namespace Google.Api {
   ///  Configuration for an anthentication provider, including support for
   ///  [JSON Web Token (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class AuthProvider : pb::IMessage<AuthProvider> {
     private static readonly pb::MessageParser<AuthProvider> _parser = new pb::MessageParser<AuthProvider>(() => new AuthProvider());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<AuthProvider> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[2]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthProvider() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthProvider(AuthProvider other) : this() {
       id_ = other.id_;
       issuer_ = other.issuer_;
       jwksUri_ = other.jwksUri_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthProvider Clone() {
       return new AuthProvider(this);
     }
@@ -450,6 +486,7 @@ namespace Google.Api {
     ///
     ///  Example: "bookstore_auth".
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Id {
       get { return id_; }
       set {
@@ -468,6 +505,7 @@ namespace Google.Api {
     ///  Example: https://securetoken.google.com
     ///  Example: 1234567-compute@developer.gserviceaccount.com
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Issuer {
       get { return issuer_; }
       set {
@@ -489,6 +527,7 @@ namespace Google.Api {
     ///
     ///  Example: https://www.googleapis.com/oauth2/v1/certs
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string JwksUri {
       get { return jwksUri_; }
       set {
@@ -496,10 +535,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AuthProvider);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(AuthProvider other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -513,6 +554,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (Id.Length != 0) hash ^= Id.GetHashCode();
@@ -521,10 +563,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Id.Length != 0) {
         output.WriteRawTag(10);
@@ -540,6 +584,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (Id.Length != 0) {
@@ -554,6 +599,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(AuthProvider other) {
       if (other == null) {
         return;
@@ -569,6 +615,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -614,29 +661,34 @@ namespace Google.Api {
   ///  request to be accepted and passed to the backend, a request can still fail
   ///  due to the backend requiring additional scopes or permissions.
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class OAuthRequirements : pb::IMessage<OAuthRequirements> {
     private static readonly pb::MessageParser<OAuthRequirements> _parser = new pb::MessageParser<OAuthRequirements>(() => new OAuthRequirements());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<OAuthRequirements> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[3]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public OAuthRequirements() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public OAuthRequirements(OAuthRequirements other) : this() {
       canonicalScopes_ = other.canonicalScopes_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public OAuthRequirements Clone() {
       return new OAuthRequirements(this);
     }
@@ -653,6 +705,7 @@ namespace Google.Api {
     ///       canonical_scopes: https://www.googleapis.com/auth/calendar,
     ///                         https://www.googleapis.com/auth/calendar.read
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string CanonicalScopes {
       get { return canonicalScopes_; }
       set {
@@ -660,10 +713,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as OAuthRequirements);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(OAuthRequirements other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -675,16 +730,19 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (CanonicalScopes.Length != 0) hash ^= CanonicalScopes.GetHashCode();
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (CanonicalScopes.Length != 0) {
         output.WriteRawTag(10);
@@ -692,6 +750,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (CanonicalScopes.Length != 0) {
@@ -700,6 +759,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(OAuthRequirements other) {
       if (other == null) {
         return;
@@ -709,6 +769,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -730,30 +791,35 @@ namespace Google.Api {
   ///  User-defined authentication requirements, including support for
   ///  [JSON Web Token (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   public sealed partial class AuthRequirement : pb::IMessage<AuthRequirement> {
     private static readonly pb::MessageParser<AuthRequirement> _parser = new pb::MessageParser<AuthRequirement>(() => new AuthRequirement());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<AuthRequirement> Parser { get { return _parser; } }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[4]; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthRequirement() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthRequirement(AuthRequirement other) : this() {
       providerId_ = other.providerId_;
       audiences_ = other.audiences_;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthRequirement Clone() {
       return new AuthRequirement(this);
     }
@@ -768,6 +834,7 @@ namespace Google.Api {
     ///
     ///      provider_id: bookstore_auth
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ProviderId {
       get { return providerId_; }
       set {
@@ -793,6 +860,7 @@ namespace Google.Api {
     ///      audiences: bookstore_android.apps.googleusercontent.com,
     ///                 bookstore_web.apps.googleusercontent.com
     /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Audiences {
       get { return audiences_; }
       set {
@@ -800,10 +868,12 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AuthRequirement);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Equals(AuthRequirement other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -816,6 +886,7 @@ namespace Google.Api {
       return true;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
       if (ProviderId.Length != 0) hash ^= ProviderId.GetHashCode();
@@ -823,10 +894,12 @@ namespace Google.Api {
       return hash;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (ProviderId.Length != 0) {
         output.WriteRawTag(10);
@@ -838,6 +911,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       if (ProviderId.Length != 0) {
@@ -849,6 +923,7 @@ namespace Google.Api {
       return size;
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(AuthRequirement other) {
       if (other == null) {
         return;
@@ -861,6 +936,7 @@ namespace Google.Api {
       }
     }
 
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
