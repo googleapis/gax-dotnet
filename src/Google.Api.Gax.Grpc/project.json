@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta05-*",
+  "version": "1.0.0-beta06-*",
 
   "packOptions": {
     "title": "Google grPC API Extensions",
@@ -18,7 +18,7 @@
 
   "dependencies": {
     "Google.Api.Gax": { "target": "project" },
-    "Google.Apis.Auth": "1.18.0",
+    "Google.Apis.Auth": "1.20.0",
     "Google.Protobuf": "3.0.0",
     "Google.Protobuf.Tools": { "version": "3.0.0", "type": "build" },
     "Grpc.Auth": "1.0.1",
