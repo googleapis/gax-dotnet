@@ -1,0 +1,399 @@
+﻿/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using Grpc.Core;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace Google.Api.Gax.Grpc.Tests
+{
+    public class BufferedClientStreamWriterTest
+    {
+        [Fact]
+        public void CompleteWithNoWrites()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            var completionTask = writer.CompleteAsync();
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+            fake.AssertMessages();
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void CompleteAfterMessages()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            var task1 = writer.WriteAsync("1");
+            var task2 = writer.WriteAsync("2");
+            var completionTask = writer.CompleteAsync();
+            AssertNotCompleted(task1, task2, completionTask);
+
+            // Server handles first message
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
+            AssertNotCompleted(task2, completionTask);
+
+            // Server handles second message
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
+            AssertNotCompleted(completionTask);
+
+            // Server handles completion
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+
+            fake.AssertMessages("1", "2");
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void WritesAfterMessagesAreSent()
+        {
+            // Unlike most other tests, here we write a message, the server completes the
+            // task, write another message, server completes etc.
+
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+
+            // First message
+            var task1 = writer.WriteAsync("1");
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
+
+            // Second message
+            var task2 = writer.WriteAsync("2");
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
+
+            // Completion
+            var completionTask = writer.CompleteAsync();
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+
+            fake.AssertMessages("1", "2");
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void FaultedWriteFailsPendingTasks()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            var task1 = writer.WriteAsync("1");
+            var task2 = writer.WriteAsync("2");
+            var task3 = writer.WriteAsync("3");
+            var completionTask = writer.CompleteAsync();
+            AssertNotCompleted(task1, task2, task3, completionTask);
+
+            // Server handles first message successfully
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
+            AssertNotCompleted(task2, task3, completionTask);
+
+            // Server fails second message. All pending tasks become faulted with the same exception.
+            var exception = new Exception("Bang");
+            fake.FailCurrentTask(exception);
+            foreach (var task in new[] { task2, task3, completionTask })
+            {
+                AssertCompletedWithStatus(task, TaskStatus.Faulted);
+                Assert.Same(exception, task.Exception.InnerExceptions[0]);
+            }
+        }
+
+        [Fact]
+        public void FaultedWriteFailsFutureTasks()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            var task1 = writer.WriteAsync("1");
+
+            // Server fails first message
+            var exception = new Exception("Bang");
+            fake.FailCurrentTask(exception);
+
+            // Subsequent calls to Write and Complete fail
+            var task2 = writer.WriteAsync("2");
+            var task3 = writer.WriteAsync("3");
+            var completionTask = writer.CompleteAsync();
+
+            foreach (var task in new[] { task2, task3, completionTask })
+            {
+                AssertCompletedWithStatus(task, TaskStatus.Faulted);
+                Assert.Same(exception, task.Exception.InnerExceptions[0]);
+            }
+        }
+
+        [Fact]
+        public void WriteBeyondBuffer()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 2);
+            var task1 = writer.WriteAsync("1");
+            var task2 = writer.WriteAsync("2");
+            // The (object) cast is because to make xUnit understand that the call itself should throw;
+            // we don't return a failed task.
+            Assert.Throws<InvalidOperationException>(() => (object) writer.WriteAsync("3"));
+
+            fake.CompleteCurrentTask();
+            WaitForSpace(writer);
+
+            // Now the buffer is smaller, we can write again.
+            var task4 = writer.WriteAsync("4");
+            var completionTask = writer.CompleteAsync();
+
+            fake.CompleteCurrentTask(); // Message 2
+            fake.CompleteCurrentTask(); // Message 4
+            fake.CompleteCurrentTask(); // Completion
+
+            AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(task4, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+
+            fake.AssertMessages("1", "2", "4");
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void TryWriteBeyondBuffer()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 2);
+            var task1 = writer.WriteAsync("1");
+            var task2 = writer.WriteAsync("2");
+            var task3 = writer.TryWriteAsync("3");
+            Assert.Null(task3); // Couldn't write.
+
+            fake.CompleteCurrentTask(); // Message 1
+            WaitForSpace(writer);
+
+            // Now the buffer is smaller, we can write again.
+            var task4 = writer.TryWriteAsync("4");
+            Assert.NotNull(task4);
+            var completionTask = writer.CompleteAsync();
+
+            fake.CompleteCurrentTask(); // Message 2
+            fake.CompleteCurrentTask(); // Message 4
+            fake.CompleteCurrentTask(); // Completion
+
+            AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(task4, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+
+            fake.AssertMessages("1", "2", "4");
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void CompletionDoesntUseBufferSpace()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 2);
+            writer.WriteAsync("1");
+            writer.WriteAsync("2");
+            writer.CompleteAsync(); // No exception
+
+            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask();
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void BehaviorAfterCompleteCalled()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            writer.CompleteAsync();
+
+            // The (object) casts are because to make xUnit understand that the call itself should throw;
+            // we don't return a failed task.
+            Assert.Throws<InvalidOperationException>(() => (object) writer.CompleteAsync());
+            Assert.Throws<InvalidOperationException>(() => (object) writer.WriteAsync("x"));
+            Assert.Null(writer.TryWriteAsync("y"));
+        }
+
+        [Fact]
+        public void WriteOptions()
+        {
+            var options1 = new WriteOptions();
+            var options2 = new WriteOptions();
+
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            writer.WriteAsync("1");
+            writer.WriteAsync("2", options1);
+            writer.WriteAsync("3");
+            writer.WriteAsync("4", options2);
+
+            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask();
+            fake.AssertOptions(null, options1, options1, options2);
+
+            // This should pick up options2 from the writer, not from the queue.
+            writer.WriteAsync("5");
+            fake.CompleteCurrentTask();
+            fake.AssertOptions(null, options1, options1, options2, options2);
+        }
+
+        /// <summary>
+        /// Waits for up to half a second for the writer to become non-full.
+        /// </summary>
+        private void WaitForSpace(BufferedClientStreamWriter<string> writer)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (writer.BufferedWriteCount < writer.Capacity)
+                {
+                    return;
+                }
+                Thread.Sleep(100);
+            }
+            // Give it one last chance, and fail if we're still full.
+            Assert.True(writer.BufferedWriteCount < writer.Capacity);
+        }
+
+        private void AssertNotCompleted(params Task[] tasks)
+        {
+            foreach (var task in tasks)
+            {
+                Assert.False(task.IsCompleted);
+            }
+        }
+
+        /// <summary>
+        /// Waits for up to half a second for the task to complete with the expected status.
+        /// </summary>
+        private void AssertCompletedWithStatus(Task task, TaskStatus expectedStatus)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (task.IsCompleted)
+                {
+                    Assert.Equal(expectedStatus, task.Status);
+                }
+                Thread.Sleep(100);
+            }
+            // Give it one last chance, and fail if we've still got the wrong status.
+            Assert.Equal(expectedStatus, task.Status);
+        }
+
+        private class FakeWriter : IClientStreamWriter<string>
+        {
+            private readonly object _lock = new object();
+            private TaskCompletionSource<int> _currentTask;
+            private List<string> _messages = new List<string>();
+            private List<WriteOptions> _options = new List<WriteOptions>();
+            private bool _completeCalled;
+
+            public WriteOptions WriteOptions { get; set; }
+
+            public Task CompleteAsync()
+            {
+                lock (_lock)
+                {
+                    Assert.Null(_currentTask);
+                    Assert.False(_completeCalled);
+                    _completeCalled = true;
+                    _currentTask = new TaskCompletionSource<int>();
+                    Monitor.PulseAll(_lock);
+                    return _currentTask.Task;
+                }
+            }
+
+            public Task WriteAsync(string message)
+            {
+                lock (_lock)
+                {
+                    Assert.Null(_currentTask);
+                    Assert.False(_completeCalled);
+                    _messages.Add(message);
+                    _options.Add(WriteOptions);
+                    _currentTask = new TaskCompletionSource<int>();
+                    Monitor.PulseAll(_lock);
+                    return _currentTask.Task;
+                }
+            }
+
+            private void WaitForTask()
+            {
+                lock (_lock)
+                {
+                    // Allow spurious wakes, unlikely though they are.
+                    while (_currentTask == null)
+                    {
+                        Assert.True(Monitor.Wait(_lock, 1000));
+                    }
+                }
+            }
+
+            public void CompleteCurrentTask()
+            {
+                WaitForTask();
+                lock (_lock)
+                {
+                    _currentTask.SetResult(0);
+                    _currentTask = null;
+                }
+            }
+
+            public void FailCurrentTask(Exception exception)
+            {
+                WaitForTask();
+                lock (_lock)
+                {
+                    _currentTask.SetException(exception);
+                    _currentTask = null;
+                }
+            }
+
+            public void CancelCurrentTask()
+            {
+                WaitForTask();
+                lock (_lock)
+                {
+                    _currentTask.SetCanceled();
+                    _currentTask = null;
+                }
+            }
+
+            public void AssertMessages(params string[] expectedMessages)
+            {
+                lock (_lock)
+                {
+                    Assert.Equal(expectedMessages, _messages);
+                }
+            }
+
+            public void AssertOptions(params WriteOptions[] expectedOptions)
+            {
+                lock (_lock)
+                {
+                    Assert.Equal(expectedOptions, _options);
+                }
+            }
+
+            public void AssertCompleted()
+            {
+                lock (_lock)
+                {
+                    Assert.Null(_currentTask);
+                    Assert.True(_completeCalled);
+                }
+            }
+        }
+    }
+}
