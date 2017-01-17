@@ -22,11 +22,10 @@ namespace Google.Api.Gax.Grpc
         protected ServiceSettingsBase()
         {
             UserAgent = new UserAgentBuilder()
-                .AppendDotNetEnvironment()
+                .AppendAssemblyVersion("lib2", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
                 .AppendAssemblyVersion("grpc", typeof(Channel))
-                // TODO: Use the assembly name instead of the namespace? Allow it to be specified?
-                .AppendAssemblyVersion(GetType().Namespace, GetType())
+                .AppendDotNetEnvironment()
                 .ToString();
         }
 
