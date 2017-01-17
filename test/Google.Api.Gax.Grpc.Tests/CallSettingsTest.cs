@@ -45,7 +45,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var mockClock = new Mock<IClock>();
             CallSettings callSettings = CallSettings.FromCallTiming(null);
-            var options = callSettings.ToCallOptions(null, mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
         }
@@ -56,7 +56,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
             CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(timeout)));
-            var options = callSettings.ToCallOptions(null, clock);
+            var options = callSettings.ToCallOptions(clock);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, clock.GetCurrentDateTimeUtc() + timeout);
         }
@@ -67,7 +67,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
             var mockClock = new Mock<IClock>();
             CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(deadline)));
-            var options = callSettings.ToCallOptions(null, mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock.Object);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 propagationToken: null, // Not possible to create/mock
                 credentials: null // Not possible to create/mock
             );
-            var options = callSettings.ToCallOptions(null, mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Equal(1, options.Headers.Count);
             Assert.Equal("[Entry: key=1, value=one]", options.Headers[0].ToString());
             Assert.Null(options.Deadline);
