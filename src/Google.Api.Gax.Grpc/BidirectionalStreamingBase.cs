@@ -95,6 +95,17 @@ namespace Google.Api.Gax.Grpc
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Completes the stream when all buffered messages have been sent. This method can only be called
+        /// once, and further messages cannot be written after it has been called.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">This method has already been called.</exception>
+        /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
+        public virtual Task TryWriteCompleteAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         // Streaming responses
 
         /// <summary>
