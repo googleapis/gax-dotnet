@@ -21,7 +21,22 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var fake = new FakeWriter();
             var writer = new BufferedClientStreamWriter<string>(fake, 5);
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
+            fake.CompleteCurrentTask();
+            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+            fake.AssertMessages();
+            fake.AssertCompleted();
+        }
+
+        [Fact]
+        public void TryCompleteWithNoWrites()
+        {
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 5);
+            var completionTask = writer.TryWriteCompleteAsync();
+            Assert.NotNull(completionTask);
+            var impossibleCompletationTask = writer.TryWriteCompleteAsync();
+            Assert.Null(impossibleCompletationTask);
             fake.CompleteCurrentTask();
             AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
             fake.AssertMessages();
@@ -35,7 +50,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var writer = new BufferedClientStreamWriter<string>(fake, 5);
             var task1 = writer.WriteAsync("1");
             var task2 = writer.WriteAsync("2");
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
             AssertNotCompleted(task1, task2, completionTask);
 
             // Server handles first message
@@ -76,7 +91,7 @@ namespace Google.Api.Gax.Grpc.Tests
             AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
 
             // Completion
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
             fake.CompleteCurrentTask();
             AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
 
@@ -92,7 +107,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var task1 = writer.WriteAsync("1");
             var task2 = writer.WriteAsync("2");
             var task3 = writer.WriteAsync("3");
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
             AssertNotCompleted(task1, task2, task3, completionTask);
 
             // Server handles first message successfully
@@ -124,7 +139,7 @@ namespace Google.Api.Gax.Grpc.Tests
             // Subsequent calls to Write and Complete fail
             var task2 = writer.WriteAsync("2");
             var task3 = writer.WriteAsync("3");
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
 
             foreach (var task in new[] { task2, task3, completionTask })
             {
@@ -149,7 +164,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             // Now the buffer is smaller, we can write again.
             var task4 = writer.WriteAsync("4");
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
 
             fake.CompleteCurrentTask(); // Message 2
             fake.CompleteCurrentTask(); // Message 4
@@ -180,7 +195,7 @@ namespace Google.Api.Gax.Grpc.Tests
             // Now the buffer is smaller, we can write again.
             var task4 = writer.TryWriteAsync("4");
             Assert.NotNull(task4);
-            var completionTask = writer.CompleteAsync();
+            var completionTask = writer.WriteCompleteAsync();
 
             fake.CompleteCurrentTask(); // Message 2
             fake.CompleteCurrentTask(); // Message 4
@@ -202,7 +217,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var writer = new BufferedClientStreamWriter<string>(fake, 2);
             writer.WriteAsync("1");
             writer.WriteAsync("2");
-            writer.CompleteAsync(); // No exception
+            writer.WriteCompleteAsync(); // No exception
 
             fake.CompleteCurrentTask();
             fake.CompleteCurrentTask();
@@ -215,11 +230,11 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var fake = new FakeWriter();
             var writer = new BufferedClientStreamWriter<string>(fake, 5);
-            writer.CompleteAsync();
+            writer.WriteCompleteAsync();
 
             // The (object) casts are because to make xUnit understand that the call itself should throw;
             // we don't return a failed task.
-            Assert.Throws<InvalidOperationException>(() => (object) writer.CompleteAsync());
+            Assert.Throws<InvalidOperationException>(() => (object) writer.WriteCompleteAsync());
             Assert.Throws<InvalidOperationException>(() => (object) writer.WriteAsync("x"));
             Assert.Null(writer.TryWriteAsync("y"));
         }

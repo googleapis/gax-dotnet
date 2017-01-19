@@ -74,7 +74,7 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="CompleteAsync"/>
+        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
         /// hasn't already been called. The same write options will be used as for the previous message.
         /// </summary>
         /// <param name="message">The message to write.</param>
@@ -83,7 +83,7 @@ namespace Google.Api.Gax.Grpc
         public Task TryWriteAsync(T message) => WriteAsyncImpl(message, null, false, false);
 
         /// <summary>
-        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="CompleteAsync"/>
+        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
         /// hasn't already been called.
         /// </summary>
         /// <param name="message">The message to write.</param>
@@ -92,7 +92,7 @@ namespace Google.Api.Gax.Grpc
         public Task TryWriteAsync(T message, WriteOptions options) => WriteAsyncImpl(message, options, true, false);
 
         /// <summary>
-        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="CompleteAsync"/>
+        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
         /// hasn't already been called. The same write options will be used as for the previous message.
         /// </summary>
         /// <param name="message">The message to write.</param>
@@ -102,13 +102,13 @@ namespace Google.Api.Gax.Grpc
         public Task WriteAsync(T message) => WriteAsyncImpl(message, null, false, true);
 
         /// <summary>
-        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="CompleteAsync"/>
+        /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
         /// hasn't already been called.
         /// </summary>
         /// <param name="message">The message to write.</param>
         /// <param name="options">The write options to use for this message.</param>
         /// <exception cref="InvalidOperationException">There isn't enough space left in the buffer,
-        /// or <see cref="CompleteAsync"/> has already been called.</exception>
+        /// or <see cref="WriteCompleteAsync"/> has already been called.</exception>
         /// <returns>A <see cref="Task"/> which will complete when the message has been written to the stream.</returns>
         public Task WriteAsync(T message, WriteOptions options) => WriteAsyncImpl(message, options, true, true);
 
@@ -188,7 +188,7 @@ namespace Google.Api.Gax.Grpc
             {
                 if (throwOnError)
                 {
-                    throw new InvalidOperationException($"Cannot call {nameof(WriteAsync)} after {nameof(CompleteAsync)}");
+                    throw new InvalidOperationException($"Cannot call {nameof(WriteAsync)} after {nameof(WriteCompleteAsync)}");
                 }
                 else
                 {
@@ -213,15 +213,32 @@ namespace Google.Api.Gax.Grpc
         /// Completes the stream when all buffered messages have been sent. This method can only be called
         /// once, and further messages cannot be written after it has been called.
         /// </summary>
+        /// <returns><c>null</c> if this stream has already be completed; otherwise a
+        /// <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
+        public Task TryWriteCompleteAsync() => WriteCompleteAsyncImpl(false);
+
+        /// <summary>
+        /// Completes the stream when all buffered messages have been sent. This method can only be called
+        /// once, and further messages cannot be written after it has been called.
+        /// </summary>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
-        public Task CompleteAsync()
+        public Task WriteCompleteAsync() => WriteCompleteAsyncImpl(true);
+
+        private Task WriteCompleteAsyncImpl(bool throwOnError)
         {
             lock (_lock)
             {
                 if (_completed)
                 {
-                    throw new InvalidOperationException($"Cannot call {nameof(CompleteAsync)} twice");
+                    if (throwOnError)
+                    {
+                        throw new InvalidOperationException($"Cannot call {nameof(WriteCompleteAsync)} twice");
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 _completed = true;
                 if (_failedTask != null)
