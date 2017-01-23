@@ -4,6 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+
 using Google.Protobuf;
 using Grpc.Core;
 using System;
@@ -67,6 +68,27 @@ namespace Google.Api.Gax.Grpc
             // I.e. User-agent is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
                 .WithRetry(Clock, Scheduler)
+                .WithUserAgent(_userAgent);
+        }
+
+        /// <summary>
+        /// Builds an <see cref="ApiBidirectionalStreamingCall"/> given a suitable underlying duplex call.
+        /// </summary>
+        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="grpcCall">The underlying gRPC duplex streaming call.</param>
+        /// <param name="perMethodCallSettings">The default method call settings.</param>
+        /// <param name="streamingSettings">The default streaming settings.</param>
+        /// <returns>An API call to proxy to the RPC calls</returns>
+        public ApiBidirectionalStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            Func<CallOptions, AsyncDuplexStreamingCall<TRequest, TResponse>> grpcCall,
+            CallSettings perMethodCallSettings,
+            BidirectionalStreamingSettings streamingSettings)
+            where TRequest : class, IMessage<TRequest>
+            where TResponse : class, IMessage<TResponse>
+        {
+            CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
+            return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithUserAgent(_userAgent);
         }
     }
