@@ -13,15 +13,7 @@ namespace Google.Api.Gax.Grpc
     public sealed class BidirectionalStreamingSettings
     {
         /// <summary>
-        /// Initialize a <see cref="BidirectionalStreamingSettings"/> with just a write buffer capacity.
-        /// </summary>
-        /// <param name="bufferCapacity">The capacity of the write buffer.</param>
-        /// <returns>A <see cref="BidirectionalStreamingSettings"/> configured with a write buffer capacity.</returns>
-        public static BidirectionalStreamingSettings FromBufferCapacity(int bufferCapacity) =>
-            new BidirectionalStreamingSettings(bufferCapacity);
-
-        /// <summary>
-        /// Configure settings for bidirection streaming.
+        /// Configure settings for bidirectional streaming.
         /// </summary>
         /// <param name="bufferedClientWriterCapacity">The capacity of the write buffer.</param>
         public BidirectionalStreamingSettings(

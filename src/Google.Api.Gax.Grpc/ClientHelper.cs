@@ -87,7 +87,6 @@ namespace Google.Api.Gax.Grpc
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
-            // TODO: What about retry?
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithUserAgent(_userAgent);

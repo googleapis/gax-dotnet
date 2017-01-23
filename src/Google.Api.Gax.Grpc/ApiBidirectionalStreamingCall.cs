@@ -38,7 +38,7 @@ namespace Google.Api.Gax.Grpc
             CallSettings baseCallSettings,
             BidirectionalStreamingSettings streamingSettings)
         {
-            _call = call;
+            _call = GaxPreconditions.CheckNotNull(call, nameof(call));
             _baseCallSettings = baseCallSettings;
             StreamingSettings = streamingSettings;
         }
@@ -57,8 +57,13 @@ namespace Google.Api.Gax.Grpc
         /// <param name="perCallCallSettings">The call settings to apply to this specific call,
         /// overriding defaults where necessary.</param>
         /// <returns>A gRPC duplex streaming call object.</returns>
-        public AsyncDuplexStreamingCall<TRequest, TResponse> Call(CallSettings perCallCallSettings) =>
-            _call(_baseCallSettings.MergedWith(perCallCallSettings));
+        public AsyncDuplexStreamingCall<TRequest, TResponse> Call(CallSettings perCallCallSettings)
+        {
+            CallSettings effectiveCallSettings = _baseCallSettings.MergedWith(perCallCallSettings);
+            GaxPreconditions.CheckState(effectiveCallSettings?.Timing?.Type != CallTimingType.Retry,
+                "Retry cannot be used in a bidirectional streaming method.");
+            return _call(effectiveCallSettings);
+        }
 
         internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
             new ApiBidirectionalStreamingCall<TRequest, TResponse>(
