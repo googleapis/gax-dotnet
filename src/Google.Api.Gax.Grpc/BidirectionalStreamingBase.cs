@@ -85,8 +85,9 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Completes the stream when all buffered messages have been sent. This method can only be called
-        /// once, and further messages cannot be written after it has been called.
+        /// Completes the stream when all buffered messages have been sent.
+        /// Only the first call to this method on any instance will have any effect;
+        /// subsequent calls will return <c>null</c>.
         /// </summary>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed;
         /// or <c>null</c> if this method has already been called.</returns>
