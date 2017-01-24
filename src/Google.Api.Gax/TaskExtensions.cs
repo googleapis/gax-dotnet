@@ -6,7 +6,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ namespace Google.Api.Gax
     /// <summary>
     /// Extension methods for tasks.
     /// </summary>
-    internal static class TaskExtensions
+    public static class TaskExtensions
     {
         /// <summary>
         /// Synchronously waits for the given task to complete, and returns the result.
@@ -24,7 +23,7 @@ namespace Google.Api.Gax
         /// <typeparam name="T">The result type of the task</typeparam>
         /// <param name="task">The task to wait for.</param>
         /// <returns>The result of the completed task.</returns>
-        internal static T ResultWithUnwrappedExceptions<T>(this Task<T> task)
+        public static T ResultWithUnwrappedExceptions<T>(this Task<T> task)
         {
             task.WaitWithUnwrappedExceptions();
             return task.Result;
@@ -35,7 +34,7 @@ namespace Google.Api.Gax
         /// Any <see cref="AggregateException"/> thrown is unwrapped to the first inner exception.
         /// </summary>
         /// <param name="task">The task to wait for.</param>
-        internal static void WaitWithUnwrappedExceptions(this Task task)
+        public static void WaitWithUnwrappedExceptions(this Task task)
         {
             try
             {
