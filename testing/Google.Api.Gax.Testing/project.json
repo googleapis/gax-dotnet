@@ -6,7 +6,7 @@
     "description": "Testing support for Google.Api.Gax",
     "authors": [ "Google Inc." ],
     "owners": [ "googleapis-packages" ],
-    "projectUrl": "htttps://github.com/googleapis/gax-dotnet",
+    "projectUrl": "https://github.com/googleapis/gax-dotnet",
     "licenseUrl": "https://developers.google.com/open-source/licenses/bsd",
     "tags": [ "Google" ]
   },
