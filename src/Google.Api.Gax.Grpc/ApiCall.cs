@@ -58,9 +58,6 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public CallSettings BaseCallSettings { get; }
 
-        private T Call<T>(TRequest request, CallSettings perCallCallSettings, Func<CallSettings, T> fn)
-            => fn(BaseCallSettings.MergedWith(perCallCallSettings));
-
         /// <summary>
         /// Performs an RPC call asynchronously.
         /// </summary>
@@ -70,7 +67,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A task representing the asynchronous operation. The result of the completed task
         /// will be the RPC response.</returns>
         public Task<TResponse> Async(TRequest request, CallSettings perCallCallSettings) =>
-            Call(request, perCallCallSettings, callSettings => _asyncCall(request, callSettings));
+            _asyncCall(request, BaseCallSettings.MergedWith(perCallCallSettings));
 
         /// <summary>
         /// Performs an RPC call synchronously.
@@ -80,7 +77,7 @@ namespace Google.Api.Gax.Grpc
         /// overriding defaults where necessary.</param>
         /// <returns>The RPC response.</returns>
         public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
-            Call(request, perCallCallSettings, callSettings => _syncCall(request, callSettings));
+            _syncCall(request, BaseCallSettings.MergedWith(perCallCallSettings));
 
         internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
             // TODO: Check that this is what we want. It allows call settings to remove our
