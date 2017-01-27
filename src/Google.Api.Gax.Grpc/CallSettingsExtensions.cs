@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 using Grpc.Core;
+using System;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc
@@ -94,6 +95,56 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A new set of call settings including the specified header.</returns>
         public static CallSettings WithHeader(this CallSettings settings, string name, string value) =>
             settings.MergedWith(CallSettings.FromHeader(name, value));
+
+        /// <summary>
+        /// Returns a <see cref="CallSettings"/> which will have an effective deadline of at least <paramref name="deadline"/>.
+        /// If <paramref name="settings"/> already observes an earlier deadline (with respect to <paramref name="clock"/>),
+        /// or if <paramref name="deadline"/> is null, the original settings will be returned.
+        /// </summary>
+        /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
+        /// <param name="deadline">Deadline to enforce. May be null, meaning there is no deadline to enforce.</param>
+        /// <param name="clock">The clock to use when computing deadlines. Must not be null.</param>
+        /// <returns>The call settings to use to observe the given deadline.</returns>
+        public static CallSettings WithEarlierDeadline(this CallSettings settings, DateTime? deadline, IClock clock)
+        {
+            GaxPreconditions.CheckNotNull(clock, nameof(clock));
+            // No deadline? Return what we already have.
+            if (deadline == null)
+            {
+                return settings;
+            }
+            // No settings, or no timing in the settings? Create a simple expiration.
+            if (settings == null || settings.Timing == null)
+            {
+                // WithCallTiming (above) is an extension method - it's fine for settings to be null.
+                return settings.WithCallTiming(CallTiming.FromDeadline(deadline.Value));
+            }
+            // Okay, we have settings with a genuine timing component and a new deadline.
+            // We may still return the existing settings, if the new deadline is later than the existing
+            // one in the settings. But if the new deadline is earlier, we need to build new settings to accommodate
+            // it.
+            var timing = settings.Timing;
+            switch (timing.Type)
+            {
+                // For simple expirations, we can just replace one deadline for another simple one,
+                // if necessary.
+                case CallTimingType.Expiration:
+                    return timing.Expiration.CalculateDeadline(clock) < deadline.Value
+                        ? settings
+                        : settings.WithCallTiming(CallTiming.FromDeadline(deadline.Value));
+                // For retries, we may need to create a new RetrySettings with all the same other aspects,
+                // but a new deadline.
+                case CallTimingType.Retry:
+                    if (timing.Retry.TotalExpiration.CalculateDeadline(clock) < deadline.Value)
+                    {
+                        return settings;
+                    }
+                    var newTiming = CallTiming.FromRetry(timing.Retry.WithTotalExpiration(Expiration.FromDeadline(deadline.Value)));
+                    return settings.WithCallTiming(newTiming);
+                default:
+                    throw new InvalidOperationException("Invalid call timing type");
+            }
+        }
 
         /// <summary>
         /// Transfers settings contained in this into a <see cref="CallOptions"/>.

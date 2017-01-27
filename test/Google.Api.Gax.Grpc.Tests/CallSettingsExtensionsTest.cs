@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Testing;
 using Grpc.Core;
 using System;
 using System.Threading;
@@ -158,5 +159,128 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal("name2", metadata[1].Key);
             Assert.Equal("value2", metadata[1].Value);
         }
+
+        [Fact]
+        public void WithEarlierDeadline_NoSettingsNoDeadline()
+        {
+            CallSettings settings = null;
+            DateTime? deadline = null;
+
+            Assert.Null(settings.WithEarlierDeadline(deadline, new FakeClock()));
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_SimpleSettingsNoDeadline()
+        {
+            CallSettings settings = CallSettings.FromHeader("name", "value");
+            DateTime? deadline = null;
+
+            Assert.Same(settings, settings.WithEarlierDeadline(deadline, new FakeClock()));
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_NonTimingSettingsWithDeadline()
+        {
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token);
+            DateTime? deadline = new DateTime(1L, DateTimeKind.Utc);
+
+            CallSettings newSettings = settings.WithEarlierDeadline(deadline, new FakeClock());
+            Assert.Equal(token, newSettings.CancellationToken);
+            Assert.Equal(deadline, newSettings.Timing.Expiration.Deadline);
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_NoSettingsWithDeadline()
+        {
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = null;
+            DateTime? deadline = new DateTime(1L, DateTimeKind.Utc);
+
+            CallSettings newSettings = settings.WithEarlierDeadline(deadline, new FakeClock());
+            Assert.Equal(deadline, newSettings.Timing.Expiration.Deadline);
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsLaterThanExistingDeadline()
+        {
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(new DateTime(10L, DateTimeKind.Utc))));
+            DateTime? deadline = new DateTime(20L, DateTimeKind.Utc);
+            Assert.Same(settings, settings.WithEarlierDeadline(deadline, new FakeClock()));
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsEarlierThanExistingDeadline()
+        {
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(new DateTime(10L, DateTimeKind.Utc))));
+            DateTime? deadline = new DateTime(1L, DateTimeKind.Utc);
+
+            CallSettings newSettings = settings.WithEarlierDeadline(deadline, new FakeClock());
+            Assert.Equal(deadline, newSettings.Timing.Expiration.Deadline);
+            Assert.Equal(token, newSettings.CancellationToken);
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsLaterThanExistingTimeout()
+        {
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(TimeSpan.FromTicks(100))));
+            var clock = new FakeClock();
+            DateTime? deadline = clock.GetCurrentDateTimeUtc() + TimeSpan.FromTicks(200);
+            Assert.Same(settings, settings.WithEarlierDeadline(deadline, clock));
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsEarlierThanExistingTimeout()
+        {
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(TimeSpan.FromTicks(200))));
+            var clock = new FakeClock();
+            DateTime? deadline = clock.GetCurrentDateTimeUtc() + TimeSpan.FromTicks(100);
+            CallSettings newSettings = settings.WithEarlierDeadline(deadline, new FakeClock());
+            // New timing has a deadline rather than a timeout
+            Assert.Equal(deadline, newSettings.Timing.Expiration.Deadline);
+            Assert.Equal(token, newSettings.CancellationToken);
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsLaterThanExistingRetryTotalExpiration()
+        {
+            var backoffSettings = new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), 2.0);
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            var timing = CallTiming.FromRetry(new RetrySettings(backoffSettings, backoffSettings, Expiration.FromDeadline(new DateTime(100L, DateTimeKind.Utc))));
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(timing);
+            DateTime? deadline = new DateTime(200L, DateTimeKind.Utc);
+            Assert.Same(settings, settings.WithEarlierDeadline(deadline, new FakeClock()));
+        }
+
+        [Fact]
+        public void WithEarlierDeadline_DeadlineIsEarlierThanExistingRetryTotalExpiration()
+        {
+            var backoffSettings = new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), 2.0);
+            // Use a cancellation token to emphasize that it's not just the timing.
+            var token = new CancellationTokenSource().Token;
+            var timing = CallTiming.FromRetry(new RetrySettings(backoffSettings, backoffSettings, Expiration.FromTimeout(TimeSpan.FromTicks(100))));
+            CallSettings settings = CallSettings.FromCancellationToken(token)
+                .WithCallTiming(timing);
+            DateTime? deadline = new DateTime(50L, DateTimeKind.Utc);
+
+            CallSettings newSettings = settings.WithEarlierDeadline(deadline, new FakeClock());
+            Assert.Equal(deadline, newSettings.Timing.Retry.TotalExpiration.Deadline);
+            Assert.Equal(token, newSettings.CancellationToken);
+        }
+
     }
 }
