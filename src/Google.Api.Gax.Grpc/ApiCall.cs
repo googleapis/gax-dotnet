@@ -46,15 +46,20 @@ namespace Google.Api.Gax.Grpc
         {
             _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
             _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
-            _baseCallSettings = baseCallSettings;
+            BaseCallSettings = baseCallSettings;
         }
 
         private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
         private readonly Func<TRequest, CallSettings, TResponse> _syncCall;
-        private readonly CallSettings _baseCallSettings;
+
+        /// <summary>
+        /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
+        /// a <c>CallSettings</c> to <see cref="Async"/> or <see cref="Sync"/>.
+        /// </summary>
+        public CallSettings BaseCallSettings { get; }
 
         private T Call<T>(TRequest request, CallSettings perCallCallSettings, Func<CallSettings, T> fn)
-            => fn(_baseCallSettings.MergedWith(perCallCallSettings));
+            => fn(BaseCallSettings.MergedWith(perCallCallSettings));
 
         /// <summary>
         /// Performs an RPC call asynchronously.
@@ -85,12 +90,12 @@ namespace Google.Api.Gax.Grpc
                 _asyncCall,
                 _syncCall,
                 CallSettings.FromHeader(UserAgentBuilder.HeaderName, userAgent)
-                    .MergedWith(_baseCallSettings));
+                    .MergedWith(BaseCallSettings));
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
             new ApiCall<TRequest, TResponse>(
                 _asyncCall.WithRetry(clock, scheduler),
                 _syncCall.WithRetry(clock, scheduler),
-                _baseCallSettings);
+                BaseCallSettings);
     }
 }
