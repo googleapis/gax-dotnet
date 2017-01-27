@@ -18,12 +18,12 @@ namespace Google.Api.Gax.Grpc
     public sealed class RetrySettings
     {
         /// <summary>
-        /// The backoff policy for the time between retries.
+        /// The backoff policy for the time between retries. This is never null.
         /// </summary>
         public BackoffSettings RetryBackoff { get; }
 
         /// <summary>
-        /// The backoff policy for timeouts of retries.
+        /// The backoff policy for timeouts of retries. This is never null.
         /// </summary>
         /// <remarks>
         /// This allows an increasing timeout, initially requesting a fast call,
@@ -33,7 +33,7 @@ namespace Google.Api.Gax.Grpc
         public BackoffSettings TimeoutBackoff { get; }
 
         /// <summary>
-        /// The total expiration, across all retries.
+        /// The total expiration, across all retries. This is never null.
         /// </summary>
         public Expiration TotalExpiration { get; }
 
@@ -159,6 +159,13 @@ namespace Google.Api.Gax.Grpc
             // TODO: Take a copy? Optimize for common cases?
             return ex => statusCodes.Contains(ex.Status.StatusCode);
         }
+
+        /// <summary>
+        /// Builds a new RetrySettings which is identical to this one, but with the given expiration.
+        /// </summary>
+        /// <param name="expiration">New expiration</param>
+        internal RetrySettings WithTotalExpiration(Expiration expiration) =>
+            new RetrySettings(RetryBackoff, TimeoutBackoff, expiration, RetryFilter, DelayJitter);
 
         private sealed class RandomJitterImpl : IJitter
         {

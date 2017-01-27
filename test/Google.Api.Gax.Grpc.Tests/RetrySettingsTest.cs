@@ -24,5 +24,22 @@ namespace Google.Api.Gax.Grpc.Tests
             var settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null);
             settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null, null);
         }
+
+        [Fact]
+        public void WithNewExpiration()
+        {
+            var retryBackoff = new BackoffSettings(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3));
+            var timeoutBackoff = new BackoffSettings(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3));
+            var original = new RetrySettings(retryBackoff, timeoutBackoff, Expiration.FromTimeout(TimeSpan.FromSeconds(5)),
+                e => false, RetrySettings.NoJitter);
+            var newExpiration = Expiration.FromDeadline(DateTime.UtcNow);
+            var newSettings = original.WithTotalExpiration(newExpiration);
+
+            Assert.Same(original.RetryBackoff, newSettings.RetryBackoff);
+            Assert.Same(original.TimeoutBackoff, newSettings.TimeoutBackoff);
+            Assert.Same(original.RetryFilter, newSettings.RetryFilter);
+            Assert.Same(original.DelayJitter, newSettings.DelayJitter);
+            Assert.Same(newExpiration, newSettings.TotalExpiration);
+        }
     }
 }
