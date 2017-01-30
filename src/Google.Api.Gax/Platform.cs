@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +20,7 @@ namespace Google.Api.Gax
         Unknown = 0,
         Gce = 1,
         Gae = 2,
+        // TODO: Add GKE if/when possible.
     }
 
     public sealed class GcePlatformDetails
@@ -34,14 +42,17 @@ namespace Google.Api.Gax
 
     public sealed class GaePlatformDetails
     {
-        public GaePlatformDetails(string gcloudProject, string gaeInstance, string gaeVersion)
+        public GaePlatformDetails(string gcloudProject, string gaeInstance, string gaeService, string gaeVersion)
         {
             ProjectId = gcloudProject;
-
+            InstanceId = gaeInstance;
+            ServiceId = gaeService;
+            VersionId = gaeVersion;
         }
 
         public string ProjectId { get; }
-        public string ModuleId { get; }
+        public string InstanceId { get; }
+        public string ServiceId { get; }
         public string VersionId { get; }
     }
 
@@ -67,31 +78,37 @@ namespace Google.Api.Gax
 
         private static async Task<GcePlatformDetails> LoadGceDetails()
         {
+            // TODO: Respect METADATA_EMULATOR_HOST environment variable. Where is this documented?
             const string metadataUrl = "http://metadata.google.internal/computeMetadata/v1?recursive=true";
             const string metadataFlavorKey = "Metadata-Flavor";
             const string metadataFlavorValue = "Google";
             const long maxContentLength = 512 * 1024; // Maximum allowed metadata size.
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
-            httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
-            var httpClient = new HttpClient();
-            var response = await httpClient.SendAsync(httpRequest, cts.Token);
-            IEnumerable<string> metadataValues;
-            if (response.StatusCode == HttpStatusCode.OK
-                && response.Content.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
-                && metadataValues.Contains(metadataFlavorValue)
-                && response.Content.Headers.ContentLength < maxContentLength)
+            try
             {
-                // Valid response from metadata server.
-                string metadataJson = await response.Content.ReadAsStringAsync();
-                try
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
+                httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
+                var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
+                var httpClient = new HttpClient();
+                var response = await httpClient.SendAsync(httpRequest, cts.Token); // TODO: Consider retrying on IO Exception.
+                IEnumerable<string> metadataValues;
+                if (response.StatusCode == HttpStatusCode.OK
+                    && response.Content.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
+                    && metadataValues.Contains(metadataFlavorValue)
+                    && response.Content.Headers.ContentLength < maxContentLength)
                 {
+                    // Valid response from metadata server.
+                    string metadataJson = await response.Content.ReadAsStringAsync();
                     return new GcePlatformDetails(metadataJson);
                 }
-                catch
-                {
-                    // TODO: How to log problems?
-                }
+            }
+            catch
+            {
+                // Possible exceptions, in all cases there's nothing we can do except
+                // assume we're not running on GCE, and hence return null.
+                // OperationCanceledException: on timeout
+                // HttpRequestException: On general request failure
+                // WebException: DNS problem on Mono
+                // TODO: Decide what to do here.
             }
             return null;
         }
@@ -102,10 +119,11 @@ namespace Google.Api.Gax
             // for details on environment variables.
             var gcloudProject = Environment.GetEnvironmentVariable("GCLOUD_PROJECT");
             var gaeInstance = Environment.GetEnvironmentVariable("GAE_INSTANCE");
+            var gaeService = Environment.GetEnvironmentVariable("GAE_SERVICE");
             var gaeVersion = Environment.GetEnvironmentVariable("GAE_VERSION");
             if (gcloudProject != null && gaeInstance != null && gaeVersion != null)
             {
-                return new GaePlatformDetails(gcloudProject, gaeInstance, gaeVersion);
+                return new GaePlatformDetails(gcloudProject, gaeInstance, gaeService, gaeVersion);
             }
             return null;
         }
@@ -145,6 +163,5 @@ namespace Google.Api.Gax
             GaeDetails != null ? PlatformType.Gae :
             GceDetails != null ? PlatformType.Gce :
             PlatformType.Unknown;
-
     }
 }
