@@ -18,7 +18,8 @@
 
   "dependencies": {
     "Google.Apis.Auth": "1.20.0",
-    "System.Interactive.Async": "3.1.1"
+    "System.Interactive.Async": "3.1.1",
+    "Newtonsoft.Json": "9.0.2-beta2" // Required for parsing metadata server JSON
   },
   "frameworks": {
     "net45": {

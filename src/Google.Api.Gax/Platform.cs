@@ -15,14 +15,32 @@ using System.Net;
 
 namespace Google.Api.Gax
 {
+    /// <summary>
+    /// Execution platform type.
+    /// </summary>
     public enum PlatformType
     {
+        /// <summary>
+        /// Unknown execution platform.
+        /// </summary>
         Unknown = 0,
+
+        /// <summary>
+        /// Execution platform is Google Compute Engine.
+        /// </summary>
         Gce = 1,
+
+        /// <summary>
+        /// Execution platform is Google App Engine.
+        /// </summary>
         Gae = 2,
+
         // TODO: Add GKE if/when possible.
     }
 
+    /// <summary>
+    /// Google Compute Engine details.
+    /// </summary>
     public sealed class GcePlatformDetails
     {
         public GcePlatformDetails(string metadataJson)
@@ -38,8 +56,14 @@ namespace Google.Api.Gax
         public string ProjectId { get; }
         public string InstanceId { get; }
         public string ZoneName { get; }
+
+        public override string ToString() =>
+            $"[GCE: ProjectId='{ProjectId}', InstanceId='{InstanceId}', ZoneName='{ZoneName}']";
     }
 
+    /// <summary>
+    /// Google App Engine details.
+    /// </summary>
     public sealed class GaePlatformDetails
     {
         public GaePlatformDetails(string gcloudProject, string gaeInstance, string gaeService, string gaeVersion)
@@ -54,6 +78,9 @@ namespace Google.Api.Gax
         public string InstanceId { get; }
         public string ServiceId { get; }
         public string VersionId { get; }
+
+        public override string ToString() =>
+            $"[GAE: ProjectId='{ProjectId}', InstanceId='{InstanceId}', ServiceId='{ServiceId}', VersionId='{VersionId}']";
     }
 
     /// <summary>
@@ -78,21 +105,23 @@ namespace Google.Api.Gax
 
         private static async Task<GcePlatformDetails> LoadGceDetails()
         {
-            // TODO: Respect METADATA_EMULATOR_HOST environment variable. Where is this documented?
+            // Check if emulator is in use by looking for an emulator host in environment variable
+            // METADATA_EMULATOR_HOST. This is the undocumented but de-facto mechanism for doing this.
+            var metadataEmulatorHost = Environment.GetEnvironmentVariable("METADATA_EMULATOR_HOST");
             const string metadataUrl = "http://metadata.google.internal/computeMetadata/v1?recursive=true";
             const string metadataFlavorKey = "Metadata-Flavor";
             const string metadataFlavorValue = "Google";
             const long maxContentLength = 512 * 1024; // Maximum allowed metadata size.
             try
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataEmulatorHost ?? metadataUrl);
                 httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
                 var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
                 var httpClient = new HttpClient();
                 var response = await httpClient.SendAsync(httpRequest, cts.Token); // TODO: Consider retrying on IO Exception.
                 IEnumerable<string> metadataValues;
                 if (response.StatusCode == HttpStatusCode.OK
-                    && response.Content.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
+                    && response.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
                     && metadataValues.Contains(metadataFlavorValue)
                     && response.Content.Headers.ContentLength < maxContentLength)
                 {
@@ -109,6 +138,7 @@ namespace Google.Api.Gax
                 // HttpRequestException: On general request failure
                 // WebException: DNS problem on Mono
                 // TODO: Decide what to do here.
+                Console.WriteLine("ERROR!!!");
             }
             return null;
         }
@@ -121,7 +151,7 @@ namespace Google.Api.Gax
             var gaeInstance = Environment.GetEnvironmentVariable("GAE_INSTANCE");
             var gaeService = Environment.GetEnvironmentVariable("GAE_SERVICE");
             var gaeVersion = Environment.GetEnvironmentVariable("GAE_VERSION");
-            if (gcloudProject != null && gaeInstance != null && gaeVersion != null)
+            if (gcloudProject != null && gaeInstance != null && gaeService != null && gaeVersion != null)
             {
                 return new GaePlatformDetails(gcloudProject, gaeInstance, gaeService, gaeVersion);
             }
@@ -134,8 +164,16 @@ namespace Google.Api.Gax
             // * The GCE detection will probably also detect GAE, so GAE must be done first.
             // * GCE detection can take time, so to GAE first.
             GaePlatformDetails gaeDetails = LoadGaeDetails();
-            GcePlatformDetails gceDetails = gaeDetails == null ? await LoadGceDetails() : null;
-            return new Platform(gaeDetails, gceDetails);
+            if (gaeDetails != null)
+            {
+                return new Platform(gaeDetails, null);
+            }
+            GcePlatformDetails gceDetails = await LoadGceDetails();
+            if (gceDetails != null)
+            {
+                return new Platform(null, gceDetails);
+            }
+            return new Platform(null, null);
         }
 
         private Platform(GaePlatformDetails gaeDetails, GcePlatformDetails gceDetails)
@@ -163,5 +201,20 @@ namespace Google.Api.Gax
             GaeDetails != null ? PlatformType.Gae :
             GceDetails != null ? PlatformType.Gce :
             PlatformType.Unknown;
+
+        public override string ToString()
+        {
+            switch (Type)
+            {
+                case PlatformType.Gae:
+                    return GaeDetails.ToString();
+                case PlatformType.Gce:
+                    return GceDetails.ToString();
+                case PlatformType.Unknown:
+                    return "[Unknown platform]";
+                default:
+                    return "[Unknown platform type]";
+            }
+        }
     }
 }
