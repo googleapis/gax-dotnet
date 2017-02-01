@@ -43,6 +43,10 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class GcePlatformDetails
     {
+        /// <summary>
+        /// Construct details of Google Compute Engine
+        /// </summary>
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
         public GcePlatformDetails(string metadataJson)
         {
             MetadataJson = metadataJson;
@@ -52,11 +56,27 @@ namespace Google.Api.Gax
             ZoneName = json["instance"]["zone"].ToString();
         }
 
+        /// <summary>
+        /// The full JSON string retrieved from the metadata server.
+        /// </summary>
         public string MetadataJson { get; }
+
+        /// <summary>
+        /// The Project ID under which this GCE instance is running.
+        /// </summary>
         public string ProjectId { get; }
+
+        /// <summary>
+        ///  The Instance ID of the GCE instance on which this is running.
+        /// </summary>
         public string InstanceId { get; }
+
+        /// <summary>
+        /// The zone name where this GCE instance is running.
+        /// </summary>
         public string ZoneName { get; }
 
+        /// <inheritdoc/>
         public override string ToString() =>
             $"[GCE: ProjectId='{ProjectId}', InstanceId='{InstanceId}', ZoneName='{ZoneName}']";
     }
@@ -66,6 +86,15 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class GaePlatformDetails
     {
+        /// <summary>
+        /// Construct details of Google App Engine
+        /// </summary>
+        /// <param name="gcloudProject">The Project ID associated with your application,
+        /// which is visible in the Google Cloud Platform Console.</param>
+        /// <param name="gaeInstance">The name of the current instance.</param>
+        /// <param name="gaeService">The service name specified in your application's app.yaml file,
+        /// or if no service name is specified, it is set to default.</param>
+        /// <param name="gaeVersion">The version label of the current application.</param>
         public GaePlatformDetails(string gcloudProject, string gaeInstance, string gaeService, string gaeVersion)
         {
             ProjectId = gcloudProject;
@@ -74,11 +103,27 @@ namespace Google.Api.Gax
             VersionId = gaeVersion;
         }
 
+        /// <summary>
+        /// The Project ID associated with your application, which is visible in the Google Cloud Platform Console.
+        /// </summary>
         public string ProjectId { get; }
+
+        /// <summary>
+        /// The name of the current instance.
+        /// </summary>
         public string InstanceId { get; }
+
+        /// <summary>
+        /// The service name specified in your application's app.yaml file, or if no service name is specified, it is set to default.
+        /// </summary>
         public string ServiceId { get; }
+
+        /// <summary>
+        /// The version label of the current application.
+        /// </summary>
         public string VersionId { get; }
 
+        /// <inheritdoc/>
         public override string ToString() =>
             $"[GAE: ProjectId='{ProjectId}', InstanceId='{InstanceId}', ServiceId='{ServiceId}', VersionId='{VersionId}']";
     }
@@ -106,7 +151,7 @@ namespace Google.Api.Gax
         private static async Task<GcePlatformDetails> LoadGceDetails()
         {
             // Check if emulator is in use by looking for an emulator host in environment variable
-            // METADATA_EMULATOR_HOST. This is the undocumented but de-facto mechanism for doing this.
+            // METADATA_EMULATOR_HOST. This is the undocumented but the de-facto mechanism for doing this.
             var metadataEmulatorHost = Environment.GetEnvironmentVariable("METADATA_EMULATOR_HOST");
             const string metadataHost = "metadata.google.internal";
             const string metadataFlavorKey = "Metadata-Flavor";
@@ -140,7 +185,6 @@ namespace Google.Api.Gax
                 // HttpRequestException: On general request failure
                 // WebException: DNS problem on Mono
                 // TODO: Decide what to do here.
-                Console.WriteLine("ERROR!!!");
             }
             return null;
         }
@@ -204,6 +248,7 @@ namespace Google.Api.Gax
             GceDetails != null ? PlatformType.Gce :
             PlatformType.Unknown;
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             switch (Type)
