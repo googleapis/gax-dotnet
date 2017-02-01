@@ -108,13 +108,15 @@ namespace Google.Api.Gax
             // Check if emulator is in use by looking for an emulator host in environment variable
             // METADATA_EMULATOR_HOST. This is the undocumented but de-facto mechanism for doing this.
             var metadataEmulatorHost = Environment.GetEnvironmentVariable("METADATA_EMULATOR_HOST");
-            const string metadataUrl = "http://metadata.google.internal/computeMetadata/v1?recursive=true";
+            const string metadataHost = "metadata.google.internal";
             const string metadataFlavorKey = "Metadata-Flavor";
             const string metadataFlavorValue = "Google";
             const long maxContentLength = 512 * 1024; // Maximum allowed metadata size.
             try
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataEmulatorHost ?? metadataUrl);
+                var effectiveMetadataHost = string.IsNullOrEmpty(metadataEmulatorHost) ? metadataHost : metadataEmulatorHost;
+                var metadataUrl = $"http://{effectiveMetadataHost}/computeMetadata/v1?recursive=true";
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
                 httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
                 var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
                 var httpClient = new HttpClient();
