@@ -72,6 +72,25 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// Builds an <see cref="ApiServerStreamingCall"/> given a suitable underlying server streaming call.
+        /// </summary>
+        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="grpcCall">The underlying gRPC duplex streaming call.</param>
+        /// <param name="perMethodCallSettings">The default method call settings.</param>
+        /// <returns>An API call to proxy to the RPC calls</returns>
+        public ApiServerStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
+            CallSettings perMethodCallSettings)
+            where TRequest : class, IMessage<TRequest>
+            where TResponse : class, IMessage<TResponse>
+        {
+            CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
+            return ApiServerStreamingCall.Create(grpcCall, baseCallSettings, Clock)
+                .WithUserAgent(_userAgent);
+        }
+
+        /// <summary>
         /// Builds an <see cref="ApiBidirectionalStreamingCall"/> given a suitable underlying duplex call.
         /// </summary>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
