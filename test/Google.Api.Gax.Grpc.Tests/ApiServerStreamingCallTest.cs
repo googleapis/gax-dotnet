@@ -11,31 +11,29 @@ using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
-    public class ApiBidirectionalStreamingCallTest
+    public class ApiServerStreamingCallTest
     {
         [Fact]
         public void FailWithRetry()
         {
-            var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
-                callOptions => null,
+            var apiCall = ApiServerStreamingCall.Create<int, int>(
+                (request, callOptions) => null,
                 CallSettings.FromCallTiming(CallTiming.FromRetry(new RetrySettings(
                     new BackoffSettings(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(100), 2.0),
                     new BackoffSettings(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(100), 2.0),
                     Expiration.FromTimeout(TimeSpan.FromSeconds(100))))),
-                new BidirectionalStreamingSettings(100),
                 new FakeClock());
-            Assert.Throws<InvalidOperationException>(() => apiCall.Call(null));
+            Assert.Throws<InvalidOperationException>(() => apiCall.Call(0, null));
         }
 
         [Fact]
         public void SucceedWithExpiration()
         {
-            var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
-                callOptions => null,
+            var apiCall = ApiServerStreamingCall.Create<int, int>(
+                (request, callOptions) => null,
                 CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100)))),
-                new BidirectionalStreamingSettings(100),
                 new FakeClock());
-            Assert.Null(apiCall.Call(null));
+            Assert.Null(apiCall.Call(0, null));
         }
     }
 }
