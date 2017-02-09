@@ -22,10 +22,10 @@ namespace Google.Api.Gax.Grpc
         protected ServiceSettingsBase()
         {
             UserAgent = new UserAgentBuilder()
+                .AppendDotNetEnvironment()
                 .AppendAssemblyVersion("gccl", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
                 .AppendAssemblyVersion("grpc", typeof(Channel))
-                .AppendDotNetEnvironment()
                 .ToString();
         }
 

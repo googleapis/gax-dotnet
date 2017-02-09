@@ -20,7 +20,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void AppendDotNetEnvironment_AddsDotNetEntry()
         {
-            Assert.Contains("dotnet/",
+            Assert.Contains("gl-dotnet/",
                 new UserAgentBuilder().AppendDotNetEnvironment().ToString());
         }
 
