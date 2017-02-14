@@ -48,8 +48,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         internal UserAgentBuilder AppendDotNetEnvironment()
 #if NETSTANDARD1_5
-            // TODO: Improve this if we can. (At least 0.0.0 is valid semver, so should parse.)
-            => AppendVersion("gl-dotnet", "0.0.0");
+            => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.RuntimeFramework.Version));
 #else
             => AppendVersion("gl-dotnet", FormatVersion(Environment.Version));
 #endif
@@ -73,7 +72,8 @@ namespace Google.Api.Gax.Grpc
             return FormatVersion(assembly.GetName().Version);
         }
 
-        private static string FormatVersion(Version version) => $"{version.Major}.{version.Minor}.{version.Build}";
+        private static string FormatVersion(Version version) =>
+            $"{version.Major}.{version.Minor}.{(version.Build != -1 ? version.Build : 0)}";
 
         public override string ToString() => string.Join(" ", _values);
     }
