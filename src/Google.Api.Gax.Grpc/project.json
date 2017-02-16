@@ -17,6 +17,7 @@
   },
 
   "dependencies": {
+    "Google.Api.CommonProtos": { "target": "project" },
     "Google.Api.Gax": { "target": "project" },
     "Google.Apis.Auth": "1.20.0",
     "Google.Protobuf": "3.0.0",
