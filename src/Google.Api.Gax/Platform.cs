@@ -212,20 +212,40 @@ namespace Google.Api.Gax
             GaePlatformDetails gaeDetails = LoadGaeDetails();
             if (gaeDetails != null)
             {
-                return new Platform(gaeDetails, null);
+                return new Platform(gaeDetails);
             }
             GcePlatformDetails gceDetails = await LoadGceDetails();
             if (gceDetails != null)
             {
-                return new Platform(null, gceDetails);
+                return new Platform(gceDetails);
             }
-            return new Platform(null, null);
+            return new Platform();
         }
 
-        private Platform(GaePlatformDetails gaeDetails, GcePlatformDetails gceDetails)
+        /// <summary>
+        /// Construct with no details.
+        /// This leads to a platform <see cref="Type"/> of <see cref="PlatformType.Unknown"/>.
+        /// </summary>
+        public Platform()
         {
-            GaeDetails = gaeDetails;
-            GceDetails = gceDetails;
+        }
+
+        /// <summary>
+        /// Construct with details of Google Compute Engine.
+        /// </summary>
+        /// <param name="gceDetails">Details of Google Compute Engine.</param>
+        public Platform(GcePlatformDetails gceDetails)
+        {
+            GceDetails = GaxPreconditions.CheckNotNull(gceDetails, nameof(gceDetails));
+        }
+
+        /// <summary>
+        /// Construct with details of Google App Engine.
+        /// </summary>
+        /// <param name="gaeDetails">Details of Google App Engine.</param>
+        public Platform(GaePlatformDetails gaeDetails)
+        {
+            GaeDetails = GaxPreconditions.CheckNotNull(gaeDetails, nameof(gaeDetails));
         }
 
         /// <summary>
