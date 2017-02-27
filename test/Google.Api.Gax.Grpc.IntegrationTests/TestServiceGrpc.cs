@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 
 namespace Google.Api.Gax.Grpc.IntegrationTests {
-  public static class TestService
+  public static partial class TestService
   {
     static readonly string __ServiceName = "google.api.gax.grpc.integration_tests.TestService";
 
@@ -36,7 +36,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     }
 
     /// <summary>Base class for server-side implementations of TestService</summary>
-    public abstract class TestServiceBase
+    public abstract partial class TestServiceBase
     {
       public virtual global::System.Threading.Tasks.Task<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> DoSimple(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, ServerCallContext context)
       {
@@ -46,7 +46,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     }
 
     /// <summary>Client for TestService</summary>
-    public class TestServiceClient : ClientBase<TestServiceClient>
+    public partial class TestServiceClient : ClientBase<TestServiceClient>
     {
       /// <summary>Creates a new client for TestService</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
@@ -84,6 +84,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       {
         return CallInvoker.AsyncUnaryCall(__Method_DoSimple, null, options, request);
       }
+      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override TestServiceClient NewInstance(ClientBaseConfiguration configuration)
       {
         return new TestServiceClient(configuration);
@@ -91,6 +92,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     }
 
     /// <summary>Creates service definition that can be registered with a server</summary>
+    /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static ServerServiceDefinition BindService(TestServiceBase serviceImpl)
     {
       return ServerServiceDefinition.CreateBuilder()
