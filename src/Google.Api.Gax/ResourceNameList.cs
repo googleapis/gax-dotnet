@@ -52,6 +52,19 @@ namespace Google.Api.Gax
         /// <inheritdoc />
         public void Add(TName item) => _underlyingList.Add(_nameToString(item));
 
+        /// <summary>
+        /// Adds all items to this list.
+        /// </summary>
+        /// <param name="items">The items to add to this list.</param>
+        public void Add(IEnumerable<TName> items)
+        {
+            GaxPreconditions.CheckNotNull(items, nameof(items));
+            foreach (TName item in items)
+            {
+                Add(item);
+            }
+        }
+
         /// <inheritdoc />
         public void Clear() => _underlyingList.Clear();
 
