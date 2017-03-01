@@ -51,10 +51,26 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
+        public void AddRange()
+        {
+            var list = List("a", "b");
+            var resourceList = ResourceList(list);
+            resourceList.Add(new[] { new UnknownResourceName("c"), new UnknownResourceName("d") });
+            Assert.Equal(List("a", "b", "c", "d"), list);
+        }
+
+        [Fact]
         public void Add_NullElement()
         {
             var resourceList = ResourceList(List());
-            Assert.Throws<ArgumentNullException>(() => resourceList.Add(null));
+            Assert.Throws<ArgumentNullException>(() => resourceList.Add((UnknownResourceName)null));
+        }
+
+        [Fact]
+        public void AddRange_NullEnumerable()
+        {
+            var resourceList = ResourceList(List());
+            Assert.Throws<ArgumentNullException>(() => resourceList.Add((IEnumerable<UnknownResourceName>)null));
         }
 
         [Fact]
