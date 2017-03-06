@@ -212,18 +212,20 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Completes the stream when all buffered messages have been sent. This method can only be called
-        /// once, and further messages cannot be written after it has been called.
+        /// Completes the stream when all buffered messages have been sent, if there is enough space in the buffer.
+        /// This method can only be successfully called once, and further messages cannot be written after it
+        /// has been successfully called.
         /// </summary>
-        /// <returns><c>null</c> if this stream has already be completed; otherwise a
+        /// <returns><c>null</c> if this stream has already be completed, or if the buffer is full; otherwise a
         /// <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
         public Task TryWriteCompleteAsync() => WriteCompleteAsyncImpl(false);
 
         /// <summary>
-        /// Completes the stream when all buffered messages have been sent. This method can only be called
-        /// once, and further messages cannot be written after it has been called.
+        /// Completes the stream when all buffered messages have been sent, if there is enough space in the buffer.
+        /// This method can only be successfully called once, and further messages cannot be written after it
+        /// has been successfully called.
         /// </summary>
-        /// <exception cref="InvalidOperationException">This method has already been called.</exception>
+        /// <exception cref="InvalidOperationException">This stream has already be completed, or the buffer is full</exception>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
         public Task WriteCompleteAsync() => WriteCompleteAsyncImpl(true);
 
