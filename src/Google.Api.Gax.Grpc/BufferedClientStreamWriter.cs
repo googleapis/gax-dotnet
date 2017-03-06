@@ -117,7 +117,7 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(message, nameof(message));
             lock (_lock)
             {
-                if (!ValidateStateForWrite(throwOnError))
+                if (!ValidateStateForWrite(throwOnError, false))
                 {
                     return null;
                 }
@@ -182,13 +182,15 @@ namespace Google.Api.Gax.Grpc
         /// Validates that we can write to the stream, optionally throwing if there's an error.
         /// This is basically to avoid a big chunk of code appearing in WriteAsyncImpl.
         /// </summary>
-        private bool ValidateStateForWrite(bool throwOnError)
+        private bool ValidateStateForWrite(bool throwOnError, bool isCompletion)
         {
             if (_completed)
             {
                 if (throwOnError)
                 {
-                    throw new InvalidOperationException($"Cannot call {nameof(WriteAsync)} after {nameof(WriteCompleteAsync)}");
+                    throw new InvalidOperationException(isCompletion ?
+                        $"Cannot call {nameof(WriteCompleteAsync)} twice" :
+                        $"Cannot call {nameof(WriteAsync)} after {nameof(WriteCompleteAsync)}");
                 }
                 else
                 {
@@ -229,16 +231,9 @@ namespace Google.Api.Gax.Grpc
         {
             lock (_lock)
             {
-                if (_completed)
+                if (!ValidateStateForWrite(throwOnError, true))
                 {
-                    if (throwOnError)
-                    {
-                        throw new InvalidOperationException($"Cannot call {nameof(WriteCompleteAsync)} twice");
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
                 _completed = true;
                 if (_failedTask != null)
