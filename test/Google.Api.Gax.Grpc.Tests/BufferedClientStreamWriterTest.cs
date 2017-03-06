@@ -159,14 +159,19 @@ namespace Google.Api.Gax.Grpc.Tests
             // we don't return a failed task.
             Assert.Throws<InvalidOperationException>(() => (object) writer.WriteAsync("3"));
 
-            fake.CompleteCurrentTask();
+            fake.CompleteCurrentTask(); // Message 1
             WaitForSpace(writer);
 
             // Now the buffer is smaller, we can write again.
             var task4 = writer.WriteAsync("4");
-            var completionTask = writer.WriteCompleteAsync();
+            // Completion fails, no space in buffer
+            Assert.Throws<InvalidOperationException>(() => (object)writer.WriteCompleteAsync());
 
             fake.CompleteCurrentTask(); // Message 2
+            WaitForSpace(writer);
+            // Completion succeeds, there is now space in the buffer.
+            var completionTask = writer.WriteCompleteAsync();
+
             fake.CompleteCurrentTask(); // Message 4
             fake.CompleteCurrentTask(); // Completion
 
@@ -195,32 +200,46 @@ namespace Google.Api.Gax.Grpc.Tests
             // Now the buffer is smaller, we can write again.
             var task4 = writer.TryWriteAsync("4");
             Assert.NotNull(task4);
-            var completionTask = writer.WriteCompleteAsync();
+            // Try to write completion, will fail as buffer is full.
+            var completionTask1 = writer.TryWriteCompleteAsync();
+            Assert.Null(completionTask1);
 
             fake.CompleteCurrentTask(); // Message 2
+            WaitForSpace(writer);
+
+            // Now the buffer is smaller, we can write completion.
+            var completionTask2 = writer.TryWriteCompleteAsync();
+            Assert.NotNull(completionTask2);
+
             fake.CompleteCurrentTask(); // Message 4
             fake.CompleteCurrentTask(); // Completion
 
             AssertCompletedWithStatus(task1, TaskStatus.RanToCompletion);
             AssertCompletedWithStatus(task2, TaskStatus.RanToCompletion);
             AssertCompletedWithStatus(task4, TaskStatus.RanToCompletion);
-            AssertCompletedWithStatus(completionTask, TaskStatus.RanToCompletion);
+            AssertCompletedWithStatus(completionTask2, TaskStatus.RanToCompletion);
 
             fake.AssertMessages("1", "2", "4");
             fake.AssertCompleted();
         }
 
         [Fact]
-        public void CompletionDoesntUseBufferSpace()
+        public void CompletionUsesBufferSpace()
         {
             var fake = new FakeWriter();
             var writer = new BufferedClientStreamWriter<string>(fake, 2);
             writer.WriteAsync("1");
             writer.WriteAsync("2");
-            writer.WriteCompleteAsync(); // No exception
+            // Try completion, should throw because queue is full.
+            // The (object) cast is because to make xUnit understand that the call itself should throw;
+            // we don't return a failed task.
+            Assert.Throws<InvalidOperationException>(() => (object)writer.WriteCompleteAsync());
+            // Try completion, should return null because queue is full.
+            Assert.Null(writer.TryWriteCompleteAsync());
 
             fake.CompleteCurrentTask();
             fake.CompleteCurrentTask();
+            writer.WriteCompleteAsync();
             fake.CompleteCurrentTask();
             fake.AssertCompleted();
         }

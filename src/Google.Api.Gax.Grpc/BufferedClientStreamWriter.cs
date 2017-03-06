@@ -117,7 +117,7 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(message, nameof(message));
             lock (_lock)
             {
-                if (!ValidateStateForWrite(throwOnError))
+                if (!ValidateStateForWrite(throwOnError, false))
                 {
                     return null;
                 }
@@ -182,13 +182,15 @@ namespace Google.Api.Gax.Grpc
         /// Validates that we can write to the stream, optionally throwing if there's an error.
         /// This is basically to avoid a big chunk of code appearing in WriteAsyncImpl.
         /// </summary>
-        private bool ValidateStateForWrite(bool throwOnError)
+        private bool ValidateStateForWrite(bool throwOnError, bool isCompletion)
         {
             if (_completed)
             {
                 if (throwOnError)
                 {
-                    throw new InvalidOperationException($"Cannot call {nameof(WriteAsync)} after {nameof(WriteCompleteAsync)}");
+                    throw new InvalidOperationException(isCompletion ?
+                        $"Cannot call {nameof(WriteCompleteAsync)} twice" :
+                        $"Cannot call {nameof(WriteAsync)} after {nameof(WriteCompleteAsync)}");
                 }
                 else
                 {
@@ -210,18 +212,20 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Completes the stream when all buffered messages have been sent. This method can only be called
-        /// once, and further messages cannot be written after it has been called.
+        /// Completes the stream when all buffered messages have been sent, if there is enough space in the buffer.
+        /// This method can only be successfully called once, and further messages cannot be written after it
+        /// has been successfully called.
         /// </summary>
-        /// <returns><c>null</c> if this stream has already be completed; otherwise a
+        /// <returns><c>null</c> if this stream has already be completed, or if the buffer is full; otherwise a
         /// <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
         public Task TryWriteCompleteAsync() => WriteCompleteAsyncImpl(false);
 
         /// <summary>
-        /// Completes the stream when all buffered messages have been sent. This method can only be called
-        /// once, and further messages cannot be written after it has been called.
+        /// Completes the stream when all buffered messages have been sent, if there is enough space in the buffer.
+        /// This method can only be successfully called once, and further messages cannot be written after it
+        /// has been successfully called.
         /// </summary>
-        /// <exception cref="InvalidOperationException">This method has already been called.</exception>
+        /// <exception cref="InvalidOperationException">This stream has already be completed, or the buffer is full</exception>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
         public Task WriteCompleteAsync() => WriteCompleteAsyncImpl(true);
 
@@ -229,16 +233,9 @@ namespace Google.Api.Gax.Grpc
         {
             lock (_lock)
             {
-                if (_completed)
+                if (!ValidateStateForWrite(throwOnError, true))
                 {
-                    if (throwOnError)
-                    {
-                        throw new InvalidOperationException($"Cannot call {nameof(WriteCompleteAsync)} twice");
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
                 _completed = true;
                 if (_failedTask != null)
