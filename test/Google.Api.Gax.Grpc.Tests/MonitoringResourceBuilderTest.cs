@@ -40,7 +40,7 @@ namespace Google.Api.Gax.Grpc.Tests
   }
 }
 ";
-            var platform = new Platform(new GcePlatformDetails(json));
+            var platform = new Platform(GcePlatformDetails.TryLoad(json));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("gce_instance", resource.Type);
             Assert.Equal(3, resource.Labels.Count);
@@ -59,6 +59,31 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
             Assert.Equal("FakeService", resource.Labels["module_id"]);
             Assert.Equal("FakeVersion", resource.Labels["version_id"]);
+        }
+
+        [Fact]
+        public void GkePlatform()
+        {
+            const string json = @"
+{
+  'project': {
+    'projectId': 'FakeProjectId'
+  },
+  'instance': {
+    'attributes': {
+      'cluster-name': 'FakeClusterName',
+    },
+    'zone': 'projects/FakeProject/zones/FakeLocation'
+  }
+}
+";
+            var platform = new Platform(GkePlatformDetails.TryLoad(json));
+            var resource = MonitoredResourceBuilder.FromPlatform(platform);
+            Assert.Equal("gke_cluster", resource.Type);
+            Assert.Equal(3, resource.Labels.Count);
+            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
+            Assert.Equal("FakeClusterName", resource.Labels["cluster_name"]);
+            Assert.Equal("FakeLocation", resource.Labels["location"]);
         }
     }
 }
