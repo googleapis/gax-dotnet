@@ -47,6 +47,13 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class GcePlatformDetails
     {
+        /// <summary>
+        /// Builds a <see cref="GcePlatformDetails"/> from the given metadata.
+        /// This metadata is normally retrieved from the GCE metadata server.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
+        /// <returns>A populated <see cref="GcePlatformDetails"/> if the metadata represents and GCE instance;
+        /// <c>null</c> otherwise.</returns>
         public static GcePlatformDetails TryLoad(string metadataJson)
         {
             JObject metadata;
@@ -155,10 +162,20 @@ namespace Google.Api.Gax
             $"[GAE: ProjectId='{ProjectId}', InstanceId='{InstanceId}', ServiceId='{ServiceId}', VersionId='{VersionId}']";
     }
 
+    /// <summary>
+    /// Google Container (Kubernetes) Engine details.
+    /// </summary>
     public sealed class GkePlatformDetails
     {
         private static readonly PathTemplate s_zoneTemplate = new PathTemplate("projects/*/zones/*");
 
+        /// <summary>
+        /// Builds a <see cref="GkePlatformDetails"/> from the given metadata.
+        /// This metadata is normally retrieved from the GCE metadata server.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
+        /// <returns>A populated <see cref="GkePlatformDetails"/> if the metadata represents and GKE instance;
+        /// <c>null</c> otherwise.</returns>
         public static GkePlatformDetails TryLoad(string metadataJson)
         {
             JObject metadata;
@@ -184,6 +201,13 @@ namespace Google.Api.Gax
             return null;
         }
 
+        /// <summary>
+        /// Construct details of Google Container (Kubernetes) Engine
+        /// </summary>
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
+        /// <param name="projectId">The project ID.</param>
+        /// <param name="clusterName">The cluster name.</param>
+        /// <param name="location">The location.</param>
         public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location)
         {
             MetadataJson = metadataJson;
@@ -197,8 +221,19 @@ namespace Google.Api.Gax
         /// </summary>
         public string MetadataJson { get; }
 
+        /// <summary>
+        /// The Project ID associated with your application, which is visible in the Google Cloud Platform Console.
+        /// </summary>
         public string ProjectId { get; }
+
+        /// <summary>
+        /// The cluster name, which is visible in the Google Cloud Platform Console.
+        /// </summary>
         public string ClusterName { get; }
+
+        /// <summary>
+        /// The cluster location, which is visible in the Google Cloud Platform Console.
+        /// </summary>
         public string Location { get; }
 
         /// <inheritdoc/>
