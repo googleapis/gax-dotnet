@@ -190,12 +190,13 @@ namespace Google.Api.Gax
             var projectId = metadata["project"]?["projectId"]?.ToString();
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.ToString();
             var zone = metadata["instance"]?["zone"]?.ToString();
+            var hostName = metadata["instance"]?["hostname"]?.ToString();
             if (projectId != null && clusterName != null && zone != null)
             {
                 TemplatedResourceName zoneResourceName;
                 if (s_zoneTemplate.TryParseName(zone, out zoneResourceName))
                 {
-                    return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1]);
+                    return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1], hostName);
                 }
             }
             return null;
@@ -208,12 +209,13 @@ namespace Google.Api.Gax
         /// <param name="projectId">The project ID.</param>
         /// <param name="clusterName">The cluster name.</param>
         /// <param name="location">The location.</param>
-        public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location)
+        public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName)
         {
             MetadataJson = metadataJson;
             ProjectId = projectId;
             ClusterName = clusterName;
             Location = location;
+            HostName = hostName;
         }
 
         /// <summary>
@@ -236,9 +238,14 @@ namespace Google.Api.Gax
         /// </summary>
         public string Location { get; }
 
+        /// <summary>
+        /// The hostname of this instance.
+        /// </summary>
+        public string HostName { get; }
+
         /// <inheritdoc/>
         public override string ToString() =>
-            $"[GKE: ProjectId='{ProjectId}', ClusterName='{ClusterName}', Location='{Location}']";
+            $"[GKE: ProjectId='{ProjectId}', ClusterName='{ClusterName}', Location='{Location}', HostName='{HostName}']";
     }
 
     /// <summary>
