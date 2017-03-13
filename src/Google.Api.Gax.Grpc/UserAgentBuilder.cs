@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         internal UserAgentBuilder AppendDotNetEnvironment()
 #if NETSTANDARD1_5
-            => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.RuntimeFramework.Version));
+            => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework?.Version));
 #else
             => AppendVersion("gl-dotnet", FormatVersion(Environment.Version));
 #endif
@@ -73,7 +73,9 @@ namespace Google.Api.Gax.Grpc
         }
 
         private static string FormatVersion(Version version) =>
-            $"{version.Major}.{version.Minor}.{(version.Build != -1 ? version.Build : 0)}";
+            version != null ?
+            $"{version.Major}.{version.Minor}.{(version.Build != -1 ? version.Build : 0)}" :
+            ""; // Empty string means "unknown"
 
         public override string ToString() => string.Join(" ", _values);
     }
