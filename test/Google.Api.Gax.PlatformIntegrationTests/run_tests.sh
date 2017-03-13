@@ -10,7 +10,7 @@ echo "Using project:'$projectId'; cluster:'$clusterName'"
 echo
 
 # Check required commands are installed
-echo "Checking in required commands are installed..."
+echo "Checking required commands are installed..."
 command -v dotnet >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "ERROR: 'dotnet' missing"
@@ -83,7 +83,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "  ... done"
 echo "Retrieving kubernetes credentals..."
-gcloud.cmd container clusters get-credentials $clusterName --zone=$clusterZone
+gcloud.cmd container clusters get-credentials $clusterName --project=$projectId --zone=$clusterZone
 if [ $? -ne 0 ]; then
     echo "ERROR: gcloud container clusters get-credentials failed"
     exit 1
