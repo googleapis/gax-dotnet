@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Threading;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Google.Api.Gax
 {
@@ -35,7 +36,10 @@ namespace Google.Api.Gax
         /// </summary>
         Gae = 2,
 
-        // TODO: Add GKE if/when possible.
+        /// <summary>
+        /// Execution platform is Google Container Engine (Kubernetes).
+        /// </summary>
+        Gke = 3,
     }
 
     /// <summary>
@@ -44,16 +48,46 @@ namespace Google.Api.Gax
     public sealed class GcePlatformDetails
     {
         /// <summary>
+        /// Builds a <see cref="GcePlatformDetails"/> from the given metadata.
+        /// This metadata is normally retrieved from the GCE metadata server.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
+        /// <returns>A populated <see cref="GcePlatformDetails"/> if the metadata represents and GCE instance;
+        /// <c>null</c> otherwise.</returns>
+        public static GcePlatformDetails TryLoad(string metadataJson)
+        {
+            JObject metadata;
+            try
+            {
+                metadata = JObject.Parse(metadataJson);
+            }
+            catch
+            {
+                return null;
+            }
+            var projectId = metadata["project"]?["projectId"]?.ToString();
+            var instanceId = metadata["instance"]?["id"]?.ToString();
+            var zoneName = metadata["instance"]?["zone"]?.ToString();
+            if (projectId != null && instanceId != null && zoneName != null)
+            {
+                return new GcePlatformDetails(metadataJson, projectId, instanceId, zoneName);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Construct details of Google Compute Engine
         /// </summary>
         /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
-        public GcePlatformDetails(string metadataJson)
+        /// <param name="projectId">The project ID.</param>
+        /// <param name="instanceId">The instance ID.</param>
+        /// <param name="zoneName">The zone name.</param>
+        public GcePlatformDetails(string metadataJson, string projectId, string instanceId, string zoneName)
         {
             MetadataJson = metadataJson;
-            var json = Newtonsoft.Json.Linq.JObject.Parse(metadataJson);
-            ProjectId = json["project"]["projectId"].ToString();
-            InstanceId = json["instance"]["id"].ToString();
-            ZoneName = json["instance"]["zone"].ToString();
+            ProjectId = projectId;
+            InstanceId = instanceId;
+            ZoneName = zoneName;
         }
 
         /// <summary>
@@ -129,6 +163,92 @@ namespace Google.Api.Gax
     }
 
     /// <summary>
+    /// Google Container (Kubernetes) Engine details.
+    /// </summary>
+    public sealed class GkePlatformDetails
+    {
+        private static readonly PathTemplate s_zoneTemplate = new PathTemplate("projects/*/zones/*");
+
+        /// <summary>
+        /// Builds a <see cref="GkePlatformDetails"/> from the given metadata.
+        /// This metadata is normally retrieved from the GCE metadata server.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
+        /// <returns>A populated <see cref="GkePlatformDetails"/> if the metadata represents and GKE instance;
+        /// <c>null</c> otherwise.</returns>
+        public static GkePlatformDetails TryLoad(string metadataJson)
+        {
+            JObject metadata;
+            try
+            {
+                metadata = JObject.Parse(metadataJson);
+            }
+            catch
+            {
+                return null;
+            }
+            var projectId = metadata["project"]?["projectId"]?.ToString();
+            var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.ToString();
+            var zone = metadata["instance"]?["zone"]?.ToString();
+            var hostName = metadata["instance"]?["hostname"]?.ToString();
+            if (projectId != null && clusterName != null && zone != null)
+            {
+                TemplatedResourceName zoneResourceName;
+                if (s_zoneTemplate.TryParseName(zone, out zoneResourceName))
+                {
+                    return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1], hostName);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Construct details of Google Container (Kubernetes) Engine
+        /// </summary>
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
+        /// <param name="projectId">The project ID.</param>
+        /// <param name="clusterName">The cluster name.</param>
+        /// <param name="location">The location.</param>
+        public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName)
+        {
+            MetadataJson = metadataJson;
+            ProjectId = projectId;
+            ClusterName = clusterName;
+            Location = location;
+            HostName = hostName;
+        }
+
+        /// <summary>
+        /// The full JSON string retrieved from the metadata server.
+        /// </summary>
+        public string MetadataJson { get; }
+
+        /// <summary>
+        /// The Project ID associated with your application, which is visible in the Google Cloud Platform Console.
+        /// </summary>
+        public string ProjectId { get; }
+
+        /// <summary>
+        /// The cluster name, which is visible in the Google Cloud Platform Console.
+        /// </summary>
+        public string ClusterName { get; }
+
+        /// <summary>
+        /// The cluster location, which is visible in the Google Cloud Platform Console.
+        /// </summary>
+        public string Location { get; }
+
+        /// <summary>
+        /// The hostname of this instance.
+        /// </summary>
+        public string HostName { get; }
+
+        /// <inheritdoc/>
+        public override string ToString() =>
+            $"[GKE: ProjectId='{ProjectId}', ClusterName='{ClusterName}', Location='{Location}', HostName='{HostName}']";
+    }
+
+    /// <summary>
     /// Information about the current execution platform.
     /// Supported execption platforms are Google App Engine (GAE) and Google Compute Engine (GCE).
     /// </summary>
@@ -148,7 +268,7 @@ namespace Google.Api.Gax
         /// <returns>Execution platform information.</returns>
         public static Platform Instance() => InstanceAsync().Result;
 
-        private static async Task<GcePlatformDetails> LoadGceDetails()
+        private static async Task<string> LoadMetadataAsync()
         {
             // Check if emulator is in use by looking for an emulator host in environment variable
             // METADATA_EMULATOR_HOST. This is the undocumented but the de-facto mechanism for doing this.
@@ -173,8 +293,7 @@ namespace Google.Api.Gax
                     && response.Content.Headers.ContentLength < maxContentLength)
                 {
                     // Valid response from metadata server.
-                    string metadataJson = await response.Content.ReadAsStringAsync();
-                    return new GcePlatformDetails(metadataJson);
+                    return await response.Content.ReadAsStringAsync();
                 }
             }
             catch
@@ -206,18 +325,28 @@ namespace Google.Api.Gax
 
         private static async Task<Platform> LoadInstance()
         {
-            // The order matters here, for two reasons:
-            // * The GCE detection will probably also detect GAE, so GAE must be done first.
-            // * GCE detection can take time, so to GAE first.
+            // The order matters here:
+            // * GAE runs on GCE, so do GAE before GCE.
+            // * GKE runs on GCE, so do GKE before GCE.
+            // * Metadata server access can take time, so to GAE first.
             GaePlatformDetails gaeDetails = LoadGaeDetails();
             if (gaeDetails != null)
             {
                 return new Platform(gaeDetails);
             }
-            GcePlatformDetails gceDetails = await LoadGceDetails();
-            if (gceDetails != null)
+            var metadataJson = await LoadMetadataAsync();
+            if (metadataJson != null)
             {
-                return new Platform(gceDetails);
+                GkePlatformDetails gkeDetails = GkePlatformDetails.TryLoad(metadataJson);
+                if (gkeDetails != null)
+                {
+                    return new Platform(gkeDetails);
+                }
+                GcePlatformDetails gceDetails = GcePlatformDetails.TryLoad(metadataJson);
+                if (gceDetails != null)
+                {
+                    return new Platform(gceDetails);
+                }
             }
             return new Platform();
         }
@@ -249,6 +378,15 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
+        /// Construct with details of Google Container (Kubernetes) Engine.
+        /// </summary>
+        /// <param name="gkeDetails">Details of Google Container (Kubernetes) Engine.</param>
+        public Platform(GkePlatformDetails gkeDetails)
+        {
+            GkeDetails = GaxPreconditions.CheckNotNull(gkeDetails, nameof(gkeDetails));
+        }
+
+        /// <summary>
         /// Google App Engine (GAE) platform details.
         /// <c>null</c> if not executing on GAE.
         /// </summary>
@@ -261,12 +399,41 @@ namespace Google.Api.Gax
         public GcePlatformDetails GceDetails { get; }
 
         /// <summary>
+        /// Google Container (Kubernetes) Engine (GKE) platform details.
+        /// <c>null</c> if not executing on GKE. 
+        /// </summary>
+        public GkePlatformDetails GkeDetails { get; }
+
+        /// <summary>
         /// The current execution platform.
         /// </summary>
         public PlatformType Type =>
             GaeDetails != null ? PlatformType.Gae :
             GceDetails != null ? PlatformType.Gce :
+            GkeDetails != null ? PlatformType.Gke :
             PlatformType.Unknown;
+
+        /// <summary>
+        /// The current Project ID.
+        /// <c>null</c> if the Project ID cannot be determined on the current execution platform.
+        /// </summary>
+        public string ProjectId
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case PlatformType.Gae:
+                        return GaeDetails.ProjectId;
+                    case PlatformType.Gce:
+                        return GceDetails.ProjectId;
+                    case PlatformType.Gke:
+                        return GkeDetails.ProjectId;
+                    default:
+                        return null;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -277,10 +444,12 @@ namespace Google.Api.Gax
                     return GaeDetails.ToString();
                 case PlatformType.Gce:
                     return GceDetails.ToString();
+                case PlatformType.Gke:
+                    return GkeDetails.ToString();
                 case PlatformType.Unknown:
                     return "[Unknown platform]";
                 default:
-                    return "[Unknown platform type]";
+                    return $"[Unknown platform type: '{Type}']";
             }
         }
     }

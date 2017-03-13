@@ -82,6 +82,18 @@ namespace Google.Api.Gax.Grpc
                             { "version_id", gae.VersionId }
                         }
                     };
+                case PlatformType.Gke:
+                    var gke = platform.GkeDetails;
+                    return new MonitoredResource
+                    {
+                        Type = "gke_cluster",
+                        Labels =
+                        {
+                            { "project_id", gke.ProjectId },
+                            { "cluster_name", gke.ClusterName },
+                            { "location", gke.Location }
+                        }
+                    };
                 default:
                     // This isn't great, but is better than throwing an exception.
                     return GlobalResource;
