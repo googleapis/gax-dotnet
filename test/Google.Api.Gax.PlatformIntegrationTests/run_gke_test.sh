@@ -1,4 +1,10 @@
 projectId=$1
+
+if [ "$projectId" == "" ]; then
+    echo "ERROR: Must specify projectId as first parameter"
+    exit 1
+fi
+
 if [ -z "$2" ]; then
     clusterName="platformintegrationtest"
 else
@@ -32,7 +38,7 @@ echo "  ... all installed OK"
 echo "Confirming project '$projectId' exists..."
 projectCheck="$(gcloud.cmd projects list --format='csv(project_id)' | grep ^$projectId$)"
 if [ "$projectCheck" != "$projectId" ]; then
-    echo "Requested Project ID '$projectId' not found"
+    echo "ERROR: Requested Project ID '$projectId' not found"
     exit 1
 fi
 echo "  ... confirmed OK"

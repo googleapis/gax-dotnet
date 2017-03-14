@@ -209,6 +209,7 @@ namespace Google.Api.Gax
         /// <param name="projectId">The project ID.</param>
         /// <param name="clusterName">The cluster name.</param>
         /// <param name="location">The location.</param>
+        /// <param name="hostName">The instance host name.</param>
         public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName)
         {
             MetadataJson = metadataJson;
