@@ -1,0 +1,3 @@
+runtime: custom
+vm: true
+service: platformtest-gce-canbedeleted
