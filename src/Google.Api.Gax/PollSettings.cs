@@ -25,20 +25,27 @@ namespace Google.Api.Gax
         /// There is no exponential backoff between calls; the same delay is used for each call.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// This is the delay between the a successful RPC response being received
         /// and the next RPC request being sent.
+        /// </para>
+        /// <para>
+        /// This is named 'InitialDelay' as backoff properties will be added to this class later.
+        /// </para>
         /// </remarks>
-        public TimeSpan Delay { get; }
+        public TimeSpan InitialDelay { get; }
         
+        // TODO: Add properties defining backoff.
+
         /// <summary>
-        /// Creates poll settings from the given expiration, delay and call settings.
+        /// Creates poll settings from the given expiration and delay, with no backoff.
         /// </summary>
         /// <param name="expiration">The expiration to use in order to know when to stop polling. Must not be null.</param>
         /// <param name="delay">The delay between RPC calls. Must be non-negative.</param>
         public PollSettings(Expiration expiration, TimeSpan delay)
         {
             Expiration = GaxPreconditions.CheckNotNull(expiration, nameof(expiration));
-            Delay = GaxPreconditions.CheckNonNegativeDelay(delay, nameof(delay));
+            InitialDelay = GaxPreconditions.CheckNonNegativeDelay(delay, nameof(delay));
         }
     }
 }

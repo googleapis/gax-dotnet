@@ -54,12 +54,12 @@ namespace Google.Api.Gax
                 {
                     return latest;
                 }
-                if (clock.GetCurrentDateTimeUtc() + pollSettings.Delay >= deadline)
+                if (clock.GetCurrentDateTimeUtc() + pollSettings.InitialDelay >= deadline)
                 {
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                scheduler.Sleep(pollSettings.Delay, cancellationToken);
+                scheduler.Sleep(pollSettings.InitialDelay, cancellationToken);
             }
         }
 
@@ -100,12 +100,12 @@ namespace Google.Api.Gax
                 {
                     return latest;
                 }
-                if (clock.GetCurrentDateTimeUtc() + pollSettings.Delay >= deadline)
+                if (clock.GetCurrentDateTimeUtc() + pollSettings.InitialDelay >= deadline)
                 {
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                await scheduler.Delay(pollSettings.Delay, cancellationToken).ConfigureAwait(false);
+                await scheduler.Delay(pollSettings.InitialDelay, cancellationToken).ConfigureAwait(false);
             }
         }
     }
