@@ -16,12 +16,12 @@ namespace Google.Api.Gax.Grpc
     public abstract class ServiceSettingsBase
     {
         /// <summary>
-        /// Constructs a new service settings base object with a default user agent, unset call settings and
+        /// Constructs a new service settings base object with a default version header, unset call settings and
         /// unset clock.
         /// </summary>
         protected ServiceSettingsBase()
         {
-            UserAgent = new UserAgentBuilder()
+            VersionHeader = new VersionHeaderBuilder()
                 .AppendDotNetEnvironment()
                 .AppendAssemblyVersion("gccl", GetType())
                 .AppendAssemblyVersion("gapic", GetType())
@@ -40,10 +40,10 @@ namespace Google.Api.Gax.Grpc
             CallSettings = existing.CallSettings;
             Clock = existing.Clock;
             Scheduler = existing.Scheduler;
-            UserAgent = existing.UserAgent;
+            VersionHeader = existing.VersionHeader;
         }
 
-        internal string UserAgent { get; }
+        internal string VersionHeader { get; }
 
         /// <summary>
         /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.

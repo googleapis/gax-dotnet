@@ -28,10 +28,6 @@
   },
   "frameworks": {
     "net45": { },
-    "netstandard1.5": {
-      "dependencies": {
-        "Microsoft.Extensions.PlatformAbstractions": "1.1.0"
-      }
-    }
+    "netstandard1.5": { }
   }
 }

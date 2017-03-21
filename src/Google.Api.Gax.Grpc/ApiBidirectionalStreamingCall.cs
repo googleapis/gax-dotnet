@@ -70,10 +70,10 @@ namespace Google.Api.Gax.Grpc
             return _call(effectiveCallSettings);
         }
 
-        internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
+        internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
             new ApiBidirectionalStreamingCall<TRequest, TResponse>(
                 _call,
-                CallSettings.FromHeader(UserAgentBuilder.HeaderName, userAgent).MergedWith(BaseCallSettings),
+                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader).MergedWith(BaseCallSettings),
                 StreamingSettings);
     }
 }

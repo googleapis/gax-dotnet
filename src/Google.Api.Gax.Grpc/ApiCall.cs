@@ -79,14 +79,14 @@ namespace Google.Api.Gax.Grpc
         public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
             _syncCall(request, BaseCallSettings.MergedWith(perCallCallSettings));
 
-        internal ApiCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
+        internal ApiCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
             // TODO: Check that this is what we want. It allows call settings to remove our
-            // user agent header. The caller can always do this manually anyway, of course, so
+            // version header. The caller can always do this manually anyway, of course, so
             // I'm tempted to leave it...
             new ApiCall<TRequest, TResponse>(
                 _asyncCall,
                 _syncCall,
-                CallSettings.FromHeader(UserAgentBuilder.HeaderName, userAgent)
+                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader)
                     .MergedWith(BaseCallSettings));
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>

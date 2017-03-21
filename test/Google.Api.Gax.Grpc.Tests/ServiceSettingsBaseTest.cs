@@ -45,7 +45,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.NotSame(settings, clonedSettings);
             // CallSettings is immutable, so just a reference copy is fine.
             Assert.Same(callSettings, clonedSettings.CallSettings);
-            Assert.Equal(settings.UserAgent, clonedSettings.UserAgent);
+            Assert.Equal(settings.VersionHeader, clonedSettings.VersionHeader);
             Assert.Equal(clock.Object, clonedSettings.Clock);
         }
 
@@ -56,7 +56,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var clonedSettings = settings.Clone();
             Assert.Null(clonedSettings.CallSettings);
             Assert.Null(clonedSettings.Clock);
-            Assert.Equal(settings.UserAgent, clonedSettings.UserAgent);
+            Assert.Equal(settings.VersionHeader, clonedSettings.VersionHeader);
         }
     }
 }
