@@ -19,12 +19,12 @@
   "dependencies": {
     "Google.Api.CommonProtos": { "target": "project" },
     "Google.Api.Gax": { "target": "project" },
-    "Google.Apis.Auth": "1.20.0",
+    "Google.Apis.Auth": "1.22.0",
     "Google.Protobuf": "3.0.0",
     "Google.Protobuf.Tools": { "version": "3.0.0", "type": "build" },
-    "Grpc.Auth": "1.1.0",
-    "Grpc.Core": "1.1.0",
-    "Grpc.Tools": { "version": "1.1.0", "type": "build" }
+    "Grpc.Auth": "1.2.0",
+    "Grpc.Core": "1.2.0",
+    "Grpc.Tools": { "version": "1.2.0", "type": "build" }
   },
   "frameworks": {
     "net45": { },
