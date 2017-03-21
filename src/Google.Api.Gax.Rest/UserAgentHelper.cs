@@ -6,13 +6,12 @@
  */
 
 using System;
-using System.Linq;
-using System.Reflection;
+using System.Net.Http;
 
 namespace Google.Api.Gax.Rest
 {
     /// <summary>
-    /// Common code used for building user agents in REST libraries.
+    /// Common code used for building user agents and related headers in REST libraries.
     /// </summary>
     public static class UserAgentHelper
     {
@@ -21,26 +20,25 @@ namespace Google.Api.Gax.Rest
         /// </summary>
         /// <param name="type">The type to extract the version number from.</param>
         /// <returns>A user agent value.</returns>
-        public static string GetDefaultUserAgent(Type type) => $"gcloud-dotnet/{FormatAssemblyVersion(type)}";
+        public static string GetDefaultUserAgent(Type type) => new VersionHeaderBuilder().AppendAssemblyVersion("gcloud-dotnet", type).ToString();
 
-        private static string FormatAssemblyVersion(System.Type type)
+        /// <summary>
+        /// Creates a request modifier which sets the Google-specific version header in HTTP requests.
+        /// </summary>
+        /// <param name="type">The type to extract the version number from.</param>
+        /// <returns>A request modifier.</returns>
+        public static Action<HttpRequestMessage> CreateRequestModifier(Type type)
         {
-            // Prefer AssemblyInformationalVersion, then AssemblyFileVersion,
-            // then AssemblyVersion.
-
-            var assembly = type.GetTypeInfo().Assembly;
-            var info = assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault()?.InformationalVersion;
-            if (info != null)
+            var value = new VersionHeaderBuilder()
+                .AppendDotNetEnvironment()
+                .AppendAssemblyVersion("gccl", type)
+                .AppendAssemblyVersion("gax", typeof(UserAgentHelper))
+                .ToString();
+            return request =>
             {
-                return info;
-            }
-            var file = assembly.GetCustomAttributes<AssemblyFileVersionAttribute>().FirstOrDefault()?.Version;
-            if (file != null)
-            {
-                return string.Join(".", file.Split('.').Take(3));
-            }
-            var version = assembly.GetName().Version;
-            return $"{version.Major}.{version.Minor}.{version.Build}";
+                request.Headers.Remove(VersionHeaderBuilder.HeaderName);
+                request.Headers.Add(VersionHeaderBuilder.HeaderName, value);
+            };
         }
     }
 }

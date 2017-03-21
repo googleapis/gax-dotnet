@@ -63,10 +63,10 @@ namespace Google.Api.Gax.Grpc
             return _call(request, effectiveCallSettings);
         }
 
-        internal ApiServerStreamingCall<TRequest, TResponse> WithUserAgent(string userAgent) =>
+        internal ApiServerStreamingCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
             new ApiServerStreamingCall<TRequest, TResponse>(
                 _call,
-                CallSettings.FromHeader(UserAgentBuilder.HeaderName, userAgent).MergedWith(BaseCallSettings));
+                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader).MergedWith(BaseCallSettings));
 
     }
 }

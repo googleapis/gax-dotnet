@@ -17,7 +17,7 @@ namespace Google.Api.Gax.Grpc
     public class ClientHelper
     {
         private readonly CallSettings _clientCallSettings;
-        private readonly string _userAgent;
+        private readonly string _versionHeader;
 
         /// <summary>
         /// Constructs a helper from the given settings.
@@ -30,7 +30,7 @@ namespace Google.Api.Gax.Grpc
             Clock = settings.Clock ?? SystemClock.Instance;
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
-            _userAgent = settings.UserAgent;
+            _versionHeader = settings.VersionHeader;
         }
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
-            // I.e. User-agent is added first, then retry is performed.
+            // I.e. Version header is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
                 .WithRetry(Clock, Scheduler)
-                .WithUserAgent(_userAgent);
+                .WithVersionHeader(_versionHeader);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiServerStreamingCall.Create(grpcCall, baseCallSettings, Clock)
-                .WithUserAgent(_userAgent);
+                .WithVersionHeader(_versionHeader);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
-                .WithUserAgent(_userAgent);
+                .WithVersionHeader(_versionHeader);
         }
     }
 }

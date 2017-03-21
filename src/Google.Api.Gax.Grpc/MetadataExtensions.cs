@@ -23,10 +23,10 @@ namespace Google.Api.Gax.Grpc
         public static Metadata Clone(this Metadata metadata) =>
             metadata.IsReadOnly ? metadata : new Metadata { metadata };
 
-        public static Metadata WithUserAgent(this Metadata metadata, string userAgent)
+        public static Metadata WithVersionHeader(this Metadata metadata, string versionHeader)
         {
             metadata = metadata.Clone();
-            metadata.Add(UserAgentBuilder.HeaderName, userAgent);
+            metadata.Add(VersionHeaderBuilder.HeaderName, versionHeader);
             return metadata;
         }
     }

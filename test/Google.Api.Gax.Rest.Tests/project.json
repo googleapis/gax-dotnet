@@ -22,8 +22,7 @@
         "Microsoft.NETCore.App": {
           "version": "1.0.0",
           "type": "platform"
-        },
-        "System.Net.Http": "4.1.0"
+        }
       }
     }
   }
