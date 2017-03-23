@@ -11,11 +11,7 @@
     "keyFile": "../../Gax.snk"
   },
   "frameworks": {
-    "net451": {
-      "dependencies": {
-        "System.Net.Http": "4.0.0"
-      }
-    },
+    "net451": { },
     "netcoreapp1.0": {
       "imports": "netcore50",
       "dependencies": {
