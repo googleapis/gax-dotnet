@@ -37,9 +37,9 @@ namespace Google.Api {
             "EU1vbml0b3JlZFJlc291cmNlEgwKBHR5cGUYASABKAkSOQoGbGFiZWxzGAIg",
             "AygLMikuZ29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZS5MYWJlbHNFbnRy",
             "eRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6",
-            "AjgBQmwKDmNvbS5nb29nbGUuYXBpQhZNb25pdG9yZWRSZXNvdXJjZVByb3Rv",
-            "UAFaNmdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
-            "L21vbml0b3JlZHJlc/gBAaICBEdBUEliBnByb3RvMw=="));
+            "AjgBQnkKDmNvbS5nb29nbGUuYXBpQhZNb25pdG9yZWRSZXNvdXJjZVByb3Rv",
+            "UAFaQ2dvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
+            "L21vbml0b3JlZHJlczttb25pdG9yZWRyZXP4AQGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -52,15 +52,15 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
-  ///  type name and a set of labels.  For example, the monitored resource
-  ///  descriptor for Google Compute Engine VM instances has a type of
-  ///  `"gce_instance"` and specifies the use of the labels `"instance_id"` and
-  ///  `"zone"` to identify particular VM instances.
+  /// An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
+  /// type name and a set of labels.  For example, the monitored resource
+  /// descriptor for Google Compute Engine VM instances has a type of
+  /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
+  /// `"zone"` to identify particular VM instances.
   ///
-  ///  Different APIs can support different monitored resource types. APIs generally
-  ///  provide a `list` method that returns the monitored resource descriptors used
-  ///  by the API.
+  /// Different APIs can support different monitored resource types. APIs generally
+  /// provide a `list` method that returns the monitored resource descriptors used
+  /// by the API.
   /// </summary>
   public sealed partial class MonitoredResourceDescriptor : pb::IMessage<MonitoredResourceDescriptor> {
     private static readonly pb::MessageParser<MonitoredResourceDescriptor> _parser = new pb::MessageParser<MonitoredResourceDescriptor>(() => new MonitoredResourceDescriptor());
@@ -102,12 +102,12 @@ namespace Google.Api {
     public const int NameFieldNumber = 5;
     private string name_ = "";
     /// <summary>
-    ///  Optional. The resource name of the monitored resource descriptor:
-    ///  `"projects/{project_id}/monitoredResourceDescriptors/{type}"` where
-    ///  {type} is the value of the `type` field in this object and
-    ///  {project_id} is a project ID that provides API-specific context for
-    ///  accessing the type.  APIs that do not use project information can use the
-    ///  resource name format `"monitoredResourceDescriptors/{type}"`.
+    /// Optional. The resource name of the monitored resource descriptor:
+    /// `"projects/{project_id}/monitoredResourceDescriptors/{type}"` where
+    /// {type} is the value of the `type` field in this object and
+    /// {project_id} is a project ID that provides API-specific context for
+    /// accessing the type.  APIs that do not use project information can use the
+    /// resource name format `"monitoredResourceDescriptors/{type}"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -121,9 +121,9 @@ namespace Google.Api {
     public const int TypeFieldNumber = 1;
     private string type_ = "";
     /// <summary>
-    ///  Required. The monitored resource type. For example, the type
-    ///  `"cloudsql_database"` represents databases in Google Cloud SQL.
-    ///  The maximum length of this value is 256 characters.
+    /// Required. The monitored resource type. For example, the type
+    /// `"cloudsql_database"` represents databases in Google Cloud SQL.
+    /// The maximum length of this value is 256 characters.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -137,10 +137,10 @@ namespace Google.Api {
     public const int DisplayNameFieldNumber = 2;
     private string displayName_ = "";
     /// <summary>
-    ///  Optional. A concise name for the monitored resource type that might be
-    ///  displayed in user interfaces. It should be a Title Cased Noun Phrase,
-    ///  without any article or other determiners. For example,
-    ///  `"Google Cloud SQL Database"`.
+    /// Optional. A concise name for the monitored resource type that might be
+    /// displayed in user interfaces. It should be a Title Cased Noun Phrase,
+    /// without any article or other determiners. For example,
+    /// `"Google Cloud SQL Database"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {
@@ -154,8 +154,8 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 3;
     private string description_ = "";
     /// <summary>
-    ///  Optional. A detailed description of the monitored resource type that might
-    ///  be used in documentation.
+    /// Optional. A detailed description of the monitored resource type that might
+    /// be used in documentation.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -171,9 +171,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(34, global::Google.Api.LabelDescriptor.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.LabelDescriptor> labels_ = new pbc::RepeatedField<global::Google.Api.LabelDescriptor>();
     /// <summary>
-    ///  Required. A set of labels used to describe instances of this monitored
-    ///  resource type. For example, an individual Google Cloud SQL database is
-    ///  identified by values for the labels `"database_id"` and `"zone"`.
+    /// Required. A set of labels used to describe instances of this monitored
+    /// resource type. For example, an individual Google Cloud SQL database is
+    /// identified by values for the labels `"database_id"` and `"zone"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LabelDescriptor> Labels {
@@ -312,19 +312,19 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  An object representing a resource that can be used for monitoring, logging,
-  ///  billing, or other purposes. Examples include virtual machine instances,
-  ///  databases, and storage devices such as disks. The `type` field identifies a
-  ///  [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource's
-  ///  schema. Information in the `labels` field identifies the actual resource and
-  ///  its attributes according to the schema. For example, a particular Compute
-  ///  Engine VM instance could be represented by the following object, because the
-  ///  [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
-  ///  `"instance_id"` and `"zone"`:
+  /// An object representing a resource that can be used for monitoring, logging,
+  /// billing, or other purposes. Examples include virtual machine instances,
+  /// databases, and storage devices such as disks. The `type` field identifies a
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource's
+  /// schema. Information in the `labels` field identifies the actual resource and
+  /// its attributes according to the schema. For example, a particular Compute
+  /// Engine VM instance could be represented by the following object, because the
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
+  /// `"instance_id"` and `"zone"`:
   ///
-  ///      { "type": "gce_instance",
-  ///        "labels": { "instance_id": "12345678901234",
-  ///                    "zone": "us-central1-a" }}
+  ///     { "type": "gce_instance",
+  ///       "labels": { "instance_id": "12345678901234",
+  ///                   "zone": "us-central1-a" }}
   /// </summary>
   public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource> {
     private static readonly pb::MessageParser<MonitoredResource> _parser = new pb::MessageParser<MonitoredResource>(() => new MonitoredResource());
@@ -363,9 +363,9 @@ namespace Google.Api {
     public const int TypeFieldNumber = 1;
     private string type_ = "";
     /// <summary>
-    ///  Required. The monitored resource type. This field must match
-    ///  the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
-    ///  example, the type of a Cloud SQL database is `"cloudsql_database"`.
+    /// Required. The monitored resource type. This field must match
+    /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
+    /// example, the type of a Cloud SQL database is `"cloudsql_database"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -381,9 +381,9 @@ namespace Google.Api {
         = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 18);
     private readonly pbc::MapField<string, string> labels_ = new pbc::MapField<string, string>();
     /// <summary>
-    ///  Required. Values for all of the labels listed in the associated monitored
-    ///  resource descriptor. For example, Cloud SQL databases use the labels
-    ///  `"database_id"` and `"zone"`.
+    /// Required. Values for all of the labels listed in the associated monitored
+    /// resource descriptor. For example, Cloud SQL databases use the labels
+    /// `"database_id"` and `"zone"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> Labels {

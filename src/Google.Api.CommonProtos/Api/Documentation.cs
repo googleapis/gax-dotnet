@@ -37,8 +37,10 @@ namespace Google.Api {
             "UnVsZRIQCghzZWxlY3RvchgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIf",
             "ChdkZXByZWNhdGlvbl9kZXNjcmlwdGlvbhgDIAEoCSJJCgRQYWdlEgwKBG5h",
             "bWUYASABKAkSDwoHY29udGVudBgCIAEoCRIiCghzdWJwYWdlcxgDIAMoCzIQ",
-            "Lmdvb2dsZS5hcGkuUGFnZUItCg5jb20uZ29vZ2xlLmFwaUISRG9jdW1lbnRh",
-            "dGlvblByb3RvUAGiAgRHQVBJYgZwcm90bzM="));
+            "Lmdvb2dsZS5hcGkuUGFnZUJ0Cg5jb20uZ29vZ2xlLmFwaUISRG9jdW1lbnRh",
+            "dGlvblByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
+            "ZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEli",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -52,63 +54,63 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  `Documentation` provides the information for describing a service.
+  /// `Documentation` provides the information for describing a service.
   ///
-  ///  Example:
-  ///  &lt;pre>&lt;code>documentation:
-  ///    summary: >
-  ///      The Google Calendar API gives access
-  ///      to most calendar features.
-  ///    pages:
-  ///    - name: Overview
-  ///      content: &amp;#40;== include google/foo/overview.md ==&amp;#41;
-  ///    - name: Tutorial
-  ///      content: &amp;#40;== include google/foo/tutorial.md ==&amp;#41;
-  ///      subpages;
-  ///      - name: Java
-  ///        content: &amp;#40;== include google/foo/tutorial_java.md ==&amp;#41;
-  ///    rules:
-  ///    - selector: google.calendar.Calendar.Get
-  ///      description: >
-  ///        ...
-  ///    - selector: google.calendar.Calendar.Put
-  ///      description: >
-  ///        ...
-  ///  &lt;/code>&lt;/pre>
-  ///  Documentation is provided in markdown syntax. In addition to
-  ///  standard markdown features, definition lists, tables and fenced
-  ///  code blocks are supported. Section headers can be provided and are
-  ///  interpreted relative to the section nesting of the context where
-  ///  a documentation fragment is embedded.
+  /// Example:
+  /// &lt;pre>&lt;code>documentation:
+  ///   summary: >
+  ///     The Google Calendar API gives access
+  ///     to most calendar features.
+  ///   pages:
+  ///   - name: Overview
+  ///     content: &amp;#40;== include google/foo/overview.md ==&amp;#41;
+  ///   - name: Tutorial
+  ///     content: &amp;#40;== include google/foo/tutorial.md ==&amp;#41;
+  ///     subpages;
+  ///     - name: Java
+  ///       content: &amp;#40;== include google/foo/tutorial_java.md ==&amp;#41;
+  ///   rules:
+  ///   - selector: google.calendar.Calendar.Get
+  ///     description: >
+  ///       ...
+  ///   - selector: google.calendar.Calendar.Put
+  ///     description: >
+  ///       ...
+  /// &lt;/code>&lt;/pre>
+  /// Documentation is provided in markdown syntax. In addition to
+  /// standard markdown features, definition lists, tables and fenced
+  /// code blocks are supported. Section headers can be provided and are
+  /// interpreted relative to the section nesting of the context where
+  /// a documentation fragment is embedded.
   ///
-  ///  Documentation from the IDL is merged with documentation defined
-  ///  via the config at normalization time, where documentation provided
-  ///  by config rules overrides IDL provided.
+  /// Documentation from the IDL is merged with documentation defined
+  /// via the config at normalization time, where documentation provided
+  /// by config rules overrides IDL provided.
   ///
-  ///  A number of constructs specific to the API platform are supported
-  ///  in documentation text.
+  /// A number of constructs specific to the API platform are supported
+  /// in documentation text.
   ///
-  ///  In order to reference a proto element, the following
-  ///  notation can be used:
-  ///  &lt;pre>&lt;code>&amp;#91;fully.qualified.proto.name]&amp;#91;]&lt;/code>&lt;/pre>
-  ///  To override the display text used for the link, this can be used:
-  ///  &lt;pre>&lt;code>&amp;#91;display text]&amp;#91;fully.qualified.proto.name]&lt;/code>&lt;/pre>
-  ///  Text can be excluded from doc using the following notation:
-  ///  &lt;pre>&lt;code>&amp;#40;-- internal comment --&amp;#41;&lt;/code>&lt;/pre>
-  ///  Comments can be made conditional using a visibility label. The below
-  ///  text will be only rendered if the `BETA` label is available:
-  ///  &lt;pre>&lt;code>&amp;#40;--BETA: comment for BETA users --&amp;#41;&lt;/code>&lt;/pre>
-  ///  A few directives are available in documentation. Note that
-  ///  directives must appear on a single line to be properly
-  ///  identified. The `include` directive includes a markdown file from
-  ///  an external source:
-  ///  &lt;pre>&lt;code>&amp;#40;== include path/to/file ==&amp;#41;&lt;/code>&lt;/pre>
-  ///  The `resource_for` directive marks a message to be the resource of
-  ///  a collection in REST view. If it is not specified, tools attempt
-  ///  to infer the resource from the operations in a collection:
-  ///  &lt;pre>&lt;code>&amp;#40;== resource_for v1.shelves.books ==&amp;#41;&lt;/code>&lt;/pre>
-  ///  The directive `suppress_warning` does not directly affect documentation
-  ///  and is documented together with service config validation.
+  /// In order to reference a proto element, the following
+  /// notation can be used:
+  /// &lt;pre>&lt;code>&amp;#91;fully.qualified.proto.name]&amp;#91;]&lt;/code>&lt;/pre>
+  /// To override the display text used for the link, this can be used:
+  /// &lt;pre>&lt;code>&amp;#91;display text]&amp;#91;fully.qualified.proto.name]&lt;/code>&lt;/pre>
+  /// Text can be excluded from doc using the following notation:
+  /// &lt;pre>&lt;code>&amp;#40;-- internal comment --&amp;#41;&lt;/code>&lt;/pre>
+  /// Comments can be made conditional using a visibility label. The below
+  /// text will be only rendered if the `BETA` label is available:
+  /// &lt;pre>&lt;code>&amp;#40;--BETA: comment for BETA users --&amp;#41;&lt;/code>&lt;/pre>
+  /// A few directives are available in documentation. Note that
+  /// directives must appear on a single line to be properly
+  /// identified. The `include` directive includes a markdown file from
+  /// an external source:
+  /// &lt;pre>&lt;code>&amp;#40;== include path/to/file ==&amp;#41;&lt;/code>&lt;/pre>
+  /// The `resource_for` directive marks a message to be the resource of
+  /// a collection in REST view. If it is not specified, tools attempt
+  /// to infer the resource from the operations in a collection:
+  /// &lt;pre>&lt;code>&amp;#40;== resource_for v1.shelves.books ==&amp;#41;&lt;/code>&lt;/pre>
+  /// The directive `suppress_warning` does not directly affect documentation
+  /// and is documented together with service config validation.
   /// </summary>
   public sealed partial class Documentation : pb::IMessage<Documentation> {
     private static readonly pb::MessageParser<Documentation> _parser = new pb::MessageParser<Documentation>(() => new Documentation());
@@ -150,8 +152,8 @@ namespace Google.Api {
     public const int SummaryFieldNumber = 1;
     private string summary_ = "";
     /// <summary>
-    ///  A short summary of what the service does. Can only be provided by
-    ///  plain text.
+    /// A short summary of what the service does. Can only be provided by
+    /// plain text.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Summary {
@@ -167,7 +169,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(42, global::Google.Api.Page.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Page> pages_ = new pbc::RepeatedField<global::Google.Api.Page>();
     /// <summary>
-    ///  The top level pages for the documentation set.
+    /// The top level pages for the documentation set.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Page> Pages {
@@ -180,9 +182,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(26, global::Google.Api.DocumentationRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.DocumentationRule> rules_ = new pbc::RepeatedField<global::Google.Api.DocumentationRule>();
     /// <summary>
-    ///  A list of documentation rules that apply to individual API elements.
+    /// A list of documentation rules that apply to individual API elements.
     ///
-    ///  **NOTE:** All service configuration rules follow "last one wins" order.
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.DocumentationRule> Rules {
@@ -193,7 +195,7 @@ namespace Google.Api {
     public const int DocumentationRootUrlFieldNumber = 4;
     private string documentationRootUrl_ = "";
     /// <summary>
-    ///  The URL to the root of documentation.
+    /// The URL to the root of documentation.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DocumentationRootUrl {
@@ -207,19 +209,19 @@ namespace Google.Api {
     public const int OverviewFieldNumber = 2;
     private string overview_ = "";
     /// <summary>
-    ///  Declares a single overview page. For example:
-    ///  &lt;pre>&lt;code>documentation:
-    ///    summary: ...
-    ///    overview: &amp;#40;== include overview.md ==&amp;#41;
-    ///  &lt;/code>&lt;/pre>
-    ///  This is a shortcut for the following declaration (using pages style):
-    ///  &lt;pre>&lt;code>documentation:
-    ///    summary: ...
-    ///    pages:
-    ///    - name: Overview
-    ///      content: &amp;#40;== include overview.md ==&amp;#41;
-    ///  &lt;/code>&lt;/pre>
-    ///  Note: you cannot specify both `overview` field and `pages` field.
+    /// Declares a single overview page. For example:
+    /// &lt;pre>&lt;code>documentation:
+    ///   summary: ...
+    ///   overview: &amp;#40;== include overview.md ==&amp;#41;
+    /// &lt;/code>&lt;/pre>
+    /// This is a shortcut for the following declaration (using pages style):
+    /// &lt;pre>&lt;code>documentation:
+    ///   summary: ...
+    ///   pages:
+    ///   - name: Overview
+    ///     content: &amp;#40;== include overview.md ==&amp;#41;
+    /// &lt;/code>&lt;/pre>
+    /// Note: you cannot specify both `overview` field and `pages` field.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Overview {
@@ -354,7 +356,7 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  A documentation rule provides information about individual API elements.
+  /// A documentation rule provides information about individual API elements.
   /// </summary>
   public sealed partial class DocumentationRule : pb::IMessage<DocumentationRule> {
     private static readonly pb::MessageParser<DocumentationRule> _parser = new pb::MessageParser<DocumentationRule>(() => new DocumentationRule());
@@ -394,12 +396,12 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  The selector is a comma-separated list of patterns. Each pattern is a
-    ///  qualified name of the element which may end in "*", indicating a wildcard.
-    ///  Wildcards are only allowed at the end and for a whole component of the
-    ///  qualified name, i.e. "foo.*" is ok, but not "foo.b*" or "foo.*.bar". To
-    ///  specify a default for all applicable elements, the whole pattern "*"
-    ///  is used.
+    /// The selector is a comma-separated list of patterns. Each pattern is a
+    /// qualified name of the element which may end in "*", indicating a wildcard.
+    /// Wildcards are only allowed at the end and for a whole component of the
+    /// qualified name, i.e. "foo.*" is ok, but not "foo.b*" or "foo.*.bar". To
+    /// specify a default for all applicable elements, the whole pattern "*"
+    /// is used.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -413,7 +415,7 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 2;
     private string description_ = "";
     /// <summary>
-    ///  Description of the selected API(s).
+    /// Description of the selected API(s).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -427,8 +429,8 @@ namespace Google.Api {
     public const int DeprecationDescriptionFieldNumber = 3;
     private string deprecationDescription_ = "";
     /// <summary>
-    ///  Deprecation description of the selected element(s). It can be provided if an
-    ///  element is marked as `deprecated`.
+    /// Deprecation description of the selected element(s). It can be provided if an
+    /// element is marked as `deprecated`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DeprecationDescription {
@@ -545,8 +547,8 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Represents a documentation page. A page can contain subpages to represent
-  ///  nested documentation set structure.
+  /// Represents a documentation page. A page can contain subpages to represent
+  /// nested documentation set structure.
   /// </summary>
   public sealed partial class Page : pb::IMessage<Page> {
     private static readonly pb::MessageParser<Page> _parser = new pb::MessageParser<Page>(() => new Page());
@@ -586,20 +588,20 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    ///  The name of the page. It will be used as an identity of the page to
-    ///  generate URI of the page, text of the link to this page in navigation,
-    ///  etc. The full page name (start from the root page name to this page
-    ///  concatenated with `.`) can be used as reference to the page in your
-    ///  documentation. For example:
-    ///  &lt;pre>&lt;code>pages:
-    ///  - name: Tutorial
-    ///    content: &amp;#40;== include tutorial.md ==&amp;#41;
-    ///    subpages:
-    ///    - name: Java
-    ///      content: &amp;#40;== include tutorial_java.md ==&amp;#41;
-    ///  &lt;/code>&lt;/pre>
-    ///  You can reference `Java` page using Markdown reference link syntax:
-    ///  `[Java][Tutorial.Java]`.
+    /// The name of the page. It will be used as an identity of the page to
+    /// generate URI of the page, text of the link to this page in navigation,
+    /// etc. The full page name (start from the root page name to this page
+    /// concatenated with `.`) can be used as reference to the page in your
+    /// documentation. For example:
+    /// &lt;pre>&lt;code>pages:
+    /// - name: Tutorial
+    ///   content: &amp;#40;== include tutorial.md ==&amp;#41;
+    ///   subpages:
+    ///   - name: Java
+    ///     content: &amp;#40;== include tutorial_java.md ==&amp;#41;
+    /// &lt;/code>&lt;/pre>
+    /// You can reference `Java` page using Markdown reference link syntax:
+    /// `[Java][Tutorial.Java]`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -613,8 +615,8 @@ namespace Google.Api {
     public const int ContentFieldNumber = 2;
     private string content_ = "";
     /// <summary>
-    ///  The Markdown content of the page. You can use &lt;code>&amp;#40;== include {path} ==&amp;#41;&lt;/code>
-    ///  to include content from a Markdown file.
+    /// The Markdown content of the page. You can use &lt;code>&amp;#40;== include {path} ==&amp;#41;&lt;/code>
+    /// to include content from a Markdown file.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Content {
@@ -630,8 +632,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(26, global::Google.Api.Page.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Page> subpages_ = new pbc::RepeatedField<global::Google.Api.Page>();
     /// <summary>
-    ///  Subpages of this page. The order of subpages specified here will be
-    ///  honored in the generated docset.
+    /// Subpages of this page. The order of subpages specified here will be
+    /// honored in the generated docset.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Page> Subpages {

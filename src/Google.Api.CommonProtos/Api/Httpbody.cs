@@ -30,9 +30,10 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL2h0dHBib2R5LnByb3RvEgpnb29nbGUuYXBpIi4KCEh0",
-            "dHBCb2R5EhQKDGNvbnRlbnRfdHlwZRgBIAEoCRIMCgRkYXRhGAIgASgMQigK",
-            "DmNvbS5nb29nbGUuYXBpQg1IdHRwQm9keVByb3RvUAGiAgRHQVBJYgZwcm90",
-            "bzM="));
+            "dHBCb2R5EhQKDGNvbnRlbnRfdHlwZRgBIAEoCRIMCgRkYXRhGAIgASgMQmUK",
+            "DmNvbS5nb29nbGUuYXBpQg1IdHRwQm9keVByb3RvUAFaO2dvb2dsZS5nb2xh",
+            "bmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL2h0dHBib2R5O2h0dHBi",
+            "b2R5ogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -44,43 +45,43 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Message that represents an arbitrary HTTP body. It should only be used for
-  ///  payload formats that can't be represented as JSON, such as raw binary or
-  ///  an HTML page.
+  /// Message that represents an arbitrary HTTP body. It should only be used for
+  /// payload formats that can't be represented as JSON, such as raw binary or
+  /// an HTML page.
   ///
-  ///  This message can be used both in streaming and non-streaming API methods in
-  ///  the request as well as the response.
+  /// This message can be used both in streaming and non-streaming API methods in
+  /// the request as well as the response.
   ///
-  ///  It can be used as a top-level request field, which is convenient if one
-  ///  wants to extract parameters from either the URL or HTTP template into the
-  ///  request fields and also want access to the raw HTTP body.
+  /// It can be used as a top-level request field, which is convenient if one
+  /// wants to extract parameters from either the URL or HTTP template into the
+  /// request fields and also want access to the raw HTTP body.
   ///
-  ///  Example:
+  /// Example:
   ///
-  ///      message GetResourceRequest {
-  ///        // A unique request id.
-  ///        string request_id = 1;
+  ///     message GetResourceRequest {
+  ///       // A unique request id.
+  ///       string request_id = 1;
   ///
-  ///        // The raw HTTP body is bound to this field.
-  ///        google.api.HttpBody http_body = 2;
-  ///      }
+  ///       // The raw HTTP body is bound to this field.
+  ///       google.api.HttpBody http_body = 2;
+  ///     }
   ///
-  ///      service ResourceService {
-  ///        rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
-  ///        rpc UpdateResource(google.api.HttpBody) returns (google.protobuf.Empty);
-  ///      }
+  ///     service ResourceService {
+  ///       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
+  ///       rpc UpdateResource(google.api.HttpBody) returns (google.protobuf.Empty);
+  ///     }
   ///
-  ///  Example with streaming methods:
+  /// Example with streaming methods:
   ///
-  ///      service CaldavService {
-  ///        rpc GetCalendar(stream google.api.HttpBody)
-  ///          returns (stream google.api.HttpBody);
-  ///        rpc UpdateCalendar(stream google.api.HttpBody)
-  ///          returns (stream google.api.HttpBody);
-  ///      }
+  ///     service CaldavService {
+  ///       rpc GetCalendar(stream google.api.HttpBody)
+  ///         returns (stream google.api.HttpBody);
+  ///       rpc UpdateCalendar(stream google.api.HttpBody)
+  ///         returns (stream google.api.HttpBody);
+  ///     }
   ///
-  ///  Use of this type only changes how the request and response bodies are
-  ///  handled, all other features will continue to work unchanged.
+  /// Use of this type only changes how the request and response bodies are
+  /// handled, all other features will continue to work unchanged.
   /// </summary>
   public sealed partial class HttpBody : pb::IMessage<HttpBody> {
     private static readonly pb::MessageParser<HttpBody> _parser = new pb::MessageParser<HttpBody>(() => new HttpBody());
@@ -119,7 +120,7 @@ namespace Google.Api {
     public const int ContentTypeFieldNumber = 1;
     private string contentType_ = "";
     /// <summary>
-    ///  The HTTP Content-Type string representing the content type of the body.
+    /// The HTTP Content-Type string representing the content type of the body.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ContentType {
@@ -133,7 +134,7 @@ namespace Google.Api {
     public const int DataFieldNumber = 2;
     private pb::ByteString data_ = pb::ByteString.Empty;
     /// <summary>
-    ///  HTTP body binary data.
+    /// HTTP body binary data.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString Data {

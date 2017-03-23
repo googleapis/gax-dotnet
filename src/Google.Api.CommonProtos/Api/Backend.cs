@@ -32,8 +32,10 @@ namespace Google.Api {
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
             "QgoLQmFja2VuZFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDwoHYWRkcmVzcxgC",
-            "IAEoCRIQCghkZWFkbGluZRgDIAEoAUInCg5jb20uZ29vZ2xlLmFwaUIMQmFj",
-            "a2VuZFByb3RvUAGiAgRHQVBJYgZwcm90bzM="));
+            "IAEoCRIQCghkZWFkbGluZRgDIAEoAUJuCg5jb20uZ29vZ2xlLmFwaUIMQmFj",
+            "a2VuZFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
+            "ZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEli",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,7 +48,7 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  `Backend` defines the backend configuration for a service.
+  /// `Backend` defines the backend configuration for a service.
   /// </summary>
   public sealed partial class Backend : pb::IMessage<Backend> {
     private static readonly pb::MessageParser<Backend> _parser = new pb::MessageParser<Backend>(() => new Backend());
@@ -86,9 +88,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.BackendRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.BackendRule> rules_ = new pbc::RepeatedField<global::Google.Api.BackendRule>();
     /// <summary>
-    ///  A list of API backend rules that apply to individual API methods.
+    /// A list of API backend rules that apply to individual API methods.
     ///
-    ///  **NOTE:** All service configuration rules follow "last one wins" order.
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.BackendRule> Rules {
@@ -163,7 +165,7 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  A backend rule provides configuration for an individual API element.
+  /// A backend rule provides configuration for an individual API element.
   /// </summary>
   public sealed partial class BackendRule : pb::IMessage<BackendRule> {
     private static readonly pb::MessageParser<BackendRule> _parser = new pb::MessageParser<BackendRule>(() => new BackendRule());
@@ -203,9 +205,9 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  Selects the methods to which this rule applies.
+    /// Selects the methods to which this rule applies.
     ///
-    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -219,7 +221,7 @@ namespace Google.Api {
     public const int AddressFieldNumber = 2;
     private string address_ = "";
     /// <summary>
-    ///  The address of the API backend.
+    /// The address of the API backend.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Address {
@@ -233,8 +235,8 @@ namespace Google.Api {
     public const int DeadlineFieldNumber = 3;
     private double deadline_;
     /// <summary>
-    ///  The number of seconds to wait for a response from a request.  The
-    ///  default depends on the deployment context.
+    /// The number of seconds to wait for a response from a request.  The
+    /// default depends on the deployment context.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Deadline {

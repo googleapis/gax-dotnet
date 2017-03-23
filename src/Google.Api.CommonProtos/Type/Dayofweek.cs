@@ -32,9 +32,10 @@ namespace Google.Type {
             "Chtnb29nbGUvdHlwZS9kYXlvZndlZWsucHJvdG8SC2dvb2dsZS50eXBlKoQB",
             "CglEYXlPZldlZWsSGwoXREFZX09GX1dFRUtfVU5TUEVDSUZJRUQQABIKCgZN",
             "T05EQVkQARILCgdUVUVTREFZEAISDQoJV0VETkVTREFZEAMSDAoIVEhVUlNE",
-            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQikK",
-            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAaICA0dUUGIGcHJv",
-            "dG8z"));
+            "QVkQBBIKCgZGUklEQVkQBRIMCghTQVRVUkRBWRAGEgoKBlNVTkRBWRAHQmkK",
+            "D2NvbS5nb29nbGUudHlwZUIORGF5T2ZXZWVrUHJvdG9QAVo+Z29vZ2xlLmdv",
+            "bGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy90eXBlL2RheW9md2Vlaztk",
+            "YXlvZndlZWuiAgNHVFBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Type.DayOfWeek), }, null));
@@ -44,39 +45,39 @@ namespace Google.Type {
   }
   #region Enums
   /// <summary>
-  ///  Represents a day of week.
+  /// Represents a day of week.
   /// </summary>
   public enum DayOfWeek {
     /// <summary>
-    ///  The unspecified day-of-week.
+    /// The unspecified day-of-week.
     /// </summary>
     [pbr::OriginalName("DAY_OF_WEEK_UNSPECIFIED")] Unspecified = 0,
     /// <summary>
-    ///  The day-of-week of Monday.
+    /// The day-of-week of Monday.
     /// </summary>
     [pbr::OriginalName("MONDAY")] Monday = 1,
     /// <summary>
-    ///  The day-of-week of Tuesday.
+    /// The day-of-week of Tuesday.
     /// </summary>
     [pbr::OriginalName("TUESDAY")] Tuesday = 2,
     /// <summary>
-    ///  The day-of-week of Wednesday.
+    /// The day-of-week of Wednesday.
     /// </summary>
     [pbr::OriginalName("WEDNESDAY")] Wednesday = 3,
     /// <summary>
-    ///  The day-of-week of Thursday.
+    /// The day-of-week of Thursday.
     /// </summary>
     [pbr::OriginalName("THURSDAY")] Thursday = 4,
     /// <summary>
-    ///  The day-of-week of Friday.
+    /// The day-of-week of Friday.
     /// </summary>
     [pbr::OriginalName("FRIDAY")] Friday = 5,
     /// <summary>
-    ///  The day-of-week of Saturday.
+    /// The day-of-week of Saturday.
     /// </summary>
     [pbr::OriginalName("SATURDAY")] Saturday = 6,
     /// <summary>
-    ///  The day-of-week of Sunday.
+    /// The day-of-week of Sunday.
     /// </summary>
     [pbr::OriginalName("SUNDAY")] Sunday = 7,
   }

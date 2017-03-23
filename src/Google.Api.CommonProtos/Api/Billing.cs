@@ -34,8 +34,9 @@ namespace Google.Api {
             "b3RvIkgKB0JpbGxpbmcSDwoHbWV0cmljcxgBIAMoCRIsCgVydWxlcxgFIAMo",
             "CzIdLmdvb2dsZS5hcGkuQmlsbGluZ1N0YXR1c1J1bGUiPwoRQmlsbGluZ1N0",
             "YXR1c1J1bGUSEAoIc2VsZWN0b3IYASABKAkSGAoQYWxsb3dlZF9zdGF0dXNl",
-            "cxgCIAMoCUIgCg5jb20uZ29vZ2xlLmFwaUIMQmlsbGluZ1Byb3RvUAFiBnBy",
-            "b3RvMw=="));
+            "cxgCIAMoCUJnCg5jb20uZ29vZ2xlLmFwaUIMQmlsbGluZ1Byb3RvUAFaRWdv",
+            "b2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZp",
+            "Y2Vjb25maWc7c2VydmljZWNvbmZpZ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -48,42 +49,42 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Billing related configuration of the service.
+  /// Billing related configuration of the service.
   ///
-  ///  The following example shows how to configure metrics for billing:
+  /// The following example shows how to configure metrics for billing:
   ///
-  ///      metrics:
-  ///      - name: library.googleapis.com/read_calls
-  ///        metric_kind: DELTA
-  ///        value_type: INT64
-  ///      - name: library.googleapis.com/write_calls
-  ///        metric_kind: DELTA
-  ///        value_type: INT64
-  ///      billing:
-  ///        metrics:
-  ///        - library.googleapis.com/read_calls
-  ///        - library.googleapis.com/write_calls
+  ///     metrics:
+  ///     - name: library.googleapis.com/read_calls
+  ///       metric_kind: DELTA
+  ///       value_type: INT64
+  ///     - name: library.googleapis.com/write_calls
+  ///       metric_kind: DELTA
+  ///       value_type: INT64
+  ///     billing:
+  ///       metrics:
+  ///       - library.googleapis.com/read_calls
+  ///       - library.googleapis.com/write_calls
   ///
-  ///  The next example shows how to enable billing status check and customize the
-  ///  check behavior. It makes sure billing status check is included in the `Check`
-  ///  method of [Service Control API](https://cloud.google.com/service-control/).
-  ///  In the example, "google.storage.Get" method can be served when the billing
-  ///  status is either `current` or `delinquent`, while "google.storage.Write"
-  ///  method can only be served when the billing status is `current`:
+  /// The next example shows how to enable billing status check and customize the
+  /// check behavior. It makes sure billing status check is included in the `Check`
+  /// method of [Service Control API](https://cloud.google.com/service-control/).
+  /// In the example, "google.storage.Get" method can be served when the billing
+  /// status is either `current` or `delinquent`, while "google.storage.Write"
+  /// method can only be served when the billing status is `current`:
   ///
-  ///      billing:
-  ///        rules:
-  ///        - selector: google.storage.Get
-  ///          allowed_statuses:
-  ///          - current
-  ///          - delinquent
-  ///        - selector: google.storage.Write
-  ///          allowed_statuses: current
+  ///     billing:
+  ///       rules:
+  ///       - selector: google.storage.Get
+  ///         allowed_statuses:
+  ///         - current
+  ///         - delinquent
+  ///       - selector: google.storage.Write
+  ///         allowed_statuses: current
   ///
-  ///  Mostly services should only allow `current` status when serving requests.
-  ///  In addition, services can choose to allow both `current` and `delinquent`
-  ///  statuses when serving read-only requests to resources. If there's no
-  ///  matching selector for operation, no billing status check will be performed.
+  /// Mostly services should only allow `current` status when serving requests.
+  /// In addition, services can choose to allow both `current` and `delinquent`
+  /// statuses when serving read-only requests to resources. If there's no
+  /// matching selector for operation, no billing status check will be performed.
   /// </summary>
   public sealed partial class Billing : pb::IMessage<Billing> {
     private static readonly pb::MessageParser<Billing> _parser = new pb::MessageParser<Billing>(() => new Billing());
@@ -124,8 +125,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(10);
     private readonly pbc::RepeatedField<string> metrics_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  Names of the metrics to report to billing. Each name must
-    ///  be defined in [Service.metrics][google.api.Service.metrics] section.
+    /// Names of the metrics to report to billing. Each name must
+    /// be defined in [Service.metrics][google.api.Service.metrics] section.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Metrics {
@@ -138,7 +139,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(42, global::Google.Api.BillingStatusRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.BillingStatusRule> rules_ = new pbc::RepeatedField<global::Google.Api.BillingStatusRule>();
     /// <summary>
-    ///  A list of billing status rules for configuring billing status check.
+    /// A list of billing status rules for configuring billing status check.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.BillingStatusRule> Rules {
@@ -222,21 +223,21 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Defines the billing status requirements for operations.
+  /// Defines the billing status requirements for operations.
   ///
-  ///  When used with
-  ///  [Service Control API](https://cloud.google.com/service-control/), the
-  ///  following statuses are supported:
+  /// When used with
+  /// [Service Control API](https://cloud.google.com/service-control/), the
+  /// following statuses are supported:
   ///
-  ///  - **current**: the associated billing account is up to date and capable of
-  ///                 paying for resource usages.
-  ///  - **delinquent**: the associated billing account has a correctable problem,
-  ///                    such as late payment.
+  /// - **current**: the associated billing account is up to date and capable of
+  ///                paying for resource usages.
+  /// - **delinquent**: the associated billing account has a correctable problem,
+  ///                   such as late payment.
   ///
-  ///  Mostly services should only allow `current` status when serving requests.
-  ///  In addition, services can choose to allow both `current` and `delinquent`
-  ///  statuses when serving read-only requests to resources. If the list of
-  ///  allowed_statuses is empty, it means no billing requirement.
+  /// Mostly services should only allow `current` status when serving requests.
+  /// In addition, services can choose to allow both `current` and `delinquent`
+  /// statuses when serving read-only requests to resources. If the list of
+  /// allowed_statuses is empty, it means no billing requirement.
   /// </summary>
   public sealed partial class BillingStatusRule : pb::IMessage<BillingStatusRule> {
     private static readonly pb::MessageParser<BillingStatusRule> _parser = new pb::MessageParser<BillingStatusRule>(() => new BillingStatusRule());
@@ -275,8 +276,8 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  Selects the operation names to which this rule applies.
-    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Selects the operation names to which this rule applies.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -292,8 +293,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> allowedStatuses_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  Allowed billing statuses. The billing status check passes if the actual
-    ///  billing status matches any of the provided values here.
+    /// Allowed billing statuses. The billing status check passes if the actual
+    /// billing status matches any of the provided values here.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> AllowedStatuses {

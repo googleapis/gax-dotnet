@@ -67,19 +67,19 @@ namespace Google.Rpc {
   }
   #region Messages
   /// <summary>
-  ///  Describes when the clients can retry a failed request. Clients could ignore
-  ///  the recommendation here or retry when this information is missing from error
-  ///  responses.
+  /// Describes when the clients can retry a failed request. Clients could ignore
+  /// the recommendation here or retry when this information is missing from error
+  /// responses.
   ///
-  ///  It's always recommended that clients should use exponential backoff when
-  ///  retrying.
+  /// It's always recommended that clients should use exponential backoff when
+  /// retrying.
   ///
-  ///  Clients should wait until `retry_delay` amount of time has passed since
-  ///  receiving the error response before retrying.  If retrying requests also
-  ///  fail, clients should use an exponential backoff scheme to gradually increase
-  ///  the delay between retries based on `retry_delay`, until either a maximum
-  ///  number of retires have been reached or a maximum retry delay cap has been
-  ///  reached.
+  /// Clients should wait until `retry_delay` amount of time has passed since
+  /// receiving the error response before retrying.  If retrying requests also
+  /// fail, clients should use an exponential backoff scheme to gradually increase
+  /// the delay between retries based on `retry_delay`, until either a maximum
+  /// number of retires have been reached or a maximum retry delay cap has been
+  /// reached.
   /// </summary>
   public sealed partial class RetryInfo : pb::IMessage<RetryInfo> {
     private static readonly pb::MessageParser<RetryInfo> _parser = new pb::MessageParser<RetryInfo>(() => new RetryInfo());
@@ -117,7 +117,7 @@ namespace Google.Rpc {
     public const int RetryDelayFieldNumber = 1;
     private global::Google.Protobuf.WellKnownTypes.Duration retryDelay_;
     /// <summary>
-    ///  Clients should wait at least this long between retrying the same request.
+    /// Clients should wait at least this long between retrying the same request.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.WellKnownTypes.Duration RetryDelay {
@@ -208,7 +208,7 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Describes additional debugging info.
+  /// Describes additional debugging info.
   /// </summary>
   public sealed partial class DebugInfo : pb::IMessage<DebugInfo> {
     private static readonly pb::MessageParser<DebugInfo> _parser = new pb::MessageParser<DebugInfo>(() => new DebugInfo());
@@ -249,7 +249,7 @@ namespace Google.Rpc {
         = pb::FieldCodec.ForString(10);
     private readonly pbc::RepeatedField<string> stackEntries_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  The stack trace entries indicating where the error occurred.
+    /// The stack trace entries indicating where the error occurred.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> StackEntries {
@@ -260,7 +260,7 @@ namespace Google.Rpc {
     public const int DetailFieldNumber = 2;
     private string detail_ = "";
     /// <summary>
-    ///  Additional debugging information provided by the server.
+    /// Additional debugging information provided by the server.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Detail {
@@ -354,17 +354,17 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Describes how a quota check failed.
+  /// Describes how a quota check failed.
   ///
-  ///  For example if a daily limit was exceeded for the calling project,
-  ///  a service could respond with a QuotaFailure detail containing the project
-  ///  id and the description of the quota limit that was exceeded.  If the
-  ///  calling project hasn't enabled the service in the developer console, then
-  ///  a service could respond with the project id and set `service_disabled`
-  ///  to true.
+  /// For example if a daily limit was exceeded for the calling project,
+  /// a service could respond with a QuotaFailure detail containing the project
+  /// id and the description of the quota limit that was exceeded.  If the
+  /// calling project hasn't enabled the service in the developer console, then
+  /// a service could respond with the project id and set `service_disabled`
+  /// to true.
   ///
-  ///  Also see RetryDetail and Help types for other details about handling a
-  ///  quota failure.
+  /// Also see RetryDetail and Help types for other details about handling a
+  /// quota failure.
   /// </summary>
   public sealed partial class QuotaFailure : pb::IMessage<QuotaFailure> {
     private static readonly pb::MessageParser<QuotaFailure> _parser = new pb::MessageParser<QuotaFailure>(() => new QuotaFailure());
@@ -404,7 +404,7 @@ namespace Google.Rpc {
         = pb::FieldCodec.ForMessage(10, global::Google.Rpc.QuotaFailure.Types.Violation.Parser);
     private readonly pbc::RepeatedField<global::Google.Rpc.QuotaFailure.Types.Violation> violations_ = new pbc::RepeatedField<global::Google.Rpc.QuotaFailure.Types.Violation>();
     /// <summary>
-    ///  Describes all quota violations.
+    /// Describes all quota violations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.QuotaFailure.Types.Violation> Violations {
@@ -481,8 +481,8 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  A message type used to describe a single quota violation.  For example, a
-      ///  daily quota or a custom quota that was exceeded.
+      /// A message type used to describe a single quota violation.  For example, a
+      /// daily quota or a custom quota that was exceeded.
       /// </summary>
       public sealed partial class Violation : pb::IMessage<Violation> {
         private static readonly pb::MessageParser<Violation> _parser = new pb::MessageParser<Violation>(() => new Violation());
@@ -521,9 +521,9 @@ namespace Google.Rpc {
         public const int SubjectFieldNumber = 1;
         private string subject_ = "";
         /// <summary>
-        ///  The subject on which the quota check failed.
-        ///  For example, "clientip:&lt;ip address of client>" or "project:&lt;Google
-        ///  developer project id>".
+        /// The subject on which the quota check failed.
+        /// For example, "clientip:&lt;ip address of client>" or "project:&lt;Google
+        /// developer project id>".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Subject {
@@ -537,13 +537,13 @@ namespace Google.Rpc {
         public const int DescriptionFieldNumber = 2;
         private string description_ = "";
         /// <summary>
-        ///  A description of how the quota check failed. Clients can use this
-        ///  description to find more about the quota configuration in the service's
-        ///  public documentation, or find the relevant quota limit to adjust through
-        ///  developer console.
+        /// A description of how the quota check failed. Clients can use this
+        /// description to find more about the quota configuration in the service's
+        /// public documentation, or find the relevant quota limit to adjust through
+        /// developer console.
         ///
-        ///  For example: "Service disabled" or "Daily Limit for read operations
-        ///  exceeded".
+        /// For example: "Service disabled" or "Daily Limit for read operations
+        /// exceeded".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
@@ -649,8 +649,8 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Describes violations in a client request. This error type focuses on the
-  ///  syntactic aspects of the request.
+  /// Describes violations in a client request. This error type focuses on the
+  /// syntactic aspects of the request.
   /// </summary>
   public sealed partial class BadRequest : pb::IMessage<BadRequest> {
     private static readonly pb::MessageParser<BadRequest> _parser = new pb::MessageParser<BadRequest>(() => new BadRequest());
@@ -690,7 +690,7 @@ namespace Google.Rpc {
         = pb::FieldCodec.ForMessage(10, global::Google.Rpc.BadRequest.Types.FieldViolation.Parser);
     private readonly pbc::RepeatedField<global::Google.Rpc.BadRequest.Types.FieldViolation> fieldViolations_ = new pbc::RepeatedField<global::Google.Rpc.BadRequest.Types.FieldViolation>();
     /// <summary>
-    ///  Describes all violations in a client request.
+    /// Describes all violations in a client request.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.BadRequest.Types.FieldViolation> FieldViolations {
@@ -767,7 +767,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  A message type used to describe a single bad request field.
+      /// A message type used to describe a single bad request field.
       /// </summary>
       public sealed partial class FieldViolation : pb::IMessage<FieldViolation> {
         private static readonly pb::MessageParser<FieldViolation> _parser = new pb::MessageParser<FieldViolation>(() => new FieldViolation());
@@ -806,9 +806,9 @@ namespace Google.Rpc {
         public const int FieldFieldNumber = 1;
         private string field_ = "";
         /// <summary>
-        ///  A path leading to a field in the request body. The value will be a
-        ///  sequence of dot-separated identifiers that identify a protocol buffer
-        ///  field. E.g., "field_violations.field" would identify this field.
+        /// A path leading to a field in the request body. The value will be a
+        /// sequence of dot-separated identifiers that identify a protocol buffer
+        /// field. E.g., "field_violations.field" would identify this field.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Field {
@@ -822,7 +822,7 @@ namespace Google.Rpc {
         public const int DescriptionFieldNumber = 2;
         private string description_ = "";
         /// <summary>
-        ///  A description of why the request element is bad.
+        /// A description of why the request element is bad.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
@@ -928,8 +928,8 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Contains metadata about the request that clients can attach when filing a bug
-  ///  or providing other forms of feedback.
+  /// Contains metadata about the request that clients can attach when filing a bug
+  /// or providing other forms of feedback.
   /// </summary>
   public sealed partial class RequestInfo : pb::IMessage<RequestInfo> {
     private static readonly pb::MessageParser<RequestInfo> _parser = new pb::MessageParser<RequestInfo>(() => new RequestInfo());
@@ -968,8 +968,8 @@ namespace Google.Rpc {
     public const int RequestIdFieldNumber = 1;
     private string requestId_ = "";
     /// <summary>
-    ///  An opaque string that should only be interpreted by the service generating
-    ///  it. For example, it can be used to identify requests in the service's logs.
+    /// An opaque string that should only be interpreted by the service generating
+    /// it. For example, it can be used to identify requests in the service's logs.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string RequestId {
@@ -983,8 +983,8 @@ namespace Google.Rpc {
     public const int ServingDataFieldNumber = 2;
     private string servingData_ = "";
     /// <summary>
-    ///  Any data that was used to serve this request. For example, an encrypted
-    ///  stack trace that can be sent back to the service provider for debugging.
+    /// Any data that was used to serve this request. For example, an encrypted
+    /// stack trace that can be sent back to the service provider for debugging.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ServingData {
@@ -1085,7 +1085,7 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Describes the resource that is being accessed.
+  /// Describes the resource that is being accessed.
   /// </summary>
   public sealed partial class ResourceInfo : pb::IMessage<ResourceInfo> {
     private static readonly pb::MessageParser<ResourceInfo> _parser = new pb::MessageParser<ResourceInfo>(() => new ResourceInfo());
@@ -1126,9 +1126,9 @@ namespace Google.Rpc {
     public const int ResourceTypeFieldNumber = 1;
     private string resourceType_ = "";
     /// <summary>
-    ///  A name for the type of resource being accessed, e.g. "sql table",
-    ///  "cloud storage bucket", "file", "Google calendar"; or the type URL
-    ///  of the resource: e.g. "type.googleapis.com/google.pubsub.v1.Topic".
+    /// A name for the type of resource being accessed, e.g. "sql table",
+    /// "cloud storage bucket", "file", "Google calendar"; or the type URL
+    /// of the resource: e.g. "type.googleapis.com/google.pubsub.v1.Topic".
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceType {
@@ -1142,9 +1142,9 @@ namespace Google.Rpc {
     public const int ResourceNameFieldNumber = 2;
     private string resourceName_ = "";
     /// <summary>
-    ///  The name of the resource being accessed.  For example, a shared calendar
-    ///  name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
-    ///  error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+    /// The name of the resource being accessed.  For example, a shared calendar
+    /// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
+    /// error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceName {
@@ -1158,9 +1158,9 @@ namespace Google.Rpc {
     public const int OwnerFieldNumber = 3;
     private string owner_ = "";
     /// <summary>
-    ///  The owner of the resource (optional).
-    ///  For example, "user:&lt;owner email>" or "project:&lt;Google developer project
-    ///  id>".
+    /// The owner of the resource (optional).
+    /// For example, "user:&lt;owner email>" or "project:&lt;Google developer project
+    /// id>".
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Owner {
@@ -1174,9 +1174,9 @@ namespace Google.Rpc {
     public const int DescriptionFieldNumber = 4;
     private string description_ = "";
     /// <summary>
-    ///  Describes what error is encountered when accessing this resource.
-    ///  For example, updating a cloud project may require the `writer` permission
-    ///  on the developer console project.
+    /// Describes what error is encountered when accessing this resource.
+    /// For example, updating a cloud project may require the `writer` permission
+    /// on the developer console project.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -1309,11 +1309,11 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Provides links to documentation or for performing an out of band action.
+  /// Provides links to documentation or for performing an out of band action.
   ///
-  ///  For example, if a quota check failed with an error indicating the calling
-  ///  project hasn't enabled the accessed service, this can contain a URL pointing
-  ///  directly to the right place in the developer console to flip the bit.
+  /// For example, if a quota check failed with an error indicating the calling
+  /// project hasn't enabled the accessed service, this can contain a URL pointing
+  /// directly to the right place in the developer console to flip the bit.
   /// </summary>
   public sealed partial class Help : pb::IMessage<Help> {
     private static readonly pb::MessageParser<Help> _parser = new pb::MessageParser<Help>(() => new Help());
@@ -1353,7 +1353,7 @@ namespace Google.Rpc {
         = pb::FieldCodec.ForMessage(10, global::Google.Rpc.Help.Types.Link.Parser);
     private readonly pbc::RepeatedField<global::Google.Rpc.Help.Types.Link> links_ = new pbc::RepeatedField<global::Google.Rpc.Help.Types.Link>();
     /// <summary>
-    ///  URL(s) pointing to additional information on handling the current error.
+    /// URL(s) pointing to additional information on handling the current error.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Rpc.Help.Types.Link> Links {
@@ -1430,7 +1430,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  Describes a URL link.
+      /// Describes a URL link.
       /// </summary>
       public sealed partial class Link : pb::IMessage<Link> {
         private static readonly pb::MessageParser<Link> _parser = new pb::MessageParser<Link>(() => new Link());
@@ -1469,7 +1469,7 @@ namespace Google.Rpc {
         public const int DescriptionFieldNumber = 1;
         private string description_ = "";
         /// <summary>
-        ///  Describes what the link offers.
+        /// Describes what the link offers.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Description {
@@ -1483,7 +1483,7 @@ namespace Google.Rpc {
         public const int UrlFieldNumber = 2;
         private string url_ = "";
         /// <summary>
-        ///  The URL of the link.
+        /// The URL of the link.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Url {
@@ -1589,8 +1589,8 @@ namespace Google.Rpc {
   }
 
   /// <summary>
-  ///  Provides a localized error message that is safe to return to the user
-  ///  which can be attached to an RPC error.
+  /// Provides a localized error message that is safe to return to the user
+  /// which can be attached to an RPC error.
   /// </summary>
   public sealed partial class LocalizedMessage : pb::IMessage<LocalizedMessage> {
     private static readonly pb::MessageParser<LocalizedMessage> _parser = new pb::MessageParser<LocalizedMessage>(() => new LocalizedMessage());
@@ -1629,9 +1629,9 @@ namespace Google.Rpc {
     public const int LocaleFieldNumber = 1;
     private string locale_ = "";
     /// <summary>
-    ///  The locale used following the specification defined at
-    ///  http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
-    ///  Examples are: "en-US", "fr-CH", "es-MX"
+    /// The locale used following the specification defined at
+    /// http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
+    /// Examples are: "en-US", "fr-CH", "es-MX"
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Locale {
@@ -1645,7 +1645,7 @@ namespace Google.Rpc {
     public const int MessageFieldNumber = 2;
     private string message_ = "";
     /// <summary>
-    ///  The localized error message in the above locale.
+    /// The localized error message in the above locale.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Message {

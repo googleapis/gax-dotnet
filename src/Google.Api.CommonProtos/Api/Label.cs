@@ -33,8 +33,9 @@ namespace Google.Api {
             "bERlc2NyaXB0b3ISCwoDa2V5GAEgASgJEjkKCnZhbHVlX3R5cGUYAiABKA4y",
             "JS5nb29nbGUuYXBpLkxhYmVsRGVzY3JpcHRvci5WYWx1ZVR5cGUSEwoLZGVz",
             "Y3JpcHRpb24YAyABKAkiLAoJVmFsdWVUeXBlEgoKBlNUUklORxAAEggKBEJP",
-            "T0wQARIJCgVJTlQ2NBACQigKDmNvbS5nb29nbGUuYXBpQgpMYWJlbFByb3Rv",
-            "UAH4AQGiAgRHQVBJYgZwcm90bzM="));
+            "T0wQARIJCgVJTlQ2NBACQl8KDmNvbS5nb29nbGUuYXBpQgpMYWJlbFByb3Rv",
+            "UAFaNWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
+            "L2xhYmVsO2xhYmVs+AEBogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,7 +47,7 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  A description of a label.
+  /// A description of a label.
   /// </summary>
   public sealed partial class LabelDescriptor : pb::IMessage<LabelDescriptor> {
     private static readonly pb::MessageParser<LabelDescriptor> _parser = new pb::MessageParser<LabelDescriptor>(() => new LabelDescriptor());
@@ -86,7 +87,7 @@ namespace Google.Api {
     public const int KeyFieldNumber = 1;
     private string key_ = "";
     /// <summary>
-    ///  The label key.
+    /// The label key.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Key {
@@ -100,7 +101,7 @@ namespace Google.Api {
     public const int ValueTypeFieldNumber = 2;
     private global::Google.Api.LabelDescriptor.Types.ValueType valueType_ = 0;
     /// <summary>
-    ///  The type of data that can be assigned to the label.
+    /// The type of data that can be assigned to the label.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.LabelDescriptor.Types.ValueType ValueType {
@@ -114,7 +115,7 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 3;
     private string description_ = "";
     /// <summary>
-    ///  A human-readable description for the label.
+    /// A human-readable description for the label.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -233,19 +234,19 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  Value types that can be used as label values.
+      /// Value types that can be used as label values.
       /// </summary>
       public enum ValueType {
         /// <summary>
-        ///  A variable-length string. This is the default.
+        /// A variable-length string. This is the default.
         /// </summary>
         [pbr::OriginalName("STRING")] String = 0,
         /// <summary>
-        ///  Boolean; true or false.
+        /// Boolean; true or false.
         /// </summary>
         [pbr::OriginalName("BOOL")] Bool = 1,
         /// <summary>
-        ///  A 64-bit signed integer.
+        /// A 64-bit signed integer.
         /// </summary>
         [pbr::OriginalName("INT64")] Int64 = 2,
       }

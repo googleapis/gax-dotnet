@@ -30,8 +30,10 @@ namespace Google.Type {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChZnb29nbGUvdHlwZS9kYXRlLnByb3RvEgtnb29nbGUudHlwZSIwCgREYXRl",
-            "EgwKBHllYXIYASABKAUSDQoFbW9udGgYAiABKAUSCwoDZGF5GAMgASgFQiQK",
-            "D2NvbS5nb29nbGUudHlwZUIJRGF0ZVByb3RvUAGiAgNHVFBiBnByb3RvMw=="));
+            "EgwKBHllYXIYASABKAUSDQoFbW9udGgYAiABKAUSCwoDZGF5GAMgASgFQl0K",
+            "D2NvbS5nb29nbGUudHlwZUIJRGF0ZVByb3RvUAFaNGdvb2dsZS5nb2xhbmcu",
+            "b3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvdHlwZS9kYXRlO2RhdGX4AQGiAgNH",
+            "VFBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -43,13 +45,13 @@ namespace Google.Type {
   }
   #region Messages
   /// <summary>
-  ///  Represents a whole calendar date, e.g. date of birth. The time of day and
-  ///  time zone are either specified elsewhere or are not significant. The date
-  ///  is relative to the Proleptic Gregorian Calendar. The day may be 0 to
-  ///  represent a year and month where the day is not significant, e.g. credit card
-  ///  expiration date. The year may be 0 to represent a month and day independent
-  ///  of year, e.g. anniversary date. Related types are [google.type.TimeOfDay][google.type.TimeOfDay]
-  ///  and `google.protobuf.Timestamp`.
+  /// Represents a whole calendar date, e.g. date of birth. The time of day and
+  /// time zone are either specified elsewhere or are not significant. The date
+  /// is relative to the Proleptic Gregorian Calendar. The day may be 0 to
+  /// represent a year and month where the day is not significant, e.g. credit card
+  /// expiration date. The year may be 0 to represent a month and day independent
+  /// of year, e.g. anniversary date. Related types are [google.type.TimeOfDay][google.type.TimeOfDay]
+  /// and `google.protobuf.Timestamp`.
   /// </summary>
   public sealed partial class Date : pb::IMessage<Date> {
     private static readonly pb::MessageParser<Date> _parser = new pb::MessageParser<Date>(() => new Date());
@@ -89,8 +91,8 @@ namespace Google.Type {
     public const int YearFieldNumber = 1;
     private int year_;
     /// <summary>
-    ///  Year of date. Must be from 1 to 9999, or 0 if specifying a date without
-    ///  a year.
+    /// Year of date. Must be from 1 to 9999, or 0 if specifying a date without
+    /// a year.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Year {
@@ -104,7 +106,7 @@ namespace Google.Type {
     public const int MonthFieldNumber = 2;
     private int month_;
     /// <summary>
-    ///  Month of year. Must be from 1 to 12.
+    /// Month of year. Must be from 1 to 12.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Month {
@@ -118,8 +120,8 @@ namespace Google.Type {
     public const int DayFieldNumber = 3;
     private int day_;
     /// <summary>
-    ///  Day of month. Must be from 1 to 31 and valid for the year and month, or 0
-    ///  if specifying a year/month where the day is not significant.
+    /// Day of month. Must be from 1 to 31 and valid for the year and month, or 0
+    /// if specifying a year/month where the day is not significant.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Day {

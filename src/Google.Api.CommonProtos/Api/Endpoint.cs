@@ -32,8 +32,10 @@ namespace Google.Api {
             "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpGhxnb29n",
             "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIl0KCEVuZHBvaW50EgwKBG5hbWUY",
             "ASABKAkSDwoHYWxpYXNlcxgCIAMoCRIMCgRhcGlzGAMgAygJEhAKCGZlYXR1",
-            "cmVzGAQgAygJEhIKCmFsbG93X2NvcnMYBSABKAhCKAoOY29tLmdvb2dsZS5h",
-            "cGlCDUVuZHBvaW50UHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
+            "cmVzGAQgAygJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdvb2dsZS5h",
+            "cGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJv",
+            "dG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmln",
+            "ogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -45,44 +47,22 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  `Endpoint` describes a network endpoint that serves a set of APIs.
-  ///  A service may expose any number of endpoints, and all endpoints share the
-  ///  same service configuration, such as quota configuration and monitoring
-  ///  configuration.
+  /// `Endpoint` describes a network endpoint that serves a set of APIs.
+  /// A service may expose any number of endpoints, and all endpoints share the
+  /// same service configuration, such as quota configuration and monitoring
+  /// configuration.
   ///
-  ///  Example service configuration:
+  /// Example service configuration:
   ///
-  ///      name: library-example.googleapis.com
-  ///      endpoints:
-  ///        # Below entry makes 'google.example.library.v1.Library'
-  ///        # API be served from endpoint address library-example.googleapis.com.
-  ///        # It also allows HTTP OPTIONS calls to be passed to the backend, for
-  ///        # it to decide whether the subsequent cross-origin request is
-  ///        # allowed to proceed.
-  ///      - name: library-example.googleapis.com
-  ///        apis: google.example.library.v1.Library
-  ///        allow_cors: true
-  ///        # Below entry makes 'google.example.library.v1.Library'
-  ///        # API be served from endpoint address
-  ///        # google.example.library-example.v1.LibraryManager.
-  ///      - name: library-manager.googleapis.com
-  ///        apis: google.example.library.v1.LibraryManager
-  ///        # BNS address for a borg job. Can specify a task by appending
-  ///        # "/taskId" (e.g. "/0") to the job spec.
-  ///
-  ///  Example OpenAPI extension for endpoint with allow_cors set to true:
-  ///
-  ///      {
-  ///        "swagger": "2.0",
-  ///        "info": {
-  ///          "description": "A simple..."
-  ///        },
-  ///        "host": "MY_PROJECT_ID.appspot.com",
-  ///        "x-google-endpoints": [{
-  ///          "name": "MY_PROJECT_ID.appspot.com",
-  ///          "allow_cors": "true"
-  ///        }]
-  ///      }
+  ///     name: library-example.googleapis.com
+  ///     endpoints:
+  ///       # Below entry makes 'google.example.library.v1.Library'
+  ///       # API be served from endpoint address library-example.googleapis.com.
+  ///       # It also allows HTTP OPTIONS calls to be passed to the backend, for
+  ///       # it to decide whether the subsequent cross-origin request is
+  ///       # allowed to proceed.
+  ///     - name: library-example.googleapis.com
+  ///       allow_cors: true
   /// </summary>
   public sealed partial class Endpoint : pb::IMessage<Endpoint> {
     private static readonly pb::MessageParser<Endpoint> _parser = new pb::MessageParser<Endpoint>(() => new Endpoint());
@@ -124,7 +104,7 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    ///  The canonical name of this endpoint.
+    /// The canonical name of this endpoint.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -140,11 +120,11 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> aliases_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  DEPRECATED: This field is no longer supported. Instead of using aliases,
-    ///  please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intented
-    ///  alias.
+    /// DEPRECATED: This field is no longer supported. Instead of using aliases,
+    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intented
+    /// alias.
     ///
-    ///  Additional names that this endpoint will be hosted on.
+    /// Additional names that this endpoint will be hosted on.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Aliases {
@@ -157,7 +137,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(26);
     private readonly pbc::RepeatedField<string> apis_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  The list of APIs served by this endpoint.
+    /// The list of APIs served by this endpoint.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Apis {
@@ -170,7 +150,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(34);
     private readonly pbc::RepeatedField<string> features_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  The list of features enabled on this endpoint.
+    /// The list of features enabled on this endpoint.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Features {
@@ -181,12 +161,12 @@ namespace Google.Api {
     public const int AllowCorsFieldNumber = 5;
     private bool allowCors_;
     /// <summary>
-    ///  Allowing
-    ///  [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing), aka
-    ///  cross-domain traffic, would allow the backends served from this endpoint to
-    ///  receive and respond to HTTP OPTIONS requests. The response will be used by
-    ///  the browser to determine whether the subsequent cross-origin request is
-    ///  allowed to proceed.
+    /// Allowing
+    /// [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing), aka
+    /// cross-domain traffic, would allow the backends served from this endpoint to
+    /// receive and respond to HTTP OPTIONS requests. The response will be used by
+    /// the browser to determine whether the subsequent cross-origin request is
+    /// allowed to proceed.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowCors {

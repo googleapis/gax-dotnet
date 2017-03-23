@@ -35,9 +35,10 @@ namespace Google.Api {
             "KA4yFi5nb29nbGUuYXBpLkNoYW5nZVR5cGUSIwoHYWR2aWNlcxgFIAMoCzIS",
             "Lmdvb2dsZS5hcGkuQWR2aWNlIh0KBkFkdmljZRITCgtkZXNjcmlwdGlvbhgC",
             "IAEoCSpPCgpDaGFuZ2VUeXBlEhsKF0NIQU5HRV9UWVBFX1VOU1BFQ0lGSUVE",
-            "EAASCQoFQURERUQQARILCgdSRU1PVkVEEAISDAoITU9ESUZJRUQQA0IsCg5j",
-            "b20uZ29vZ2xlLmFwaUIRQ29uZmlnQ2hhbmdlUHJvdG9QAaICBEdBUEliBnBy",
-            "b3RvMw=="));
+            "EAASCQoFQURERUQQARILCgdSRU1PVkVEEAISDAoITU9ESUZJRUQQA0JxCg5j",
+            "b20uZ29vZ2xlLmFwaUIRQ29uZmlnQ2hhbmdlUHJvdG9QAVpDZ29vZ2xlLmdv",
+            "bGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvY29uZmlnY2hhbmdl",
+            "O2NvbmZpZ2NoYW5nZaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ChangeType), }, new pbr::GeneratedClrTypeInfo[] {
@@ -50,27 +51,27 @@ namespace Google.Api {
   }
   #region Enums
   /// <summary>
-  ///  Classifies set of possible modifications to an object in the service
-  ///  configuration.
+  /// Classifies set of possible modifications to an object in the service
+  /// configuration.
   /// </summary>
   public enum ChangeType {
     /// <summary>
-    ///  No value was provided.
+    /// No value was provided.
     /// </summary>
     [pbr::OriginalName("CHANGE_TYPE_UNSPECIFIED")] Unspecified = 0,
     /// <summary>
-    ///  The changed object exists in the 'new' service configuration, but not
-    ///  in the 'old' service configuration.
+    /// The changed object exists in the 'new' service configuration, but not
+    /// in the 'old' service configuration.
     /// </summary>
     [pbr::OriginalName("ADDED")] Added = 1,
     /// <summary>
-    ///  The changed object exists in the 'old' service configuration, but not
-    ///  in the 'new' service configuration.
+    /// The changed object exists in the 'old' service configuration, but not
+    /// in the 'new' service configuration.
     /// </summary>
     [pbr::OriginalName("REMOVED")] Removed = 2,
     /// <summary>
-    ///  The changed object exists in both service configurations, but its value
-    ///  is different.
+    /// The changed object exists in both service configurations, but its value
+    /// is different.
     /// </summary>
     [pbr::OriginalName("MODIFIED")] Modified = 3,
   }
@@ -79,12 +80,12 @@ namespace Google.Api {
 
   #region Messages
   /// <summary>
-  ///  Output generated from semantically comparing two versions of a service
-  ///  configuration.
+  /// Output generated from semantically comparing two versions of a service
+  /// configuration.
   ///
-  ///  Includes detailed information about a field that have changed with
-  ///  applicable advice about potential consequences for the change, such as
-  ///  backwards-incompatibility.
+  /// Includes detailed information about a field that have changed with
+  /// applicable advice about potential consequences for the change, such as
+  /// backwards-incompatibility.
   /// </summary>
   public sealed partial class ConfigChange : pb::IMessage<ConfigChange> {
     private static readonly pb::MessageParser<ConfigChange> _parser = new pb::MessageParser<ConfigChange>(() => new ConfigChange());
@@ -126,15 +127,15 @@ namespace Google.Api {
     public const int ElementFieldNumber = 1;
     private string element_ = "";
     /// <summary>
-    ///  Object hierarchy path to the change, with levels separated by a '.'
-    ///  character. For repeated fields, an applicable unique identifier field is
-    ///  used for the index (usually selector, name, or id). For maps, the term
-    ///  'key' is used. If the field has no unique identifier, the numeric index
-    ///  is used.
-    ///  Examples:
-    ///  - visibility.rules[selector=="google.LibraryService.CreateBook"].restriction
-    ///  - quota.metric_rules[selector=="google"].metric_costs[key=="reads"].value
-    ///  - logging.producer_destinations[0]
+    /// Object hierarchy path to the change, with levels separated by a '.'
+    /// character. For repeated fields, an applicable unique identifier field is
+    /// used for the index (usually selector, name, or id). For maps, the term
+    /// 'key' is used. If the field has no unique identifier, the numeric index
+    /// is used.
+    /// Examples:
+    /// - visibility.rules[selector=="google.LibraryService.CreateBook"].restriction
+    /// - quota.metric_rules[selector=="google"].metric_costs[key=="reads"].value
+    /// - logging.producer_destinations[0]
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Element {
@@ -148,8 +149,8 @@ namespace Google.Api {
     public const int OldValueFieldNumber = 2;
     private string oldValue_ = "";
     /// <summary>
-    ///  Value of the changed object in the old Service configuration,
-    ///  in JSON format. This field will not be populated if ChangeType == ADDED.
+    /// Value of the changed object in the old Service configuration,
+    /// in JSON format. This field will not be populated if ChangeType == ADDED.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string OldValue {
@@ -163,8 +164,8 @@ namespace Google.Api {
     public const int NewValueFieldNumber = 3;
     private string newValue_ = "";
     /// <summary>
-    ///  Value of the changed object in the new Service configuration,
-    ///  in JSON format. This field will not be populated if ChangeType == REMOVED.
+    /// Value of the changed object in the new Service configuration,
+    /// in JSON format. This field will not be populated if ChangeType == REMOVED.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string NewValue {
@@ -178,7 +179,7 @@ namespace Google.Api {
     public const int ChangeTypeFieldNumber = 4;
     private global::Google.Api.ChangeType changeType_ = 0;
     /// <summary>
-    ///  The type for this change, either ADDED, REMOVED, or MODIFIED.
+    /// The type for this change, either ADDED, REMOVED, or MODIFIED.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.ChangeType ChangeType {
@@ -194,8 +195,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(42, global::Google.Api.Advice.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Advice> advices_ = new pbc::RepeatedField<global::Google.Api.Advice>();
     /// <summary>
-    ///  Collection of advice provided for this change, useful for determining the
-    ///  possible impact of this change.
+    /// Collection of advice provided for this change, useful for determining the
+    /// possible impact of this change.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Advice> Advices {
@@ -334,8 +335,8 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Generated advice about this change, used for providing more
-  ///  information about how a change will affect the existing service.
+  /// Generated advice about this change, used for providing more
+  /// information about how a change will affect the existing service.
   /// </summary>
   public sealed partial class Advice : pb::IMessage<Advice> {
     private static readonly pb::MessageParser<Advice> _parser = new pb::MessageParser<Advice>(() => new Advice());
@@ -373,8 +374,8 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 2;
     private string description_ = "";
     /// <summary>
-    ///  Useful description for why this advice was applied and what actions should
-    ///  be taken to mitigate any implied risks.
+    /// Useful description for why this advice was applied and what actions should
+    /// be taken to mitigate any implied risks.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {

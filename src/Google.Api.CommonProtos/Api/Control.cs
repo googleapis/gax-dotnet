@@ -30,8 +30,10 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chhnb29nbGUvYXBpL2NvbnRyb2wucHJvdG8SCmdvb2dsZS5hcGkiHgoHQ29u",
-            "dHJvbBITCgtlbnZpcm9ubWVudBgBIAEoCUInCg5jb20uZ29vZ2xlLmFwaUIM",
-            "Q29udHJvbFByb3RvUAGiAgRHQVBJYgZwcm90bzM="));
+            "dHJvbBITCgtlbnZpcm9ubWVudBgBIAEoCUJuCg5jb20uZ29vZ2xlLmFwaUIM",
+            "Q29udHJvbFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dv",
+            "b2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdB",
+            "UEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -43,9 +45,9 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Selects and configures the service controller used by the service.  The
-  ///  service controller handles features like abuse, quota, billing, logging,
-  ///  monitoring, etc.
+  /// Selects and configures the service controller used by the service.  The
+  /// service controller handles features like abuse, quota, billing, logging,
+  /// monitoring, etc.
   /// </summary>
   public sealed partial class Control : pb::IMessage<Control> {
     private static readonly pb::MessageParser<Control> _parser = new pb::MessageParser<Control>(() => new Control());
@@ -83,8 +85,8 @@ namespace Google.Api {
     public const int EnvironmentFieldNumber = 1;
     private string environment_ = "";
     /// <summary>
-    ///  The service control environment to use. If empty, no control plane
-    ///  feature (like quota and billing) will be enabled.
+    /// The service control environment to use. If empty, no control plane
+    /// feature (like quota and billing) will be enabled.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Environment {
