@@ -47,8 +47,9 @@ namespace Google.Api {
             "d2lkdGgYAiABKAESDgoGb2Zmc2V0GAMgASgBGk8KC0V4cG9uZW50aWFsEhoK",
             "Em51bV9maW5pdGVfYnVja2V0cxgBIAEoBRIVCg1ncm93dGhfZmFjdG9yGAIg",
             "ASgBEg0KBXNjYWxlGAMgASgBGhoKCEV4cGxpY2l0Eg4KBmJvdW5kcxgBIAMo",
-            "AUIJCgdvcHRpb25zQiUKDmNvbS5nb29nbGUuYXBpQhFEaXN0cmlidXRpb25Q",
-            "cm90b1ABYgZwcm90bzM="));
+            "AUIJCgdvcHRpb25zQmoKDmNvbS5nb29nbGUuYXBpQhFEaXN0cmlidXRpb25Q",
+            "cm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlz",
+            "L2FwaS9kaXN0cmlidXRpb247ZGlzdHJpYnV0aW9uYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -63,21 +64,21 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Distribution contains summary statistics for a population of values and,
-  ///  optionally, a histogram representing the distribution of those values across
-  ///  a specified set of histogram buckets.
+  /// Distribution contains summary statistics for a population of values and,
+  /// optionally, a histogram representing the distribution of those values across
+  /// a specified set of histogram buckets.
   ///
-  ///  The summary statistics are the count, mean, sum of the squared deviation from
-  ///  the mean, the minimum, and the maximum of the set of population of values.
+  /// The summary statistics are the count, mean, sum of the squared deviation from
+  /// the mean, the minimum, and the maximum of the set of population of values.
   ///
-  ///  The histogram is based on a sequence of buckets and gives a count of values
-  ///  that fall into each bucket.  The boundaries of the buckets are given either
-  ///  explicitly or by specifying parameters for a method of computing them
-  ///  (buckets of fixed width or buckets of exponentially increasing width).
+  /// The histogram is based on a sequence of buckets and gives a count of values
+  /// that fall into each bucket.  The boundaries of the buckets are given either
+  /// explicitly or by specifying parameters for a method of computing them
+  /// (buckets of fixed width or buckets of exponentially increasing width).
   ///
-  ///  Although it is not forbidden, it is generally a bad idea to include
-  ///  non-finite values (infinities or NaNs) in the population of values, as this
-  ///  will render the `mean` and `sum_of_squared_deviation` fields meaningless.
+  /// Although it is not forbidden, it is generally a bad idea to include
+  /// non-finite values (infinities or NaNs) in the population of values, as this
+  /// will render the `mean` and `sum_of_squared_deviation` fields meaningless.
   /// </summary>
   public sealed partial class Distribution : pb::IMessage<Distribution> {
     private static readonly pb::MessageParser<Distribution> _parser = new pb::MessageParser<Distribution>(() => new Distribution());
@@ -120,7 +121,7 @@ namespace Google.Api {
     public const int CountFieldNumber = 1;
     private long count_;
     /// <summary>
-    ///  The number of values in the population. Must be non-negative.
+    /// The number of values in the population. Must be non-negative.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Count {
@@ -134,8 +135,8 @@ namespace Google.Api {
     public const int MeanFieldNumber = 2;
     private double mean_;
     /// <summary>
-    ///  The arithmetic mean of the values in the population. If `count` is zero
-    ///  then this field must be zero.
+    /// The arithmetic mean of the values in the population. If `count` is zero
+    /// then this field must be zero.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Mean {
@@ -149,15 +150,15 @@ namespace Google.Api {
     public const int SumOfSquaredDeviationFieldNumber = 3;
     private double sumOfSquaredDeviation_;
     /// <summary>
-    ///  The sum of squared deviations from the mean of the values in the
-    ///  population.  For values x_i this is:
+    /// The sum of squared deviations from the mean of the values in the
+    /// population.  For values x_i this is:
     ///
-    ///      Sum[i=1..n]((x_i - mean)^2)
+    ///     Sum[i=1..n]((x_i - mean)^2)
     ///
-    ///  Knuth, "The Art of Computer Programming", Vol. 2, page 323, 3rd edition
-    ///  describes Welford's method for accumulating this sum in one pass.
+    /// Knuth, "The Art of Computer Programming", Vol. 2, page 323, 3rd edition
+    /// describes Welford's method for accumulating this sum in one pass.
     ///
-    ///  If `count` is zero then this field must be zero.
+    /// If `count` is zero then this field must be zero.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double SumOfSquaredDeviation {
@@ -171,8 +172,8 @@ namespace Google.Api {
     public const int RangeFieldNumber = 4;
     private global::Google.Api.Distribution.Types.Range range_;
     /// <summary>
-    ///  If specified, contains the range of the population values. The field
-    ///  must not be present if the `count` is zero.
+    /// If specified, contains the range of the population values. The field
+    /// must not be present if the `count` is zero.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Distribution.Types.Range Range {
@@ -186,7 +187,7 @@ namespace Google.Api {
     public const int BucketOptionsFieldNumber = 6;
     private global::Google.Api.Distribution.Types.BucketOptions bucketOptions_;
     /// <summary>
-    ///  Defines the histogram bucket boundaries.
+    /// Defines the histogram bucket boundaries.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Distribution.Types.BucketOptions BucketOptions {
@@ -202,18 +203,18 @@ namespace Google.Api {
         = pb::FieldCodec.ForInt64(58);
     private readonly pbc::RepeatedField<long> bucketCounts_ = new pbc::RepeatedField<long>();
     /// <summary>
-    ///  If `bucket_options` is given, then the sum of the values in `bucket_counts`
-    ///  must equal the value in `count`.  If `bucket_options` is not given, no
-    ///  `bucket_counts` fields may be given.
+    /// If `bucket_options` is given, then the sum of the values in `bucket_counts`
+    /// must equal the value in `count`.  If `bucket_options` is not given, no
+    /// `bucket_counts` fields may be given.
     ///
-    ///  Bucket counts are given in order under the numbering scheme described
-    ///  above (the underflow bucket has number 0; the finite buckets, if any,
-    ///  have numbers 1 through N-2; the overflow bucket has number N-1).
+    /// Bucket counts are given in order under the numbering scheme described
+    /// above (the underflow bucket has number 0; the finite buckets, if any,
+    /// have numbers 1 through N-2; the overflow bucket has number N-1).
     ///
-    ///  The size of `bucket_counts` must be no greater than N as defined in
-    ///  `bucket_options`.
+    /// The size of `bucket_counts` must be no greater than N as defined in
+    /// `bucket_options`.
     ///
-    ///  Any suffix of trailing zero bucket_count fields may be omitted.
+    /// Any suffix of trailing zero bucket_count fields may be omitted.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<long> BucketCounts {
@@ -383,7 +384,7 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  The range of the population values.
+      /// The range of the population values.
       /// </summary>
       public sealed partial class Range : pb::IMessage<Range> {
         private static readonly pb::MessageParser<Range> _parser = new pb::MessageParser<Range>(() => new Range());
@@ -422,7 +423,7 @@ namespace Google.Api {
         public const int MinFieldNumber = 1;
         private double min_;
         /// <summary>
-        ///  The minimum of the population values.
+        /// The minimum of the population values.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public double Min {
@@ -436,7 +437,7 @@ namespace Google.Api {
         public const int MaxFieldNumber = 2;
         private double max_;
         /// <summary>
-        ///  The maximum of the population values.
+        /// The maximum of the population values.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public double Max {
@@ -537,29 +538,29 @@ namespace Google.Api {
       }
 
       /// <summary>
-      ///  A Distribution may optionally contain a histogram of the values in the
-      ///  population.  The histogram is given in `bucket_counts` as counts of values
-      ///  that fall into one of a sequence of non-overlapping buckets.  The sequence
-      ///  of buckets is described by `bucket_options`.
+      /// A Distribution may optionally contain a histogram of the values in the
+      /// population.  The histogram is given in `bucket_counts` as counts of values
+      /// that fall into one of a sequence of non-overlapping buckets.  The sequence
+      /// of buckets is described by `bucket_options`.
       ///
-      ///  A bucket specifies an inclusive lower bound and exclusive upper bound for
-      ///  the values that are counted for that bucket.  The upper bound of a bucket
-      ///  is strictly greater than the lower bound.
+      /// A bucket specifies an inclusive lower bound and exclusive upper bound for
+      /// the values that are counted for that bucket.  The upper bound of a bucket
+      /// is strictly greater than the lower bound.
       ///
-      ///  The sequence of N buckets for a Distribution consists of an underflow
-      ///  bucket (number 0), zero or more finite buckets (number 1 through N - 2) and
-      ///  an overflow bucket (number N - 1).  The buckets are contiguous:  the lower
-      ///  bound of bucket i (i > 0) is the same as the upper bound of bucket i - 1.
-      ///  The buckets span the whole range of finite values: lower bound of the
-      ///  underflow bucket is -infinity and the upper bound of the overflow bucket is
-      ///  +infinity.  The finite buckets are so-called because both bounds are
-      ///  finite.
+      /// The sequence of N buckets for a Distribution consists of an underflow
+      /// bucket (number 0), zero or more finite buckets (number 1 through N - 2) and
+      /// an overflow bucket (number N - 1).  The buckets are contiguous:  the lower
+      /// bound of bucket i (i > 0) is the same as the upper bound of bucket i - 1.
+      /// The buckets span the whole range of finite values: lower bound of the
+      /// underflow bucket is -infinity and the upper bound of the overflow bucket is
+      /// +infinity.  The finite buckets are so-called because both bounds are
+      /// finite.
       ///
-      ///  `BucketOptions` describes bucket boundaries in one of three ways.  Two
-      ///  describe the boundaries by giving parameters for a formula to generate
-      ///  boundaries and one gives the bucket boundaries explicitly.
+      /// `BucketOptions` describes bucket boundaries in one of three ways.  Two
+      /// describe the boundaries by giving parameters for a formula to generate
+      /// boundaries and one gives the bucket boundaries explicitly.
       ///
-      ///  If `bucket_boundaries` is not given, then no `bucket_counts` may be given.
+      /// If `bucket_boundaries` is not given, then no `bucket_counts` may be given.
       /// </summary>
       public sealed partial class BucketOptions : pb::IMessage<BucketOptions> {
         private static readonly pb::MessageParser<BucketOptions> _parser = new pb::MessageParser<BucketOptions>(() => new BucketOptions());
@@ -607,7 +608,7 @@ namespace Google.Api {
         /// <summary>Field number for the "linear_buckets" field.</summary>
         public const int LinearBucketsFieldNumber = 1;
         /// <summary>
-        ///  The linear bucket.
+        /// The linear bucket.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Linear LinearBuckets {
@@ -621,7 +622,7 @@ namespace Google.Api {
         /// <summary>Field number for the "exponential_buckets" field.</summary>
         public const int ExponentialBucketsFieldNumber = 2;
         /// <summary>
-        ///  The exponential buckets.
+        /// The exponential buckets.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential ExponentialBuckets {
@@ -635,7 +636,7 @@ namespace Google.Api {
         /// <summary>Field number for the "explicit_buckets" field.</summary>
         public const int ExplicitBucketsFieldNumber = 3;
         /// <summary>
-        ///  The explicit buckets.
+        /// The explicit buckets.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit ExplicitBuckets {
@@ -795,15 +796,15 @@ namespace Google.Api {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static partial class Types {
           /// <summary>
-          ///  Specify a sequence of buckets that all have the same width (except
-          ///  overflow and underflow).  Each bucket represents a constant absolute
-          ///  uncertainty on the specific value in the bucket.
+          /// Specify a sequence of buckets that all have the same width (except
+          /// overflow and underflow).  Each bucket represents a constant absolute
+          /// uncertainty on the specific value in the bucket.
           ///
-          ///  Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
-          ///  bucket `i`:
+          /// Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
+          /// bucket `i`:
           ///
-          ///     Upper bound (0 &lt;= i &lt; N-1):     offset + (width * i).
-          ///     Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
+          ///    Upper bound (0 &lt;= i &lt; N-1):     offset + (width * i).
+          ///    Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
           /// </summary>
           public sealed partial class Linear : pb::IMessage<Linear> {
             private static readonly pb::MessageParser<Linear> _parser = new pb::MessageParser<Linear>(() => new Linear());
@@ -843,7 +844,7 @@ namespace Google.Api {
             public const int NumFiniteBucketsFieldNumber = 1;
             private int numFiniteBuckets_;
             /// <summary>
-            ///  Must be greater than 0.
+            /// Must be greater than 0.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int NumFiniteBuckets {
@@ -857,7 +858,7 @@ namespace Google.Api {
             public const int WidthFieldNumber = 2;
             private double width_;
             /// <summary>
-            ///  Must be greater than 0.
+            /// Must be greater than 0.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Width {
@@ -871,7 +872,7 @@ namespace Google.Api {
             public const int OffsetFieldNumber = 3;
             private double offset_;
             /// <summary>
-            ///  Lower bound of the first bucket.
+            /// Lower bound of the first bucket.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Offset {
@@ -988,15 +989,15 @@ namespace Google.Api {
           }
 
           /// <summary>
-          ///  Specify a sequence of buckets that have a width that is proportional to
-          ///  the value of the lower bound.  Each bucket represents a constant relative
-          ///  uncertainty on a specific value in the bucket.
+          /// Specify a sequence of buckets that have a width that is proportional to
+          /// the value of the lower bound.  Each bucket represents a constant relative
+          /// uncertainty on a specific value in the bucket.
           ///
-          ///  Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
-          ///  bucket i:
+          /// Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
+          /// bucket i:
           ///
-          ///     Upper bound (0 &lt;= i &lt; N-1):     scale * (growth_factor ^ i).
-          ///     Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
+          ///    Upper bound (0 &lt;= i &lt; N-1):     scale * (growth_factor ^ i).
+          ///    Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
           /// </summary>
           public sealed partial class Exponential : pb::IMessage<Exponential> {
             private static readonly pb::MessageParser<Exponential> _parser = new pb::MessageParser<Exponential>(() => new Exponential());
@@ -1036,7 +1037,7 @@ namespace Google.Api {
             public const int NumFiniteBucketsFieldNumber = 1;
             private int numFiniteBuckets_;
             /// <summary>
-            ///  Must be greater than 0.
+            /// Must be greater than 0.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int NumFiniteBuckets {
@@ -1050,7 +1051,7 @@ namespace Google.Api {
             public const int GrowthFactorFieldNumber = 2;
             private double growthFactor_;
             /// <summary>
-            ///  Must be greater than 1.
+            /// Must be greater than 1.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double GrowthFactor {
@@ -1064,7 +1065,7 @@ namespace Google.Api {
             public const int ScaleFieldNumber = 3;
             private double scale_;
             /// <summary>
-            ///  Must be greater than 0.
+            /// Must be greater than 0.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public double Scale {
@@ -1181,17 +1182,17 @@ namespace Google.Api {
           }
 
           /// <summary>
-          ///  A set of buckets with arbitrary widths.
+          /// A set of buckets with arbitrary widths.
           ///
-          ///  Defines `size(bounds) + 1` (= N) buckets with these boundaries for
-          ///  bucket i:
+          /// Defines `size(bounds) + 1` (= N) buckets with these boundaries for
+          /// bucket i:
           ///
-          ///     Upper bound (0 &lt;= i &lt; N-1):     bounds[i]
-          ///     Lower bound (1 &lt;= i &lt; N);       bounds[i - 1]
+          ///    Upper bound (0 &lt;= i &lt; N-1):     bounds[i]
+          ///    Lower bound (1 &lt;= i &lt; N);       bounds[i - 1]
           ///
-          ///  There must be at least one element in `bounds`.  If `bounds` has only one
-          ///  element, there are no finite buckets, and that single element is the
-          ///  common boundary of the overflow and underflow buckets.
+          /// There must be at least one element in `bounds`.  If `bounds` has only one
+          /// element, there are no finite buckets, and that single element is the
+          /// common boundary of the overflow and underflow buckets.
           /// </summary>
           public sealed partial class Explicit : pb::IMessage<Explicit> {
             private static readonly pb::MessageParser<Explicit> _parser = new pb::MessageParser<Explicit>(() => new Explicit());
@@ -1231,7 +1232,7 @@ namespace Google.Api {
                 = pb::FieldCodec.ForDouble(10);
             private readonly pbc::RepeatedField<double> bounds_ = new pbc::RepeatedField<double>();
             /// <summary>
-            ///  The values must be monotonically increasing.
+            /// The values must be monotonically increasing.
             /// </summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public pbc::RepeatedField<double> Bounds {

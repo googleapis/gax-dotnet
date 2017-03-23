@@ -35,8 +35,9 @@ namespace Google.Api {
             "cGUYAiABKA4yIS5nb29nbGUuYXBpLlByb3BlcnR5LlByb3BlcnR5VHlwZRIT",
             "CgtkZXNjcmlwdGlvbhgDIAEoCSJMCgxQcm9wZXJ0eVR5cGUSDwoLVU5TUEVD",
             "SUZJRUQQABIJCgVJTlQ2NBABEggKBEJPT0wQAhIKCgZTVFJJTkcQAxIKCgZE",
-            "T1VCTEUQBEIhCg5jb20uZ29vZ2xlLmFwaUINQ29uc3VtZXJQcm90b1ABYgZw",
-            "cm90bzM="));
+            "T1VCTEUQBEJoCg5jb20uZ29vZ2xlLmFwaUINQ29uc3VtZXJQcm90b1ABWkVn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2",
+            "aWNlY29uZmlnO3NlcnZpY2Vjb25maWdiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -49,22 +50,22 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  A descriptor for defining project properties for a service. One service may
-  ///  have many consumer projects, and the service may want to behave differently
-  ///  depending on some properties on the project. For example, a project may be
-  ///  associated with a school, or a business, or a government agency, a business
-  ///  type property on the project may affect how a service responds to the client.
-  ///  This descriptor defines which properties are allowed to be set on a project.
+  /// A descriptor for defining project properties for a service. One service may
+  /// have many consumer projects, and the service may want to behave differently
+  /// depending on some properties on the project. For example, a project may be
+  /// associated with a school, or a business, or a government agency, a business
+  /// type property on the project may affect how a service responds to the client.
+  /// This descriptor defines which properties are allowed to be set on a project.
   ///
-  ///  Example:
+  /// Example:
   ///
-  ///     project_properties:
-  ///       properties:
-  ///       - name: NO_WATERMARK
-  ///         type: BOOL
-  ///         description: Allows usage of the API without watermarks.
-  ///       - name: EXTENDED_TILE_CACHE_PERIOD
-  ///         type: INT64
+  ///    project_properties:
+  ///      properties:
+  ///      - name: NO_WATERMARK
+  ///        type: BOOL
+  ///        description: Allows usage of the API without watermarks.
+  ///      - name: EXTENDED_TILE_CACHE_PERIOD
+  ///        type: INT64
   /// </summary>
   public sealed partial class ProjectProperties : pb::IMessage<ProjectProperties> {
     private static readonly pb::MessageParser<ProjectProperties> _parser = new pb::MessageParser<ProjectProperties>(() => new ProjectProperties());
@@ -104,7 +105,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.Property.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Property> properties_ = new pbc::RepeatedField<global::Google.Api.Property>();
     /// <summary>
-    ///  List of per consumer project-specific properties.
+    /// List of per consumer project-specific properties.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Property> Properties {
@@ -179,16 +180,16 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Defines project properties.
+  /// Defines project properties.
   ///
-  ///  API services can define properties that can be assigned to consumer projects
-  ///  so that backends can perform response customization without having to make
-  ///  additional calls or maintain additional storage. For example, Maps API
-  ///  defines properties that controls map tile cache period, or whether to embed a
-  ///  watermark in a result.
+  /// API services can define properties that can be assigned to consumer projects
+  /// so that backends can perform response customization without having to make
+  /// additional calls or maintain additional storage. For example, Maps API
+  /// defines properties that controls map tile cache period, or whether to embed a
+  /// watermark in a result.
   ///
-  ///  These values can be set via API producer console. Only API providers can
-  ///  define and set these properties.
+  /// These values can be set via API producer console. Only API providers can
+  /// define and set these properties.
   /// </summary>
   public sealed partial class Property : pb::IMessage<Property> {
     private static readonly pb::MessageParser<Property> _parser = new pb::MessageParser<Property>(() => new Property());
@@ -228,7 +229,7 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    ///  The name of the property (a.k.a key).
+    /// The name of the property (a.k.a key).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -242,7 +243,7 @@ namespace Google.Api {
     public const int TypeFieldNumber = 2;
     private global::Google.Api.Property.Types.PropertyType type_ = 0;
     /// <summary>
-    ///  The type of this property.
+    /// The type of this property.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Property.Types.PropertyType Type {
@@ -256,7 +257,7 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 3;
     private string description_ = "";
     /// <summary>
-    ///  The description of the property
+    /// The description of the property
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -375,27 +376,27 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  Supported data type of the property values
+      /// Supported data type of the property values
       /// </summary>
       public enum PropertyType {
         /// <summary>
-        ///  The type is unspecified, and will result in an error.
+        /// The type is unspecified, and will result in an error.
         /// </summary>
         [pbr::OriginalName("UNSPECIFIED")] Unspecified = 0,
         /// <summary>
-        ///  The type is `int64`.
+        /// The type is `int64`.
         /// </summary>
         [pbr::OriginalName("INT64")] Int64 = 1,
         /// <summary>
-        ///  The type is `bool`.
+        /// The type is `bool`.
         /// </summary>
         [pbr::OriginalName("BOOL")] Bool = 2,
         /// <summary>
-        ///  The type is `string`.
+        /// The type is `string`.
         /// </summary>
         [pbr::OriginalName("STRING")] String = 3,
         /// <summary>
-        ///  The type is 'double'.
+        /// The type is 'double'.
         /// </summary>
         [pbr::OriginalName("DOUBLE")] Double = 4,
       }

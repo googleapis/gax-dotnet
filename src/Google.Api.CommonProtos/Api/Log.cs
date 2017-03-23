@@ -32,8 +32,10 @@ namespace Google.Api {
             "ChRnb29nbGUvYXBpL2xvZy5wcm90bxIKZ29vZ2xlLmFwaRoWZ29vZ2xlL2Fw",
             "aS9sYWJlbC5wcm90byJ1Cg1Mb2dEZXNjcmlwdG9yEgwKBG5hbWUYASABKAkS",
             "KwoGbGFiZWxzGAIgAygLMhsuZ29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3IS",
-            "EwoLZGVzY3JpcHRpb24YAyABKAkSFAoMZGlzcGxheV9uYW1lGAQgASgJQiMK",
-            "DmNvbS5nb29nbGUuYXBpQghMb2dQcm90b1ABogIER0FQSWIGcHJvdG8z"));
+            "EwoLZGVzY3JpcHRpb24YAyABKAkSFAoMZGlzcGxheV9uYW1lGAQgASgJQmoK",
+            "DmNvbS5nb29nbGUuYXBpQghMb2dQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9y",
+            "Zy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZp",
+            "Y2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -45,14 +47,14 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  A description of a log type. Example in YAML format:
+  /// A description of a log type. Example in YAML format:
   ///
-  ///      - name: library.googleapis.com/activity_history
-  ///        description: The history of borrowing and returning library items.
-  ///        display_name: Activity
-  ///        labels:
-  ///        - key: /customer_id
-  ///          description: Identifier of a library customer
+  ///     - name: library.googleapis.com/activity_history
+  ///       description: The history of borrowing and returning library items.
+  ///       display_name: Activity
+  ///       labels:
+  ///       - key: /customer_id
+  ///         description: Identifier of a library customer
   /// </summary>
   public sealed partial class LogDescriptor : pb::IMessage<LogDescriptor> {
     private static readonly pb::MessageParser<LogDescriptor> _parser = new pb::MessageParser<LogDescriptor>(() => new LogDescriptor());
@@ -93,10 +95,10 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    ///  The name of the log. It must be less than 512 characters long and can
-    ///  include the following characters: upper- and lower-case alphanumeric
-    ///  characters [A-Za-z0-9], and punctuation characters including
-    ///  slash, underscore, hyphen, period [/_-.].
+    /// The name of the log. It must be less than 512 characters long and can
+    /// include the following characters: upper- and lower-case alphanumeric
+    /// characters [A-Za-z0-9], and punctuation characters including
+    /// slash, underscore, hyphen, period [/_-.].
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -112,9 +114,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(18, global::Google.Api.LabelDescriptor.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.LabelDescriptor> labels_ = new pbc::RepeatedField<global::Google.Api.LabelDescriptor>();
     /// <summary>
-    ///  The set of labels that are available to describe a specific log entry.
-    ///  Runtime requests that contain labels not specified here are
-    ///  considered invalid.
+    /// The set of labels that are available to describe a specific log entry.
+    /// Runtime requests that contain labels not specified here are
+    /// considered invalid.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.LabelDescriptor> Labels {
@@ -125,8 +127,8 @@ namespace Google.Api {
     public const int DescriptionFieldNumber = 3;
     private string description_ = "";
     /// <summary>
-    ///  A human-readable description of this log. This information appears in
-    ///  the documentation and can contain details.
+    /// A human-readable description of this log. This information appears in
+    /// the documentation and can contain details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -140,8 +142,8 @@ namespace Google.Api {
     public const int DisplayNameFieldNumber = 4;
     private string displayName_ = "";
     /// <summary>
-    ///  The human-readable name for this log. This information appears on
-    ///  the user interface and should be concise.
+    /// The human-readable name for this log. This information appears on
+    /// the user interface and should be concise.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {

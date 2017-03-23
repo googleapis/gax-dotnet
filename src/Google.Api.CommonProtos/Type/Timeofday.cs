@@ -31,8 +31,10 @@ namespace Google.Type {
           string.Concat(
             "Chtnb29nbGUvdHlwZS90aW1lb2ZkYXkucHJvdG8SC2dvb2dsZS50eXBlIksK",
             "CVRpbWVPZkRheRINCgVob3VycxgBIAEoBRIPCgdtaW51dGVzGAIgASgFEg8K",
-            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCKQoPY29tLmdvb2dsZS50",
-            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABogIDR1RQYgZwcm90bzM="));
+            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCaQoPY29tLmdvb2dsZS50",
+            "eXBlQg5UaW1lT2ZEYXlQcm90b1ABWj5nb29nbGUuZ29sYW5nLm9yZy9nZW5w",
+            "cm90by9nb29nbGVhcGlzL3R5cGUvdGltZW9mZGF5O3RpbWVvZmRheaICA0dU",
+            "UGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -44,9 +46,9 @@ namespace Google.Type {
   }
   #region Messages
   /// <summary>
-  ///  Represents a time of day. The date and time zone are either not significant
-  ///  or are specified elsewhere. An API may chose to allow leap seconds. Related
-  ///  types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
+  /// Represents a time of day. The date and time zone are either not significant
+  /// or are specified elsewhere. An API may chose to allow leap seconds. Related
+  /// types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
   /// </summary>
   public sealed partial class TimeOfDay : pb::IMessage<TimeOfDay> {
     private static readonly pb::MessageParser<TimeOfDay> _parser = new pb::MessageParser<TimeOfDay>(() => new TimeOfDay());
@@ -87,8 +89,8 @@ namespace Google.Type {
     public const int HoursFieldNumber = 1;
     private int hours_;
     /// <summary>
-    ///  Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-    ///  to allow the value "24:00:00" for scenarios like business closing time.
+    /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+    /// to allow the value "24:00:00" for scenarios like business closing time.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Hours {
@@ -102,7 +104,7 @@ namespace Google.Type {
     public const int MinutesFieldNumber = 2;
     private int minutes_;
     /// <summary>
-    ///  Minutes of hour of day. Must be from 0 to 59.
+    /// Minutes of hour of day. Must be from 0 to 59.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Minutes {
@@ -116,8 +118,8 @@ namespace Google.Type {
     public const int SecondsFieldNumber = 3;
     private int seconds_;
     /// <summary>
-    ///  Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-    ///  allow the value 60 if it allows leap-seconds.
+    /// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+    /// allow the value 60 if it allows leap-seconds.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Seconds {
@@ -131,7 +133,7 @@ namespace Google.Type {
     public const int NanosFieldNumber = 4;
     private int nanos_;
     /// <summary>
-    ///  Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+    /// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Nanos {

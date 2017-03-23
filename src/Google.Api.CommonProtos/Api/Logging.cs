@@ -35,8 +35,10 @@ namespace Google.Api {
             "Z2dpbmdEZXN0aW5hdGlvbhJFChVjb25zdW1lcl9kZXN0aW5hdGlvbnMYAiAD",
             "KAsyJi5nb29nbGUuYXBpLkxvZ2dpbmcuTG9nZ2luZ0Rlc3RpbmF0aW9uGj4K",
             "EkxvZ2dpbmdEZXN0aW5hdGlvbhIaChJtb25pdG9yZWRfcmVzb3VyY2UYAyAB",
-            "KAkSDAoEbG9ncxgBIAMoCUInCg5jb20uZ29vZ2xlLmFwaUIMTG9nZ2luZ1By",
-            "b3RvUAGiAgRHQVBJYgZwcm90bzM="));
+            "KAkSDAoEbG9ncxgBIAMoCUJuCg5jb20uZ29vZ2xlLmFwaUIMTG9nZ2luZ1By",
+            "b3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMv",
+            "YXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -48,37 +50,35 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Logging configuration of the service.
+  /// Logging configuration of the service.
   ///
-  ///  The following example shows how to configure logs to be sent to the
-  ///  producer and consumer projects. In the example,
-  ///  the `library.googleapis.com/activity_history` log is
-  ///  sent to both the producer and consumer projects, whereas
-  ///  the `library.googleapis.com/purchase_history` log is only sent to the
-  ///  producer project:
+  /// The following example shows how to configure logs to be sent to the
+  /// producer and consumer projects. In the example, the `activity_history`
+  /// log is sent to both the producer and consumer projects, whereas the
+  /// `purchase_history` log is only sent to the producer project.
   ///
-  ///      monitored_resources:
-  ///      - type: library.googleapis.com/branch
-  ///        labels:
-  ///        - key: /city
-  ///          description: The city where the library branch is located in.
-  ///        - key: /name
-  ///          description: The name of the branch.
-  ///      logs:
-  ///      - name: library.googleapis.com/activity_history
-  ///        labels:
-  ///        - key: /customer_id
-  ///      - name: library.googleapis.com/purchase_history
-  ///      logging:
-  ///        producer_destinations:
-  ///        - monitored_resource: library.googleapis.com/branch
-  ///          logs:
-  ///          - library.googleapis.com/activity_history
-  ///          - library.googleapis.com/purchase_history
-  ///        consumer_destinations:
-  ///        - monitored_resource: library.googleapis.com/branch
-  ///          logs:
-  ///          - library.googleapis.com/activity_history
+  ///     monitored_resources:
+  ///     - type: library.googleapis.com/branch
+  ///       labels:
+  ///       - key: /city
+  ///         description: The city where the library branch is located in.
+  ///       - key: /name
+  ///         description: The name of the branch.
+  ///     logs:
+  ///     - name: activity_history
+  ///       labels:
+  ///       - key: /customer_id
+  ///     - name: purchase_history
+  ///     logging:
+  ///       producer_destinations:
+  ///       - monitored_resource: library.googleapis.com/branch
+  ///         logs:
+  ///         - activity_history
+  ///         - purchase_history
+  ///       consumer_destinations:
+  ///       - monitored_resource: library.googleapis.com/branch
+  ///         logs:
+  ///         - activity_history
   /// </summary>
   public sealed partial class Logging : pb::IMessage<Logging> {
     private static readonly pb::MessageParser<Logging> _parser = new pb::MessageParser<Logging>(() => new Logging());
@@ -119,10 +119,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.Logging.Types.LoggingDestination.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination> producerDestinations_ = new pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination>();
     /// <summary>
-    ///  Logging configurations for sending logs to the producer project.
-    ///  There can be multiple producer destinations, each one must have a
-    ///  different monitored resource type. A log can be used in at most
-    ///  one producer destination.
+    /// Logging configurations for sending logs to the producer project.
+    /// There can be multiple producer destinations, each one must have a
+    /// different monitored resource type. A log can be used in at most
+    /// one producer destination.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination> ProducerDestinations {
@@ -135,10 +135,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(18, global::Google.Api.Logging.Types.LoggingDestination.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination> consumerDestinations_ = new pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination>();
     /// <summary>
-    ///  Logging configurations for sending logs to the consumer project.
-    ///  There can be multiple consumer destinations, each one must have a
-    ///  different monitored resource type. A log can be used in at most
-    ///  one consumer destination.
+    /// Logging configurations for sending logs to the consumer project.
+    /// There can be multiple consumer destinations, each one must have a
+    /// different monitored resource type. A log can be used in at most
+    /// one consumer destination.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Logging.Types.LoggingDestination> ConsumerDestinations {
@@ -224,8 +224,8 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  Configuration of a specific logging destination (the producer project
-      ///  or the consumer project).
+      /// Configuration of a specific logging destination (the producer project
+      /// or the consumer project).
       /// </summary>
       public sealed partial class LoggingDestination : pb::IMessage<LoggingDestination> {
         private static readonly pb::MessageParser<LoggingDestination> _parser = new pb::MessageParser<LoggingDestination>(() => new LoggingDestination());
@@ -264,8 +264,8 @@ namespace Google.Api {
         public const int MonitoredResourceFieldNumber = 3;
         private string monitoredResource_ = "";
         /// <summary>
-        ///  The monitored resource type. The type must be defined in
-        ///  [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// The monitored resource type. The type must be defined in the
+        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MonitoredResource {
@@ -281,8 +281,10 @@ namespace Google.Api {
             = pb::FieldCodec.ForString(10);
         private readonly pbc::RepeatedField<string> logs_ = new pbc::RepeatedField<string>();
         /// <summary>
-        ///  Names of the logs to be sent to this destination. Each name must
-        ///  be defined in the [Service.logs][google.api.Service.logs] section.
+        /// Names of the logs to be sent to this destination. Each name must
+        /// be defined in the [Service.logs][google.api.Service.logs] section. If the log name is
+        /// not a domain scoped name, it will be automatically prefixed with
+        /// the service name followed by "/".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Logs {

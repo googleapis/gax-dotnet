@@ -35,8 +35,10 @@ namespace Google.Api {
             "dWxlEhAKCHNlbGVjdG9yGAEgASgJEi8KCnBhcmFtZXRlcnMYAiADKAsyGy5n",
             "b29nbGUuYXBpLlN5c3RlbVBhcmFtZXRlciJRCg9TeXN0ZW1QYXJhbWV0ZXIS",
             "DAoEbmFtZRgBIAEoCRITCgtodHRwX2hlYWRlchgCIAEoCRIbChN1cmxfcXVl",
-            "cnlfcGFyYW1ldGVyGAMgASgJQi8KDmNvbS5nb29nbGUuYXBpQhRTeXN0ZW1Q",
-            "YXJhbWV0ZXJQcm90b1ABogIER0FQSWIGcHJvdG8z"));
+            "cnlfcGFyYW1ldGVyGAMgASgJQnYKDmNvbS5nb29nbGUuYXBpQhRTeXN0ZW1Q",
+            "YXJhbWV0ZXJQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9n",
+            "b29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRH",
+            "QVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -50,12 +52,12 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  ### System parameter configuration
+  /// ### System parameter configuration
   ///
-  ///  A system parameter is a special kind of parameter defined by the API
-  ///  system, not by an individual API. It is typically mapped to an HTTP header
-  ///  and/or a URL query parameter. This configuration specifies which methods
-  ///  change the names of the system parameters.
+  /// A system parameter is a special kind of parameter defined by the API
+  /// system, not by an individual API. It is typically mapped to an HTTP header
+  /// and/or a URL query parameter. This configuration specifies which methods
+  /// change the names of the system parameters.
   /// </summary>
   public sealed partial class SystemParameters : pb::IMessage<SystemParameters> {
     private static readonly pb::MessageParser<SystemParameters> _parser = new pb::MessageParser<SystemParameters>(() => new SystemParameters());
@@ -95,36 +97,34 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.SystemParameterRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.SystemParameterRule> rules_ = new pbc::RepeatedField<global::Google.Api.SystemParameterRule>();
     /// <summary>
-    ///  Define system parameters.
+    /// Define system parameters.
     ///
-    ///  The parameters defined here will override the default parameters
-    ///  implemented by the system. If this field is missing from the service
-    ///  config, default system parameters will be used. Default system parameters
-    ///  and names is implementation-dependent.
+    /// The parameters defined here will override the default parameters
+    /// implemented by the system. If this field is missing from the service
+    /// config, default system parameters will be used. Default system parameters
+    /// and names is implementation-dependent.
     ///
-    ///  Example: define api key and alt name for all methods
+    /// Example: define api key for all methods
     ///
-    ///  system_parameters
-    ///    rules:
-    ///      - selector: "*"
-    ///        parameters:
-    ///          - name: api_key
-    ///            url_query_parameter: api_key
-    ///          - name: alt
-    ///            http_header: Response-Content-Type
+    ///     system_parameters
+    ///       rules:
+    ///         - selector: "*"
+    ///           parameters:
+    ///             - name: api_key
+    ///               url_query_parameter: api_key
     ///
-    ///  Example: define 2 api key names for a specific method.
+    /// Example: define 2 api key names for a specific method.
     ///
-    ///  system_parameters
-    ///    rules:
-    ///      - selector: "/ListShelves"
-    ///        parameters:
-    ///          - name: api_key
-    ///            http_header: Api-Key1
-    ///          - name: api_key
-    ///            http_header: Api-Key2
+    ///     system_parameters
+    ///       rules:
+    ///         - selector: "/ListShelves"
+    ///           parameters:
+    ///             - name: api_key
+    ///               http_header: Api-Key1
+    ///             - name: api_key
+    ///               http_header: Api-Key2
     ///
-    ///  **NOTE:** All service configuration rules follow "last one wins" order.
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.SystemParameterRule> Rules {
@@ -199,8 +199,8 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Define a system parameter rule mapping system parameter definitions to
-  ///  methods.
+  /// Define a system parameter rule mapping system parameter definitions to
+  /// methods.
   /// </summary>
   public sealed partial class SystemParameterRule : pb::IMessage<SystemParameterRule> {
     private static readonly pb::MessageParser<SystemParameterRule> _parser = new pb::MessageParser<SystemParameterRule>(() => new SystemParameterRule());
@@ -239,10 +239,10 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  Selects the methods to which this rule applies. Use '*' to indicate all
-    ///  methods in all APIs.
+    /// Selects the methods to which this rule applies. Use '*' to indicate all
+    /// methods in all APIs.
     ///
-    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -258,11 +258,11 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(18, global::Google.Api.SystemParameter.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.SystemParameter> parameters_ = new pbc::RepeatedField<global::Google.Api.SystemParameter>();
     /// <summary>
-    ///  Define parameters. Multiple names may be defined for a parameter.
-    ///  For a given method call, only one of them should be used. If multiple
-    ///  names are used the behavior is implementation-dependent.
-    ///  If none of the specified names are present the behavior is
-    ///  parameter-dependent.
+    /// Define parameters. Multiple names may be defined for a parameter.
+    /// For a given method call, only one of them should be used. If multiple
+    /// names are used the behavior is implementation-dependent.
+    /// If none of the specified names are present the behavior is
+    /// parameter-dependent.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.SystemParameter> Parameters {
@@ -353,9 +353,9 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Define a parameter's name and location. The parameter may be passed as either
-  ///  an HTTP header or a URL query parameter, and if both are passed the behavior
-  ///  is implementation-dependent.
+  /// Define a parameter's name and location. The parameter may be passed as either
+  /// an HTTP header or a URL query parameter, and if both are passed the behavior
+  /// is implementation-dependent.
   /// </summary>
   public sealed partial class SystemParameter : pb::IMessage<SystemParameter> {
     private static readonly pb::MessageParser<SystemParameter> _parser = new pb::MessageParser<SystemParameter>(() => new SystemParameter());
@@ -395,8 +395,7 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    ///  Define the name of the parameter, such as "api_key", "alt", "callback",
-    ///  and etc. It is case sensitive.
+    /// Define the name of the parameter, such as "api_key" . It is case sensitive.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -410,8 +409,8 @@ namespace Google.Api {
     public const int HttpHeaderFieldNumber = 2;
     private string httpHeader_ = "";
     /// <summary>
-    ///  Define the HTTP header name to use for the parameter. It is case
-    ///  insensitive.
+    /// Define the HTTP header name to use for the parameter. It is case
+    /// insensitive.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string HttpHeader {
@@ -425,8 +424,8 @@ namespace Google.Api {
     public const int UrlQueryParameterFieldNumber = 3;
     private string urlQueryParameter_ = "";
     /// <summary>
-    ///  Define the URL query parameter name to use for the parameter. It is case
-    ///  sensitive.
+    /// Define the URL query parameter name to use for the parameter. It is case
+    /// sensitive.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string UrlQueryParameter {

@@ -31,8 +31,9 @@ namespace Google.Type {
           string.Concat(
             "Chdnb29nbGUvdHlwZS9tb25leS5wcm90bxILZ29vZ2xlLnR5cGUiPAoFTW9u",
             "ZXkSFQoNY3VycmVuY3lfY29kZRgBIAEoCRINCgV1bml0cxgCIAEoAxINCgVu",
-            "YW5vcxgDIAEoBUIlCg9jb20uZ29vZ2xlLnR5cGVCCk1vbmV5UHJvdG9QAaIC",
-            "A0dUUGIGcHJvdG8z"));
+            "YW5vcxgDIAEoBUJdCg9jb20uZ29vZ2xlLnR5cGVCCk1vbmV5UHJvdG9QAVo2",
+            "Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy90eXBlL21v",
+            "bmV5O21vbmV5ogIDR1RQYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -44,7 +45,7 @@ namespace Google.Type {
   }
   #region Messages
   /// <summary>
-  ///  Represents an amount of money with its currency type.
+  /// Represents an amount of money with its currency type.
   /// </summary>
   public sealed partial class Money : pb::IMessage<Money> {
     private static readonly pb::MessageParser<Money> _parser = new pb::MessageParser<Money>(() => new Money());
@@ -84,7 +85,7 @@ namespace Google.Type {
     public const int CurrencyCodeFieldNumber = 1;
     private string currencyCode_ = "";
     /// <summary>
-    ///  The 3-letter currency code defined in ISO 4217.
+    /// The 3-letter currency code defined in ISO 4217.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string CurrencyCode {
@@ -98,8 +99,8 @@ namespace Google.Type {
     public const int UnitsFieldNumber = 2;
     private long units_;
     /// <summary>
-    ///  The whole units of the amount.
-    ///  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+    /// The whole units of the amount.
+    /// For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Units {
@@ -113,12 +114,12 @@ namespace Google.Type {
     public const int NanosFieldNumber = 3;
     private int nanos_;
     /// <summary>
-    ///  Number of nano (10^-9) units of the amount.
-    ///  The value must be between -999,999,999 and +999,999,999 inclusive.
-    ///  If `units` is positive, `nanos` must be positive or zero.
-    ///  If `units` is zero, `nanos` can be positive, zero, or negative.
-    ///  If `units` is negative, `nanos` must be negative or zero.
-    ///  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+    /// Number of nano (10^-9) units of the amount.
+    /// The value must be between -999,999,999 and +999,999,999 inclusive.
+    /// If `units` is positive, `nanos` must be positive or zero.
+    /// If `units` is zero, `nanos` can be positive, zero, or negative.
+    /// If `units` is negative, `nanos` must be negative or zero.
+    /// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Nanos {

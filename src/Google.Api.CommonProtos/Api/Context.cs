@@ -32,8 +32,10 @@ namespace Google.Api {
             "Chhnb29nbGUvYXBpL2NvbnRleHQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQ29u",
             "dGV4dBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQ29udGV4dFJ1bGUi",
             "RAoLQ29udGV4dFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSEQoJcmVxdWVzdGVk",
-            "GAIgAygJEhAKCHByb3ZpZGVkGAMgAygJQicKDmNvbS5nb29nbGUuYXBpQgxD",
-            "b250ZXh0UHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
+            "GAIgAygJEhAKCHByb3ZpZGVkGAMgAygJQm4KDmNvbS5nb29nbGUuYXBpQgxD",
+            "b250ZXh0UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29v",
+            "Z2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQ",
+            "SWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,23 +48,23 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  `Context` defines which contexts an API requests.
+  /// `Context` defines which contexts an API requests.
   ///
-  ///  Example:
+  /// Example:
   ///
-  ///      context:
-  ///        rules:
-  ///        - selector: "*"
-  ///          requested:
-  ///          - google.rpc.context.ProjectContext
-  ///          - google.rpc.context.OriginContext
+  ///     context:
+  ///       rules:
+  ///       - selector: "*"
+  ///         requested:
+  ///         - google.rpc.context.ProjectContext
+  ///         - google.rpc.context.OriginContext
   ///
-  ///  The above specifies that all methods in the API request
-  ///  `google.rpc.context.ProjectContext` and
-  ///  `google.rpc.context.OriginContext`.
+  /// The above specifies that all methods in the API request
+  /// `google.rpc.context.ProjectContext` and
+  /// `google.rpc.context.OriginContext`.
   ///
-  ///  Available context types are defined in package
-  ///  `google.rpc.context`.
+  /// Available context types are defined in package
+  /// `google.rpc.context`.
   /// </summary>
   public sealed partial class Context : pb::IMessage<Context> {
     private static readonly pb::MessageParser<Context> _parser = new pb::MessageParser<Context>(() => new Context());
@@ -102,9 +104,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.ContextRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.ContextRule> rules_ = new pbc::RepeatedField<global::Google.Api.ContextRule>();
     /// <summary>
-    ///  A list of RPC context rules that apply to individual API methods.
+    /// A list of RPC context rules that apply to individual API methods.
     ///
-    ///  **NOTE:** All service configuration rules follow "last one wins" order.
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.ContextRule> Rules {
@@ -179,8 +181,8 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  A context rule provides information about the context for an individual API
-  ///  element.
+  /// A context rule provides information about the context for an individual API
+  /// element.
   /// </summary>
   public sealed partial class ContextRule : pb::IMessage<ContextRule> {
     private static readonly pb::MessageParser<ContextRule> _parser = new pb::MessageParser<ContextRule>(() => new ContextRule());
@@ -220,9 +222,9 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  Selects the methods to which this rule applies.
+    /// Selects the methods to which this rule applies.
     ///
-    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -238,7 +240,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> requested_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  A list of full type names of requested contexts.
+    /// A list of full type names of requested contexts.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Requested {
@@ -251,7 +253,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(26);
     private readonly pbc::RepeatedField<string> provided_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  A list of full type names of provided contexts.
+    /// A list of full type names of provided contexts.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Provided {

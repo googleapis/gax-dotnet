@@ -35,9 +35,10 @@ namespace Google.Api {
             "dG9yaW5nLk1vbml0b3JpbmdEZXN0aW5hdGlvbhJLChVjb25zdW1lcl9kZXN0",
             "aW5hdGlvbnMYAiADKAsyLC5nb29nbGUuYXBpLk1vbml0b3JpbmcuTW9uaXRv",
             "cmluZ0Rlc3RpbmF0aW9uGkQKFU1vbml0b3JpbmdEZXN0aW5hdGlvbhIaChJt",
-            "b25pdG9yZWRfcmVzb3VyY2UYASABKAkSDwoHbWV0cmljcxgCIAMoCUIqCg5j",
-            "b20uZ29vZ2xlLmFwaUIPTW9uaXRvcmluZ1Byb3RvUAGiAgRHQVBJYgZwcm90",
-            "bzM="));
+            "b25pdG9yZWRfcmVzb3VyY2UYASABKAkSDwoHbWV0cmljcxgCIAMoCUJxCg5j",
+            "b20uZ29vZ2xlLmFwaUIPTW9uaXRvcmluZ1Byb3RvUAFaRWdvb2dsZS5nb2xh",
+            "bmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7",
+            "c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -49,43 +50,43 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Monitoring configuration of the service.
+  /// Monitoring configuration of the service.
   ///
-  ///  The example below shows how to configure monitored resources and metrics
-  ///  for monitoring. In the example, a monitored resource and two metrics are
-  ///  defined. The `library.googleapis.com/book/returned_count` metric is sent
-  ///  to both producer and consumer projects, whereas the
-  ///  `library.googleapis.com/book/overdue_count` metric is only sent to the
-  ///  consumer project.
+  /// The example below shows how to configure monitored resources and metrics
+  /// for monitoring. In the example, a monitored resource and two metrics are
+  /// defined. The `library.googleapis.com/book/returned_count` metric is sent
+  /// to both producer and consumer projects, whereas the
+  /// `library.googleapis.com/book/overdue_count` metric is only sent to the
+  /// consumer project.
   ///
-  ///      monitored_resources:
-  ///      - type: library.googleapis.com/branch
-  ///        labels:
-  ///        - key: /city
-  ///          description: The city where the library branch is located in.
-  ///        - key: /name
-  ///          description: The name of the branch.
-  ///      metrics:
-  ///      - name: library.googleapis.com/book/returned_count
-  ///        metric_kind: DELTA
-  ///        value_type: INT64
-  ///        labels:
-  ///        - key: /customer_id
-  ///      - name: library.googleapis.com/book/overdue_count
-  ///        metric_kind: GAUGE
-  ///        value_type: INT64
-  ///        labels:
-  ///        - key: /customer_id
-  ///      monitoring:
-  ///        producer_destinations:
-  ///        - monitored_resource: library.googleapis.com/branch
-  ///          metrics:
-  ///          - library.googleapis.com/book/returned_count
-  ///        consumer_destinations:
-  ///        - monitored_resource: library.googleapis.com/branch
-  ///          metrics:
-  ///          - library.googleapis.com/book/returned_count
-  ///          - library.googleapis.com/book/overdue_count
+  ///     monitored_resources:
+  ///     - type: library.googleapis.com/branch
+  ///       labels:
+  ///       - key: /city
+  ///         description: The city where the library branch is located in.
+  ///       - key: /name
+  ///         description: The name of the branch.
+  ///     metrics:
+  ///     - name: library.googleapis.com/book/returned_count
+  ///       metric_kind: DELTA
+  ///       value_type: INT64
+  ///       labels:
+  ///       - key: /customer_id
+  ///     - name: library.googleapis.com/book/overdue_count
+  ///       metric_kind: GAUGE
+  ///       value_type: INT64
+  ///       labels:
+  ///       - key: /customer_id
+  ///     monitoring:
+  ///       producer_destinations:
+  ///       - monitored_resource: library.googleapis.com/branch
+  ///         metrics:
+  ///         - library.googleapis.com/book/returned_count
+  ///       consumer_destinations:
+  ///       - monitored_resource: library.googleapis.com/branch
+  ///         metrics:
+  ///         - library.googleapis.com/book/returned_count
+  ///         - library.googleapis.com/book/overdue_count
   /// </summary>
   public sealed partial class Monitoring : pb::IMessage<Monitoring> {
     private static readonly pb::MessageParser<Monitoring> _parser = new pb::MessageParser<Monitoring>(() => new Monitoring());
@@ -126,10 +127,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(10, global::Google.Api.Monitoring.Types.MonitoringDestination.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> producerDestinations_ = new pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination>();
     /// <summary>
-    ///  Monitoring configurations for sending metrics to the producer project.
-    ///  There can be multiple producer destinations, each one must have a
-    ///  different monitored resource type. A metric can be used in at most
-    ///  one producer destination.
+    /// Monitoring configurations for sending metrics to the producer project.
+    /// There can be multiple producer destinations, each one must have a
+    /// different monitored resource type. A metric can be used in at most
+    /// one producer destination.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ProducerDestinations {
@@ -142,10 +143,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(18, global::Google.Api.Monitoring.Types.MonitoringDestination.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> consumerDestinations_ = new pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination>();
     /// <summary>
-    ///  Monitoring configurations for sending metrics to the consumer project.
-    ///  There can be multiple consumer destinations, each one must have a
-    ///  different monitored resource type. A metric can be used in at most
-    ///  one consumer destination.
+    /// Monitoring configurations for sending metrics to the consumer project.
+    /// There can be multiple consumer destinations, each one must have a
+    /// different monitored resource type. A metric can be used in at most
+    /// one consumer destination.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ConsumerDestinations {
@@ -231,8 +232,8 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
-      ///  Configuration of a specific monitoring destination (the producer project
-      ///  or the consumer project).
+      /// Configuration of a specific monitoring destination (the producer project
+      /// or the consumer project).
       /// </summary>
       public sealed partial class MonitoringDestination : pb::IMessage<MonitoringDestination> {
         private static readonly pb::MessageParser<MonitoringDestination> _parser = new pb::MessageParser<MonitoringDestination>(() => new MonitoringDestination());
@@ -271,8 +272,8 @@ namespace Google.Api {
         public const int MonitoredResourceFieldNumber = 1;
         private string monitoredResource_ = "";
         /// <summary>
-        ///  The monitored resource type. The type must be defined in
-        ///  [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// The monitored resource type. The type must be defined in
+        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MonitoredResource {
@@ -288,8 +289,8 @@ namespace Google.Api {
             = pb::FieldCodec.ForString(18);
         private readonly pbc::RepeatedField<string> metrics_ = new pbc::RepeatedField<string>();
         /// <summary>
-        ///  Names of the metrics to report to this monitoring destination.
-        ///  Each name must be defined in [Service.metrics][google.api.Service.metrics] section.
+        /// Names of the metrics to report to this monitoring destination.
+        /// Each name must be defined in [Service.metrics][google.api.Service.metrics] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Metrics {

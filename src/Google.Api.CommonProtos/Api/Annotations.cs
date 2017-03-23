@@ -32,8 +32,10 @@ namespace Google.Api {
             "Chxnb29nbGUvYXBpL2Fubm90YXRpb25zLnByb3RvEgpnb29nbGUuYXBpGhVn",
             "b29nbGUvYXBpL2h0dHAucHJvdG8aIGdvb2dsZS9wcm90b2J1Zi9kZXNjcmlw",
             "dG9yLnByb3RvOkUKBGh0dHASHi5nb29nbGUucHJvdG9idWYuTWV0aG9kT3B0",
-            "aW9ucxiwyrwiIAEoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGVCKwoOY29tLmdv",
-            "b2dsZS5hcGlCEEFubm90YXRpb25zUHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
+            "aW9ucxiwyrwiIAEoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGVCbgoOY29tLmdv",
+            "b2dsZS5hcGlCEEFubm90YXRpb25zUHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5v",
+            "cmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3Rh",
+            "dGlvbnOiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.HttpReflection.Descriptor, pbr::FileDescriptor.DescriptorProtoFileDescriptor, },
           new pbr::GeneratedClrTypeInfo(null, null));

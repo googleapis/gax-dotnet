@@ -30,15 +30,17 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChZnb29nbGUvYXBpL3VzYWdlLnByb3RvEgpnb29nbGUuYXBpGhxnb29nbGUv",
-            "YXBpL2Fubm90YXRpb25zLnByb3RvIkMKBVVzYWdlEhQKDHJlcXVpcmVtZW50",
+            "YXBpL2Fubm90YXRpb25zLnByb3RvImoKBVVzYWdlEhQKDHJlcXVpcmVtZW50",
             "cxgBIAMoCRIkCgVydWxlcxgGIAMoCzIVLmdvb2dsZS5hcGkuVXNhZ2VSdWxl",
-            "Ij8KCVVzYWdlUnVsZRIQCghzZWxlY3RvchgBIAEoCRIgChhhbGxvd191bnJl",
-            "Z2lzdGVyZWRfY2FsbHMYAiABKAhCJQoOY29tLmdvb2dsZS5hcGlCClVzYWdl",
-            "UHJvdG9QAaICBEdBUEliBnByb3RvMw=="));
+            "EiUKHXByb2R1Y2VyX25vdGlmaWNhdGlvbl9jaGFubmVsGAcgASgJIj8KCVVz",
+            "YWdlUnVsZRIQCghzZWxlY3RvchgBIAEoCRIgChhhbGxvd191bnJlZ2lzdGVy",
+            "ZWRfY2FsbHMYAiABKAhCbAoOY29tLmdvb2dsZS5hcGlCClVzYWdlUHJvdG9Q",
+            "AVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkv",
+            "c2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Usage), global::Google.Api.Usage.Parser, new[]{ "Requirements", "Rules" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Usage), global::Google.Api.Usage.Parser, new[]{ "Requirements", "Rules", "ProducerNotificationChannel" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.UsageRule), global::Google.Api.UsageRule.Parser, new[]{ "Selector", "AllowUnregisteredCalls" }, null, null, null)
           }));
     }
@@ -47,7 +49,7 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  ///  Configuration controlling usage of a service.
+  /// Configuration controlling usage of a service.
   /// </summary>
   public sealed partial class Usage : pb::IMessage<Usage> {
     private static readonly pb::MessageParser<Usage> _parser = new pb::MessageParser<Usage>(() => new Usage());
@@ -75,6 +77,7 @@ namespace Google.Api {
     public Usage(Usage other) : this() {
       requirements_ = other.requirements_.Clone();
       rules_ = other.rules_.Clone();
+      producerNotificationChannel_ = other.producerNotificationChannel_;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -88,9 +91,9 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(10);
     private readonly pbc::RepeatedField<string> requirements_ = new pbc::RepeatedField<string>();
     /// <summary>
-    ///  Requirements that must be satisfied before a consumer project can use the
-    ///  service. Each requirement is of the form &lt;service.name>/&lt;requirement-id>;
-    ///  for example 'serviceusage.googleapis.com/billing-enabled'.
+    /// Requirements that must be satisfied before a consumer project can use the
+    /// service. Each requirement is of the form &lt;service.name>/&lt;requirement-id>;
+    /// for example 'serviceusage.googleapis.com/billing-enabled'.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Requirements {
@@ -103,13 +106,34 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(50, global::Google.Api.UsageRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.UsageRule> rules_ = new pbc::RepeatedField<global::Google.Api.UsageRule>();
     /// <summary>
-    ///  A list of usage rules that apply to individual API methods.
+    /// A list of usage rules that apply to individual API methods.
     ///
-    ///  **NOTE:** All service configuration rules follow "last one wins" order.
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.UsageRule> Rules {
       get { return rules_; }
+    }
+
+    /// <summary>Field number for the "producer_notification_channel" field.</summary>
+    public const int ProducerNotificationChannelFieldNumber = 7;
+    private string producerNotificationChannel_ = "";
+    /// <summary>
+    /// The full resource name of a channel used for sending notifications to the
+    /// service producer.
+    ///
+    /// Google Service Management currently only supports
+    /// [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) as a notification
+    /// channel. To use Google Cloud Pub/Sub as the channel, this must be the name
+    /// of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format
+    /// documented in https://cloud.google.com/pubsub/docs/overview.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ProducerNotificationChannel {
+      get { return producerNotificationChannel_; }
+      set {
+        producerNotificationChannel_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -127,6 +151,7 @@ namespace Google.Api {
       }
       if(!requirements_.Equals(other.requirements_)) return false;
       if(!rules_.Equals(other.rules_)) return false;
+      if (ProducerNotificationChannel != other.ProducerNotificationChannel) return false;
       return true;
     }
 
@@ -135,6 +160,7 @@ namespace Google.Api {
       int hash = 1;
       hash ^= requirements_.GetHashCode();
       hash ^= rules_.GetHashCode();
+      if (ProducerNotificationChannel.Length != 0) hash ^= ProducerNotificationChannel.GetHashCode();
       return hash;
     }
 
@@ -147,6 +173,10 @@ namespace Google.Api {
     public void WriteTo(pb::CodedOutputStream output) {
       requirements_.WriteTo(output, _repeated_requirements_codec);
       rules_.WriteTo(output, _repeated_rules_codec);
+      if (ProducerNotificationChannel.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(ProducerNotificationChannel);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -154,6 +184,9 @@ namespace Google.Api {
       int size = 0;
       size += requirements_.CalculateSize(_repeated_requirements_codec);
       size += rules_.CalculateSize(_repeated_rules_codec);
+      if (ProducerNotificationChannel.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ProducerNotificationChannel);
+      }
       return size;
     }
 
@@ -164,6 +197,9 @@ namespace Google.Api {
       }
       requirements_.Add(other.requirements_);
       rules_.Add(other.rules_);
+      if (other.ProducerNotificationChannel.Length != 0) {
+        ProducerNotificationChannel = other.ProducerNotificationChannel;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -182,6 +218,10 @@ namespace Google.Api {
             rules_.AddEntriesFrom(input, _repeated_rules_codec);
             break;
           }
+          case 58: {
+            ProducerNotificationChannel = input.ReadString();
+            break;
+          }
         }
       }
     }
@@ -189,30 +229,30 @@ namespace Google.Api {
   }
 
   /// <summary>
-  ///  Usage configuration rules for the service.
+  /// Usage configuration rules for the service.
   ///
-  ///  NOTE: Under development.
+  /// NOTE: Under development.
   ///
-  ///  Use this rule to configure unregistered calls for the service. Unregistered
-  ///  calls are calls that do not contain consumer project identity.
-  ///  (Example: calls that do not contain an API key).
-  ///  By default, API methods do not allow unregistered calls, and each method call
-  ///  must be identified by a consumer project identity. Use this rule to
-  ///  allow/disallow unregistered calls.
+  /// Use this rule to configure unregistered calls for the service. Unregistered
+  /// calls are calls that do not contain consumer project identity.
+  /// (Example: calls that do not contain an API key).
+  /// By default, API methods do not allow unregistered calls, and each method call
+  /// must be identified by a consumer project identity. Use this rule to
+  /// allow/disallow unregistered calls.
   ///
-  ///  Example of an API that wants to allow unregistered calls for entire service.
+  /// Example of an API that wants to allow unregistered calls for entire service.
   ///
-  ///      usage:
-  ///        rules:
-  ///        - selector: "*"
-  ///          allow_unregistered_calls: true
+  ///     usage:
+  ///       rules:
+  ///       - selector: "*"
+  ///         allow_unregistered_calls: true
   ///
-  ///  Example of a method that wants to allow unregistered calls.
+  /// Example of a method that wants to allow unregistered calls.
   ///
-  ///      usage:
-  ///        rules:
-  ///        - selector: "google.example.library.v1.LibraryService.CreateBook"
-  ///          allow_unregistered_calls: true
+  ///     usage:
+  ///       rules:
+  ///       - selector: "google.example.library.v1.LibraryService.CreateBook"
+  ///         allow_unregistered_calls: true
   /// </summary>
   public sealed partial class UsageRule : pb::IMessage<UsageRule> {
     private static readonly pb::MessageParser<UsageRule> _parser = new pb::MessageParser<UsageRule>(() => new UsageRule());
@@ -251,10 +291,10 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    ///  Selects the methods to which this rule applies. Use '*' to indicate all
-    ///  methods in all APIs.
+    /// Selects the methods to which this rule applies. Use '*' to indicate all
+    /// methods in all APIs.
     ///
-    ///  Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -268,7 +308,7 @@ namespace Google.Api {
     public const int AllowUnregisteredCallsFieldNumber = 2;
     private bool allowUnregisteredCalls_;
     /// <summary>
-    ///  True, if the method allows unregistered calls; false otherwise.
+    /// True, if the method allows unregistered calls; false otherwise.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowUnregisteredCalls {
