@@ -10,3 +10,8 @@ project.lock.json
 # (We could put this under obj if that became simpler; see
 # docfx.json.)
 _site
+
+# Used in generateprotos.sh
+packages
+tmp
+googleapis
