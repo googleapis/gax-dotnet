@@ -39,38 +39,40 @@ namespace Google.Api {
             "cm90bxoUZ29vZ2xlL2FwaS9sb2cucHJvdG8aGGdvb2dsZS9hcGkvbG9nZ2lu",
             "Zy5wcm90bxoXZ29vZ2xlL2FwaS9tZXRyaWMucHJvdG8aI2dvb2dsZS9hcGkv",
             "bW9uaXRvcmVkX3Jlc291cmNlLnByb3RvGhtnb29nbGUvYXBpL21vbml0b3Jp",
-            "bmcucHJvdG8aIWdvb2dsZS9hcGkvc3lzdGVtX3BhcmFtZXRlci5wcm90bxoW",
-            "Z29vZ2xlL2FwaS91c2FnZS5wcm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5w",
-            "cm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3Rv",
-            "YnVmL3R5cGUucHJvdG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90",
-            "byKRBwoHU2VydmljZRI0Cg5jb25maWdfdmVyc2lvbhgUIAEoCzIcLmdvb2ds",
-            "ZS5wcm90b2J1Zi5VSW50MzJWYWx1ZRIMCgRuYW1lGAEgASgJEgoKAmlkGCEg",
-            "ASgJEg0KBXRpdGxlGAIgASgJEhsKE3Byb2R1Y2VyX3Byb2plY3RfaWQYFiAB",
-            "KAkSIgoEYXBpcxgDIAMoCzIULmdvb2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlw",
-            "ZXMYBCADKAsyFS5nb29nbGUucHJvdG9idWYuVHlwZRIkCgVlbnVtcxgFIAMo",
-            "CzIVLmdvb2dsZS5wcm90b2J1Zi5FbnVtEjAKDWRvY3VtZW50YXRpb24YBiAB",
-            "KAsyGS5nb29nbGUuYXBpLkRvY3VtZW50YXRpb24SJAoHYmFja2VuZBgIIAEo",
-            "CzITLmdvb2dsZS5hcGkuQmFja2VuZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xl",
-            "LmFwaS5IdHRwEjIKDmF1dGhlbnRpY2F0aW9uGAsgASgLMhouZ29vZ2xlLmFw",
-            "aS5BdXRoZW50aWNhdGlvbhIkCgdjb250ZXh0GAwgASgLMhMuZ29vZ2xlLmFw",
-            "aS5Db250ZXh0EiAKBXVzYWdlGA8gASgLMhEuZ29vZ2xlLmFwaS5Vc2FnZRIn",
-            "CgllbmRwb2ludHMYEiADKAsyFC5nb29nbGUuYXBpLkVuZHBvaW50EiQKB2Nv",
-            "bnRyb2wYFSABKAsyEy5nb29nbGUuYXBpLkNvbnRyb2wSJwoEbG9ncxgXIAMo",
-            "CzIZLmdvb2dsZS5hcGkuTG9nRGVzY3JpcHRvchItCgdtZXRyaWNzGBggAygL",
-            "MhwuZ29vZ2xlLmFwaS5NZXRyaWNEZXNjcmlwdG9yEkQKE21vbml0b3JlZF9y",
-            "ZXNvdXJjZXMYGSADKAsyJy5nb29nbGUuYXBpLk1vbml0b3JlZFJlc291cmNl",
-            "RGVzY3JpcHRvchIkCgdsb2dnaW5nGBsgASgLMhMuZ29vZ2xlLmFwaS5Mb2dn",
-            "aW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5nb29nbGUuYXBpLk1vbml0b3Jp",
-            "bmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSABKAsyHC5nb29nbGUuYXBpLlN5",
-            "c3RlbVBhcmFtZXRlcnMSLgoMZXhwZXJpbWVudGFsGGUgASgLMhguZ29vZ2xl",
-            "LmFwaS5FeHBlcmltZW50YWxCbgoOY29tLmdvb2dsZS5hcGlCDFNlcnZpY2VQ",
-            "cm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlz",
-            "L2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90",
-            "bzM="));
+            "bmcucHJvdG8aFmdvb2dsZS9hcGkvcXVvdGEucHJvdG8aHGdvb2dsZS9hcGkv",
+            "c291cmNlX2luZm8ucHJvdG8aIWdvb2dsZS9hcGkvc3lzdGVtX3BhcmFtZXRl",
+            "ci5wcm90bxoWZ29vZ2xlL2FwaS91c2FnZS5wcm90bxoZZ29vZ2xlL3Byb3Rv",
+            "YnVmL2FueS5wcm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FwaS5wcm90bxoaZ29v",
+            "Z2xlL3Byb3RvYnVmL3R5cGUucHJvdG8aHmdvb2dsZS9wcm90b2J1Zi93cmFw",
+            "cGVycy5wcm90byLgBwoHU2VydmljZRI0Cg5jb25maWdfdmVyc2lvbhgUIAEo",
+            "CzIcLmdvb2dsZS5wcm90b2J1Zi5VSW50MzJWYWx1ZRIMCgRuYW1lGAEgASgJ",
+            "EgoKAmlkGCEgASgJEg0KBXRpdGxlGAIgASgJEhsKE3Byb2R1Y2VyX3Byb2pl",
+            "Y3RfaWQYFiABKAkSIgoEYXBpcxgDIAMoCzIULmdvb2dsZS5wcm90b2J1Zi5B",
+            "cGkSJAoFdHlwZXMYBCADKAsyFS5nb29nbGUucHJvdG9idWYuVHlwZRIkCgVl",
+            "bnVtcxgFIAMoCzIVLmdvb2dsZS5wcm90b2J1Zi5FbnVtEjAKDWRvY3VtZW50",
+            "YXRpb24YBiABKAsyGS5nb29nbGUuYXBpLkRvY3VtZW50YXRpb24SJAoHYmFj",
+            "a2VuZBgIIAEoCzITLmdvb2dsZS5hcGkuQmFja2VuZBIeCgRodHRwGAkgASgL",
+            "MhAuZ29vZ2xlLmFwaS5IdHRwEiAKBXF1b3RhGAogASgLMhEuZ29vZ2xlLmFw",
+            "aS5RdW90YRIyCg5hdXRoZW50aWNhdGlvbhgLIAEoCzIaLmdvb2dsZS5hcGku",
+            "QXV0aGVudGljYXRpb24SJAoHY29udGV4dBgMIAEoCzITLmdvb2dsZS5hcGku",
+            "Q29udGV4dBIgCgV1c2FnZRgPIAEoCzIRLmdvb2dsZS5hcGkuVXNhZ2USJwoJ",
+            "ZW5kcG9pbnRzGBIgAygLMhQuZ29vZ2xlLmFwaS5FbmRwb2ludBIkCgdjb250",
+            "cm9sGBUgASgLMhMuZ29vZ2xlLmFwaS5Db250cm9sEicKBGxvZ3MYFyADKAsy",
+            "GS5nb29nbGUuYXBpLkxvZ0Rlc2NyaXB0b3ISLQoHbWV0cmljcxgYIAMoCzIc",
+            "Lmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvchJEChNtb25pdG9yZWRfcmVz",
+            "b3VyY2VzGBkgAygLMicuZ29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZURl",
+            "c2NyaXB0b3ISJAoHbG9nZ2luZxgbIAEoCzITLmdvb2dsZS5hcGkuTG9nZ2lu",
+            "ZxIqCgptb25pdG9yaW5nGBwgASgLMhYuZ29vZ2xlLmFwaS5Nb25pdG9yaW5n",
+            "EjcKEXN5c3RlbV9wYXJhbWV0ZXJzGB0gASgLMhwuZ29vZ2xlLmFwaS5TeXN0",
+            "ZW1QYXJhbWV0ZXJzEisKC3NvdXJjZV9pbmZvGCUgASgLMhYuZ29vZ2xlLmFw",
+            "aS5Tb3VyY2VJbmZvEi4KDGV4cGVyaW1lbnRhbBhlIAEoCzIYLmdvb2dsZS5h",
+            "cGkuRXhwZXJpbWVudGFsQm4KDmNvbS5nb29nbGUuYXBpQgxTZXJ2aWNlUHJv",
+            "dG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9h",
+            "cGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.ExperimentalReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.ExperimentalReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Logging", "Monitoring", "SystemParameters", "Experimental" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Logging", "Monitoring", "SystemParameters", "SourceInfo", "Experimental" }, null, null, null)
           }));
     }
     #endregion
@@ -137,6 +139,7 @@ namespace Google.Api {
       Documentation = other.documentation_ != null ? other.Documentation.Clone() : null;
       Backend = other.backend_ != null ? other.Backend.Clone() : null;
       Http = other.http_ != null ? other.Http.Clone() : null;
+      Quota = other.quota_ != null ? other.Quota.Clone() : null;
       Authentication = other.authentication_ != null ? other.Authentication.Clone() : null;
       Context = other.context_ != null ? other.Context.Clone() : null;
       Usage = other.usage_ != null ? other.Usage.Clone() : null;
@@ -148,6 +151,7 @@ namespace Google.Api {
       Logging = other.logging_ != null ? other.Logging.Clone() : null;
       Monitoring = other.monitoring_ != null ? other.Monitoring.Clone() : null;
       SystemParameters = other.systemParameters_ != null ? other.SystemParameters.Clone() : null;
+      SourceInfo = other.sourceInfo_ != null ? other.SourceInfo.Clone() : null;
       Experimental = other.experimental_ != null ? other.Experimental.Clone() : null;
     }
 
@@ -333,6 +337,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "quota" field.</summary>
+    public const int QuotaFieldNumber = 10;
+    private global::Google.Api.Quota quota_;
+    /// <summary>
+    /// Quota configuration.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Api.Quota Quota {
+      get { return quota_; }
+      set {
+        quota_ = value;
+      }
+    }
+
     /// <summary>Field number for the "authentication" field.</summary>
     public const int AuthenticationFieldNumber = 11;
     private global::Google.Api.Authentication authentication_;
@@ -486,6 +504,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "source_info" field.</summary>
+    public const int SourceInfoFieldNumber = 37;
+    private global::Google.Api.SourceInfo sourceInfo_;
+    /// <summary>
+    /// Output only. The source information for this configuration if available.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Api.SourceInfo SourceInfo {
+      get { return sourceInfo_; }
+      set {
+        sourceInfo_ = value;
+      }
+    }
+
     /// <summary>Field number for the "experimental" field.</summary>
     public const int ExperimentalFieldNumber = 101;
     private global::Google.Api.Experimental experimental_;
@@ -524,6 +556,7 @@ namespace Google.Api {
       if (!object.Equals(Documentation, other.Documentation)) return false;
       if (!object.Equals(Backend, other.Backend)) return false;
       if (!object.Equals(Http, other.Http)) return false;
+      if (!object.Equals(Quota, other.Quota)) return false;
       if (!object.Equals(Authentication, other.Authentication)) return false;
       if (!object.Equals(Context, other.Context)) return false;
       if (!object.Equals(Usage, other.Usage)) return false;
@@ -535,6 +568,7 @@ namespace Google.Api {
       if (!object.Equals(Logging, other.Logging)) return false;
       if (!object.Equals(Monitoring, other.Monitoring)) return false;
       if (!object.Equals(SystemParameters, other.SystemParameters)) return false;
+      if (!object.Equals(SourceInfo, other.SourceInfo)) return false;
       if (!object.Equals(Experimental, other.Experimental)) return false;
       return true;
     }
@@ -553,6 +587,7 @@ namespace Google.Api {
       if (documentation_ != null) hash ^= Documentation.GetHashCode();
       if (backend_ != null) hash ^= Backend.GetHashCode();
       if (http_ != null) hash ^= Http.GetHashCode();
+      if (quota_ != null) hash ^= Quota.GetHashCode();
       if (authentication_ != null) hash ^= Authentication.GetHashCode();
       if (context_ != null) hash ^= Context.GetHashCode();
       if (usage_ != null) hash ^= Usage.GetHashCode();
@@ -564,6 +599,7 @@ namespace Google.Api {
       if (logging_ != null) hash ^= Logging.GetHashCode();
       if (monitoring_ != null) hash ^= Monitoring.GetHashCode();
       if (systemParameters_ != null) hash ^= SystemParameters.GetHashCode();
+      if (sourceInfo_ != null) hash ^= SourceInfo.GetHashCode();
       if (experimental_ != null) hash ^= Experimental.GetHashCode();
       return hash;
     }
@@ -597,6 +633,10 @@ namespace Google.Api {
       if (http_ != null) {
         output.WriteRawTag(74);
         output.WriteMessage(Http);
+      }
+      if (quota_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(Quota);
       }
       if (authentication_ != null) {
         output.WriteRawTag(90);
@@ -641,6 +681,10 @@ namespace Google.Api {
         output.WriteRawTag(138, 2);
         output.WriteString(Id);
       }
+      if (sourceInfo_ != null) {
+        output.WriteRawTag(170, 2);
+        output.WriteMessage(SourceInfo);
+      }
       if (experimental_ != null) {
         output.WriteRawTag(170, 6);
         output.WriteMessage(Experimental);
@@ -677,6 +721,9 @@ namespace Google.Api {
       if (http_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Http);
       }
+      if (quota_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Quota);
+      }
       if (authentication_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Authentication);
       }
@@ -701,6 +748,9 @@ namespace Google.Api {
       }
       if (systemParameters_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SystemParameters);
+      }
+      if (sourceInfo_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(SourceInfo);
       }
       if (experimental_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(Experimental);
@@ -751,6 +801,12 @@ namespace Google.Api {
         }
         Http.MergeFrom(other.Http);
       }
+      if (other.quota_ != null) {
+        if (quota_ == null) {
+          quota_ = new global::Google.Api.Quota();
+        }
+        Quota.MergeFrom(other.Quota);
+      }
       if (other.authentication_ != null) {
         if (authentication_ == null) {
           authentication_ = new global::Google.Api.Authentication();
@@ -796,6 +852,12 @@ namespace Google.Api {
           systemParameters_ = new global::Google.Api.SystemParameters();
         }
         SystemParameters.MergeFrom(other.SystemParameters);
+      }
+      if (other.sourceInfo_ != null) {
+        if (sourceInfo_ == null) {
+          sourceInfo_ = new global::Google.Api.SourceInfo();
+        }
+        SourceInfo.MergeFrom(other.SourceInfo);
       }
       if (other.experimental_ != null) {
         if (experimental_ == null) {
@@ -852,6 +914,13 @@ namespace Google.Api {
               http_ = new global::Google.Api.Http();
             }
             input.ReadMessage(http_);
+            break;
+          }
+          case 82: {
+            if (quota_ == null) {
+              quota_ = new global::Google.Api.Quota();
+            }
+            input.ReadMessage(quota_);
             break;
           }
           case 90: {
@@ -932,6 +1001,13 @@ namespace Google.Api {
           }
           case 266: {
             Id = input.ReadString();
+            break;
+          }
+          case 298: {
+            if (sourceInfo_ == null) {
+              sourceInfo_ = new global::Google.Api.SourceInfo();
+            }
+            input.ReadMessage(sourceInfo_);
             break;
           }
           case 810: {
