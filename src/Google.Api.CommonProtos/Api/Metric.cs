@@ -110,9 +110,9 @@ namespace Google.Api {
     /// that defines the scope of the metric type or of its data; and (2) the
     /// metric's URL-encoded type, which also appears in the `type` field of this
     /// descriptor. For example, following is the resource name of a custom
-    /// metric within the GCP project 123456789:
+    /// metric within the GCP project `my-project-id`:
     ///
-    ///     "projects/123456789/metricDescriptors/custom.googleapis.com%2Finvoice%2Fpaid%2Famount"
+    ///     "projects/my-project-id/metricDescriptors/custom.googleapis.com%2Finvoice%2Fpaid%2Famount"
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -127,7 +127,7 @@ namespace Google.Api {
     private string type_ = "";
     /// <summary>
     /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded.  All user-defined metric types have the DNS name
+    /// URL-encoded.  All user-defined custom metric types have the DNS name
     /// `custom.googleapis.com`.  Metric types should use a natural hierarchical
     /// grouping. For example:
     ///

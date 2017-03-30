@@ -30,16 +30,16 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpGhxnb29n",
-            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIl0KCEVuZHBvaW50EgwKBG5hbWUY",
+            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIm0KCEVuZHBvaW50EgwKBG5hbWUY",
             "ASABKAkSDwoHYWxpYXNlcxgCIAMoCRIMCgRhcGlzGAMgAygJEhAKCGZlYXR1",
-            "cmVzGAQgAygJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdvb2dsZS5h",
-            "cGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJv",
-            "dG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmln",
-            "ogIER0FQSWIGcHJvdG8z"));
+            "cmVzGAQgAygJEg4KBnRhcmdldBhlIAEoCRISCgphbGxvd19jb3JzGAUgASgI",
+            "Qm8KDmNvbS5nb29nbGUuYXBpQg1FbmRwb2ludFByb3RvUAFaRWdvb2dsZS5n",
+            "b2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25m",
+            "aWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Apis", "Features", "AllowCors" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Apis", "Features", "Target", "AllowCors" }, null, null, null)
           }));
     }
     #endregion
@@ -92,6 +92,7 @@ namespace Google.Api {
       aliases_ = other.aliases_.Clone();
       apis_ = other.apis_.Clone();
       features_ = other.features_.Clone();
+      target_ = other.target_;
       allowCors_ = other.allowCors_;
     }
 
@@ -157,6 +158,23 @@ namespace Google.Api {
       get { return features_; }
     }
 
+    /// <summary>Field number for the "target" field.</summary>
+    public const int TargetFieldNumber = 101;
+    private string target_ = "";
+    /// <summary>
+    /// The specification of an Internet routable address of API frontend that will
+    /// handle requests to this [API Endpoint](https://cloud.google.com/apis/design/glossary).
+    /// It should be either a valid IPv4 address or a fully-qualified domain name.
+    /// For example, "8.8.8.8" or "myservice.appspot.com".
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Target {
+      get { return target_; }
+      set {
+        target_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "allow_cors" field.</summary>
     public const int AllowCorsFieldNumber = 5;
     private bool allowCors_;
@@ -193,6 +211,7 @@ namespace Google.Api {
       if(!aliases_.Equals(other.aliases_)) return false;
       if(!apis_.Equals(other.apis_)) return false;
       if(!features_.Equals(other.features_)) return false;
+      if (Target != other.Target) return false;
       if (AllowCors != other.AllowCors) return false;
       return true;
     }
@@ -204,6 +223,7 @@ namespace Google.Api {
       hash ^= aliases_.GetHashCode();
       hash ^= apis_.GetHashCode();
       hash ^= features_.GetHashCode();
+      if (Target.Length != 0) hash ^= Target.GetHashCode();
       if (AllowCors != false) hash ^= AllowCors.GetHashCode();
       return hash;
     }
@@ -226,6 +246,10 @@ namespace Google.Api {
         output.WriteRawTag(40);
         output.WriteBool(AllowCors);
       }
+      if (Target.Length != 0) {
+        output.WriteRawTag(170, 6);
+        output.WriteString(Target);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -237,6 +261,9 @@ namespace Google.Api {
       size += aliases_.CalculateSize(_repeated_aliases_codec);
       size += apis_.CalculateSize(_repeated_apis_codec);
       size += features_.CalculateSize(_repeated_features_codec);
+      if (Target.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(Target);
+      }
       if (AllowCors != false) {
         size += 1 + 1;
       }
@@ -254,6 +281,9 @@ namespace Google.Api {
       aliases_.Add(other.aliases_);
       apis_.Add(other.apis_);
       features_.Add(other.features_);
+      if (other.Target.Length != 0) {
+        Target = other.Target;
+      }
       if (other.AllowCors != false) {
         AllowCors = other.AllowCors;
       }
@@ -285,6 +315,10 @@ namespace Google.Api {
           }
           case 40: {
             AllowCors = input.ReadBool();
+            break;
+          }
+          case 810: {
+            Target = input.ReadString();
             break;
           }
         }
