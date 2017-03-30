@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "packOptions": {
     "title": "Google API Extensions",
@@ -17,7 +17,7 @@
   },
 
   "dependencies": {
-    "Google.Apis.Auth": "1.24.0",
+    "Google.Apis.Auth": "1.24.1",
     "System.Interactive.Async": "3.1.1",
     "Newtonsoft.Json": "10.0.1"
   },
