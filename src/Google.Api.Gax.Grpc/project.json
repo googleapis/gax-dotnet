@@ -19,7 +19,6 @@
   "dependencies": {
     "Google.Api.CommonProtos": "1.0.0",
     "Google.Api.Gax": { "target": "project" },
-    "Google.Apis.Auth": "1.22.0",
     "Grpc.Auth": "1.2.0",
     "Grpc.Core": "1.2.0",
     "Grpc.Tools": { "version": "1.2.0", "type": "build" }
