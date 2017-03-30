@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta13-*",
+  "version": "1.0.0",
 
   "packOptions": {
     "title": "Google REST API Extensions",
