@@ -33,7 +33,7 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// Asynchronously reads a single page of results with a fixed maximum size. The returned page is guaranteed
+        /// Eagerly (but asynchronously) reads a single page of results with a fixed maximum size. The returned page is guaranteed
         /// to have that many results, unless there is no more data available.
         /// </summary>
         /// <remarks>
@@ -41,7 +41,9 @@ namespace Google.Api.Gax
         /// For example, a request for a page with 100 resources may return a page with 80 resources but
         /// a next page token for more to be retrieved. This is suitable for batch-processing, but not
         /// for user-visible paging such as in a web application, where fixed-size pages are expected.
-        /// This method may make more than one API call in order to fill the page.
+        /// This method may make more than one API call in order to fill the page, but after the page has been
+        /// returned, all the data will have been loaded. (In particular, iterating over the items in the page
+        /// multiple times will not make any further requests.)
         /// </remarks>
         /// <param name="pageSize">The page size. Must be greater than 0.</param>
         /// <param name="cancellationToken">A token to cancel the operation.</param>
