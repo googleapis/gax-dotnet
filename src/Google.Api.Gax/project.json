@@ -17,9 +17,9 @@
   },
 
   "dependencies": {
-    "Google.Apis.Auth": "1.24.1",
+    "Google.Apis.Auth": "1.25.0",
     "System.Interactive.Async": "3.1.1",
-    "Newtonsoft.Json": "10.0.1"
+    "Newtonsoft.Json": "10.0.2"
   },
   "frameworks": {
     "net45": {
