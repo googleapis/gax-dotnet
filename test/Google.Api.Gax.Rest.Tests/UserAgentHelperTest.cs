@@ -16,8 +16,7 @@ namespace Google.Api.Gax.Rest.Tests
         [Fact]
         public void GetDefaultUserAgent()
         {
-            // Always 1.0.0, because we don't declare a version nubmer in project.json for tests.
-            Assert.Equal("gcloud-dotnet/1.0.0", UserAgentHelper.GetDefaultUserAgent(typeof(UserAgentHelperTest)));
+            Assert.StartsWith("gcloud-dotnet/1.0.0", UserAgentHelper.GetDefaultUserAgent(typeof(UserAgentHelperTest)));
         }
 
         [Fact]

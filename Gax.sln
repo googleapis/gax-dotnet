@@ -1,29 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax", "src\Google.Api.Gax\Google.Api.Gax.xproj", "{16E01144-C66A-4267-AE2C-40FECF562BBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax", "src\Google.Api.Gax\Google.Api.Gax.csproj", "{16E01144-C66A-4267-AE2C-40FECF562BBB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Tests", "test\Google.Api.Gax.Tests\Google.Api.Gax.Tests.xproj", "{911A7CDE-2F97-4D82-A25F-9DCC89ADF481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Tests", "test\Google.Api.Gax.Tests\Google.Api.Gax.Tests.csproj", "{911A7CDE-2F97-4D82-A25F-9DCC89ADF481}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Testing", "testing\Google.Api.Gax.Testing\Google.Api.Gax.Testing.xproj", "{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Testing", "testing\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj", "{5BD31BA4-1B9C-48CB-A9B2-77E4A0A35495}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Rest", "src\Google.Api.Gax.Rest\Google.Api.Gax.Rest.xproj", "{0B96F57B-A344-4B54-9E0A-C38305F04F92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Rest", "src\Google.Api.Gax.Rest\Google.Api.Gax.Rest.csproj", "{0B96F57B-A344-4B54-9E0A-C38305F04F92}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Rest.Tests", "test\Google.Api.Gax.Rest.Tests\Google.Api.Gax.Rest.Tests.xproj", "{1910E331-250B-4826-9E19-690DB028EA7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Rest.Tests", "test\Google.Api.Gax.Rest.Tests\Google.Api.Gax.Rest.Tests.csproj", "{1910E331-250B-4826-9E19-690DB028EA7B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.CommonProtos", "src\Google.Api.CommonProtos\Google.Api.CommonProtos.xproj", "{29623F34-B99D-47C2-80C8-1A42C0F25A3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.CommonProtos", "src\Google.Api.CommonProtos\Google.Api.CommonProtos.csproj", "{29623F34-B99D-47C2-80C8-1A42C0F25A3B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Grpc.Tests", "test\Google.Api.Gax.Grpc.Tests\Google.Api.Gax.Grpc.Tests.xproj", "{AB803631-49E6-4114-8668-AF9F5AB3A2D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Tests", "test\Google.Api.Gax.Grpc.Tests\Google.Api.Gax.Grpc.Tests.csproj", "{AB803631-49E6-4114-8668-AF9F5AB3A2D9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Grpc", "src\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.xproj", "{79AF504F-A1F6-4306-91DA-5AB816546306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc", "src\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj", "{79AF504F-A1F6-4306-91DA-5AB816546306}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Grpc.IntegrationTests", "test\Google.Api.Gax.Grpc.IntegrationTests\Google.Api.Gax.Grpc.IntegrationTests.xproj", "{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.IntegrationTests", "test\Google.Api.Gax.Grpc.IntegrationTests\Google.Api.Gax.Grpc.IntegrationTests.csproj", "{BD7ECD06-675B-4B3A-AB63-3966F95CBC11}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.Grpc.Testing", "testing\Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.xproj", "{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Testing", "testing\Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj", "{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Google.Api.Gax.PlatformIntegrationTests", "test\Google.Api.Gax.PlatformIntegrationTests\Google.Api.Gax.PlatformIntegrationTests.xproj", "{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.PlatformIntegrationTests", "test\Google.Api.Gax.PlatformIntegrationTests\Google.Api.Gax.PlatformIntegrationTests.csproj", "{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
