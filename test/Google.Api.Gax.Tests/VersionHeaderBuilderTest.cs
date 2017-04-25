@@ -48,8 +48,7 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void AppendAssemblyVersion()
         {
-            // Our test assembly is implicitly at v1.0.0. (We don't specify a version in project.json.)
-            Assert.Equal("foo/1.0.0",
+            Assert.StartsWith("foo/1.0.0",
                 new VersionHeaderBuilder().AppendAssemblyVersion("foo", GetType()).ToString());
         }
     }

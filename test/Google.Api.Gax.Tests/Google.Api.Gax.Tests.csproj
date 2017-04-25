@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProjectProperties.xml" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Google.Api.Gax\Google.Api.Gax.csproj" />
+    <ProjectReference Include="..\..\testing\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\StripDesktopOnNonWindows.xml" />
+
+</Project>

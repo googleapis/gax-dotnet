@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProjectProperties.xml" />
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Packaging information -->
+  <PropertyGroup>
+    <Title>Testing support for Google.Api.Gax.Grpc</Title>
+    <Description>Testing support for Google.Api.Gax.Grpc</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\StripDesktopOnNonWindows.xml" />
+
+</Project>
