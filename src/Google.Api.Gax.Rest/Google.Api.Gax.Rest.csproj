@@ -3,7 +3,7 @@
   <Import Project="..\CommonProjectProperties.xml" />
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>2.0.0-beta01</VersionPrefix>
     <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
   </PropertyGroup>
 
@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.25.0" />
   </ItemGroup>
 
   <Import Project="..\..\StripDesktopOnNonWindows.xml" />

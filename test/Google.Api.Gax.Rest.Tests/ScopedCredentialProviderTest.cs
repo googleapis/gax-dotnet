@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Google.Api.Gax.IntegrationTests
+namespace Google.Api.Gax.Rest.Tests
 {
     // Note: we can't easily test the default credentials part here, as that relies
     // on environment variables etc. (We could potentially set the environment variable

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Google.Api.Gax
+namespace Google.Api.Gax.Rest
 {
     /// <summary>
     /// Simple factory of scoped credentials, which caches a scoped version of the
