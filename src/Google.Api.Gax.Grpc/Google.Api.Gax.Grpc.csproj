@@ -3,7 +3,7 @@
   <Import Project="..\CommonProjectProperties.xml" />
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>2.0.0-beta01</VersionPrefix>
     <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
   </PropertyGroup>
 
@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Grpc.Auth" Version="1.2.0" />
     <PackageReference Include="Grpc.Core" Version="1.2.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.25.0" />
   </ItemGroup>
 
   <Import Project="..\..\StripDesktopOnNonWindows.xml" />
