@@ -5,7 +5,7 @@
 OS=windows
 [[ ${OS} = "windows" ]] && EXE_SUFFIX=.exe || EXE_SUFFIX=
 
-PROTOBUF_VERSION=3.2.0
+PROTOBUF_VERSION=3.3.0
 PROTOC=packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
 CORE_PROTOS_ROOT=packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
 
