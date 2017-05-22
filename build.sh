@@ -48,4 +48,4 @@ do
 done
 
 echo Packing
-dotnet pack $DOTNET_BUILD_ARGS --no-build Gax.sln
+dotnet pack $DOTNET_BUILD_ARGS --no-build -o $PWD/nuget Gax.sln
