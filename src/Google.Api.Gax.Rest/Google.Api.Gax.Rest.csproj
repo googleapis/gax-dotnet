@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.25.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.26.2" />
   </ItemGroup>
 
   <Import Project="..\..\StripDesktopOnNonWindows.xml" />
