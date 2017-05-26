@@ -151,7 +151,7 @@ namespace Google.Api.Gax.Testing
         /// </summary>
         /// <exception cref="SchedulerTimeoutException">The scheduler timed out.</exception>
         /// <param name="taskProvider">A delegate providing an asynchronous action to execute with the scheduler.</param>
-        public Task RunAsync(Func<Task> taskProvider) => RunAsync(async () => { await taskProvider(); return 0; });
+        public Task RunAsync(Func<Task> taskProvider) => RunAsync(async () => { await taskProvider().ConfigureAwait(false); return 0; });
 
         /// <summary>
         /// Runs a task in a separate thread, and the scheduler alongside it to simulate sleeping and delaying.
@@ -182,7 +182,7 @@ namespace Google.Api.Gax.Testing
             var funcTask = Task.Run(taskProvider);
             var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + SimulatedTimeTimeout);
             var delayTask = Task.Delay(RealTimeTimeout);
-            var completedTask = await Task.WhenAny(funcTask, simulatedTimeTask, delayTask);
+            var completedTask = await Task.WhenAny(funcTask, simulatedTimeTask, delayTask).ConfigureAwait(false);
             lock (_monitor)
             {
                 _stopped = true;
@@ -190,7 +190,7 @@ namespace Google.Api.Gax.Testing
             }
             if (completedTask == funcTask)
             {
-                return await funcTask;
+                return await funcTask.ConfigureAwait(false);
             }
             else if (completedTask == delayTask)
             {

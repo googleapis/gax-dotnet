@@ -132,7 +132,7 @@ namespace Google.Api.Gax.Rest
                 {
                     return false;
                 }
-                Current = await _request.ExecuteAsync(cancellationToken);
+                Current = await _request.ExecuteAsync(cancellationToken).ConfigureAwait(false);
                 var nextPageToken = _pageManager.GetNextPageToken(Current);
                 if (nextPageToken == null)
                 {

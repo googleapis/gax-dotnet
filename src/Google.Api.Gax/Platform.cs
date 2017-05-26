@@ -286,7 +286,7 @@ namespace Google.Api.Gax
                 httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
                 var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
                 var httpClient = new HttpClient();
-                var response = await httpClient.SendAsync(httpRequest, cts.Token); // TODO: Consider retrying on IO Exception.
+                var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false); // TODO: Consider retrying on IO Exception.
                 IEnumerable<string> metadataValues;
                 if (response.StatusCode == HttpStatusCode.OK
                     && response.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
@@ -294,7 +294,7 @@ namespace Google.Api.Gax
                     && response.Content.Headers.ContentLength < maxContentLength)
                 {
                     // Valid response from metadata server.
-                    return await response.Content.ReadAsStringAsync();
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
             }
             catch
@@ -335,7 +335,7 @@ namespace Google.Api.Gax
             {
                 return new Platform(gaeDetails);
             }
-            var metadataJson = await LoadMetadataAsync();
+            var metadataJson = await LoadMetadataAsync().ConfigureAwait(false);
             if (metadataJson != null)
             {
                 GkePlatformDetails gkeDetails = GkePlatformDetails.TryLoad(metadataJson);

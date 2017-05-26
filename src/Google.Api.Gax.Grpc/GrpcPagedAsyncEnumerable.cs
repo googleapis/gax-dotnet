@@ -146,7 +146,7 @@ namespace Google.Api.Gax.Grpc
                 {
                     effectiveCallSettings = _callSettings.WithCancellationToken(cancellationToken);
                 }
-                Current = await _apiCall.Async(_request, effectiveCallSettings);
+                Current = await _apiCall.Async(_request, effectiveCallSettings).ConfigureAwait(false);
                 var nextPageToken = Current.NextPageToken;
                 if (nextPageToken == "")
                 {

@@ -55,7 +55,7 @@ namespace Google.Api.Gax.Grpc
 
         private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
         {
-            var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync();
+            var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
             if (appDefaultCredentials.IsCreateScopedRequired)
             {
                 appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
@@ -103,7 +103,7 @@ namespace Google.Api.Gax.Grpc
         public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await _lazyScopedDefaultChannelCredentials.Value;
+            var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
             return GetChannel(endpoint, credentials);
         }
 

@@ -42,7 +42,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A task, the result of which will be a <see cref="MonitoredResource"/> instance,
         /// populated most suitably for the given platform.</returns>
         public static async Task<MonitoredResource> FromPlatformAsync() =>
-            FromPlatform(await Platform.InstanceAsync());
+            FromPlatform(await Platform.InstanceAsync().ConfigureAwait(false));
 
         /// <summary>
         /// Builds a suitable <see cref="MonitoredResource"/> instance, given

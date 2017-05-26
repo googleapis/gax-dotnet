@@ -24,7 +24,7 @@ namespace Google.Api.Gax.Grpc
                 RetrySettings retrySettings = callSettings.Timing?.Retry;
                 if (retrySettings == null)
                 {
-                    return await fn(request, callSettings);
+                    return await fn(request, callSettings).ConfigureAwait(false);
                 }
                 DateTime? overallDeadline = retrySettings.TotalExpiration.CalculateDeadline(clock);
                 TimeSpan retryDelay = retrySettings.RetryBackoff.Delay;
@@ -37,7 +37,7 @@ namespace Google.Api.Gax.Grpc
                     CallSettings attemptCallSettings = callSettings.WithCallTiming(CallTiming.FromDeadline(combinedDeadline));
                     try
                     {
-                        return await fn(request, attemptCallSettings);
+                        return await fn(request, attemptCallSettings).ConfigureAwait(false);
                     }
                     catch (RpcException e) when (retrySettings.RetryFilter(e))
                     {
@@ -47,7 +47,7 @@ namespace Google.Api.Gax.Grpc
                         {
                             throw;
                         }
-                        await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
+                        await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
                         retryDelay = retrySettings.RetryBackoff.NextDelay(retryDelay);
                         callTimeout = retrySettings.TimeoutBackoff.NextDelay(callTimeout);
                     }
