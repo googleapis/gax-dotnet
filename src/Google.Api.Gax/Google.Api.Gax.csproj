@@ -16,6 +16,9 @@
   <ItemGroup>
     <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.0-beta4">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

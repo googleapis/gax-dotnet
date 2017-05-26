@@ -67,7 +67,8 @@ namespace Google.Api.Gax.Rest
 
         private async Task<GoogleCredential> CreateDefaultCredentialsUncached()
         {
-            var credentials = await GoogleCredential.GetApplicationDefaultAsync();
+            // ConfigureAwait isn't really needed here as we're calling Task.Run anyway, but it's harmless.
+            var credentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
             return ApplyScopes(credentials);
         }
 

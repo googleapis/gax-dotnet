@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Google.Api.Gax\Google.Api.Gax.csproj" />
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.0-beta4">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <Import Project="..\..\StripDesktopOnNonWindows.xml" />
