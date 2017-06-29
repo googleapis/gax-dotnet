@@ -95,6 +95,31 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
+        /// Checks that the given argument value is valid.
+        /// </summary>
+        /// <remarks>
+        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
+        /// not exclusive. This is deliberate, to allow the specification of ranges which include
+        /// <see cref="Int64.MaxValue"/>.
+        /// </remarks>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <param name="minInclusive">The smallest valid value.</param>
+        /// <param name="maxInclusive">The largest valid value.</param>
+        /// <returns><paramref name="argument"/> if it was in range</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
+        public static long CheckArgumentRange(long argument, string paramName, long minInclusive, long maxInclusive)
+        {
+            if (argument < minInclusive || argument > maxInclusive)
+            {
+                throw new ArgumentOutOfRangeException(
+                    paramName,
+                    $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]");
+            }
+            return argument;
+        }
+
+        /// <summary>
         /// Checks that given condition is met, throwing an <see cref="InvalidOperationException"/> otherwise.
         /// </summary>
         /// <param name="condition">The (already evaluated) condition to check.</param>

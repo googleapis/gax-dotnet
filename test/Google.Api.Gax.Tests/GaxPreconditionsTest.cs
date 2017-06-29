@@ -57,17 +57,34 @@ namespace Google.Api.Gax.Tests
         [InlineData(RangeMin)]
         [InlineData((RangeMin + RangeMax) / 2)]
         [InlineData(RangeMax)]
-        public void CheckRange_Valid(int value)
+        public void CheckRangeInt32_Valid(int value)
         {
-            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), -4, 5));
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
 
         [Theory]
         [InlineData(RangeMin - 1)]
         [InlineData(RangeMax + 1)]
-        public void CheckRange_Invalid(int value)
+        public void CheckRangeInt32_Invalid(int value)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), -4, 5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        public void CheckRangeInt64_Valid(long value)
+        {
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 1)]
+        [InlineData(RangeMax + 1)]
+        public void CheckRangeInt64_Invalid(long value)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
 
         [Fact]
