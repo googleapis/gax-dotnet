@@ -130,7 +130,7 @@ namespace Google.Api.Gax.Grpc
                 var effectiveOptions = modifyOptions ? options
                     : lastRequest != null ? lastRequest.WriteOptions
                     : _writer.WriteOptions;
-                var request = new Request(message, effectiveOptions);
+                var request = new Request(message, effectiveOptions, HandleWriteComplete);
                 if (lastRequest == null)
                 {
                     // If there's nothing in flight, send immediately. Otherwise,
@@ -138,7 +138,6 @@ namespace Google.Api.Gax.Grpc
                     request.WriteTo(_writer);
                 }
                 _queue.AddLast(request);
-                request.CompletionSource.Task.ContinueWith(HandleWriteComplete);
                 return request.CompletionSource.Task;
             }
         }
@@ -244,7 +243,7 @@ namespace Google.Api.Gax.Grpc
                 }
 
                 var lastRequest = _queue.Last?.Value;
-                var request = new Request(null, null);
+                var request = new Request(null, null, null);
                 if (lastRequest == null)
                 {
                     // If there's nothing in flight, send immediately. Otherwise,
@@ -282,10 +281,13 @@ namespace Google.Api.Gax.Grpc
             internal WriteOptions WriteOptions { get; }
             internal TaskCompletionSource<int> CompletionSource { get; }
 
-            public Request(T message, WriteOptions options)
+            private Action<Task> _continuation;
+
+            public Request(T message, WriteOptions options, Action<Task> continuation)
             {
                 Message = message;
                 WriteOptions = options;
+                _continuation = continuation;
                 CompletionSource = new TaskCompletionSource<int>();
             }
 
@@ -293,7 +295,11 @@ namespace Google.Api.Gax.Grpc
             {
                 writer.WriteOptions = WriteOptions;
                 Task task = Message == null ? writer.CompleteAsync() : writer.WriteAsync(Message);
-                task.ContinueWith(t => PropagateTaskResult(t, CompletionSource));
+                task.ContinueWith(t =>
+                {
+                    _continuation?.Invoke(t);
+                    PropagateTaskResult(t, CompletionSource);
+                });
             }
         }
     }
