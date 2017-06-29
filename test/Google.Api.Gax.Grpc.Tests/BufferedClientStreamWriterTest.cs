@@ -8,6 +8,7 @@
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -281,6 +282,23 @@ namespace Google.Api.Gax.Grpc.Tests
             writer.WriteAsync("5");
             fake.CompleteCurrentTask();
             fake.AssertOptions(null, options1, options1, options2, options2);
+        }
+
+        [Fact]
+        public async Task AtomicTaskCompletion()
+        {
+            const int testSize = 100;
+            var fake = new FakeWriter();
+            var writer = new BufferedClientStreamWriter<string>(fake, 1);
+            var msgs = Enumerable.Range(0, testSize).Select(x => x.ToString()).ToArray();
+            foreach (var msg in msgs)
+            {
+                // This write can fail if task completion inside writer is not atomic.
+                Task task = writer.WriteAsync(msg);
+                fake.CompleteCurrentTask();
+                await task.ConfigureAwait(false);
+            }
+            fake.AssertMessages(msgs);
         }
 
         /// <summary>
