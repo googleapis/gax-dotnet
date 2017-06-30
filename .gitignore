@@ -15,3 +15,6 @@ _site
 packages
 tmp
 googleapis
+
+# Created by build.sh
+nuget
