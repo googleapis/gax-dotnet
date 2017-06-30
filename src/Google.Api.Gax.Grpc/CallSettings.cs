@@ -16,6 +16,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class CallSettings
     {
+        internal const string FieldMaskHeader = "x-goog-fieldmask";
+
         /// <summary>
         /// Constructs an instance with the specified settings.
         /// </summary>
@@ -154,5 +156,24 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(value, nameof(value));
             return FromHeaderMutation(metadata => metadata.Add(name, value));
         }
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> that will include a field mask in the request, to
+        /// limit which fields are returned in the response.
+        /// </summary>
+        /// <remarks>
+        /// The precise effect on the request is not guaranteed: it may be through a header or a side-channel,
+        /// for example. Likewise the effect of combining multiple settings containing field masks is not specified.
+        /// </remarks>
+        /// <param name="fieldMask">The field mask for the request. Must not be null.</param>
+        /// <returns>A new instance.</returns>
+        public static CallSettings FromFieldMask(string fieldMask)
+        {
+            GaxPreconditions.CheckNotNull(fieldMask, nameof(fieldMask));
+            return FromHeaderMutation(metadata => metadata.Add(FieldMaskHeader, fieldMask));
+        }
+
+        // TODO: Accept a Google.Protobuf.FieldMask when we're convinced it's useful and we know
+        // exactly what to do with it.
     }
 }
