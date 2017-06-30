@@ -74,6 +74,24 @@ namespace Google.Api.Gax.Tests
         [InlineData(RangeMin)]
         [InlineData((RangeMin + RangeMax) / 2)]
         [InlineData(RangeMax)]
+        [InlineData(null)]
+        public void CheckRangeNullableInt32_Valid(int? value)
+        {
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 1)]
+        [InlineData(RangeMax + 1)]
+        public void CheckRangeNullableInt32_Invalid(int? value)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
         public void CheckRangeInt64_Valid(long value)
         {
             Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
@@ -86,6 +104,128 @@ namespace Google.Api.Gax.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        [InlineData(null)]
+        public void CheckRangeNullableInt64_Valid(long? value)
+        {
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 1)]
+        [InlineData(RangeMax + 1)]
+        public void CheckRangeNullableInt64_Invalid(long? value)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        public void CheckRangeDouble_Valid(double value)
+        {
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 0.1)]
+        [InlineData(RangeMax + 0.1)]
+        public void CheckRangeDouble_Invalid(double value)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        [InlineData(null)]
+        public void CheckRangeNullableDouble_Valid(double? value)
+        {
+            Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 0.1)]
+        [InlineData(RangeMax + 0.1)]
+        public void CheckRangeNullableDouble_Invalid(double? value)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void CheckNonNegativeInt32_Valid(int value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeInt32_Invalid(int value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(null)]
+        public void CheckNonNegativeNullableInt32_Valid(int? value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeNullableInt32_Invalid(int? value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void CheckNonNegativeInt64_Valid(long value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeInt64_Invalid(long value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(null)]
+        public void CheckNonNegativeNullableInt64_Valid(long? value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeNullableInt64_Invalid(long? value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void CheckNonNegativeDouble_Valid(double value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeDouble_Invalid(double value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(null)]
+        public void CheckNonNegativeNullableDouble_Valid(double? value) => Assert.Equal(value, GaxPreconditions.CheckNonNegative(value, nameof(value)));
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void CheckNonNegativeNullableDouble_Invalid(double? value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegative(value, nameof(value)));
 
         [Fact]
         public void CheckState_Valid()
