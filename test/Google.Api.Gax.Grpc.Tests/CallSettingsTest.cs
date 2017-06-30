@@ -139,5 +139,16 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal("name", metadata[0].Key);
             Assert.Equal("value", metadata[0].Value);
         }
+
+        // Note: this test may well need to change, e.g. if we start to use a side channel.
+        [Fact]
+        public void FromFieldMask()
+        {
+            var settings = CallSettings.FromFieldMask("foo");
+            var metadata = new Metadata();
+            settings.HeaderMutation(metadata);
+            Assert.Equal(CallSettings.FieldMaskHeader, metadata[0].Key);
+            Assert.Equal("foo", metadata[0].Value);
+        }
     }
 }
