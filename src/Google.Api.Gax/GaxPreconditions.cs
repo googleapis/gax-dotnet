@@ -39,14 +39,8 @@ namespace Google.Api.Gax
         /// <param name="paramName">The name of the parameter in the calling method.</param>
         /// <exception cref="ArgumentNullException"><paramref name="argument"/> is null</exception>
         /// <returns><paramref name="argument"/> if it is not null</returns>
-        public static T CheckNotNull<T>(T argument, string paramName) where T : class
-        {
-            if (argument == null)
-            {
-                throw new ArgumentNullException(paramName);
-            }
-            return argument;
-        }
+        public static T CheckNotNull<T>(T argument, string paramName) where T : class =>
+            argument == null ? throw new ArgumentNullException(paramName) : argument;
 
         /// <summary>
         /// Checks that a string argument is neither null, nor an empty string.
@@ -56,18 +50,10 @@ namespace Google.Api.Gax
         /// <exception cref="ArgumentNullException"><paramref name="argument"/> is null</exception>
         /// <exception cref="ArgumentException"><paramref name="argument"/> is empty</exception>
         /// <returns><paramref name="argument"/> if it is not null or empty</returns>
-        public static string CheckNotNullOrEmpty(string argument, string paramName)
-        {
-            if (argument == null)
-            {
-                throw new ArgumentNullException(paramName);
-            }
-            if (argument == "")
-            {
-                throw new ArgumentException("An empty string was provided, but is not valid", paramName);
-            }
-            return argument;
-        }
+        public static string CheckNotNullOrEmpty(string argument, string paramName) =>
+            argument == null ? throw new ArgumentNullException(paramName) :
+            argument == "" ? throw new ArgumentException("An empty string was provided, but is not valid", paramName) :
+            argument;
 
         /// <summary>
         /// Checks that the given argument value is valid.
@@ -83,16 +69,26 @@ namespace Google.Api.Gax
         /// <param name="maxInclusive">The largest valid value.</param>
         /// <returns><paramref name="argument"/> if it was in range</returns>
         /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static int CheckArgumentRange(int argument, string paramName, int minInclusive, int maxInclusive)
-        {
-            if (argument < minInclusive || argument > maxInclusive)
-            {
-                throw new ArgumentOutOfRangeException(
-                    paramName,
-                    $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]");
-            }
-            return argument;
-        }
+        public static int CheckArgumentRange(int argument, string paramName, int minInclusive, int maxInclusive) =>
+            argument < minInclusive || argument > maxInclusive ?
+            throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is valid.
+        /// </summary>
+        /// <remarks>
+        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
+        /// not exclusive. This is deliberate, to allow the specification of ranges which include
+        /// <see cref="Int32.MaxValue"/>.
+        /// </remarks>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <param name="minInclusive">The smallest valid value.</param>
+        /// <param name="maxInclusive">The largest valid value.</param>
+        /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
+        public static int? CheckArgumentRange(int? argument, string paramName, int minInclusive, int maxInclusive) =>
+            argument is int arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
 
         /// <summary>
         /// Checks that the given argument value is valid.
@@ -108,16 +104,121 @@ namespace Google.Api.Gax
         /// <param name="maxInclusive">The largest valid value.</param>
         /// <returns><paramref name="argument"/> if it was in range</returns>
         /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static long CheckArgumentRange(long argument, string paramName, long minInclusive, long maxInclusive)
-        {
-            if (argument < minInclusive || argument > maxInclusive)
-            {
-                throw new ArgumentOutOfRangeException(
-                    paramName,
-                    $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]");
-            }
-            return argument;
-        }
+        public static long CheckArgumentRange(long argument, string paramName, long minInclusive, long maxInclusive) =>
+            argument < minInclusive || argument > maxInclusive ?
+            throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is valid.
+        /// </summary>
+        /// <remarks>
+        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
+        /// not exclusive. This is deliberate, to allow the specification of ranges which include
+        /// <see cref="Int32.MaxValue"/>.
+        /// </remarks>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <param name="minInclusive">The smallest valid value.</param>
+        /// <param name="maxInclusive">The largest valid value.</param>
+        /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
+        public static long? CheckArgumentRange(long? argument, string paramName, long minInclusive, long maxInclusive) =>
+            argument is long arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
+
+        /// <summary>
+        /// Checks that the given argument value is valid.
+        /// </summary>
+        /// <remarks>
+        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
+        /// not exclusive. This is deliberate, to allow the specification of ranges which include
+        /// <see cref="Int64.MaxValue"/>.
+        /// </remarks>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <param name="minInclusive">The smallest valid value.</param>
+        /// <param name="maxInclusive">The largest valid value.</param>
+        /// <returns><paramref name="argument"/> if it was in range</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
+        public static double CheckArgumentRange(double argument, string paramName, double minInclusive, double maxInclusive) =>
+            argument < minInclusive || argument > maxInclusive ?
+            throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is valid.
+        /// </summary>
+        /// <remarks>
+        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
+        /// not exclusive. This is deliberate, to allow the specification of ranges which include
+        /// <see cref="Int32.MaxValue"/>.
+        /// </remarks>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <param name="minInclusive">The smallest valid value.</param>
+        /// <param name="maxInclusive">The largest valid value.</param>
+        /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
+        public static double? CheckArgumentRange(double? argument, string paramName, double minInclusive, double maxInclusive) =>
+            argument is double arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
+
+        /// <summary>
+        /// Checks that the given argument value is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static int CheckNonNegative(int argument, string paramName) =>
+            argument < 0 ? throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be non-negative.") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static int? CheckNonNegative(int? argument, string paramName) =>
+            argument is int arg ? CheckNonNegative(arg, paramName) : argument;
+
+        /// <summary>
+        /// Checks that the given argument value is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static long CheckNonNegative(long argument, string paramName) =>
+            argument < 0 ? throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be non-negative.") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static long? CheckNonNegative(long? argument, string paramName) =>
+            argument is long arg ? CheckNonNegative(arg, paramName) : argument;
+
+        /// <summary>
+        /// Checks that the given argument value is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static double CheckNonNegative(double argument, string paramName) =>
+            argument < 0 ? throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be non-negative.") : argument;
+
+        /// <summary>
+        /// Checks that the given argument value, if not <c>null</c>, is not negative.
+        /// </summary>
+        /// <param name="argument">The value of the argument passed to the calling method.</param>
+        /// <param name="paramName">The name of the parameter in the calling method.</param>
+        /// <returns><paramref name="argument"/> if it was non-negative, or <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The argument was negative.</exception>
+        public static double? CheckNonNegative(double? argument, string paramName) =>
+            argument is double arg ? CheckNonNegative(arg, paramName) : argument;
 
         /// <summary>
         /// Checks that given condition is met, throwing an <see cref="InvalidOperationException"/> otherwise.
@@ -237,13 +338,7 @@ namespace Google.Api.Gax
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <param name="paramName">The name of the parameter whose value is being tested.</param>
-        internal static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName)
-        {
-            if (value < TimeSpan.Zero)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative");
-            }
-            return value;
-        }
+        internal static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName) =>
+            value < TimeSpan.Zero ? throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative") : value;
     }
 }
