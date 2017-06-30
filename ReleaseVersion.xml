@@ -1,0 +1,10 @@
+<Project>
+  <!-- 
+    - Single place to put the release version number. This is imported
+    - in both testing/* and src/*. We may eventually want to have
+    - divergent versions, but for the moment this keeps things simpler.
+    -->
+  <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
+  </PropertyGroup>
+</Project>

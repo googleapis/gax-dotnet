@@ -21,4 +21,6 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/googleapis/gax-dotnet</RepositoryUrl>
   </PropertyGroup>
+
+  <Import Project="..\ReleaseVersion.xml" />
 </Project>
