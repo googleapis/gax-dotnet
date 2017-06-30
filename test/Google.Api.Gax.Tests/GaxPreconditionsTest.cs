@@ -127,7 +127,7 @@ namespace Google.Api.Gax.Tests
         [InlineData(RangeMin)]
         [InlineData((RangeMin + RangeMax) / 2)]
         [InlineData(RangeMax)]
-        public void CheckRangeDouble_Valid(double value)
+        public void CheckRangeTDouble_Valid(double value)
         {
             Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
@@ -135,7 +135,7 @@ namespace Google.Api.Gax.Tests
         [Theory]
         [InlineData(RangeMin - 0.1)]
         [InlineData(RangeMax + 0.1)]
-        public void CheckRangeDouble_Invalid(double value)
+        public void CheckRangeTDouble_Invalid(double value)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
@@ -145,7 +145,7 @@ namespace Google.Api.Gax.Tests
         [InlineData((RangeMin + RangeMax) / 2)]
         [InlineData(RangeMax)]
         [InlineData(null)]
-        public void CheckRangeNullableDouble_Valid(double? value)
+        public void CheckRangeNullableTDouble_Valid(double? value)
         {
             Assert.Equal(value, GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
         }
@@ -153,9 +153,47 @@ namespace Google.Api.Gax.Tests
         [Theory]
         [InlineData(RangeMin - 0.1)]
         [InlineData(RangeMax + 0.1)]
-        public void CheckRangeNullableDouble_Invalid(double? value)
+        public void CheckRangeNullableTDouble_Invalid(double? value)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(value, nameof(value), RangeMin, RangeMax));
+        }
+
+        private TimeSpan S(int seconds) => TimeSpan.FromSeconds(seconds);
+        private TimeSpan? S(int? seconds) => seconds is int s ? (TimeSpan?)TimeSpan.FromSeconds(s) : null;
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        public void CheckRangeTTimeSpan_Valid(int seconds)
+        {
+            Assert.Equal(S(seconds), GaxPreconditions.CheckArgumentRange(S(seconds), nameof(seconds), S(RangeMin), S(RangeMax)));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 1)]
+        [InlineData(RangeMax + 1)]
+        public void CheckRangeTTimeSpan_Invalid(int seconds)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(S(seconds), nameof(seconds), S(RangeMin), S(RangeMax)));
+        }
+
+        [Theory]
+        [InlineData(RangeMin)]
+        [InlineData((RangeMin + RangeMax) / 2)]
+        [InlineData(RangeMax)]
+        [InlineData(null)]
+        public void CheckRangeNullableTTimeSpan_Valid(int? seconds)
+        {
+            Assert.Equal(S(seconds), GaxPreconditions.CheckArgumentRange(S(seconds), nameof(seconds), S(RangeMin), S(RangeMax)));
+        }
+
+        [Theory]
+        [InlineData(RangeMin - 1)]
+        [InlineData(RangeMax + 1)]
+        public void CheckRangeNullableTDouble_Invalid(int? seconds)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(S(seconds), nameof(seconds), S(RangeMin), S(RangeMax)));
         }
 
         [Theory]

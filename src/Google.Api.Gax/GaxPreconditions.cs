@@ -74,23 +74,6 @@ namespace Google.Api.Gax
             throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
 
         /// <summary>
-        /// Checks that the given argument value, if not <c>null</c>, is valid.
-        /// </summary>
-        /// <remarks>
-        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
-        /// not exclusive. This is deliberate, to allow the specification of ranges which include
-        /// <see cref="Int32.MaxValue"/>.
-        /// </remarks>
-        /// <param name="argument">The value of the argument passed to the calling method.</param>
-        /// <param name="paramName">The name of the parameter in the calling method.</param>
-        /// <param name="minInclusive">The smallest valid value.</param>
-        /// <param name="maxInclusive">The largest valid value.</param>
-        /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static int? CheckArgumentRange(int? argument, string paramName, int minInclusive, int maxInclusive) =>
-            argument is int arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
-
-        /// <summary>
         /// Checks that the given argument value is valid.
         /// </summary>
         /// <remarks>
@@ -104,8 +87,8 @@ namespace Google.Api.Gax
         /// <param name="maxInclusive">The largest valid value.</param>
         /// <returns><paramref name="argument"/> if it was in range</returns>
         /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static long CheckArgumentRange(long argument, string paramName, long minInclusive, long maxInclusive) =>
-            argument < minInclusive || argument > maxInclusive ?
+        public static T CheckArgumentRange<T>(T argument, string paramName, T minInclusive, T maxInclusive) where T : IComparable<T> =>
+            argument.CompareTo(minInclusive) < 0 || argument.CompareTo(maxInclusive) > 0 ?
             throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
 
         /// <summary>
@@ -122,43 +105,8 @@ namespace Google.Api.Gax
         /// <param name="maxInclusive">The largest valid value.</param>
         /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static long? CheckArgumentRange(long? argument, string paramName, long minInclusive, long maxInclusive) =>
-            argument is long arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
-
-        /// <summary>
-        /// Checks that the given argument value is valid.
-        /// </summary>
-        /// <remarks>
-        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
-        /// not exclusive. This is deliberate, to allow the specification of ranges which include
-        /// <see cref="Int64.MaxValue"/>.
-        /// </remarks>
-        /// <param name="argument">The value of the argument passed to the calling method.</param>
-        /// <param name="paramName">The name of the parameter in the calling method.</param>
-        /// <param name="minInclusive">The smallest valid value.</param>
-        /// <param name="maxInclusive">The largest valid value.</param>
-        /// <returns><paramref name="argument"/> if it was in range</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static double CheckArgumentRange(double argument, string paramName, double minInclusive, double maxInclusive) =>
-            argument < minInclusive || argument > maxInclusive ?
-            throw new ArgumentOutOfRangeException(paramName, $"Value {argument} should be in range [{minInclusive}, {maxInclusive}]") : argument;
-
-        /// <summary>
-        /// Checks that the given argument value, if not <c>null</c>, is valid.
-        /// </summary>
-        /// <remarks>
-        /// Note that the upper bound (<paramref name="maxInclusive"/>) is inclusive,
-        /// not exclusive. This is deliberate, to allow the specification of ranges which include
-        /// <see cref="Int32.MaxValue"/>.
-        /// </remarks>
-        /// <param name="argument">The value of the argument passed to the calling method.</param>
-        /// <param name="paramName">The name of the parameter in the calling method.</param>
-        /// <param name="minInclusive">The smallest valid value.</param>
-        /// <param name="maxInclusive">The largest valid value.</param>
-        /// <returns><paramref name="argument"/> if it was in range, or <c>null</c>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The argument was outside the specified range.</exception>
-        public static double? CheckArgumentRange(double? argument, string paramName, double minInclusive, double maxInclusive) =>
-            argument is double arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
+        public static T? CheckArgumentRange<T>(T? argument, string paramName, T minInclusive, T maxInclusive) where T : struct, IComparable<T> =>
+            argument is T arg ? CheckArgumentRange(arg, paramName, minInclusive, maxInclusive) : argument;
 
         /// <summary>
         /// Checks that the given argument value is not negative.
