@@ -55,6 +55,8 @@ namespace Google.Api.Gax
             argument == "" ? throw new ArgumentException("An empty string was provided, but is not valid", paramName) :
             argument;
 
+        // CheckArgumentRange(int) cannot be removed in favour of the generic method,
+        // because  that would be a breaking minor version change.
         /// <summary>
         /// Checks that the given argument value is valid.
         /// </summary>
