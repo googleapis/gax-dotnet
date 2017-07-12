@@ -40,7 +40,7 @@ namespace Google.Api.Gax
         /// <exception cref="ArgumentNullException"><paramref name="argument"/> is null</exception>
         /// <returns><paramref name="argument"/> if it is not null</returns>
         public static T CheckNotNull<T>(T argument, string paramName) where T : class =>
-            argument == null ? throw new ArgumentNullException(paramName) : argument;
+            argument ?? throw new ArgumentNullException(paramName);
 
         /// <summary>
         /// Checks that a string argument is neither null, nor an empty string.
