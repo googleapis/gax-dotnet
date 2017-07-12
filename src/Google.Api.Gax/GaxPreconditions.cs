@@ -283,12 +283,12 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// Checks that the given <see cref="TimeSpan"/> used as a delay is non-negative. This is internal
-        /// as it's very specialized.
+        /// Checks that the given <see cref="TimeSpan"/> used as a delay is non-negative. This is a very specific
+        /// call; most users won't need it.
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <param name="paramName">The name of the parameter whose value is being tested.</param>
-        internal static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName) =>
+        public static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName) =>
             value < TimeSpan.Zero ? throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative") : value;
     }
 }
