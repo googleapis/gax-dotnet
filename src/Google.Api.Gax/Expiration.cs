@@ -88,7 +88,10 @@ namespace Google.Api.Gax
             ExpirationType.None;
     }
 
-    internal static class ExpirationExtensions
+    /// <summary>
+    /// Extension methods for <see cref="Expiration"/>.
+    /// </summary>
+    public static class ExpirationExtensions
     {
         /// <summary>
         /// Calculate a deadline from an <see cref="Expiration"/> and a <see cref="IClock"/>.
@@ -96,7 +99,7 @@ namespace Google.Api.Gax
         /// <param name="expiration"><see cref="Expiration"/>, may be null.</param>
         /// <param name="clock"><see cref="IClock"/> to use for deadline calculation.</param>
         /// <returns>The calculated absolute deadline, or null if no deadline should be used.</returns>
-        internal static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
+        public static DateTime? CalculateDeadline(this Expiration expiration, IClock clock)
         {
             GaxPreconditions.CheckNotNull(clock, nameof(clock));
             if (expiration == null)

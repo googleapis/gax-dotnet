@@ -17,18 +17,18 @@ namespace Google.Api.Gax
     /// The value is a space-separated list of name/value pairs, where the value
     /// should be a semantic version string.
     /// </summary>
-    internal sealed class VersionHeaderBuilder
+    public sealed class VersionHeaderBuilder
     {
         /// <summary>
         /// The name of the header to set.
         /// </summary>
-        internal const string HeaderName = "x-goog-api-client";
+        public const string HeaderName = "x-goog-api-client";
         private readonly List<string> _values = new List<string>();
 
         /// <summary>
         /// Appends the given name/version string to the list.
         /// </summary>
-        internal VersionHeaderBuilder AppendVersion(string name, string version)
+        public VersionHeaderBuilder AppendVersion(string name, string version)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             GaxPreconditions.CheckNotNull(version, nameof(version));
@@ -40,13 +40,13 @@ namespace Google.Api.Gax
         /// Appends a name/version string, taking the version from the version of the assembly
         /// containing the given type.
         /// </summary>
-        internal VersionHeaderBuilder AppendAssemblyVersion(string name, System.Type type)
+        public VersionHeaderBuilder AppendAssemblyVersion(string name, System.Type type)
             => AppendVersion(name, FormatAssemblyVersion(type));
 
         /// <summary>
         /// Appends the .NET environment information to the list.
         /// </summary>
-        internal VersionHeaderBuilder AppendDotNetEnvironment()
+        public VersionHeaderBuilder AppendDotNetEnvironment()
 #if NETSTANDARD1_3
             => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework?.Version));
 #else
@@ -77,6 +77,7 @@ namespace Google.Api.Gax
             $"{version.Major}.{version.Minor}.{(version.Build != -1 ? version.Build : 0)}" :
             ""; // Empty string means "unknown"
 
+        /// <inheritdoc />
         public override string ToString() => string.Join(" ", _values);
     }
 }
