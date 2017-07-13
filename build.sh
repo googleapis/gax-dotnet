@@ -46,6 +46,3 @@ do
   # defined for the project.
   dotnet test $DOTNET_TEST_ARGS $testproject
 done
-
-echo Packing
-dotnet pack $DOTNET_BUILD_ARGS --no-build -o $PWD/nuget Gax.sln
