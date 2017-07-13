@@ -13,8 +13,6 @@
   <PropertyGroup>
     <Copyright>Copyright 2017 Google Inc.</Copyright>
     <Authors>Google Inc.</Authors>
-    <IncludeSymbols>True</IncludeSymbols>
-    <IncludeSource>True</IncludeSource>
     <PackageLicenseUrl>https://developers.google.com/open-source/licenses/bsd</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/googleapis/gax-dotnet</PackageProjectUrl>
     <PackageTags>Google</PackageTags>
