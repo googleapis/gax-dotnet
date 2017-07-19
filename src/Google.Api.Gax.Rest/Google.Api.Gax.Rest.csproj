@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.27.1" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.28.0" />
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.0-beta4">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
