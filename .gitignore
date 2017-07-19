@@ -16,5 +16,6 @@ packages
 tmp
 googleapis
 
-# Created by build.sh
+# Created by buildrelease.sh
 nuget
+releasebuild
