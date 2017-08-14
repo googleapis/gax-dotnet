@@ -147,6 +147,24 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// Returns a new <see cref="CallSettings"/> with the given the expiration, merged with the (optional) original settings specified by <paramref name="settings"/>.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="settings"/> is non-null and has retry-based timing, the returned settings will have the same timing, but with the specified
+        /// expiration. Otherwise, the returned settings will have a simple expiration.
+        /// </remarks>
+        /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
+        /// <param name="expiration">Expiration to use in the returned settings, possibly as part of a retry. Must not be null.</param>
+        /// <returns></returns>
+        public static CallSettings WithExpiration(this CallSettings settings, Expiration expiration)
+        {
+            GaxPreconditions.CheckNotNull(expiration, nameof(expiration));
+            var retry = settings?.Timing?.Retry?.WithTotalExpiration(expiration);
+            var timing = retry == null ? CallTiming.FromExpiration(expiration) : CallTiming.FromRetry(retry);
+            return settings.WithCallTiming(timing);
+        }
+
+        /// <summary>
         /// Transfers settings contained in this into a <see cref="CallOptions"/>.
         /// </summary>
         /// <param name="callSettings">The call settings for the call. May be null.</param>

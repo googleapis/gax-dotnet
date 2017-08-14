@@ -282,5 +282,60 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(token, newSettings.CancellationToken);
         }
 
+        [Fact]
+        public void WithExpiration_NullExpiration()
+        {
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token);
+            Assert.Throws<ArgumentNullException>(() => settings.WithExpiration(null));
+        }
+
+        [Fact]
+        public void WithExpiration_NullSettings()
+        {
+            CallSettings settings = null;
+            Expiration expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            var result = settings.WithExpiration(expiration);
+            Assert.Equal(expiration, result.Timing.Expiration);
+        }
+
+        [Fact]
+        public void WithExpiration_SettingsWithNoTiming()
+        {
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token);
+            Expiration expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            var result = settings.WithExpiration(expiration);
+            Assert.Equal(expiration, result.Timing.Expiration);
+            Assert.Equal(token, result.CancellationToken);
+        }
+
+        [Fact]
+        public void WithExpiration_SettingsWithExpiration()
+        {
+            var token = new CancellationTokenSource().Token;
+            var originalTiming = CallTiming.FromTimeout(TimeSpan.FromSeconds(5));
+            CallSettings settings = CallSettings.FromCancellationToken(token).WithCallTiming(originalTiming);
+            Expiration expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            var result = settings.WithExpiration(expiration);
+            Assert.Same(expiration, result.Timing.Expiration);
+            Assert.Equal(token, result.CancellationToken);
+        }
+
+        [Fact]
+        public void WithExpiration_SettingsWithRetry()
+        {
+            var token = new CancellationTokenSource().Token;
+            var backoffSettings = new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10), 1.5);
+            var retry = new RetrySettings(backoffSettings, backoffSettings, Expiration.FromTimeout(TimeSpan.FromSeconds(5)));
+            var originalTiming = CallTiming.FromRetry(retry);
+            CallSettings settings = CallSettings.FromCancellationToken(token).WithCallTiming(originalTiming);
+            Expiration expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            var result = settings.WithExpiration(expiration);
+            Assert.Same(expiration, result.Timing.Retry.TotalExpiration);
+            Assert.Same(backoffSettings, result.Timing.Retry.RetryBackoff);
+            Assert.Same(backoffSettings, result.Timing.Retry.TimeoutBackoff);
+            Assert.Equal(token, result.CancellationToken);
+        }
     }
 }
