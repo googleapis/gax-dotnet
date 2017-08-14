@@ -164,7 +164,7 @@ namespace Google.Api.Gax.Grpc
         /// Builds a new RetrySettings which is identical to this one, but with the given expiration.
         /// </summary>
         /// <param name="expiration">New expiration</param>
-        internal RetrySettings WithTotalExpiration(Expiration expiration) =>
+        public RetrySettings WithTotalExpiration(Expiration expiration) =>
             new RetrySettings(RetryBackoff, TimeoutBackoff, expiration, RetryFilter, DelayJitter);
 
         private sealed class RandomJitterImpl : IJitter
