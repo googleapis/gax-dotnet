@@ -20,7 +20,7 @@ namespace Google.Api.Gax
         /// Repeatedly calls the specified polling action, delaying between calls,
         /// until a given condition is met in the response.
         /// </summary>
-        /// <typeparam name="TResponse">The response type. Must not be null.</typeparam>
+        /// <typeparam name="TResponse">The response type.</typeparam>
         /// <param name="pollAction">The poll action, typically performing an RPC. The value passed to the
         /// action is the overall deadline, so that the RPC settings can be adjusted accordingly. A null value
         /// indicates no deadline.</param>
@@ -47,6 +47,7 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(pollSettings, nameof(pollSettings));
 
             var deadline = pollSettings.Expiration.CalculateDeadline(clock);
+            var currentDelay = pollSettings.Delay;
             while (true)
             {
                 var latest = pollAction(deadline);
@@ -59,7 +60,8 @@ namespace Google.Api.Gax
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                scheduler.Sleep(pollSettings.Delay, cancellationToken);
+                scheduler.Sleep(currentDelay, cancellationToken);
+                currentDelay = pollSettings.NextDelay(currentDelay);
             }
         }
 
@@ -67,7 +69,7 @@ namespace Google.Api.Gax
         /// Asynchronously repeatedly calls the specified polling action, delaying between calls,
         /// until a given condition is met in the response.
         /// </summary>
-        /// <typeparam name="TResponse">The response type. Must not be null.</typeparam>
+        /// <typeparam name="TResponse">The response type.</typeparam>
         /// <param name="pollAction">The poll action, typically performing an RPC. The value passed to the
         /// action is the overall deadline, so that the RPC settings can be adjusted accordingly. A null
         /// value indicates no deadline.</param>
@@ -93,6 +95,7 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(pollSettings, nameof(pollSettings));
 
             var deadline = pollSettings.Expiration.CalculateDeadline(clock);
+            var currentDelay = pollSettings.Delay;
             while (true)
             {
                 var latest = await pollAction(deadline).ConfigureAwait(false);
@@ -105,7 +108,8 @@ namespace Google.Api.Gax
                     // TODO: Could return null instead. Unclear what's better here.
                     throw new TimeoutException("Operation did not complete within the specified expiry time");
                 }
-                await scheduler.Delay(pollSettings.Delay, cancellationToken).ConfigureAwait(false);
+                await scheduler.Delay(currentDelay, cancellationToken).ConfigureAwait(false);
+                currentDelay = pollSettings.NextDelay(currentDelay);
             }
         }
     }

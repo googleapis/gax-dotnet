@@ -42,10 +42,10 @@ namespace Google.Api.Gax
         public TimeSpan MaxDelay { get; }
 
         /// <summary>
-        /// Creates poll settings from the given expiration and delay.
+        /// Creates poll settings from the given expiration and constant delay.
         /// </summary>
         /// <param name="expiration">The expiration to use in order to know when to stop polling. Must not be null.</param>
-        /// <param name="delay">The delay between RPC calls. Must be non-negative.</param>
+        /// <param name="delay">The constant delay between RPC calls. Must be non-negative.</param>
         public PollSettings(Expiration expiration, TimeSpan delay) : this (expiration, delay, 1.0, delay) { }
 
         /// <summary>
@@ -66,6 +66,20 @@ namespace Google.Api.Gax
             }
             DelayMultiplier = delayMultiplier;
             MaxDelay = GaxPreconditions.CheckNonNegativeDelay(maxDelay, nameof(maxDelay));
+        }
+
+        /// <summary>
+        /// Works out the next delay from the current one, based on the multiplier and maximum.
+        /// </summary>
+        /// <param name="currentDelay">The current delay.</param>
+        /// <returns>The next delay.</returns>
+        internal TimeSpan NextDelay(TimeSpan currentDelay)
+        {
+            checked
+            {
+                TimeSpan next = new TimeSpan((long)(currentDelay.Ticks * DelayMultiplier));
+                return next < MaxDelay ? next : MaxDelay;
+            }
         }
     }
 }
