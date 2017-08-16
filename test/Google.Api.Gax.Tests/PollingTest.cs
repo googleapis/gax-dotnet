@@ -32,6 +32,19 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
+        public void PollToCompletionExponential_Success()
+        {
+            var pollSource = new PollSource(TimeSpan.FromSeconds(7), 5);
+            var pollSettings = new PollSettings(Expiration.FromTimeout(TimeSpan.FromSeconds(20)), TimeSpan.FromSeconds(1), 2.0, TimeSpan.FromSeconds(3));
+            pollSource.Scheduler.Run(() =>
+            {
+                var result = pollSource.PollRepeatedly(pollSettings, CancellationToken.None);
+                Assert.Equal(5, result);
+                Assert.Equal(TimeSpan.FromSeconds(9), pollSource.RunningTime);
+            });
+        }
+
+        [Fact]
         public void PollToCompletion_Timeout()
         {
             var pollSource = new PollSource(TimeSpan.FromSeconds(10), 5);
@@ -54,6 +67,19 @@ namespace Google.Api.Gax.Tests
                 var result = await pollSource.PollRepeatedlyAsync(pollSettings, CancellationToken.None);
                 Assert.Equal(5, result);
                 Assert.Equal(TimeSpan.FromSeconds(4), pollSource.RunningTime);
+            });
+        }
+
+        [Fact]
+        public async Task PollToCompletionExponentialAsync_Success()
+        {
+            var pollSource = new PollSource(TimeSpan.FromSeconds(7), 5);
+            var pollSettings = new PollSettings(Expiration.FromTimeout(TimeSpan.FromSeconds(20)), TimeSpan.FromSeconds(1), 2.0, TimeSpan.FromSeconds(3));
+            await pollSource.Scheduler.RunAsync(async () =>
+            {
+                var result = await pollSource.PollRepeatedlyAsync(pollSettings, CancellationToken.None);
+                Assert.Equal(5, result);
+                Assert.Equal(TimeSpan.FromSeconds(9), pollSource.RunningTime);
             });
         }
 
