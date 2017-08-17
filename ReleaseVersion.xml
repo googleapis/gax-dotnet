@@ -5,6 +5,6 @@
     - divergent versions, but for the moment this keeps things simpler.
     -->
   <PropertyGroup>
-    <VersionPrefix>2.1.0-beta01</VersionPrefix>
+    <VersionPrefix>2.1.0-beta02</VersionPrefix>
   </PropertyGroup>
 </Project>
