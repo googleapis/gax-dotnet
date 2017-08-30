@@ -191,7 +191,7 @@ namespace Google.Api.Gax.Tests
         [Theory]
         [InlineData(RangeMin - 1)]
         [InlineData(RangeMax + 1)]
-        public void CheckRangeNullableTDouble_Invalid(int? seconds)
+        public void CheckRangeNullableTInt32_Invalid(int? seconds)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckArgumentRange(S(seconds), nameof(seconds), S(RangeMin), S(RangeMax)));
         }

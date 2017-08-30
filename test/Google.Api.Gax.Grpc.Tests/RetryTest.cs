@@ -207,10 +207,11 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.True(server.CallTimes.Count() > 1);
         }
 
-        [InlineData(true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
-        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
-        [InlineData(false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded }, false)]
-        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound }, false)]
+        [Theory]
+        [InlineData(true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
+        [InlineData(false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
         public async Task RetryFilter_EventualFailure(bool async, StatusCode failureCode, StatusCode[] filterCodes)
         {
             var callDuration = 100;

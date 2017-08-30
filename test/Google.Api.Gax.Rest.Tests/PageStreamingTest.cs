@@ -151,7 +151,7 @@ namespace Google.Api.Gax.Rest
 
         private static readonly PagedResource s_resourceC = new PagedResource();
 
-        public static readonly object[] s_naturalPages = new object[] {
+        public static readonly IEnumerable<object[]> s_naturalPages = new object[][] {
             new [] { s_resourceA }, new[] { s_resourceB } // Not C due to special zero-page behavior
             };
 

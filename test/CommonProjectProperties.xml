@@ -6,6 +6,7 @@
     <AssemblyOriginatorKeyFile>../../Gax.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <NoWarn>1701;1702;1705;xUnit2013;AD0001</NoWarn>
   </PropertyGroup>
 
   <!-- Packaging information -->
@@ -15,10 +16,10 @@
 
   <!-- Common dependencies. Not *all* projects need all of these, but enough to make it worth doing. -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="xunit" Version="2.3.0-beta1-build3642" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta1-build1309" />
-    <PackageReference Include="Moq" Version="4.7.8" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="xunit" Version="2.3.0-beta5-build3769" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta5-build3769" />
+    <PackageReference Include="Moq" Version="4.7.99" />
   </ItemGroup>
 
 </Project>

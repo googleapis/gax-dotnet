@@ -86,9 +86,11 @@ namespace Google.Api.Gax.Tests
         {
             var list = List("a", "b");
             var resourceList = ResourceList(list);
+#pragma warning disable xUnit2017 // We're testing the Contains method...
             Assert.True(resourceList.Contains(new UnknownResourceName("a")));
             Assert.True(resourceList.Contains(new UnknownResourceName("b")));
             Assert.False(resourceList.Contains(new UnknownResourceName("c")));
+#pragma warning restore xUnit2017            
         }
 
         [Fact]
