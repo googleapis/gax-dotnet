@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
@@ -45,7 +46,8 @@ namespace Google.Api.Gax
                 // Unwrap the first exception, a bit like await would.
                 // It's very unlikely that we'd ever see an AggregateException without an inner exceptions,
                 // but let's handle it relatively gracefully.
-                throw e.InnerExceptions.FirstOrDefault() ?? e;
+                // Using ExceptionDispatchInfo to keep the original exception stack trace.
+                ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
             }
 
         }
