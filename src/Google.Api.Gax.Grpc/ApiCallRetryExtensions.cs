@@ -18,7 +18,7 @@ namespace Google.Api.Gax.Grpc
         // Async retry
         internal static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, Task<TResponse>> fn,
-            IClock clock, IScheduler scheduler) =>
+            IClock clock, IScheduler scheduler, Func<TResponse, Task> postResponse) =>
             async (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Timing?.Retry;
@@ -37,7 +37,12 @@ namespace Google.Api.Gax.Grpc
                     CallSettings attemptCallSettings = callSettings.WithCallTiming(CallTiming.FromDeadline(combinedDeadline));
                     try
                     {
-                        return await fn(request, attemptCallSettings).ConfigureAwait(false);
+                        var response = await fn(request, attemptCallSettings).ConfigureAwait(false);
+                        if (postResponse != null)
+                        {
+                            await postResponse(response).ConfigureAwait(false);
+                        }
+                        return response;
                     }
                     catch (RpcException e) when (retrySettings.RetryFilter(e))
                     {
@@ -57,7 +62,7 @@ namespace Google.Api.Gax.Grpc
         // Sync retry
         internal static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, TResponse> fn,
-            IClock clock, IScheduler scheduler) =>
+            IClock clock, IScheduler scheduler, Action<TResponse> postResponse) =>
             (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Timing?.Retry;
@@ -76,7 +81,9 @@ namespace Google.Api.Gax.Grpc
                     CallSettings attemptCallSettings = callSettings.WithCallTiming(CallTiming.FromDeadline(combinedDeadline));
                     try
                     {
-                        return fn(request, attemptCallSettings);
+                        var response = fn(request, attemptCallSettings);
+                        postResponse?.Invoke(response);
+                        return response;
                     }
                     catch (RpcException e) when (retrySettings.RetryFilter(e))
                     {

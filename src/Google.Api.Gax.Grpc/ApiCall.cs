@@ -91,8 +91,8 @@ namespace Google.Api.Gax.Grpc
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
             new ApiCall<TRequest, TResponse>(
-                _asyncCall.WithRetry(clock, scheduler),
-                _syncCall.WithRetry(clock, scheduler),
+                _asyncCall.WithRetry(clock, scheduler, null),
+                _syncCall.WithRetry(clock, scheduler, null),
                 BaseCallSettings);
     }
 }
