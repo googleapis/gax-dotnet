@@ -43,6 +43,21 @@ namespace Google.Api.Gax.Grpc.Tests
             return streamingCall.ResponseStream.Current;
         }
 
+        private Task<SimpleResponse> Call(
+            bool async, bool serverStreaming, FakeScheduler scheduler, Server server, SimpleRequest request, CallSettings callSettings)
+        {
+            if (serverStreaming)
+            {
+                var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
+                return Call(async, retryingCallable, request, callSettings);
+            }
+            else
+            {
+                var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
+                return Call(async, retryingCallable, request, callSettings);
+            }
+        }
+
         [Theory, CombinatorialData]
         public async Task FirstCallSucceeds(bool async, bool serverStreaming)
         {
@@ -60,17 +75,8 @@ namespace Google.Api.Gax.Grpc.Tests
             await scheduler.RunAsync(async () =>
             {
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                SimpleResponse result;
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
-                }
+                var request = new SimpleRequest { Name = name };
+                var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
             });
 
@@ -98,17 +104,8 @@ namespace Google.Api.Gax.Grpc.Tests
             await scheduler.RunAsync(async () =>
             {
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                SimpleResponse result;
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    result = await Call(async, retryingCallable, new SimpleRequest { Name = name }, callSettings);
-                }
+                var request = new SimpleRequest { Name = name };
+                var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
             });
 
@@ -143,16 +140,8 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 // Expiration makes it fail while waiting to make third call
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<RpcException>(() => task);
 
@@ -188,16 +177,8 @@ namespace Google.Api.Gax.Grpc.Tests
                 // Call 2: t=1800, deadline=3800 (2000+1800), completes at 2100
                 // Call 3, t=3600, deadline=4500 (would be 7600, but overall deadline truncates), completes at 3900 (with success)
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
 
             server.AssertCallTimes(time0, time0 + TimeSpan.FromTicks(1800), time0 + TimeSpan.FromTicks(3600));
@@ -225,16 +206,8 @@ namespace Google.Api.Gax.Grpc.Tests
             await scheduler.RunAsync(async () =>
             {
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
 
             Assert.True(server.CallTimes.Count() > 1);
@@ -266,16 +239,8 @@ namespace Google.Api.Gax.Grpc.Tests
             var task = scheduler.RunAsync(async () =>
             {
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<RpcException>(() => task);
 
@@ -306,16 +271,8 @@ namespace Google.Api.Gax.Grpc.Tests
                     cts.Cancel();
                 });
                 var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings)).WithCancellationToken(cts.Token);
-                if (serverStreaming)
-                {
-                    var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
-                else
-                {
-                    var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                    await Call(async, retryingCallable, new SimpleRequest { Name = "irrelevant" }, callSettings);
-                }
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<TaskCanceledException>(() => task);
             Assert.Equal(time0 + delay, scheduler.Clock.GetCurrentDateTimeUtc());
