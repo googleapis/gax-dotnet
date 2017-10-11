@@ -18,6 +18,8 @@ namespace Google.Api.Gax.Grpc
     {
         internal const string FieldMaskHeader = "x-goog-fieldmask";
 
+        internal static CallSettings CancellationTokenNone { get; } = new CallSettings(default(CancellationToken), null, null, null, null, null);
+
         /// <summary>
         /// Constructs an instance with the specified settings.
         /// </summary>
@@ -115,7 +117,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="cancellationToken">The cancellation token for the new settings.</param>
         /// <returns>A new instance.</returns>
         public static CallSettings FromCancellationToken(CancellationToken cancellationToken) =>
-            new CallSettings(cancellationToken, null, null, null, null, null);
+            cancellationToken.CanBeCanceled ? new CallSettings(cancellationToken, null, null, null, null, null) : CancellationTokenNone;
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified call credentials, or returns null
