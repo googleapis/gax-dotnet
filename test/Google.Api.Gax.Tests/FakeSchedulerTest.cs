@@ -15,15 +15,32 @@ namespace Google.Api.Gax.Tests
 {
     public class FakeSchedulerTest
     {
-        // Note: no tests for cancellation at the moment as they're fiendishly difficult to write in a robust way.
-        // We need to revisit FakeScheduler yet again...
-
         [Fact]
         public async Task SimpleDelay()
         {
             var scheduler = new FakeScheduler();
             await scheduler.RunAsync(() => scheduler.Delay(TimeSpan.FromTicks(1000)));
             Assert.Equal(1000, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
+        }
+
+        [Fact]
+        public async Task CancelDelay()
+        {
+            var scheduler = new FakeScheduler();
+            var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
+            var cts = new CancellationTokenSource();
+            Task task = scheduler.RunAsync(async () =>
+            {
+                var unused = Task.Run(async () =>
+                {
+                    await scheduler.Delay(TimeSpan.FromSeconds(1));
+                    cts.Cancel();
+                });
+                await scheduler.Delay(TimeSpan.FromSeconds(2), cts.Token);
+            });
+            await Assert.ThrowsAsync<TaskCanceledException>(() => task);
+            Assert.True(cts.IsCancellationRequested);
+            Assert.Equal(time0 + TimeSpan.FromSeconds(1), scheduler.Clock.GetCurrentDateTimeUtc());
         }
     }
 }

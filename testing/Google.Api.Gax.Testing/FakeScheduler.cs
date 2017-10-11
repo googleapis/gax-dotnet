@@ -225,6 +225,11 @@ namespace Google.Api.Gax.Testing
                                 return;
                             }
                         }
+                        // Give some time for tasks to execute.
+                        // Repeats until no further delays have been created.
+                        // It would be much better to track all created Tasks and make sure they've all completed;
+                        // But that's fairly invasive.
+                        while (Monitor.Wait(_monitor, TimeSpan.FromMilliseconds(10))) ;
                         // Test completed already (not necessarily successfully)
                         if (_stopped)
                         {

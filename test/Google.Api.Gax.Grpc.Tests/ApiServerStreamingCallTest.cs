@@ -7,6 +7,7 @@
 
 using Google.Api.Gax.Testing;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -14,7 +15,7 @@ namespace Google.Api.Gax.Grpc.Tests
     public class ApiServerStreamingCallTest
     {
         [Fact]
-        public void FailWithRetry()
+        public async Task FailWithRetry()
         {
             var apiCall = ApiServerStreamingCall.Create<int, int>(
                 (request, callOptions) => null,
@@ -23,16 +24,18 @@ namespace Google.Api.Gax.Grpc.Tests
                     new BackoffSettings(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(100), 2.0),
                     Expiration.FromTimeout(TimeSpan.FromSeconds(100))))),
                 new FakeClock());
+            await Assert.ThrowsAsync<InvalidOperationException>(() => apiCall.CallAsync(0, null));
             Assert.Throws<InvalidOperationException>(() => apiCall.Call(0, null));
         }
 
         [Fact]
-        public void SucceedWithExpiration()
+        public async Task SucceedWithExpiration()
         {
             var apiCall = ApiServerStreamingCall.Create<int, int>(
                 (request, callOptions) => null,
                 CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100)))),
                 new FakeClock());
+            Assert.Null(await apiCall.CallAsync(0, null));
             Assert.Null(apiCall.Call(0, null));
         }
     }
