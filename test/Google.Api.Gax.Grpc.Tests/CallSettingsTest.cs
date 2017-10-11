@@ -95,6 +95,15 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
+        public void CancellationTokenNone()
+        {
+            var none = CallSettings.FromCancellationToken(default(CancellationToken));
+            Assert.Same(CallSettings.CancellationTokenNone, none);
+            var notNone = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
+            Assert.NotSame(CallSettings.CancellationTokenNone, notNone);
+        }
+
+        [Fact]
         public void FromCancellationToken()
         {
             var token = new CancellationTokenSource().Token;
