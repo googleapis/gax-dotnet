@@ -86,7 +86,8 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Construct a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to
-        /// the underlying <see cref="CallSettings"/>.
+        /// the underlying <see cref="CallSettings"/>. If a value exists in both the original and
+        /// the overlay, the overlay takes priority.
         /// </summary>
         /// <param name="callSettingsOverlayFn">Function that builds the overlay <see cref="CallSettings"/>.</param>
         /// <returns>A new <see cref="ApiCall{TRequest, TResponse}"/> with the overlay applied.</returns>

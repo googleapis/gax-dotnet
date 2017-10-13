@@ -29,6 +29,8 @@ namespace Google.Api.Gax.Grpc.Tests
             call1.Async(null, CallSettings.FromCancellationToken(ctPerCall));
             Assert.Equal(ctPerCall, syncCallSettings.CancellationToken.Value);
             Assert.NotEqual(ctBase, syncCallSettings.CancellationToken.Value);
+            Assert.Equal(ctPerCall, asyncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctBase, asyncCallSettings.CancellationToken.Value);
 
             // Verify an overlay overwrites all else.
             var call2 = call0.WithCallSettingsOverlay(req => CallSettings.FromCancellationToken(ctOverlay));
@@ -37,6 +39,9 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(ctOverlay, syncCallSettings.CancellationToken.Value);
             Assert.NotEqual(ctBase, syncCallSettings.CancellationToken.Value);
             Assert.NotEqual(ctPerCall, syncCallSettings.CancellationToken.Value);
+            Assert.Equal(ctOverlay, asyncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctBase, asyncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctPerCall, asyncCallSettings.CancellationToken.Value);
         }
     }
 }
