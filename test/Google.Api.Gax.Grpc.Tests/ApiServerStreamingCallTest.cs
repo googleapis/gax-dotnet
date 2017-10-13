@@ -7,6 +7,7 @@
 
 using Google.Api.Gax.Testing;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -37,6 +38,37 @@ namespace Google.Api.Gax.Grpc.Tests
                 new FakeClock());
             Assert.Null(await apiCall.CallAsync(0, null));
             Assert.Null(apiCall.Call(0, null));
+        }
+
+        [Fact]
+        public void WithCallSettingsOverlay()
+        {
+            var ctBase = new CancellationTokenSource().Token;
+            var ctPerCall = new CancellationTokenSource().Token;
+            var ctOverlay = new CancellationTokenSource().Token;
+
+            CallSettings syncCallSettings = null;
+            CallSettings asyncCallSettings = null;
+            var call0 = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                (req, cs) => { asyncCallSettings = cs; return null; },
+                (req, cs) => { syncCallSettings = cs; return null; },
+                CallSettings.FromCancellationToken(ctBase));
+
+            // Verify a null overlay has no effect.
+            // CallAsync call runs synchonously due to 'call0' definition above.
+            var call1 = call0.WithCallSettingsOverlay(req => null);
+            call1.Call(null, CallSettings.FromCancellationToken(ctPerCall));
+            call1.CallAsync(null, CallSettings.FromCancellationToken(ctPerCall));
+            Assert.Equal(ctPerCall, syncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctBase, syncCallSettings.CancellationToken.Value);
+
+            // Verify an overlay overwrites all else.
+            var call2 = call0.WithCallSettingsOverlay(req => CallSettings.FromCancellationToken(ctOverlay));
+            call2.Call(null, CallSettings.FromCancellationToken(ctPerCall));
+            call2.CallAsync(null, CallSettings.FromCancellationToken(ctPerCall));
+            Assert.Equal(ctOverlay, syncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctBase, syncCallSettings.CancellationToken.Value);
+            Assert.NotEqual(ctPerCall, syncCallSettings.CancellationToken.Value);
         }
     }
 }

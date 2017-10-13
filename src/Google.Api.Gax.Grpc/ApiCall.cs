@@ -94,5 +94,17 @@ namespace Google.Api.Gax.Grpc
                 _asyncCall.WithRetry(clock, scheduler, null),
                 _syncCall.WithRetry(clock, scheduler, null),
                 BaseCallSettings);
+
+        /// <summary>
+        /// Construct a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to
+        /// the underlying <see cref="CallSettings"/>.
+        /// </summary>
+        /// <param name="callSettingsOverlayFn">Function that builds the overlay <see cref="CallSettings"/>.</param>
+        /// <returns>A new <see cref="ApiCall{TRequest, TResponse}"/> with the overlay applied.</returns>
+        public ApiCall<TRequest, TResponse> WithCallSettingsOverlay(Func<TRequest, CallSettings> callSettingsOverlayFn) =>
+            new ApiCall<TRequest, TResponse>(
+                (req, cs) => _asyncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
+                (req, cs) => _syncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
+                BaseCallSettings);
     }
 }
