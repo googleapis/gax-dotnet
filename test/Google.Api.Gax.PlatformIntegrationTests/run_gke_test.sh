@@ -120,11 +120,16 @@ until [[ "$ipAddress" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; do
     sleep 5
     echo "  ..."
     ipAddress=$(kubectl get services | grep platformintegrationtest | awk '{ print $3 }')
+    if [ $? -ne 0 ]; then
+        echo "ERROR: kubectl get services failed"
+        exit 1
+    fi
 done
 echo "  ... ready, IP: $ipAddress"
 
 url="http://$ipAddress:8080/"
 echo "Retrieving test web page: $url"
+
 testResponse=$(curl $url | head -n1)
 
 echo "Deleted kubernetes service/deployment..."

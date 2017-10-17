@@ -36,14 +36,26 @@ namespace Google.Api.Gax.PlatformIntegrationTests
 
             app.Run(async (context) =>
             {
-                var platform = await Google.Api.Gax.Platform.InstanceAsync();
-                var envs = Environment.GetEnvironmentVariables();
-                // Output a the detected platform, the all environment variables.
-                string output = envs.Cast<DictionaryEntry>()
-                    .Select(x => new { key = x.Key.ToString(), value = x.Value.ToString() })
-                    .OrderBy(x => x.key)
-                    .Aggregate($"{platform.Type}\n{platform}\n\n", (acc, x) => acc + $"[{x.key}]: '{x.value}'\n");
-                await context.Response.WriteAsync(output);
+                try
+                {
+                    var platform = await Google.Api.Gax.Platform.InstanceAsync();
+                    var envs = Environment.GetEnvironmentVariables();
+                    // Output a the detected platform, the all environment variables.
+                    string output = envs.Cast<DictionaryEntry>()
+                        .Select(x => new { key = x.Key.ToString(), value = x.Value.ToString() })
+                        .OrderBy(x => x.key)
+                        .Aggregate($"{platform.Type}\n{platform}\n\n", (acc, x) => acc + $"[{x.key}]: '{x.value}'\n");
+                    var metadata = platform.GkeDetails?.MetadataJson ?? platform.GceDetails?.MetadataJson;
+                    if (metadata != null)
+                    {
+                        output += "\n\n" + metadata;
+                    }
+                    await context.Response.WriteAsync(output);
+                }
+                catch (Exception e)
+                {
+                    await context.Response.WriteAsync(e.ToString());
+                }
             });
         }
     }

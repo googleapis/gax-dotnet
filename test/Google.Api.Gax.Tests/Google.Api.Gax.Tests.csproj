@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Metadata.json" />
+    <None Remove="Resources\Namespace.json" />
+    <None Remove="Resources\Pod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Metadata.json" />
+    <EmbeddedResource Include="Resources\Namespace.json" />
+    <EmbeddedResource Include="Resources\Pod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Google.Api.Gax\Google.Api.Gax.csproj" />
     <ProjectReference Include="..\..\testing\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
   </ItemGroup>

@@ -64,7 +64,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void GkePlatform()
         {
-            const string json = @"
+            const string metadataJson = @"
 {
   'project': {
     'projectId': 'FakeProjectId'
@@ -73,17 +73,45 @@ namespace Google.Api.Gax.Grpc.Tests
     'attributes': {
       'cluster-name': 'FakeClusterName',
     },
+    'id': '123',
     'zone': 'projects/FakeProject/zones/FakeLocation'
   }
 }
 ";
-            var platform = new Platform(GkePlatformDetails.TryLoad(json));
+            const string namespaceJson = @"
+{
+  'kind': 'Namespace',
+  'metadata': {
+    'uid': 'namespaceid'
+  }
+}
+";
+            const string podJson = @"
+{
+  'kind': 'Pod',
+  'metadata': {
+    'name': 'podname',
+    'uid': 'podid'
+  }
+}
+";
+            var kubernetesData = new GkePlatformDetails.KubernetesData
+            {
+                NamespaceJson = namespaceJson,
+                PodJson = podJson,
+                MountInfo = new[] { "/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log" }
+            };
+            var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
-            Assert.Equal("gke_cluster", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
+            Assert.Equal("container", resource.Type);
+            Assert.Equal(7, resource.Labels.Count);
             Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
             Assert.Equal("FakeClusterName", resource.Labels["cluster_name"]);
-            Assert.Equal("FakeLocation", resource.Labels["location"]);
+            Assert.Equal("namespaceid", resource.Labels["namespace_id"]);
+            Assert.Equal("123", resource.Labels["instance_id"]);
+            Assert.Equal("podid", resource.Labels["pod_id"]);
+            Assert.Equal("containername", resource.Labels["container_name"]);
+            Assert.Equal("projects/FakeProject/zones/FakeLocation", resource.Labels["zone"]);
         }
     }
 }
