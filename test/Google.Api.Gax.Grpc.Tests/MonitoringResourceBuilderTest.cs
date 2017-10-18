@@ -43,10 +43,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var platform = new Platform(GcePlatformDetails.TryLoad(json));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("gce_instance", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeInstanceId", resource.Labels["instance_id"]);
-            Assert.Equal("FakeZone", resource.Labels["zone"]);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "instance_id", "FakeInstanceId" },
+                { "zone", "FakeZone" }
+            }, resource.Labels);
         }
 
         [Fact]
@@ -55,16 +57,18 @@ namespace Google.Api.Gax.Grpc.Tests
             var platform = new Platform(new GaePlatformDetails("FakeProjectId", "FakeInstanceId", "FakeService", "FakeVersion"));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("gae_app", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeService", resource.Labels["module_id"]);
-            Assert.Equal("FakeVersion", resource.Labels["version_id"]);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "module_id", "FakeService" },
+                { "version_id", "FakeVersion" }
+            }, resource.Labels);
         }
 
         [Fact]
         public void GkePlatform()
         {
-            const string json = @"
+            const string metadataJson = @"
 {
   'project': {
     'projectId': 'FakeProjectId'
@@ -73,17 +77,47 @@ namespace Google.Api.Gax.Grpc.Tests
     'attributes': {
       'cluster-name': 'FakeClusterName',
     },
+    'id': '123',
     'zone': 'projects/FakeProject/zones/FakeLocation'
   }
 }
 ";
-            var platform = new Platform(GkePlatformDetails.TryLoad(json));
+            const string namespaceJson = @"
+{
+  'kind': 'Namespace',
+  'metadata': {
+    'uid': 'namespaceid'
+  }
+}
+";
+            const string podJson = @"
+{
+  'kind': 'Pod',
+  'metadata': {
+    'name': 'podname',
+    'uid': 'podid'
+  }
+}
+";
+            var kubernetesData = new GkePlatformDetails.KubernetesData
+            {
+                NamespaceJson = namespaceJson,
+                PodJson = podJson,
+                MountInfo = new[] { "/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log" }
+            };
+            var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
-            Assert.Equal("gke_cluster", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeClusterName", resource.Labels["cluster_name"]);
-            Assert.Equal("FakeLocation", resource.Labels["location"]);
+            Assert.Equal("container", resource.Type);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "cluster_name", "FakeClusterName" },
+                { "namespace_id", "namespaceid" },
+                { "instance_id", "123" },
+                { "pod_id", "podid" },
+                { "container_name", "containername" },
+                { "zone", "projects/FakeProject/zones/FakeLocation" }
+            }, resource.Labels);
         }
     }
 }

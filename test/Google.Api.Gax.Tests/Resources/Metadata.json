@@ -1,0 +1,76 @@
+{
+  "instance": {
+    "attributes": {
+      "cluster-name": "platformintegrationtest",
+      "created-by": "projects/233772281425/zones/europe-west2-c/instanceGroupManagers/gke-platformintegrationt-default-pool-bf36c574-grp",
+      "gci-ensure-gke-docker": "true",
+      "gci-update-strategy": "update_disabled",
+      "instance-template": "projects/233772281425/global/instanceTemplates/gke-platformintegrationt-default-pool-bf36c574"
+    },
+    "cpuPlatform": "Intel Broadwell",
+    "description": "",
+    "disks": [
+      {
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      }
+    ],
+    "hostname": "gke-platformintegrationt-default-pool-bf36c574-hjt1.c.chrisbacon-testing.internal",
+    "id": 2917200381659545756,
+    "image": "projects/gke-node-images/global/images/cos-stable-60-9592-90-0",
+    "licenses": [
+      { "id": "1001010" },
+      { "id": "1001003" }
+    ],
+    "machineType": "projects/233772281425/machineTypes/n1-standard-1",
+    "maintenanceEvent": "NONE",
+    "name": "gke-platformintegrationt-default-pool-bf36c574-hjt1",
+    "networkInterfaces": [
+      {
+        "accessConfigs": [
+          {
+            "externalIp": "35.197.197.22",
+            "type": "ONE_TO_ONE_NAT"
+          }
+        ],
+        "forwardedIps": [ "35.197.217.144" ],
+        "ip": "10.154.0.2",
+        "ipAliases": [],
+        "mac": "42:01:0a:9a:00:02",
+        "network": "projects/233772281425/networks/default",
+        "targetInstanceIps": []
+      }
+    ],
+    "preempted": "FALSE",
+    "scheduling": {
+      "automaticRestart": "TRUE",
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": "FALSE"
+    },
+    "serviceAccounts": {
+      "233772281425-compute@developer.gserviceaccount.com": {
+        "aliases": [ "default" ],
+        "email": "233772281425-compute@developer.gserviceaccount.com",
+        "scopes": [ "https://www.googleapis.com/auth/compute", "https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/trace.append" ]
+      },
+      "default": {
+        "aliases": [ "default" ],
+        "email": "233772281425-compute@developer.gserviceaccount.com",
+        "scopes": [ "https://www.googleapis.com/auth/compute", "https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/trace.append" ]
+      }
+    },
+    "tags": [ "gke-platformintegrationtest-149e72f3-node" ],
+    "virtualClock": { "driftToken": "0" },
+    "zone": "projects/233772281425/zones/europe-west2-c"
+  },
+  "project": {
+    "attributes": {
+      "gke-cluster-1-797c6bee-cidr": "default:10.28.0.0/14",
+      "gke-platformintegrationtest-149e72f3-cidr": "default:10.60.0.0/14"
+    },
+    "numericProjectId": 233772281425,
+    "projectId": "chrisbacon-testing"
+  }
+}

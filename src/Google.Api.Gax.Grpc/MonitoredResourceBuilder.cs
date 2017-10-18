@@ -86,12 +86,16 @@ namespace Google.Api.Gax.Grpc
                     var gke = platform.GkeDetails;
                     return new MonitoredResource
                     {
-                        Type = "gke_cluster",
+                        Type = "container",
                         Labels =
                         {
                             { "project_id", gke.ProjectId },
                             { "cluster_name", gke.ClusterName },
-                            { "location", gke.Location }
+                            { "namespace_id", gke.NamespaceId },
+                            { "instance_id", gke.InstanceId },
+                            { "pod_id", gke.PodId },
+                            { "container_name", gke.ContainerName },
+                            { "zone", gke.Zone }
                         }
                     };
                 default:
