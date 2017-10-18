@@ -108,9 +108,11 @@ namespace Google.Api.Gax.Tests
         const string metadataValid = "{'project':{'projectId':'FakeProjectId'},'instance':{'attributes':{'cluster-name':'FakeClusterName'},'id':'123','zone':'projects/FakeProject/zones/FakeLocation'}}";
         const string metadataIncomplete = "{'project':{'projectId':'FakeProjectId'},'instance':{'attr";
         const string namespaceValid = "{'kind':'Namespace','metadata':{'uid':'namespaceid'}}";
+        const string namespaceMissingKind = "{'notkind':'Namespace','metadata':{'uid':'namespaceid'}}";
         const string namespaceWrongKind = "{'kind':'NotNamespace','metadata':{'uid':'namespaceid'}}";
         const string namespaceIncomplete = "{'kind':'Namespace','m";
         const string podValid = "{'kind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
+        const string podMissingKind = "{'notkind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
         const string podWrongKind = "{'kind':'NotPod','metadata':{'name':'podname','uid':'podid'}}";
         const string podIncomplete = "{'kind':'Pod','metadata':{";
         const string mountInfoValid = "123\n/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log\nabc";
@@ -120,8 +122,8 @@ namespace Google.Api.Gax.Tests
         [Theory, PairwiseData]
         public void Gke_IncompleteData(
             [CombinatorialValues("", metadataIncomplete, metadataValid)] string metadataJson,
-            [CombinatorialValues(null, "", namespaceIncomplete, namespaceWrongKind, namespaceValid)] string namespaceJson,
-            [CombinatorialValues(null, "", podIncomplete, podWrongKind, podValid)] string podJson,
+            [CombinatorialValues(null, "", namespaceIncomplete, namespaceWrongKind, namespaceMissingKind, namespaceValid)] string namespaceJson,
+            [CombinatorialValues(null, "", podIncomplete, podWrongKind, podMissingKind, podValid)] string podJson,
             [CombinatorialValues(null, "", mountInfoMultiple, mountInfoMissing, mountInfoValid)] string mountInfo)
         {
             var kubernetesData = new GkePlatformDetails.KubernetesData

@@ -325,12 +325,12 @@ namespace Google.Api.Gax
                 // Metadata is required. If it's not present, or the JSON cannot be parsed, return null.
                 return null;
             }
-            if (namespaceData != null && namespaceData["kind"].Value<string>() != "Namespace")
+            if (namespaceData?["kind"]?.Value<string>() != "Namespace")
             {
                 // If namespaceData looks corrupt/incomplete, ignore it.
                 namespaceData = null;
             }
-            if (podData != null && podData["kind"].Value<string>() != "Pod")
+            if (podData?["kind"]?.Value<string>() != "Pod")
             {
                 // If podData looks corrupt/incomplete, ignore it.
                 podData = null;
