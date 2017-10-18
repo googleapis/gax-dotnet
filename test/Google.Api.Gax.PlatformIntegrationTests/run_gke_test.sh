@@ -129,7 +129,6 @@ echo "  ... ready, IP: $ipAddress"
 
 url="http://$ipAddress:8080/"
 echo "Retrieving test web page: $url"
-
 testResponse=$(curl $url | head -n1)
 
 echo "Deleted kubernetes service/deployment..."

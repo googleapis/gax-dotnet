@@ -5,17 +5,18 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Threading;
-using System.Net;
-using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
@@ -54,11 +55,13 @@ namespace Google.Api.Gax
         /// Builds a <see cref="GcePlatformDetails"/> from the given metadata.
         /// This metadata is normally retrieved from the GCE metadata server.
         /// </summary>
-        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
+        /// Must not be <c>null</c>.</param>
         /// <returns>A populated <see cref="GcePlatformDetails"/> if the metadata represents and GCE instance;
         /// <c>null</c> otherwise.</returns>
         public static GcePlatformDetails TryLoad(string metadataJson)
         {
+            GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
             JObject metadata;
             try
             {
@@ -81,16 +84,16 @@ namespace Google.Api.Gax
         /// <summary>
         /// Construct details of Google Compute Engine
         /// </summary>
-        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
-        /// <param name="projectId">The project ID.</param>
-        /// <param name="instanceId">The instance ID.</param>
-        /// <param name="zoneName">The zone name.</param>
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server. Must not be <c>null</c>.</param>
+        /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
+        /// <param name="instanceId">The instance ID. Must not be <c>null</c>.</param>
+        /// <param name="zoneName">The zone name. Must not be <c>null</c>.</param>
         public GcePlatformDetails(string metadataJson, string projectId, string instanceId, string zoneName)
         {
-            MetadataJson = metadataJson;
-            ProjectId = projectId;
-            InstanceId = instanceId;
-            ZoneName = zoneName;
+            MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
+            ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
+            InstanceId = GaxPreconditions.CheckNotNull(instanceId, nameof(instanceId));
+            ZoneName = GaxPreconditions.CheckNotNull(zoneName, nameof(zoneName));
         }
 
         /// <summary>
@@ -127,17 +130,17 @@ namespace Google.Api.Gax
         /// Construct details of Google App Engine
         /// </summary>
         /// <param name="gcloudProject">The Project ID associated with your application,
-        /// which is visible in the Google Cloud Platform Console.</param>
-        /// <param name="gaeInstance">The name of the current instance.</param>
+        /// which is visible in the Google Cloud Platform Console. Must not be <c>null</c>.</param>
+        /// <param name="gaeInstance">The name of the current instance. Must not be <c>null</c>.</param>
         /// <param name="gaeService">The service name specified in your application's app.yaml file,
-        /// or if no service name is specified, it is set to default.</param>
-        /// <param name="gaeVersion">The version label of the current application.</param>
+        /// or if no service name is specified, it is set to default. Must not be <c>null</c>.</param>
+        /// <param name="gaeVersion">The version label of the current application. Must not be <c>null</c>.</param>
         public GaePlatformDetails(string gcloudProject, string gaeInstance, string gaeService, string gaeVersion)
         {
-            ProjectId = gcloudProject;
-            InstanceId = gaeInstance;
-            ServiceId = gaeService;
-            VersionId = gaeVersion;
+            ProjectId = GaxPreconditions.CheckNotNull(gcloudProject, nameof(gcloudProject));
+            InstanceId = GaxPreconditions.CheckNotNull(gaeInstance, nameof(gaeInstance));
+            ServiceId = GaxPreconditions.CheckNotNull(gaeService, nameof(gaeService));
+            VersionId = GaxPreconditions.CheckNotNull(gaeVersion, nameof(gaeVersion));
         }
 
         /// <summary>
@@ -176,6 +179,11 @@ namespace Google.Api.Gax
         public class KubernetesData
         {
             /// <summary>
+            /// The kubernetes pod name
+            /// </summary>
+            public string PodName { get; set; }
+
+            /// <summary>
             /// JSON from https://kubernetes/api/v1/namespaces/{namespace}
             /// </summary>
             public string NamespaceJson { get; set; }
@@ -204,60 +212,79 @@ namespace Google.Api.Gax
                 // Not running on GKE
                 return null;
             }
+            // If anything following fails, then the return value will still show that we're running on GKE.
             var baseUrl = $"https://{kubernetesServiceHost}:{kubernetesServicePort}/api/v1";
-            string kubernetesNamespace;
-            string kubernetesToken;
-            string kubernetesCa;
-            string[] mountInfo;
+            string kubernetesNamespace = null;
+            string kubernetesToken = null;
+            X509Certificate2 kubernetesCaCert = null;
+            string[] mountInfo = null;
             try
             {
                 kubernetesNamespace = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/namespace");
                 kubernetesToken = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/token");
-                kubernetesCa = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt");
+                kubernetesCaCert = new X509Certificate2("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt");
                 mountInfo = File.ReadAllLines("/proc/self/mountinfo");
             }
             catch
             {
-                // Various errors can occur, all of which mean probably not running on GKE
-                return null;
+                // Ignore all errors
             }
             if (string.IsNullOrEmpty(kubernetesNamespace) || string.IsNullOrEmpty(kubernetesToken) ||
-                string.IsNullOrEmpty(kubernetesCa) || mountInfo == null || mountInfo.Length == 0)
+                kubernetesCaCert == null || mountInfo == null || mountInfo.Length == 0)
             {
-                // These files should contain useful data on GKE
-                return null;
+                // These files should contain useful data on GKE. If anything is missing then return what we already know.
+                return new KubernetesData { PodName = podName, MountInfo = mountInfo };
             }
 
             var handler = new HttpClientHandler
             {
-                // TODO: Properly check that the certificate is valid, using kubernetesCa
-                ServerCertificateCustomValidationCallback = (msg, cert, chain, errs) => true
+                ServerCertificateCustomValidationCallback = (msg, cert, chain, errs) =>
+                {
+                    // Add the kubernetes-provided ca
+                    chain.ChainPolicy.ExtraStore.Add(kubernetesCaCert);
+                    chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+                    // Allow ca that is not installed on the current machine
+                    // This allows *any* ca to be used, hence the following check for the kubernetes-provided ca
+                    chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+                    if (chain.Build(cert))
+                    {
+                        // Check that the root ca is the kubernetes-provided ca
+                        return chain.ChainElements[chain.ChainElements.Count - 1].Certificate.Thumbprint == kubernetesCaCert.Thumbprint;
+                    }
+                    return false;
+                }
             };
+            string namespaceJson = null;
+            string podJson = null;
             using (var client = new HttpClient(handler))
             {
+                client.Timeout = TimeSpan.FromMilliseconds(1000); // 1 second found to be reasonable
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", kubernetesToken);
                 var urlNamespace = $"{baseUrl}/namespaces/{kubernetesNamespace}";
                 var urlPod = $"{baseUrl}/namespaces/{kubernetesNamespace}/pods/{podName}";
                 try
                 {
-                    return new KubernetesData
-                    {
-                        NamespaceJson = await client.GetStringAsync(urlNamespace).ConfigureAwait(false),
-                        PodJson = await client.GetStringAsync(urlPod).ConfigureAwait(false),
-                        MountInfo = mountInfo
-                    };
+                    namespaceJson = await client.GetStringAsync(urlNamespace).ConfigureAwait(false);
+                    podJson = await client.GetStringAsync(urlPod).ConfigureAwait(false);
                 }
                 catch
                 {
-                    return null;
+                    // Ignore all errors
                 }
             }
+            return new KubernetesData
+            {
+                PodName = podName,
+                NamespaceJson = namespaceJson,
+                PodJson = podJson,
+                MountInfo = mountInfo
+            };
         }
 #elif NET45
         internal static Task<KubernetesData> LoadKubernetesDataAsync()
         {
-            // .NET45 code cannot run on Kubernetes.
-            // And .NET45 does not cert functionality that we require.
+            // .NET45 code cannot currently run on Kubernetes.
+            // And .NET45 does not support the certificate functionality that we require.
             return Task.FromResult<KubernetesData>(null);
         }
 #else
@@ -280,14 +307,19 @@ namespace Google.Api.Gax
         /// The metadata is normally retrieved from the GCE metadata server.
         /// The kubernetes data is normally retrieved using the kubernetes API.
         /// </summary>
-        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
-        /// <param name="kubernetesData">Kubernetes data, normally retrieved using the kubernetes API.</param>
-        /// <returns></returns>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
+        /// Must not be <c>null</c>.</param>
+        /// <param name="kubernetesData">Kubernetes data, normally retrieved using the kubernetes API.
+        /// Must not be <c>null</c>.</param>
+        /// <returns>A populated <see cref="GkePlatformDetails"/> if the metadata represents and GKE instance;
+        /// <c>null</c> otherwise.</returns>
         public static GkePlatformDetails TryLoad(string metadataJson, KubernetesData kubernetesData)
         {
-            JObject metadata;
-            JObject namespaceData;
-            JObject podData;
+            GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
+            GaxPreconditions.CheckNotNull(kubernetesData, nameof(kubernetesData));
+            JObject metadata = null;
+            JObject namespaceData = null;
+            JObject podData = null;
             try
             {
                 metadata = JObject.Parse(metadataJson);
@@ -296,22 +328,24 @@ namespace Google.Api.Gax
             }
             catch
             {
-                return null;
+                // Ignore all errors
             }
-            if (namespaceData["kind"].Value<string>() != "Namespace" || podData["kind"].Value<string>() != "Pod")
+            if (metadata == null ||
+                (namespaceData != null && namespaceData["kind"].Value<string>() != "Namespace") ||
+                (podData != null && podData["kind"].Value<string>() != "Pod"))
             {
                 return null;
             }
-            var hostName = podData["metadata"]?["name"]?.Value<string>(); // Pod name is the hostname
+            var hostName = kubernetesData.PodName ?? podData?["metadata"]?["name"]?.Value<string>(); // Pod name is the hostname
             var projectId = metadata["project"]?["projectId"]?.Value<string>();
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.Value<string>();
             var instanceId = metadata["instance"]?["id"]?.Value<string>();
             var zone = metadata["instance"]?["zone"]?.Value<string>();
-            var namespaceId = namespaceData["metadata"]?["uid"]?.Value<string>();
-            var podId = podData["metadata"]?["uid"]?.Value<string>();
+            var namespaceId = namespaceData?["metadata"]?["uid"]?.Value<string>() ?? "";
+            var podId = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
             // A hack to find the container name. There appears to be no official way to do this.
             var regex = new Regex($"/var/lib/kubelet/pods/{podId}/containers/([^/]+)/.*/dev/termination-log");
-            var containerNames = kubernetesData.MountInfo.Select(x =>
+            var containerNames = kubernetesData.MountInfo?.Select(x =>
             {
                 var match = regex.Match(x);
                 if (match.Success)
@@ -320,7 +354,7 @@ namespace Google.Api.Gax
                 }
                 return null;
             }).Where(x => x != null).ToList();
-            var containerName = containerNames.Count == 1 ? containerNames[0] : "";
+            var containerName = containerNames?.Count == 1 ? containerNames[0] : "";
             if (hostName != null && projectId != null && clusterName != null && instanceId != null &&
                 zone != null && namespaceId != null && podId != null && containerName != null)
             {
@@ -334,43 +368,43 @@ namespace Google.Api.Gax
         /// <summary>
         /// Construct details of Google Container (Kubernetes) Engine
         /// </summary>
-        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
-        /// <param name="projectId">The project ID.</param>
-        /// <param name="clusterName">The cluster name.</param>
-        /// <param name="location">The location.</param>
-        /// <param name="hostName">The instance host name.</param>
-        [Obsolete("Only partial fills instance with data; use alternative constructor.")]
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server. Must not be <c>null</c>.</param>
+        /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
+        /// <param name="clusterName">The cluster name. Must not be <c>null</c>.</param>
+        /// <param name="location">The location. Must not be <c>null</c>.</param>
+        /// <param name="hostName">The instance host name. Must not be <c>null</c>.</param>
+        [Obsolete("Only partially fills instance with data; use alternative constructor.")]
         public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName)
-            : this(metadataJson, projectId, clusterName, location, hostName, null, null, null, null, null)
+            : this(metadataJson, projectId, clusterName, location, hostName, "", "", "", "", "")
         {
         }
 
         /// <summary>
         /// Construct details of Google Container (Kubernetes) Engine
         /// </summary>
-        /// <param name="metadataJson">The full JSON string retrieved from the metadata server.</param>
-        /// <param name="projectId">The project ID.</param>
-        /// <param name="clusterName">The cluster name.</param>
-        /// <param name="location">The location.</param>
-        /// <param name="hostName">The instance host name.</param>
-        /// <param name="instanceId">The GCE instance ID.</param>
-        /// <param name="zone">The zone.</param>
-        /// <param name="namespaceId">The kubernetes namespace ID.</param>
-        /// <param name="podId">The kubernetes pod ID.</param>
-        /// <param name="containerName">The container name.</param>
+        /// <param name="metadataJson">The full JSON string retrieved from the metadata server. Must not be <c>null</c>.</param>
+        /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
+        /// <param name="clusterName">The cluster name. Must not be <c>null</c>.</param>
+        /// <param name="location">The location. Must not be <c>null</c>.</param>
+        /// <param name="hostName">The instance host name. Must not be <c>null</c>.</param>
+        /// <param name="instanceId">The GCE instance ID. Must not be <c>null</c>.</param>
+        /// <param name="zone">The zone. Must not be <c>null</c>.</param>
+        /// <param name="namespaceId">The kubernetes namespace ID. Must not be <c>null</c>.</param>
+        /// <param name="podId">The kubernetes pod ID. Must not be <c>null</c>.</param>
+        /// <param name="containerName">The container name. Must not be <c>null</c>.</param>
         public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName,
             string instanceId, string zone, string namespaceId, string podId, string containerName)
         {
-            MetadataJson = metadataJson;
-            ProjectId = projectId;
-            ClusterName = clusterName;
-            Location = location;
-            HostName = hostName;
-            InstanceId = instanceId;
-            Zone = zone;
-            NamespaceId = namespaceId;
-            PodId = podId;
-            ContainerName = containerName;
+            MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
+            ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
+            ClusterName = GaxPreconditions.CheckNotNull(clusterName, nameof(clusterName));
+            Location = GaxPreconditions.CheckNotNull(location, nameof(location));
+            HostName = GaxPreconditions.CheckNotNull(hostName, nameof(hostName));
+            InstanceId = GaxPreconditions.CheckNotNull(instanceId, nameof(instanceId));
+            Zone = GaxPreconditions.CheckNotNull(zone, nameof(zone));
+            NamespaceId = GaxPreconditions.CheckNotNull(namespaceId, nameof(namespaceId));
+            PodId = GaxPreconditions.CheckNotNull(podId, nameof(podId));
+            ContainerName = GaxPreconditions.CheckNotNull(containerName, nameof(containerName));
         }
 
         /// <summary>
@@ -465,16 +499,17 @@ namespace Google.Api.Gax
                 var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
                 httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
                 var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
-                var httpClient = new HttpClient();
-                var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false); // TODO: Consider retrying on IO Exception.
-                IEnumerable<string> metadataValues;
-                if (response.StatusCode == HttpStatusCode.OK
-                    && response.Headers.TryGetValues(metadataFlavorKey, out metadataValues)
-                    && metadataValues.Contains(metadataFlavorValue)
-                    && response.Content.Headers.ContentLength < maxContentLength)
+                using (var httpClient = new HttpClient())
                 {
-                    // Valid response from metadata server.
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false); // TODO: Consider retrying on IO Exception.
+                    if (response.StatusCode == HttpStatusCode.OK
+                        && response.Headers.TryGetValues(metadataFlavorKey, out var metadataValues)
+                        && metadataValues.Contains(metadataFlavorValue)
+                        && response.Content.Headers.ContentLength < maxContentLength)
+                    {
+                        // Valid response from metadata server.
+                        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
                 }
             }
             catch
@@ -519,10 +554,13 @@ namespace Google.Api.Gax
             if (metadataJson != null)
             {
                 var kubernetesData = await GkePlatformDetails.LoadKubernetesDataAsync().ConfigureAwait(false);
-                GkePlatformDetails gkeDetails = GkePlatformDetails.TryLoad(metadataJson, kubernetesData);
-                if (gkeDetails != null)
+                if (kubernetesData != null)
                 {
-                    return new Platform(gkeDetails);
+                    GkePlatformDetails gkeDetails = GkePlatformDetails.TryLoad(metadataJson, kubernetesData);
+                    if (gkeDetails != null)
+                    {
+                        return new Platform(gkeDetails);
+                    }
                 }
                 GcePlatformDetails gceDetails = GcePlatformDetails.TryLoad(metadataJson);
                 if (gceDetails != null)

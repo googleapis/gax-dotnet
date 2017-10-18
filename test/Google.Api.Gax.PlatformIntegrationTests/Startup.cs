@@ -40,7 +40,7 @@ namespace Google.Api.Gax.PlatformIntegrationTests
                 {
                     var platform = await Google.Api.Gax.Platform.InstanceAsync();
                     var envs = Environment.GetEnvironmentVariables();
-                    // Output a the detected platform, the all environment variables.
+                    // Output the detected platform; then all environment variable and metadata, useful for debugging.
                     string output = envs.Cast<DictionaryEntry>()
                         .Select(x => new { key = x.Key.ToString(), value = x.Value.ToString() })
                         .OrderBy(x => x.key)
