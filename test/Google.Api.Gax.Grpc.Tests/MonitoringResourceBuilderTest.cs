@@ -43,10 +43,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var platform = new Platform(GcePlatformDetails.TryLoad(json));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("gce_instance", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeInstanceId", resource.Labels["instance_id"]);
-            Assert.Equal("FakeZone", resource.Labels["zone"]);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "instance_id", "FakeInstanceId" },
+                { "zone", "FakeZone" }
+            }, resource.Labels);
         }
 
         [Fact]
@@ -55,10 +57,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var platform = new Platform(new GaePlatformDetails("FakeProjectId", "FakeInstanceId", "FakeService", "FakeVersion"));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("gae_app", resource.Type);
-            Assert.Equal(3, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeService", resource.Labels["module_id"]);
-            Assert.Equal("FakeVersion", resource.Labels["version_id"]);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "module_id", "FakeService" },
+                { "version_id", "FakeVersion" }
+            }, resource.Labels);
         }
 
         [Fact]
@@ -104,14 +108,16 @@ namespace Google.Api.Gax.Grpc.Tests
             var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
             Assert.Equal("container", resource.Type);
-            Assert.Equal(7, resource.Labels.Count);
-            Assert.Equal("FakeProjectId", resource.Labels["project_id"]);
-            Assert.Equal("FakeClusterName", resource.Labels["cluster_name"]);
-            Assert.Equal("namespaceid", resource.Labels["namespace_id"]);
-            Assert.Equal("123", resource.Labels["instance_id"]);
-            Assert.Equal("podid", resource.Labels["pod_id"]);
-            Assert.Equal("containername", resource.Labels["container_name"]);
-            Assert.Equal("projects/FakeProject/zones/FakeLocation", resource.Labels["zone"]);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "cluster_name", "FakeClusterName" },
+                { "namespace_id", "namespaceid" },
+                { "instance_id", "123" },
+                { "pod_id", "podid" },
+                { "container_name", "containername" },
+                { "zone", "projects/FakeProject/zones/FakeLocation" }
+            }, resource.Labels);
         }
     }
 }

@@ -209,10 +209,10 @@ namespace Google.Api.Gax
             var podName = Environment.GetEnvironmentVariable("HOSTNAME");
             if (string.IsNullOrEmpty(kubernetesServiceHost) || kubernetesServicePort == 0 || string.IsNullOrEmpty(podName))
             {
-                // Not running on GKE
+                // Not running on kubernetes
                 return null;
             }
-            // If anything following fails, then the return value will still show that we're running on GKE.
+            // If anything following fails, then the return value will still show that we're running on kubernetes.
             var baseUrl = $"https://{kubernetesServiceHost}:{kubernetesServicePort}/api/v1";
             string kubernetesNamespace = null;
             string kubernetesToken = null;
@@ -227,7 +227,7 @@ namespace Google.Api.Gax
             }
             catch
             {
-                // Ignore all errors
+                // Ignore all errors, we still return partial data.
             }
             if (string.IsNullOrEmpty(kubernetesNamespace) || string.IsNullOrEmpty(kubernetesToken) ||
                 kubernetesCaCert == null || mountInfo == null || mountInfo.Length == 0)
@@ -246,12 +246,8 @@ namespace Google.Api.Gax
                     // Allow ca that is not installed on the current machine
                     // This allows *any* ca to be used, hence the following check for the kubernetes-provided ca
                     chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
-                    if (chain.Build(cert))
-                    {
-                        // Check that the root ca is the kubernetes-provided ca
-                        return chain.ChainElements[chain.ChainElements.Count - 1].Certificate.Thumbprint == kubernetesCaCert.Thumbprint;
-                    }
-                    return false;
+                    // Check that cert is trusted, and that the root ca is the kubernetes-provided ca
+                    return chain.Build(cert) && chain.ChainElements[chain.ChainElements.Count - 1].Certificate.Thumbprint == kubernetesCaCert.Thumbprint;
                 }
             };
             string namespaceJson = null;
@@ -320,23 +316,26 @@ namespace Google.Api.Gax
             JObject metadata = null;
             JObject namespaceData = null;
             JObject podData = null;
-            try
+            // Parse JSON, ignoring all errors; partially available data is supported
+            try { metadata = JObject.Parse(metadataJson); } catch { }
+            try { namespaceData = JObject.Parse(kubernetesData.NamespaceJson); } catch { }
+            try { podData = JObject.Parse(kubernetesData.PodJson); } catch { }
+            if (metadata == null)
             {
-                metadata = JObject.Parse(metadataJson);
-                namespaceData = JObject.Parse(kubernetesData.NamespaceJson);
-                podData = JObject.Parse(kubernetesData.PodJson);
-            }
-            catch
-            {
-                // Ignore all errors
-            }
-            if (metadata == null ||
-                (namespaceData != null && namespaceData["kind"].Value<string>() != "Namespace") ||
-                (podData != null && podData["kind"].Value<string>() != "Pod"))
-            {
+                // Metadata is required. If it's not present, or the JSON cannot be parsed, return null.
                 return null;
             }
-            var hostName = kubernetesData.PodName ?? podData?["metadata"]?["name"]?.Value<string>(); // Pod name is the hostname
+            if (namespaceData != null && namespaceData["kind"].Value<string>() != "Namespace")
+            {
+                // If namespaceData looks corrupt/incomplete, ignore it.
+                namespaceData = null;
+            }
+            if (podData != null && podData["kind"].Value<string>() != "Pod")
+            {
+                // If podData looks corrupt/incomplete, ignore it.
+                podData = null;
+            }
+            var hostName = kubernetesData.PodName ?? podData?["metadata"]?["name"]?.Value<string>() ?? ""; // Pod name is the hostname
             var projectId = metadata["project"]?["projectId"]?.Value<string>();
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.Value<string>();
             var instanceId = metadata["instance"]?["id"]?.Value<string>();
@@ -359,8 +358,10 @@ namespace Google.Api.Gax
                 zone != null && namespaceId != null && podId != null && containerName != null)
             {
                 if (s_zoneTemplate.TryParseName(zone, out var zoneResourceName))
+                {
                     return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1], hostName,
                         instanceId, zone, namespaceId, podId, containerName);
+                }
             }
             return null;
         }

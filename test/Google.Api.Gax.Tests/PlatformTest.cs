@@ -104,5 +104,65 @@ namespace Google.Api.Gax.Tests
             Assert.Equal("de3bf4eb-b036-11e7-8e33-42010a9a0fdd", gke.PodId);
             Assert.Equal("platformintegrationtest", gke.ContainerName);
         }
+
+        const string metadataValid = "{'project':{'projectId':'FakeProjectId'},'instance':{'attributes':{'cluster-name':'FakeClusterName'},'id':'123','zone':'projects/FakeProject/zones/FakeLocation'}}";
+        const string metadataIncomplete = "{'project':{'projectId':'FakeProjectId'},'instance':{'attr";
+        const string namespaceValid = "{'kind':'Namespace','metadata':{'uid':'namespaceid'}}";
+        const string namespaceWrongKind = "{'kind':'NotNamespace','metadata':{'uid':'namespaceid'}}";
+        const string namespaceIncomplete = "{'kind':'Namespace','m";
+        const string podValid = "{'kind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
+        const string podWrongKind = "{'kind':'NotPod','metadata':{'name':'podname','uid':'podid'}}";
+        const string podIncomplete = "{'kind':'Pod','metadata':{";
+        const string mountInfoValid = "123\n/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log\nabc";
+        const string mountInfoMultiple = "var/lib/kubelet/pods/podid/containers/containername1/ /dev/termination-log\nvar/lib/kubelet/pods/podid/containers/containername2/ /dev/termination-log";
+        const string mountInfoMissing = "123\n/var/lib/kubelet/pods/podid/notcontainers/containername/ /dev/termination-log\nabc";
+
+        [Theory, PairwiseData]
+        public void Gke_IncompleteData(
+            [CombinatorialValues("", metadataIncomplete, metadataValid)] string metadataJson,
+            [CombinatorialValues(null, "", namespaceIncomplete, namespaceWrongKind, namespaceValid)] string namespaceJson,
+            [CombinatorialValues(null, "", podIncomplete, podWrongKind, podValid)] string podJson,
+            [CombinatorialValues(null, "", mountInfoMultiple, mountInfoMissing, mountInfoValid)] string mountInfo)
+        {
+            var kubernetesData = new GkePlatformDetails.KubernetesData
+            {
+                NamespaceJson = namespaceJson,
+                PodJson = podJson,
+                MountInfo = mountInfo?.Split('\n').Where(x => x != "").ToArray()
+            };
+            var gke = GkePlatformDetails.TryLoad(metadataJson, kubernetesData);
+            if (metadataJson != metadataValid)
+            {
+                Assert.Null(gke);
+                return;
+            }
+            Assert.NotNull(gke);
+            if (namespaceJson == namespaceValid)
+            {
+                Assert.Equal("namespaceid", gke.NamespaceId);
+            }
+            else
+            {
+                Assert.Equal("", gke.NamespaceId);
+            }
+            if (podJson == podValid)
+            {
+                Assert.Equal("podid", gke.PodId);
+                Assert.Equal("podname", gke.HostName);
+            }
+            else
+            {
+                Assert.Equal("", gke.PodId);
+                Assert.Equal("", gke.HostName);
+            }
+            if (mountInfo == mountInfoValid && podJson == podValid)
+            {
+                Assert.Equal("containername", gke.ContainerName);
+            }
+            else
+            {
+                Assert.Equal("", gke.ContainerName);
+            }
+        }
     }
 }
