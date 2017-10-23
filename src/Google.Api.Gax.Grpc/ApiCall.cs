@@ -172,5 +172,25 @@ namespace Google.Api.Gax.Grpc
                 (req, cs) => _asyncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 (req, cs) => _syncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 BaseCallSettings);
+
+        /// <summary>
+        /// Construct a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an exception customizer
+        /// to both the synchronous and asynchronous calls.
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="customizer"/> will be passed any exception that is thrown by the underlying API call.
+        /// If it returns null, the original exception is retained and passed on. Otherwise, the returned exception is
+        /// thrown in place of the original one.
+        /// </remarks>
+        /// <param name="customizer">The exception customizer to apply. Must not be null.</param>
+        /// <returns>A new <see cref="ApiCall{TRequest, TResponse}"/> with the exception customizer applied.</returns>
+        public ApiCall<TRequest, TResponse> WithExceptionCustomizer(Func<RpcException, RpcException> customizer)
+        {
+            GaxPreconditions.CheckNotNull(customizer, nameof(customizer));
+            return new ApiCall<TRequest, TResponse>(
+                _asyncCall.WithExceptionCustomizer(customizer),
+                _syncCall.WithExceptionCustomizer(customizer),
+                BaseCallSettings);
+        }
     }
 }
