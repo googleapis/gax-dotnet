@@ -527,9 +527,9 @@ namespace Google.Api.Gax
 
         private static GaePlatformDetails LoadGaeDetails()
         {
-            // See https://cloud.google.com/appengine/docs/flexible/python/runtime#environment_variables
+            // See https://cloud.google.com/appengine/docs/flexible/dotnet/runtime#environment_variables
             // for details on environment variables.
-            var gcloudProject = Environment.GetEnvironmentVariable("GCLOUD_PROJECT");
+            var gcloudProject = Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT") ?? Environment.GetEnvironmentVariable("GCLOUD_PROJECT");
             var gaeInstance = Environment.GetEnvironmentVariable("GAE_INSTANCE");
             var gaeService = Environment.GetEnvironmentVariable("GAE_SERVICE");
             var gaeVersion = Environment.GetEnvironmentVariable("GAE_VERSION");
