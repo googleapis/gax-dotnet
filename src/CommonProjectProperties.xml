@@ -18,6 +18,7 @@
     <PackageTags>Google</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/googleapis/gax-dotnet</RepositoryUrl>
+    <PackageIconUrl>https://www.gstatic.com/images/branding/product/1x/google_developers_64dp.png</PackageIconUrl>
   </PropertyGroup>
 
   <Import Project="..\ReleaseVersion.xml" />
