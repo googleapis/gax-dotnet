@@ -9,7 +9,7 @@ This repository contains code for support libraries for the
 See the [API
 reference](https://googlecloudplatform.github.io/google-cloud-dotnet/docs/api/Google.Api.Gax.html)
 and [API
-layers](https://googlecloudplatform.github.io/google-cloud-dotnet/docs/api-layers.html)
+layers](https://googlecloudplatform.github.io/google-cloud-dotnet/docs/guides/api-layers.html)
 documentation for more details of how these support libraries are
 used.
 
