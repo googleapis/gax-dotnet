@@ -254,7 +254,7 @@ namespace Google.Api.Gax
             string podJson = null;
             using (var client = new HttpClient(handler))
             {
-                client.Timeout = TimeSpan.FromMilliseconds(1000); // 1 second found to be reasonable
+                client.Timeout = Platform.HttpTimeout;
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", kubernetesToken);
                 var urlNamespace = $"{baseUrl}/namespaces/{kubernetesNamespace}";
                 var urlPod = $"{baseUrl}/namespaces/{kubernetesNamespace}/pods/{podName}";
@@ -470,7 +470,23 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class Platform
     {
-        private readonly static Lazy<Task<Platform>> s_instance = new Lazy<Task<Platform>>(LoadInstanceAsync);
+        /// <summary>
+        /// <para>
+        /// Timeout to use for HTTP requests when determining platform details.
+        /// This is internal rather than private as it's used from LoadKubernetesDataAsync;
+        /// it's not expected to be used outside this source file though.
+        /// </para>
+        /// <para>
+        /// Originally this had a value of 1 second. We have observed very rare issues believed to be due to this,
+        /// and have certainly observed metadata requests taking ~800ms.
+        /// 2 seconds is expected to make these issues even rarer, but it's unlikely to have a negative effect on
+        /// anything else: in cases where we're not running on GCE/GKE, the request is likely to fail much sooner
+        /// anyway.
+        /// </para>
+        /// </summary>
+        internal static readonly TimeSpan HttpTimeout = TimeSpan.FromSeconds(2);
+
+        private static readonly Lazy<Task<Platform>> s_instance = new Lazy<Task<Platform>>(LoadInstanceAsync);
 
         /// <summary>
         /// Asyncrhonously get execution platform information.
@@ -499,7 +515,7 @@ namespace Google.Api.Gax
                 var metadataUrl = $"http://{effectiveMetadataHost}/computeMetadata/v1?recursive=true";
                 var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
                 httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
-                var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)); // 1000 found to be reasonable.
+                var cts = new CancellationTokenSource(HttpTimeout);
                 using (var httpClient = new HttpClient())
                 {
                     var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false); // TODO: Consider retrying on IO Exception.
