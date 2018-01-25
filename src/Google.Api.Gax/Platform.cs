@@ -495,7 +495,7 @@ namespace Google.Api.Gax
         public static Task<Platform> InstanceAsync() => s_instance.Value;
 
         /// <summary>
-        /// Get execution platform information. This may block for up to one second.
+        /// Get execution platform information. This may block briefly while network operations are in progress.
         /// </summary>
         /// <returns>Execution platform information.</returns>
         public static Platform Instance() => InstanceAsync().Result;
