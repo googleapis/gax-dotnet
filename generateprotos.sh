@@ -5,9 +5,14 @@
 OS=windows
 [[ ${OS} = "windows" ]] && EXE_SUFFIX=.exe || EXE_SUFFIX=
 
+declare -r ROOT=$(realpath $(dirname $0))
+cd $ROOT
+
 PROTOBUF_VERSION=3.3.0
-PROTOC=packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
-CORE_PROTOS_ROOT=packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
+GRPC_VERSION=1.9.0
+PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
+CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
+GRPC_PLUGIN=$ROOT/packages/Grpc.Tools.$GRPC_VERSION/tools/windows_x64/grpc_csharp_plugin.exe
 
 # Nuget isn't working nicely for me on Linux...
 nuget_install() {
@@ -31,6 +36,7 @@ install_dependencies() {
   # Make sure we have all the tools we need.
   # Prerequisite: Java already installed so that gradlew will work
   nuget_install Google.Protobuf.Tools $PROTOBUF_VERSION
+  nuget_install Grpc.Tools $GRPC_VERSION
 
   if [ -d "googleapis" ]
   then
@@ -79,3 +85,9 @@ do
 done
 
 rm -rf $OUTDIR
+
+(cd test/Google.Api.Gax.Grpc.IntegrationTests;
+ $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
+
+(cd test/Google.Api.Gax.Grpc.Tests;
+ $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
