@@ -15,21 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Label="dotnet pack instructions">
-    <Content Include="$(OutputPath)netstandard1.3\$(PackageId).pdb">
-      <Pack>true</Pack>
-      <PackagePath>lib/netstandard1.3</PackagePath>
-    </Content>
-    <Content Include="$(OutputPath)net45\$(PackageId).pdb">
-      <Pack>true</Pack>
-      <PackagePath>lib/net45</PackagePath>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.1.2" PrivateAssets="All" />
+    
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
   </ItemGroup>
 
   <Import Project="..\..\StripDesktopOnNonWindows.xml" />
