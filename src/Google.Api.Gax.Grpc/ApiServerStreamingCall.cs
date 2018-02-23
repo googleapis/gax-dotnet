@@ -38,8 +38,8 @@ namespace Google.Api.Gax.Grpc
             Func<TRequest, CallSettings, AsyncServerStreamingCall<TResponse>> syncCall,
             CallSettings baseCallSettings)
         {
-            _asyncCall = asyncCall;
-            _syncCall = syncCall;
+            _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
+            _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
             BaseCallSettings = baseCallSettings;
         }
 
