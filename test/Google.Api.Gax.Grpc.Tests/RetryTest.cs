@@ -348,7 +348,6 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 CallTimes.Add(_scheduler.Clock.GetCurrentDateTimeUtc());
                 CallSettingsReceived.Add(callSettings);
-                var ctor = typeof(AsyncServerStreamingCall<SimpleResponse>).GetTypeInfo().GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single();
                 var responseStream = new AsyncStreamReader<SimpleResponse>(new SimpleResponse { Name = request.Name });
                 var responseHeaders = Task.Run(async () =>
                 {
@@ -360,7 +359,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     }
                     return Metadata.Empty;
                 });
-                var response = (AsyncServerStreamingCall<SimpleResponse>)ctor.Invoke(new object[] { responseStream, responseHeaders, null, null, null });
+                var response = new AsyncServerStreamingCall<SimpleResponse>(responseStream, responseHeaders, null, null, null);
                 return response;
             }
 
