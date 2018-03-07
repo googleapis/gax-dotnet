@@ -252,9 +252,10 @@ namespace Google.Api.Gax
             };
             string namespaceJson = null;
             string podJson = null;
+            // TODO: Consider retrying.
             using (var client = new HttpClient(handler))
             {
-                client.Timeout = Platform.HttpTimeout;
+                client.Timeout = TimeSpan.FromSeconds(1);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", kubernetesToken);
                 var urlNamespace = $"{baseUrl}/namespaces/{kubernetesNamespace}";
                 var urlPod = $"{baseUrl}/namespaces/{kubernetesNamespace}/pods/{podName}";
@@ -470,22 +471,6 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class Platform
     {
-        /// <summary>
-        /// <para>
-        /// Timeout to use for HTTP requests when determining platform details.
-        /// This is internal rather than private as it's used from LoadKubernetesDataAsync;
-        /// it's not expected to be used outside this source file though.
-        /// </para>
-        /// <para>
-        /// Originally this had a value of 1 second. We have observed very rare issues believed to be due to this,
-        /// and have certainly observed metadata requests taking ~800ms.
-        /// 2 seconds is expected to make these issues even rarer, but it's unlikely to have a negative effect on
-        /// anything else: in cases where we're not running on GCE/GKE, the request is likely to fail much sooner
-        /// anyway.
-        /// </para>
-        /// </summary>
-        internal static readonly TimeSpan HttpTimeout = TimeSpan.FromSeconds(2);
-
         private static readonly Lazy<Task<Platform>> s_instance = new Lazy<Task<Platform>>(LoadInstanceAsync);
 
         /// <summary>
@@ -509,37 +494,49 @@ namespace Google.Api.Gax
             const string metadataHost = "169.254.169.254";
             const string metadataFlavorKey = "Metadata-Flavor";
             const string metadataFlavorValue = "Google";
+            const int metadataServerPingAttempts = 3;
             const long maxContentLength = 512 * 1024; // Maximum allowed metadata size.
-            try
+            // Reasonably short timeout; we sometimes see a first request take over a second if left to its own devices, but
+            // a retry is fast.
+            TimeSpan timeout = TimeSpan.FromMilliseconds(500);
+
+            var effectiveMetadataHost = string.IsNullOrEmpty(metadataEmulatorHost) ? metadataHost : metadataEmulatorHost;
+            var metadataUrl = $"http://{effectiveMetadataHost}/computeMetadata/v1?recursive=true";
+            // Using the built-in HttpClient, as we want bare bones functionality - we'll control retries.
+            // Use the same one across all attempts, which may contribute to speedier retries.
+            using (var httpClient = new HttpClient())
             {
-                var effectiveMetadataHost = string.IsNullOrEmpty(metadataEmulatorHost) ? metadataHost : metadataEmulatorHost;
-                var metadataUrl = $"http://{effectiveMetadataHost}/computeMetadata/v1?recursive=true";
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
-                httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
-                var cts = new CancellationTokenSource(HttpTimeout);
-                using (var httpClient = new HttpClient())
+                for (int i = 0; i < metadataServerPingAttempts; i++)
                 {
-                    var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false); // TODO: Consider retrying on IO Exception.
-                    if (response.StatusCode == HttpStatusCode.OK
-                        && response.Headers.TryGetValues(metadataFlavorKey, out var metadataValues)
-                        && metadataValues.Contains(metadataFlavorValue)
-                        && response.Content.Headers.ContentLength < maxContentLength)
+                    try
                     {
-                        // Valid response from metadata server.
-                        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var cts = new CancellationTokenSource(timeout);
+                        var httpRequest = new HttpRequestMessage(HttpMethod.Get, metadataUrl);
+                        httpRequest.Headers.Add(metadataFlavorKey, metadataFlavorValue); // Required for any query.
+                        var response = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);
+                        if (response.StatusCode == HttpStatusCode.OK
+                            && response.Headers.TryGetValues(metadataFlavorKey, out var metadataValues)
+                            && metadataValues.Contains(metadataFlavorValue)
+                            && response.Content.Headers.ContentLength < maxContentLength)
+                        {
+                            // Valid response from metadata server.
+                            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        }
+                    }
+                    catch
+                    {
+                        // No-op; we'll retry.
+                        // Possible exceptions, in all cases there's nothing we can do except
+                        // assume we're not running on GCE, and hence return null after retrying.
+                        // OperationCanceledException: on timeout
+                        // HttpRequestException: On general request failure
+                        // WebException: DNS problem on Mono
+                        // TODO: Decide what to do here.
                     }
                 }
+                // Multiple attempts failed.
+                return null;
             }
-            catch
-            {
-                // Possible exceptions, in all cases there's nothing we can do except
-                // assume we're not running on GCE, and hence return null.
-                // OperationCanceledException: on timeout
-                // HttpRequestException: On general request failure
-                // WebException: DNS problem on Mono
-                // TODO: Decide what to do here.
-            }
-            return null;
         }
 
         private static GaePlatformDetails LoadGaeDetails()
