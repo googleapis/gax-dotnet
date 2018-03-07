@@ -97,6 +97,24 @@ namespace Google.Api.Gax.Grpc
             settings.MergedWith(CallSettings.FromHeader(name, value));
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static CallSettings WithResponseMetadataHandler(this CallSettings settings, Action<Metadata> handler) =>
+            settings.MergedWith(CallSettings.FromResponseMetadataHandler(handler));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="handler"></param>
+        /// <returns></returns>
+        public static CallSettings WithTrailingMetadataHandler(this CallSettings settings, Action<Metadata> handler) =>
+            settings.MergedWith(CallSettings.FromTrailingMetadataHandler(handler));
+
+        /// <summary>
         /// Returns a <see cref="CallSettings"/> which will have an effective deadline of at least <paramref name="deadline"/>.
         /// If <paramref name="settings"/> already observes an earlier deadline (with respect to <paramref name="clock"/>),
         /// or if <paramref name="deadline"/> is null, the original settings will be returned.

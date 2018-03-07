@@ -1,7 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+using Google.Api.Gax.Testing;
+using Grpc.Core;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -43,5 +50,71 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.NotEqual(ctBase, asyncCallSettings.CancellationToken.Value);
             Assert.NotEqual(ctPerCall, asyncCallSettings.CancellationToken.Value);
         }
+
+        [Theory, CombinatorialData]
+        public async Task MetadataHandlers(bool responseHandler, bool trailingHandler, bool sync)
+        {
+            var call = CreateMetadataTestingApiCall();
+            Metadata actualResponseMetadata = null;
+            Metadata actualTrailingMetadata = null;
+            Metadata expectedResponseMetadata = responseHandler ? CreateMetadata("kind", "response") : null;
+            Metadata expectedTrailingMetadata = trailingHandler ? CreateMetadata("kind", "trailing") : null;
+
+            CallSettings settings = null;
+            if (responseHandler)
+            {
+                settings = settings.WithResponseMetadataHandler(metadata => actualResponseMetadata = metadata);
+            }
+            if (trailingHandler)
+            {
+                settings = settings.WithTrailingMetadataHandler(metadata => actualTrailingMetadata = metadata);
+            }
+            var request = new SimpleRequest();
+            var response = sync ? call.Sync(request, settings) : await call.Async(request, settings);
+            Assert.Equal("response", response.Name);
+
+            AssertMetadata(expectedResponseMetadata, actualResponseMetadata);
+            AssertMetadata(expectedTrailingMetadata, actualTrailingMetadata);
+        }
+
+        private ApiCall<SimpleRequest, SimpleResponse> CreateMetadataTestingApiCall()
+        {
+            var responseMetadata = CreateMetadata("kind", "response");
+            var trailingMetadata = CreateMetadata("kind", "trailing");
+            var response = new SimpleResponse { Name = "response" };
+            var call = new AsyncUnaryCall<SimpleResponse>(
+                Task.FromResult(response),
+                Task.FromResult(responseMetadata),
+                () => Status.DefaultSuccess,
+                () => trailingMetadata,
+                disposeAction: () => { });
+
+            return ApiCall.Create<SimpleRequest, SimpleResponse>(
+                (request, options) => call,
+                (request, options) => response,
+                baseCallSettings: null,
+                clock: new FakeClock());
+        }
+
+        private void AssertMetadata(Metadata expected, Metadata actual)
+        {
+            if (expected == null)
+            {
+                Assert.Null(actual);
+                return;
+            }
+            Assert.Equal(expected.Count, actual.Count);
+            for (int i = 0; i < expected.Count; i++)
+            {
+                Assert.Equal(expected[i].Key, actual[i].Key);
+                Assert.Equal(expected[i].Value, actual[i].Value);
+            }
+        }
+
+        /// <summary>
+        /// Creates a Metadata instance for a single key/value pair.
+        /// </summary>
+        private static Metadata CreateMetadata(string key, string value) =>
+            new Metadata { new Metadata.Entry("kind", "response") };
     }
 }

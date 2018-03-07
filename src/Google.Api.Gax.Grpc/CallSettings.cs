@@ -35,7 +35,30 @@ namespace Google.Api.Gax.Grpc
             CallTiming timing,
             Action<Metadata> headerMutation,
             WriteOptions writeOptions,
-            ContextPropagationToken propagationToken)
+            ContextPropagationToken propagationToken) : this(cancellationToken, credentials, timing, headerMutation, writeOptions, propagationToken, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance with the specified settings.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
+        /// <param name="credentials">Credentials to use for the call.</param>
+        /// <param name="timing"><see cref="CallTiming"/> to use, or null for default retry/expiration behavior.</param>
+        /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
+        /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
+        /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
+        /// <param name="responseMetadataHandler">Action to invoke when response metadata is received.</param>
+        /// <param name="trailingMetadataHandler">Action to invoke when trailing metadata is received.</param>
+        public CallSettings(
+            CancellationToken? cancellationToken,
+            CallCredentials credentials,
+            CallTiming timing,
+            Action<Metadata> headerMutation,
+            WriteOptions writeOptions,
+            ContextPropagationToken propagationToken,
+            Action<Metadata> responseMetadataHandler,
+            Action<Metadata> trailingMetadataHandler)
         {
             CancellationToken = cancellationToken;
             Credentials = credentials;
@@ -43,6 +66,8 @@ namespace Google.Api.Gax.Grpc
             HeaderMutation = headerMutation;
             WriteOptions = writeOptions;
             PropagationToken = propagationToken;
+            ResponseMetadataHandler = responseMetadataHandler;
+            TrailingMetadataHandler = trailingMetadataHandler;
         }
 
         /// <summary>
@@ -80,6 +105,16 @@ namespace Google.Api.Gax.Grpc
         public CallTiming Timing { get; }
 
         /// <summary>
+        /// Delegate to receive the metadata associated with a response.
+        /// </summary>
+        public Action<Metadata> ResponseMetadataHandler { get; }
+
+        /// <summary>
+        /// Delegate to receive the metadata sent after the response.
+        /// </summary>
+        public Action<Metadata> TrailingMetadataHandler { get; }
+
+        /// <summary>
         /// Merges the settings in <paramref name="overlaid"/> with those in
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
         /// If both arguments are null, the result is null. If one argument is null,
@@ -108,7 +143,9 @@ namespace Google.Api.Gax.Grpc
                 // anything that the previous mutation does.
                 original.HeaderMutation + overlaid.HeaderMutation,
                 overlaid.WriteOptions ?? original.WriteOptions,
-                overlaid.PropagationToken ?? original.PropagationToken);
+                overlaid.PropagationToken ?? original.PropagationToken,
+                original.ResponseMetadataHandler + overlaid.ResponseMetadataHandler,
+                original.TrailingMetadataHandler + overlaid.TrailingMetadataHandler);
         }
 
         /// <summary>
@@ -146,6 +183,24 @@ namespace Google.Api.Gax.Grpc
         public static CallSettings FromHeaderMutation(Action<Metadata> headerMutation) =>
             headerMutation == null ? null : new CallSettings(null, null, null, headerMutation, null, null);
 
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified response metadata handler, or returns null
+        /// if <paramref name="responseMetadataHandler"/> is null.
+        /// </summary>
+        /// <param name="responseMetadataHandler">Action to receive response metadata when the call completes.</param>
+        /// <returns>A new instance, or null if <paramref name="responseMetadataHandler"/> is null..</returns>
+        public static CallSettings FromResponseMetadataHandler(Action<Metadata> responseMetadataHandler) =>
+            responseMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, responseMetadataHandler, null);
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified trailing metadata handler, or returns null
+        /// if <paramref name="trailingMetadataHandler"/> is null.
+        /// </summary>
+        /// <param name="trailingMetadataHandler">Action to receive trailing metadata when the call completes.</param>
+        /// <returns>A new instance, or null if <paramref name="trailingMetadataHandler"/> is null..</returns>
+        public static CallSettings FromTrailingMetadataHandler(Action<Metadata> trailingMetadataHandler) =>
+            trailingMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, null, trailingMetadataHandler);
+        
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified header name and value.
         /// </summary>
