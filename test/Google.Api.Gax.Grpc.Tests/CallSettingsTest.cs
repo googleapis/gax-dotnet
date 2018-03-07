@@ -159,5 +159,43 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(CallSettings.FieldMaskHeader, metadata[0].Key);
             Assert.Equal("foo", metadata[0].Value);
         }
+
+        [Fact]
+        public void FromResponseMetadataHandler()
+        {
+            Action<Metadata> handler = metadata => { };
+            var settings = CallSettings.FromResponseMetadataHandler(handler);
+            Assert.Same(handler, settings.ResponseMetadataHandler);
+        }
+
+        [Fact]
+        public void FromTrailingMetadataHandler()
+        {
+            Action<Metadata> handler = metadata => { };
+            var settings = CallSettings.FromTrailingMetadataHandler(handler);
+            Assert.Same(handler, settings.TrailingMetadataHandler);
+        }
+
+        [Fact]
+        public void MergeResponseMetadataHandlers()
+        {
+            Action<Metadata> handler1 = metadata => { };
+            Action<Metadata> handler2 = metadata => { };
+            var settings = CallSettings.Merge(
+                CallSettings.FromResponseMetadataHandler(handler1),
+                CallSettings.FromResponseMetadataHandler(handler2));
+            Assert.Equal(handler1 + handler2, settings.ResponseMetadataHandler);
+        }
+
+        [Fact]
+        public void MergeTrailingMetadataHandlers()
+        {
+            Action<Metadata> handler1 = metadata => { };
+            Action<Metadata> handler2 = metadata => { };
+            var settings = CallSettings.Merge(
+                CallSettings.FromTrailingMetadataHandler(handler1),
+                CallSettings.FromTrailingMetadataHandler(handler2));
+            Assert.Equal(handler1 + handler2, settings.TrailingMetadataHandler);
+        }
     }
 }

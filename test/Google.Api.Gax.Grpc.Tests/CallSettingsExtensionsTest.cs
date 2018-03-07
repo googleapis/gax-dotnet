@@ -337,5 +337,53 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Same(backoffSettings, result.Timing.Retry.TimeoutBackoff);
             Assert.Equal(token, result.CancellationToken);
         }
+
+        [Fact]
+        public void WithResponseMetadataHandler_OnlyHandler()
+        {
+            Metadata setByHandler = null;
+            var settings = ((CallSettings) null).WithResponseMetadataHandler(m => setByHandler = m);
+            var metadata = new Metadata();
+            settings.ResponseMetadataHandler(metadata);
+            Assert.Same(metadata, setByHandler);
+        }
+
+        [Fact]
+        public void WithTrailingMetadataHandler_OnlyHandler()
+        {
+            Metadata setByHandler = null;
+            var settings = ((CallSettings) null).WithTrailingMetadataHandler(m => setByHandler = m);
+            var metadata = new Metadata();
+            settings.TrailingMetadataHandler(metadata);
+            Assert.Same(metadata, setByHandler);
+        }
+
+        [Fact]
+        public void WithResponseMetadataHandler_MultipleHandlers()
+        {
+            Metadata setByHandler1 = null;
+            Metadata setByHandler2 = null;
+            var settings = ((CallSettings) null)
+                .WithResponseMetadataHandler(m => setByHandler1 = m)
+                .WithResponseMetadataHandler(m => setByHandler2 = m);
+            var metadata = new Metadata();
+            settings.ResponseMetadataHandler(metadata);
+            Assert.Same(metadata, setByHandler1);
+            Assert.Same(metadata, setByHandler2);
+        }
+
+        [Fact]
+        public void WithTrailingMetadataHandler_MultipleHandlers()
+        {
+            Metadata setByHandler1 = null;
+            Metadata setByHandler2 = null;
+            var settings = ((CallSettings) null)
+                .WithTrailingMetadataHandler(m => setByHandler1 = m)
+                .WithTrailingMetadataHandler(m => setByHandler2 = m);
+            var metadata = new Metadata();
+            settings.TrailingMetadataHandler(metadata);
+            Assert.Same(metadata, setByHandler1);
+            Assert.Same(metadata, setByHandler2);
+        }
     }
 }

@@ -22,10 +22,75 @@ namespace Google.Api.Gax.Grpc
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
-            return new ApiCall<TRequest, TResponse>(
-                (req, cs) => asyncGrpcCall(req, cs.ToCallOptions(clock)).ResponseAsync,
-                (req, cs) => syncGrpcCall(req, cs.ToCallOptions(clock)),
-                baseCallSettings);
+            var adapter = new GrpcCallAdapter<TRequest, TResponse>(asyncGrpcCall, syncGrpcCall, clock);
+            return new ApiCall<TRequest, TResponse>(adapter.CallAsync, adapter.CallSync, baseCallSettings);
+        }
+
+        /// <summary>
+        /// Adapter used to mask the fact that when we need response/trailing metadata, a sync call may need
+        /// to use the async gRPC code.
+        /// </summary>
+        private class GrpcCallAdapter<TRequest, TResponse>
+            where TRequest : class, IMessage<TRequest>
+            where TResponse : class, IMessage<TResponse>
+        {
+            private readonly Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> _asyncGrpcCall;
+            private readonly Func<TRequest, CallOptions, TResponse> _syncGrpcCall;
+            private readonly IClock _clock;
+
+            internal GrpcCallAdapter(
+                Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
+                Func<TRequest, CallOptions, TResponse> syncGrpcCall,
+                IClock clock)
+            {
+                _asyncGrpcCall = asyncGrpcCall;
+                _syncGrpcCall = syncGrpcCall;
+                _clock = clock;
+            }
+
+            internal Task<TResponse> CallAsync(TRequest request, CallSettings callSettings)
+            {
+                var unaryCall = _asyncGrpcCall(request, callSettings.ToCallOptions(_clock));
+                var responseMetadataHandler = callSettings?.ResponseMetadataHandler;
+                var trailingMetadataHandler = callSettings?.TrailingMetadataHandler;
+
+                // If we don't have any response/trailing metadata handlers, it's simplest just to
+                // return the gRPC task.
+                if (responseMetadataHandler == null && trailingMetadataHandler == null)
+                {
+                    return unaryCall.ResponseAsync;
+                }
+
+                // Otherwise, we want to pass the returned metadata to the handlers before our returned task completes,
+                // so we create a proxy task.
+                return WaitAndCallHandlers();
+
+                // Implementation note: we capture local variables here, forcing the compiler to create
+                // a class to hold that state, as well as a regular async state machine. This could be avoided
+                // with parameters, but the cost is small compared with the network access (and it's a relatively rare case).
+                async Task<TResponse> WaitAndCallHandlers()
+                {
+                    var response = await unaryCall.ResponseAsync.ConfigureAwait(false);
+                    var responseHeadersTask = unaryCall.ResponseHeadersAsync;
+                    if (responseHeadersTask.Status == TaskStatus.RanToCompletion)
+                    {
+                        responseMetadataHandler?.Invoke(responseHeadersTask.Result);
+                    }
+                    trailingMetadataHandler?.Invoke(unaryCall.GetTrailers());
+                    return response;
+                }
+            }
+
+            internal TResponse CallSync(TRequest request, CallSettings callSettings)
+            {
+                // If we don't have complicated requirements, use the gRPC sync call. Otherwise,
+                // async the sync call.
+                if (callSettings?.ResponseMetadataHandler == null && callSettings?.TrailingMetadataHandler == null)
+                {
+                    return _syncGrpcCall(request, callSettings.ToCallOptions(_clock));
+                }
+                return CallAsync(request, callSettings).ResultWithUnwrappedExceptions();
+            }
         }
     }
 
