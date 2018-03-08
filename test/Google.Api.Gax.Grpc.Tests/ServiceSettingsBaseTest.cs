@@ -6,7 +6,6 @@
  */
 
 using Moq;
-using System;
 using System.Threading;
 using Xunit;
 
@@ -47,6 +46,10 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Same(callSettings, clonedSettings.CallSettings);
             Assert.Equal(settings.VersionHeader, clonedSettings.VersionHeader);
             Assert.Equal(clock.Object, clonedSettings.Clock);
+
+            // The version header builder really is cloned...
+            clonedSettings.VersionHeaderBuilder.AppendVersion("x", "1.0.0");
+            Assert.NotEqual(settings.VersionHeader, clonedSettings.VersionHeader);
         }
 
         [Fact]

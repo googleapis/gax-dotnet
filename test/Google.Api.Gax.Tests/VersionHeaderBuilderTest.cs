@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using System;
 using Xunit;
 
 namespace Google.Api.Gax.Tests
@@ -20,11 +21,11 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void AppendDotNetEnvironment_AddsDotNetEntry()
         {
-            string VersionHeader = new VersionHeaderBuilder().AppendDotNetEnvironment().ToString();
+            string versionHeader = new VersionHeaderBuilder().AppendDotNetEnvironment().ToString();
 #if NETCOREAPP1_0
-            Assert.StartsWith("gl-dotnet/1.", VersionHeader);
+            Assert.StartsWith("gl-dotnet/1.", versionHeader);
 #else
-            Assert.StartsWith("gl-dotnet/4.", VersionHeader);
+            Assert.StartsWith("gl-dotnet/4.", versionHeader);
 #endif
         }
 
@@ -50,6 +51,46 @@ namespace Google.Api.Gax.Tests
         {
             Assert.StartsWith("foo/1.0.0",
                 new VersionHeaderBuilder().AppendAssemblyVersion("foo", GetType()).ToString());
+        }
+
+        [Fact]
+        public void NamesAreUnique()
+        {
+            var builder = new VersionHeaderBuilder();
+            builder.AppendVersion("name", "1.0.0");
+            Assert.Throws<ArgumentException>(() => builder.AppendVersion("name", "2.0.0"));
+        }
+
+        [Fact]
+        public void Clone()
+        {
+            var builder1 = new VersionHeaderBuilder();
+            builder1.AppendVersion("x", "1.0.0");
+            var builder2 = builder1.Clone();
+            builder1.AppendVersion("y", "2.0.0");
+            builder2.AppendVersion("z", "3.0.0");
+            Assert.Equal("x/1.0.0 y/2.0.0", builder1.ToString());
+            Assert.Equal("x/1.0.0 z/3.0.0", builder2.ToString());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("x y")]
+        [InlineData("x/y")]
+        public void InvalidName(string name)
+        {
+            var builder = new VersionHeaderBuilder();
+            Assert.Throws<ArgumentException>(() => builder.AppendVersion(name, "1.0.0"));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("x y")]
+        [InlineData("x/y")]
+        public void InvalidVersion(string version)
+        {
+            var builder = new VersionHeaderBuilder();
+            Assert.Throws<ArgumentException>(() => builder.AppendVersion("name", version));
         }
     }
 }

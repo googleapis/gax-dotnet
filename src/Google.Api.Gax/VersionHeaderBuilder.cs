@@ -15,7 +15,7 @@ namespace Google.Api.Gax
     /// <summary>
     /// Helps build version strings for the x-goog-api-client header.
     /// The value is a space-separated list of name/value pairs, where the value
-    /// should be a semantic version string.
+    /// should be a semantic version string. Names must be unique.
     /// </summary>
     public sealed class VersionHeaderBuilder
     {
@@ -23,16 +23,24 @@ namespace Google.Api.Gax
         /// The name of the header to set.
         /// </summary>
         public const string HeaderName = "x-goog-api-client";
+        private readonly List<string> _names = new List<string>();
         private readonly List<string> _values = new List<string>();
 
         /// <summary>
         /// Appends the given name/version string to the list.
         /// </summary>
+        /// <param name="name">The name. Must not be null or empty, or contain a space or a slash.</param>
+        /// <param name="version">The version. Must not be null or empty, or contain a space or a slash.</param>
         public VersionHeaderBuilder AppendVersion(string name, string version)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             GaxPreconditions.CheckNotNull(version, nameof(version));
-            _values.Add($"{name}/{version}");
+            // Deliberate duplication as we may want to have different constraints.
+            GaxPreconditions.CheckArgument(name.Length > 0 && !name.Contains(' ') && !name.Contains('/'), nameof(name), $"Invalid name: {name}");
+            GaxPreconditions.CheckArgument(version.Length > 0 && !version.Contains(' ') && !version.Contains('/'), nameof(version), $"Invalid version: {version}");
+            GaxPreconditions.CheckArgument(!_names.Contains(name), nameof(name), "Names in version headers must be unique");
+            _names.Add(name);
+            _values.Add(version);
             return this;
         }
 
@@ -78,6 +86,18 @@ namespace Google.Api.Gax
             ""; // Empty string means "unknown"
 
         /// <inheritdoc />
-        public override string ToString() => string.Join(" ", _values);
+        public override string ToString() => string.Join(" ", _names.Zip(_values, (name, value) => $"{name}/{value}"));
+
+        /// <summary>
+        /// Clones this VersionHeaderBuilder, creating an independent copy with the same names/values.
+        /// </summary>
+        /// <returns>A clone of this builder.</returns>
+        public VersionHeaderBuilder Clone()
+        {
+            var ret = new VersionHeaderBuilder();
+            ret._names.AddRange(_names);
+            ret._values.AddRange(_values);
+            return ret;
+        }
     }
 }
