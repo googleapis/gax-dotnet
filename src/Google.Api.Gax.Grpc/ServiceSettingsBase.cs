@@ -21,13 +21,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected ServiceSettingsBase()
         {
-            VersionHeader = new VersionHeaderBuilder()
+            VersionHeaderBuilder = new VersionHeaderBuilder()
                 .AppendDotNetEnvironment()
                 .AppendAssemblyVersion("gccl", GetType())
                 .AppendAssemblyVersion("gapic", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
-                .AppendAssemblyVersion("grpc", typeof(Channel))
-                .ToString();
+                .AppendAssemblyVersion("grpc", typeof(Channel));
         }
 
         /// <summary>
@@ -40,10 +39,15 @@ namespace Google.Api.Gax.Grpc
             CallSettings = existing.CallSettings;
             Clock = existing.Clock;
             Scheduler = existing.Scheduler;
-            VersionHeader = existing.VersionHeader;
+            VersionHeaderBuilder = existing.VersionHeaderBuilder.Clone();
         }
 
-        internal string VersionHeader { get; }
+        /// <summary>
+        /// A builder for x-goog-api-client version headers. Additional library versions can be appended via this property.
+        /// </summary>
+        public VersionHeaderBuilder VersionHeaderBuilder { get; }
+
+        internal string VersionHeader => VersionHeaderBuilder.ToString();
 
         /// <summary>
         /// If not null, <see cref="CallSettings"/> that are applied to every RPC performed by the client.
