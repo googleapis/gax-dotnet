@@ -62,7 +62,8 @@ namespace Google.Api.Gax.Grpc
                 ? CallSettings.FromCallCredentials(credentials)
                 : new CallSettings(settings.CancellationToken, credentials,
                     settings.Timing, settings.HeaderMutation,
-                    settings.WriteOptions, settings.PropagationToken);
+                    settings.WriteOptions, settings.PropagationToken,
+                    settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified call timing,
@@ -82,7 +83,8 @@ namespace Google.Api.Gax.Grpc
                 ? CallSettings.FromCallTiming(timing)
                 : new CallSettings(settings.CancellationToken, settings.Credentials,
                     timing, settings.HeaderMutation,
-                    settings.WriteOptions, settings.PropagationToken);
+                    settings.WriteOptions, settings.PropagationToken,
+                    settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified header,
