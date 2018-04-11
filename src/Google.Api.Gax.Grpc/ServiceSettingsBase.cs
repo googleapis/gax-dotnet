@@ -45,7 +45,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// A builder for x-goog-api-client version headers. Additional library versions can be appended via this property.
         /// </summary>
-        public VersionHeaderBuilder VersionHeaderBuilder { get; }
+        internal VersionHeaderBuilder VersionHeaderBuilder { get; }
 
         internal string VersionHeader => VersionHeaderBuilder.ToString();
 
