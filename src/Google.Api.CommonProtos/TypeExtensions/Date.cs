@@ -9,16 +9,13 @@ using System;
 
 namespace Google.Type
 {
-    /// <summary>
-    /// Extensions to <see cref="Date"/>.
-    /// </summary>
     public partial class Date
     {
         /// <summary>
         /// Converts <see cref="Date"/> to <see cref="DateTime"/>.
         /// </summary>
-        /// <returns>The converted <see cref="DateTime"/> with no time specified.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when <see cref="Date.Year"/>, <see cref="Date.Month"/>, and/or <see cref="Date.Day"/> are not within the valid range.</exception>
+        /// <returns>The converted <see cref="DateTime"/> with time at midnight and <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="Year"/>, <see cref="Month"/>, and/or <see cref="Day"/> are not within the valid range.</exception>
         public DateTime ToDateTime()
         {
             try
@@ -34,8 +31,8 @@ namespace Google.Type
         /// <summary>
         /// Converts <see cref="Date"/> to <see cref="DateTimeOffset"/>.
         /// </summary>
-        /// <returns>The converted <see cref="DateTimeOffset"/> with no time specified and an Offset of <see cref="TimeSpan.Zero"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when <see cref="Date.Year"/>, <see cref="Date.Month"/>, and/or <see cref="Date.Day"/> are not within the valid range.</exception>        
+        /// <returns>The converted <see cref="DateTimeOffset"/> with time at midnight, <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>, and an <see cref="DateTimeOffset.Offset"/> of <see cref="TimeSpan.Zero"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="Year"/>, <see cref="Month"/>, and/or <see cref="Day"/> are not within the valid range.</exception>        
         public DateTimeOffset ToDateTimeOffset()
         {
             try
@@ -53,7 +50,7 @@ namespace Google.Type
         /// </summary>     
         /// <param name="dateTimeToConvert">The <see cref="DateTime"/> instance being converted.</param>
         /// <returns>The created <see cref="Date"/>.</returns>
-        public static Date CreateDate(DateTime dateTimeToConvert) =>
+        public static Date FromDateTime(DateTime dateTimeToConvert) =>
             new Date
             {
                 Year = dateTimeToConvert.Year,
@@ -66,7 +63,7 @@ namespace Google.Type
         /// </summary>  
         /// <param name="dateTimeOffsetToConvert">The <see cref="DateTimeOffset"/> instance being converted.</param>
         /// <returns>The created <see cref="Date"/>.</returns>
-        public static Date CreateDate(DateTimeOffset dateTimeOffsetToConvert) =>
+        public static Date FromDateTimeOffset(DateTimeOffset dateTimeOffsetToConvert) =>
             new Date
             {
                 Year = dateTimeOffsetToConvert.Year,
@@ -86,7 +83,7 @@ namespace Google.Type
         /// <param name="dateTimeToConvert">The <see cref="DateTime"/> instance being converted.</param>
         /// <returns>The <see cref="Date"/>.</returns>
         public static Date ToDate(this DateTime dateTimeToConvert) =>
-            Date.CreateDate(dateTimeToConvert);
+            Date.FromDateTime(dateTimeToConvert);
 
         /// <summary>
         /// Converts the <see cref="DateTimeOffset.Date"/> part of <see cref="DateTimeOffset"/> to <see cref="Date"/>.
@@ -94,6 +91,6 @@ namespace Google.Type
         /// <param name="dateTimeOffsetToConvert">The <see cref="DateTimeOffset"/> instance being converted.</param>
         /// <returns>The converted <see cref="Date"/>.</returns>
         public static Date ToDate(this DateTimeOffset dateTimeOffsetToConvert) =>
-            Date.CreateDate(dateTimeOffsetToConvert);
+            Date.FromDateTimeOffset(dateTimeOffsetToConvert);
     }
 }
