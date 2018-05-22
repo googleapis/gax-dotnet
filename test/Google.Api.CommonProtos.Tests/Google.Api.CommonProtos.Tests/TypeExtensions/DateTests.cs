@@ -1,11 +1,10 @@
 ﻿/*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.CommonProtos.TypeExtensions;
 using Google.Type;
 using System;
 using System.Collections.Generic;
@@ -13,79 +12,72 @@ using Xunit;
 
 namespace Google.Api.CommonProtos.Tests.TypeExtensions
 {
-    public class DateExtensionsTests
+    public class DateTests
     {
-        /// <summary>
-        /// Year, Month, Day
-        /// </summary>
-        public static IEnumerable<object[]> DateArguments => new[]
+        public static IEnumerable<object[]> InvalidDateTestArguments => new[]
         {
+            // In the order of Year, Month, Day.
+            new object[] { -1, -1 , -1},
+            new object[] { 0, 0 , 0},
+            new object[] { 0, 4 , 28},
+            new object[] { 2018, 0 , 28},
+            new object[] { 2018, 4 , 0},
+            new object[] { 10000, 4 , 28},
+            new object[] { 2018, 13 , 28},
+            new object[] { 2018, 4 , 32}
+        };
+
+        public static IEnumerable<object[]> ValidDateTestArguments => new[]
+        {
+            // In the order of Year, Month, Day.
             new object[] { 0001, 1 , 1},
             new object[] { 2000, 2 , 29},
             new object[] { 2018, 4 , 28},
-            new object[] { 9999, 12 , 31},
+            new object[] { 9999, 12 , 31}
         };
 
         [Fact]
-        public void ToDateTimeThrowsArgumentOutOfRangeExceptionWhenDateIsNotInitialized()
+        public void ToDateTimeThrowsInvalidOperationExceptionWhenDateIsNotInitialized()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
+            Assert.Throws<InvalidOperationException>(
                 () => new Date().ToDateTime());
         }
 
-        [Fact]
-        public void ToDateTimeThrowsArgumentOutOfRangeExceptionWhenYearIsZero()
+        [Theory]
+        [MemberData(nameof(InvalidDateTestArguments))]
+        public void ToDateTimeThrowsInvalidOperationExceptionWhenDateIsInvalidState(int year, int month, int day)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
+            Assert.Throws<InvalidOperationException>(
                 () => new Date
                 {
-                    Month = 1,
-                    Day = 1
-                }.ToDateTime());           
-        }
-
-        [Fact]
-        public void ToDateTimeThrowsArgumentOutOfRangeExceptionWhenDayIsZero()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new Date
-                {
-                    Year = 2000,
-                    Month = 1,
+                    Year = year,
+                    Month = month,
+                    Day = day
                 }.ToDateTime());
         }
 
         [Fact]
-        public void ToDateTimeOffsetThrowsArgumentOutOfRangeExceptionWhenDateIsNotInitialized()
+        public void ToDateTimeOffsetThrowsInvalidOperationExceptionWhenDateIsNotInitialized()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
+            Assert.Throws<InvalidOperationException>(
                 () => new Date().ToDateTimeOffset());
         }
 
-        [Fact]
-        public void ToDateTimeOffsetThrowsArgumentOutOfRangeExceptionWhenYearIsZero()
+        [Theory]
+        [MemberData(nameof(InvalidDateTestArguments))]
+        public void ToDateTimeOffsetThrowsInvalidOperationExceptionWhenDateIsInvalidState(int year, int month, int day)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
+            Assert.Throws<InvalidOperationException>(
                 () => new Date
                 {
-                    Month = 1,
-                    Day = 1
-                }.ToDateTimeOffset());
-        }
-
-        [Fact]
-        public void ToDateTimeOffsetThrowsArgumentOutOfRangeExceptionWhenDayIsZero()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new Date
-                {
-                    Year = 2000,
-                    Month = 1,
+                    Year = year,
+                    Month = month,
+                    Day = day
                 }.ToDateTimeOffset());
         }
 
         [Theory]
-        [MemberData(nameof(DateArguments))]
+        [MemberData(nameof(ValidDateTestArguments))]
         public void IsConvertedToDateTime(int year, int month, int day)
         {
             var subjectUnderTest = new Date
@@ -106,7 +98,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
         }
 
         [Theory]
-        [MemberData(nameof(DateArguments))]
+        [MemberData(nameof(ValidDateTestArguments))]
         public void IsConvertedToDateTimeOffset(int year, int month, int day)
         {
             var subjectUnderTest = new Date
@@ -128,7 +120,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
         }
 
         [Theory]
-        [MemberData(nameof(DateArguments))]
+        [MemberData(nameof(ValidDateTestArguments))]
         public void IsConvertedToDateFromDateTime(int year, int month, int day)
         {
             var subjectUnderTest = new DateTime(year, month, day);
@@ -139,7 +131,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
         }
 
         [Theory]
-        [MemberData(nameof(DateArguments))]
+        [MemberData(nameof(ValidDateTestArguments))]
         public void IsConvertedToDateFromDateTimeOffset(int year, int month, int day)
         {
             var someHours = 2;
@@ -152,6 +144,5 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
             Assert.Equal(month, actualDate.Month);
             Assert.Equal(day, actualDate.Day);
         }
-
     }
 }
