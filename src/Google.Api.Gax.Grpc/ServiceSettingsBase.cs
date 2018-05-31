@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -40,6 +41,7 @@ namespace Google.Api.Gax.Grpc
             Clock = existing.Clock;
             Scheduler = existing.Scheduler;
             VersionHeaderBuilder = existing.VersionHeaderBuilder.Clone();
+            Interceptor = existing.Interceptor;
         }
 
         /// <summary>
@@ -73,5 +75,15 @@ namespace Google.Api.Gax.Grpc
         /// In production code generally leave this unset to use the <see cref="SystemScheduler"/>.
         /// </remarks>
         public IScheduler Scheduler { get; set; }
+
+        /// <summary>
+        /// An optional gRPC interceptor to perform arbitrary interception tasks (such as logging) on gRPC calls.
+        /// </summary>
+        /// <remarks>
+        /// This property will be used by code generators. As of May 31st 2018, it is not in use. This documentation
+        /// will be updated after the code generator has been changed, with the date of the first client library releases
+        /// to use it.
+        /// </remarks>
+        public Interceptor Interceptor { get; set; }
     }
 }
