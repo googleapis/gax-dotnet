@@ -64,12 +64,17 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Works out the next delay from the current one, based on the multiplier and maximum.
         /// </summary>
-        internal TimeSpan NextDelay(TimeSpan currentDelay)
+        /// <param name="currentDelay">The current delay to use as a basis for the next one.</param>
+        /// <returns>The next delay to use, which is always at least <see cref="Delay"/> and at most <see cref="MaxDelay"/>.</returns>
+        public TimeSpan NextDelay(TimeSpan currentDelay)
         {
             checked
             {
                 TimeSpan next = new TimeSpan((long) (currentDelay.Ticks * DelayMultiplier));
-                return next < MaxDelay ? next : MaxDelay;
+                return
+                    next < Delay ? Delay :        // Lower bound capping
+                    next > MaxDelay ? MaxDelay :  // Upper bound capping
+                    next;
             }
         }
     }
