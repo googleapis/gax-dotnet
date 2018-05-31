@@ -42,7 +42,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="organizationName">The organization resource name in string form. Must not be <c>null</c>.</param>
         /// <param name="result">When this method returns, the parsed <see cref="OrganizationName"/>,
         /// or <c>null</c> if parsing fails.</param>
-        /// <returns><c>true</c> if the name was parsed succssfully; <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string organizationName, out OrganizationName result)
         {
             GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));

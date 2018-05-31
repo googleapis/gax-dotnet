@@ -42,7 +42,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="BillingAccountName">The billing account resource name in string form. Must not be <c>null</c>.</param>
         /// <param name="result">When this method returns, the parsed <see cref="BillingAccountName"/>,
         /// or <c>null</c> if parsing fails.</param>
-        /// <returns><c>true</c> if the name was parsed succssfully; <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string BillingAccountName, out BillingAccountName result)
         {
             GaxPreconditions.CheckNotNull(BillingAccountName, nameof(BillingAccountName));
