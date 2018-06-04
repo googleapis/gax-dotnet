@@ -326,7 +326,8 @@ namespace Google.Api {
     public const int AllowUnregisteredCallsFieldNumber = 2;
     private bool allowUnregisteredCalls_;
     /// <summary>
-    /// True, if the method allows unregistered calls; false otherwise.
+    /// If true, the selected method allows unregistered calls, e.g. calls
+    /// that don't identify any user or application.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool AllowUnregisteredCalls {
@@ -340,8 +341,10 @@ namespace Google.Api {
     public const int SkipServiceControlFieldNumber = 3;
     private bool skipServiceControl_;
     /// <summary>
-    /// True, if the method should skip service control. If so, no control plane
-    /// feature (like quota and billing) will be enabled.
+    /// If true, the selected method should skip service control and the control
+    /// plane features, such as quota and billing, will not be available.
+    /// This flag is used by Google Cloud Endpoints to bypass checks for internal
+    /// methods, such as service health check methods.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool SkipServiceControl {

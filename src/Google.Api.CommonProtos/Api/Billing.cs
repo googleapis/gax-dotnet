@@ -55,6 +55,7 @@ namespace Google.Api {
   ///
   /// The following example shows how to configure monitored resources and metrics
   /// for billing:
+  ///
   ///     monitored_resources:
   ///     - type: library.googleapis.com/branch
   ///       labels:
