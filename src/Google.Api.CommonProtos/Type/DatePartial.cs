@@ -48,27 +48,27 @@ namespace Google.Type
         /// <summary>
         /// Creates a <see cref="Date"/> instance from the <see cref="DateTime.Date"/> part of <see cref="DateTime"/>.
         /// </summary>     
-        /// <param name="dateTimeToConvert">The <see cref="DateTime"/> instance being converted.</param>
+        /// <param name="dateTime">The <see cref="DateTime"/> value being converted.</param>
         /// <returns>The created <see cref="Date"/>.</returns>
-        public static Date FromDateTime(DateTime dateTimeToConvert) =>
+        public static Date FromDateTime(DateTime dateTime) =>
             new Date
             {
-                Year = dateTimeToConvert.Year,
-                Month = dateTimeToConvert.Month,
-                Day = dateTimeToConvert.Day
+                Year = dateTime.Year,
+                Month = dateTime.Month,
+                Day = dateTime.Day
             };
 
         /// <summary>
         /// Creates a <see cref="Date"/> instance from the <see cref="DateTimeOffset.Date"/> part of <see cref="DateTimeOffset"/>.
         /// </summary>  
-        /// <param name="dateTimeOffsetToConvert">The <see cref="DateTimeOffset"/> instance being converted.</param>
+        /// <param name="dateTimeOffset">The <see cref="DateTimeOffset"/> value being converted.</param>
         /// <returns>The created <see cref="Date"/>.</returns>
-        public static Date FromDateTimeOffset(DateTimeOffset dateTimeOffsetToConvert) =>
+        public static Date FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
             new Date
             {
-                Year = dateTimeOffsetToConvert.Year,
-                Month = dateTimeOffsetToConvert.Month,
-                Day = dateTimeOffsetToConvert.Day
+                Year = dateTimeOffset.Year,
+                Month = dateTimeOffset.Month,
+                Day = dateTimeOffset.Day
             };
     }
 
@@ -80,17 +80,17 @@ namespace Google.Type
         /// <summary>
         /// Converts the <see cref="DateTime.Date"/> part of <see cref="DateTime"/> to <see cref="Date"/>.
         /// </summary>
-        /// <param name="dateTimeToConvert">The <see cref="DateTime"/> instance being converted.</param>
+        /// <param name="dateTime">The <see cref="DateTime"/> instance being converted.</param>
         /// <returns>The <see cref="Date"/>.</returns>
-        public static Date ToDate(this DateTime dateTimeToConvert) =>
-            Date.FromDateTime(dateTimeToConvert);
+        public static Date ToDate(this DateTime dateTime) =>
+            Date.FromDateTime(dateTime);
 
         /// <summary>
         /// Converts the <see cref="DateTimeOffset.Date"/> part of <see cref="DateTimeOffset"/> to <see cref="Date"/>.
         /// </summary>
-        /// <param name="dateTimeOffsetToConvert">The <see cref="DateTimeOffset"/> instance being converted.</param>
+        /// <param name="dateTimeOffset">The <see cref="DateTimeOffset"/> instance being converted.</param>
         /// <returns>The converted <see cref="Date"/>.</returns>
-        public static Date ToDate(this DateTimeOffset dateTimeOffsetToConvert) =>
-            Date.FromDateTimeOffset(dateTimeOffsetToConvert);
+        public static Date ToDate(this DateTimeOffset dateTimeOffset) =>
+            Date.FromDateTimeOffset(dateTimeOffset);
     }
 }
