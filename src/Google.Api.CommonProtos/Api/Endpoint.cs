@@ -32,16 +32,16 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpGhxnb29n",
-            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIm0KCEVuZHBvaW50EgwKBG5hbWUY",
-            "ASABKAkSDwoHYWxpYXNlcxgCIAMoCRIMCgRhcGlzGAMgAygJEhAKCGZlYXR1",
-            "cmVzGAQgAygJEg4KBnRhcmdldBhlIAEoCRISCgphbGxvd19jb3JzGAUgASgI",
-            "Qm8KDmNvbS5nb29nbGUuYXBpQg1FbmRwb2ludFByb3RvUAFaRWdvb2dsZS5n",
-            "b2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25m",
-            "aWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
+            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIl8KCEVuZHBvaW50EgwKBG5hbWUY",
+            "ASABKAkSDwoHYWxpYXNlcxgCIAMoCRIQCghmZWF0dXJlcxgEIAMoCRIOCgZ0",
+            "YXJnZXQYZSABKAkSEgoKYWxsb3dfY29ycxgFIAEoCEJvCg5jb20uZ29vZ2xl",
+            "LmFwaUINRW5kcG9pbnRQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5w",
+            "cm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25m",
+            "aWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Apis", "Features", "Target", "AllowCors" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Features", "Target", "AllowCors" }, null, null, null)
           }));
     }
     #endregion
@@ -93,7 +93,6 @@ namespace Google.Api {
     public Endpoint(Endpoint other) : this() {
       name_ = other.name_;
       aliases_ = other.aliases_.Clone();
-      apis_ = other.apis_.Clone();
       features_ = other.features_.Clone();
       target_ = other.target_;
       allowCors_ = other.allowCors_;
@@ -126,27 +125,14 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<string> aliases_ = new pbc::RepeatedField<string>();
     /// <summary>
     /// DEPRECATED: This field is no longer supported. Instead of using aliases,
-    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intented
-    /// alias.
+    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended
+    /// aliases.
     ///
     /// Additional names that this endpoint will be hosted on.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Aliases {
       get { return aliases_; }
-    }
-
-    /// <summary>Field number for the "apis" field.</summary>
-    public const int ApisFieldNumber = 3;
-    private static readonly pb::FieldCodec<string> _repeated_apis_codec
-        = pb::FieldCodec.ForString(26);
-    private readonly pbc::RepeatedField<string> apis_ = new pbc::RepeatedField<string>();
-    /// <summary>
-    /// The list of APIs served by this endpoint.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> Apis {
-      get { return apis_; }
     }
 
     /// <summary>Field number for the "features" field.</summary>
@@ -213,7 +199,6 @@ namespace Google.Api {
       }
       if (Name != other.Name) return false;
       if(!aliases_.Equals(other.aliases_)) return false;
-      if(!apis_.Equals(other.apis_)) return false;
       if(!features_.Equals(other.features_)) return false;
       if (Target != other.Target) return false;
       if (AllowCors != other.AllowCors) return false;
@@ -225,7 +210,6 @@ namespace Google.Api {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       hash ^= aliases_.GetHashCode();
-      hash ^= apis_.GetHashCode();
       hash ^= features_.GetHashCode();
       if (Target.Length != 0) hash ^= Target.GetHashCode();
       if (AllowCors != false) hash ^= AllowCors.GetHashCode();
@@ -247,7 +231,6 @@ namespace Google.Api {
         output.WriteString(Name);
       }
       aliases_.WriteTo(output, _repeated_aliases_codec);
-      apis_.WriteTo(output, _repeated_apis_codec);
       features_.WriteTo(output, _repeated_features_codec);
       if (AllowCors != false) {
         output.WriteRawTag(40);
@@ -269,7 +252,6 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
       size += aliases_.CalculateSize(_repeated_aliases_codec);
-      size += apis_.CalculateSize(_repeated_apis_codec);
       size += features_.CalculateSize(_repeated_features_codec);
       if (Target.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(Target);
@@ -292,7 +274,6 @@ namespace Google.Api {
         Name = other.Name;
       }
       aliases_.Add(other.aliases_);
-      apis_.Add(other.apis_);
       features_.Add(other.features_);
       if (other.Target.Length != 0) {
         Target = other.Target;
@@ -317,10 +298,6 @@ namespace Google.Api {
           }
           case 18: {
             aliases_.AddEntriesFrom(input, _repeated_aliases_codec);
-            break;
-          }
-          case 26: {
-            apis_.AddEntriesFrom(input, _repeated_apis_codec);
             break;
           }
           case 34: {

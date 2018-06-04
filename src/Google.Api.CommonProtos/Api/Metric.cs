@@ -109,14 +109,7 @@ namespace Google.Api {
     public const int NameFieldNumber = 1;
     private string name_ = "";
     /// <summary>
-    /// The resource name of the metric descriptor. Depending on the
-    /// implementation, the name typically includes: (1) the parent resource name
-    /// that defines the scope of the metric type or of its data; and (2) the
-    /// metric's URL-encoded type, which also appears in the `type` field of this
-    /// descriptor. For example, following is the resource name of a custom
-    /// metric within the GCP project `my-project-id`:
-    ///
-    ///     "projects/my-project-id/metricDescriptors/custom.googleapis.com%2Finvoice%2Fpaid%2Famount"
+    /// The resource name of the metric descriptor.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -237,8 +230,6 @@ namespace Google.Api {
     ///
     /// **Grammar**
     ///
-    /// The grammar includes the dimensionless unit `1`, such as `1/s`.
-    ///
     /// The grammar also includes these connectors:
     ///
     /// * `/`    division (as an infix operator, e.g. `1/s`).
@@ -248,7 +239,7 @@ namespace Google.Api {
     ///
     ///     Expression = Component { "." Component } { "/" Component } ;
     ///
-    ///     Component = [ PREFIX ] UNIT [ Annotation ]
+    ///     Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
     ///               | Annotation
     ///               | "1"
     ///               ;
@@ -262,6 +253,9 @@ namespace Google.Api {
     ///    `{requests}/s == 1/s`, `By{transmitted}/s == By/s`.
     /// * `NAME` is a sequence of non-blank printable ASCII characters not
     ///    containing '{' or '}'.
+    /// * `1` represents dimensionless value 1, such as in `1/s`.
+    /// * `%` represents dimensionless value 1/100, and annotates values giving
+    ///    a percentage.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Unit {
@@ -291,6 +285,8 @@ namespace Google.Api {
     /// <summary>
     /// A concise name for the metric, which can be displayed in user interfaces.
     /// Use sentence case without an ending period, for example "Request count".
+    /// This field is optional but it is recommended to be set for any metrics
+    /// associated with user-visible concepts, such as Quota.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DisplayName {

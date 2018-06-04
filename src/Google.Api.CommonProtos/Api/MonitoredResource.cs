@@ -32,21 +32,28 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiNnb29nbGUvYXBpL21vbml0b3JlZF9yZXNvdXJjZS5wcm90bxIKZ29vZ2xl",
-            "LmFwaRoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90byKRAQobTW9uaXRvcmVkUmVz",
-            "b3VyY2VEZXNjcmlwdG9yEgwKBG5hbWUYBSABKAkSDAoEdHlwZRgBIAEoCRIU",
-            "CgxkaXNwbGF5X25hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSKwoG",
-            "bGFiZWxzGAQgAygLMhsuZ29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3IiiwEK",
-            "EU1vbml0b3JlZFJlc291cmNlEgwKBHR5cGUYASABKAkSOQoGbGFiZWxzGAIg",
-            "AygLMikuZ29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZS5MYWJlbHNFbnRy",
-            "eRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6",
-            "AjgBQnkKDmNvbS5nb29nbGUuYXBpQhZNb25pdG9yZWRSZXNvdXJjZVByb3Rv",
-            "UAFaQ2dvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
-            "L21vbml0b3JlZHJlczttb25pdG9yZWRyZXP4AQGiAgRHQVBJYgZwcm90bzM="));
+            "LmFwaRoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90bxocZ29vZ2xlL3Byb3RvYnVm",
+            "L3N0cnVjdC5wcm90byKRAQobTW9uaXRvcmVkUmVzb3VyY2VEZXNjcmlwdG9y",
+            "EgwKBG5hbWUYBSABKAkSDAoEdHlwZRgBIAEoCRIUCgxkaXNwbGF5X25hbWUY",
+            "AiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSKwoGbGFiZWxzGAQgAygLMhsu",
+            "Z29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3IiiwEKEU1vbml0b3JlZFJlc291",
+            "cmNlEgwKBHR5cGUYASABKAkSOQoGbGFiZWxzGAIgAygLMikuZ29vZ2xlLmFw",
+            "aS5Nb25pdG9yZWRSZXNvdXJjZS5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRy",
+            "eRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIsoBChlNb25pdG9y",
+            "ZWRSZXNvdXJjZU1ldGFkYXRhEi4KDXN5c3RlbV9sYWJlbHMYASABKAsyFy5n",
+            "b29nbGUucHJvdG9idWYuU3RydWN0EkoKC3VzZXJfbGFiZWxzGAIgAygLMjUu",
+            "Z29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZU1ldGFkYXRhLlVzZXJMYWJl",
+            "bHNFbnRyeRoxCg9Vc2VyTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZh",
+            "bHVlGAIgASgJOgI4AUJ5Cg5jb20uZ29vZ2xlLmFwaUIWTW9uaXRvcmVkUmVz",
+            "b3VyY2VQcm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
+            "bGVhcGlzL2FwaS9tb25pdG9yZWRyZXM7bW9uaXRvcmVkcmVz+AEBogIER0FQ",
+            "SWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceDescriptor), global::Google.Api.MonitoredResourceDescriptor.Parser, new[]{ "Name", "Type", "DisplayName", "Description", "Labels" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResource), global::Google.Api.MonitoredResource.Parser, new[]{ "Type", "Labels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResource), global::Google.Api.MonitoredResource.Parser, new[]{ "Type", "Labels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceMetadata), global::Google.Api.MonitoredResourceMetadata.Parser, new[]{ "SystemLabels", "UserLabels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
     #endregion
@@ -381,7 +388,7 @@ namespace Google.Api {
     /// <summary>
     /// Required. The monitored resource type. This field must match
     /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
-    /// example, the type of a Cloud SQL database is `"cloudsql_database"`.
+    /// example, the type of a Compute Engine VM instance is `gce_instance`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -398,8 +405,8 @@ namespace Google.Api {
     private readonly pbc::MapField<string, string> labels_ = new pbc::MapField<string, string>();
     /// <summary>
     /// Required. Values for all of the labels listed in the associated monitored
-    /// resource descriptor. For example, Cloud SQL databases use the labels
-    /// `"database_id"` and `"zone"`.
+    /// resource descriptor. For example, Compute Engine VM instances use the
+    /// labels `"project_id"`, `"instance_id"`, and `"zone"`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> Labels {
@@ -491,6 +498,185 @@ namespace Google.Api {
           }
           case 18: {
             labels_.AddEntriesFrom(input, _map_labels_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.
+  /// [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to
+  /// uniquely identify a monitored resource instance. There is some other useful
+  /// auxiliary metadata. Google Stackdriver Monitoring &amp; Logging uses an ingestion
+  /// pipeline to extract metadata for cloud resources of all types , and stores
+  /// the metadata in this message.
+  /// </summary>
+  public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata> {
+    private static readonly pb::MessageParser<MonitoredResourceMetadata> _parser = new pb::MessageParser<MonitoredResourceMetadata>(() => new MonitoredResourceMetadata());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<MonitoredResourceMetadata> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.MonitoredResourceReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MonitoredResourceMetadata() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MonitoredResourceMetadata(MonitoredResourceMetadata other) : this() {
+      SystemLabels = other.systemLabels_ != null ? other.SystemLabels.Clone() : null;
+      userLabels_ = other.userLabels_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MonitoredResourceMetadata Clone() {
+      return new MonitoredResourceMetadata(this);
+    }
+
+    /// <summary>Field number for the "system_labels" field.</summary>
+    public const int SystemLabelsFieldNumber = 1;
+    private global::Google.Protobuf.WellKnownTypes.Struct systemLabels_;
+    /// <summary>
+    /// Output only. Values for predefined system metadata labels.
+    /// System labels are a kind of metadata extracted by Google Stackdriver.
+    /// Stackdriver determines what system labels are useful and how to obtain
+    /// their values. Some examples: "machine_image", "vpc", "subnet_id",
+    /// "security_group", "name", etc.
+    /// System label values can be only strings, Boolean values, or a list of
+    /// strings. For example:
+    ///
+    ///     { "name": "my-test-instance",
+    ///       "security_group": ["a", "b", "c"],
+    ///       "spot_instance": false }
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Struct SystemLabels {
+      get { return systemLabels_; }
+      set {
+        systemLabels_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "user_labels" field.</summary>
+    public const int UserLabelsFieldNumber = 2;
+    private static readonly pbc::MapField<string, string>.Codec _map_userLabels_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 18);
+    private readonly pbc::MapField<string, string> userLabels_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Output only. A map of user-defined metadata labels.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> UserLabels {
+      get { return userLabels_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as MonitoredResourceMetadata);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(MonitoredResourceMetadata other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(SystemLabels, other.SystemLabels)) return false;
+      if (!UserLabels.Equals(other.UserLabels)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (systemLabels_ != null) hash ^= SystemLabels.GetHashCode();
+      hash ^= UserLabels.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (systemLabels_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(SystemLabels);
+      }
+      userLabels_.WriteTo(output, _map_userLabels_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (systemLabels_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SystemLabels);
+      }
+      size += userLabels_.CalculateSize(_map_userLabels_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(MonitoredResourceMetadata other) {
+      if (other == null) {
+        return;
+      }
+      if (other.systemLabels_ != null) {
+        if (systemLabels_ == null) {
+          systemLabels_ = new global::Google.Protobuf.WellKnownTypes.Struct();
+        }
+        SystemLabels.MergeFrom(other.SystemLabels);
+      }
+      userLabels_.Add(other.userLabels_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (systemLabels_ == null) {
+              systemLabels_ = new global::Google.Protobuf.WellKnownTypes.Struct();
+            }
+            input.ReadMessage(systemLabels_);
+            break;
+          }
+          case 18: {
+            userLabels_.AddEntriesFrom(input, _map_userLabels_codec);
             break;
           }
         }

@@ -12,9 +12,6 @@
 #pragma warning disable 1591
 #region Designer generated code
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using grpc = global::Grpc.Core;
 
 namespace Google.Api.Gax.Grpc.IntegrationTests {
@@ -71,7 +68,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       {
       }
 
-      public virtual global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse DoSimple(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default(CancellationToken))
+      public virtual global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse DoSimple(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return DoSimple(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
@@ -79,7 +76,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       {
         return CallInvoker.BlockingUnaryCall(__Method_DoSimple, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> DoSimpleAsync(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default(CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> DoSimpleAsync(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return DoSimpleAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }

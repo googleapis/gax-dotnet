@@ -33,16 +33,16 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
-            "QgoLQmFja2VuZFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDwoHYWRkcmVzcxgC",
-            "IAEoCRIQCghkZWFkbGluZRgDIAEoAUJuCg5jb20uZ29vZ2xlLmFwaUIMQmFj",
-            "a2VuZFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
-            "ZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEli",
-            "BnByb3RvMw=="));
+            "WAoLQmFja2VuZFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDwoHYWRkcmVzcxgC",
+            "IAEoCRIQCghkZWFkbGluZRgDIAEoARIUCgxtaW5fZGVhZGxpbmUYBCABKAFC",
+            "bgoOY29tLmdvb2dsZS5hcGlCDEJhY2tlbmRQcm90b1ABWkVnb29nbGUuZ29s",
+            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmln",
+            "O3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Backend), global::Google.Api.Backend.Parser, new[]{ "Rules" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline" }, null, null, null)
           }));
     }
     #endregion
@@ -209,6 +209,7 @@ namespace Google.Api {
       selector_ = other.selector_;
       address_ = other.address_;
       deadline_ = other.deadline_;
+      minDeadline_ = other.minDeadline_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -251,14 +252,29 @@ namespace Google.Api {
     public const int DeadlineFieldNumber = 3;
     private double deadline_;
     /// <summary>
-    /// The number of seconds to wait for a response from a request.  The
-    /// default depends on the deployment context.
+    /// The number of seconds to wait for a response from a request.  The default
+    /// deadline for gRPC is infinite (no deadline) and HTTP requests is 5 seconds.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Deadline {
       get { return deadline_; }
       set {
         deadline_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "min_deadline" field.</summary>
+    public const int MinDeadlineFieldNumber = 4;
+    private double minDeadline_;
+    /// <summary>
+    /// Minimum deadline in seconds needed for this method. Calls having deadline
+    /// value lower than this will be rejected.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double MinDeadline {
+      get { return minDeadline_; }
+      set {
+        minDeadline_ = value;
       }
     }
 
@@ -278,6 +294,7 @@ namespace Google.Api {
       if (Selector != other.Selector) return false;
       if (Address != other.Address) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Deadline, other.Deadline)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(MinDeadline, other.MinDeadline)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -287,6 +304,7 @@ namespace Google.Api {
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (Deadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Deadline);
+      if (MinDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(MinDeadline);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -312,6 +330,10 @@ namespace Google.Api {
         output.WriteRawTag(25);
         output.WriteDouble(Deadline);
       }
+      if (MinDeadline != 0D) {
+        output.WriteRawTag(33);
+        output.WriteDouble(MinDeadline);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -327,6 +349,9 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
       }
       if (Deadline != 0D) {
+        size += 1 + 8;
+      }
+      if (MinDeadline != 0D) {
         size += 1 + 8;
       }
       if (_unknownFields != null) {
@@ -349,6 +374,9 @@ namespace Google.Api {
       if (other.Deadline != 0D) {
         Deadline = other.Deadline;
       }
+      if (other.MinDeadline != 0D) {
+        MinDeadline = other.MinDeadline;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -370,6 +398,10 @@ namespace Google.Api {
           }
           case 25: {
             Deadline = input.ReadDouble();
+            break;
+          }
+          case 33: {
+            MinDeadline = input.ReadDouble();
             break;
           }
         }

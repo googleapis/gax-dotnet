@@ -31,15 +31,16 @@ namespace Google.Api {
     static HttpbodyReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chlnb29nbGUvYXBpL2h0dHBib2R5LnByb3RvEgpnb29nbGUuYXBpIi4KCEh0",
-            "dHBCb2R5EhQKDGNvbnRlbnRfdHlwZRgBIAEoCRIMCgRkYXRhGAIgASgMQmUK",
-            "DmNvbS5nb29nbGUuYXBpQg1IdHRwQm9keVByb3RvUAFaO2dvb2dsZS5nb2xh",
-            "bmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL2h0dHBib2R5O2h0dHBi",
-            "b2R5ogIER0FQSWIGcHJvdG8z"));
+            "Chlnb29nbGUvYXBpL2h0dHBib2R5LnByb3RvEgpnb29nbGUuYXBpGhlnb29n",
+            "bGUvcHJvdG9idWYvYW55LnByb3RvIlgKCEh0dHBCb2R5EhQKDGNvbnRlbnRf",
+            "dHlwZRgBIAEoCRIMCgRkYXRhGAIgASgMEigKCmV4dGVuc2lvbnMYAyADKAsy",
+            "FC5nb29nbGUucHJvdG9idWYuQW55QmUKDmNvbS5nb29nbGUuYXBpQg1IdHRw",
+            "Qm9keVByb3RvUAFaO2dvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
+            "ZWFwaXMvYXBpL2h0dHBib2R5O2h0dHBib2R5ogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.HttpBody), global::Google.Api.HttpBody.Parser, new[]{ "ContentType", "Data" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.HttpBody), global::Google.Api.HttpBody.Parser, new[]{ "ContentType", "Data", "Extensions" }, null, null, null)
           }));
     }
     #endregion
@@ -112,6 +113,7 @@ namespace Google.Api {
     public HttpBody(HttpBody other) : this() {
       contentType_ = other.contentType_;
       data_ = other.data_;
+      extensions_ = other.extensions_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -148,6 +150,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "extensions" field.</summary>
+    public const int ExtensionsFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::Google.Protobuf.WellKnownTypes.Any> _repeated_extensions_codec
+        = pb::FieldCodec.ForMessage(26, global::Google.Protobuf.WellKnownTypes.Any.Parser);
+    private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> extensions_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any>();
+    /// <summary>
+    /// Application specific response metadata. Must be set in the first response
+    /// for streaming APIs.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> Extensions {
+      get { return extensions_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as HttpBody);
@@ -163,6 +179,7 @@ namespace Google.Api {
       }
       if (ContentType != other.ContentType) return false;
       if (Data != other.Data) return false;
+      if(!extensions_.Equals(other.extensions_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -171,6 +188,7 @@ namespace Google.Api {
       int hash = 1;
       if (ContentType.Length != 0) hash ^= ContentType.GetHashCode();
       if (Data.Length != 0) hash ^= Data.GetHashCode();
+      hash ^= extensions_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -192,6 +210,7 @@ namespace Google.Api {
         output.WriteRawTag(18);
         output.WriteBytes(Data);
       }
+      extensions_.WriteTo(output, _repeated_extensions_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -206,6 +225,7 @@ namespace Google.Api {
       if (Data.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
       }
+      size += extensions_.CalculateSize(_repeated_extensions_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -223,6 +243,7 @@ namespace Google.Api {
       if (other.Data.Length != 0) {
         Data = other.Data;
       }
+      extensions_.Add(other.extensions_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -240,6 +261,10 @@ namespace Google.Api {
           }
           case 18: {
             Data = input.ReadBytes();
+            break;
+          }
+          case 26: {
+            extensions_.AddEntriesFrom(input, _repeated_extensions_codec);
             break;
           }
         }
