@@ -9,37 +9,31 @@ using Google.Type;
 using System;
 using Xunit;
 
-namespace Google.Api.CommonProtos.Tests.TypeExtensions
+namespace Google.Api.CommonProtos.Tests.Type
 {
-    public class DateTests
+    public class DateTest
     {
-        public class InvalidDateTheoryData : TheoryData<int, int, int>
+        public static TheoryData<int, int, int> InvalidDates = new TheoryData<int, int, int>
         {
-            public InvalidDateTheoryData()
-            {
-                // In the order of Year, Month, Day.
-                Add(-1, -1, -1);
-                Add(0, 0, 0);
-                Add(0, 4, 28);
-                Add(2018, 0, 28);
-                Add(2018, 4, 0);
-                Add(10000, 4, 28);
-                Add(2018, 13, 28);
-                Add(2018, 4, 32);
-            }
-        }
+            // In the order of Year, Month, Day.
+            {  -1, -1, -1 },
+            { 0, 0, 0 },
+            { 0, 4, 28 },
+            { 2018, 0, 28 },
+            { 2018, 4, 0 },
+            { 10000, 4, 28 },
+            { 2018, 13, 28 },
+            { 2018, 4, 32 },
+        };
 
-        public class ValidDateTheoryData : TheoryData<int, int, int>
+        public static TheoryData<int, int, int> ValidDates = new TheoryData<int, int, int>
         {
-            public ValidDateTheoryData()
-            {
-                // In the order of Year, Month, Day.
-                Add(0001, 1, 1);
-                Add(2000, 2, 29);
-                Add(2018, 4, 28);
-                Add(9999, 12, 31);
-            }
-        }
+            // In the order of Year, Month, Day.
+            { 0001, 1, 1 },
+            { 2000, 2, 29 },
+            { 2018, 4, 28 },
+            { 9999, 12, 31 },
+        };
 
         [Fact]
         public void ToDateTimeThrowsInvalidOperationExceptionWhenDateIsNotInitialized()
@@ -48,7 +42,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
                 () => new Date().ToDateTime());
         }
 
-        [Theory, ClassData(typeof(InvalidDateTheoryData))]
+        [Theory, MemberData(nameof(InvalidDates))]
         public void ToDateTimeThrowsInvalidOperationExceptionWhenDateIsInvalidState(int year, int month, int day)
         {
             Assert.Throws<InvalidOperationException>(
@@ -67,7 +61,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
                 () => new Date().ToDateTimeOffset());
         }
 
-        [Theory, ClassData(typeof(InvalidDateTheoryData))]
+        [Theory, MemberData(nameof(InvalidDates))]
         public void ToDateTimeOffsetThrowsInvalidOperationExceptionWhenDateIsInvalidState(int year, int month, int day)
         {
             Assert.Throws<InvalidOperationException>(
@@ -79,7 +73,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
                 }.ToDateTimeOffset());
         }
 
-        [Theory, ClassData(typeof(ValidDateTheoryData))]
+        [Theory, MemberData(nameof(ValidDates))]
         public void IsConvertedToDateTime(int year, int month, int day)
         {
             var subjectUnderTest = new Date
@@ -99,7 +93,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
             Assert.Equal(DateTimeKind.Unspecified, actualDateTime.Kind);
         }
 
-        [Theory, ClassData(typeof(ValidDateTheoryData))]
+        [Theory, MemberData(nameof(ValidDates))]
         public void IsConvertedToDateTimeOffset(int year, int month, int day)
         {
             var subjectUnderTest = new Date
@@ -121,7 +115,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
             Assert.Equal(DateTimeKind.Unspecified, actualDateTimeOffset.DateTime.Kind);
         }
 
-        [Theory, ClassData(typeof(ValidDateTheoryData))]
+        [Theory, MemberData(nameof(ValidDates))]
         public void IsConvertedToDateFromDateTime(int year, int month, int day)
         {
             var subjectUnderTest = new DateTime(year, month, day);
@@ -131,7 +125,7 @@ namespace Google.Api.CommonProtos.Tests.TypeExtensions
             Assert.Equal(day, actualDate.Day);
         }
 
-        [Theory, ClassData(typeof(ValidDateTheoryData))]
+        [Theory, MemberData(nameof(ValidDates))]
         public void IsConvertedToDateFromDateTimeOffset(int year, int month, int day)
         {
             var someHours = 2;
