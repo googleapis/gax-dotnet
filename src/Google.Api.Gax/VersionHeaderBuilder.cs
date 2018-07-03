@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Google.Api.Gax
 {
@@ -55,11 +57,20 @@ namespace Google.Api.Gax
         /// Appends the .NET environment information to the list.
         /// </summary>
         public VersionHeaderBuilder AppendDotNetEnvironment()
+        {
 #if NETSTANDARD1_3
-            => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework?.Version));
+            //=> AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework?.Version));
+            // the implementation of Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework calls
+            // GetEntryAssembly() which returns null on Xamarin.Android.
+            // And FormatVersion(null) will barf at GaxPreconditions.CheckArgument(version...)
+            var runtimeFramework = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework;
+
+            var version = runtimeFramework != null ? FormatVersion(runtimeFramework.Version) : "0.0.0.0";
+            return AppendVersion("gl-dotnet", version);
 #else
-            => AppendVersion("gl-dotnet", FormatVersion(Environment.Version));
+            return AppendVersion("gl-dotnet", FormatVersion(Environment.Version));
 #endif
+        }
 
         private static string FormatAssemblyVersion(System.Type type)
         {

@@ -10,6 +10,7 @@
   <PropertyGroup>
     <Title>Google API Extensions</Title>
     <Description>Support classes for Google API client libraries</Description>
+    <Version>2.4.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
