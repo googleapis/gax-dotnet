@@ -29,11 +29,15 @@ namespace Google.Api.Gax.Tests
 #endif
         }
 
-        [Fact]
-        public void AppendVersion()
+        [Theory]
+        [InlineData("foo", "1.2.3-bar", "foo/1.2.3-bar")]
+        [InlineData("foo", "", "foo/")]
+        public void AppendVersion(string name, string version, string expected)
         {
-            Assert.Equal("foo/1.2.3-bar",
-                new VersionHeaderBuilder().AppendVersion("foo", "1.2.3-bar").ToString());
+            var builder = new VersionHeaderBuilder();
+            builder.AppendVersion(name, version);
+            var actual = builder.ToString();
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -84,7 +88,6 @@ namespace Google.Api.Gax.Tests
         }
 
         [Theory]
-        [InlineData("")]
         [InlineData("x y")]
         [InlineData("x/y")]
         public void InvalidVersion(string version)
