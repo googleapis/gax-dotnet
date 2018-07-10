@@ -83,7 +83,7 @@ namespace Google.Api.Gax
         private static string FormatVersion(Version version) =>
             version != null ?
             $"{version.Major}.{version.Minor}.{(version.Build != -1 ? version.Build : 0)}" :
-            ""; // Empty string means "unknown"
+            "0.0.0"; // Reasonable semantic version for "unknown"
 
         /// <inheritdoc />
         public override string ToString() => string.Join(" ", _names.Zip(_values, (name, value) => $"{name}/{value}"));
