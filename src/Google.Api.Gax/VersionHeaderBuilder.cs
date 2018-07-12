@@ -30,14 +30,14 @@ namespace Google.Api.Gax
         /// Appends the given name/version string to the list.
         /// </summary>
         /// <param name="name">The name. Must not be null or empty, or contain a space or a slash.</param>
-        /// <param name="version">The version. Must not be null or empty, or contain a space or a slash.</param>
+        /// <param name="version">The version. Must not be null, or contain a space or a slash.</param>
         public VersionHeaderBuilder AppendVersion(string name, string version)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             GaxPreconditions.CheckNotNull(version, nameof(version));
-            // Deliberate duplication as we may want to have different constraints.
+            // Names can't be empty, but versions can. (We use the empty string to indicate an unknown version.)
             GaxPreconditions.CheckArgument(name.Length > 0 && !name.Contains(' ') && !name.Contains('/'), nameof(name), $"Invalid name: {name}");
-            GaxPreconditions.CheckArgument(version.Length > 0 && !version.Contains(' ') && !version.Contains('/'), nameof(version), $"Invalid version: {version}");
+            GaxPreconditions.CheckArgument(!version.Contains(' ') && !version.Contains('/'), nameof(version), $"Invalid version: {version}");
             GaxPreconditions.CheckArgument(!_names.Contains(name), nameof(name), "Names in version headers must be unique");
             _names.Add(name);
             _values.Add(version);
