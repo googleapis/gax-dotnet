@@ -67,7 +67,7 @@ namespace Google.Api.Gax.Grpc
                         {
                             { "project_id", gce.ProjectId },
                             { "instance_id", gce.InstanceId },
-                            { "zone", gce.ZoneName }
+                            { "zone", gce.Location }
                         }
                     };
                 case PlatformType.Gae:
@@ -95,7 +95,7 @@ namespace Google.Api.Gax.Grpc
                             { "instance_id", gke.InstanceId },
                             { "pod_id", gke.PodId },
                             { "container_name", gke.ContainerName },
-                            { "zone", gke.Zone }
+                            { "zone", gke.Location }
                         }
                     };
                 default:

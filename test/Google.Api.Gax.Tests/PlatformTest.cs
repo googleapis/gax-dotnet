@@ -41,6 +41,22 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
+        public void Gce_ValidZoneFormatLocation()
+        {
+            var metadataJson = "{'project':{'projectId':'FakeProjectId'},'instance':{'id':'123','zone':'projects/123456/zones/FakeLocation'}}";
+            var gce = new GcePlatformDetails(metadataJson, "FakeProjectId", "123", "projects/123456/zones/FakeLocation");
+            Assert.Equal("FakeLocation", gce.Location);
+        }
+
+        [Fact]
+        public void Gce_InvalidZoneFormatLocation()
+        {
+            var metadataJson = "{'project':{'projectId':'FakeProjectId'},'instance':{'id':'123','zone':'FakeLocation'}}";
+            var gce = new GcePlatformDetails(metadataJson, "FakeProjectId", "123", "FakeLocation");
+            Assert.Throws<InvalidOperationException>(() => gce.Location);
+        }
+
+        [Fact]
         public void Gke_NoData()
         {
             Assert.Throws<ArgumentNullException>(() => GkePlatformDetails.TryLoad(null, new GkePlatformDetails.KubernetesData()));
@@ -100,16 +116,16 @@ namespace Google.Api.Gax.Tests
             Assert.Equal("platformintegrationtest-1135066300-rpzm4", gke.HostName);
             Assert.Equal("2917200381659545756", gke.InstanceId);
             Assert.Equal("projects/233772281425/zones/europe-west2-c", gke.Zone);
-            Assert.Equal("9f1c8731-ae9c-11e7-90fc-42010a9a0fdd", gke.NamespaceId);
-            Assert.Equal("de3bf4eb-b036-11e7-8e33-42010a9a0fdd", gke.PodId);
+            Assert.Equal("default", gke.NamespaceId);
+            Assert.Equal("platformintegrationtest-1135066300-rpzm4", gke.PodId);
             Assert.Equal("platformintegrationtest", gke.ContainerName);
         }
 
         const string metadataValid = "{'project':{'projectId':'FakeProjectId'},'instance':{'attributes':{'cluster-name':'FakeClusterName'},'id':'123','zone':'projects/FakeProject/zones/FakeLocation'}}";
         const string metadataIncomplete = "{'project':{'projectId':'FakeProjectId'},'instance':{'attr";
-        const string namespaceValid = "{'kind':'Namespace','metadata':{'uid':'namespaceid'}}";
-        const string namespaceMissingKind = "{'notkind':'Namespace','metadata':{'uid':'namespaceid'}}";
-        const string namespaceWrongKind = "{'kind':'NotNamespace','metadata':{'uid':'namespaceid'}}";
+        const string namespaceValid = "{'kind':'Namespace','metadata':{'name':'namespacename'}}";
+        const string namespaceMissingKind = "{'notkind':'Namespace','metadata':{'name':'namespacename'}}";
+        const string namespaceWrongKind = "{'kind':'NotNamespace','metadata':{'name':'namespacename'}}";
         const string namespaceIncomplete = "{'kind':'Namespace','m";
         const string podValid = "{'kind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
         const string podMissingKind = "{'notkind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
@@ -141,7 +157,7 @@ namespace Google.Api.Gax.Tests
             Assert.NotNull(gke);
             if (namespaceJson == namespaceValid)
             {
-                Assert.Equal("namespaceid", gke.NamespaceId);
+                Assert.Equal("namespacename", gke.NamespaceId);
             }
             else
             {
@@ -149,7 +165,7 @@ namespace Google.Api.Gax.Tests
             }
             if (podJson == podValid)
             {
-                Assert.Equal("podid", gke.PodId);
+                Assert.Equal("podname", gke.PodId);
                 Assert.Equal("podname", gke.HostName);
             }
             else

@@ -7,7 +7,6 @@
 
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -87,7 +86,12 @@ namespace Google.Api.Gax
         /// <param name="metadataJson">The full JSON string retrieved from the metadata server. Must not be <c>null</c>.</param>
         /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
         /// <param name="instanceId">The instance ID. Must not be <c>null</c>.</param>
-        /// <param name="zoneName">The zone name. Must not be <c>null</c>.</param>
+        /// <param name="zoneName">The zone name. Must not be <c>null</c>.
+        /// If this value is in the format <code>projects/&lt;project-number&gt;/zones/&lt;zone-name&gt;</code>
+        /// then <see cref="Location"/> will return the <code>&lt;zone-name&gt;</code> part of this value.
+        /// If not, <see cref="Location"/> will throw <see cref="InvalidOperationException"/>.
+        /// If this value has been retrived from Google Compute Engine, the it's format will be the one
+        /// described above.</param>
         public GcePlatformDetails(string metadataJson, string projectId, string instanceId, string zoneName)
         {
             MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
@@ -112,9 +116,31 @@ namespace Google.Api.Gax
         public string InstanceId { get; }
 
         /// <summary>
-        /// The zone name where this GCE instance is running.
+        /// The zone where this GCE instance is running.
+        /// This will be in the format <code>projects/&lt;project-number&gt;/zones/&lt;zone-name&gt;</code>
+        /// id the value has been retrieved from Google Compute Engine.
         /// </summary>
         public string ZoneName { get; }
+
+        /// <summary>
+        /// The zone name where this GCE instance is running.
+        /// If <see cref="ZoneName"/> is in the format <code>projects/&lt;project-number&gt;/zones/&lt;zone-name&gt;</code>
+        /// this value will be the <code>&lt;zone-name&gt;</code> part in <see cref="ZoneName"/>.
+        /// If <see cref="ZoneName"/> is in a different format then this getting the value of this property will
+        /// throw <see cref="InvalidOperationException"/>.
+        /// </summary>
+        public string Location
+        {
+            get
+            {
+                if (Platform.s_zoneTemplate.TryParseName(ZoneName, out var zoneResourceName))
+                {
+                    return zoneResourceName[1];
+                }
+                throw new InvalidOperationException($@"For {nameof(Location)} to have a value the format of {nameof(ZoneName)} 
+should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} current value is {ZoneName}.");
+            }
+        }
 
         /// <inheritdoc/>
         public override string ToString() =>
@@ -198,8 +224,6 @@ namespace Google.Api.Gax
             /// </summary>
             public string[] MountInfo { get; set; }
         }
-
-        private static readonly PathTemplate s_zoneTemplate = new PathTemplate("projects/*/zones/*");
 
 #if NETSTANDARD1_3
         internal static async Task<KubernetesData> LoadKubernetesDataAsync()
@@ -341,10 +365,11 @@ namespace Google.Api.Gax
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.Value<string>();
             var instanceId = metadata["instance"]?["id"]?.Value<string>();
             var zone = metadata["instance"]?["zone"]?.Value<string>();
-            var namespaceId = namespaceData?["metadata"]?["uid"]?.Value<string>() ?? "";
-            var podId = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
+            var namespaceId = namespaceData?["metadata"]?["name"]?.Value<string>() ?? "";
+            var podId = podData?["metadata"]?["name"]?.Value<string>() ?? "";
+            var podUid = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
             // A hack to find the container name. There appears to be no official way to do this.
-            var regex = new Regex($"/var/lib/kubelet/pods/{podId}/containers/([^/]+)/.*/dev/termination-log");
+            var regex = new Regex($"/var/lib/kubelet/pods/{podUid}/containers/([^/]+)/.*/dev/termination-log");
             var containerNames = kubernetesData.MountInfo?.Select(x =>
             {
                 var match = regex.Match(x);
@@ -358,7 +383,7 @@ namespace Google.Api.Gax
             if (hostName != null && projectId != null && clusterName != null && instanceId != null &&
                 zone != null && namespaceId != null && podId != null && containerName != null)
             {
-                if (s_zoneTemplate.TryParseName(zone, out var zoneResourceName))
+                if (Platform.s_zoneTemplate.TryParseName(zone, out var zoneResourceName))
                 {
                     return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1], hostName,
                         instanceId, zone, namespaceId, podId, containerName);
@@ -426,6 +451,8 @@ namespace Google.Api.Gax
 
         /// <summary>
         /// The cluster location, which is visible in the Google Cloud Platform Console.
+        /// This is equivalent to the value of the <code>&lt;zone-name&gt;</code> part in
+        /// <see cref="Zone"/>
         /// </summary>
         public string Location { get; }
 
@@ -441,6 +468,7 @@ namespace Google.Api.Gax
 
         /// <summary>
         /// The GCE zone in which the instance is running.
+        /// This is in the format <code>projects/&lt;project-number&gt;/zones/&lt;zone-name&gt;</code>.
         /// </summary>
         public string Zone { get; }
 
@@ -471,6 +499,7 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class Platform
     {
+        internal static readonly PathTemplate s_zoneTemplate = new PathTemplate("projects/*/zones/*");
         private static readonly Lazy<Task<Platform>> s_instance = new Lazy<Task<Platform>>(LoadInstanceAsync);
 
         /// <summary>
