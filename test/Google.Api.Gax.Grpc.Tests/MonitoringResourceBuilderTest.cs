@@ -36,7 +36,7 @@ namespace Google.Api.Gax.Grpc.Tests
   },
   'instance': {
     'id': 'FakeInstanceId',
-    'zone': 'FakeZone'
+    'zone': 'projects/1234567/zones/FakeZone'
   }
 }
 ";
@@ -86,7 +86,8 @@ namespace Google.Api.Gax.Grpc.Tests
 {
   'kind': 'Namespace',
   'metadata': {
-    'uid': 'namespaceid'
+    'uid': 'namespaceid',
+    'name':'namespacename'
   }
 }
 ";
@@ -112,11 +113,15 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 { "project_id", "FakeProjectId" },
                 { "cluster_name", "FakeClusterName" },
-                { "namespace_id", "namespaceid" },
+                // Although the name of the label is namespace_id, the actual value returned and expected
+                // by Stackdriver is the namespace name.
+                { "namespace_id", "namespacename" },
                 { "instance_id", "123" },
-                { "pod_id", "podid" },
+                // Although the name of the label is pod_id, the actual value returned and expected
+                // by Stackdriver is the pod name.
+                { "pod_id", "podname" },
                 { "container_name", "containername" },
-                { "zone", "projects/FakeProject/zones/FakeLocation" }
+                { "zone", "FakeLocation" }
             }, resource.Labels);
         }
     }
