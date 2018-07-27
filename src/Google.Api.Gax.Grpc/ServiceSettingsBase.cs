@@ -78,12 +78,9 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// An optional gRPC interceptor to perform arbitrary interception tasks (such as logging) on gRPC calls.
+        /// Note that this property is not used by code generated before August 2nd 2018: only packages created
+        /// on or after that date are aware of this property.
         /// </summary>
-        /// <remarks>
-        /// This property will be used by code generators. As of May 31st 2018, it is not in use. This documentation
-        /// will be updated after the code generator has been changed, with the date of the first client library releases
-        /// to use it.
-        /// </remarks>
         public Interceptor Interceptor { get; set; }
     }
 }
