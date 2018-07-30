@@ -42,12 +42,12 @@ namespace Google.Api.CommonProtos.Tests.Type
         };
 
         [Theory, MemberData(nameof(InvalidMoneyValues))]
-        public void ToMoneyWithOutOfRangeValueThrowsArgumentOutOfRangeException(decimal valueToConvert, string expectedMessage)
+        public void OutOfRangeValueThrowsArgumentOutOfRangeException(decimal valueToConvert, string expectedMessage)
         {
             bool caughtArgumentOutOfRangeException = false;
             try
             {
-                valueToConvert.ToMoney(TestCurrencyCode);
+                new Money { DecimalValue = valueToConvert };
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -65,14 +65,14 @@ namespace Google.Api.CommonProtos.Tests.Type
                 CurrencyCode = TestCurrencyCode,
                 Nanos = nanos,
                 Units = units
-            };
-            Assert.Equal(expected, subjectUnderTest.ToDecimal());
+            };           
+            Assert.Equal(expected, subjectUnderTest.DecimalValue);
         }
 
         [Theory, MemberData(nameof(ValidMoneyValues))]
         public void DecimalIsConvertedToMoneyWithEmptyCurrency(long expectedUnits, int expectedNanos, decimal valueToConvert)
         {
-            var actual = valueToConvert.ToMoney("");
+            var actual = new Money { DecimalValue = valueToConvert };
 
             Assert.Equal(expectedUnits, actual.Units);
             Assert.Equal(expectedNanos, actual.Nanos);
@@ -82,7 +82,7 @@ namespace Google.Api.CommonProtos.Tests.Type
         [Theory, MemberData(nameof(ValidMoneyValues))]
         public void DecimalIsConvertedToMoneyWithCurrencySpecified(long expectedUnits, int expectedNanos, decimal valueToConvert)
         {
-            var actual = valueToConvert.ToMoney(TestCurrencyCode);
+            var actual = new Money { CurrencyCode = TestCurrencyCode, DecimalValue = valueToConvert };
 
             Assert.Equal(expectedUnits, actual.Units);
             Assert.Equal(expectedNanos, actual.Nanos);
