@@ -12,14 +12,17 @@ namespace Google.Type
     public partial class Money
     {
         /// <summary>
-        /// The amount of money in <see cref="decimal"/> format.
+        /// The amount of money in <see cref="decimal"/> format. This is an abstraction of the Units and Nanos properties.
+        /// Getting this property combines those property values, and setting this property will set both of those properties.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">The integral part of the decimal must be a valid <see cref="Int64"/>, and the fractional part must have a maximum of 9 digits of precision.</exception>
-        public decimal DecimalValue {
+        public decimal DecimalValue
+        {
 
             get => Units + (Nanos / 1_000_000_000M);
 
-            set {
+            set
+            {
                 decimal integralPart = Math.Truncate(value);
                 long units;
 
