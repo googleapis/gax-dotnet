@@ -44,17 +44,8 @@ namespace Google.Api.CommonProtos.Tests.Type
         [Theory, MemberData(nameof(InvalidMoneyValues))]
         public void OutOfRangeValueThrowsArgumentOutOfRangeException(decimal valueToConvert, string expectedMessage)
         {
-            bool caughtArgumentOutOfRangeException = false;
-            try
-            {
-                new Money { DecimalValue = valueToConvert };
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                caughtArgumentOutOfRangeException = true;
-                Assert.Contains(expectedMessage, ex.Message);
-            }
-            Assert.True(caughtArgumentOutOfRangeException);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new Money { DecimalValue = valueToConvert });
+            Assert.Contains(expectedMessage, exception.Message);
         }
 
         [Theory, MemberData(nameof(ValidMoneyValues))]
