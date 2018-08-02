@@ -36,7 +36,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <see cref="BillingAccountName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="s::ArgumentNullException"/> if <paramref name="BillingAccountName"/> is null,
+        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="BillingAccountName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
         /// <param name="BillingAccountName">The billing account resource name in string form. Must not be <c>null</c>.</param>
