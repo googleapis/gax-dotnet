@@ -36,7 +36,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <see cref="FolderName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="s::ArgumentNullException"/> if <paramref name="folderName"/> is null,
+        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="folderName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
         /// <param name="folderName">The folder resource name in string form. Must not be <c>null</c>.</param>
