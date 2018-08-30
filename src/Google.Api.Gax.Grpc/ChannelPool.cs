@@ -5,10 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Apis.Auth.OAuth2;
-using Grpc.Auth;
 using Grpc.Core;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,16 +19,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private readonly IEnumerable<string> _scopes;
-
-        /// <summary>
-        /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
-        /// task can be used whenever channel credentials are required. The returned task always runs in the
-        /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
-        /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
-        /// _scopes, and you can't refer to an instance field within an instance field initializer.
-        /// </summary>
-        private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
+        private readonly DefaultChannelCredentialsCache _credentialsCache;
 
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
         // "clear and fetch values" for shutdown.
@@ -43,25 +31,8 @@ namespace Google.Api.Gax.Grpc
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ChannelPool(IEnumerable<string> scopes)
-        {
-            // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
-            _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
-            GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
-            // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
-            // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
-            _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
-        }
-
-        private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
-        {
-            var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
-            if (appDefaultCredentials.IsCreateScopedRequired)
-            {
-                appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
-            }
-            return appDefaultCredentials.ToChannelCredentials();
-        }
+        public ChannelPool(IEnumerable<string> scopes) =>
+            _credentialsCache = new DefaultChannelCredentialsCache(scopes);
 
         /// <summary>
         /// Shuts down all the currently-allocated channels asynchronously. This does not prevent the channel
@@ -89,7 +60,7 @@ namespace Google.Api.Gax.Grpc
         public Channel GetChannel(ServiceEndpoint endpoint)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
+            var credentials = _credentialsCache.GetCredentials();
             return GetChannel(endpoint, credentials);
         }
 
@@ -99,11 +70,11 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
-        /// task will be channel for the specified endpoint.</returns>
+        /// task will be a channel for the specified endpoint.</returns>
         public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
+            var credentials = await _credentialsCache.GetCredentialsAsync().ConfigureAwait(false);
             return GetChannel(endpoint, credentials);
         }
 
