@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProjectProperties.xml" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Google.Api.Gax.Grpc.Gcp\Google.Api.Gax.Grpc.Gcp.csproj" />
+    
+    <!-- 
+      - TODO: Avoid this. Depending on a test project is nasty. Options:
+      - * Extract a common test project that both Grpc.IntegrationTests and Grpc.Gcp.IntegrationTests depend on
+      - * Put the Grpc.Gcp tests into Grpc.IntegrationTests
+      -->
+    <ProjectReference Include="..\Google.Api.Gax.Grpc.IntegrationTests\Google.Api.Gax.Grpc.IntegrationTests.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\StripDesktopOnNonWindows.xml" />
+
+</Project>

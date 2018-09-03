@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Testing
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.PlatformIntegrationTests", "test\Google.Api.Gax.PlatformIntegrationTests\Google.Api.Gax.PlatformIntegrationTests.csproj", "{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Api.CommonProtos.Tests", "test\Google.Api.CommonProtos.Tests\Google.Api.CommonProtos.Tests.csproj", "{7839A366-B685-475E-AB76-E2DC8A7D8C44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.CommonProtos.Tests", "test\Google.Api.CommonProtos.Tests\Google.Api.CommonProtos.Tests.csproj", "{7839A366-B685-475E-AB76-E2DC8A7D8C44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Gcp", "src\Google.Api.Gax.Grpc.Gcp\Google.Api.Gax.Grpc.Gcp.csproj", "{966C1852-164C-4162-B727-04782706D787}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Gcp.IntegrationTests", "test\Google.Api.Gax.Grpc.Gcp.IntegrationTests\Google.Api.Gax.Grpc.Gcp.IntegrationTests.csproj", "{E4272960-930B-451C-975D-AE70C1FC463D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,14 @@ Global
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966C1852-164C-4162-B727-04782706D787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966C1852-164C-4162-B727-04782706D787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966C1852-164C-4162-B727-04782706D787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966C1852-164C-4162-B727-04782706D787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4272960-930B-451C-975D-AE70C1FC463D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4272960-930B-451C-975D-AE70C1FC463D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4272960-930B-451C-975D-AE70C1FC463D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4272960-930B-451C-975D-AE70C1FC463D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
