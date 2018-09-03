@@ -18,6 +18,7 @@
 
     <PackageReference Include="Grpc.Auth" Version="1.13.1" />
     <PackageReference Include="Grpc.Core" Version="1.13.1" />
+    <PackageReference Include="Grpc.Gcp" Version="0.1.2" />
     <PackageReference Include="Google.Apis.Auth" Version="1.35.1" />
 
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.1" PrivateAssets="All" />
