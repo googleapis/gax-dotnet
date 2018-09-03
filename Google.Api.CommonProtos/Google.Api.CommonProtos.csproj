@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProperties.Production.xml" />
+
+  <PropertyGroup>
+    <VersionPrefix>1.3.0</VersionPrefix>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Packaging information -->
+  <PropertyGroup>
+    <Title>Google API Common Protos</Title>
+    <Description>Common Protocol Buffer messages for Google APIs</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.5.1" />
+    
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Import Project="..\StripDesktopOnNonWindows.xml" />
+
+</Project>

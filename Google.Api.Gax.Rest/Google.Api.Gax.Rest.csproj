@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProperties.Production.xml" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Packaging information -->
+  <PropertyGroup>
+    <Title>Google API Common Protos</Title>
+    <Description>Common Protocol Buffer messages for Google APIs</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
+
+    <PackageReference Include="Google.Apis.Auth" Version="1.35.1" />
+
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.1" PrivateAssets="All" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Import Project="..\StripDesktopOnNonWindows.xml" />
+
+</Project>

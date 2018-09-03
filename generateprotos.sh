@@ -53,7 +53,7 @@ install_dependencies() {
 install_dependencies
 
 declare -r OUTDIR=tmp
-declare -r TARGETDIR=src/Google.Api.CommonProtos
+declare -r TARGETDIR=Google.Api.CommonProtos
 rm -rf $OUTDIR
 mkdir $OUTDIR
 
@@ -86,8 +86,8 @@ done
 
 rm -rf $OUTDIR
 
-(cd test/Google.Api.Gax.Grpc.IntegrationTests;
+(cd Google.Api.Gax.Grpc.IntegrationTests;
  $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
 
-(cd test/Google.Api.Gax.Grpc.Tests;
+(cd Google.Api.Gax.Grpc.Tests;
  $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
