@@ -40,7 +40,7 @@ dotnet build $DOTNET_BUILD_ARGS Gax.sln
 
 echo Testing
 
-for testproject in test/*.Tests
+for testproject in *.Tests
 do
   # This will run the tests on every platform  
   # defined for the project.

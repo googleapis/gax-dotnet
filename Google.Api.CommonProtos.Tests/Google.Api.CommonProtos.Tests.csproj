@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProperties.Test.xml" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Api.CommonProtos\Google.Api.CommonProtos.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\StripDesktopOnNonWindows.xml" />
+
+</Project>

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProperties.Test.xml" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Metadata.json" />
+    <None Remove="Resources\Namespace.json" />
+    <None Remove="Resources\Pod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Metadata.json" />
+    <EmbeddedResource Include="Resources\Namespace.json" />
+    <EmbeddedResource Include="Resources\Pod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
+    <ProjectReference Include="..\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\StripDesktopOnNonWindows.xml" />
+
+</Project>
