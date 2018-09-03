@@ -67,7 +67,7 @@ namespace Google.Api.Gax.Grpc
         /// Shuts down all the currently-allocated channels asynchronously. This does not prevent the channel
         /// pool from being used later on, but the currently-allocated channels will not be reused.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A task which will complete when all the (current) channels have been shut down.</returns>
         public Task ShutdownChannelsAsync()
         {
             List<Channel> channelsToShutdown;

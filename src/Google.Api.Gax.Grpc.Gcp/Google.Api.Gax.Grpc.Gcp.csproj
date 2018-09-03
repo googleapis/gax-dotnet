@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\CommonProjectProperties.xml" />
+
+  <!-- For the moment, this package is versioned independently. -->
+  <PropertyGroup>
+    <Version>2.5.0-beta01</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Packaging information -->
+  <PropertyGroup>
+    <Title>Google Cloud Platform gRPC API Extensions</Title>
+    <Description>Additional gRPC API extensions for Google Cloud Platform APIs</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
+
+    <PackageReference Include="Grpc.Gcp" Version="1.0.0" />
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="1.0.1" PrivateAssets="All" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Import Project="..\..\StripDesktopOnNonWindows.xml" />
+
+</Project>
