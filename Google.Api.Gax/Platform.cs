@@ -205,9 +205,14 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
         public class KubernetesData
         {
             /// <summary>
-            /// The kubernetes pod name
+            /// The Kubernetes pod name
             /// </summary>
             public string PodName { get; set; }
+
+            /// <summary>
+            /// The Kubernetes namespace name
+            /// </summary>
+            public string NamespaceName { get; set; }
 
             /// <summary>
             /// JSON from https://kubernetes/api/v1/namespaces/{namespace}
@@ -257,7 +262,12 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
                 kubernetesCaCert == null || mountInfo == null || mountInfo.Length == 0)
             {
                 // These files should contain useful data on GKE. If anything is missing then return what we already know.
-                return new KubernetesData { PodName = podName, MountInfo = mountInfo };
+                return new KubernetesData
+                {
+                    PodName = podName,
+                    NamespaceName = kubernetesNamespace,
+                    MountInfo = mountInfo
+                };
             }
 
             var handler = new HttpClientHandler
@@ -296,6 +306,7 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
             return new KubernetesData
             {
                 PodName = podName,
+                NamespaceName = kubernetesNamespace,
                 NamespaceJson = namespaceJson,
                 PodJson = podJson,
                 MountInfo = mountInfo
@@ -327,6 +338,10 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
         /// Builds a <see cref="GkePlatformDetails"/> from the given metadata and kubernetes data.
         /// The metadata is normally retrieved from the GCE metadata server.
         /// The kubernetes data is normally retrieved using the kubernetes API.
+        /// This method attempts to return as much information as it is present on <paramref name="metadataJson"/>
+        /// and <paramref name="kubernetesData"/> but will return <see cref="string.Empty"/> for <see cref="GkePlatformDetails"/>
+        /// properties whose corresponding information is corrupt or missing in <paramref name="metadataJson"/>
+        /// or <paramref name="kubernetesData"/>.
         /// </summary>
         /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
         /// Must not be <c>null</c>.</param>
@@ -365,8 +380,8 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.Value<string>();
             var instanceId = metadata["instance"]?["id"]?.Value<string>();
             var zone = metadata["instance"]?["zone"]?.Value<string>();
-            var namespaceId = namespaceData?["metadata"]?["name"]?.Value<string>() ?? "";
-            var podId = podData?["metadata"]?["name"]?.Value<string>() ?? "";
+            var namespaceId = namespaceData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.NamespaceName ?? "";
+            var podId = podData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.PodName ?? "";
             var podUid = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
             // A hack to find the container name. There appears to be no official way to do this.
             var regex = new Regex($"/var/lib/kubelet/pods/{podUid}/containers/([^/]+)/.*/dev/termination-log");

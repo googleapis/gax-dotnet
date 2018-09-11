@@ -74,23 +74,29 @@ namespace Google.Api.Gax.Tests
             Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", "", null));
         }
 
-        [Fact]
-        public void Gke_PartialData()
+        [Theory]
+        [InlineData(null, null, "", "")]
+        [InlineData("", "", "", "")]
+        [InlineData("podName", null, "podName", "")]
+        [InlineData(null, "namespace", "", "namespace")]
+        [InlineData("podName", "namespace", "podName", "namespace")]
+        public void Gke_PartialData(string podName, string namespaceName, string expectedPodName, string expectedNamespaceName)
         {
             var kubernetesData = new GkePlatformDetails.KubernetesData
             {
-                PodName = "testpodname"
+                PodName = podName,
+                NamespaceName = namespaceName
             };
             var gke = GkePlatformDetails.TryLoad(LoadResourceString("Metadata.json"), kubernetesData);
             Assert.NotNull(gke);
             Assert.Equal("chrisbacon-testing", gke.ProjectId);
             Assert.Equal("platformintegrationtest", gke.ClusterName);
             Assert.Equal("europe-west2-c", gke.Location);
-            Assert.Equal("testpodname", gke.HostName);
+            Assert.Equal(expectedPodName, gke.HostName);
             Assert.Equal("2917200381659545756", gke.InstanceId);
             Assert.Equal("projects/233772281425/zones/europe-west2-c", gke.Zone);
-            Assert.Equal("", gke.NamespaceId);
-            Assert.Equal("", gke.PodId);
+            Assert.Equal(expectedNamespaceName, gke.NamespaceId);
+            Assert.Equal(expectedPodName, gke.PodId);
             Assert.Equal("", gke.ContainerName);
         }
 
