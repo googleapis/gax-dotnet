@@ -77,7 +77,7 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Experimental(Experimental other) : this() {
-      Authorization = other.authorization_ != null ? other.Authorization.Clone() : null;
+      authorization_ = other.authorization_ != null ? other.authorization_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 

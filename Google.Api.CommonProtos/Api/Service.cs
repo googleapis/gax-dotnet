@@ -141,24 +141,24 @@ namespace Google.Api {
       apis_ = other.apis_.Clone();
       types_ = other.types_.Clone();
       enums_ = other.enums_.Clone();
-      Documentation = other.documentation_ != null ? other.Documentation.Clone() : null;
-      Backend = other.backend_ != null ? other.Backend.Clone() : null;
-      Http = other.http_ != null ? other.Http.Clone() : null;
-      Quota = other.quota_ != null ? other.Quota.Clone() : null;
-      Authentication = other.authentication_ != null ? other.Authentication.Clone() : null;
-      Context = other.context_ != null ? other.Context.Clone() : null;
-      Usage = other.usage_ != null ? other.Usage.Clone() : null;
+      documentation_ = other.documentation_ != null ? other.documentation_.Clone() : null;
+      backend_ = other.backend_ != null ? other.backend_.Clone() : null;
+      http_ = other.http_ != null ? other.http_.Clone() : null;
+      quota_ = other.quota_ != null ? other.quota_.Clone() : null;
+      authentication_ = other.authentication_ != null ? other.authentication_.Clone() : null;
+      context_ = other.context_ != null ? other.context_.Clone() : null;
+      usage_ = other.usage_ != null ? other.usage_.Clone() : null;
       endpoints_ = other.endpoints_.Clone();
-      Control = other.control_ != null ? other.Control.Clone() : null;
+      control_ = other.control_ != null ? other.control_.Clone() : null;
       logs_ = other.logs_.Clone();
       metrics_ = other.metrics_.Clone();
       monitoredResources_ = other.monitoredResources_.Clone();
-      Billing = other.billing_ != null ? other.Billing.Clone() : null;
-      Logging = other.logging_ != null ? other.Logging.Clone() : null;
-      Monitoring = other.monitoring_ != null ? other.Monitoring.Clone() : null;
-      SystemParameters = other.systemParameters_ != null ? other.SystemParameters.Clone() : null;
-      SourceInfo = other.sourceInfo_ != null ? other.SourceInfo.Clone() : null;
-      Experimental = other.experimental_ != null ? other.Experimental.Clone() : null;
+      billing_ = other.billing_ != null ? other.billing_.Clone() : null;
+      logging_ = other.logging_ != null ? other.logging_.Clone() : null;
+      monitoring_ = other.monitoring_ != null ? other.monitoring_.Clone() : null;
+      systemParameters_ = other.systemParameters_ != null ? other.systemParameters_.Clone() : null;
+      sourceInfo_ = other.sourceInfo_ != null ? other.sourceInfo_.Clone() : null;
+      experimental_ = other.experimental_ != null ? other.experimental_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 

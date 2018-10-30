@@ -263,7 +263,7 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AuthenticationRule(AuthenticationRule other) : this() {
       selector_ = other.selector_;
-      Oauth = other.oauth_ != null ? other.Oauth.Clone() : null;
+      oauth_ = other.oauth_ != null ? other.oauth_.Clone() : null;
       allowWithoutCredential_ = other.allowWithoutCredential_;
       requirements_ = other.requirements_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);

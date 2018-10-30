@@ -114,8 +114,8 @@ namespace Google.Api {
       count_ = other.count_;
       mean_ = other.mean_;
       sumOfSquaredDeviation_ = other.sumOfSquaredDeviation_;
-      Range = other.range_ != null ? other.Range.Clone() : null;
-      BucketOptions = other.bucketOptions_ != null ? other.BucketOptions.Clone() : null;
+      range_ = other.range_ != null ? other.range_.Clone() : null;
+      bucketOptions_ = other.bucketOptions_ != null ? other.bucketOptions_.Clone() : null;
       bucketCounts_ = other.bucketCounts_.Clone();
       exemplars_ = other.exemplars_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1453,7 +1453,7 @@ namespace Google.Api {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Exemplar(Exemplar other) : this() {
           value_ = other.value_;
-          Timestamp = other.timestamp_ != null ? other.Timestamp.Clone() : null;
+          timestamp_ = other.timestamp_ != null ? other.timestamp_.Clone() : null;
           attachments_ = other.attachments_.Clone();
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }

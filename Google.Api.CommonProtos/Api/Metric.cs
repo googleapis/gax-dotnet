@@ -104,7 +104,7 @@ namespace Google.Api {
       unit_ = other.unit_;
       description_ = other.description_;
       displayName_ = other.displayName_;
-      Metadata = other.metadata_ != null ? other.Metadata.Clone() : null;
+      metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -623,8 +623,8 @@ namespace Google.Api {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public MetricDescriptorMetadata(MetricDescriptorMetadata other) : this() {
           launchStage_ = other.launchStage_;
-          SamplePeriod = other.samplePeriod_ != null ? other.SamplePeriod.Clone() : null;
-          IngestDelay = other.ingestDelay_ != null ? other.IngestDelay.Clone() : null;
+          samplePeriod_ = other.samplePeriod_ != null ? other.samplePeriod_.Clone() : null;
+          ingestDelay_ = other.ingestDelay_ != null ? other.ingestDelay_.Clone() : null;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
