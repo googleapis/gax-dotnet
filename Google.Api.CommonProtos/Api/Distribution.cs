@@ -31,34 +31,39 @@ namespace Google.Api {
     static DistributionReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2Rpc3RyaWJ1dGlvbi5wcm90bxIKZ29vZ2xlLmFwaRoc",
-            "Z29vZ2xlL2FwaS9hbm5vdGF0aW9ucy5wcm90bxoZZ29vZ2xlL3Byb3RvYnVm",
-            "L2FueS5wcm90bxofZ29vZ2xlL3Byb3RvYnVmL3RpbWVzdGFtcC5wcm90byKu",
-            "BQoMRGlzdHJpYnV0aW9uEg0KBWNvdW50GAEgASgDEgwKBG1lYW4YAiABKAES",
-            "IAoYc3VtX29mX3NxdWFyZWRfZGV2aWF0aW9uGAMgASgBEi0KBXJhbmdlGAQg",
-            "ASgLMh4uZ29vZ2xlLmFwaS5EaXN0cmlidXRpb24uUmFuZ2USPgoOYnVja2V0",
-            "X29wdGlvbnMYBiABKAsyJi5nb29nbGUuYXBpLkRpc3RyaWJ1dGlvbi5CdWNr",
-            "ZXRPcHRpb25zEhUKDWJ1Y2tldF9jb3VudHMYByADKAMaIQoFUmFuZ2USCwoD",
-            "bWluGAEgASgBEgsKA21heBgCIAEoARq1AwoNQnVja2V0T3B0aW9ucxJHCg5s",
-            "aW5lYXJfYnVja2V0cxgBIAEoCzItLmdvb2dsZS5hcGkuRGlzdHJpYnV0aW9u",
-            "LkJ1Y2tldE9wdGlvbnMuTGluZWFySAASUQoTZXhwb25lbnRpYWxfYnVja2V0",
-            "cxgCIAEoCzIyLmdvb2dsZS5hcGkuRGlzdHJpYnV0aW9uLkJ1Y2tldE9wdGlv",
-            "bnMuRXhwb25lbnRpYWxIABJLChBleHBsaWNpdF9idWNrZXRzGAMgASgLMi8u",
-            "Z29vZ2xlLmFwaS5EaXN0cmlidXRpb24uQnVja2V0T3B0aW9ucy5FeHBsaWNp",
-            "dEgAGkMKBkxpbmVhchIaChJudW1fZmluaXRlX2J1Y2tldHMYASABKAUSDQoF",
-            "d2lkdGgYAiABKAESDgoGb2Zmc2V0GAMgASgBGk8KC0V4cG9uZW50aWFsEhoK",
-            "Em51bV9maW5pdGVfYnVja2V0cxgBIAEoBRIVCg1ncm93dGhfZmFjdG9yGAIg",
-            "ASgBEg0KBXNjYWxlGAMgASgBGhoKCEV4cGxpY2l0Eg4KBmJvdW5kcxgBIAMo",
-            "AUIJCgdvcHRpb25zQmoKDmNvbS5nb29nbGUuYXBpQhFEaXN0cmlidXRpb25Q",
-            "cm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlz",
-            "L2FwaS9kaXN0cmlidXRpb247ZGlzdHJpYnV0aW9uYgZwcm90bzM="));
+            "Ch1nb29nbGUvYXBpL2Rpc3RyaWJ1dGlvbi5wcm90bxIKZ29vZ2xlLmFwaRoZ",
+            "Z29vZ2xlL3Byb3RvYnVmL2FueS5wcm90bxofZ29vZ2xlL3Byb3RvYnVmL3Rp",
+            "bWVzdGFtcC5wcm90byLZBgoMRGlzdHJpYnV0aW9uEg0KBWNvdW50GAEgASgD",
+            "EgwKBG1lYW4YAiABKAESIAoYc3VtX29mX3NxdWFyZWRfZGV2aWF0aW9uGAMg",
+            "ASgBEi0KBXJhbmdlGAQgASgLMh4uZ29vZ2xlLmFwaS5EaXN0cmlidXRpb24u",
+            "UmFuZ2USPgoOYnVja2V0X29wdGlvbnMYBiABKAsyJi5nb29nbGUuYXBpLkRp",
+            "c3RyaWJ1dGlvbi5CdWNrZXRPcHRpb25zEhUKDWJ1Y2tldF9jb3VudHMYByAD",
+            "KAMSNAoJZXhlbXBsYXJzGAogAygLMiEuZ29vZ2xlLmFwaS5EaXN0cmlidXRp",
+            "b24uRXhlbXBsYXIaIQoFUmFuZ2USCwoDbWluGAEgASgBEgsKA21heBgCIAEo",
+            "ARq1AwoNQnVja2V0T3B0aW9ucxJHCg5saW5lYXJfYnVja2V0cxgBIAEoCzIt",
+            "Lmdvb2dsZS5hcGkuRGlzdHJpYnV0aW9uLkJ1Y2tldE9wdGlvbnMuTGluZWFy",
+            "SAASUQoTZXhwb25lbnRpYWxfYnVja2V0cxgCIAEoCzIyLmdvb2dsZS5hcGku",
+            "RGlzdHJpYnV0aW9uLkJ1Y2tldE9wdGlvbnMuRXhwb25lbnRpYWxIABJLChBl",
+            "eHBsaWNpdF9idWNrZXRzGAMgASgLMi8uZ29vZ2xlLmFwaS5EaXN0cmlidXRp",
+            "b24uQnVja2V0T3B0aW9ucy5FeHBsaWNpdEgAGkMKBkxpbmVhchIaChJudW1f",
+            "ZmluaXRlX2J1Y2tldHMYASABKAUSDQoFd2lkdGgYAiABKAESDgoGb2Zmc2V0",
+            "GAMgASgBGk8KC0V4cG9uZW50aWFsEhoKEm51bV9maW5pdGVfYnVja2V0cxgB",
+            "IAEoBRIVCg1ncm93dGhfZmFjdG9yGAIgASgBEg0KBXNjYWxlGAMgASgBGhoK",
+            "CEV4cGxpY2l0Eg4KBmJvdW5kcxgBIAMoAUIJCgdvcHRpb25zGnMKCEV4ZW1w",
+            "bGFyEg0KBXZhbHVlGAEgASgBEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2ds",
+            "ZS5wcm90b2J1Zi5UaW1lc3RhbXASKQoLYXR0YWNobWVudHMYAyADKAsyFC5n",
+            "b29nbGUucHJvdG9idWYuQW55QnEKDmNvbS5nb29nbGUuYXBpQhFEaXN0cmli",
+            "dXRpb25Qcm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
+            "bGVhcGlzL2FwaS9kaXN0cmlidXRpb247ZGlzdHJpYnV0aW9uogIER0FQSWIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution), global::Google.Api.Distribution.Parser, new[]{ "Count", "Mean", "SumOfSquaredDeviation", "Range", "BucketOptions", "BucketCounts" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Range), global::Google.Api.Distribution.Types.Range.Parser, new[]{ "Min", "Max" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution), global::Google.Api.Distribution.Parser, new[]{ "Count", "Mean", "SumOfSquaredDeviation", "Range", "BucketOptions", "BucketCounts", "Exemplars" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Range), global::Google.Api.Distribution.Types.Range.Parser, new[]{ "Min", "Max" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions), global::Google.Api.Distribution.Types.BucketOptions.Parser, new[]{ "LinearBuckets", "ExponentialBuckets", "ExplicitBuckets" }, new[]{ "Options" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Linear), global::Google.Api.Distribution.Types.BucketOptions.Types.Linear.Parser, new[]{ "NumFiniteBuckets", "Width", "Offset" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential), global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential.Parser, new[]{ "NumFiniteBuckets", "GrowthFactor", "Scale" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit), global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit.Parser, new[]{ "Bounds" }, null, null, null)})})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit), global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit.Parser, new[]{ "Bounds" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Exemplar), global::Google.Api.Distribution.Types.Exemplar.Parser, new[]{ "Value", "Timestamp", "Attachments" }, null, null, null)})
           }));
     }
     #endregion
@@ -66,17 +71,16 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// Distribution contains summary statistics for a population of values and,
-  /// optionally, a histogram representing the distribution of those values across
-  /// a specified set of histogram buckets.
+  /// `Distribution` contains summary statistics for a population of values. It
+  /// optionally contains a histogram representing the distribution of those values
+  /// across a set of buckets.
   ///
   /// The summary statistics are the count, mean, sum of the squared deviation from
   /// the mean, the minimum, and the maximum of the set of population of values.
-  ///
   /// The histogram is based on a sequence of buckets and gives a count of values
-  /// that fall into each bucket.  The boundaries of the buckets are given either
-  /// explicitly or by specifying parameters for a method of computing them
-  /// (buckets of fixed width or buckets of exponentially increasing width).
+  /// that fall into each bucket. The boundaries of the buckets are given either
+  /// explicitly or by formulas for buckets of fixed or exponentially increasing
+  /// widths.
   ///
   /// Although it is not forbidden, it is generally a bad idea to include
   /// non-finite values (infinities or NaNs) in the population of values, as this
@@ -113,6 +117,7 @@ namespace Google.Api {
       Range = other.range_ != null ? other.Range.Clone() : null;
       BucketOptions = other.bucketOptions_ != null ? other.BucketOptions.Clone() : null;
       bucketCounts_ = other.bucketCounts_.Clone();
+      exemplars_ = other.exemplars_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -125,7 +130,9 @@ namespace Google.Api {
     public const int CountFieldNumber = 1;
     private long count_;
     /// <summary>
-    /// The number of values in the population. Must be non-negative.
+    /// The number of values in the population. Must be non-negative. This value
+    /// must equal the sum of the values in `bucket_counts` if a histogram is
+    /// provided.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Count {
@@ -155,7 +162,7 @@ namespace Google.Api {
     private double sumOfSquaredDeviation_;
     /// <summary>
     /// The sum of squared deviations from the mean of the values in the
-    /// population.  For values x_i this is:
+    /// population. For values x_i this is:
     ///
     ///     Sum[i=1..n]((x_i - mean)^2)
     ///
@@ -191,7 +198,8 @@ namespace Google.Api {
     public const int BucketOptionsFieldNumber = 6;
     private global::Google.Api.Distribution.Types.BucketOptions bucketOptions_;
     /// <summary>
-    /// Defines the histogram bucket boundaries.
+    /// Defines the histogram bucket boundaries. If the distribution does not
+    /// contain a histogram, then omit this field.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Distribution.Types.BucketOptions BucketOptions {
@@ -207,22 +215,38 @@ namespace Google.Api {
         = pb::FieldCodec.ForInt64(58);
     private readonly pbc::RepeatedField<long> bucketCounts_ = new pbc::RepeatedField<long>();
     /// <summary>
-    /// If `bucket_options` is given, then the sum of the values in `bucket_counts`
-    /// must equal the value in `count`.  If `bucket_options` is not given, no
-    /// `bucket_counts` fields may be given.
+    /// The number of values in each bucket of the histogram, as described in
+    /// `bucket_options`. If the distribution does not have a histogram, then omit
+    /// this field. If there is a histogram, then the sum of the values in
+    /// `bucket_counts` must equal the value in the `count` field of the
+    /// distribution.
     ///
-    /// Bucket counts are given in order under the numbering scheme described
-    /// above (the underflow bucket has number 0; the finite buckets, if any,
-    /// have numbers 1 through N-2; the overflow bucket has number N-1).
+    /// If present, `bucket_counts` should contain N values, where N is the number
+    /// of buckets specified in `bucket_options`. If you supply fewer than N
+    /// values, the remaining values are assumed to be 0.
     ///
-    /// The size of `bucket_counts` must be no greater than N as defined in
-    /// `bucket_options`.
-    ///
-    /// Any suffix of trailing zero bucket_count fields may be omitted.
+    /// The order of the values in `bucket_counts` follows the bucket numbering
+    /// schemes described for the three bucket types. The first value must be the
+    /// count for the underflow bucket (number 0). The next N-2 values are the
+    /// counts for the finite buckets (number 1 through N-2). The N'th value in
+    /// `bucket_counts` is the count for the overflow bucket (number N-1).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<long> BucketCounts {
       get { return bucketCounts_; }
+    }
+
+    /// <summary>Field number for the "exemplars" field.</summary>
+    public const int ExemplarsFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::Google.Api.Distribution.Types.Exemplar> _repeated_exemplars_codec
+        = pb::FieldCodec.ForMessage(82, global::Google.Api.Distribution.Types.Exemplar.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.Distribution.Types.Exemplar> exemplars_ = new pbc::RepeatedField<global::Google.Api.Distribution.Types.Exemplar>();
+    /// <summary>
+    /// Must be in increasing order of `value` field.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Google.Api.Distribution.Types.Exemplar> Exemplars {
+      get { return exemplars_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -244,6 +268,7 @@ namespace Google.Api {
       if (!object.Equals(Range, other.Range)) return false;
       if (!object.Equals(BucketOptions, other.BucketOptions)) return false;
       if(!bucketCounts_.Equals(other.bucketCounts_)) return false;
+      if(!exemplars_.Equals(other.exemplars_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -256,6 +281,7 @@ namespace Google.Api {
       if (range_ != null) hash ^= Range.GetHashCode();
       if (bucketOptions_ != null) hash ^= BucketOptions.GetHashCode();
       hash ^= bucketCounts_.GetHashCode();
+      hash ^= exemplars_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -290,6 +316,7 @@ namespace Google.Api {
         output.WriteMessage(BucketOptions);
       }
       bucketCounts_.WriteTo(output, _repeated_bucketCounts_codec);
+      exemplars_.WriteTo(output, _repeated_exemplars_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -314,6 +341,7 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(BucketOptions);
       }
       size += bucketCounts_.CalculateSize(_repeated_bucketCounts_codec);
+      size += exemplars_.CalculateSize(_repeated_exemplars_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -347,6 +375,7 @@ namespace Google.Api {
         BucketOptions.MergeFrom(other.BucketOptions);
       }
       bucketCounts_.Add(other.bucketCounts_);
+      exemplars_.Add(other.exemplars_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -387,6 +416,10 @@ namespace Google.Api {
           case 58:
           case 56: {
             bucketCounts_.AddEntriesFrom(input, _repeated_bucketCounts_codec);
+            break;
+          }
+          case 82: {
+            exemplars_.AddEntriesFrom(input, _repeated_exemplars_codec);
             break;
           }
         }
@@ -564,29 +597,21 @@ namespace Google.Api {
       }
 
       /// <summary>
-      /// A Distribution may optionally contain a histogram of the values in the
-      /// population.  The histogram is given in `bucket_counts` as counts of values
-      /// that fall into one of a sequence of non-overlapping buckets.  The sequence
-      /// of buckets is described by `bucket_options`.
+      /// `BucketOptions` describes the bucket boundaries used to create a histogram
+      /// for the distribution. The buckets can be in a linear sequence, an
+      /// exponential sequence, or each bucket can be specified explicitly.
+      /// `BucketOptions` does not include the number of values in each bucket.
       ///
-      /// A bucket specifies an inclusive lower bound and exclusive upper bound for
-      /// the values that are counted for that bucket.  The upper bound of a bucket
-      /// is strictly greater than the lower bound.
-      ///
-      /// The sequence of N buckets for a Distribution consists of an underflow
-      /// bucket (number 0), zero or more finite buckets (number 1 through N - 2) and
-      /// an overflow bucket (number N - 1).  The buckets are contiguous:  the lower
-      /// bound of bucket i (i > 0) is the same as the upper bound of bucket i - 1.
-      /// The buckets span the whole range of finite values: lower bound of the
-      /// underflow bucket is -infinity and the upper bound of the overflow bucket is
-      /// +infinity.  The finite buckets are so-called because both bounds are
-      /// finite.
-      ///
-      /// `BucketOptions` describes bucket boundaries in one of three ways.  Two
-      /// describe the boundaries by giving parameters for a formula to generate
-      /// boundaries and one gives the bucket boundaries explicitly.
-      ///
-      /// If `bucket_boundaries` is not given, then no `bucket_counts` may be given.
+      /// A bucket has an inclusive lower bound and exclusive upper bound for the
+      /// values that are counted for that bucket. The upper bound of a bucket must
+      /// be strictly greater than the lower bound. The sequence of N buckets for a
+      /// distribution consists of an underflow bucket (number 0), zero or more
+      /// finite buckets (number 1 through N - 2) and an overflow bucket (number N -
+      /// 1). The buckets are contiguous: the lower bound of bucket i (i > 0) is the
+      /// same as the upper bound of bucket i - 1. The buckets span the whole range
+      /// of finite values: lower bound of the underflow bucket is -infinity and the
+      /// upper bound of the overflow bucket is +infinity. The finite buckets are
+      /// so-called because both bounds are finite.
       /// </summary>
       public sealed partial class BucketOptions : pb::IMessage<BucketOptions> {
         private static readonly pb::MessageParser<BucketOptions> _parser = new pb::MessageParser<BucketOptions>(() => new BucketOptions());
@@ -843,12 +868,12 @@ namespace Google.Api {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static partial class Types {
           /// <summary>
-          /// Specify a sequence of buckets that all have the same width (except
-          /// overflow and underflow).  Each bucket represents a constant absolute
-          /// uncertainty on the specific value in the bucket.
+          /// Specifies a linear sequence of buckets that all have the same width
+          /// (except overflow and underflow). Each bucket represents a constant
+          /// absolute uncertainty on the specific value in the bucket.
           ///
-          /// Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
-          /// bucket `i`:
+          /// There are `num_finite_buckets + 2` (= N) buckets. Bucket `i` has the
+          /// following boundaries:
           ///
           ///    Upper bound (0 &lt;= i &lt; N-1):     offset + (width * i).
           ///    Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
@@ -1048,12 +1073,12 @@ namespace Google.Api {
           }
 
           /// <summary>
-          /// Specify a sequence of buckets that have a width that is proportional to
-          /// the value of the lower bound.  Each bucket represents a constant relative
-          /// uncertainty on a specific value in the bucket.
+          /// Specifies an exponential sequence of buckets that have a width that is
+          /// proportional to the value of the lower bound. Each bucket represents a
+          /// constant relative uncertainty on a specific value in the bucket.
           ///
-          /// Defines `num_finite_buckets + 2` (= N) buckets with these boundaries for
-          /// bucket i:
+          /// There are `num_finite_buckets + 2` (= N) buckets. Bucket `i` has the
+          /// following boundaries:
           ///
           ///    Upper bound (0 &lt;= i &lt; N-1):     scale * (growth_factor ^ i).
           ///    Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
@@ -1253,17 +1278,17 @@ namespace Google.Api {
           }
 
           /// <summary>
-          /// A set of buckets with arbitrary widths.
+          /// Specifies a set of buckets with arbitrary widths.
           ///
-          /// Defines `size(bounds) + 1` (= N) buckets with these boundaries for
-          /// bucket i:
+          /// There are `size(bounds) + 1` (= N) buckets. Bucket `i` has the following
+          /// boundaries:
           ///
           ///    Upper bound (0 &lt;= i &lt; N-1):     bounds[i]
           ///    Lower bound (1 &lt;= i &lt; N);       bounds[i - 1]
           ///
-          /// There must be at least one element in `bounds`.  If `bounds` has only one
-          /// element, there are no finite buckets, and that single element is the
-          /// common boundary of the overflow and underflow buckets.
+          /// The `bounds` field must contain at least one element. If `bounds` has
+          /// only one element, then there are no finite buckets, and that single
+          /// element is the common boundary of the overflow and underflow buckets.
           /// </summary>
           public sealed partial class Explicit : pb::IMessage<Explicit> {
             private static readonly pb::MessageParser<Explicit> _parser = new pb::MessageParser<Explicit>(() => new Explicit());
@@ -1392,6 +1417,216 @@ namespace Google.Api {
 
         }
         #endregion
+
+      }
+
+      /// <summary>
+      /// Exemplars are example points that may be used to annotate aggregated
+      /// distribution values. They are metadata that gives information about a
+      /// particular value added to a Distribution bucket, such as a trace ID that
+      /// was active when a value was added. They may contain further information,
+      /// such as a example values and timestamps, origin, etc.
+      /// </summary>
+      public sealed partial class Exemplar : pb::IMessage<Exemplar> {
+        private static readonly pb::MessageParser<Exemplar> _parser = new pb::MessageParser<Exemplar>(() => new Exemplar());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Exemplar> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.Distribution.Descriptor.NestedTypes[2]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Exemplar() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Exemplar(Exemplar other) : this() {
+          value_ = other.value_;
+          Timestamp = other.timestamp_ != null ? other.Timestamp.Clone() : null;
+          attachments_ = other.attachments_.Clone();
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Exemplar Clone() {
+          return new Exemplar(this);
+        }
+
+        /// <summary>Field number for the "value" field.</summary>
+        public const int ValueFieldNumber = 1;
+        private double value_;
+        /// <summary>
+        /// Value of the exemplar point. This value determines to which bucket the
+        /// exemplar belongs.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public double Value {
+          get { return value_; }
+          set {
+            value_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "timestamp" field.</summary>
+        public const int TimestampFieldNumber = 2;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp timestamp_;
+        /// <summary>
+        /// The observation (sampling) time of the above value.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp Timestamp {
+          get { return timestamp_; }
+          set {
+            timestamp_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "attachments" field.</summary>
+        public const int AttachmentsFieldNumber = 3;
+        private static readonly pb::FieldCodec<global::Google.Protobuf.WellKnownTypes.Any> _repeated_attachments_codec
+            = pb::FieldCodec.ForMessage(26, global::Google.Protobuf.WellKnownTypes.Any.Parser);
+        private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> attachments_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any>();
+        /// <summary>
+        /// Contextual information about the example value. Examples are:
+        ///
+        ///   Trace ID: type.googleapis.com/google.devtools.cloudtrace.v1.Trace
+        ///
+        ///   Literal string: type.googleapis.com/google.protobuf.StringValue
+        ///
+        ///   Labels dropped during aggregation:
+        ///     type.googleapis.com/google.monitoring.v3.DroppedLabels
+        ///
+        /// There may be only a single attachment of any given message type in a
+        /// single exemplar, and this is enforced by the system.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> Attachments {
+          get { return attachments_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Exemplar);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Exemplar other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Value, other.Value)) return false;
+          if (!object.Equals(Timestamp, other.Timestamp)) return false;
+          if(!attachments_.Equals(other.attachments_)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (Value != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Value);
+          if (timestamp_ != null) hash ^= Timestamp.GetHashCode();
+          hash ^= attachments_.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (Value != 0D) {
+            output.WriteRawTag(9);
+            output.WriteDouble(Value);
+          }
+          if (timestamp_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(Timestamp);
+          }
+          attachments_.WriteTo(output, _repeated_attachments_codec);
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (Value != 0D) {
+            size += 1 + 8;
+          }
+          if (timestamp_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Timestamp);
+          }
+          size += attachments_.CalculateSize(_repeated_attachments_codec);
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Exemplar other) {
+          if (other == null) {
+            return;
+          }
+          if (other.Value != 0D) {
+            Value = other.Value;
+          }
+          if (other.timestamp_ != null) {
+            if (timestamp_ == null) {
+              timestamp_ = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            Timestamp.MergeFrom(other.Timestamp);
+          }
+          attachments_.Add(other.attachments_);
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 9: {
+                Value = input.ReadDouble();
+                break;
+              }
+              case 18: {
+                if (timestamp_ == null) {
+                  timestamp_ = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(timestamp_);
+                break;
+              }
+              case 26: {
+                attachments_.AddEntriesFrom(input, _repeated_attachments_codec);
+                break;
+              }
+            }
+          }
+        }
 
       }
 

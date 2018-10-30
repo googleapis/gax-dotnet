@@ -32,12 +32,12 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpGhxnb29n",
-            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvIl8KCEVuZHBvaW50EgwKBG5hbWUY",
-            "ASABKAkSDwoHYWxpYXNlcxgCIAMoCRIQCghmZWF0dXJlcxgEIAMoCRIOCgZ0",
-            "YXJnZXQYZSABKAkSEgoKYWxsb3dfY29ycxgFIAEoCEJvCg5jb20uZ29vZ2xl",
-            "LmFwaUINRW5kcG9pbnRQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5w",
-            "cm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25m",
-            "aWeiAgRHQVBJYgZwcm90bzM="));
+            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvImMKCEVuZHBvaW50EgwKBG5hbWUY",
+            "ASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESEAoIZmVhdHVyZXMYBCADKAkS",
+            "DgoGdGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdv",
+            "b2dsZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcv",
+            "Z2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNl",
+            "Y29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -130,6 +130,7 @@ namespace Google.Api {
     ///
     /// Additional names that this endpoint will be hosted on.
     /// </summary>
+    [global::System.ObsoleteAttribute]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Aliases {
       get { return aliases_; }

@@ -33,21 +33,22 @@ namespace Google.Api {
           string.Concat(
             "ChVnb29nbGUvYXBpL2h0dHAucHJvdG8SCmdvb2dsZS5hcGkiVAoESHR0cBIj",
             "CgVydWxlcxgBIAMoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGUSJwofZnVsbHlf",
-            "ZGVjb2RlX3Jlc2VydmVkX2V4cGFuc2lvbhgCIAEoCCLqAQoISHR0cFJ1bGUS",
+            "ZGVjb2RlX3Jlc2VydmVkX2V4cGFuc2lvbhgCIAEoCCKBAgoISHR0cFJ1bGUS",
             "EAoIc2VsZWN0b3IYASABKAkSDQoDZ2V0GAIgASgJSAASDQoDcHV0GAMgASgJ",
             "SAASDgoEcG9zdBgEIAEoCUgAEhAKBmRlbGV0ZRgFIAEoCUgAEg8KBXBhdGNo",
             "GAYgASgJSAASLwoGY3VzdG9tGAggASgLMh0uZ29vZ2xlLmFwaS5DdXN0b21I",
-            "dHRwUGF0dGVybkgAEgwKBGJvZHkYByABKAkSMQoTYWRkaXRpb25hbF9iaW5k",
-            "aW5ncxgLIAMoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGVCCQoHcGF0dGVybiIv",
-            "ChFDdXN0b21IdHRwUGF0dGVybhIMCgRraW5kGAEgASgJEgwKBHBhdGgYAiAB",
-            "KAlCagoOY29tLmdvb2dsZS5hcGlCCUh0dHBQcm90b1ABWkFnb29nbGUuZ29s",
-            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczth",
-            "bm5vdGF0aW9uc/gBAaICBEdBUEliBnByb3RvMw=="));
+            "dHRwUGF0dGVybkgAEgwKBGJvZHkYByABKAkSFQoNcmVzcG9uc2VfYm9keRgM",
+            "IAEoCRIxChNhZGRpdGlvbmFsX2JpbmRpbmdzGAsgAygLMhQuZ29vZ2xlLmFw",
+            "aS5IdHRwUnVsZUIJCgdwYXR0ZXJuIi8KEUN1c3RvbUh0dHBQYXR0ZXJuEgwK",
+            "BGtpbmQYASABKAkSDAoEcGF0aBgCIAEoCUJqCg5jb20uZ29vZ2xlLmFwaUIJ",
+            "SHR0cFByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
+            "ZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25z+AEBogIER0FQSWIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Http), global::Google.Api.Http.Parser, new[]{ "Rules", "FullyDecodeReservedExpansion" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.HttpRule), global::Google.Api.HttpRule.Parser, new[]{ "Selector", "Get", "Put", "Post", "Delete", "Patch", "Custom", "Body", "AdditionalBindings" }, new[]{ "Pattern" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.HttpRule), global::Google.Api.HttpRule.Parser, new[]{ "Selector", "Get", "Put", "Post", "Delete", "Patch", "Custom", "Body", "ResponseBody", "AdditionalBindings" }, new[]{ "Pattern" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CustomHttpPattern), global::Google.Api.CustomHttpPattern.Parser, new[]{ "Kind", "Path" }, null, null, null)
           }));
     }
@@ -223,90 +224,92 @@ namespace Google.Api {
   }
 
   /// <summary>
-  /// `HttpRule` defines the mapping of an RPC method to one or more HTTP
-  /// REST API methods. The mapping specifies how different portions of the RPC
-  /// request message are mapped to URL path, URL query parameters, and
-  /// HTTP request body. The mapping is typically specified as an
-  /// `google.api.http` annotation on the RPC method,
-  /// see "google/api/annotations.proto" for details.
+  /// # gRPC Transcoding
   ///
-  /// The mapping consists of a field specifying the path template and
-  /// method kind.  The path template can refer to fields in the request
-  /// message, as in the example below which describes a REST GET
-  /// operation on a resource collection of messages:
+  /// gRPC Transcoding is a feature for mapping between a gRPC method and one or
+  /// more HTTP REST endpoints. It allows developers to build a single API service
+  /// that supports both gRPC APIs and REST APIs. Many systems, including [Google
+  /// APIs](https://github.com/googleapis/googleapis),
+  /// [Cloud Endpoints](https://cloud.google.com/endpoints), [gRPC
+  /// Gateway](https://github.com/grpc-ecosystem/grpc-gateway),
+  /// and [Envoy](https://github.com/envoyproxy/envoy) proxy support this feature
+  /// and use it for large scale production services.
+  ///
+  /// `HttpRule` defines the schema of the gRPC/REST mapping. The mapping specifies
+  /// how different portions of the gRPC request message are mapped to the URL
+  /// path, URL query parameters, and HTTP request body. It also controls how the
+  /// gRPC response message is mapped to the HTTP response body. `HttpRule` is
+  /// typically specified as an `google.api.http` annotation on the gRPC method.
+  ///
+  /// Each mapping specifies a URL path template and an HTTP method. The path
+  /// template may refer to one or more fields in the gRPC request message, as long
+  /// as each field is a non-repeated field with a primitive (non-message) type.
+  /// The path template controls how fields of the request message are mapped to
+  /// the URL path.
+  ///
+  /// Example:
   ///
   ///     service Messaging {
   ///       rpc GetMessage(GetMessageRequest) returns (Message) {
-  ///         option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
+  ///         option (google.api.http) = {
+  ///             get: "/v1/{name=messages/*}"
+  ///         };
   ///       }
   ///     }
   ///     message GetMessageRequest {
-  ///       message SubMessage {
-  ///         string subfield = 1;
-  ///       }
-  ///       string message_id = 1; // mapped to the URL
-  ///       SubMessage sub = 2;    // `sub.subfield` is url-mapped
+  ///       string name = 1; // Mapped to URL path.
   ///     }
   ///     message Message {
-  ///       string text = 1; // content of the resource
+  ///       string text = 1; // The resource content.
   ///     }
   ///
-  /// The same http annotation can alternatively be expressed inside the
-  /// `GRPC API Configuration` YAML file.
+  /// This enables an HTTP REST to gRPC mapping as below:
   ///
-  ///     http:
-  ///       rules:
-  ///         - selector: &lt;proto_package_name>.Messaging.GetMessage
-  ///           get: /v1/messages/{message_id}/{sub.subfield}
-  ///
-  /// This definition enables an automatic, bidrectional mapping of HTTP
-  /// JSON to RPC. Example:
-  ///
-  /// HTTP | RPC
+  /// HTTP | gRPC
   /// -----|-----
-  /// `GET /v1/messages/123456/foo`  | `GetMessage(message_id: "123456" sub: SubMessage(subfield: "foo"))`
+  /// `GET /v1/messages/123456`  | `GetMessage(name: "messages/123456")`
   ///
-  /// In general, not only fields but also field paths can be referenced
-  /// from a path pattern. Fields mapped to the path pattern cannot be
-  /// repeated and must have a primitive (non-message) type.
-  ///
-  /// Any fields in the request message which are not bound by the path
-  /// pattern automatically become (optional) HTTP query
-  /// parameters. Assume the following definition of the request message:
+  /// Any fields in the request message which are not bound by the path template
+  /// automatically become HTTP query parameters if there is no HTTP request body.
+  /// For example:
   ///
   ///     service Messaging {
   ///       rpc GetMessage(GetMessageRequest) returns (Message) {
-  ///         option (google.api.http).get = "/v1/messages/{message_id}";
+  ///         option (google.api.http) = {
+  ///             get:"/v1/messages/{message_id}"
+  ///         };
   ///       }
   ///     }
   ///     message GetMessageRequest {
   ///       message SubMessage {
   ///         string subfield = 1;
   ///       }
-  ///       string message_id = 1; // mapped to the URL
-  ///       int64 revision = 2;    // becomes a parameter
-  ///       SubMessage sub = 3;    // `sub.subfield` becomes a parameter
+  ///       string message_id = 1; // Mapped to URL path.
+  ///       int64 revision = 2;    // Mapped to URL query parameter `revision`.
+  ///       SubMessage sub = 3;    // Mapped to URL query parameter `sub.subfield`.
   ///     }
   ///
   /// This enables a HTTP JSON to RPC mapping as below:
   ///
-  /// HTTP | RPC
+  /// HTTP | gRPC
   /// -----|-----
   /// `GET /v1/messages/123456?revision=2&amp;sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield: "foo"))`
   ///
-  /// Note that fields which are mapped to HTTP parameters must have a
-  /// primitive type or a repeated primitive type. Message types are not
-  /// allowed. In the case of a repeated type, the parameter can be
-  /// repeated in the URL, as in `...?param=A&amp;param=B`.
+  /// Note that fields which are mapped to URL query parameters must have a
+  /// primitive type or a repeated primitive type or a non-repeated message type.
+  /// In the case of a repeated type, the parameter can be repeated in the URL
+  /// as `...?param=A&amp;param=B`. In the case of a message type, each field of the
+  /// message is mapped to a separate parameter, such as
+  /// `...?foo.a=A&amp;foo.b=B&amp;foo.c=C`.
   ///
-  /// For HTTP method kinds which allow a request body, the `body` field
+  /// For HTTP methods that allow a request body, the `body` field
   /// specifies the mapping. Consider a REST update method on the
   /// message resource collection:
   ///
   ///     service Messaging {
   ///       rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
   ///         option (google.api.http) = {
-  ///           put: "/v1/messages/{message_id}"
+  ///           patch: "/v1/messages/{message_id}"
   ///           body: "message"
   ///         };
   ///       }
@@ -320,9 +323,9 @@ namespace Google.Api {
   /// representation of the JSON in the request body is determined by
   /// protos JSON encoding:
   ///
-  /// HTTP | RPC
+  /// HTTP | gRPC
   /// -----|-----
-  /// `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" message { text: "Hi!" })`
+  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" message { text: "Hi!" })`
   ///
   /// The special name `*` can be used in the body mapping to define that
   /// every field not bound by the path template should be mapped to the
@@ -332,7 +335,7 @@ namespace Google.Api {
   ///     service Messaging {
   ///       rpc UpdateMessage(Message) returns (Message) {
   ///         option (google.api.http) = {
-  ///           put: "/v1/messages/{message_id}"
+  ///           patch: "/v1/messages/{message_id}"
   ///           body: "*"
   ///         };
   ///       }
@@ -344,13 +347,13 @@ namespace Google.Api {
   ///
   /// The following HTTP JSON to RPC mapping is enabled:
   ///
-  /// HTTP | RPC
+  /// HTTP | gRPC
   /// -----|-----
-  /// `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" text: "Hi!")`
+  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" text: "Hi!")`
   ///
   /// Note that when using `*` in the body mapping, it is not possible to
   /// have HTTP parameters, as all fields not bound by the path end in
-  /// the body. This makes this option more rarely used in practice of
+  /// the body. This makes this option more rarely used in practice when
   /// defining REST APIs. The common usage of `*` is in custom methods
   /// which don't use the URL at all for transferring data.
   ///
@@ -372,31 +375,30 @@ namespace Google.Api {
   ///       string user_id = 2;
   ///     }
   ///
-  /// This enables the following two alternative HTTP JSON to RPC
-  /// mappings:
+  /// This enables the following two alternative HTTP JSON to RPC mappings:
   ///
-  /// HTTP | RPC
+  /// HTTP | gRPC
   /// -----|-----
   /// `GET /v1/messages/123456` | `GetMessage(message_id: "123456")`
   /// `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id: "123456")`
   ///
-  /// # Rules for HTTP mapping
+  /// ## Rules for HTTP mapping
   ///
-  /// The rules for mapping HTTP path, query parameters, and body fields
-  /// to the request message are as follows:
+  /// 1. Leaf request fields (recursive expansion nested messages in the request
+  ///    message) are classified into three categories:
+  ///    - Fields referred by the path template. They are passed via the URL path.
+  ///    - Fields referred by the [HttpRule.body][google.api.HttpRule.body]. They are passed via the HTTP
+  ///      request body.
+  ///    - All other fields are passed via the URL query parameters, and the
+  ///      parameter name is the field path in the request message. A repeated
+  ///      field can be represented as multiple query parameters under the same
+  ///      name.
+  ///  2. If [HttpRule.body][google.api.HttpRule.body] is "*", there is no URL query parameter, all fields
+  ///     are passed via URL path and HTTP request body.
+  ///  3. If [HttpRule.body][google.api.HttpRule.body] is omitted, there is no HTTP request body, all
+  ///     fields are passed via URL path and URL query parameters.
   ///
-  /// 1. The `body` field specifies either `*` or a field path, or is
-  ///    omitted. If omitted, it indicates there is no HTTP request body.
-  /// 2. Leaf fields (recursive expansion of nested messages in the
-  ///    request) can be classified into three types:
-  ///     (a) Matched in the URL template.
-  ///     (b) Covered by body (if body is `*`, everything except (a) fields;
-  ///         else everything under the body field)
-  ///     (c) All other fields.
-  /// 3. URL query parameters found in the HTTP request are mapped to (c) fields.
-  /// 4. Any body sent with an HTTP request can contain only (b) fields.
-  ///
-  /// The syntax of the path template is as follows:
+  /// ### Path template syntax
   ///
   ///     Template = "/" Segments [ Verb ] ;
   ///     Segments = Segment { "/" Segment } ;
@@ -405,34 +407,84 @@ namespace Google.Api {
   ///     FieldPath = IDENT { "." IDENT } ;
   ///     Verb     = ":" LITERAL ;
   ///
-  /// The syntax `*` matches a single path segment. The syntax `**` matches zero
-  /// or more path segments, which must be the last part of the path except the
-  /// `Verb`. The syntax `LITERAL` matches literal text in the path.
+  /// The syntax `*` matches a single URL path segment. The syntax `**` matches
+  /// zero or more URL path segments, which must be the last part of the URL path
+  /// except the `Verb`.
   ///
   /// The syntax `Variable` matches part of the URL path as specified by its
   /// template. A variable template must not contain other variables. If a variable
   /// matches a single path segment, its template may be omitted, e.g. `{var}`
   /// is equivalent to `{var=*}`.
   ///
+  /// The syntax `LITERAL` matches literal text in the URL path. If the `LITERAL`
+  /// contains any reserved character, such characters should be percent-encoded
+  /// before the matching.
+  ///
   /// If a variable contains exactly one path segment, such as `"{var}"` or
-  /// `"{var=*}"`, when such a variable is expanded into a URL path, all characters
-  /// except `[-_.~0-9a-zA-Z]` are percent-encoded. Such variables show up in the
-  /// Discovery Document as `{var}`.
+  /// `"{var=*}"`, when such a variable is expanded into a URL path on the client
+  /// side, all characters except `[-_.~0-9a-zA-Z]` are percent-encoded. The
+  /// server side does the reverse decoding. Such variables show up in the
+  /// [Discovery Document](https://developers.google.com/discovery/v1/reference/apis)
+  /// as `{var}`.
   ///
-  /// If a variable contains one or more path segments, such as `"{var=foo/*}"`
-  /// or `"{var=**}"`, when such a variable is expanded into a URL path, all
-  /// characters except `[-_.~/0-9a-zA-Z]` are percent-encoded. Such variables
-  /// show up in the Discovery Document as `{+var}`.
+  /// If a variable contains multiple path segments, such as `"{var=foo/*}"`
+  /// or `"{var=**}"`, when such a variable is expanded into a URL path on the
+  /// client side, all characters except `[-_.~/0-9a-zA-Z]` are percent-encoded.
+  /// The server side does the reverse decoding, except "%2F" and "%2f" are left
+  /// unchanged. Such variables show up in the
+  /// [Discovery Document](https://developers.google.com/discovery/v1/reference/apis)
+  /// as `{+var}`.
   ///
-  /// NOTE: While the single segment variable matches the semantics of
-  /// [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2
-  /// Simple String Expansion, the multi segment variable **does not** match
-  /// RFC 6570 Reserved Expansion. The reason is that the Reserved Expansion
+  /// ## Using gRPC API Service Configuration
+  ///
+  /// gRPC API Service Configuration (service config) is a configuration language
+  /// for configuring a gRPC service to become a user-facing product. The
+  /// service config is simply the YAML representation of the `google.api.Service`
+  /// proto message.
+  ///
+  /// As an alternative to annotating your proto file, you can configure gRPC
+  /// transcoding in your service config YAML files. You do this by specifying a
+  /// `HttpRule` that maps the gRPC method to a REST endpoint, achieving the same
+  /// effect as the proto annotation. This can be particularly useful if you
+  /// have a proto that is reused in multiple services. Note that any transcoding
+  /// specified in the service config will override any matching transcoding
+  /// configuration in the proto.
+  ///
+  /// Example:
+  ///
+  ///     http:
+  ///       rules:
+  ///         # Selects a gRPC method and applies HttpRule to it.
+  ///         - selector: example.v1.Messaging.GetMessage
+  ///           get: /v1/messages/{message_id}/{sub.subfield}
+  ///
+  /// ## Special notes
+  ///
+  /// When gRPC Transcoding is used to map a gRPC to JSON REST endpoints, the
+  /// proto to JSON conversion must follow the [proto3
+  /// specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
+  ///
+  /// While the single segment variable follows the semantics of
+  /// [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2 Simple String
+  /// Expansion, the multi segment variable **does not** follow RFC 6570 Section
+  /// 3.2.3 Reserved Expansion. The reason is that the Reserved Expansion
   /// does not expand special characters like `?` and `#`, which would lead
-  /// to invalid URLs.
+  /// to invalid URLs. As the result, gRPC Transcoding uses a custom encoding
+  /// for multi segment variables.
   ///
-  /// NOTE: the field paths in variables and in the `body` must not refer to
-  /// repeated fields or map fields.
+  /// The path variables **must not** refer to any repeated or mapped field,
+  /// because client libraries are not capable of handling such variable expansion.
+  ///
+  /// The path variables **must not** capture the leading "/" character. The reason
+  /// is that the most common use case "{var}" does not capture the leading "/"
+  /// character. For consistency, all path variables must share the same behavior.
+  ///
+  /// Repeated message fields must not be mapped to URL query parameters, because
+  /// no client library can support such complicated mapping.
+  ///
+  /// If an API needs to use a JSON array for request or response body, it can map
+  /// the request or response body to a repeated field. However, some gRPC
+  /// Transcoding implementations may not support this feature.
   /// </summary>
   public sealed partial class HttpRule : pb::IMessage<HttpRule> {
     private static readonly pb::MessageParser<HttpRule> _parser = new pb::MessageParser<HttpRule>(() => new HttpRule());
@@ -461,6 +513,7 @@ namespace Google.Api {
     public HttpRule(HttpRule other) : this() {
       selector_ = other.selector_;
       body_ = other.body_;
+      responseBody_ = other.responseBody_;
       additionalBindings_ = other.additionalBindings_.Clone();
       switch (other.PatternCase) {
         case PatternOneofCase.Get:
@@ -495,7 +548,7 @@ namespace Google.Api {
     public const int SelectorFieldNumber = 1;
     private string selector_ = "";
     /// <summary>
-    /// Selects methods to which this rule applies.
+    /// Selects a method to which this rule applies.
     ///
     /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
@@ -510,7 +563,8 @@ namespace Google.Api {
     /// <summary>Field number for the "get" field.</summary>
     public const int GetFieldNumber = 2;
     /// <summary>
-    /// Used for listing and getting information about resources.
+    /// Maps to HTTP GET. Used for listing and getting information about
+    /// resources.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Get {
@@ -524,7 +578,7 @@ namespace Google.Api {
     /// <summary>Field number for the "put" field.</summary>
     public const int PutFieldNumber = 3;
     /// <summary>
-    /// Used for updating a resource.
+    /// Maps to HTTP PUT. Used for replacing a resource.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Put {
@@ -538,7 +592,7 @@ namespace Google.Api {
     /// <summary>Field number for the "post" field.</summary>
     public const int PostFieldNumber = 4;
     /// <summary>
-    /// Used for creating a resource.
+    /// Maps to HTTP POST. Used for creating a resource or performing an action.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Post {
@@ -552,7 +606,7 @@ namespace Google.Api {
     /// <summary>Field number for the "delete" field.</summary>
     public const int DeleteFieldNumber = 5;
     /// <summary>
-    /// Used for deleting a resource.
+    /// Maps to HTTP DELETE. Used for deleting a resource.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Delete {
@@ -566,7 +620,7 @@ namespace Google.Api {
     /// <summary>Field number for the "patch" field.</summary>
     public const int PatchFieldNumber = 6;
     /// <summary>
-    /// Used for updating a resource.
+    /// Maps to HTTP PATCH. Used for updating a resource.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Patch {
@@ -598,16 +652,37 @@ namespace Google.Api {
     public const int BodyFieldNumber = 7;
     private string body_ = "";
     /// <summary>
-    /// The name of the request field whose value is mapped to the HTTP body, or
-    /// `*` for mapping all fields not captured by the path pattern to the HTTP
-    /// body. NOTE: the referred field must not be a repeated field and must be
-    /// present at the top-level of request message type.
+    /// The name of the request field whose value is mapped to the HTTP request
+    /// body, or `*` for mapping all request fields not captured by the path
+    /// pattern to the HTTP body, or omitted for not having any HTTP request body.
+    ///
+    /// NOTE: the referred field must be present at the top-level of the request
+    /// message type.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Body {
       get { return body_; }
       set {
         body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "response_body" field.</summary>
+    public const int ResponseBodyFieldNumber = 12;
+    private string responseBody_ = "";
+    /// <summary>
+    /// Optional. The name of the response field whose value is mapped to the HTTP
+    /// response body. When omitted, the entire response message will be used
+    /// as the HTTP response body.
+    ///
+    /// NOTE: The referred field must be present at the top-level of the response
+    /// message type.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ResponseBody {
+      get { return responseBody_; }
+      set {
+        responseBody_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -670,6 +745,7 @@ namespace Google.Api {
       if (Patch != other.Patch) return false;
       if (!object.Equals(Custom, other.Custom)) return false;
       if (Body != other.Body) return false;
+      if (ResponseBody != other.ResponseBody) return false;
       if(!additionalBindings_.Equals(other.additionalBindings_)) return false;
       if (PatternCase != other.PatternCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -686,6 +762,7 @@ namespace Google.Api {
       if (patternCase_ == PatternOneofCase.Patch) hash ^= Patch.GetHashCode();
       if (patternCase_ == PatternOneofCase.Custom) hash ^= Custom.GetHashCode();
       if (Body.Length != 0) hash ^= Body.GetHashCode();
+      if (ResponseBody.Length != 0) hash ^= ResponseBody.GetHashCode();
       hash ^= additionalBindings_.GetHashCode();
       hash ^= (int) patternCase_;
       if (_unknownFields != null) {
@@ -734,6 +811,10 @@ namespace Google.Api {
         output.WriteMessage(Custom);
       }
       additionalBindings_.WriteTo(output, _repeated_additionalBindings_codec);
+      if (ResponseBody.Length != 0) {
+        output.WriteRawTag(98);
+        output.WriteString(ResponseBody);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -766,6 +847,9 @@ namespace Google.Api {
       if (Body.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Body);
       }
+      if (ResponseBody.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ResponseBody);
+      }
       size += additionalBindings_.CalculateSize(_repeated_additionalBindings_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -783,6 +867,9 @@ namespace Google.Api {
       }
       if (other.Body.Length != 0) {
         Body = other.Body;
+      }
+      if (other.ResponseBody.Length != 0) {
+        ResponseBody = other.ResponseBody;
       }
       additionalBindings_.Add(other.additionalBindings_);
       switch (other.PatternCase) {
@@ -859,6 +946,10 @@ namespace Google.Api {
           }
           case 90: {
             additionalBindings_.AddEntriesFrom(input, _repeated_additionalBindings_codec);
+            break;
+          }
+          case 98: {
+            ResponseBody = input.ReadString();
             break;
           }
         }
