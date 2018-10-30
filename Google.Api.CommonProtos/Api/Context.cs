@@ -33,16 +33,17 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2NvbnRleHQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQ29u",
             "dGV4dBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQ29udGV4dFJ1bGUi",
-            "RAoLQ29udGV4dFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSEQoJcmVxdWVzdGVk",
-            "GAIgAygJEhAKCHByb3ZpZGVkGAMgAygJQm4KDmNvbS5nb29nbGUuYXBpQgxD",
-            "b250ZXh0UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29v",
-            "Z2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQ",
-            "SWIGcHJvdG8z"));
+            "jQEKC0NvbnRleHRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEhEKCXJlcXVlc3Rl",
+            "ZBgCIAMoCRIQCghwcm92aWRlZBgDIAMoCRIiChphbGxvd2VkX3JlcXVlc3Rf",
+            "ZXh0ZW5zaW9ucxgEIAMoCRIjChthbGxvd2VkX3Jlc3BvbnNlX2V4dGVuc2lv",
+            "bnMYBSADKAlCbgoOY29tLmdvb2dsZS5hcGlCDENvbnRleHRQcm90b1ABWkVn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2",
+            "aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Context), global::Google.Api.Context.Parser, new[]{ "Rules" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ContextRule), global::Google.Api.ContextRule.Parser, new[]{ "Selector", "Requested", "Provided" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ContextRule), global::Google.Api.ContextRule.Parser, new[]{ "Selector", "Requested", "Provided", "AllowedRequestExtensions", "AllowedResponseExtensions" }, null, null, null)
           }));
     }
     #endregion
@@ -67,6 +68,25 @@ namespace Google.Api {
   ///
   /// Available context types are defined in package
   /// `google.rpc.context`.
+  ///
+  /// This also provides mechanism to whitelist any protobuf message extension that
+  /// can be sent in grpc metadata using “x-goog-ext-&lt;extension_id>-bin” and
+  /// “x-goog-ext-&lt;extension_id>-jspb” format. For example, list any service
+  /// specific protobuf types that can appear in grpc metadata as follows in your
+  /// yaml file:
+  ///
+  /// Example:
+  ///
+  ///     context:
+  ///       rules:
+  ///        - selector: "google.example.library.v1.LibraryService.CreateBook"
+  ///          allowed_request_extensions:
+  ///          - google.foo.v1.NewExtension
+  ///          allowed_response_extensions:
+  ///          - google.foo.v1.NewExtension
+  ///
+  /// You can also specify extension ID instead of fully qualified extension name
+  /// here.
   /// </summary>
   public sealed partial class Context : pb::IMessage<Context> {
     private static readonly pb::MessageParser<Context> _parser = new pb::MessageParser<Context>(() => new Context());
@@ -226,6 +246,8 @@ namespace Google.Api {
       selector_ = other.selector_;
       requested_ = other.requested_.Clone();
       provided_ = other.provided_.Clone();
+      allowedRequestExtensions_ = other.allowedRequestExtensions_.Clone();
+      allowedResponseExtensions_ = other.allowedResponseExtensions_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -276,6 +298,34 @@ namespace Google.Api {
       get { return provided_; }
     }
 
+    /// <summary>Field number for the "allowed_request_extensions" field.</summary>
+    public const int AllowedRequestExtensionsFieldNumber = 4;
+    private static readonly pb::FieldCodec<string> _repeated_allowedRequestExtensions_codec
+        = pb::FieldCodec.ForString(34);
+    private readonly pbc::RepeatedField<string> allowedRequestExtensions_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// A list of full type names or extension IDs of extensions allowed in grpc
+    /// side channel from client to backend.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> AllowedRequestExtensions {
+      get { return allowedRequestExtensions_; }
+    }
+
+    /// <summary>Field number for the "allowed_response_extensions" field.</summary>
+    public const int AllowedResponseExtensionsFieldNumber = 5;
+    private static readonly pb::FieldCodec<string> _repeated_allowedResponseExtensions_codec
+        = pb::FieldCodec.ForString(42);
+    private readonly pbc::RepeatedField<string> allowedResponseExtensions_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// A list of full type names or extension IDs of extensions allowed in grpc
+    /// side channel from backend to client.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> AllowedResponseExtensions {
+      get { return allowedResponseExtensions_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ContextRule);
@@ -292,6 +342,8 @@ namespace Google.Api {
       if (Selector != other.Selector) return false;
       if(!requested_.Equals(other.requested_)) return false;
       if(!provided_.Equals(other.provided_)) return false;
+      if(!allowedRequestExtensions_.Equals(other.allowedRequestExtensions_)) return false;
+      if(!allowedResponseExtensions_.Equals(other.allowedResponseExtensions_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -301,6 +353,8 @@ namespace Google.Api {
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
       hash ^= requested_.GetHashCode();
       hash ^= provided_.GetHashCode();
+      hash ^= allowedRequestExtensions_.GetHashCode();
+      hash ^= allowedResponseExtensions_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -320,6 +374,8 @@ namespace Google.Api {
       }
       requested_.WriteTo(output, _repeated_requested_codec);
       provided_.WriteTo(output, _repeated_provided_codec);
+      allowedRequestExtensions_.WriteTo(output, _repeated_allowedRequestExtensions_codec);
+      allowedResponseExtensions_.WriteTo(output, _repeated_allowedResponseExtensions_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -333,6 +389,8 @@ namespace Google.Api {
       }
       size += requested_.CalculateSize(_repeated_requested_codec);
       size += provided_.CalculateSize(_repeated_provided_codec);
+      size += allowedRequestExtensions_.CalculateSize(_repeated_allowedRequestExtensions_codec);
+      size += allowedResponseExtensions_.CalculateSize(_repeated_allowedResponseExtensions_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -349,6 +407,8 @@ namespace Google.Api {
       }
       requested_.Add(other.requested_);
       provided_.Add(other.provided_);
+      allowedRequestExtensions_.Add(other.allowedRequestExtensions_);
+      allowedResponseExtensions_.Add(other.allowedResponseExtensions_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -370,6 +430,14 @@ namespace Google.Api {
           }
           case 26: {
             provided_.AddEntriesFrom(input, _repeated_provided_codec);
+            break;
+          }
+          case 34: {
+            allowedRequestExtensions_.AddEntriesFrom(input, _repeated_allowedRequestExtensions_codec);
+            break;
+          }
+          case 42: {
+            allowedResponseExtensions_.AddEntriesFrom(input, _repeated_allowedResponseExtensions_codec);
             break;
           }
         }

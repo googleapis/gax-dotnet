@@ -151,8 +151,6 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.QuotaLimit> limits_ = new pbc::RepeatedField<global::Google.Api.QuotaLimit>();
     /// <summary>
     /// List of `QuotaLimit` definitions for the service.
-    ///
-    /// Used by metric-based quotas only.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.QuotaLimit> Limits {
@@ -167,8 +165,6 @@ namespace Google.Api {
     /// <summary>
     /// List of `MetricRule` definitions, each one mapping a selected method to one
     /// or more metrics.
-    ///
-    /// Used by metric-based quotas only.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.MetricRule> MetricRules {
@@ -263,10 +259,7 @@ namespace Google.Api {
 
   /// <summary>
   /// Bind API methods to metrics. Binding a method to a metric causes that
-  /// metric's configured quota, billing, and monitoring behaviors to apply to the
-  /// method call.
-  ///
-  /// Used by metric-based quotas only.
+  /// metric's configured quota behaviors to apply to the method call.
   /// </summary>
   public sealed partial class MetricRule : pb::IMessage<MetricRule> {
     private static readonly pb::MessageParser<MetricRule> _parser = new pb::MessageParser<MetricRule>(() => new MetricRule());
@@ -482,24 +475,12 @@ namespace Google.Api {
     public const int NameFieldNumber = 6;
     private string name_ = "";
     /// <summary>
-    /// Name of the quota limit. The name is used to refer to the limit when
-    /// overriding the default limit on per-consumer basis.
+    /// Name of the quota limit.
     ///
-    /// For group-based quota limits, the name must be unique within the quota
-    /// group. If a name is not provided, it will be generated from the limit_by
-    /// and duration fields.
-    ///
-    /// For metric-based quota limits, the name must be provided, and it must be
-    /// unique within the service. The name can only include alphanumeric
-    /// characters as well as '-'.
+    /// The name must be provided, and it must be unique within the service. The
+    /// name can only include alphanumeric characters as well as '-'.
     ///
     /// The maximum length of the limit name is 64 characters.
-    ///
-    /// The name of a limit is used as a unique identifier for this limit.
-    /// Therefore, once a limit has been put into use, its name should be
-    /// immutable. You can use the display_name field to provide a user-friendly
-    /// name for the limit. The display name can be evolved over time without
-    /// affecting the identity of the limit.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -617,8 +598,6 @@ namespace Google.Api {
     /// The name of the metric this quota limit applies to. The quota limits with
     /// the same metric will be checked together during runtime. The metric must be
     /// defined within the service config.
-    ///
-    /// Used by metric-based quotas only.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Metric {
@@ -636,33 +615,11 @@ namespace Google.Api {
     /// [Metric.unit][]. The supported unit kinds are determined by the quota
     /// backend system.
     ///
-    /// The [Google Service Control](https://cloud.google.com/service-control)
-    /// supports the following unit components:
-    /// * One of the time intevals:
-    ///   * "/min"  for quota every minute.
-    ///   * "/d"  for quota every 24 hours, starting 00:00 US Pacific Time.
-    ///   * Otherwise the quota won't be reset by time, such as storage limit.
-    /// * One and only one of the granted containers:
-    ///   * "/{organization}" quota for an organization.
-    ///   * "/{project}" quota for a project.
-    ///   * "/{folder}" quota for a folder.
-    ///   * "/{resource}" quota for a universal resource.
-    /// * Zero or more quota segmentation dimension. Not all combos are valid.
-    ///   * "/{region}" quota for every region. Not to be used with time intervals.
-    ///   * Otherwise the resources granted on the target is not segmented.
-    ///   * "/{zone}" quota for every zone. Not to be used with time intervals.
-    ///   * Otherwise the resources granted on the target is not segmented.
-    ///   * "/{resource}" quota for a resource associated with a project or org.
-    ///
     /// Here are some examples:
     /// * "1/min/{project}" for quota per minute per project.
-    /// * "1/min/{user}" for quota per minute per user.
-    /// * "1/min/{organization}" for quota per minute per organization.
     ///
     /// Note: the order of unit components is insignificant.
     /// The "1" at the beginning is required to follow the metric unit syntax.
-    ///
-    /// Used by metric-based quotas only.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Unit {
@@ -678,38 +635,9 @@ namespace Google.Api {
         = new pbc::MapField<string, long>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForInt64(16), 82);
     private readonly pbc::MapField<string, long> values_ = new pbc::MapField<string, long>();
     /// <summary>
-    /// Tiered limit values. Also allows for regional or zone overrides for these
-    /// values if "/{region}" or "/{zone}" is specified in the unit field.
-    ///
-    /// Currently supported tiers from low to high:
-    /// VERY_LOW, LOW, STANDARD, HIGH, VERY_HIGH
-    ///
-    /// To apply different limit values for users according to their tiers, specify
-    /// the values for the tiers you want to differentiate. For example:
-    /// {LOW:100, STANDARD:500, HIGH:1000, VERY_HIGH:5000}
-    ///
-    /// The limit value for each tier is optional except for the tier STANDARD.
-    /// The limit value for an unspecified tier falls to the value of its next
-    /// tier towards tier STANDARD. For the above example, the limit value for tier
-    /// STANDARD is 500.
-    ///
-    /// To apply the same limit value for all users, just specify limit value for
-    /// tier STANDARD. For example: {STANDARD:500}.
-    ///
-    /// To apply a regional overide for a tier, add a map entry with key
-    /// "&lt;TIER>/&lt;region>", where &lt;region> is a region name. Similarly, for a zone
-    /// override, add a map entry with key "&lt;TIER>/{zone}".
-    /// Further, a wildcard can be used at the end of a zone name in order to
-    /// specify zone level overrides. For example:
-    /// LOW: 10, STANDARD: 50, HIGH: 100,
-    /// LOW/us-central1: 20, STANDARD/us-central1: 60, HIGH/us-central1: 200,
-    /// LOW/us-central1-*: 10, STANDARD/us-central1-*: 20, HIGH/us-central1-*: 80
-    ///
-    /// The regional overrides tier set for each region must be the same as
-    /// the tier set for default limit values. Same rule applies for zone overrides
-    /// tier as well.
-    ///
-    /// Used by metric-based quotas only.
+    /// Tiered limit values. You must specify this as a key:value pair, with an
+    /// integer value that is the maximum number of requests allowed for the
+    /// specified unit. Currently only STANDARD is supported.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, long> Values {
