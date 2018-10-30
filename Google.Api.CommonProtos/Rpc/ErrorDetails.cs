@@ -112,7 +112,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RetryInfo(RetryInfo other) : this() {
-      RetryDelay = other.retryDelay_ != null ? other.RetryDelay.Clone() : null;
+      retryDelay_ = other.retryDelay_ != null ? other.retryDelay_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 

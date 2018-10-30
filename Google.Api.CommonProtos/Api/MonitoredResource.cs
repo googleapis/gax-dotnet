@@ -539,7 +539,7 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public MonitoredResourceMetadata(MonitoredResourceMetadata other) : this() {
-      SystemLabels = other.systemLabels_ != null ? other.SystemLabels.Clone() : null;
+      systemLabels_ = other.systemLabels_ != null ? other.systemLabels_.Clone() : null;
       userLabels_ = other.userLabels_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
