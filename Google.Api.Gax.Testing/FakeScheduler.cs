@@ -225,21 +225,23 @@ namespace Google.Api.Gax.Testing
 
         /// <summary>
         /// Runs the scheduler for the given number of seconds. If the task completes normally,
-        /// the clock should have advanced by the given number of seconds.
+        /// the clock should have advanced by the given number of seconds. Any timers scheduled for a later time
+        /// will still be queued, and can be triggered by running the fake scheduler further.
         /// </summary>
         /// <param name="seconds">How many seconds (in simulated time) to run for</param>
         /// <returns>A task which will complete when scheduler has processed tasks up until
         /// the given time.</returns>
-        public Task RunAndPauseForSeconds(int seconds) => RunAndPause(TimeSpan.FromSeconds(seconds));
+        public Task RunForSecondsAsync(int seconds) => RunAsync(TimeSpan.FromSeconds(seconds));
 
         /// <summary>
         /// Runs the scheduler for the given amount of time. If the task completes normally,
-        /// the clock should have advanced by the given TimeSpan.
+        /// the clock should have advanced by the given TimeSpan. Any timers scheduled for a later time
+        /// will still be queued, and can be triggered by running the fake scheduler further.
         /// </summary>
         /// <param name="time">How long (in simulated time) to run for</param>
         /// <returns>A task which will complete when scheduler has processed tasks up until
         /// the given time.</returns>
-        public async Task RunAndPause(TimeSpan time)
+        public async Task RunAsync(TimeSpan time)
         {
             var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + time, false);
             var delayTask = Task.Delay(RealTimeTimeout);
