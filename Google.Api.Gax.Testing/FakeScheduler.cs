@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Testing
 {
     /// <summary>
-    /// Experimental - please read reamarks. Fake implementation of <see cref="IScheduler" />, designed to work with
+    /// Experimental - please read remarks. Fake implementation of <see cref="IScheduler" />, designed to work with
     /// <see cref="FakeClock"/>.
     /// </summary>
     /// <remarks>
@@ -27,10 +27,25 @@ namespace Google.Api.Gax.Testing
         /// How long the scheduler can run in real time before timing out.
         /// </summary>
         public TimeSpan RealTimeTimeout { get; set; } = TimeSpan.FromSeconds(10);
+
         /// <summary>
         /// How long the scheduler can run in simulated time before timing out.
         /// </summary>
-        private TimeSpan SimulatedTimeTimeout { get; set; } = TimeSpan.FromDays(10);
+        public TimeSpan SimulatedTimeTimeout { get; set; } = TimeSpan.FromDays(10);
+
+        /// <summary>
+        /// When running the scheduler, we pause until no more tasks have been scheduled
+        /// for a certain time, to allow continuations to execute before the clock is advanced.
+        /// By default this is 10ms, but tests which expect a greater amount of processing
+        /// may increase this.
+        /// </summary>
+        public TimeSpan IdleTimeBeforeAdvancing { get; set; } = TimeSpan.FromMilliseconds(10);
+
+        /// <summary>
+        /// Time to allow test code to execute continuations after the scheduler loop has completed.
+        /// This is a one-time delay per RunAsync/RunAndPause call, to reduce flakiness.
+        /// </summary>
+        public TimeSpan PostLoopSettleTime { get; set; } = TimeSpan.FromMilliseconds(100);
 
         /// <summary>
         /// The clock associated with this scheduler. The clock is advanced as the scheduler runs.
@@ -180,78 +195,166 @@ namespace Google.Api.Gax.Testing
         public async Task<T> RunAsync<T>(Func<Task<T>> taskProvider)
         {
             var funcTask = Task.Run(taskProvider);
-            var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + SimulatedTimeTimeout);
+            var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + SimulatedTimeTimeout, true);
             var delayTask = Task.Delay(RealTimeTimeout);
-            var completedTask = await Task.WhenAny(funcTask, simulatedTimeTask, delayTask).ConfigureAwait(false);
+            await Task.WhenAny(funcTask, simulatedTimeTask, delayTask).ConfigureAwait(false);
+            // Allow the test code a little more time to execute, just in case we're waiting for slow logging etc.
+            await Task.WhenAny(funcTask, Task.Delay(PostLoopSettleTime)).ConfigureAwait(false);
             lock (_monitor)
             {
                 _stopped = true;
                 Monitor.PulseAll(_monitor);
             }
-            if (completedTask == funcTask)
+            if (funcTask.IsCompleted)
             {
                 return await funcTask.ConfigureAwait(false);
             }
-            else if (completedTask == delayTask)
+            else if (delayTask.IsCompleted)
             {
                 throw new SchedulerTimeoutException("Real time time-out; deadlock in user code?");
             }
-            else if (completedTask == simulatedTimeTask)
+            else if (simulatedTimeTask.IsCompleted)
             {
                 throw new SchedulerTimeoutException("Simulated time time-out; busy loop in user code?");
             }
             else
             {
-                throw new InvalidOperationException($"Unexpected return value from Task.WhenAny - none of the expected tasks");
+                throw new InvalidOperationException($"Unexpected return from Task.WhenAny - none of the expected tasks completed.");
             }
         }
 
-        private Task StartLoopAsync(DateTime simulatedTimeout)
+        /// <summary>
+        /// Runs the scheduler for the given number of seconds. If the task completes normally,
+        /// the clock should have advanced by the given number of seconds.
+        /// </summary>
+        /// <param name="seconds">How many seconds (in simulated time) to run for</param>
+        /// <returns>A task which will complete when scheduler has processed tasks up until
+        /// the given time.</returns>
+        public Task RunAndPauseForSeconds(int seconds) => RunAndPause(TimeSpan.FromSeconds(seconds));
+
+        /// <summary>
+        /// Runs the scheduler for the given amount of time. If the task completes normally,
+        /// the clock should have advanced by the given TimeSpan.
+        /// </summary>
+        /// <param name="time">How long (in simulated time) to run for</param>
+        /// <returns>A task which will complete when scheduler has processed tasks up until
+        /// the given time.</returns>
+        public async Task RunAndPause(TimeSpan time)
         {
-            return Task.Run(() =>
+            var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + time, false);
+            var delayTask = Task.Delay(RealTimeTimeout);
+            var completedTask = await Task.WhenAny(simulatedTimeTask, delayTask).ConfigureAwait(false);
+            if (completedTask == delayTask)
             {
-                // Make sure that if real time elapses, the delay task completes first.
-                TimeSpan monitorTimeout = RealTimeTimeout + TimeSpan.FromSeconds(2);
-                while (Clock.GetCurrentDateTimeUtc() < simulatedTimeout)
+                throw new SchedulerTimeoutException("Real time time-out; deadlock in user code?");
+            }
+            // Let any finally-released tasks a bit of time to execute before returning.
+            await Task.Delay(PostLoopSettleTime).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Runs the inner loop of the scheduler. If the returned task completes normally, the clock will be
+        /// set to <paramref name="simulatedTimeout"/>.
+        /// </summary>
+        /// <param name="simulatedTimeout">Maximum time to run for. Delays scheduled for later than this
+        /// time will not be executed.</param>
+        /// <param name="runTestCode">true if test code is running as well, and should be given some extra time to
+        /// execute on each iteration. false if only the scheduled tasks are running.</param>
+        private Task StartLoopAsync(DateTime simulatedTimeout, bool runTestCode) =>
+            Task.Run(async () =>
+            {
+                // In-method protection against infinite loops. Each caller provides the actual timeout check,
+                // throwing an exception appropriately.
+                DateTime realDeadline = DateTime.UtcNow + RealTimeTimeout + TimeSpan.FromSeconds(2);
+
+                DateTime nextClockTime = Clock.GetCurrentDateTimeUtc();
+
+                while (nextClockTime <= simulatedTimeout)
                 {
-                    DelayTimer next;
+                    // Pointless on the first iteration, but on later iterations this will
+                    // be the time of the next timer waiting to execute.
+                    Clock.AdvanceTo(nextClockTime);
+
+                    // Return if the test has completed already (not necessarily successfully)
                     lock (_monitor)
                     {
-                        while (!_stopped && _actions.Count == 0)
-                        {
-                            if (!Monitor.Wait(_monitor, monitorTimeout))
-                            {
-                                // The test will already have failed by now.
-                                return;
-                            }
-                        }
-                        // Give some time for tasks to execute.
-                        // Repeats until no further delays have been created.
-                        // It would be much better to track all created Tasks and make sure they've all completed;
-                        // But that's fairly invasive.
-                        while (Monitor.Wait(_monitor, TimeSpan.FromMilliseconds(10))) ;
-                        // Test completed already (not necessarily successfully)
                         if (_stopped)
                         {
                             return;
                         }
-                        next = _actions.First.Value;
-                        _actions.RemoveFirst();
                     }
-                    // Ignore cancelled tasks. (They can't be faulted or run to completion yet.)
-                    if (!next.CompletionSource.Task.IsCanceled)
+
+                    // Find all timers that are due now.
+                    List<DelayTimer> timers = new List<DelayTimer>();
+                    lock (_monitor)
                     {
-                        Clock.AdvanceTo(next.ScheduledTime);
-                        next.CompletionSource.SetResult(0);
+                        while (_actions.Count != 0 && _actions.First.Value.ScheduledTime <= nextClockTime)
+                        {
+                            timers.Add(_actions.First.Value);
+                            _actions.RemoveFirst();
+                        }
+                    }
+
+                    // Release all due, non-cancelled timers. (A cancelled TCS will ignore this.)
+                    timers.ForEach(t => t.CompletionSource.TrySetResult(0));
+
+                    // Give a little time for things to run before we enter the monitor at all.
+                    // On CI platforms, we've seen odd behaviour where tasks appear to be effectively
+                    // blocked by this thread. Using a Task.Delay instead of Thread.Sleep will allow
+                    // other tasks (e.g. those unblocked by TCS.TrySetResult) a better chance to run.
+                    await Task.Delay(IdleTimeBeforeAdvancing).ConfigureAwait(false);
+
+                    lock (_monitor)
+                    {
+                        // If the test code is running (RunAsync) give that a bit of time - wait for at least
+                        // one delay to be scheduled, or the test to complete.
+                        if (runTestCode)
+                        {
+                            while (!_stopped && _actions.Count == 0)
+                            {
+                                if (!Monitor.Wait(_monitor, RealTimeTimeout + TimeSpan.FromSeconds(2)))
+                                {
+                                    throw new SchedulerTimeoutException("Scheduler timed out (real time)");
+                                }
+                            }
+                        }
+
+                        if (_stopped)
+                        {
+                            break;
+                        }
+
+                        // Give some time for tasks to execute.
+                        // Repeats until no further delays are created within IdleTimeBeforeAdvancing.
+                        // It would be much better to track all created Tasks and make sure they've all completed;
+                        // But that's fairly invasive.
+                        while (DateTime.UtcNow < realDeadline && Monitor.Wait(_monitor, IdleTimeBeforeAdvancing)) ;
+
+                        // We don't expect this to be observed, as the calling code will probably have timed
+                        // out already, but it's clearer than returning normally.
+                        if (DateTime.UtcNow >= realDeadline)
+                        {
+                            throw new SchedulerTimeoutException("Scheduler timed out (real time)");
+                        }
+
+                        // If we have a new timer, and if it should be released before (or at) the timeout,
+                        // go round the loop again.
+                        if (_actions.Count != 0 && _actions.First.Value.ScheduledTime <= simulatedTimeout)
+                        {
+                            nextClockTime = _actions.First.Value.ScheduledTime;
+                            continue;
+                        }
+                        else
+                        {
+                            // Either we're idle, or the next timer is beyond our simulated timeout, so
+                            // quit the loop.
+                            break;
+                        }
                     }
                 }
+                Clock.AdvanceTo(simulatedTimeout);
             });
-        }
 
-        private void WaitForCancellationPropagation()
-        {
-        }
-        
         private Task AddTimer(DateTime scheduledTime, CancellationToken cancellationToken)
         {
             var timer = new DelayTimer(scheduledTime, new TaskCompletionSource<int>(), cancellationToken);
