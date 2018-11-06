@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax
@@ -44,12 +45,103 @@ namespace Google.Api.Gax
             catch (AggregateException e)
             {
                 // Unwrap the first exception, a bit like await would.
-                // It's very unlikely that we'd ever see an AggregateException without an inner exceptions,
+                // It's very unlikely that we'd ever see an AggregateException without an inner exception,
                 // but let's handle it relatively gracefully.
                 // Using ExceptionDispatchInfo to keep the original exception stack trace.
                 ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
             }
+        }
 
+        /// <summary>
+        /// Synchronously waits for the given task to complete.
+        /// Any <see cref="AggregateException"/> thrown is unwrapped to the first inner exception.
+        /// </summary>
+        /// <param name="task">The task to wait for.</param>
+        /// <param name="timeout">A TimeSpan that represents the number of milliseconds to wait, or
+        /// -1 milliseconds to wait indefinitely.</param>
+        public static void WaitWithUnwrappedExceptions(this Task task, TimeSpan timeout)
+        {
+            try
+            {
+                task.Wait(timeout);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exception,
+                // but let's handle it relatively gracefully.
+                // Using ExceptionDispatchInfo to keep the original exception stack trace.
+                ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+            }
+        }
+
+        /// <summary>
+        /// Synchronously waits for the given task to complete.
+        /// Any <see cref="AggregateException"/> thrown is unwrapped to the first inner exception.
+        /// </summary>
+        /// <param name="task">The task to wait for.</param>
+        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or
+        /// -1 to wait indefinitely.</param>
+        public static void WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout)
+        {
+            try
+            {
+                task.Wait(millisecondsTimeout);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exception,
+                // but let's handle it relatively gracefully.
+                // Using ExceptionDispatchInfo to keep the original exception stack trace.
+                ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+            }
+        }
+
+        /// <summary>
+        /// Synchronously waits for the given task to complete.
+        /// Any <see cref="AggregateException"/> thrown is unwrapped to the first inner exception.
+        /// </summary>
+        /// <param name="task">The task to wait for.</param>
+        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or
+        /// -1 to wait indefinitely.</param>
+        /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete</param>
+        public static void WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout, CancellationToken cancellationToken)
+        {
+            try
+            {
+                task.Wait(millisecondsTimeout, cancellationToken);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exception,
+                // but let's handle it relatively gracefully.
+                // Using ExceptionDispatchInfo to keep the original exception stack trace.
+                ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+            }
+        }
+
+        /// <summary>
+        /// Synchronously waits for the given task to complete.
+        /// Any <see cref="AggregateException"/> thrown is unwrapped to the first inner exception.
+        /// </summary>
+        /// <param name="task">The task to wait for.</param>
+        /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete</param>
+        public static void WaitWithUnwrappedExceptions(this Task task, CancellationToken cancellationToken)
+        {
+            try
+            {
+                task.Wait(cancellationToken);
+            }
+            catch (AggregateException e)
+            {
+                // Unwrap the first exception, a bit like await would.
+                // It's very unlikely that we'd ever see an AggregateException without an inner exception,
+                // but let's handle it relatively gracefully.
+                // Using ExceptionDispatchInfo to keep the original exception stack trace.
+                ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+            }
         }
     }
 }
