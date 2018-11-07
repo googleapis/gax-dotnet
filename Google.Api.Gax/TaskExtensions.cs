@@ -59,11 +59,11 @@ namespace Google.Api.Gax
         /// <param name="task">The task to wait for.</param>
         /// <param name="timeout">A TimeSpan that represents the number of milliseconds to wait, or
         /// -1 milliseconds to wait indefinitely.</param>
-        public static void WaitWithUnwrappedExceptions(this Task task, TimeSpan timeout)
+        public static bool WaitWithUnwrappedExceptions(this Task task, TimeSpan timeout)
         {
             try
             {
-                task.Wait(timeout);
+                return task.Wait(timeout);
             }
             catch (AggregateException e)
             {
@@ -72,6 +72,7 @@ namespace Google.Api.Gax
                 // but let's handle it relatively gracefully.
                 // Using ExceptionDispatchInfo to keep the original exception stack trace.
                 ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+                throw new InvalidOperationException("Only present to keep the compiler happy");
             }
         }
 
@@ -82,11 +83,11 @@ namespace Google.Api.Gax
         /// <param name="task">The task to wait for.</param>
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or
         /// -1 to wait indefinitely.</param>
-        public static void WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout)
+        public static bool WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout)
         {
             try
             {
-                task.Wait(millisecondsTimeout);
+                return task.Wait(millisecondsTimeout);
             }
             catch (AggregateException e)
             {
@@ -95,6 +96,7 @@ namespace Google.Api.Gax
                 // but let's handle it relatively gracefully.
                 // Using ExceptionDispatchInfo to keep the original exception stack trace.
                 ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+                throw new InvalidOperationException("Only present to keep the compiler happy");
             }
         }
 
@@ -106,11 +108,11 @@ namespace Google.Api.Gax
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or
         /// -1 to wait indefinitely.</param>
         /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete</param>
-        public static void WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout, CancellationToken cancellationToken)
+        public static bool WaitWithUnwrappedExceptions(this Task task, int millisecondsTimeout, CancellationToken cancellationToken)
         {
             try
             {
-                task.Wait(millisecondsTimeout, cancellationToken);
+                return task.Wait(millisecondsTimeout, cancellationToken);
             }
             catch (AggregateException e)
             {
@@ -119,6 +121,7 @@ namespace Google.Api.Gax
                 // but let's handle it relatively gracefully.
                 // Using ExceptionDispatchInfo to keep the original exception stack trace.
                 ExceptionDispatchInfo.Capture(e.InnerExceptions.FirstOrDefault() ?? e).Throw();
+                throw new InvalidOperationException("Only present to keep the compiler happy");
             }
         }
 
