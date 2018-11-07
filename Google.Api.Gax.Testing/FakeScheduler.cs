@@ -243,7 +243,8 @@ namespace Google.Api.Gax.Testing
         /// the given time.</returns>
         public async Task RunAsync(TimeSpan time)
         {
-            var simulatedTimeTask = StartLoopAsync(Clock.GetCurrentDateTimeUtc() + time, false);
+            var simulatedTimeout = Clock.GetCurrentDateTimeUtc() + time;
+            var simulatedTimeTask = StartLoopAsync(simulatedTimeout, false);
             var delayTask = Task.Delay(RealTimeTimeout);
             var completedTask = await Task.WhenAny(simulatedTimeTask, delayTask).ConfigureAwait(false);
             if (completedTask == delayTask)
@@ -252,11 +253,12 @@ namespace Google.Api.Gax.Testing
             }
             // Let any finally-released tasks a bit of time to execute before returning.
             await Task.Delay(PostLoopSettleTime).ConfigureAwait(false);
+            Clock.AdvanceTo(simulatedTimeout);
         }
 
         /// <summary>
-        /// Runs the inner loop of the scheduler. If the returned task completes normally, the clock will be
-        /// set to <paramref name="simulatedTimeout"/>.
+        /// Runs the inner loop of the scheduler, until either the scheduler has been stopped by test code completing,
+        /// or we reach the simulated timeout.
         /// </summary>
         /// <param name="simulatedTimeout">Maximum time to run for. Delays scheduled for later than this
         /// time will not be executed.</param>
@@ -354,7 +356,6 @@ namespace Google.Api.Gax.Testing
                         }
                     }
                 }
-                Clock.AdvanceTo(simulatedTimeout);
             });
 
         private Task AddTimer(DateTime scheduledTime, CancellationToken cancellationToken)
