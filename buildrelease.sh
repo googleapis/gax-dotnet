@@ -32,7 +32,6 @@ git clone https://github.com/googleapis/gax-dotnet.git releasebuild -c core.auto
 cd releasebuild
 git checkout $tag
 export CI=true # Forces SourceLink in the main build.
-export NOVERSIONSUFFIX=true
 ./build.sh
 dotnet pack Gax.sln --no-build -o $PWD/nuget -c Release
 
