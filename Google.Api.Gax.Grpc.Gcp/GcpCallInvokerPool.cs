@@ -112,46 +112,6 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        // Note: this class will disappear if/when https://github.com/grpc/grpc/issues/16533 is fixed.
-        private class ChannelOptionComparer : IEqualityComparer<ChannelOption>
-        {
-            public static readonly ChannelOptionComparer Instance = new ChannelOptionComparer();
-
-            private ChannelOptionComparer() { }
-
-            public bool Equals(ChannelOption x, ChannelOption y)
-            {
-                if (x == null && y == null)
-                {
-                    return true;
-                }
-
-                if (x == null ||
-                    y == null ||
-                    x.Type != y.Type ||
-                    x.Name != y.Name)
-                {
-                    return false;
-                }
-
-                return
-                    x.Type == ChannelOption.OptionType.Integer ? x.IntValue == y.IntValue :
-                    x.Type == ChannelOption.OptionType.String ? y.StringValue == y.StringValue :
-                    throw new ArgumentException("Unexpected channel option type: " + x.Type);
-            }
-
-            public int GetHashCode(ChannelOption obj)
-            {
-                return
-                    obj == null ? 0 :
-                    obj.Type == ChannelOption.OptionType.Integer ?
-                        EqualityHelpers.CombineHashCodes(obj.IntValue, obj.Name.GetHashCode(), (int)obj.Type) :
-                    obj.Type == ChannelOption.OptionType.String ?
-                        EqualityHelpers.CombineHashCodes(obj.StringValue.GetHashCode(), obj.Name.GetHashCode(), (int)obj.Type) :
-                    throw new ArgumentException("Unexpected channel option type: " + obj.Type);
-            }
-        }
-
         private struct Key : IEquatable<Key>
         {
             public readonly ServiceEndpoint Endpoint;
@@ -166,12 +126,12 @@ namespace Google.Api.Gax.Grpc.Gcp
             public override int GetHashCode() =>
                 EqualityHelpers.CombineHashCodes(
                     Endpoint.GetHashCode(),
-                    EqualityHelpers.GetListHashCode(Options, ChannelOptionComparer.Instance));
+                    EqualityHelpers.GetListHashCode(Options, EqualityComparer<ChannelOption>.Default));
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                Endpoint.Equals(other.Endpoint) && Options.SequenceEqual(other.Options, ChannelOptionComparer.Instance);
+                Endpoint.Equals(other.Endpoint) && Options.SequenceEqual(other.Options);
         }
     }
 }

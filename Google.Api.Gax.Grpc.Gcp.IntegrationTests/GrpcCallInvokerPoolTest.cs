@@ -15,6 +15,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
     public class GcpCallInvokerPoolTest
     {
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
+
         [Fact]
         public void SameEndpointAndOptions_SameCallInvoker()
         {
@@ -27,6 +28,21 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
                 Assert.Same(callInvoker1, callInvoker2);
             }
         }
+
+        [Fact]
+        public void SameEndpointAndEqualOptions_SameCallInvoker()
+        {
+            var pool = new GcpCallInvokerPool(EmptyScopes);
+            var options1 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
+            var options2 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
+            using (var fixture = new TestServiceFixture())
+            {
+                var callInvoker1 = pool.GetCallInvoker(fixture.Endpoint, options1);
+                var callInvoker2 = pool.GetCallInvoker(fixture.Endpoint, options2);
+                Assert.Same(callInvoker1, callInvoker2);
+            }
+        }
+
         [Fact]
         public void DifferentEndpoint_DifferentCallInvoker()
         {
@@ -39,6 +55,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
                 Assert.NotSame(callInvoker1, callInvoker2);
             }
         }
+
         [Fact]
         public void DifferentOptions_DifferentCallInvoker()
         {
@@ -54,6 +71,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
                 Assert.NotSame(callInvoker1, callInvoker3);
             }
         }
+
         [Fact]
         public void ShutdownAsync_EmptiesPool()
         {
