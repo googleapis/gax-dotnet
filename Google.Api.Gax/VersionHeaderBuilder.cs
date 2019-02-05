@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 namespace Google.Api.Gax
 {
@@ -19,6 +20,8 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class VersionHeaderBuilder
     {
+        private static readonly Lazy<string> s_environmentVersion = new Lazy<string>(GetEnvironmentVersion);
+
         /// <summary>
         /// The name of the header to set.
         /// </summary>
@@ -54,12 +57,33 @@ namespace Google.Api.Gax
         /// <summary>
         /// Appends the .NET environment information to the list.
         /// </summary>
-        public VersionHeaderBuilder AppendDotNetEnvironment()
-#if NETSTANDARD1_3
-            => AppendVersion("gl-dotnet", FormatVersion(Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default?.Application?.RuntimeFramework?.Version));
-#else
-            => AppendVersion("gl-dotnet", FormatVersion(Environment.Version));
-#endif
+        public VersionHeaderBuilder AppendDotNetEnvironment() => AppendVersion("gl-dotnet", s_environmentVersion.Value);
+
+        private static string GetEnvironmentVersion()
+        {
+            try
+            {
+                // Assembly.GetEntryAssembly() isn't available in netstandard1.3. Attempt to fetch it with reflection, which is ugly but should work.
+                // This is a slightly more robust version of the code we previously used in Microsoft.Extensions.PlatformAbstractions.
+                var getEntryAssemblyMethod = typeof(Assembly)
+                    .GetTypeInfo()
+                    .DeclaredMethods
+                    .Where(m => m.IsStatic && m.GetParameters().Length == 0 && m.ReturnType == typeof(Assembly))
+                    .FirstOrDefault();
+                if (getEntryAssemblyMethod == null)
+                {
+                    return "";
+                }
+                Assembly entryAssembly = (Assembly) getEntryAssemblyMethod.Invoke(null, new object[0]);
+                var frameworkName = entryAssembly?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+                return frameworkName == null ? "" : FormatVersion(new FrameworkName(frameworkName).Version);
+            }
+            catch
+            {
+                // If we simply can't get the version for whatever reason, don't fail.
+                return "";
+            }
+        }
 
         private static string FormatAssemblyVersion(System.Type type)
         {
