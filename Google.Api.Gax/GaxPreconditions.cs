@@ -216,6 +216,22 @@ namespace Google.Api.Gax
             }
         }
 
+        /// <summary>
+        /// Checks that given condition is met, throwing an <see cref="InvalidOperationException"/> otherwise.
+        /// </summary>
+        /// <param name="condition">The (already evaluated) condition to check.</param>
+        /// <param name="format">The format string to use to create the exception message if the
+        /// condition is not met.</param>
+        /// <param name="arg0">The first argument to the format string.</param>
+        /// <param name="arg1">The second argument to the format string.</param>
+        /// <param name="arg2">The third argument to the format string.</param>
+        public static void CheckState<T1, T2, T3>(bool condition, string format, T1 arg0, T2 arg1, T3 arg2)
+        {
+            if (!condition)
+            {
+                throw new InvalidOperationException(string.Format(format, arg0, arg1, arg2));
+            }
+        }
 
         /// <summary>
         /// Checks that given argument-based condition is met, throwing an <see cref="ArgumentException"/> otherwise.

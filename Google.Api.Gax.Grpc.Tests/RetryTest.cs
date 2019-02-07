@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 using System.Threading;
+using Google.Api.Gax.Grpc.Testing;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -325,22 +326,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             public ApiCall<SimpleRequest, SimpleResponse> Callable =>
                 new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync, null);
-
-            private class AsyncStreamReader<T> : IAsyncStreamReader<T>
-            {
-                public AsyncStreamReader(params T[] data) : this((IEnumerable<T>)data) { }
-
-                public AsyncStreamReader(IEnumerable<T> data) => _en = data.GetEnumerator();
-
-                private IEnumerator<T> _en;
-
-                public Task<bool> MoveNext(CancellationToken cancellationToken) => Task.FromResult(_en.MoveNext());
-
-                public T Current => _en.Current;
-
-                public void Dispose() => _en.Dispose();
-            }
-
+            
             public Task<AsyncServerStreamingCall<SimpleResponse>> ServerStreamingMethodAsync(SimpleRequest request, CallSettings callSettings) =>
                 Task.FromResult(ServerStreamingMethodSync(request, callSettings));
 
@@ -348,7 +334,8 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 CallTimes.Add(_scheduler.Clock.GetCurrentDateTimeUtc());
                 CallSettingsReceived.Add(callSettings);
-                var responseStream = new AsyncStreamReader<SimpleResponse>(new SimpleResponse { Name = request.Name });
+                var responses = new[] { new SimpleResponse { Name = request.Name } };
+                var responseStream = new AsyncStreamAdapter<SimpleResponse>(responses.ToAsyncEnumerable().GetEnumerator());
                 var responseHeaders = Task.Run(async () =>
                 {
                     await _scheduler.Delay(_callDuration, callSettings.CancellationToken.GetValueOrDefault());
