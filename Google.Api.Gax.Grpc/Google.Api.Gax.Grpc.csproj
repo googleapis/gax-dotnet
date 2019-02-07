@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <!-- Packaging information -->
