@@ -108,7 +108,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="values">The values checked for non-nullity if <paramref name="controlling"/> is non-null.</param>
         protected void ValidateOptionExcludesOthers(string message, object controlling, params object[] values)
         {
-            GaxPreconditions.CheckState(controlling == null || !values.Contains(null), message);
+            GaxPreconditions.CheckState(controlling == null || values.All(v => v == null), message);
         }
 
         /// <summary>
@@ -123,8 +123,16 @@ namespace Google.Api.Gax.Grpc
                 return CallInvoker;
             }
             var endpoint = Endpoint ?? GetDefaultEndpoint();
-            var credentials = GetChannelCredentials();
-            Channel channel = new Channel(endpoint.Host, endpoint.Port, credentials);
+            Channel channel;
+            if (CanUseChannelPool)
+            {
+                channel = GetChannelPool().GetChannel(endpoint);
+            }
+            else
+            {
+                var credentials = GetChannelCredentials();
+                channel = CreateChannel(endpoint, credentials);
+            }
             return new DefaultCallInvoker(channel);
         }
 
@@ -149,7 +157,7 @@ namespace Google.Api.Gax.Grpc
             else
             {
                 var credentials = await GetChannelCredentialsAsync(cancellationToken).ConfigureAwait(false);
-                channel = new Channel(endpoint.Host, endpoint.Port, credentials);
+                channel = CreateChannel(endpoint, credentials);
             }
             return new DefaultCallInvoker(channel);
         }
@@ -163,6 +171,10 @@ namespace Google.Api.Gax.Grpc
             if (ChannelCredentials != null)
             {
                 return ChannelCredentials;
+            }
+            if (TokenAccessMethod != null)
+            {
+                return new DelegatedTokenAccess(TokenAccessMethod).ToChannelCredentials();
             }
             GoogleCredential unscoped =
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
@@ -180,6 +192,10 @@ namespace Google.Api.Gax.Grpc
             if (ChannelCredentials != null)
             {
                 return ChannelCredentials;
+            }
+            if (TokenAccessMethod != null)
+            {
+                return new DelegatedTokenAccess(TokenAccessMethod).ToChannelCredentials();
             }
             GoogleCredential unscoped =
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) : // TODO: Use an async method when one is available
@@ -232,5 +248,19 @@ namespace Google.Api.Gax.Grpc
         /// Builds the resulting client asynchronously.
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+
+        private protected virtual Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials) =>
+            new Channel(endpoint.Host, endpoint.Port, credentials);
+
+        private class DelegatedTokenAccess : ITokenAccess
+        {
+            private readonly Func<string, CancellationToken, Task<string>> _tokenAccessMethod;
+
+            internal DelegatedTokenAccess(Func<string, CancellationToken, Task<string>> tokenAccessMethod) =>
+                _tokenAccessMethod = tokenAccessMethod;
+
+            public Task<string> GetAccessTokenForRequestAsync(string authUri, CancellationToken cancellationToken) =>
+                _tokenAccessMethod(authUri, cancellationToken);
+        }
     }
 }
