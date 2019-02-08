@@ -223,6 +223,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             builder.ResetChannelCreation();
             callInvoker = await builder.BuildAsync(default);
             validator(callInvoker);
+            builder.ResetChannelCreation();
         }
 
         public static TheoryData<SampleClientBuilder> InvalidCombinationsTheoryData = new TheoryData<SampleClientBuilder>
