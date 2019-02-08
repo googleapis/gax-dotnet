@@ -141,8 +141,16 @@ namespace Google.Api.Gax.Grpc
                 return CallInvoker;
             }
             var endpoint = Endpoint ?? GetDefaultEndpoint();
-            var credentials = await GetChannelCredentialsAsync(cancellationToken).ConfigureAwait(false);
-            Channel channel = new Channel(endpoint.Host, endpoint.Port, credentials);
+            Channel channel;
+            if (CanUseChannelPool)
+            {
+                channel = await GetChannelPool().GetChannelAsync(endpoint).ConfigureAwait(false);
+            }
+            else
+            {
+                var credentials = await GetChannelCredentialsAsync(cancellationToken).ConfigureAwait(false);
+                channel = new Channel(endpoint.Host, endpoint.Port, credentials);
+            }
             return new DefaultCallInvoker(channel);
         }
 
@@ -189,6 +197,25 @@ namespace Google.Api.Gax.Grpc
         /// Returns the endpoint for this builder type, used if no endpoint is otherwise specified.
         /// </summary>
         protected abstract ServiceEndpoint GetDefaultEndpoint();
+
+        /// <summary>
+        /// Returns the channel pool to use when no other options are specified. This method is not called unless
+        /// <see cref="CanUseChannelPool"/> returns true, so if a channel pool is unavailable, override that property
+        /// to return false and throw an exception from this method.
+        /// </summary>
+        protected abstract ChannelPool GetChannelPool();
+
+        /// <summary>
+        /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
+        /// true if and only if no scopes, credentials or token access method have been specified. Derived classes should
+        /// override this property if there are other reasons why the channel pool should not be used.
+        /// </summary>
+        protected virtual bool CanUseChannelPool =>
+            ChannelCredentials == null &&
+            CredentialsPath == null &&
+            JsonCredentials == null &&
+            TokenAccessMethod == null &&
+            Scopes == null;
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.
