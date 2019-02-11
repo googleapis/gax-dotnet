@@ -3,7 +3,7 @@
   <Import Project="..\CommonProperties.Production.xml" />
 
   <PropertyGroup>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
   </PropertyGroup>
 
