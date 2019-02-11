@@ -126,7 +126,7 @@ namespace Google.Api {
     public const int ContentTypeFieldNumber = 1;
     private string contentType_ = "";
     /// <summary>
-    /// The HTTP Content-Type string representing the content type of the body.
+    /// The HTTP Content-Type header value specifying the content type of the body.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ContentType {
@@ -140,7 +140,7 @@ namespace Google.Api {
     public const int DataFieldNumber = 2;
     private pb::ByteString data_ = pb::ByteString.Empty;
     /// <summary>
-    /// HTTP body binary data.
+    /// The HTTP request/response body as raw binary.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString Data {
