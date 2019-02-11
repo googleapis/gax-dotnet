@@ -33,16 +33,21 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
-            "WAoLQmFja2VuZFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDwoHYWRkcmVzcxgC",
-            "IAEoCRIQCghkZWFkbGluZRgDIAEoARIUCgxtaW5fZGVhZGxpbmUYBCABKAFC",
-            "bgoOY29tLmdvb2dsZS5hcGlCDEJhY2tlbmRQcm90b1ABWkVnb29nbGUuZ29s",
-            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmln",
-            "O3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
+            "yAIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
+            "AiABKAkSEAoIZGVhZGxpbmUYAyABKAESFAoMbWluX2RlYWRsaW5lGAQgASgB",
+            "EhoKEm9wZXJhdGlvbl9kZWFkbGluZRgFIAEoARJBChBwYXRoX3RyYW5zbGF0",
+            "aW9uGAYgASgOMicuZ29vZ2xlLmFwaS5CYWNrZW5kUnVsZS5QYXRoVHJhbnNs",
+            "YXRpb24SFgoMand0X2F1ZGllbmNlGAcgASgJSAAiZQoPUGF0aFRyYW5zbGF0",
+            "aW9uEiAKHFBBVEhfVFJBTlNMQVRJT05fVU5TUEVDSUZJRUQQABIUChBDT05T",
+            "VEFOVF9BRERSRVNTEAESGgoWQVBQRU5EX1BBVEhfVE9fQUREUkVTUxACQhAK",
+            "DmF1dGhlbnRpY2F0aW9uQm4KDmNvbS5nb29nbGUuYXBpQgxCYWNrZW5kUHJv",
+            "dG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9h",
+            "cGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Backend), global::Google.Api.Backend.Parser, new[]{ "Rules" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline", "OperationDeadline", "PathTranslation", "JwtAudience" }, new[]{ "Authentication" }, new[]{ typeof(global::Google.Api.BackendRule.Types.PathTranslation) }, null)
           }));
     }
     #endregion
@@ -210,6 +215,14 @@ namespace Google.Api {
       address_ = other.address_;
       deadline_ = other.deadline_;
       minDeadline_ = other.minDeadline_;
+      operationDeadline_ = other.operationDeadline_;
+      pathTranslation_ = other.pathTranslation_;
+      switch (other.AuthenticationCase) {
+        case AuthenticationOneofCase.JwtAudience:
+          JwtAudience = other.JwtAudience;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -278,6 +291,64 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "operation_deadline" field.</summary>
+    public const int OperationDeadlineFieldNumber = 5;
+    private double operationDeadline_;
+    /// <summary>
+    /// The number of seconds to wait for the completion of a long running
+    /// operation. The default is no deadline.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double OperationDeadline {
+      get { return operationDeadline_; }
+      set {
+        operationDeadline_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "path_translation" field.</summary>
+    public const int PathTranslationFieldNumber = 6;
+    private global::Google.Api.BackendRule.Types.PathTranslation pathTranslation_ = 0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Api.BackendRule.Types.PathTranslation PathTranslation {
+      get { return pathTranslation_; }
+      set {
+        pathTranslation_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "jwt_audience" field.</summary>
+    public const int JwtAudienceFieldNumber = 7;
+    /// <summary>
+    /// The JWT audience is used when generating a JWT id token for the backend.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string JwtAudience {
+      get { return authenticationCase_ == AuthenticationOneofCase.JwtAudience ? (string) authentication_ : ""; }
+      set {
+        authentication_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        authenticationCase_ = AuthenticationOneofCase.JwtAudience;
+      }
+    }
+
+    private object authentication_;
+    /// <summary>Enum of possible cases for the "authentication" oneof.</summary>
+    public enum AuthenticationOneofCase {
+      None = 0,
+      JwtAudience = 7,
+    }
+    private AuthenticationOneofCase authenticationCase_ = AuthenticationOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AuthenticationOneofCase AuthenticationCase {
+      get { return authenticationCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearAuthentication() {
+      authenticationCase_ = AuthenticationOneofCase.None;
+      authentication_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as BackendRule);
@@ -295,6 +366,10 @@ namespace Google.Api {
       if (Address != other.Address) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Deadline, other.Deadline)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(MinDeadline, other.MinDeadline)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(OperationDeadline, other.OperationDeadline)) return false;
+      if (PathTranslation != other.PathTranslation) return false;
+      if (JwtAudience != other.JwtAudience) return false;
+      if (AuthenticationCase != other.AuthenticationCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -305,6 +380,10 @@ namespace Google.Api {
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (Deadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Deadline);
       if (MinDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(MinDeadline);
+      if (OperationDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(OperationDeadline);
+      if (PathTranslation != 0) hash ^= PathTranslation.GetHashCode();
+      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) hash ^= JwtAudience.GetHashCode();
+      hash ^= (int) authenticationCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -334,6 +413,18 @@ namespace Google.Api {
         output.WriteRawTag(33);
         output.WriteDouble(MinDeadline);
       }
+      if (OperationDeadline != 0D) {
+        output.WriteRawTag(41);
+        output.WriteDouble(OperationDeadline);
+      }
+      if (PathTranslation != 0) {
+        output.WriteRawTag(48);
+        output.WriteEnum((int) PathTranslation);
+      }
+      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+        output.WriteRawTag(58);
+        output.WriteString(JwtAudience);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -353,6 +444,15 @@ namespace Google.Api {
       }
       if (MinDeadline != 0D) {
         size += 1 + 8;
+      }
+      if (OperationDeadline != 0D) {
+        size += 1 + 8;
+      }
+      if (PathTranslation != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) PathTranslation);
+      }
+      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(JwtAudience);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -377,6 +477,18 @@ namespace Google.Api {
       if (other.MinDeadline != 0D) {
         MinDeadline = other.MinDeadline;
       }
+      if (other.OperationDeadline != 0D) {
+        OperationDeadline = other.OperationDeadline;
+      }
+      if (other.PathTranslation != 0) {
+        PathTranslation = other.PathTranslation;
+      }
+      switch (other.AuthenticationCase) {
+        case AuthenticationOneofCase.JwtAudience:
+          JwtAudience = other.JwtAudience;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -404,9 +516,85 @@ namespace Google.Api {
             MinDeadline = input.ReadDouble();
             break;
           }
+          case 41: {
+            OperationDeadline = input.ReadDouble();
+            break;
+          }
+          case 48: {
+            pathTranslation_ = (global::Google.Api.BackendRule.Types.PathTranslation) input.ReadEnum();
+            break;
+          }
+          case 58: {
+            JwtAudience = input.ReadString();
+            break;
+          }
         }
       }
     }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the BackendRule message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      /// <summary>
+      /// Path Translation specifies how to combine the backend address with the
+      /// request path in order to produce the appropriate forwarding URL for the
+      /// request.
+      ///
+      /// Path Translation is applicable only to HTTP-based backends. Backends which
+      /// do not accept requests over HTTP/HTTPS should leave `path_translation`
+      /// unspecified.
+      /// </summary>
+      public enum PathTranslation {
+        [pbr::OriginalName("PATH_TRANSLATION_UNSPECIFIED")] Unspecified = 0,
+        /// <summary>
+        /// Use the backend address as-is, with no modification to the path. If the
+        /// URL pattern contains variables, the variable names and values will be
+        /// appended to the query string. If a query string parameter and a URL
+        /// pattern variable have the same name, this may result in duplicate keys in
+        /// the query string.
+        ///
+        /// # Examples
+        ///
+        /// Given the following operation config:
+        ///
+        ///     Method path:        /api/company/{cid}/user/{uid}
+        ///     Backend address:    https://example.cloudfunctions.net/getUser
+        ///
+        /// Requests to the following request paths will call the backend at the
+        /// translated path:
+        ///
+        ///     Request path: /api/company/widgetworks/user/johndoe
+        ///     Translated:   https://example.cloudfunctions.net/getUser?cid=widgetworks&amp;uid=johndoe
+        ///
+        ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
+        ///     Translated:   https://example.cloudfunctions.net/getUser?timezone=EST&amp;cid=widgetworks&amp;uid=johndoe
+        /// </summary>
+        [pbr::OriginalName("CONSTANT_ADDRESS")] ConstantAddress = 1,
+        /// <summary>
+        /// The request path will be appended to the backend address.
+        ///
+        /// # Examples
+        ///
+        /// Given the following operation config:
+        ///
+        ///     Method path:        /api/company/{cid}/user/{uid}
+        ///     Backend address:    https://example.appspot.com
+        ///
+        /// Requests to the following request paths will call the backend at the
+        /// translated path:
+        ///
+        ///     Request path: /api/company/widgetworks/user/johndoe
+        ///     Translated:   https://example.appspot.com/api/company/widgetworks/user/johndoe
+        ///
+        ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
+        ///     Translated:   https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST
+        /// </summary>
+        [pbr::OriginalName("APPEND_PATH_TO_ADDRESS")] AppendPathToAddress = 2,
+      }
+
+    }
+    #endregion
 
   }
 

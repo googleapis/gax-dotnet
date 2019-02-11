@@ -132,9 +132,11 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> producerDestinations_ = new pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination>();
     /// <summary>
     /// Monitoring configurations for sending metrics to the producer project.
-    /// There can be multiple producer destinations, each one must have a
-    /// different monitored resource type. A metric can be used in at most
-    /// one producer destination.
+    /// There can be multiple producer destinations. A monitored resouce type may
+    /// appear in multiple monitoring destinations if different aggregations are
+    /// needed for different sets of metrics associated with that monitored
+    /// resource type. A monitored resource and metric pair may only be used once
+    /// in the Monitoring configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ProducerDestinations {
@@ -148,9 +150,11 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> consumerDestinations_ = new pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination>();
     /// <summary>
     /// Monitoring configurations for sending metrics to the consumer project.
-    /// There can be multiple consumer destinations, each one must have a
-    /// different monitored resource type. A metric can be used in at most
-    /// one consumer destination.
+    /// There can be multiple consumer destinations. A monitored resouce type may
+    /// appear in multiple monitoring destinations if different aggregations are
+    /// needed for different sets of metrics associated with that monitored
+    /// resource type. A monitored resource and metric pair may only be used once
+    /// in the Monitoring configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.Monitoring.Types.MonitoringDestination> ConsumerDestinations {
@@ -305,8 +309,8 @@ namespace Google.Api {
             = pb::FieldCodec.ForString(18);
         private readonly pbc::RepeatedField<string> metrics_ = new pbc::RepeatedField<string>();
         /// <summary>
-        /// Names of the metrics to report to this monitoring destination.
-        /// Each name must be defined in [Service.metrics][google.api.Service.metrics] section.
+        /// Types of the metrics to report to this monitoring destination.
+        /// Each type must be defined in [Service.metrics][google.api.Service.metrics] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Metrics {

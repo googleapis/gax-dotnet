@@ -592,7 +592,7 @@ namespace Google.Api {
     public const int AuthorizationUrlFieldNumber = 5;
     private string authorizationUrl_ = "";
     /// <summary>
-    /// Redirect URL if JWT token is required but no present or is expired.
+    /// Redirect URL if JWT token is required but not present or is expired.
     /// Implement authorizationUrl of securityDefinitions in OpenAPI spec.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
