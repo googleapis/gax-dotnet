@@ -84,5 +84,52 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.NotEqual(endpoint1.GetHashCode(), endpoint3.GetHashCode());
             Assert.NotEqual(endpoint1.GetHashCode(), endpoint4.GetHashCode());
         }
+
+        [Theory]
+        [InlineData("host", "host", 443)]
+        [InlineData("host.foo", "host.foo", 443)]
+        [InlineData("https://host.foo", "host.foo", 443)]
+        [InlineData("host:100", "host", 100)]
+        [InlineData("https://host:100", "host", 100)]
+        public void Parse_Valid(string text, string expectedHost, int expectedPort)
+        {
+            Assert.True(ServiceEndpoint.TryParse(text, out var endpoint));
+            Assert.Equal(expectedHost, endpoint.Host);
+            Assert.Equal(expectedPort, endpoint.Port);
+
+            Assert.Equal(endpoint, ServiceEndpoint.Parse(text));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("host:not_a_port")]
+        [InlineData("host:-1")]
+        [InlineData("host:0")]
+        [InlineData("host:65536")]
+        [InlineData("host:100:200")]
+        [InlineData("https://host:100:200")]
+        [InlineData("https://host: 100")]
+        [InlineData("https:// host:100")]
+        [InlineData("   host:443")]
+        [InlineData("host:443    ")]
+        [InlineData("host: 443")]
+        [InlineData("host    ")]
+        [InlineData("    host")]
+        [InlineData(":")]
+        [InlineData(" : ")]
+        public void Parse_Invalid(string text)
+        {
+            Assert.Throws<ArgumentException>(() => ServiceEndpoint.Parse(text));
+            Assert.False(ServiceEndpoint.TryParse(text, out var endpoint));
+            Assert.Null(endpoint);
+        }
+
+        [Fact]
+        public void Parse_Null()
+        {
+            Assert.Throws<ArgumentNullException>(() => ServiceEndpoint.Parse(null));
+            Assert.False(ServiceEndpoint.TryParse(null, out var endpoint));
+            Assert.Null(endpoint);
+        }
     }
 }

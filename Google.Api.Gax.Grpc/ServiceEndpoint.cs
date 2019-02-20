@@ -6,6 +6,8 @@
  */
 
 using System;
+using System.Globalization;
+using System.Linq;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -34,6 +36,103 @@ namespace Google.Api.Gax.Grpc
         {
             Host = GaxPreconditions.CheckNotNullOrEmpty(host, nameof(host));
             Port = GaxPreconditions.CheckArgumentRange(port, nameof(port), 1, 65535);
+        }
+
+        /// <summary>
+        /// Tries to parse the specified value as an endpoint.
+        /// </summary>
+        /// <remarks>
+        /// <para>Valid formats are:</para>
+        /// <list type="bullet">
+        ///   <item><c>host</c></item>
+        ///   <item><c>https://host</c></item>
+        ///   <item><c>host:port</c></item>
+        ///   <item><c>https://host:port</c></item>
+        /// </list>
+        /// <para>The port defaults to 443 if it is not otherwise specified. If it is specified, it must be in the range 1-65535 inclusive.</para>
+        /// </remarks>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="endpoint">The resulting endpoint, or <c>null</c> if the value could not be parsed.</param>
+        /// <returns><c>true</c> if the value was parsed successfully; <c>false</c> if parsing failed</returns>
+        public static bool TryParse(string text, out ServiceEndpoint endpoint) =>
+            TryParseInternal(text, out endpoint, out _);
+
+        /// <summary>
+        /// Parses the specified value as an endpoint.
+        /// </summary>
+        /// <remarks>
+        /// <para>Valid formats are:</para>
+        /// <list type="bullet">
+        ///   <item><c>host</c></item>
+        ///   <item><c>https://host</c></item>
+        ///   <item><c>host:port</c></item>
+        ///   <item><c>https://host:port</c></item>
+        /// </list>
+        /// <para>The port defaults to 443 if it is not otherwise specified. If it is specified, it must be in the range 1-65535 inclusive.</para>
+        /// </remarks>
+        /// <param name="text">The text to parse.</param>
+        /// <returns>The resulting endpoint.</returns>
+        /// <exception cref="ArgumentException"><paramref name="text"/> does not represent a valid endpoint.</exception>
+        public static ServiceEndpoint Parse(string text) =>
+            text is null ? throw new ArgumentNullException(nameof(text)) :
+            TryParseInternal(text, out var endpoint, out var errorMessage) ? endpoint
+            : throw new ArgumentException(errorMessage, nameof(text));
+
+        private static bool TryParseInternal(string text, out ServiceEndpoint endpoint, out string errorMessage)
+        {
+            if (text is null)
+            {
+                errorMessage = "Input cannot be null"; // This will never actually be used.
+                endpoint = null;
+                return false;
+            }
+            if (text.StartsWith("https://"))
+            {
+                text = text.Substring(8);
+            }
+            int colonIndex = text.IndexOf(':');
+
+            string host;
+            int port;
+            if (colonIndex == -1)
+            {
+                host = text;
+                port = 443;
+            }
+            else
+            {
+                host = text.Substring(0, colonIndex);
+                string portText = text.Substring(colonIndex + 1);
+                if (!int.TryParse(portText, NumberStyles.None,  CultureInfo.InvariantCulture, out port))
+                {
+                    endpoint = null;
+                    errorMessage = $"Unable to parse port value: '{portText}'";
+                    return false;
+                }
+                if (port < 1 || port > 65535)
+                {
+                    endpoint = null;
+                    errorMessage = $"Port value {portText} is not in the range 1-65535 inclusive.";
+                    return false;
+                }
+            }
+            if (host == "")
+            {
+                endpoint = null;
+                errorMessage = $"Host cannot be empty.";
+                return false;
+            }
+
+            // While this isn't the only problem we could run into, it's probably the most common one.
+            if (host.Any(c => char.IsWhiteSpace(c)))
+            {
+                endpoint = null;
+                errorMessage = "Host values must not contain whitespace";
+                return false;
+            }
+            errorMessage = null;
+            endpoint = new ServiceEndpoint(host, port);
+            return true;
         }
 
         /// <summary>
