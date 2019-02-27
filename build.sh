@@ -12,16 +12,17 @@ DOTNET_BUILD_ARGS="-c $CONFIG"
 DOTNET_TEST_ARGS="--no-build $DOTNET_BUILD_ARGS"
 
 echo CLI args: $DOTNET_BUILD_ARGS
+echo Current working directory: $PWD
 
 echo Restoring
-dotnet restore -v minimal Gax.sln
+dotnet restore -v minimal ./Gax.sln
 
 echo Building
-dotnet build $DOTNET_BUILD_ARGS Gax.sln
+dotnet build $DOTNET_BUILD_ARGS ./Gax.sln
 
 echo Testing
 
-for testproject in *.Tests
+for testproject in ./*.Tests
 do
   # This will run the tests on every platform  
   # defined for the project.
