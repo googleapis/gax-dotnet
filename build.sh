@@ -2,6 +2,8 @@
 
 set -e
 
+cd $(dirname $0)
+
 # Clean up previous builds
 rm -rf {src,test,testing}/*/bin {src,test,testing}/*/obj
 
