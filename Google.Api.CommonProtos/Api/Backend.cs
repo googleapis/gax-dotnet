@@ -237,7 +237,8 @@ namespace Google.Api {
     /// <summary>
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
+    /// details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -565,10 +566,12 @@ namespace Google.Api {
         /// translated path:
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe
-        ///     Translated:   https://example.cloudfunctions.net/getUser?cid=widgetworks&amp;uid=johndoe
+        ///     Translated:
+        ///     https://example.cloudfunctions.net/getUser?cid=widgetworks&amp;uid=johndoe
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
-        ///     Translated:   https://example.cloudfunctions.net/getUser?timezone=EST&amp;cid=widgetworks&amp;uid=johndoe
+        ///     Translated:
+        ///     https://example.cloudfunctions.net/getUser?timezone=EST&amp;cid=widgetworks&amp;uid=johndoe
         /// </summary>
         [pbr::OriginalName("CONSTANT_ADDRESS")] ConstantAddress = 1,
         /// <summary>
@@ -585,10 +588,12 @@ namespace Google.Api {
         /// translated path:
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe
-        ///     Translated:   https://example.appspot.com/api/company/widgetworks/user/johndoe
+        ///     Translated:
+        ///     https://example.appspot.com/api/company/widgetworks/user/johndoe
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
-        ///     Translated:   https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST
+        ///     Translated:
+        ///     https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST
         /// </summary>
         [pbr::OriginalName("APPEND_PATH_TO_ADDRESS")] AppendPathToAddress = 2,
       }

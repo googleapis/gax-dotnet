@@ -61,9 +61,10 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
-  /// type name and a set of labels.  For example, the monitored resource
-  /// descriptor for Google Compute Engine VM instances has a type of
+  /// An object that describes the schema of a
+  /// [MonitoredResource][google.api.MonitoredResource] object using a type name
+  /// and a set of labels.  For example, the monitored resource descriptor for
+  /// Google Compute Engine VM instances has a type of
   /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
   /// `"zone"` to identify particular VM instances.
   ///
@@ -336,11 +337,13 @@ namespace Google.Api {
   /// An object representing a resource that can be used for monitoring, logging,
   /// billing, or other purposes. Examples include virtual machine instances,
   /// databases, and storage devices such as disks. The `type` field identifies a
-  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource's
-  /// schema. Information in the `labels` field identifies the actual resource and
-  /// its attributes according to the schema. For example, a particular Compute
-  /// Engine VM instance could be represented by the following object, because the
-  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object
+  /// that describes the resource's schema. Information in the `labels` field
+  /// identifies the actual resource and its attributes according to the schema.
+  /// For example, a particular Compute Engine VM instance could be represented by
+  /// the following object, because the
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for
+  /// `"gce_instance"` has labels
   /// `"instance_id"` and `"zone"`:
   ///
   ///     { "type": "gce_instance",
@@ -387,8 +390,10 @@ namespace Google.Api {
     private string type_ = "";
     /// <summary>
     /// Required. The monitored resource type. This field must match
-    /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
-    /// example, the type of a Compute Engine VM instance is `gce_instance`.
+    /// the `type` field of a
+    /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor]
+    /// object. For example, the type of a Compute Engine VM instance is
+    /// `gce_instance`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -507,12 +512,12 @@ namespace Google.Api {
   }
 
   /// <summary>
-  /// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.
-  /// [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to
-  /// uniquely identify a monitored resource instance. There is some other useful
-  /// auxiliary metadata. Monitoring and Logging use an ingestion
-  /// pipeline to extract metadata for cloud resources of all types, and store
-  /// the metadata in this message.
+  /// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource]
+  /// object. [MonitoredResource][google.api.MonitoredResource] objects contain the
+  /// minimum set of information to uniquely identify a monitored resource
+  /// instance. There is some other useful auxiliary metadata. Monitoring and
+  /// Logging use an ingestion pipeline to extract metadata for cloud resources of
+  /// all types, and store the metadata in this message.
   /// </summary>
   public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata> {
     private static readonly pb::MessageParser<MonitoredResourceMetadata> _parser = new pb::MessageParser<MonitoredResourceMetadata>(() => new MonitoredResourceMetadata());

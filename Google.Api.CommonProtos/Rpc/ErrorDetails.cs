@@ -1578,7 +1578,8 @@ namespace Google.Rpc {
     /// <summary>
     /// The name of the resource being accessed.  For example, a shared calendar
     /// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
-    /// error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+    /// error is
+    /// [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceName {

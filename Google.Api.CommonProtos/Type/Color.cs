@@ -34,9 +34,10 @@ namespace Google.Type {
             "Chdnb29nbGUvdHlwZS9jb2xvci5wcm90bxILZ29vZ2xlLnR5cGUaHmdvb2ds",
             "ZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byJdCgVDb2xvchILCgNyZWQYASAB",
             "KAISDQoFZ3JlZW4YAiABKAISDAoEYmx1ZRgDIAEoAhIqCgVhbHBoYRgEIAEo",
-            "CzIbLmdvb2dsZS5wcm90b2J1Zi5GbG9hdFZhbHVlQl0KD2NvbS5nb29nbGUu",
+            "CzIbLmdvb2dsZS5wcm90b2J1Zi5GbG9hdFZhbHVlQmAKD2NvbS5nb29nbGUu",
             "dHlwZUIKQ29sb3JQcm90b1ABWjZnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90",
-            "by9nb29nbGVhcGlzL3R5cGUvY29sb3I7Y29sb3KiAgNHVFBiBnByb3RvMw=="));
+            "by9nb29nbGVhcGlzL3R5cGUvY29sb3I7Y29sb3L4AQGiAgNHVFBiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -54,7 +55,12 @@ namespace Google.Type {
   /// can be trivially provided to the constructor of "java.awt.Color" in Java; it
   /// can also be trivially provided to UIColor's "+colorWithRed:green:blue:alpha"
   /// method in iOS; and, with just a little work, it can be easily formatted into
-  /// a CSS "rgba()" string in JavaScript, as well. Here are some examples:
+  /// a CSS "rgba()" string in JavaScript, as well.
+  ///
+  /// Note: this proto does not carry information about the absolute color space
+  /// that should be used to interpret the RGB value (e.g. sRGB, Adobe RGB,
+  /// DCI-P3, BT.2020, etc.). By default, applications SHOULD assume the sRGB color
+  /// space.
   ///
   /// Example (Java):
   ///
@@ -116,7 +122,7 @@ namespace Google.Type {
   ///          if (![color getRed:&amp;red green:&amp;green blue:&amp;blue alpha:&amp;alpha]) {
   ///            return nil;
   ///          }
-  ///          Color* result = [Color alloc] init];
+  ///          Color* result = [[Color alloc] init];
   ///          [result setRed:red];
   ///          [result setGreen:green];
   ///          [result setBlue:blue];

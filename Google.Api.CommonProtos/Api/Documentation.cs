@@ -443,8 +443,8 @@ namespace Google.Api {
     public const int DeprecationDescriptionFieldNumber = 3;
     private string deprecationDescription_ = "";
     /// <summary>
-    /// Deprecation description of the selected element(s). It can be provided if an
-    /// element is marked as `deprecated`.
+    /// Deprecation description of the selected element(s). It can be provided if
+    /// an element is marked as `deprecated`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string DeprecationDescription {
@@ -641,8 +641,8 @@ namespace Google.Api {
     public const int ContentFieldNumber = 2;
     private string content_ = "";
     /// <summary>
-    /// The Markdown content of the page. You can use &lt;code>&amp;#40;== include {path} ==&amp;#41;&lt;/code>
-    /// to include content from a Markdown file.
+    /// The Markdown content of the page. You can use &lt;code>&amp;#40;== include {path}
+    /// ==&amp;#41;&lt;/code> to include content from a Markdown file.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Content {

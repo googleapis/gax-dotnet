@@ -33,10 +33,10 @@ namespace Google.Type {
           string.Concat(
             "Chtnb29nbGUvdHlwZS90aW1lb2ZkYXkucHJvdG8SC2dvb2dsZS50eXBlIksK",
             "CVRpbWVPZkRheRINCgVob3VycxgBIAEoBRIPCgdtaW51dGVzGAIgASgFEg8K",
-            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCaQoPY29tLmdvb2dsZS50",
+            "B3NlY29uZHMYAyABKAUSDQoFbmFub3MYBCABKAVCbAoPY29tLmdvb2dsZS50",
             "eXBlQg5UaW1lT2ZEYXlQcm90b1ABWj5nb29nbGUuZ29sYW5nLm9yZy9nZW5w",
-            "cm90by9nb29nbGVhcGlzL3R5cGUvdGltZW9mZGF5O3RpbWVvZmRheaICA0dU",
-            "UGIGcHJvdG8z"));
+            "cm90by9nb29nbGVhcGlzL3R5cGUvdGltZW9mZGF5O3RpbWVvZmRhefgBAaIC",
+            "A0dUUGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -49,7 +49,7 @@ namespace Google.Type {
   #region Messages
   /// <summary>
   /// Represents a time of day. The date and time zone are either not significant
-  /// or are specified elsewhere. An API may chose to allow leap seconds. Related
+  /// or are specified elsewhere. An API may choose to allow leap seconds. Related
   /// types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
   /// </summary>
   public sealed partial class TimeOfDay : pb::IMessage<TimeOfDay> {
