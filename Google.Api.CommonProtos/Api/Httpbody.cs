@@ -71,7 +71,8 @@ namespace Google.Api {
   ///
   ///     service ResourceService {
   ///       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
-  ///       rpc UpdateResource(google.api.HttpBody) returns (google.protobuf.Empty);
+  ///       rpc UpdateResource(google.api.HttpBody) returns
+  ///       (google.protobuf.Empty);
   ///     }
   ///
   /// Example with streaming methods:

@@ -293,7 +293,9 @@ namespace Google.Api {
   ///
   /// HTTP | gRPC
   /// -----|-----
-  /// `GET /v1/messages/123456?revision=2&amp;sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield: "foo"))`
+  /// `GET /v1/messages/123456?revision=2&amp;sub.subfield=foo` |
+  /// `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield:
+  /// "foo"))`
   ///
   /// Note that fields which are mapped to URL query parameters must have a
   /// primitive type or a repeated primitive type or a non-repeated message type.
@@ -325,7 +327,8 @@ namespace Google.Api {
   ///
   /// HTTP | gRPC
   /// -----|-----
-  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" message { text: "Hi!" })`
+  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
+  /// "123456" message { text: "Hi!" })`
   ///
   /// The special name `*` can be used in the body mapping to define that
   /// every field not bound by the path template should be mapped to the
@@ -349,7 +352,8 @@ namespace Google.Api {
   ///
   /// HTTP | gRPC
   /// -----|-----
-  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" text: "Hi!")`
+  /// `PATCH /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id:
+  /// "123456" text: "Hi!")`
   ///
   /// Note that when using `*` in the body mapping, it is not possible to
   /// have HTTP parameters, as all fields not bound by the path end in
@@ -380,22 +384,26 @@ namespace Google.Api {
   /// HTTP | gRPC
   /// -----|-----
   /// `GET /v1/messages/123456` | `GetMessage(message_id: "123456")`
-  /// `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id: "123456")`
+  /// `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id:
+  /// "123456")`
   ///
   /// ## Rules for HTTP mapping
   ///
   /// 1. Leaf request fields (recursive expansion nested messages in the request
   ///    message) are classified into three categories:
   ///    - Fields referred by the path template. They are passed via the URL path.
-  ///    - Fields referred by the [HttpRule.body][google.api.HttpRule.body]. They are passed via the HTTP
+  ///    - Fields referred by the [HttpRule.body][google.api.HttpRule.body]. They
+  ///    are passed via the HTTP
   ///      request body.
   ///    - All other fields are passed via the URL query parameters, and the
   ///      parameter name is the field path in the request message. A repeated
   ///      field can be represented as multiple query parameters under the same
   ///      name.
-  ///  2. If [HttpRule.body][google.api.HttpRule.body] is "*", there is no URL query parameter, all fields
+  ///  2. If [HttpRule.body][google.api.HttpRule.body] is "*", there is no URL
+  ///  query parameter, all fields
   ///     are passed via URL path and HTTP request body.
-  ///  3. If [HttpRule.body][google.api.HttpRule.body] is omitted, there is no HTTP request body, all
+  ///  3. If [HttpRule.body][google.api.HttpRule.body] is omitted, there is no HTTP
+  ///  request body, all
   ///     fields are passed via URL path and URL query parameters.
   ///
   /// ### Path template syntax
@@ -424,16 +432,18 @@ namespace Google.Api {
   /// `"{var=*}"`, when such a variable is expanded into a URL path on the client
   /// side, all characters except `[-_.~0-9a-zA-Z]` are percent-encoded. The
   /// server side does the reverse decoding. Such variables show up in the
-  /// [Discovery Document](https://developers.google.com/discovery/v1/reference/apis)
-  /// as `{var}`.
+  /// [Discovery
+  /// Document](https://developers.google.com/discovery/v1/reference/apis) as
+  /// `{var}`.
   ///
   /// If a variable contains multiple path segments, such as `"{var=foo/*}"`
   /// or `"{var=**}"`, when such a variable is expanded into a URL path on the
   /// client side, all characters except `[-_.~/0-9a-zA-Z]` are percent-encoded.
   /// The server side does the reverse decoding, except "%2F" and "%2f" are left
   /// unchanged. Such variables show up in the
-  /// [Discovery Document](https://developers.google.com/discovery/v1/reference/apis)
-  /// as `{+var}`.
+  /// [Discovery
+  /// Document](https://developers.google.com/discovery/v1/reference/apis) as
+  /// `{+var}`.
   ///
   /// ## Using gRPC API Service Configuration
   ///
@@ -550,7 +560,8 @@ namespace Google.Api {
     /// <summary>
     /// Selects a method to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
+    /// details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {

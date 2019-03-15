@@ -856,8 +856,9 @@ namespace Google.Api {
     public const int TypeFieldNumber = 3;
     private string type_ = "";
     /// <summary>
-    /// An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].
-    /// For example, `custom.googleapis.com/invoice/paid/amount`.
+    /// An existing metric type, see
+    /// [google.api.MetricDescriptor][google.api.MetricDescriptor]. For example,
+    /// `custom.googleapis.com/invoice/paid/amount`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
