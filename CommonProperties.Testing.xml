@@ -12,13 +12,21 @@
   <PropertyGroup>
     <Copyright>Copyright 2017 Google Inc.</Copyright>
     <Authors>Google Inc.</Authors>
-    <PackageLicenseUrl>https://developers.google.com/open-source/licenses/bsd</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/googleapis/gax-dotnet</PackageProjectUrl>
     <PackageTags>Google</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/googleapis/gax-dotnet</RepositoryUrl>
     <PackageIconUrl>https://www.gstatic.com/images/branding/product/1x/google_developers_64dp.png</PackageIconUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 
+      - Note: not PackagePage="$(PackageLicenseFile)" as
+      - suggested in docs, due to us using a file with no extension.
+      -->
+    <None Include="../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <Import Project="ReleaseVersion.xml" />
 </Project>
