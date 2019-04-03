@@ -63,11 +63,30 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public CallInvoker CallInvoker { get; set; }
 
+        // Note: when adding any more properties, CopyCommonSettings must also be updated.
+
         /// <summary>
         /// Creates a new instance with no settings.
         /// </summary>
         protected ClientBuilderBase()
         {
+        }
+
+        /// <summary>
+        /// Copies common settings from the specified builder into this one. This is a shallow copy.
+        /// </summary>
+        /// <typeparam name="TOther">The other client type</typeparam>
+        /// <param name="source">The builder to copy from.</param>
+        protected void CopyCommonSettings<TOther>(ClientBuilderBase<TOther> source)
+        {
+            GaxPreconditions.CheckNotNull(source, nameof(source));
+            Endpoint = source.Endpoint;
+            Scopes = source.Scopes;
+            ChannelCredentials = source.ChannelCredentials;
+            CredentialsPath = source.CredentialsPath;
+            JsonCredentials = source.JsonCredentials;
+            TokenAccessMethod = source.TokenAccessMethod;
+            CallInvoker = source.CallInvoker;
         }
 
         /// <summary>
