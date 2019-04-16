@@ -68,7 +68,7 @@ namespace Google.Api.Gax
                 var getEntryAssemblyMethod = typeof(Assembly)
                     .GetTypeInfo()
                     .DeclaredMethods
-                    .Where(m => m.IsStatic && m.GetParameters().Length == 0 && m.ReturnType == typeof(Assembly))
+                    .Where(m => m.Name == "GetEntryAssembly" && m.IsStatic && m.GetParameters().Length == 0 && m.ReturnType == typeof(Assembly))
                     .FirstOrDefault();
                 if (getEntryAssemblyMethod == null)
                 {
