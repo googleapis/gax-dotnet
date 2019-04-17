@@ -3,7 +3,8 @@
   <Import Project="..\CommonProperties.Test.xml" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp2.1;net452</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,4 @@
       -->
     <ProjectReference Include="..\Google.Api.Gax.Grpc.IntegrationTests\Google.Api.Gax.Grpc.IntegrationTests.csproj" />
   </ItemGroup>
-
-  <Import Project="..\StripDesktopOnNonWindows.xml" />
-
 </Project>

@@ -5,6 +5,7 @@
   <PropertyGroup>
     <Version>1.6.0</Version>
     <TargetFrameworks>netstandard1.3;netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.3;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Packaging information -->
@@ -18,7 +19,4 @@
     
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>
-
-  <Import Project="..\StripDesktopOnNonWindows.xml" />
-
 </Project>

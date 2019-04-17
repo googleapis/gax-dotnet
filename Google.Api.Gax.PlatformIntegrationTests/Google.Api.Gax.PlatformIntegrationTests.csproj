@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <!-- Note: no common import. This project isn't like any of the other test projects. -->
   <PropertyGroup>
@@ -20,7 +20,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
   </ItemGroup>
-
-  <Import Project="..\StripDesktopOnNonWindows.xml" />
-
 </Project>

@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.5;netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Packaging information -->
@@ -18,7 +19,4 @@
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>
-
-  <Import Project="..\StripDesktopOnNonWindows.xml" />
-
 </Project>
