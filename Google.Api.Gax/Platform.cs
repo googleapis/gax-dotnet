@@ -230,7 +230,7 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
             public string[] MountInfo { get; set; }
         }
 
-#if NETSTANDARD1_3
+#if NETSTANDARD1_3 || NETSTANDARD2_0
         internal static async Task<KubernetesData> LoadKubernetesDataAsync()
         {
             var kubernetesServiceHost = Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_HOST");

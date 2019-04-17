@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <Version>1.6.0</Version>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;net45</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Packaging information -->
