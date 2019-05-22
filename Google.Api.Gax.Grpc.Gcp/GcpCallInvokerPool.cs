@@ -124,9 +124,9 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
 
             public override int GetHashCode() =>
-                EqualityHelpers.CombineHashCodes(
+                GaxEqualityHelpers.CombineHashCodes(
                     Endpoint.GetHashCode(),
-                    EqualityHelpers.GetListHashCode(Options, EqualityComparer<ChannelOption>.Default));
+                    GaxEqualityHelpers.GetListHashCode(Options));
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
