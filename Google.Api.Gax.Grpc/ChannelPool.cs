@@ -22,7 +22,12 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private static readonly List<ChannelOption> s_defaultOptions = new List<ChannelOption> { GrpcChannelOptions.OneMinuteKeepalive };
+        private static readonly List<ChannelOption> s_defaultOptions = new List<ChannelOption>
+        {
+            GrpcChannelOptions.OneMinuteKeepalive,
+            GrpcChannelOptions.DisableServiceConfigResolution
+        };
+        
         private readonly IEnumerable<string> _scopes;
 
         /// <summary>
