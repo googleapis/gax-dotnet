@@ -69,6 +69,11 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public CallInvoker CallInvoker { get; set; }
 
+        /// <summary>
+        /// A custom user agent to specify in the channel metadata, or null if no custom user agent is required.
+        /// </summary>
+        public string UserAgent { get; set; }
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
         /// <summary>
@@ -93,6 +98,7 @@ namespace Google.Api.Gax.Grpc
             JsonCredentials = source.JsonCredentials;
             TokenAccessMethod = source.TokenAccessMethod;
             CallInvoker = source.CallInvoker;
+            UserAgent = source.UserAgent;
         }
 
         /// <summary>
@@ -247,7 +253,10 @@ namespace Google.Api.Gax.Grpc
         protected abstract ChannelPool GetChannelPool();
 
         // Currently private as we don't need per-subclass configuration. We can make it virtual in the future.
-        private IReadOnlyList<ChannelOption> GetChannelOptions() => s_defaultChannelPoolOptions;
+        private IReadOnlyList<ChannelOption> GetChannelOptions() =>
+            UserAgent == null
+            ? s_defaultChannelPoolOptions
+            : new List<ChannelOption>(s_defaultChannelPoolOptions) { GrpcChannelOptions.PrimaryUserAgent(UserAgent) };
 
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
