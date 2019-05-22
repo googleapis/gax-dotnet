@@ -23,5 +23,15 @@ namespace Google.Api.Gax.Grpc
         /// and only if the channel is idle for more than 60 seconds.
         /// </summary>
         internal static ChannelOption OneMinuteKeepalive { get; } = new ChannelOption("grpc.keepalive_time_ms", 60_000);
+
+        /// <summary>
+        /// "Disable looking up the service config via the name resolver."
+        /// </summary>
+        /// <remarks>
+        /// Currently this defaults to "on" (so disabled) anyway, but that may change later.
+        /// Explicitly disable service config resolution for now; we'll allow it to be enabled when we have code to change
+        /// our retry policy.
+        /// </remarks>
+        internal static ChannelOption DisableServiceConfigResolution { get; } = new ChannelOption("grpc.service_config_disable_resolution", 1);
     }
 }

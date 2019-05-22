@@ -22,7 +22,11 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
-        private static readonly List<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption> { GrpcChannelOptions.OneMinuteKeepalive };
+        private static readonly List<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption>
+        {
+            GrpcChannelOptions.OneMinuteKeepalive,
+            GrpcChannelOptions.DisableServiceConfigResolution
+        };
 
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
