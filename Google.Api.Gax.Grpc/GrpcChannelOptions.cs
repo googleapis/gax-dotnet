@@ -33,5 +33,13 @@ namespace Google.Api.Gax.Grpc
         /// our retry policy.
         /// </remarks>
         internal static ChannelOption DisableServiceConfigResolution { get; } = new ChannelOption("grpc.service_config_disable_resolution", 1);
+
+        /// <summary>
+        /// Creates a channel option for the primary user agent, which appears first in the channel metadata.
+        /// </summary>
+        /// <param name="userAgent">Custom primary user agent for the channel. Must not be null.</param>
+        /// <returns>A channel option for the primary user agent</returns>
+        internal static ChannelOption PrimaryUserAgent(string userAgent) =>
+            new ChannelOption(ChannelOptions.PrimaryUserAgentString, GaxPreconditions.CheckNotNull(userAgent, nameof(userAgent)));
     }
 }
