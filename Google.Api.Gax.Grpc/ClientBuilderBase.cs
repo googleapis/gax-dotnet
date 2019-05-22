@@ -22,6 +22,8 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
+        private static readonly List<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption> { GrpcChannelOptions.OneMinuteKeepalive };
+
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
@@ -145,7 +147,7 @@ namespace Google.Api.Gax.Grpc
             Channel channel;
             if (CanUseChannelPool)
             {
-                channel = GetChannelPool().GetChannel(endpoint);
+                channel = GetChannelPool().GetChannel(endpoint, GetChannelOptions());
             }
             else
             {
@@ -171,7 +173,7 @@ namespace Google.Api.Gax.Grpc
             Channel channel;
             if (CanUseChannelPool)
             {
-                channel = await GetChannelPool().GetChannelAsync(endpoint).ConfigureAwait(false);
+                channel = await GetChannelPool().GetChannelAsync(endpoint, GetChannelOptions()).ConfigureAwait(false);
             }
             else
             {
@@ -240,6 +242,9 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected abstract ChannelPool GetChannelPool();
 
+        // Currently private as we don't need per-subclass configuration. We can make it virtual in the future.
+        private IReadOnlyList<ChannelOption> GetChannelOptions() => s_defaultChannelPoolOptions;
+
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
         /// true if and only if no scopes, credentials or token access method have been specified. Derived classes should
@@ -269,7 +274,7 @@ namespace Google.Api.Gax.Grpc
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
         private protected virtual Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials) =>
-            new Channel(endpoint.Host, endpoint.Port, credentials);
+            new Channel(endpoint.Host, endpoint.Port, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccess
         {
