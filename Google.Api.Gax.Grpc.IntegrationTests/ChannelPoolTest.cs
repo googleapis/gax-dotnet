@@ -41,6 +41,34 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         }
 
         [Fact]
+        public void SameOptions_SameChannel()
+        {
+            var options1 = new[] { new ChannelOption("x", 5) };
+            var options2 = new[] { new ChannelOption("x", 5) };
+            var pool = new ChannelPool(EmptyScopes);
+            using (var fixture = new TestServiceFixture())
+            {
+                var channel1 = pool.GetChannel(fixture.Endpoint, options1);
+                var channel2 = pool.GetChannel(fixture.Endpoint, options2);
+                Assert.Same(channel1, channel2);
+            }
+        }
+
+        [Fact]
+        public void DifferentOptions_DifferentChannel()
+        {
+            var options1 = new[] { new ChannelOption("x", 5) };
+            var options2 = new[] { new ChannelOption("x", 6) };
+            var pool = new ChannelPool(EmptyScopes);
+            using (var fixture = new TestServiceFixture())
+            {
+                var channel1 = pool.GetChannel(fixture.Endpoint, options1);
+                var channel2 = pool.GetChannel(fixture.Endpoint, options2);
+                Assert.NotSame(channel1, channel2);
+            }
+        }
+
+        [Fact]
         public async Task ShutdownAsync_ShutsDownChannel()
         {
             var pool = new ChannelPool(EmptyScopes);

@@ -35,7 +35,7 @@ namespace Google.Api.Gax.Grpc
 
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
         // "clear and fetch values" for shutdown.
-        private readonly Dictionary<ServiceEndpoint, Channel> _channels = new Dictionary<ServiceEndpoint, Channel>();
+        private readonly Dictionary<Key, Channel> _channels = new Dictionary<Key, Channel>();
         private readonly object _lock = new object();
 
         /// <summary>
@@ -86,12 +86,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint)
-        {
-            GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
-            return GetChannel(endpoint, credentials);
-        }
+        public Channel GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, null);
 
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
@@ -100,35 +95,76 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint)
+        public Task<Channel> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, null);
+
+        /// <summary>
+        /// Returns a channel from this pool, creating a new one if there is no channel
+        /// already associated with <paramref name="endpoint"/>.
+        /// </summary>
+        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
+        /// <param name="channelOptions">The channel options to include. May be null.</param>
+        /// <returns>A channel for the specified endpoint.</returns>
+        public Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
+        {
+            GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
+            var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
+            return GetChannel(endpoint, channelOptions, credentials);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
+        /// already associated with <paramref name="endpoint"/>.
+        /// </summary>
+        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
+        /// <param name="channelOptions">The channel options to include. May be null.</param>
+        /// <returns>A task representing the asynchronous operation. The value of the completed
+        /// task will be channel for the specified endpoint.</returns>
+        public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
-            return GetChannel(endpoint, credentials);
+            return GetChannel(endpoint, channelOptions, credentials);
         }
 
-        private Channel GetChannel(ServiceEndpoint endpoint, ChannelCredentials credentials)
+        private Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions, ChannelCredentials credentials)
         {
+            var optionsList = channelOptions?.ToList() ?? new List<ChannelOption>();
+            optionsList.Add(GrpcChannelOptions.OneMinuteKeepalive);
+
+            var key = new Key(endpoint, optionsList);
+
             lock (_lock)
             {
                 Channel channel;
-                if (!_channels.TryGetValue(endpoint, out channel))
+                if (!_channels.TryGetValue(key, out channel))
                 {
-                    var options = new[]
-                    {
-                        // "After a duration of this time the client/server pings its peer to see if the
-                        // transport is still alive. Int valued, milliseconds."
-                        // Required for any channel using a streaming RPC, to ensure an idle stream doesn't
-                        // allow the TCP connection to be silently dropped by any intermediary network devices.
-                        // 60 second keepalive time is reasonable. This will only add minimal network traffic,
-                        // and only if the channel is idle for more than 60 seconds.
-                        new ChannelOption("grpc.keepalive_time_ms", 60_000)
-                    };
-                    channel = new Channel(endpoint.Host, endpoint.Port, credentials, options);
-                    _channels[endpoint] = channel;
+                    channel = new Channel(endpoint.Host, endpoint.Port, credentials, optionsList);
+                    _channels[key] = channel;
                 }
                 return channel;
             }
+        }
+
+        private struct Key : IEquatable<Key>
+        {
+            public readonly ServiceEndpoint Endpoint;
+            public readonly List<ChannelOption> Options;
+
+            public Key(ServiceEndpoint endpoint, List<ChannelOption> options)
+            {
+                Endpoint = endpoint;
+                Options = options;
+            }
+
+            public override int GetHashCode() =>
+                GaxEqualityHelpers.CombineHashCodes(
+                    Endpoint.GetHashCode(),
+                    GaxEqualityHelpers.GetListHashCode(Options));
+
+            public override bool Equals(object obj) => obj is Key other && Equals(other);
+
+            public bool Equals(Key other) =>
+                Endpoint.Equals(other.Endpoint) && Options.SequenceEqual(other.Options);
         }
     }
 }
