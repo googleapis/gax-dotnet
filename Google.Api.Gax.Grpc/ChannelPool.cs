@@ -22,6 +22,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
+        private static readonly List<ChannelOption> s_defaultOptions = new List<ChannelOption> { GrpcChannelOptions.OneMinuteKeepalive };
         private readonly IEnumerable<string> _scopes;
 
         /// <summary>
@@ -82,24 +83,25 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
-        /// already associated with <paramref name="endpoint"/>.
+        /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, null);
+        public Channel GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
-        /// already associated with <paramref name="endpoint"/>.
+        /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public Task<Channel> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, null);
+        public Task<Channel> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>.
+        /// The specified channel options are applied, but only those options.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
@@ -114,6 +116,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>.
+        /// The specified channel options are applied, but only those options.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
@@ -129,7 +132,6 @@ namespace Google.Api.Gax.Grpc
         private Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions, ChannelCredentials credentials)
         {
             var optionsList = channelOptions?.ToList() ?? new List<ChannelOption>();
-            optionsList.Add(GrpcChannelOptions.OneMinuteKeepalive);
 
             var key = new Key(endpoint, optionsList);
 
