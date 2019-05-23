@@ -22,7 +22,7 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
-        private static readonly List<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption>
+        private static readonly IReadOnlyList<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption>
         {
             GrpcChannelOptions.OneMinuteKeepalive,
             GrpcChannelOptions.DisableServiceConfigResolution
