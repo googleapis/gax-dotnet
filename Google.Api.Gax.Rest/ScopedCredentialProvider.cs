@@ -19,11 +19,11 @@ namespace Google.Api.Gax.Rest
     public sealed class ScopedCredentialProvider
     {
         /// <summary>
-        /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
-        /// task can be used whenever channel credentials are required. The returned task always runs in the
+        /// Lazily-created task to retrieve the default application credentials. Once completed, this
+        /// task can be used whenever credentials are required. The returned task always runs in the
         /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
-        /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
-        /// _scopes, and you can't refer to an instance field within an instance field initializer.
+        /// The field is initialized in the constructor, as it uses _scopes,
+        /// and you can't refer to an instance field within an instance field initializer.
         /// </summary>
         private readonly Lazy<Task<GoogleCredential>> _lazyScopedDefaultCredentials;
         private readonly List<string> _scopes;
