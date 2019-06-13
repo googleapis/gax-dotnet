@@ -21,6 +21,26 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// </summary>
     public sealed class GcpCallInvokerPool
     {
+        private static readonly IReadOnlyList<ChannelOption> s_defaultOptions = new List<ChannelOption>
+        {
+            // "After a duration of this time the client/server pings its peer to see if the
+            // transport is still alive. Int valued, milliseconds."
+            // Required for any channel using a streaming RPC, to ensure an idle stream doesn't
+            // allow the TCP connection to be silently dropped by any intermediary network devices.
+            // 60 second keepalive time is reasonable. This will only add minimal network traffic,
+            // and only if the channel is idle for more than 60 seconds.
+            new ChannelOption("grpc.keepalive_time_ms", 60_000),
+            /// <summary>
+            /// "Disable looking up the service config via the name resolver."
+            /// </summary>
+            /// <remarks>
+            /// Currently this defaults to "on" (so disabled) anyway, but that may change later.
+            /// Explicitly disable service config resolution for now; we'll allow it to be enabled when we have code to change
+            /// our retry policy.
+            /// </remarks>
+            new ChannelOption("grpc.service_config_disable_resolution", 1)
+        };
+
         private readonly DefaultChannelCredentialsCache _credentialsCache;
 
         private readonly Dictionary<Key, GcpCallInvoker> _callInvokers = new Dictionary<Key, GcpCallInvoker>();
@@ -91,13 +111,15 @@ namespace Google.Api.Gax.Grpc.Gcp
         private GcpCallInvoker GetCallInvoker(ServiceEndpoint endpoint, IEnumerable<ChannelOption> options, ChannelCredentials credentials)
         {
             var optionsList = options?.ToList() ?? new List<ChannelOption>();
-            // "After a duration of this time the client/server pings its peer to see if the
-            // transport is still alive. Int valued, milliseconds."
-            // Required for any channel using a streaming RPC, to ensure an idle stream doesn't
-            // allow the TCP connection to be silently dropped by any intermediary network devices.
-            // 60 second keepalive time is reasonable. This will only add minimal network traffic,
-            // and only if the channel is idle for more than 60 seconds.
-            optionsList.Add(new ChannelOption("grpc.keepalive_time_ms", 60_000));
+
+            // Add in any options from our defaults that aren't already specified.
+            foreach (var extra in s_defaultOptions)
+            {
+                if (!optionsList.Any(option => option.Name == extra.Name))
+                {
+                    optionsList.Add(extra);
+                }
+            }
 
             var key = new Key(endpoint, optionsList);
 
