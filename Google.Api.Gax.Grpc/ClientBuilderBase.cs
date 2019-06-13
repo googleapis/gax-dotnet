@@ -252,8 +252,11 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected abstract ChannelPool GetChannelPool();
 
-        // Currently private as we don't need per-subclass configuration. We can make it virtual in the future.
-        private IReadOnlyList<ChannelOption> GetChannelOptions() =>
+        /// <summary>
+        /// Returns the options to use when creating a channel.
+        /// </summary>
+        /// <returns>The options to use when creating a channel.</returns>
+        protected virtual IReadOnlyList<ChannelOption> GetChannelOptions() =>
             UserAgent == null
             ? s_defaultChannelPoolOptions
             : new List<ChannelOption>(s_defaultChannelPoolOptions) { GrpcChannelOptions.PrimaryUserAgent(UserAgent) };
