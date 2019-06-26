@@ -197,5 +197,25 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallSettings.FromTrailingMetadataHandler(handler2));
             Assert.Equal(handler1 + handler2, settings.TrailingMetadataHandler);
         }
+
+        [Theory]
+        [InlineData("parent", "foo", "parent=foo")]
+        [InlineData("parent", "a,b", "parent=a%2Cb")]
+        [InlineData("transaction", "xy==", "transaction=xy%3D%3D")]
+        [InlineData("parent", null, "parent=")]
+        public void FromGoogleRequestParamsHeader(string parameterName, string parameterValue, string expectedHeaderValue)
+        {
+            var callSettings = CallSettings.FromGoogleRequestParamsHeader(parameterName, parameterValue);
+            AssertSingleHeader(callSettings, CallSettings.RequestParamsHeader, expectedHeaderValue);
+        }
+
+        internal static void AssertSingleHeader(CallSettings callSettings, string expectedHeaderName, string expectedHeaderValue)
+        {
+            var metadata = new Metadata();
+            callSettings.HeaderMutation(metadata);
+            Assert.Equal(1, metadata.Count);
+            Assert.Equal(expectedHeaderName, metadata[0].Key);
+            Assert.Equal(expectedHeaderValue, metadata[0].Value);
+        }
     }
 }

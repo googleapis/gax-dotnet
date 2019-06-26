@@ -161,7 +161,7 @@ namespace Google.Api.Gax.Grpc
                 BaseCallSettings);
 
         /// <summary>
-        /// Construct a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to
+        /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to
         /// the underlying <see cref="CallSettings"/>. If a value exists in both the original and
         /// the overlay, the overlay takes priority.
         /// </summary>
@@ -174,7 +174,7 @@ namespace Google.Api.Gax.Grpc
                 BaseCallSettings);
 
         /// <summary>
-        /// Construct a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an exception customizer
+        /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an exception customizer
         /// to both the synchronous and asynchronous calls.
         /// </summary>
         /// <remarks>
@@ -191,6 +191,21 @@ namespace Google.Api.Gax.Grpc
                 _asyncCall.WithExceptionCustomizer(customizer),
                 _syncCall.WithExceptionCustomizer(customizer),
                 BaseCallSettings);
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an x-goog-request-params header to each request,
+        /// using the specified parameter name and a value derived from the request.
+        /// </summary>
+        /// <param name="parameterName">The parameter name in the header. Must not be null.</param>
+        /// <param name="valueSelector">A function to call on each request, to determine the value to specify in the header.
+        /// The parameter must not be null, but may return null.</param>
+        /// <returns>A new <see cref="ApiCall{TRequest, TResponse}"/> which applies the header on each request.</returns>
+        public ApiCall<TRequest, TResponse> WithGoogleRequestParam(string parameterName, Func<TRequest, string> valueSelector)
+        {
+            GaxPreconditions.CheckNotNull(parameterName, nameof(parameterName));
+            GaxPreconditions.CheckNotNull(valueSelector, nameof(valueSelector));
+            return WithCallSettingsOverlay(request => CallSettings.FromGoogleRequestParamsHeader(parameterName, valueSelector(request)));
         }
     }
 }
