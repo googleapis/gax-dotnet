@@ -163,5 +163,23 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Same(replacement, thrown);
             Assert.Same(original, callbackException);
         }
+
+        [Fact]
+        public void WithGoogleRequestParam()
+        {
+            CallSettings syncCallSettings = null;
+            CallSettings asyncCallSettings = null;
+            var call0 = new ApiCall<SimpleRequest, SimpleResponse>(
+                (req, cs) => { asyncCallSettings = cs; return null; },
+                (req, cs) => { syncCallSettings = cs; return null; },
+                null);
+
+            var call1 = call0.WithGoogleRequestParam("parent", request => request.Name);
+            call1.Sync(new SimpleRequest { Name = "test" }, null);
+            call1.Async(new SimpleRequest { Name = "test" }, null);
+
+            CallSettingsTest.AssertSingleHeader(syncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
+            CallSettingsTest.AssertSingleHeader(asyncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
+        }
     }
 }

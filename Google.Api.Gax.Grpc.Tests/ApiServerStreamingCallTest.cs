@@ -75,5 +75,23 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.NotEqual(ctBase, asyncCallSettings.CancellationToken.Value);
             Assert.NotEqual(ctPerCall, asyncCallSettings.CancellationToken.Value);
         }
+
+        [Fact]
+        public void WithGoogleRequestParam()
+        {
+            CallSettings syncCallSettings = null;
+            CallSettings asyncCallSettings = null;
+            var call0 = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                (req, cs) => { asyncCallSettings = cs; return null; },
+                (req, cs) => { syncCallSettings = cs; return null; },
+                null);
+
+            var call1 = call0.WithGoogleRequestParam("parent", request => request.Name);
+            call1.Call(new SimpleRequest { Name = "test" }, null);
+            call1.CallAsync(new SimpleRequest { Name = "test" }, null);
+
+            CallSettingsTest.AssertSingleHeader(syncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
+            CallSettingsTest.AssertSingleHeader(asyncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace Google.Api.Gax.Grpc
     public sealed class CallSettings
     {
         internal const string FieldMaskHeader = "x-goog-fieldmask";
+        internal const string RequestParamsHeader = "x-goog-request-params";
 
         internal static CallSettings CancellationTokenNone { get; } = new CallSettings(default(CancellationToken), null, null, null, null, null);
 
@@ -232,5 +233,15 @@ namespace Google.Api.Gax.Grpc
 
         // TODO: Accept a Google.Protobuf.FieldMask when we're convinced it's useful and we know
         // exactly what to do with it.
+
+        /// <summary>
+        /// Creates a CallSettings which applies an x-goog-request-params header with the specified
+        /// parameter name and value.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter. Must not be null.</param>
+        /// <param name="value">The value of the parameter, which may be null. This is equivalent to an empty string.</param>
+        /// <returns>A CallSettings which applies the appropriate parameter.</returns>
+        internal static CallSettings FromGoogleRequestParamsHeader(string parameterName, string value) =>
+            CallSettings.FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
     }
 }
