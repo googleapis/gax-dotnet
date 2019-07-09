@@ -101,6 +101,7 @@ namespace Google.Api.Gax.Grpc
         /// Constructs a new <see cref="ApiServerStreamingCall{TRequest, TResponse}"/> that applies an x-goog-request-params header to each request,
         /// using the specified parameter name and a value derived from the request.
         /// </summary>
+        /// <remarks>Values produced by the function are URL-encoded; it is expected that <paramref name="parameterName"/> is already URL-encoded.</remarks>
         /// <param name="parameterName">The parameter name in the header. Must not be null.</param>
         /// <param name="valueSelector">A function to call on each request, to determine the value to specify in the header.
         /// The parameter must not be null, but may return null.</param>

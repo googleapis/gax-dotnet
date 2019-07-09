@@ -238,8 +238,9 @@ namespace Google.Api.Gax.Grpc
         /// Creates a CallSettings which applies an x-goog-request-params header with the specified
         /// parameter name and value.
         /// </summary>
+        /// <remarks>The value is URL-encoded; it is expected that <paramref name="parameterName"/> is already URL-encoded.</remarks>
         /// <param name="parameterName">The name of the parameter. Must not be null.</param>
-        /// <param name="value">The value of the parameter, which may be null. This is equivalent to an empty string.</param>
+        /// <param name="value">The value of the parameter, which may be null. A null value is equivalent to providing an empty string.</param>
         /// <returns>A CallSettings which applies the appropriate parameter.</returns>
         internal static CallSettings FromGoogleRequestParamsHeader(string parameterName, string value) =>
             CallSettings.FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
