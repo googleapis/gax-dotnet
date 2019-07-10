@@ -162,7 +162,7 @@ namespace Google.Api {
       }
       if (other.authorization_ != null) {
         if (authorization_ == null) {
-          authorization_ = new global::Google.Api.AuthorizationConfig();
+          Authorization = new global::Google.Api.AuthorizationConfig();
         }
         Authorization.MergeFrom(other.Authorization);
       }
@@ -179,9 +179,9 @@ namespace Google.Api {
             break;
           case 66: {
             if (authorization_ == null) {
-              authorization_ = new global::Google.Api.AuthorizationConfig();
+              Authorization = new global::Google.Api.AuthorizationConfig();
             }
-            input.ReadMessage(authorization_);
+            input.ReadMessage(Authorization);
             break;
           }
         }

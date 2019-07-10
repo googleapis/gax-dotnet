@@ -335,7 +335,7 @@ namespace Google.Api {
             break;
           }
           case 32: {
-            changeType_ = (global::Google.Api.ChangeType) input.ReadEnum();
+            ChangeType = (global::Google.Api.ChangeType) input.ReadEnum();
             break;
           }
           case 42: {

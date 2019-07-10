@@ -273,6 +273,7 @@ namespace Google.Type {
       }
     }
 
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Color);

@@ -495,7 +495,7 @@ namespace Google.Api {
       }
       if (other.metadata_ != null) {
         if (metadata_ == null) {
-          metadata_ = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
+          Metadata = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
         }
         Metadata.MergeFrom(other.Metadata);
       }
@@ -522,11 +522,11 @@ namespace Google.Api {
             break;
           }
           case 24: {
-            metricKind_ = (global::Google.Api.MetricDescriptor.Types.MetricKind) input.ReadEnum();
+            MetricKind = (global::Google.Api.MetricDescriptor.Types.MetricKind) input.ReadEnum();
             break;
           }
           case 32: {
-            valueType_ = (global::Google.Api.MetricDescriptor.Types.ValueType) input.ReadEnum();
+            ValueType = (global::Google.Api.MetricDescriptor.Types.ValueType) input.ReadEnum();
             break;
           }
           case 42: {
@@ -547,13 +547,13 @@ namespace Google.Api {
           }
           case 82: {
             if (metadata_ == null) {
-              metadata_ = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
+              Metadata = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
             }
-            input.ReadMessage(metadata_);
+            input.ReadMessage(Metadata);
             break;
           }
           case 96: {
-            launchStage_ = (global::Google.Api.LaunchStage) input.ReadEnum();
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
             break;
           }
         }
@@ -797,13 +797,13 @@ namespace Google.Api {
           }
           if (other.samplePeriod_ != null) {
             if (samplePeriod_ == null) {
-              samplePeriod_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+              SamplePeriod = new global::Google.Protobuf.WellKnownTypes.Duration();
             }
             SamplePeriod.MergeFrom(other.SamplePeriod);
           }
           if (other.ingestDelay_ != null) {
             if (ingestDelay_ == null) {
-              ingestDelay_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+              IngestDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
             }
             IngestDelay.MergeFrom(other.IngestDelay);
           }
@@ -819,21 +819,21 @@ namespace Google.Api {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
               case 8: {
-                launchStage_ = (global::Google.Api.LaunchStage) input.ReadEnum();
+                LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
                 break;
               }
               case 18: {
                 if (samplePeriod_ == null) {
-                  samplePeriod_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+                  SamplePeriod = new global::Google.Protobuf.WellKnownTypes.Duration();
                 }
-                input.ReadMessage(samplePeriod_);
+                input.ReadMessage(SamplePeriod);
                 break;
               }
               case 26: {
                 if (ingestDelay_ == null) {
-                  ingestDelay_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+                  IngestDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
                 }
-                input.ReadMessage(ingestDelay_);
+                input.ReadMessage(IngestDelay);
                 break;
               }
             }
