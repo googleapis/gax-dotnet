@@ -197,7 +197,7 @@ namespace Google.Rpc {
       }
       if (other.retryDelay_ != null) {
         if (retryDelay_ == null) {
-          retryDelay_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+          RetryDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
         }
         RetryDelay.MergeFrom(other.RetryDelay);
       }
@@ -214,9 +214,9 @@ namespace Google.Rpc {
             break;
           case 10: {
             if (retryDelay_ == null) {
-              retryDelay_ = new global::Google.Protobuf.WellKnownTypes.Duration();
+              RetryDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
             }
-            input.ReadMessage(retryDelay_);
+            input.ReadMessage(RetryDelay);
             break;
           }
         }

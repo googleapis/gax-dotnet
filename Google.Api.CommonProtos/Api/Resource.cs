@@ -331,7 +331,7 @@ namespace Google.Api {
             break;
           }
           case 32: {
-            history_ = (global::Google.Api.ResourceDescriptor.Types.History) input.ReadEnum();
+            History = (global::Google.Api.ResourceDescriptor.Types.History) input.ReadEnum();
             break;
           }
         }

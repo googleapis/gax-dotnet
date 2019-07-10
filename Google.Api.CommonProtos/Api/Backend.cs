@@ -521,7 +521,7 @@ namespace Google.Api {
             break;
           }
           case 48: {
-            pathTranslation_ = (global::Google.Api.BackendRule.Types.PathTranslation) input.ReadEnum();
+            PathTranslation = (global::Google.Api.BackendRule.Types.PathTranslation) input.ReadEnum();
             break;
           }
           case 58: {

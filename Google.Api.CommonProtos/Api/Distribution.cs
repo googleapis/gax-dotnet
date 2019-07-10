@@ -364,13 +364,13 @@ namespace Google.Api {
       }
       if (other.range_ != null) {
         if (range_ == null) {
-          range_ = new global::Google.Api.Distribution.Types.Range();
+          Range = new global::Google.Api.Distribution.Types.Range();
         }
         Range.MergeFrom(other.Range);
       }
       if (other.bucketOptions_ != null) {
         if (bucketOptions_ == null) {
-          bucketOptions_ = new global::Google.Api.Distribution.Types.BucketOptions();
+          BucketOptions = new global::Google.Api.Distribution.Types.BucketOptions();
         }
         BucketOptions.MergeFrom(other.BucketOptions);
       }
@@ -401,16 +401,16 @@ namespace Google.Api {
           }
           case 34: {
             if (range_ == null) {
-              range_ = new global::Google.Api.Distribution.Types.Range();
+              Range = new global::Google.Api.Distribution.Types.Range();
             }
-            input.ReadMessage(range_);
+            input.ReadMessage(Range);
             break;
           }
           case 50: {
             if (bucketOptions_ == null) {
-              bucketOptions_ = new global::Google.Api.Distribution.Types.BucketOptions();
+              BucketOptions = new global::Google.Api.Distribution.Types.BucketOptions();
             }
-            input.ReadMessage(bucketOptions_);
+            input.ReadMessage(BucketOptions);
             break;
           }
           case 58:
@@ -1593,7 +1593,7 @@ namespace Google.Api {
           }
           if (other.timestamp_ != null) {
             if (timestamp_ == null) {
-              timestamp_ = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+              Timestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             Timestamp.MergeFrom(other.Timestamp);
           }
@@ -1615,9 +1615,9 @@ namespace Google.Api {
               }
               case 18: {
                 if (timestamp_ == null) {
-                  timestamp_ = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                  Timestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
                 }
-                input.ReadMessage(timestamp_);
+                input.ReadMessage(Timestamp);
                 break;
               }
               case 26: {

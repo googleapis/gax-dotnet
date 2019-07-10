@@ -355,7 +355,7 @@ namespace Google.Api {
             break;
           }
           case 56: {
-            launchStage_ = (global::Google.Api.LaunchStage) input.ReadEnum();
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
             break;
           }
         }
@@ -683,7 +683,7 @@ namespace Google.Api {
       }
       if (other.systemLabels_ != null) {
         if (systemLabels_ == null) {
-          systemLabels_ = new global::Google.Protobuf.WellKnownTypes.Struct();
+          SystemLabels = new global::Google.Protobuf.WellKnownTypes.Struct();
         }
         SystemLabels.MergeFrom(other.SystemLabels);
       }
@@ -701,9 +701,9 @@ namespace Google.Api {
             break;
           case 10: {
             if (systemLabels_ == null) {
-              systemLabels_ = new global::Google.Protobuf.WellKnownTypes.Struct();
+              SystemLabels = new global::Google.Protobuf.WellKnownTypes.Struct();
             }
-            input.ReadMessage(systemLabels_);
+            input.ReadMessage(SystemLabels);
             break;
           }
           case 18: {

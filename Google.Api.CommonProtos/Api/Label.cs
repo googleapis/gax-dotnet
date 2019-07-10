@@ -232,7 +232,7 @@ namespace Google.Api {
             break;
           }
           case 16: {
-            valueType_ = (global::Google.Api.LabelDescriptor.Types.ValueType) input.ReadEnum();
+            ValueType = (global::Google.Api.LabelDescriptor.Types.ValueType) input.ReadEnum();
             break;
           }
           case 26: {

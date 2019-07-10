@@ -386,7 +386,7 @@ namespace Google.Api {
             break;
           }
           case 16: {
-            type_ = (global::Google.Api.Property.Types.PropertyType) input.ReadEnum();
+            Type = (global::Google.Api.Property.Types.PropertyType) input.ReadEnum();
             break;
           }
           case 26: {

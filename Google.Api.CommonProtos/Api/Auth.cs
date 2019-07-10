@@ -417,7 +417,7 @@ namespace Google.Api {
       }
       if (other.oauth_ != null) {
         if (oauth_ == null) {
-          oauth_ = new global::Google.Api.OAuthRequirements();
+          Oauth = new global::Google.Api.OAuthRequirements();
         }
         Oauth.MergeFrom(other.Oauth);
       }
@@ -442,9 +442,9 @@ namespace Google.Api {
           }
           case 18: {
             if (oauth_ == null) {
-              oauth_ = new global::Google.Api.OAuthRequirements();
+              Oauth = new global::Google.Api.OAuthRequirements();
             }
-            input.ReadMessage(oauth_);
+            input.ReadMessage(Oauth);
             break;
           }
           case 40: {

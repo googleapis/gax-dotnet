@@ -182,6 +182,7 @@ namespace Google.Api {
       }
     }
 
+
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 1;
     private string name_ = "";
@@ -798,50 +799,50 @@ namespace Google.Api {
       enums_.Add(other.enums_);
       if (other.documentation_ != null) {
         if (documentation_ == null) {
-          documentation_ = new global::Google.Api.Documentation();
+          Documentation = new global::Google.Api.Documentation();
         }
         Documentation.MergeFrom(other.Documentation);
       }
       if (other.backend_ != null) {
         if (backend_ == null) {
-          backend_ = new global::Google.Api.Backend();
+          Backend = new global::Google.Api.Backend();
         }
         Backend.MergeFrom(other.Backend);
       }
       if (other.http_ != null) {
         if (http_ == null) {
-          http_ = new global::Google.Api.Http();
+          Http = new global::Google.Api.Http();
         }
         Http.MergeFrom(other.Http);
       }
       if (other.quota_ != null) {
         if (quota_ == null) {
-          quota_ = new global::Google.Api.Quota();
+          Quota = new global::Google.Api.Quota();
         }
         Quota.MergeFrom(other.Quota);
       }
       if (other.authentication_ != null) {
         if (authentication_ == null) {
-          authentication_ = new global::Google.Api.Authentication();
+          Authentication = new global::Google.Api.Authentication();
         }
         Authentication.MergeFrom(other.Authentication);
       }
       if (other.context_ != null) {
         if (context_ == null) {
-          context_ = new global::Google.Api.Context();
+          Context = new global::Google.Api.Context();
         }
         Context.MergeFrom(other.Context);
       }
       if (other.usage_ != null) {
         if (usage_ == null) {
-          usage_ = new global::Google.Api.Usage();
+          Usage = new global::Google.Api.Usage();
         }
         Usage.MergeFrom(other.Usage);
       }
       endpoints_.Add(other.endpoints_);
       if (other.control_ != null) {
         if (control_ == null) {
-          control_ = new global::Google.Api.Control();
+          Control = new global::Google.Api.Control();
         }
         Control.MergeFrom(other.Control);
       }
@@ -850,31 +851,31 @@ namespace Google.Api {
       monitoredResources_.Add(other.monitoredResources_);
       if (other.billing_ != null) {
         if (billing_ == null) {
-          billing_ = new global::Google.Api.Billing();
+          Billing = new global::Google.Api.Billing();
         }
         Billing.MergeFrom(other.Billing);
       }
       if (other.logging_ != null) {
         if (logging_ == null) {
-          logging_ = new global::Google.Api.Logging();
+          Logging = new global::Google.Api.Logging();
         }
         Logging.MergeFrom(other.Logging);
       }
       if (other.monitoring_ != null) {
         if (monitoring_ == null) {
-          monitoring_ = new global::Google.Api.Monitoring();
+          Monitoring = new global::Google.Api.Monitoring();
         }
         Monitoring.MergeFrom(other.Monitoring);
       }
       if (other.systemParameters_ != null) {
         if (systemParameters_ == null) {
-          systemParameters_ = new global::Google.Api.SystemParameters();
+          SystemParameters = new global::Google.Api.SystemParameters();
         }
         SystemParameters.MergeFrom(other.SystemParameters);
       }
       if (other.sourceInfo_ != null) {
         if (sourceInfo_ == null) {
-          sourceInfo_ = new global::Google.Api.SourceInfo();
+          SourceInfo = new global::Google.Api.SourceInfo();
         }
         SourceInfo.MergeFrom(other.SourceInfo);
       }
@@ -911,51 +912,51 @@ namespace Google.Api {
           }
           case 50: {
             if (documentation_ == null) {
-              documentation_ = new global::Google.Api.Documentation();
+              Documentation = new global::Google.Api.Documentation();
             }
-            input.ReadMessage(documentation_);
+            input.ReadMessage(Documentation);
             break;
           }
           case 66: {
             if (backend_ == null) {
-              backend_ = new global::Google.Api.Backend();
+              Backend = new global::Google.Api.Backend();
             }
-            input.ReadMessage(backend_);
+            input.ReadMessage(Backend);
             break;
           }
           case 74: {
             if (http_ == null) {
-              http_ = new global::Google.Api.Http();
+              Http = new global::Google.Api.Http();
             }
-            input.ReadMessage(http_);
+            input.ReadMessage(Http);
             break;
           }
           case 82: {
             if (quota_ == null) {
-              quota_ = new global::Google.Api.Quota();
+              Quota = new global::Google.Api.Quota();
             }
-            input.ReadMessage(quota_);
+            input.ReadMessage(Quota);
             break;
           }
           case 90: {
             if (authentication_ == null) {
-              authentication_ = new global::Google.Api.Authentication();
+              Authentication = new global::Google.Api.Authentication();
             }
-            input.ReadMessage(authentication_);
+            input.ReadMessage(Authentication);
             break;
           }
           case 98: {
             if (context_ == null) {
-              context_ = new global::Google.Api.Context();
+              Context = new global::Google.Api.Context();
             }
-            input.ReadMessage(context_);
+            input.ReadMessage(Context);
             break;
           }
           case 122: {
             if (usage_ == null) {
-              usage_ = new global::Google.Api.Usage();
+              Usage = new global::Google.Api.Usage();
             }
-            input.ReadMessage(usage_);
+            input.ReadMessage(Usage);
             break;
           }
           case 146: {
@@ -971,9 +972,9 @@ namespace Google.Api {
           }
           case 170: {
             if (control_ == null) {
-              control_ = new global::Google.Api.Control();
+              Control = new global::Google.Api.Control();
             }
-            input.ReadMessage(control_);
+            input.ReadMessage(Control);
             break;
           }
           case 178: {
@@ -994,30 +995,30 @@ namespace Google.Api {
           }
           case 210: {
             if (billing_ == null) {
-              billing_ = new global::Google.Api.Billing();
+              Billing = new global::Google.Api.Billing();
             }
-            input.ReadMessage(billing_);
+            input.ReadMessage(Billing);
             break;
           }
           case 218: {
             if (logging_ == null) {
-              logging_ = new global::Google.Api.Logging();
+              Logging = new global::Google.Api.Logging();
             }
-            input.ReadMessage(logging_);
+            input.ReadMessage(Logging);
             break;
           }
           case 226: {
             if (monitoring_ == null) {
-              monitoring_ = new global::Google.Api.Monitoring();
+              Monitoring = new global::Google.Api.Monitoring();
             }
-            input.ReadMessage(monitoring_);
+            input.ReadMessage(Monitoring);
             break;
           }
           case 234: {
             if (systemParameters_ == null) {
-              systemParameters_ = new global::Google.Api.SystemParameters();
+              SystemParameters = new global::Google.Api.SystemParameters();
             }
-            input.ReadMessage(systemParameters_);
+            input.ReadMessage(SystemParameters);
             break;
           }
           case 266: {
@@ -1026,9 +1027,9 @@ namespace Google.Api {
           }
           case 298: {
             if (sourceInfo_ == null) {
-              sourceInfo_ = new global::Google.Api.SourceInfo();
+              SourceInfo = new global::Google.Api.SourceInfo();
             }
-            input.ReadMessage(sourceInfo_);
+            input.ReadMessage(SourceInfo);
             break;
           }
         }
