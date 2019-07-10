@@ -6,6 +6,7 @@
     <AssemblyOriginatorKeyFile>../Gax.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <NoWarn>1701;1702;1705;xUnit2013;AD0001</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <!-- Packaging information -->
