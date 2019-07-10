@@ -31,18 +31,17 @@ namespace Google.Api {
     static MonitoringReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chtnb29nbGUvYXBpL21vbml0b3JpbmcucHJvdG8SCmdvb2dsZS5hcGkaHGdv",
-            "b2dsZS9hcGkvYW5ub3RhdGlvbnMucHJvdG8i7AEKCk1vbml0b3JpbmcSSwoV",
-            "cHJvZHVjZXJfZGVzdGluYXRpb25zGAEgAygLMiwuZ29vZ2xlLmFwaS5Nb25p",
-            "dG9yaW5nLk1vbml0b3JpbmdEZXN0aW5hdGlvbhJLChVjb25zdW1lcl9kZXN0",
-            "aW5hdGlvbnMYAiADKAsyLC5nb29nbGUuYXBpLk1vbml0b3JpbmcuTW9uaXRv",
-            "cmluZ0Rlc3RpbmF0aW9uGkQKFU1vbml0b3JpbmdEZXN0aW5hdGlvbhIaChJt",
-            "b25pdG9yZWRfcmVzb3VyY2UYASABKAkSDwoHbWV0cmljcxgCIAMoCUJxCg5j",
-            "b20uZ29vZ2xlLmFwaUIPTW9uaXRvcmluZ1Byb3RvUAFaRWdvb2dsZS5nb2xh",
-            "bmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7",
-            "c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
+            "Chtnb29nbGUvYXBpL21vbml0b3JpbmcucHJvdG8SCmdvb2dsZS5hcGki7AEK",
+            "Ck1vbml0b3JpbmcSSwoVcHJvZHVjZXJfZGVzdGluYXRpb25zGAEgAygLMiwu",
+            "Z29vZ2xlLmFwaS5Nb25pdG9yaW5nLk1vbml0b3JpbmdEZXN0aW5hdGlvbhJL",
+            "ChVjb25zdW1lcl9kZXN0aW5hdGlvbnMYAiADKAsyLC5nb29nbGUuYXBpLk1v",
+            "bml0b3JpbmcuTW9uaXRvcmluZ0Rlc3RpbmF0aW9uGkQKFU1vbml0b3JpbmdE",
+            "ZXN0aW5hdGlvbhIaChJtb25pdG9yZWRfcmVzb3VyY2UYASABKAkSDwoHbWV0",
+            "cmljcxgCIAMoCUJxCg5jb20uZ29vZ2xlLmFwaUIPTW9uaXRvcmluZ1Byb3Rv",
+            "UAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBp",
+            "L3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Monitoring), global::Google.Api.Monitoring.Parser, new[]{ "ProducerDestinations", "ConsumerDestinations" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Monitoring.Types.MonitoringDestination), global::Google.Api.Monitoring.Types.MonitoringDestination.Parser, new[]{ "MonitoredResource", "Metrics" }, null, null, null)})
           }));
@@ -293,8 +292,7 @@ namespace Google.Api {
         private string monitoredResource_ = "";
         /// <summary>
         /// The monitored resource type. The type must be defined in
-        /// [Service.monitored_resources][google.api.Service.monitored_resources]
-        /// section.
+        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MonitoredResource {
@@ -311,8 +309,7 @@ namespace Google.Api {
         private readonly pbc::RepeatedField<string> metrics_ = new pbc::RepeatedField<string>();
         /// <summary>
         /// Types of the metrics to report to this monitoring destination.
-        /// Each type must be defined in
-        /// [Service.metrics][google.api.Service.metrics] section.
+        /// Each type must be defined in [Service.metrics][google.api.Service.metrics] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Metrics {

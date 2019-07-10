@@ -32,21 +32,25 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL3Jlc291cmNlLnByb3RvEgpnb29nbGUuYXBpGiBnb29n",
-            "bGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byIrCghSZXNvdXJjZRIPCgdw",
-            "YXR0ZXJuGAEgASgJEg4KBnN5bWJvbBgCIAEoCTpGCghyZXNvdXJjZRIdLmdv",
-            "b2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYnQggASgLMhQuZ29vZ2xlLmFw",
-            "aS5SZXNvdXJjZTo6ChJyZXNvdXJjZV9yZWZlcmVuY2USHS5nb29nbGUucHJv",
-            "dG9idWYuRmllbGRPcHRpb25zGJ8IIAEoCTpQChNyZXNvdXJjZV9kZWZpbml0",
-            "aW9uEhwuZ29vZ2xlLnByb3RvYnVmLkZpbGVPcHRpb25zGJ0IIAMoCzIULmdv",
-            "b2dsZS5hcGkuUmVzb3VyY2VCugEKDmNvbS5nb29nbGUuYXBpQg1SZXNvdXJj",
-            "ZVByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFw",
-            "aXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIER0FQSepBHQoScHJv",
-            "amVjdHMve3Byb2plY3R9EgdQcm9qZWN06kEsChxvcmdhbml6YXRpb25zL3tv",
-            "cmdhbml6YXRpb259EgxPcmdhbml6YXRpb25iBnByb3RvMw=="));
+            "bGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byLdAQoSUmVzb3VyY2VEZXNj",
+            "cmlwdG9yEgwKBHR5cGUYASABKAkSDwoHcGF0dGVybhgCIAMoCRISCgpuYW1l",
+            "X2ZpZWxkGAMgASgJEjcKB2hpc3RvcnkYBCABKA4yJi5nb29nbGUuYXBpLlJl",
+            "c291cmNlRGVzY3JpcHRvci5IaXN0b3J5IlsKB0hpc3RvcnkSFwoTSElTVE9S",
+            "WV9VTlNQRUNJRklFRBAAEh0KGU9SSUdJTkFMTFlfU0lOR0xFX1BBVFRFUk4Q",
+            "ARIYChRGVVRVUkVfTVVMVElfUEFUVEVSThACIjUKEVJlc291cmNlUmVmZXJl",
+            "bmNlEgwKBHR5cGUYASABKAkSEgoKY2hpbGRfdHlwZRgCIAEoCTpZChJyZXNv",
+            "dXJjZV9yZWZlcmVuY2USHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25z",
+            "GJ8IIAEoCzIdLmdvb2dsZS5hcGkuUmVzb3VyY2VSZWZlcmVuY2U6UgoIcmVz",
+            "b3VyY2USHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYnQggASgL",
+            "Mh4uZ29vZ2xlLmFwaS5SZXNvdXJjZURlc2NyaXB0b3JCbgoOY29tLmdvb2ds",
+            "ZS5hcGlCDVJlc291cmNlUHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
+            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlvbnP4",
+            "AQGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { pbr::FileDescriptor.DescriptorProtoFileDescriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Resource), global::Google.Api.Resource.Parser, new[]{ "Pattern", "Symbol" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ResourceDescriptor), global::Google.Api.ResourceDescriptor.Parser, new[]{ "Type", "Pattern", "NameField", "History" }, null, new[]{ typeof(global::Google.Api.ResourceDescriptor.Types.History) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ResourceReference), global::Google.Api.ResourceReference.Parser, new[]{ "Type", "ChildType" }, null, null, null)
           }));
     }
     #endregion
@@ -54,21 +58,44 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// An annotation designating that this field designates a resource.
+  /// A simple descriptor of a resource type.
+  ///
+  /// ResourceDescriptor annotates a resource message (either by means of a
+  /// protobuf annotation or use in the service config), and associates the
+  /// resource's schema, the resource type, and the pattern of the resource name.
   ///
   /// Example:
   ///
-  ///     message Topic {
-  ///       string name = 1 [(google.api.resource) = {
-  ///         name: "projects/{project}/topics/{topic}"
-  ///       }];
-  ///     }
+  ///   message Topic {
+  ///     // Indicates this message defines a resource schema.
+  ///     // Declares the resource type in the format of {service}/{kind}.
+  ///     // For Kubernetes resources, the format is {api group}/{kind}.
+  ///     option (google.api.resource) = {
+  ///       type: "pubsub.googleapis.com/Topic"
+  ///       pattern: "projects/{project}/topics/{topic}"
+  ///     };
+  ///   }
+  ///
+  /// Sometimes, resources have multiple patterns, typically because they can
+  /// live under multiple parents.
+  ///
+  /// Example:
+  ///
+  ///   message LogEntry {
+  ///     option (google.api.resource) = {
+  ///       type: "logging.googleapis.com/LogEntry"
+  ///       pattern: "projects/{project}/logs/{log}"
+  ///       pattern: "organizations/{organization}/logs/{log}"
+  ///       pattern: "folders/{folder}/logs/{log}"
+  ///       pattern: "billingAccounts/{billing_account}/logs/{log}"
+  ///     };
+  ///   }
   /// </summary>
-  public sealed partial class Resource : pb::IMessage<Resource> {
-    private static readonly pb::MessageParser<Resource> _parser = new pb::MessageParser<Resource>(() => new Resource());
+  public sealed partial class ResourceDescriptor : pb::IMessage<ResourceDescriptor> {
+    private static readonly pb::MessageParser<ResourceDescriptor> _parser = new pb::MessageParser<ResourceDescriptor>(() => new ResourceDescriptor());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Resource> Parser { get { return _parser; } }
+    public static pb::MessageParser<ResourceDescriptor> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -81,90 +108,140 @@ namespace Google.Api {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Resource() {
+    public ResourceDescriptor() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Resource(Resource other) : this() {
-      pattern_ = other.pattern_;
-      symbol_ = other.symbol_;
+    public ResourceDescriptor(ResourceDescriptor other) : this() {
+      type_ = other.type_;
+      pattern_ = other.pattern_.Clone();
+      nameField_ = other.nameField_;
+      history_ = other.history_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Resource Clone() {
-      return new Resource(this);
+    public ResourceDescriptor Clone() {
+      return new ResourceDescriptor(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private string type_ = "";
+    /// <summary>
+    /// The resource type. It must be in the format of
+    /// {service_name}/{resource_type_kind}. The `resource_type_kind` must be
+    /// singular and must not include version numbers.
+    ///
+    /// Example: `storage.googleapis.com/Bucket`
+    ///
+    /// The value of the resource_type_kind must follow the regular expression
+    /// /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
+    /// should use PascalCase (UpperCamelCase). The maximum number of
+    /// characters allowed for the `resource_type_kind` is 100.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Type {
+      get { return type_; }
+      set {
+        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
     }
 
     /// <summary>Field number for the "pattern" field.</summary>
-    public const int PatternFieldNumber = 1;
-    private string pattern_ = "";
+    public const int PatternFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_pattern_codec
+        = pb::FieldCodec.ForString(18);
+    private readonly pbc::RepeatedField<string> pattern_ = new pbc::RepeatedField<string>();
     /// <summary>
-    /// Required. The resource's name template.
+    /// Optional. The valid resource name pattern(s) for this resource type.
     ///
     /// Examples:
     ///   - "projects/{project}/topics/{topic}"
     ///   - "projects/{project}/knowledgeBases/{knowledge_base}"
+    ///
+    /// The components in braces correspond to the IDs for each resource in the
+    /// hierarchy. It is expected that, if multiple patterns are provided,
+    /// the same component name (e.g. "project") refers to IDs of the same
+    /// type of resource.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Pattern {
+    public pbc::RepeatedField<string> Pattern {
       get { return pattern_; }
+    }
+
+    /// <summary>Field number for the "name_field" field.</summary>
+    public const int NameFieldFieldNumber = 3;
+    private string nameField_ = "";
+    /// <summary>
+    /// Optional. The field on the resource that designates the resource name
+    /// field. If omitted, this is assumed to be "name".
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string NameField {
+      get { return nameField_; }
       set {
-        pattern_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        nameField_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "symbol" field.</summary>
-    public const int SymbolFieldNumber = 2;
-    private string symbol_ = "";
+    /// <summary>Field number for the "history" field.</summary>
+    public const int HistoryFieldNumber = 4;
+    private global::Google.Api.ResourceDescriptor.Types.History history_ = 0;
     /// <summary>
-    /// The name that should be used in code to describe the resource,
-    /// in PascalCase.
-    ///
-    /// If omitted, this is inferred from the name of the message.
-    /// This is required if the resource is being defined without the context
-    /// of a message (see `resource_definition`, below).
+    /// Optional. The historical or future-looking state of the resource pattern.
     ///
     /// Example:
-    ///   option (google.api.resource_definition) = {
-    ///     pattern: "projects/{project}"
-    ///     symbol: "Project"
-    ///   };
+    ///   // The InspectTemplate message originally only supported resource
+    ///   // names with organization, and project was added later.
+    ///   message InspectTemplate {
+    ///     option (google.api.resource) = {
+    ///       type: "dlp.googleapis.com/InspectTemplate"
+    ///       pattern:
+    ///       "organizations/{organization}/inspectTemplates/{inspect_template}"
+    ///       pattern: "projects/{project}/inspectTemplates/{inspect_template}"
+    ///       history: ORIGINALLY_SINGLE_PATTERN
+    ///     };
+    ///   }
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Symbol {
-      get { return symbol_; }
+    public global::Google.Api.ResourceDescriptor.Types.History History {
+      get { return history_; }
       set {
-        symbol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        history_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Resource);
+      return Equals(other as ResourceDescriptor);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Resource other) {
+    public bool Equals(ResourceDescriptor other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Pattern != other.Pattern) return false;
-      if (Symbol != other.Symbol) return false;
+      if (Type != other.Type) return false;
+      if(!pattern_.Equals(other.pattern_)) return false;
+      if (NameField != other.NameField) return false;
+      if (History != other.History) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Pattern.Length != 0) hash ^= Pattern.GetHashCode();
-      if (Symbol.Length != 0) hash ^= Symbol.GetHashCode();
+      if (Type.Length != 0) hash ^= Type.GetHashCode();
+      hash ^= pattern_.GetHashCode();
+      if (NameField.Length != 0) hash ^= NameField.GetHashCode();
+      if (History != 0) hash ^= History.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -178,13 +255,18 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Pattern.Length != 0) {
+      if (Type.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Pattern);
+        output.WriteString(Type);
       }
-      if (Symbol.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Symbol);
+      pattern_.WriteTo(output, _repeated_pattern_codec);
+      if (NameField.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(NameField);
+      }
+      if (History != 0) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) History);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -194,11 +276,15 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Pattern.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Pattern);
+      if (Type.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
       }
-      if (Symbol.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Symbol);
+      size += pattern_.CalculateSize(_repeated_pattern_codec);
+      if (NameField.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NameField);
+      }
+      if (History != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) History);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -207,15 +293,19 @@ namespace Google.Api {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Resource other) {
+    public void MergeFrom(ResourceDescriptor other) {
       if (other == null) {
         return;
       }
-      if (other.Pattern.Length != 0) {
-        Pattern = other.Pattern;
+      if (other.Type.Length != 0) {
+        Type = other.Type;
       }
-      if (other.Symbol.Length != 0) {
-        Symbol = other.Symbol;
+      pattern_.Add(other.pattern_);
+      if (other.NameField.Length != 0) {
+        NameField = other.NameField;
+      }
+      if (other.History != 0) {
+        History = other.History;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -229,11 +319,232 @@ namespace Google.Api {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Pattern = input.ReadString();
+            Type = input.ReadString();
             break;
           }
           case 18: {
-            Symbol = input.ReadString();
+            pattern_.AddEntriesFrom(input, _repeated_pattern_codec);
+            break;
+          }
+          case 26: {
+            NameField = input.ReadString();
+            break;
+          }
+          case 32: {
+            history_ = (global::Google.Api.ResourceDescriptor.Types.History) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the ResourceDescriptor message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      /// <summary>
+      /// A description of the historical or future-looking state of the
+      /// resource pattern.
+      /// </summary>
+      public enum History {
+        /// <summary>
+        /// The "unset" value.
+        /// </summary>
+        [pbr::OriginalName("HISTORY_UNSPECIFIED")] Unspecified = 0,
+        /// <summary>
+        /// The resource originally had one pattern and launched as such, and
+        /// additional patterns were added later.
+        /// </summary>
+        [pbr::OriginalName("ORIGINALLY_SINGLE_PATTERN")] OriginallySinglePattern = 1,
+        /// <summary>
+        /// The resource has one pattern, but the API owner expects to add more
+        /// later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
+        /// that from being necessary once there are multiple patterns.)
+        /// </summary>
+        [pbr::OriginalName("FUTURE_MULTI_PATTERN")] FutureMultiPattern = 2,
+      }
+
+    }
+    #endregion
+
+  }
+
+  /// <summary>
+  /// Defines a proto annotation that describes a field that refers to a resource.
+  /// </summary>
+  public sealed partial class ResourceReference : pb::IMessage<ResourceReference> {
+    private static readonly pb::MessageParser<ResourceReference> _parser = new pb::MessageParser<ResourceReference>(() => new ResourceReference());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ResourceReference> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ResourceReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResourceReference() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResourceReference(ResourceReference other) : this() {
+      type_ = other.type_;
+      childType_ = other.childType_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResourceReference Clone() {
+      return new ResourceReference(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private string type_ = "";
+    /// <summary>
+    /// The resource type that the annotated field references.
+    ///
+    /// Example:
+    ///
+    ///   message Subscription {
+    ///     string topic = 2 [(google.api.resource_reference) = {
+    ///       type = "pubsub.googleapis.com/Topic"
+    ///     }];
+    ///   }
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Type {
+      get { return type_; }
+      set {
+        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "child_type" field.</summary>
+    public const int ChildTypeFieldNumber = 2;
+    private string childType_ = "";
+    /// <summary>
+    /// The resource type of a child collection that the annotated field
+    /// references. This is useful for `parent` fields where a resource has more
+    /// than one possible type of parent.
+    ///
+    /// Example:
+    ///
+    ///   message ListLogEntriesRequest {
+    ///     string parent = 1 [(google.api.resource_reference) = {
+    ///       child_type: "logging.googleapis.com/LogEntry"
+    ///     };
+    ///   }
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ChildType {
+      get { return childType_; }
+      set {
+        childType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ResourceReference);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ResourceReference other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (ChildType != other.ChildType) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type.Length != 0) hash ^= Type.GetHashCode();
+      if (ChildType.Length != 0) hash ^= ChildType.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      if (ChildType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ChildType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
+      }
+      if (ChildType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ChildType);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ResourceReference other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type.Length != 0) {
+        Type = other.Type;
+      }
+      if (other.ChildType.Length != 0) {
+        ChildType = other.ChildType;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            ChildType = input.ReadString();
             break;
           }
         }

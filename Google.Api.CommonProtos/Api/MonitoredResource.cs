@@ -32,26 +32,27 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiNnb29nbGUvYXBpL21vbml0b3JlZF9yZXNvdXJjZS5wcm90bxIKZ29vZ2xl",
-            "LmFwaRoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90bxocZ29vZ2xlL3Byb3RvYnVm",
-            "L3N0cnVjdC5wcm90byKRAQobTW9uaXRvcmVkUmVzb3VyY2VEZXNjcmlwdG9y",
-            "EgwKBG5hbWUYBSABKAkSDAoEdHlwZRgBIAEoCRIUCgxkaXNwbGF5X25hbWUY",
-            "AiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSKwoGbGFiZWxzGAQgAygLMhsu",
-            "Z29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3IiiwEKEU1vbml0b3JlZFJlc291",
-            "cmNlEgwKBHR5cGUYASABKAkSOQoGbGFiZWxzGAIgAygLMikuZ29vZ2xlLmFw",
-            "aS5Nb25pdG9yZWRSZXNvdXJjZS5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRy",
-            "eRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIsoBChlNb25pdG9y",
-            "ZWRSZXNvdXJjZU1ldGFkYXRhEi4KDXN5c3RlbV9sYWJlbHMYASABKAsyFy5n",
-            "b29nbGUucHJvdG9idWYuU3RydWN0EkoKC3VzZXJfbGFiZWxzGAIgAygLMjUu",
-            "Z29vZ2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZU1ldGFkYXRhLlVzZXJMYWJl",
-            "bHNFbnRyeRoxCg9Vc2VyTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZh",
-            "bHVlGAIgASgJOgI4AUJ5Cg5jb20uZ29vZ2xlLmFwaUIWTW9uaXRvcmVkUmVz",
-            "b3VyY2VQcm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
-            "bGVhcGlzL2FwaS9tb25pdG9yZWRyZXM7bW9uaXRvcmVkcmVz+AEBogIER0FQ",
-            "SWIGcHJvdG8z"));
+            "LmFwaRoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90bxodZ29vZ2xlL2FwaS9sYXVu",
+            "Y2hfc3RhZ2UucHJvdG8aHGdvb2dsZS9wcm90b2J1Zi9zdHJ1Y3QucHJvdG8i",
+            "wAEKG01vbml0b3JlZFJlc291cmNlRGVzY3JpcHRvchIMCgRuYW1lGAUgASgJ",
+            "EgwKBHR5cGUYASABKAkSFAoMZGlzcGxheV9uYW1lGAIgASgJEhMKC2Rlc2Ny",
+            "aXB0aW9uGAMgASgJEisKBmxhYmVscxgEIAMoCzIbLmdvb2dsZS5hcGkuTGFi",
+            "ZWxEZXNjcmlwdG9yEi0KDGxhdW5jaF9zdGFnZRgHIAEoDjIXLmdvb2dsZS5h",
+            "cGkuTGF1bmNoU3RhZ2UiiwEKEU1vbml0b3JlZFJlc291cmNlEgwKBHR5cGUY",
+            "ASABKAkSOQoGbGFiZWxzGAIgAygLMikuZ29vZ2xlLmFwaS5Nb25pdG9yZWRS",
+            "ZXNvdXJjZS5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASAB",
+            "KAkSDQoFdmFsdWUYAiABKAk6AjgBIsoBChlNb25pdG9yZWRSZXNvdXJjZU1l",
+            "dGFkYXRhEi4KDXN5c3RlbV9sYWJlbHMYASABKAsyFy5nb29nbGUucHJvdG9i",
+            "dWYuU3RydWN0EkoKC3VzZXJfbGFiZWxzGAIgAygLMjUuZ29vZ2xlLmFwaS5N",
+            "b25pdG9yZWRSZXNvdXJjZU1ldGFkYXRhLlVzZXJMYWJlbHNFbnRyeRoxCg9V",
+            "c2VyTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4",
+            "AUJ5Cg5jb20uZ29vZ2xlLmFwaUIWTW9uaXRvcmVkUmVzb3VyY2VQcm90b1AB",
+            "WkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9t",
+            "b25pdG9yZWRyZXM7bW9uaXRvcmVkcmVz+AEBogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceDescriptor), global::Google.Api.MonitoredResourceDescriptor.Parser, new[]{ "Name", "Type", "DisplayName", "Description", "Labels" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceDescriptor), global::Google.Api.MonitoredResourceDescriptor.Parser, new[]{ "Name", "Type", "DisplayName", "Description", "Labels", "LaunchStage" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResource), global::Google.Api.MonitoredResource.Parser, new[]{ "Type", "Labels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceMetadata), global::Google.Api.MonitoredResourceMetadata.Parser, new[]{ "SystemLabels", "UserLabels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
@@ -61,10 +62,9 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// An object that describes the schema of a
-  /// [MonitoredResource][google.api.MonitoredResource] object using a type name
-  /// and a set of labels.  For example, the monitored resource descriptor for
-  /// Google Compute Engine VM instances has a type of
+  /// An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
+  /// type name and a set of labels.  For example, the monitored resource
+  /// descriptor for Google Compute Engine VM instances has a type of
   /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
   /// `"zone"` to identify particular VM instances.
   ///
@@ -102,6 +102,7 @@ namespace Google.Api {
       displayName_ = other.displayName_;
       description_ = other.description_;
       labels_ = other.labels_.Clone();
+      launchStage_ = other.launchStage_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -192,6 +193,20 @@ namespace Google.Api {
       get { return labels_; }
     }
 
+    /// <summary>Field number for the "launch_stage" field.</summary>
+    public const int LaunchStageFieldNumber = 7;
+    private global::Google.Api.LaunchStage launchStage_ = 0;
+    /// <summary>
+    /// Optional. The launch stage of the monitored resource definition.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Api.LaunchStage LaunchStage {
+      get { return launchStage_; }
+      set {
+        launchStage_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MonitoredResourceDescriptor);
@@ -210,6 +225,7 @@ namespace Google.Api {
       if (DisplayName != other.DisplayName) return false;
       if (Description != other.Description) return false;
       if(!labels_.Equals(other.labels_)) return false;
+      if (LaunchStage != other.LaunchStage) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -221,6 +237,7 @@ namespace Google.Api {
       if (DisplayName.Length != 0) hash ^= DisplayName.GetHashCode();
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       hash ^= labels_.GetHashCode();
+      if (LaunchStage != 0) hash ^= LaunchStage.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -251,6 +268,10 @@ namespace Google.Api {
         output.WriteRawTag(42);
         output.WriteString(Name);
       }
+      if (LaunchStage != 0) {
+        output.WriteRawTag(56);
+        output.WriteEnum((int) LaunchStage);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -272,6 +293,9 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
       }
       size += labels_.CalculateSize(_repeated_labels_codec);
+      if (LaunchStage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LaunchStage);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -296,6 +320,9 @@ namespace Google.Api {
         Description = other.Description;
       }
       labels_.Add(other.labels_);
+      if (other.LaunchStage != 0) {
+        LaunchStage = other.LaunchStage;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -327,6 +354,10 @@ namespace Google.Api {
             Name = input.ReadString();
             break;
           }
+          case 56: {
+            launchStage_ = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
         }
       }
     }
@@ -337,13 +368,11 @@ namespace Google.Api {
   /// An object representing a resource that can be used for monitoring, logging,
   /// billing, or other purposes. Examples include virtual machine instances,
   /// databases, and storage devices such as disks. The `type` field identifies a
-  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object
-  /// that describes the resource's schema. Information in the `labels` field
-  /// identifies the actual resource and its attributes according to the schema.
-  /// For example, a particular Compute Engine VM instance could be represented by
-  /// the following object, because the
-  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for
-  /// `"gce_instance"` has labels
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource's
+  /// schema. Information in the `labels` field identifies the actual resource and
+  /// its attributes according to the schema. For example, a particular Compute
+  /// Engine VM instance could be represented by the following object, because the
+  /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
   /// `"instance_id"` and `"zone"`:
   ///
   ///     { "type": "gce_instance",
@@ -390,10 +419,8 @@ namespace Google.Api {
     private string type_ = "";
     /// <summary>
     /// Required. The monitored resource type. This field must match
-    /// the `type` field of a
-    /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor]
-    /// object. For example, the type of a Compute Engine VM instance is
-    /// `gce_instance`.
+    /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
+    /// example, the type of a Compute Engine VM instance is `gce_instance`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -512,12 +539,12 @@ namespace Google.Api {
   }
 
   /// <summary>
-  /// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource]
-  /// object. [MonitoredResource][google.api.MonitoredResource] objects contain the
-  /// minimum set of information to uniquely identify a monitored resource
-  /// instance. There is some other useful auxiliary metadata. Monitoring and
-  /// Logging use an ingestion pipeline to extract metadata for cloud resources of
-  /// all types, and store the metadata in this message.
+  /// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.
+  /// [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to
+  /// uniquely identify a monitored resource instance. There is some other useful
+  /// auxiliary metadata. Monitoring and Logging use an ingestion
+  /// pipeline to extract metadata for cloud resources of all types, and store
+  /// the metadata in this message.
   /// </summary>
   public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata> {
     private static readonly pb::MessageParser<MonitoredResourceMetadata> _parser = new pb::MessageParser<MonitoredResourceMetadata>(() => new MonitoredResourceMetadata());

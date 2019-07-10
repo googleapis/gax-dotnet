@@ -31,18 +31,17 @@ namespace Google.Api {
     static LoggingReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chhnb29nbGUvYXBpL2xvZ2dpbmcucHJvdG8SCmdvb2dsZS5hcGkaHGdvb2ds",
-            "ZS9hcGkvYW5ub3RhdGlvbnMucHJvdG8i1wEKB0xvZ2dpbmcSRQoVcHJvZHVj",
-            "ZXJfZGVzdGluYXRpb25zGAEgAygLMiYuZ29vZ2xlLmFwaS5Mb2dnaW5nLkxv",
-            "Z2dpbmdEZXN0aW5hdGlvbhJFChVjb25zdW1lcl9kZXN0aW5hdGlvbnMYAiAD",
-            "KAsyJi5nb29nbGUuYXBpLkxvZ2dpbmcuTG9nZ2luZ0Rlc3RpbmF0aW9uGj4K",
-            "EkxvZ2dpbmdEZXN0aW5hdGlvbhIaChJtb25pdG9yZWRfcmVzb3VyY2UYAyAB",
-            "KAkSDAoEbG9ncxgBIAMoCUJuCg5jb20uZ29vZ2xlLmFwaUIMTG9nZ2luZ1By",
-            "b3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMv",
-            "YXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3Rv",
-            "Mw=="));
+            "Chhnb29nbGUvYXBpL2xvZ2dpbmcucHJvdG8SCmdvb2dsZS5hcGki1wEKB0xv",
+            "Z2dpbmcSRQoVcHJvZHVjZXJfZGVzdGluYXRpb25zGAEgAygLMiYuZ29vZ2xl",
+            "LmFwaS5Mb2dnaW5nLkxvZ2dpbmdEZXN0aW5hdGlvbhJFChVjb25zdW1lcl9k",
+            "ZXN0aW5hdGlvbnMYAiADKAsyJi5nb29nbGUuYXBpLkxvZ2dpbmcuTG9nZ2lu",
+            "Z0Rlc3RpbmF0aW9uGj4KEkxvZ2dpbmdEZXN0aW5hdGlvbhIaChJtb25pdG9y",
+            "ZWRfcmVzb3VyY2UYAyABKAkSDAoEbG9ncxgBIAMoCUJuCg5jb20uZ29vZ2xl",
+            "LmFwaUIMTG9nZ2luZ1Byb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnBy",
+            "b3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZp",
+            "Z6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Logging), global::Google.Api.Logging.Parser, new[]{ "ProducerDestinations", "ConsumerDestinations" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Logging.Types.LoggingDestination), global::Google.Api.Logging.Types.LoggingDestination.Parser, new[]{ "MonitoredResource", "Logs" }, null, null, null)})
           }));
@@ -281,8 +280,7 @@ namespace Google.Api {
         private string monitoredResource_ = "";
         /// <summary>
         /// The monitored resource type. The type must be defined in the
-        /// [Service.monitored_resources][google.api.Service.monitored_resources]
-        /// section.
+        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MonitoredResource {
@@ -299,9 +297,9 @@ namespace Google.Api {
         private readonly pbc::RepeatedField<string> logs_ = new pbc::RepeatedField<string>();
         /// <summary>
         /// Names of the logs to be sent to this destination. Each name must
-        /// be defined in the [Service.logs][google.api.Service.logs] section. If the
-        /// log name is not a domain scoped name, it will be automatically prefixed
-        /// with the service name followed by "/".
+        /// be defined in the [Service.logs][google.api.Service.logs] section. If the log name is
+        /// not a domain scoped name, it will be automatically prefixed with
+        /// the service name followed by "/".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Logs {
