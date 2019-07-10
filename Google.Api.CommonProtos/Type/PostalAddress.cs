@@ -63,7 +63,7 @@ namespace Google.Type {
   ///
   /// Advice on address input / editing:
   ///  - Use an i18n-ready address widget such as
-  ///    https://github.com/googlei18n/libaddressinput)
+  ///    https://github.com/google/libaddressinput)
   /// - Users should not be presented with UI elements for input or editing of
   ///   fields outside countries where that field is used.
   ///

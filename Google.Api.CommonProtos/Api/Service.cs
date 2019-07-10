@@ -31,52 +31,50 @@ namespace Google.Api {
     static ServiceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chhnb29nbGUvYXBpL3NlcnZpY2UucHJvdG8SCmdvb2dsZS5hcGkaHGdvb2ds",
-            "ZS9hcGkvYW5ub3RhdGlvbnMucHJvdG8aFWdvb2dsZS9hcGkvYXV0aC5wcm90",
-            "bxoYZ29vZ2xlL2FwaS9iYWNrZW5kLnByb3RvGhhnb29nbGUvYXBpL2JpbGxp",
-            "bmcucHJvdG8aGGdvb2dsZS9hcGkvY29udGV4dC5wcm90bxoYZ29vZ2xlL2Fw",
-            "aS9jb250cm9sLnByb3RvGh5nb29nbGUvYXBpL2RvY3VtZW50YXRpb24ucHJv",
-            "dG8aGWdvb2dsZS9hcGkvZW5kcG9pbnQucHJvdG8aKmdvb2dsZS9hcGkvZXhw",
-            "ZXJpbWVudGFsL2V4cGVyaW1lbnRhbC5wcm90bxoVZ29vZ2xlL2FwaS9odHRw",
-            "LnByb3RvGhZnb29nbGUvYXBpL2xhYmVsLnByb3RvGhRnb29nbGUvYXBpL2xv",
-            "Zy5wcm90bxoYZ29vZ2xlL2FwaS9sb2dnaW5nLnByb3RvGhdnb29nbGUvYXBp",
-            "L21ldHJpYy5wcm90bxojZ29vZ2xlL2FwaS9tb25pdG9yZWRfcmVzb3VyY2Uu",
-            "cHJvdG8aG2dvb2dsZS9hcGkvbW9uaXRvcmluZy5wcm90bxoWZ29vZ2xlL2Fw",
-            "aS9xdW90YS5wcm90bxocZ29vZ2xlL2FwaS9zb3VyY2VfaW5mby5wcm90bxoh",
-            "Z29vZ2xlL2FwaS9zeXN0ZW1fcGFyYW1ldGVyLnByb3RvGhZnb29nbGUvYXBp",
-            "L3VzYWdlLnByb3RvGhlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvGhlnb29n",
-            "bGUvcHJvdG9idWYvYXBpLnByb3RvGhpnb29nbGUvcHJvdG9idWYvdHlwZS5w",
-            "cm90bxoeZ29vZ2xlL3Byb3RvYnVmL3dyYXBwZXJzLnByb3RvIoYICgdTZXJ2",
-            "aWNlEjQKDmNvbmZpZ192ZXJzaW9uGBQgASgLMhwuZ29vZ2xlLnByb3RvYnVm",
-            "LlVJbnQzMlZhbHVlEgwKBG5hbWUYASABKAkSCgoCaWQYISABKAkSDQoFdGl0",
-            "bGUYAiABKAkSGwoTcHJvZHVjZXJfcHJvamVjdF9pZBgWIAEoCRIiCgRhcGlz",
-            "GAMgAygLMhQuZ29vZ2xlLnByb3RvYnVmLkFwaRIkCgV0eXBlcxgEIAMoCzIV",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UeXBlEiQKBWVudW1zGAUgAygLMhUuZ29vZ2xl",
-            "LnByb3RvYnVmLkVudW0SMAoNZG9jdW1lbnRhdGlvbhgGIAEoCzIZLmdvb2ds",
-            "ZS5hcGkuRG9jdW1lbnRhdGlvbhIkCgdiYWNrZW5kGAggASgLMhMuZ29vZ2xl",
-            "LmFwaS5CYWNrZW5kEh4KBGh0dHAYCSABKAsyEC5nb29nbGUuYXBpLkh0dHAS",
-            "IAoFcXVvdGEYCiABKAsyES5nb29nbGUuYXBpLlF1b3RhEjIKDmF1dGhlbnRp",
-            "Y2F0aW9uGAsgASgLMhouZ29vZ2xlLmFwaS5BdXRoZW50aWNhdGlvbhIkCgdj",
-            "b250ZXh0GAwgASgLMhMuZ29vZ2xlLmFwaS5Db250ZXh0EiAKBXVzYWdlGA8g",
-            "ASgLMhEuZ29vZ2xlLmFwaS5Vc2FnZRInCgllbmRwb2ludHMYEiADKAsyFC5n",
-            "b29nbGUuYXBpLkVuZHBvaW50EiQKB2NvbnRyb2wYFSABKAsyEy5nb29nbGUu",
-            "YXBpLkNvbnRyb2wSJwoEbG9ncxgXIAMoCzIZLmdvb2dsZS5hcGkuTG9nRGVz",
-            "Y3JpcHRvchItCgdtZXRyaWNzGBggAygLMhwuZ29vZ2xlLmFwaS5NZXRyaWNE",
-            "ZXNjcmlwdG9yEkQKE21vbml0b3JlZF9yZXNvdXJjZXMYGSADKAsyJy5nb29n",
-            "bGUuYXBpLk1vbml0b3JlZFJlc291cmNlRGVzY3JpcHRvchIkCgdiaWxsaW5n",
-            "GBogASgLMhMuZ29vZ2xlLmFwaS5CaWxsaW5nEiQKB2xvZ2dpbmcYGyABKAsy",
-            "Ey5nb29nbGUuYXBpLkxvZ2dpbmcSKgoKbW9uaXRvcmluZxgcIAEoCzIWLmdv",
-            "b2dsZS5hcGkuTW9uaXRvcmluZxI3ChFzeXN0ZW1fcGFyYW1ldGVycxgdIAEo",
-            "CzIcLmdvb2dsZS5hcGkuU3lzdGVtUGFyYW1ldGVycxIrCgtzb3VyY2VfaW5m",
-            "bxglIAEoCzIWLmdvb2dsZS5hcGkuU291cmNlSW5mbxIuCgxleHBlcmltZW50",
-            "YWwYZSABKAsyGC5nb29nbGUuYXBpLkV4cGVyaW1lbnRhbEJuCg5jb20uZ29v",
-            "Z2xlLmFwaUIMU2VydmljZVByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dl",
-            "bnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNv",
-            "bmZpZ6ICBEdBUEliBnByb3RvMw=="));
+            "Chhnb29nbGUvYXBpL3NlcnZpY2UucHJvdG8SCmdvb2dsZS5hcGkaFWdvb2ds",
+            "ZS9hcGkvYXV0aC5wcm90bxoYZ29vZ2xlL2FwaS9iYWNrZW5kLnByb3RvGhhn",
+            "b29nbGUvYXBpL2JpbGxpbmcucHJvdG8aGGdvb2dsZS9hcGkvY29udGV4dC5w",
+            "cm90bxoYZ29vZ2xlL2FwaS9jb250cm9sLnByb3RvGh5nb29nbGUvYXBpL2Rv",
+            "Y3VtZW50YXRpb24ucHJvdG8aGWdvb2dsZS9hcGkvZW5kcG9pbnQucHJvdG8a",
+            "FWdvb2dsZS9hcGkvaHR0cC5wcm90bxoWZ29vZ2xlL2FwaS9sYWJlbC5wcm90",
+            "bxoUZ29vZ2xlL2FwaS9sb2cucHJvdG8aGGdvb2dsZS9hcGkvbG9nZ2luZy5w",
+            "cm90bxoXZ29vZ2xlL2FwaS9tZXRyaWMucHJvdG8aI2dvb2dsZS9hcGkvbW9u",
+            "aXRvcmVkX3Jlc291cmNlLnByb3RvGhtnb29nbGUvYXBpL21vbml0b3Jpbmcu",
+            "cHJvdG8aFmdvb2dsZS9hcGkvcXVvdGEucHJvdG8aGWdvb2dsZS9hcGkvcmVz",
+            "b3VyY2UucHJvdG8aHGdvb2dsZS9hcGkvc291cmNlX2luZm8ucHJvdG8aIWdv",
+            "b2dsZS9hcGkvc3lzdGVtX3BhcmFtZXRlci5wcm90bxoWZ29vZ2xlL2FwaS91",
+            "c2FnZS5wcm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90bxoZZ29vZ2xl",
+            "L3Byb3RvYnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3RvYnVmL3R5cGUucHJv",
+            "dG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byLWBwoHU2Vydmlj",
+            "ZRI0Cg5jb25maWdfdmVyc2lvbhgUIAEoCzIcLmdvb2dsZS5wcm90b2J1Zi5V",
+            "SW50MzJWYWx1ZRIMCgRuYW1lGAEgASgJEgoKAmlkGCEgASgJEg0KBXRpdGxl",
+            "GAIgASgJEhsKE3Byb2R1Y2VyX3Byb2plY3RfaWQYFiABKAkSIgoEYXBpcxgD",
+            "IAMoCzIULmdvb2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsyFS5n",
+            "b29nbGUucHJvdG9idWYuVHlwZRIkCgVlbnVtcxgFIAMoCzIVLmdvb2dsZS5w",
+            "cm90b2J1Zi5FbnVtEjAKDWRvY3VtZW50YXRpb24YBiABKAsyGS5nb29nbGUu",
+            "YXBpLkRvY3VtZW50YXRpb24SJAoHYmFja2VuZBgIIAEoCzITLmdvb2dsZS5h",
+            "cGkuQmFja2VuZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xlLmFwaS5IdHRwEiAK",
+            "BXF1b3RhGAogASgLMhEuZ29vZ2xlLmFwaS5RdW90YRIyCg5hdXRoZW50aWNh",
+            "dGlvbhgLIAEoCzIaLmdvb2dsZS5hcGkuQXV0aGVudGljYXRpb24SJAoHY29u",
+            "dGV4dBgMIAEoCzITLmdvb2dsZS5hcGkuQ29udGV4dBIgCgV1c2FnZRgPIAEo",
+            "CzIRLmdvb2dsZS5hcGkuVXNhZ2USJwoJZW5kcG9pbnRzGBIgAygLMhQuZ29v",
+            "Z2xlLmFwaS5FbmRwb2ludBIkCgdjb250cm9sGBUgASgLMhMuZ29vZ2xlLmFw",
+            "aS5Db250cm9sEicKBGxvZ3MYFyADKAsyGS5nb29nbGUuYXBpLkxvZ0Rlc2Ny",
+            "aXB0b3ISLQoHbWV0cmljcxgYIAMoCzIcLmdvb2dsZS5hcGkuTWV0cmljRGVz",
+            "Y3JpcHRvchJEChNtb25pdG9yZWRfcmVzb3VyY2VzGBkgAygLMicuZ29vZ2xl",
+            "LmFwaS5Nb25pdG9yZWRSZXNvdXJjZURlc2NyaXB0b3ISJAoHYmlsbGluZxga",
+            "IAEoCzITLmdvb2dsZS5hcGkuQmlsbGluZxIkCgdsb2dnaW5nGBsgASgLMhMu",
+            "Z29vZ2xlLmFwaS5Mb2dnaW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5nb29n",
+            "bGUuYXBpLk1vbml0b3JpbmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSABKAsy",
+            "HC5nb29nbGUuYXBpLlN5c3RlbVBhcmFtZXRlcnMSKwoLc291cmNlX2luZm8Y",
+            "JSABKAsyFi5nb29nbGUuYXBpLlNvdXJjZUluZm9CbgoOY29tLmdvb2dsZS5h",
+            "cGlCDFNlcnZpY2VQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90",
+            "by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWei",
+            "AgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.ExperimentalReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.ResourceReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo", "Experimental" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo" }, null, null, null)
           }));
     }
     #endregion
@@ -158,7 +156,6 @@ namespace Google.Api {
       monitoring_ = other.monitoring_ != null ? other.monitoring_.Clone() : null;
       systemParameters_ = other.systemParameters_ != null ? other.systemParameters_.Clone() : null;
       sourceInfo_ = other.sourceInfo_ != null ? other.sourceInfo_.Clone() : null;
-      experimental_ = other.experimental_ != null ? other.experimental_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -253,10 +250,10 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Api> apis_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Api>();
     /// <summary>
     /// A list of API interfaces exported by this service. Only the `name` field
-    /// of the [google.protobuf.Api][google.protobuf.Api] needs to be provided by
-    /// the configuration author, as the remaining fields will be derived from the
-    /// IDL during the normalization process. It is an error to specify an API
-    /// interface here which cannot be resolved against the associated IDL files.
+    /// of the [google.protobuf.Api][google.protobuf.Api] needs to be provided by the configuration
+    /// author, as the remaining fields will be derived from the IDL during the
+    /// normalization process. It is an error to specify an API interface here
+    /// which cannot be resolved against the associated IDL files.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Api> Apis {
@@ -462,8 +459,7 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.MonitoredResourceDescriptor> monitoredResources_ = new pbc::RepeatedField<global::Google.Api.MonitoredResourceDescriptor>();
     /// <summary>
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and
-    /// [Service.logging][google.api.Service.logging] configurations.
+    /// by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Api.MonitoredResourceDescriptor> MonitoredResources {
@@ -540,20 +536,6 @@ namespace Google.Api {
       }
     }
 
-    /// <summary>Field number for the "experimental" field.</summary>
-    public const int ExperimentalFieldNumber = 101;
-    private global::Google.Api.Experimental experimental_;
-    /// <summary>
-    /// Experimental configuration.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Api.Experimental Experimental {
-      get { return experimental_; }
-      set {
-        experimental_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Service);
@@ -592,7 +574,6 @@ namespace Google.Api {
       if (!object.Equals(Monitoring, other.Monitoring)) return false;
       if (!object.Equals(SystemParameters, other.SystemParameters)) return false;
       if (!object.Equals(SourceInfo, other.SourceInfo)) return false;
-      if (!object.Equals(Experimental, other.Experimental)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -624,7 +605,6 @@ namespace Google.Api {
       if (monitoring_ != null) hash ^= Monitoring.GetHashCode();
       if (systemParameters_ != null) hash ^= SystemParameters.GetHashCode();
       if (sourceInfo_ != null) hash ^= SourceInfo.GetHashCode();
-      if (experimental_ != null) hash ^= Experimental.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -716,10 +696,6 @@ namespace Google.Api {
         output.WriteRawTag(170, 2);
         output.WriteMessage(SourceInfo);
       }
-      if (experimental_ != null) {
-        output.WriteRawTag(170, 6);
-        output.WriteMessage(Experimental);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -788,9 +764,6 @@ namespace Google.Api {
       }
       if (sourceInfo_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SourceInfo);
-      }
-      if (experimental_ != null) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(Experimental);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -904,12 +877,6 @@ namespace Google.Api {
           sourceInfo_ = new global::Google.Api.SourceInfo();
         }
         SourceInfo.MergeFrom(other.SourceInfo);
-      }
-      if (other.experimental_ != null) {
-        if (experimental_ == null) {
-          experimental_ = new global::Google.Api.Experimental();
-        }
-        Experimental.MergeFrom(other.Experimental);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1062,13 +1029,6 @@ namespace Google.Api {
               sourceInfo_ = new global::Google.Api.SourceInfo();
             }
             input.ReadMessage(sourceInfo_);
-            break;
-          }
-          case 810: {
-            if (experimental_ == null) {
-              experimental_ = new global::Google.Api.Experimental();
-            }
-            input.ReadMessage(experimental_);
             break;
           }
         }

@@ -31,17 +31,16 @@ namespace Google.Api {
     static UsageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChZnb29nbGUvYXBpL3VzYWdlLnByb3RvEgpnb29nbGUuYXBpGhxnb29nbGUv",
-            "YXBpL2Fubm90YXRpb25zLnByb3RvImoKBVVzYWdlEhQKDHJlcXVpcmVtZW50",
-            "cxgBIAMoCRIkCgVydWxlcxgGIAMoCzIVLmdvb2dsZS5hcGkuVXNhZ2VSdWxl",
-            "EiUKHXByb2R1Y2VyX25vdGlmaWNhdGlvbl9jaGFubmVsGAcgASgJIl0KCVVz",
-            "YWdlUnVsZRIQCghzZWxlY3RvchgBIAEoCRIgChhhbGxvd191bnJlZ2lzdGVy",
-            "ZWRfY2FsbHMYAiABKAgSHAoUc2tpcF9zZXJ2aWNlX2NvbnRyb2wYAyABKAhC",
-            "bAoOY29tLmdvb2dsZS5hcGlCClVzYWdlUHJvdG9QAVpFZ29vZ2xlLmdvbGFu",
-            "Zy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztz",
-            "ZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "ChZnb29nbGUvYXBpL3VzYWdlLnByb3RvEgpnb29nbGUuYXBpImoKBVVzYWdl",
+            "EhQKDHJlcXVpcmVtZW50cxgBIAMoCRIkCgVydWxlcxgGIAMoCzIVLmdvb2ds",
+            "ZS5hcGkuVXNhZ2VSdWxlEiUKHXByb2R1Y2VyX25vdGlmaWNhdGlvbl9jaGFu",
+            "bmVsGAcgASgJIl0KCVVzYWdlUnVsZRIQCghzZWxlY3RvchgBIAEoCRIgChhh",
+            "bGxvd191bnJlZ2lzdGVyZWRfY2FsbHMYAiABKAgSHAoUc2tpcF9zZXJ2aWNl",
+            "X2NvbnRyb2wYAyABKAhCbAoOY29tLmdvb2dsZS5hcGlCClVzYWdlUHJvdG9Q",
+            "AVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkv",
+            "c2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Usage), global::Google.Api.Usage.Parser, new[]{ "Requirements", "Rules", "ProducerNotificationChannel" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.UsageRule), global::Google.Api.UsageRule.Parser, new[]{ "Selector", "AllowUnregisteredCalls", "SkipServiceControl" }, null, null, null)
@@ -312,8 +311,7 @@ namespace Google.Api {
     /// Selects the methods to which this rule applies. Use '*' to indicate all
     /// methods in all APIs.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
-    /// details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {

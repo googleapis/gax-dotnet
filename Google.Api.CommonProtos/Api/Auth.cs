@@ -31,24 +31,23 @@ namespace Google.Api {
     static AuthReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChVnb29nbGUvYXBpL2F1dGgucHJvdG8SCmdvb2dsZS5hcGkaHGdvb2dsZS9h",
-            "cGkvYW5ub3RhdGlvbnMucHJvdG8ibAoOQXV0aGVudGljYXRpb24SLQoFcnVs",
-            "ZXMYAyADKAsyHi5nb29nbGUuYXBpLkF1dGhlbnRpY2F0aW9uUnVsZRIrCglw",
-            "cm92aWRlcnMYBCADKAsyGC5nb29nbGUuYXBpLkF1dGhQcm92aWRlciKpAQoS",
-            "QXV0aGVudGljYXRpb25SdWxlEhAKCHNlbGVjdG9yGAEgASgJEiwKBW9hdXRo",
-            "GAIgASgLMh0uZ29vZ2xlLmFwaS5PQXV0aFJlcXVpcmVtZW50cxIgChhhbGxv",
-            "d193aXRob3V0X2NyZWRlbnRpYWwYBSABKAgSMQoMcmVxdWlyZW1lbnRzGAcg",
-            "AygLMhsuZ29vZ2xlLmFwaS5BdXRoUmVxdWlyZW1lbnQiagoMQXV0aFByb3Zp",
-            "ZGVyEgoKAmlkGAEgASgJEg4KBmlzc3VlchgCIAEoCRIQCghqd2tzX3VyaRgD",
-            "IAEoCRIRCglhdWRpZW5jZXMYBCABKAkSGQoRYXV0aG9yaXphdGlvbl91cmwY",
-            "BSABKAkiLQoRT0F1dGhSZXF1aXJlbWVudHMSGAoQY2Fub25pY2FsX3Njb3Bl",
-            "cxgBIAEoCSI5Cg9BdXRoUmVxdWlyZW1lbnQSEwoLcHJvdmlkZXJfaWQYASAB",
-            "KAkSEQoJYXVkaWVuY2VzGAIgASgJQmsKDmNvbS5nb29nbGUuYXBpQglBdXRo",
-            "UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBp",
-            "cy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJv",
-            "dG8z"));
+            "ChVnb29nbGUvYXBpL2F1dGgucHJvdG8SCmdvb2dsZS5hcGkibAoOQXV0aGVu",
+            "dGljYXRpb24SLQoFcnVsZXMYAyADKAsyHi5nb29nbGUuYXBpLkF1dGhlbnRp",
+            "Y2F0aW9uUnVsZRIrCglwcm92aWRlcnMYBCADKAsyGC5nb29nbGUuYXBpLkF1",
+            "dGhQcm92aWRlciKpAQoSQXV0aGVudGljYXRpb25SdWxlEhAKCHNlbGVjdG9y",
+            "GAEgASgJEiwKBW9hdXRoGAIgASgLMh0uZ29vZ2xlLmFwaS5PQXV0aFJlcXVp",
+            "cmVtZW50cxIgChhhbGxvd193aXRob3V0X2NyZWRlbnRpYWwYBSABKAgSMQoM",
+            "cmVxdWlyZW1lbnRzGAcgAygLMhsuZ29vZ2xlLmFwaS5BdXRoUmVxdWlyZW1l",
+            "bnQiagoMQXV0aFByb3ZpZGVyEgoKAmlkGAEgASgJEg4KBmlzc3VlchgCIAEo",
+            "CRIQCghqd2tzX3VyaRgDIAEoCRIRCglhdWRpZW5jZXMYBCABKAkSGQoRYXV0",
+            "aG9yaXphdGlvbl91cmwYBSABKAkiLQoRT0F1dGhSZXF1aXJlbWVudHMSGAoQ",
+            "Y2Fub25pY2FsX3Njb3BlcxgBIAEoCSI5Cg9BdXRoUmVxdWlyZW1lbnQSEwoL",
+            "cHJvdmlkZXJfaWQYASABKAkSEQoJYXVkaWVuY2VzGAIgASgJQmsKDmNvbS5n",
+            "b29nbGUuYXBpQglBdXRoUHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
+            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
+            "ZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Authentication), global::Google.Api.Authentication.Parser, new[]{ "Rules", "Providers" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthenticationRule), global::Google.Api.AuthenticationRule.Parser, new[]{ "Selector", "Oauth", "AllowWithoutCredential", "Requirements" }, null, null, null),
@@ -280,8 +279,7 @@ namespace Google.Api {
     /// <summary>
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
-    /// details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {
@@ -464,7 +462,7 @@ namespace Google.Api {
   }
 
   /// <summary>
-  /// Configuration for an anthentication provider, including support for
+  /// Configuration for an authentication provider, including support for
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>

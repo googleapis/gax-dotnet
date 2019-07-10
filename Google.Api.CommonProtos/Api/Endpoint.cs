@@ -31,15 +31,14 @@ namespace Google.Api {
     static EndpointReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpGhxnb29n",
-            "bGUvYXBpL2Fubm90YXRpb25zLnByb3RvImMKCEVuZHBvaW50EgwKBG5hbWUY",
-            "ASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESEAoIZmVhdHVyZXMYBCADKAkS",
-            "DgoGdGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdv",
-            "b2dsZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcv",
-            "Z2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNl",
-            "Y29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpImMKCEVu",
+            "ZHBvaW50EgwKBG5hbWUYASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESEAoI",
+            "ZmVhdHVyZXMYBCADKAkSDgoGdGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMY",
+            "BSABKAhCbwoOY29tLmdvb2dsZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29v",
+            "Z2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2Vydmlj",
+            "ZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Features", "Target", "AllowCors" }, null, null, null)
           }));
@@ -125,8 +124,8 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<string> aliases_ = new pbc::RepeatedField<string>();
     /// <summary>
     /// DEPRECATED: This field is no longer supported. Instead of using aliases,
-    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each
-    /// of the intended aliases.
+    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended
+    /// aliases.
     ///
     /// Additional names that this endpoint will be hosted on.
     /// </summary>

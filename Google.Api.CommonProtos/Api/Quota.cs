@@ -31,24 +31,24 @@ namespace Google.Api {
     static QuotaReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChZnb29nbGUvYXBpL3F1b3RhLnByb3RvEgpnb29nbGUuYXBpGhxnb29nbGUv",
-            "YXBpL2Fubm90YXRpb25zLnByb3RvIl0KBVF1b3RhEiYKBmxpbWl0cxgDIAMo",
-            "CzIWLmdvb2dsZS5hcGkuUXVvdGFMaW1pdBIsCgxtZXRyaWNfcnVsZXMYBCAD",
-            "KAsyFi5nb29nbGUuYXBpLk1ldHJpY1J1bGUikQEKCk1ldHJpY1J1bGUSEAoI",
-            "c2VsZWN0b3IYASABKAkSPQoMbWV0cmljX2Nvc3RzGAIgAygLMicuZ29vZ2xl",
-            "LmFwaS5NZXRyaWNSdWxlLk1ldHJpY0Nvc3RzRW50cnkaMgoQTWV0cmljQ29z",
-            "dHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAM6AjgBIpUCCgpR",
-            "dW90YUxpbWl0EgwKBG5hbWUYBiABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkS",
-            "FQoNZGVmYXVsdF9saW1pdBgDIAEoAxIRCgltYXhfbGltaXQYBCABKAMSEQoJ",
-            "ZnJlZV90aWVyGAcgASgDEhAKCGR1cmF0aW9uGAUgASgJEg4KBm1ldHJpYxgI",
-            "IAEoCRIMCgR1bml0GAkgASgJEjIKBnZhbHVlcxgKIAMoCzIiLmdvb2dsZS5h",
-            "cGkuUXVvdGFMaW1pdC5WYWx1ZXNFbnRyeRIUCgxkaXNwbGF5X25hbWUYDCAB",
-            "KAkaLQoLVmFsdWVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgD",
-            "OgI4AUJsCg5jb20uZ29vZ2xlLmFwaUIKUXVvdGFQcm90b1ABWkVnb29nbGUu",
-            "Z29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29u",
-            "ZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
+            "ChZnb29nbGUvYXBpL3F1b3RhLnByb3RvEgpnb29nbGUuYXBpIl0KBVF1b3Rh",
+            "EiYKBmxpbWl0cxgDIAMoCzIWLmdvb2dsZS5hcGkuUXVvdGFMaW1pdBIsCgxt",
+            "ZXRyaWNfcnVsZXMYBCADKAsyFi5nb29nbGUuYXBpLk1ldHJpY1J1bGUikQEK",
+            "Ck1ldHJpY1J1bGUSEAoIc2VsZWN0b3IYASABKAkSPQoMbWV0cmljX2Nvc3Rz",
+            "GAIgAygLMicuZ29vZ2xlLmFwaS5NZXRyaWNSdWxlLk1ldHJpY0Nvc3RzRW50",
+            "cnkaMgoQTWV0cmljQ29zdHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUY",
+            "AiABKAM6AjgBIpUCCgpRdW90YUxpbWl0EgwKBG5hbWUYBiABKAkSEwoLZGVz",
+            "Y3JpcHRpb24YAiABKAkSFQoNZGVmYXVsdF9saW1pdBgDIAEoAxIRCgltYXhf",
+            "bGltaXQYBCABKAMSEQoJZnJlZV90aWVyGAcgASgDEhAKCGR1cmF0aW9uGAUg",
+            "ASgJEg4KBm1ldHJpYxgIIAEoCRIMCgR1bml0GAkgASgJEjIKBnZhbHVlcxgK",
+            "IAMoCzIiLmdvb2dsZS5hcGkuUXVvdGFMaW1pdC5WYWx1ZXNFbnRyeRIUCgxk",
+            "aXNwbGF5X25hbWUYDCABKAkaLQoLVmFsdWVzRW50cnkSCwoDa2V5GAEgASgJ",
+            "Eg0KBXZhbHVlGAIgASgDOgI4AUJsCg5jb20uZ29vZ2xlLmFwaUIKUXVvdGFQ",
+            "cm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlz",
+            "L2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Quota), global::Google.Api.Quota.Parser, new[]{ "Limits", "MetricRules" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricRule), global::Google.Api.MetricRule.Parser, new[]{ "Selector", "MetricCosts" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
@@ -63,7 +63,7 @@ namespace Google.Api {
   /// Quota configuration helps to achieve fairness and budgeting in service
   /// usage.
   ///
-  /// The quota configuration works this way:
+  /// The metric based quota configuration works this way:
   /// - The service configuration defines a set of metrics.
   /// - For API calls, the quota.metric_rules maps methods to metrics with
   ///   corresponding costs.
@@ -302,8 +302,7 @@ namespace Google.Api {
     /// <summary>
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
-    /// details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Selector {

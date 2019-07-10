@@ -33,7 +33,7 @@ namespace Google.Api {
           string.Concat(
             "Chdnb29nbGUvYXBpL21ldHJpYy5wcm90bxIKZ29vZ2xlLmFwaRoWZ29vZ2xl",
             "L2FwaS9sYWJlbC5wcm90bxodZ29vZ2xlL2FwaS9sYXVuY2hfc3RhZ2UucHJv",
-            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byLKBQoQTWV0cmlj",
+            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byL9BQoQTWV0cmlj",
             "RGVzY3JpcHRvchIMCgRuYW1lGAEgASgJEgwKBHR5cGUYCCABKAkSKwoGbGFi",
             "ZWxzGAIgAygLMhsuZ29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3ISPAoLbWV0",
             "cmljX2tpbmQYAyABKA4yJy5nb29nbGUuYXBpLk1ldHJpY0Rlc2NyaXB0b3Iu",
@@ -41,24 +41,25 @@ namespace Google.Api {
             "ZXRyaWNEZXNjcmlwdG9yLlZhbHVlVHlwZRIMCgR1bml0GAUgASgJEhMKC2Rl",
             "c2NyaXB0aW9uGAYgASgJEhQKDGRpc3BsYXlfbmFtZRgHIAEoCRJHCghtZXRh",
             "ZGF0YRgKIAEoCzI1Lmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvci5NZXRy",
-            "aWNEZXNjcmlwdG9yTWV0YWRhdGEarAEKGE1ldHJpY0Rlc2NyaXB0b3JNZXRh",
-            "ZGF0YRItCgxsYXVuY2hfc3RhZ2UYASABKA4yFy5nb29nbGUuYXBpLkxhdW5j",
-            "aFN0YWdlEjAKDXNhbXBsZV9wZXJpb2QYAiABKAsyGS5nb29nbGUucHJvdG9i",
-            "dWYuRHVyYXRpb24SLwoMaW5nZXN0X2RlbGF5GAMgASgLMhkuZ29vZ2xlLnBy",
-            "b3RvYnVmLkR1cmF0aW9uIk8KCk1ldHJpY0tpbmQSGwoXTUVUUklDX0tJTkRf",
-            "VU5TUEVDSUZJRUQQABIJCgVHQVVHRRABEgkKBURFTFRBEAISDgoKQ1VNVUxB",
-            "VElWRRADInEKCVZhbHVlVHlwZRIaChZWQUxVRV9UWVBFX1VOU1BFQ0lGSUVE",
-            "EAASCAoEQk9PTBABEgkKBUlOVDY0EAISCgoGRE9VQkxFEAMSCgoGU1RSSU5H",
-            "EAQSEAoMRElTVFJJQlVUSU9OEAUSCQoFTU9ORVkQBiJ1CgZNZXRyaWMSDAoE",
-            "dHlwZRgDIAEoCRIuCgZsYWJlbHMYAiADKAsyHi5nb29nbGUuYXBpLk1ldHJp",
-            "Yy5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoF",
-            "dmFsdWUYAiABKAk6AjgBQl8KDmNvbS5nb29nbGUuYXBpQgtNZXRyaWNQcm90",
-            "b1ABWjdnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2Fw",
-            "aS9tZXRyaWM7bWV0cmljogIER0FQSWIGcHJvdG8z"));
+            "aWNEZXNjcmlwdG9yTWV0YWRhdGESLQoMbGF1bmNoX3N0YWdlGAwgASgOMhcu",
+            "Z29vZ2xlLmFwaS5MYXVuY2hTdGFnZRqwAQoYTWV0cmljRGVzY3JpcHRvck1l",
+            "dGFkYXRhEjEKDGxhdW5jaF9zdGFnZRgBIAEoDjIXLmdvb2dsZS5hcGkuTGF1",
+            "bmNoU3RhZ2VCAhgBEjAKDXNhbXBsZV9wZXJpb2QYAiABKAsyGS5nb29nbGUu",
+            "cHJvdG9idWYuRHVyYXRpb24SLwoMaW5nZXN0X2RlbGF5GAMgASgLMhkuZ29v",
+            "Z2xlLnByb3RvYnVmLkR1cmF0aW9uIk8KCk1ldHJpY0tpbmQSGwoXTUVUUklD",
+            "X0tJTkRfVU5TUEVDSUZJRUQQABIJCgVHQVVHRRABEgkKBURFTFRBEAISDgoK",
+            "Q1VNVUxBVElWRRADInEKCVZhbHVlVHlwZRIaChZWQUxVRV9UWVBFX1VOU1BF",
+            "Q0lGSUVEEAASCAoEQk9PTBABEgkKBUlOVDY0EAISCgoGRE9VQkxFEAMSCgoG",
+            "U1RSSU5HEAQSEAoMRElTVFJJQlVUSU9OEAUSCQoFTU9ORVkQBiJ1CgZNZXRy",
+            "aWMSDAoEdHlwZRgDIAEoCRIuCgZsYWJlbHMYAiADKAsyHi5nb29nbGUuYXBp",
+            "Lk1ldHJpYy5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASAB",
+            "KAkSDQoFdmFsdWUYAiABKAk6AjgBQl8KDmNvbS5nb29nbGUuYXBpQgtNZXRy",
+            "aWNQcm90b1ABWjdnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVh",
+            "cGlzL2FwaS9tZXRyaWM7bWV0cmljogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata", "LaunchStage" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Metric), global::Google.Api.Metric.Parser, new[]{ "Type", "Labels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
@@ -105,6 +106,7 @@ namespace Google.Api {
       description_ = other.description_;
       displayName_ = other.displayName_;
       metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
+      launchStage_ = other.launchStage_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -319,6 +321,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "launch_stage" field.</summary>
+    public const int LaunchStageFieldNumber = 12;
+    private global::Google.Api.LaunchStage launchStage_ = 0;
+    /// <summary>
+    /// Optional. The launch stage of the metric definition.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Api.LaunchStage LaunchStage {
+      get { return launchStage_; }
+      set {
+        launchStage_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MetricDescriptor);
@@ -341,6 +357,7 @@ namespace Google.Api {
       if (Description != other.Description) return false;
       if (DisplayName != other.DisplayName) return false;
       if (!object.Equals(Metadata, other.Metadata)) return false;
+      if (LaunchStage != other.LaunchStage) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -356,6 +373,7 @@ namespace Google.Api {
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       if (DisplayName.Length != 0) hash ^= DisplayName.GetHashCode();
       if (metadata_ != null) hash ^= Metadata.GetHashCode();
+      if (LaunchStage != 0) hash ^= LaunchStage.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -402,6 +420,10 @@ namespace Google.Api {
         output.WriteRawTag(82);
         output.WriteMessage(Metadata);
       }
+      if (LaunchStage != 0) {
+        output.WriteRawTag(96);
+        output.WriteEnum((int) LaunchStage);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -434,6 +456,9 @@ namespace Google.Api {
       }
       if (metadata_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Metadata);
+      }
+      if (LaunchStage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LaunchStage);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -473,6 +498,9 @@ namespace Google.Api {
           metadata_ = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
         }
         Metadata.MergeFrom(other.Metadata);
+      }
+      if (other.LaunchStage != 0) {
+        LaunchStage = other.LaunchStage;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -522,6 +550,10 @@ namespace Google.Api {
               metadata_ = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
             }
             input.ReadMessage(metadata_);
+            break;
+          }
+          case 96: {
+            launchStage_ = (global::Google.Api.LaunchStage) input.ReadEnum();
             break;
           }
         }
@@ -637,8 +669,10 @@ namespace Google.Api {
         public const int LaunchStageFieldNumber = 1;
         private global::Google.Api.LaunchStage launchStage_ = 0;
         /// <summary>
+        /// Deprecated. Please use the MetricDescriptor.launch_stage instead.
         /// The launch stage of the metric definition.
         /// </summary>
+        [global::System.ObsoleteAttribute]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public global::Google.Api.LaunchStage LaunchStage {
           get { return launchStage_; }
@@ -856,9 +890,8 @@ namespace Google.Api {
     public const int TypeFieldNumber = 3;
     private string type_ = "";
     /// <summary>
-    /// An existing metric type, see
-    /// [google.api.MetricDescriptor][google.api.MetricDescriptor]. For example,
-    /// `custom.googleapis.com/invoice/paid/amount`.
+    /// An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].
+    /// For example, `custom.googleapis.com/invoice/paid/amount`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
