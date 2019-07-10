@@ -8,6 +8,7 @@
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,17 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class BufferedClientStreamWriterTest
     {
+        // Timeout configuration: this test can be flaky in low-CPU environments,
+        // e.g. Travis. While we don't want tests to take forever to fail, we do
+        // want them to be reliable. These are currently pretty generous.
+
+        // How long we wait for a task to be created in FakeWriter.
+        private static readonly TimeSpan s_taskWaitTimeout = TimeSpan.FromSeconds(5);
+        // How long we wait for tasks to complete when asserting completion status.
+        private static readonly TimeSpan s_completionTimeout = TimeSpan.FromSeconds(3);
+        // How long we wait for space in the buffer.
+        private static readonly TimeSpan s_waitForSpaceTimeout = TimeSpan.FromSeconds(3);
+
         [Fact]
         public void CompleteWithNoWrites()
         {
@@ -142,7 +154,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var task3 = writer.WriteAsync("3");
             var completionTask = writer.WriteCompleteAsync();
 
-            foreach (var task in new[] { task2, task3, completionTask })
+            foreach (var task in new[] { task1, task2, task3, completionTask })
             {
                 AssertCompletedWithStatus(task, TaskStatus.Faulted);
                 Assert.Same(exception, task.Exception.InnerExceptions[0]);
@@ -302,20 +314,16 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         /// <summary>
-        /// Waits for up to half a second for the writer to become non-full.
+        /// Waits for a limited time for the writer to become non-full.
         /// </summary>
         private void WaitForSpace(BufferedClientStreamWriter<string> writer)
         {
-            for (int i = 0; i < 5; i++)
+            var stopwatch = Stopwatch.StartNew();
+            while (writer.BufferedWriteCount >= writer.Capacity && stopwatch.Elapsed < s_waitForSpaceTimeout)
             {
-                if (writer.BufferedWriteCount < writer.Capacity)
-                {
-                    return;
-                }
                 Thread.Sleep(100);
             }
-            // Give it one last chance, and fail if we're still full.
-            Assert.True(writer.BufferedWriteCount < writer.Capacity);
+            Assert.True(writer.BufferedWriteCount < writer.Capacity, $"Count {writer.BufferedWriteCount} should be less than capacity {writer.Capacity}");
         }
 
         private void AssertNotCompleted(params Task[] tasks)
@@ -331,15 +339,12 @@ namespace Google.Api.Gax.Grpc.Tests
         /// </summary>
         private void AssertCompletedWithStatus(Task task, TaskStatus expectedStatus)
         {
-            for (int i = 0; i < 5; i++)
+            var stopwatch = Stopwatch.StartNew();
+            // Sort of like task.Wait(), but without throwing an exception.
+            while (!task.IsCompleted && stopwatch.Elapsed < s_completionTimeout)
             {
-                if (task.IsCompleted)
-                {
-                    Assert.Equal(expectedStatus, task.Status);
-                }
                 Thread.Sleep(100);
             }
-            // Give it one last chance, and fail if we've still got the wrong status.
             Assert.Equal(expectedStatus, task.Status);
         }
 
@@ -387,7 +392,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     // Allow spurious wakes, unlikely though they are.
                     while (_currentTask == null)
                     {
-                        Assert.True(Monitor.Wait(_lock, 1000));
+                        Assert.True(Monitor.Wait(_lock, s_taskWaitTimeout), $"Monitor.Wait timed out");
                     }
                 }
             }
