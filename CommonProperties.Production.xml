@@ -11,7 +11,7 @@
 
   <!-- Packaging information -->
   <PropertyGroup>
-    <Copyright>Copyright 2018 Google Inc.</Copyright>
+    <Copyright>Copyright 2019 Google Inc.</Copyright>
     <Authors>Google Inc.</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/googleapis/gax-dotnet</PackageProjectUrl>
