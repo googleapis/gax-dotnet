@@ -5,48 +5,52 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using System;
+using gax = Google.Api.Gax;
+using sys = System;
 
 namespace Google.Api.Gax.ResourceNames
 {
+    // Note: the use of BillingAccountName as a parameter name (rather than billingAccountName) is unfortunate,
+    // but changing it now would require a new major version.
+
     /// <summary>
     /// Resource name for the 'billing account' resource which is widespread across Google Cloud Platform.
     /// While most resource names are generated on a per-API basis, many APIs use a billing account resource, and it's
     /// useful to be able to pass values from one API to another.
     /// </summary>
-    public sealed partial class BillingAccountName : IResourceName, IEquatable<BillingAccountName>
+    public sealed partial class BillingAccountName : gax::IResourceName, sys::IEquatable<BillingAccountName>
     {
-        private static readonly PathTemplate s_template = new PathTemplate("billingAccounts/{billing_account}");
+        private static readonly gax::PathTemplate s_template = new gax::PathTemplate("billingAccounts/{billing_account}");
 
         /// <summary>
-        /// Parses the given billing account resource name in string form into a new
+        /// Parses the given billing resource name in string form into a new
         /// <see cref="BillingAccountName"/> instance.
         /// </summary>
-        /// <param name="BillingAccountName">The billing account resource name in string form. Must not be <c>null</c>.</param>
+        /// <param name="BillingAccountName">The billing resource name in string form. Must not be <c>null</c>.</param>
         /// <returns>The parsed <see cref="BillingAccountName"/> if successful.</returns>
         public static BillingAccountName Parse(string BillingAccountName)
         {
-            GaxPreconditions.CheckNotNull(BillingAccountName, nameof(BillingAccountName));
-            TemplatedResourceName resourceName = s_template.ParseName(BillingAccountName);
+            gax::GaxPreconditions.CheckNotNull(BillingAccountName, nameof(BillingAccountName));
+            gax::TemplatedResourceName resourceName = s_template.ParseName(BillingAccountName);
             return new BillingAccountName(resourceName[0]);
         }
 
         /// <summary>
-        /// Tries to parse the given billing account resource name in string form into a new
+        /// Tries to parse the given billing resource name in string form into a new
         /// <see cref="BillingAccountName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="BillingAccountName"/> is null,
+        /// This method still throws <see cref="sys::ArgumentNullException"/> if <paramref name="BillingAccountName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
-        /// <param name="BillingAccountName">The billing account resource name in string form. Must not be <c>null</c>.</param>
+        /// <param name="BillingAccountName">The billing resource name in string form. Must not be <c>null</c>.</param>
         /// <param name="result">When this method returns, the parsed <see cref="BillingAccountName"/>,
         /// or <c>null</c> if parsing fails.</param>
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string BillingAccountName, out BillingAccountName result)
         {
-            GaxPreconditions.CheckNotNull(BillingAccountName, nameof(BillingAccountName));
-            TemplatedResourceName resourceName;
+            gax::GaxPreconditions.CheckNotNull(BillingAccountName, nameof(BillingAccountName));
+            gax::TemplatedResourceName resourceName;
             if (s_template.TryParseName(BillingAccountName, out resourceName))
             {
                 result = new BillingAccountName(resourceName[0]);
@@ -59,6 +63,12 @@ namespace Google.Api.Gax.ResourceNames
             }
         }
 
+        /// <summary>Formats the IDs into the string representation of the <see cref="BillingAccountName"/>.</summary>
+        /// <param name="billingAccountId">The <c>billingAccount</c> ID. Must not be <c>null</c>.</param>
+        /// <returns>The string representation of the <see cref="BillingAccountName"/>.</returns>
+        public static string Format(string billingAccountId) =>
+            s_template.Expand(gax::GaxPreconditions.CheckNotNull(billingAccountId, nameof(billingAccountId)));
+
         /// <summary>
         /// Constructs a new instance of the <see cref="BillingAccountName"/> resource name class
         /// from its component parts.
@@ -66,7 +76,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="billingAccountId">The billingAccount ID. Must not be <c>null</c>.</param>
         public BillingAccountName(string billingAccountId)
         {
-            BillingAccountId = GaxPreconditions.CheckNotNull(billingAccountId, nameof(billingAccountId));
+            BillingAccountId = gax::GaxPreconditions.CheckNotNull(billingAccountId, nameof(billingAccountId));
         }
 
         /// <summary>
@@ -75,7 +85,7 @@ namespace Google.Api.Gax.ResourceNames
         public string BillingAccountId { get; }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Simple;
+        public gax::ResourceNameKind Kind => gax::ResourceNameKind.Simple;
 
         /// <inheritdoc />
         public override string ToString() => s_template.Expand(BillingAccountId);
