@@ -5,7 +5,8 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using System;
+using gax = Google.Api.Gax;
+using sys = System;
 
 namespace Google.Api.Gax.ResourceNames
 {
@@ -14,9 +15,9 @@ namespace Google.Api.Gax.ResourceNames
     /// While most resource names are generated on a per-API basis, many APIs use a folder resource, and it's
     /// useful to be able to pass values from one API to another.
     /// </summary>
-    public sealed partial class FolderName : IResourceName, IEquatable<FolderName>
+    public sealed partial class FolderName : gax::IResourceName, sys::IEquatable<FolderName>
     {
-        private static readonly PathTemplate s_template = new PathTemplate("folders/{folder}");
+        private static readonly gax::PathTemplate s_template = new gax::PathTemplate("folders/{folder}");
 
         /// <summary>
         /// Parses the given folder resource name in string form into a new
@@ -26,8 +27,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns>The parsed <see cref="FolderName"/> if successful.</returns>
         public static FolderName Parse(string folderName)
         {
-            GaxPreconditions.CheckNotNull(folderName, nameof(folderName));
-            TemplatedResourceName resourceName = s_template.ParseName(folderName);
+            gax::GaxPreconditions.CheckNotNull(folderName, nameof(folderName));
+            gax::TemplatedResourceName resourceName = s_template.ParseName(folderName);
             return new FolderName(resourceName[0]);
         }
 
@@ -36,7 +37,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <see cref="FolderName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="folderName"/> is null,
+        /// This method still throws <see cref="sys::ArgumentNullException"/> if <paramref name="folderName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
         /// <param name="folderName">The folder resource name in string form. Must not be <c>null</c>.</param>
@@ -45,8 +46,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string folderName, out FolderName result)
         {
-            GaxPreconditions.CheckNotNull(folderName, nameof(folderName));
-            TemplatedResourceName resourceName;
+            gax::GaxPreconditions.CheckNotNull(folderName, nameof(folderName));
+            gax::TemplatedResourceName resourceName;
             if (s_template.TryParseName(folderName, out resourceName))
             {
                 result = new FolderName(resourceName[0]);
@@ -59,6 +60,12 @@ namespace Google.Api.Gax.ResourceNames
             }
         }
 
+        /// <summary>Formats the IDs into the string representation of the <see cref="FolderName"/>.</summary>
+        /// <param name="folderId">The <c>folder</c> ID. Must not be <c>null</c>.</param>
+        /// <returns>The string representation of the <see cref="FolderName"/>.</returns>
+        public static string Format(string folderId) =>
+            s_template.Expand(gax::GaxPreconditions.CheckNotNull(folderId, nameof(folderId)));
+
         /// <summary>
         /// Constructs a new instance of the <see cref="FolderName"/> resource name class
         /// from its component parts.
@@ -66,7 +73,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="folderId">The folder ID. Must not be <c>null</c>.</param>
         public FolderName(string folderId)
         {
-            FolderId = GaxPreconditions.CheckNotNull(folderId, nameof(folderId));
+            FolderId = gax::GaxPreconditions.CheckNotNull(folderId, nameof(folderId));
         }
 
         /// <summary>
@@ -75,7 +82,7 @@ namespace Google.Api.Gax.ResourceNames
         public string FolderId { get; }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Simple;
+        public gax::ResourceNameKind Kind => gax::ResourceNameKind.Simple;
 
         /// <inheritdoc />
         public override string ToString() => s_template.Expand(FolderId);

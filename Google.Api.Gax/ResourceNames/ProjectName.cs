@@ -5,7 +5,8 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using System;
+using gax = Google.Api.Gax;
+using sys = System;
 
 namespace Google.Api.Gax.ResourceNames
 {
@@ -14,9 +15,9 @@ namespace Google.Api.Gax.ResourceNames
     /// While most resource names are generated on a per-API basis, many APIs use a project resource, and it's
     /// useful to be able to pass values from one API to another.
     /// </summary>
-    public sealed partial class ProjectName : IResourceName, IEquatable<ProjectName>
+    public sealed partial class ProjectName : gax::IResourceName, sys::IEquatable<ProjectName>
     {
-        private static readonly PathTemplate s_template = new PathTemplate("projects/{project}");
+        private static readonly gax::PathTemplate s_template = new gax::PathTemplate("projects/{project}");
 
         /// <summary>
         /// Parses the given project resource name in string form into a new
@@ -26,8 +27,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns>The parsed <see cref="ProjectName"/> if successful.</returns>
         public static ProjectName Parse(string projectName)
         {
-            GaxPreconditions.CheckNotNull(projectName, nameof(projectName));
-            TemplatedResourceName resourceName = s_template.ParseName(projectName);
+            gax::GaxPreconditions.CheckNotNull(projectName, nameof(projectName));
+            gax::TemplatedResourceName resourceName = s_template.ParseName(projectName);
             return new ProjectName(resourceName[0]);
         }
 
@@ -36,7 +37,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <see cref="ProjectName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="projectName"/> is null,
+        /// This method still throws <see cref="sys::ArgumentNullException"/> if <paramref name="projectName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
         /// <param name="projectName">The project resource name in string form. Must not be <c>null</c>.</param>
@@ -45,8 +46,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string projectName, out ProjectName result)
         {
-            GaxPreconditions.CheckNotNull(projectName, nameof(projectName));
-            TemplatedResourceName resourceName;
+            gax::GaxPreconditions.CheckNotNull(projectName, nameof(projectName));
+            gax::TemplatedResourceName resourceName;
             if (s_template.TryParseName(projectName, out resourceName))
             {
                 result = new ProjectName(resourceName[0]);
@@ -59,6 +60,12 @@ namespace Google.Api.Gax.ResourceNames
             }
         }
 
+        /// <summary>Formats the IDs into the string representation of the <see cref="ProjectName"/>.</summary>
+        /// <param name="projectId">The <c>project</c> ID. Must not be <c>null</c>.</param>
+        /// <returns>The string representation of the <see cref="ProjectName"/>.</returns>
+        public static string Format(string projectId) =>
+            s_template.Expand(gax::GaxPreconditions.CheckNotNull(projectId, nameof(projectId)));
+
         /// <summary>
         /// Constructs a new instance of the <see cref="ProjectName"/> resource name class
         /// from its component parts.
@@ -66,7 +73,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
         public ProjectName(string projectId)
         {
-            ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
+            ProjectId = gax::GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
         }
 
         /// <summary>
@@ -75,7 +82,7 @@ namespace Google.Api.Gax.ResourceNames
         public string ProjectId { get; }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Simple;
+        public gax::ResourceNameKind Kind => gax::ResourceNameKind.Simple;
 
         /// <inheritdoc />
         public override string ToString() => s_template.Expand(ProjectId);

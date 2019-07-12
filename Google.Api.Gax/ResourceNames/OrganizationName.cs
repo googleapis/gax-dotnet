@@ -5,7 +5,8 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using System;
+using gax = Google.Api.Gax;
+using sys = System;
 
 namespace Google.Api.Gax.ResourceNames
 {
@@ -14,9 +15,9 @@ namespace Google.Api.Gax.ResourceNames
     /// While most resource names are generated on a per-API basis, many APIs use an organization resource, and it's
     /// useful to be able to pass values from one API to another.
     /// </summary>
-    public sealed partial class OrganizationName : IResourceName, IEquatable<OrganizationName>
+    public sealed partial class OrganizationName : gax::IResourceName, sys::IEquatable<OrganizationName>
     {
-        private static readonly PathTemplate s_template = new PathTemplate("organizations/{organization}");
+        private static readonly gax::PathTemplate s_template = new gax::PathTemplate("organizations/{organization}");
 
         /// <summary>
         /// Parses the given organization resource name in string form into a new
@@ -26,8 +27,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns>The parsed <see cref="OrganizationName"/> if successful.</returns>
         public static OrganizationName Parse(string organizationName)
         {
-            GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));
-            TemplatedResourceName resourceName = s_template.ParseName(organizationName);
+            gax::GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));
+            gax::TemplatedResourceName resourceName = s_template.ParseName(organizationName);
             return new OrganizationName(resourceName[0]);
         }
 
@@ -36,7 +37,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <see cref="OrganizationName"/> instance.
         /// </summary>
         /// <remarks>
-        /// This method still throws <see cref="ArgumentNullException"/> if <paramref name="organizationName"/> is null,
+        /// This method still throws <see cref="sys::ArgumentNullException"/> if <paramref name="organizationName"/> is null,
         /// as this would usually indicate a programming error rather than a data error.
         /// </remarks>
         /// <param name="organizationName">The organization resource name in string form. Must not be <c>null</c>.</param>
@@ -45,8 +46,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
         public static bool TryParse(string organizationName, out OrganizationName result)
         {
-            GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));
-            TemplatedResourceName resourceName;
+            gax::GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));
+            gax::TemplatedResourceName resourceName;
             if (s_template.TryParseName(organizationName, out resourceName))
             {
                 result = new OrganizationName(resourceName[0]);
@@ -59,6 +60,12 @@ namespace Google.Api.Gax.ResourceNames
             }
         }
 
+        /// <summary>Formats the IDs into the string representation of the <see cref="OrganizationName"/>.</summary>
+        /// <param name="organizationId">The <c>organization</c> ID. Must not be <c>null</c>.</param>
+        /// <returns>The string representation of the <see cref="OrganizationName"/>.</returns>
+        public static string Format(string organizationId) =>
+            s_template.Expand(gax::GaxPreconditions.CheckNotNull(organizationId, nameof(organizationId)));
+
         /// <summary>
         /// Constructs a new instance of the <see cref="OrganizationName"/> resource name class
         /// from its component parts.
@@ -66,7 +73,7 @@ namespace Google.Api.Gax.ResourceNames
         /// <param name="organizationId">The organization ID. Must not be <c>null</c>.</param>
         public OrganizationName(string organizationId)
         {
-            OrganizationId = GaxPreconditions.CheckNotNull(organizationId, nameof(organizationId));
+            OrganizationId = gax::GaxPreconditions.CheckNotNull(organizationId, nameof(organizationId));
         }
 
         /// <summary>
@@ -75,7 +82,7 @@ namespace Google.Api.Gax.ResourceNames
         public string OrganizationId { get; }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Simple;
+        public gax::ResourceNameKind Kind => gax::ResourceNameKind.Simple;
 
         /// <inheritdoc />
         public override string ToString() => s_template.Expand(OrganizationId);
