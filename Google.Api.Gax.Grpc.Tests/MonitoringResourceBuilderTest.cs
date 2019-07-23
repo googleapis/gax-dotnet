@@ -5,10 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -62,6 +59,22 @@ namespace Google.Api.Gax.Grpc.Tests
                 { "project_id", "FakeProjectId" },
                 { "module_id", "FakeService" },
                 { "version_id", "FakeVersion" }
+            }, resource.Labels);
+        }
+
+        [Fact]
+        public void CloudRunPlatform()
+        {
+            var details = new CloudRunPlatformDetails("json", "projectId", "location", "service", "revision", "configuration");
+            var resource = MonitoredResourceBuilder.FromPlatform(new Platform(details));
+            Assert.Equal("cloud_run_revision", resource.Type);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "projectId" },
+                { "location", "location" },
+                { "service_name", "service" },
+                { "revision_name", "revision" },
+                { "configuration_name", "configuration" }
             }, resource.Labels);
         }
 

@@ -43,6 +43,113 @@ namespace Google.Api.Gax
         /// Execution platform is Google Container Engine (Kubernetes).
         /// </summary>
         Gke = 3,
+
+        /// <summary>
+        /// Execution platform is Google Cloud Run.
+        /// </summary>
+        CloudRun = 4
+    }
+
+    /// <summary>
+    /// Google Cloud Run details.
+    /// </summary>
+    public sealed class CloudRunPlatformDetails
+    {
+        /// <summary>
+        /// Builds a <see cref="CloudRunPlatformDetails"/> from the given metadata
+        /// and Cloud Run environment variables.
+        /// The metadata is normally retrieved from the GCE metadata server.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
+        /// Must not be <c>null</c>.</param>
+        /// <returns>A populated <see cref="CloudRunPlatformDetails"/> if the metadata represents and GCE instance;
+        /// <c>null</c> otherwise.</returns>
+        public static CloudRunPlatformDetails TryLoad(string metadataJson)
+        {
+            GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
+            JObject metadata;
+            try
+            {
+                metadata = JObject.Parse(metadataJson);
+            }
+            catch
+            {
+                return null;
+            }
+            
+            var projectId = metadata["project"]?["projectId"]?.ToString();
+            var zoneName = metadata["instance"]?["zone"]?.ToString();
+            if (projectId == null || zoneName == null || !Platform.s_zoneTemplate.TryParseName(zoneName, out var zoneResourceName))
+            {
+                return null;
+            }
+            string location = zoneResourceName[1];
+            string serviceName = Environment.GetEnvironmentVariable("K_SERVICE");
+            string revisionName = Environment.GetEnvironmentVariable("K_REVISION");
+            string configurationName = Environment.GetEnvironmentVariable("K_CONFIGURATION");
+            if (serviceName is null || revisionName is null || configurationName is null)
+            {
+                return null;
+            }
+            return new CloudRunPlatformDetails(metadataJson, projectId, location, serviceName, revisionName, configurationName);
+        }
+
+        /// <summary>
+        /// Constructs details of a Google Cloud Run service revision.
+        /// </summary>
+        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
+        /// Must not be <c>null</c>.</param>
+        /// <param name="projectId">The project ID. Must not be null.</param>
+        /// <param name="location">The location in which the service code is running. Must not be null.</param>
+        /// <param name="serviceName">The name of the service. Must not be null.</param>
+        /// <param name="revisionName">The name of the revision. Must not be null.</param>
+        /// <param name="configurationName">The name of the configuration. Must not be null.</param>
+        public CloudRunPlatformDetails(
+            string metadataJson, string projectId, string location,
+            string serviceName, string revisionName, string configurationName)
+        {
+            MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
+            ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
+            Location = GaxPreconditions.CheckNotNull(location, nameof(location));
+            ServiceName = GaxPreconditions.CheckNotNull(serviceName, nameof(serviceName));
+            RevisionName = GaxPreconditions.CheckNotNull(revisionName, nameof(revisionName));
+            ConfigurationName = GaxPreconditions.CheckNotNull(configurationName, nameof(configurationName));
+        }
+
+        /// <summary>
+        /// The full JSON string retrieved from the metadata server. This is never null.
+        /// </summary>
+        public string MetadataJson { get; }
+
+        /// <summary>
+        /// The Project ID under which this service is running. This is never null.
+        /// </summary>
+        public string ProjectId { get; }
+
+        /// <summary>
+        /// The location, e.g. "us-central1". This is never null.
+        /// </summary>
+        public string Location { get; }
+
+        /// <summary>
+        /// The name of the Cloud Run service being run. This is never null.
+        /// </summary>
+        public string ServiceName { get; }
+        
+        /// <summary>
+        /// The name of the Cloud Run revision being run. This is never null.
+        /// </summary>
+        public string RevisionName { get; }
+
+        /// <summary>
+        /// The name of the Cloud Run configuration being run. This is never null.
+        /// </summary>
+        public string ConfigurationName { get; }
+
+        /// <inheritdoc/>
+        public override string ToString() =>
+            $"[Cloud Run: ProjectId='{ProjectId}', Location='{Location}', " +
+            $"ServiceName='{ServiceName}', RevisionName='{RevisionName}', ConfigurationName='{ConfigurationName}']";
     }
 
     /// <summary>
@@ -101,22 +208,22 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// The full JSON string retrieved from the metadata server.
+        /// The full JSON string retrieved from the metadata server. This is never null.
         /// </summary>
         public string MetadataJson { get; }
 
         /// <summary>
-        /// The Project ID under which this GCE instance is running.
+        /// The Project ID under which this GCE instance is running. This is never null.
         /// </summary>
         public string ProjectId { get; }
 
         /// <summary>
-        ///  The Instance ID of the GCE instance on which this is running.
+        ///  The Instance ID of the GCE instance on which this is running. This is never null.
         /// </summary>
         public string InstanceId { get; }
 
         /// <summary>
-        /// The zone where this GCE instance is running.
+        /// The zone where this GCE instance is running. This is never null.
         /// This will be in the format <code>projects/&lt;project-number&gt;/zones/&lt;zone-name&gt;</code>
         /// id the value has been retrieved from Google Compute Engine.
         /// </summary>
@@ -626,6 +733,11 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
                 {
                     return new Platform(gceDetails);
                 }
+                CloudRunPlatformDetails cloudRunDetails = CloudRunPlatformDetails.TryLoad(metadataJson);
+                if (cloudRunDetails != null)
+                {
+                    return new Platform(cloudRunDetails);
+                }
             }
             return new Platform();
         }
@@ -666,6 +778,15 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
         }
 
         /// <summary>
+        /// Construct with details of Google Cloud Run.
+        /// </summary>
+        /// <param name="cloudRunDetails">Details of Google Cloud Run.</param>
+        public Platform(CloudRunPlatformDetails cloudRunDetails)
+        {
+            CloudRunDetails = GaxPreconditions.CheckNotNull(cloudRunDetails, nameof(cloudRunDetails));
+        }
+
+        /// <summary>
         /// Google App Engine (GAE) platform details.
         /// <c>null</c> if not executing on GAE.
         /// </summary>
@@ -684,12 +805,19 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
         public GkePlatformDetails GkeDetails { get; }
 
         /// <summary>
+        /// Google Cloud Run platform details.
+        /// <c>null</c> if not executing on Google Cloud Run. 
+        /// </summary>
+        public CloudRunPlatformDetails CloudRunDetails { get; }
+
+        /// <summary>
         /// The current execution platform.
         /// </summary>
         public PlatformType Type =>
             GaeDetails != null ? PlatformType.Gae :
             GceDetails != null ? PlatformType.Gce :
             GkeDetails != null ? PlatformType.Gke :
+            CloudRunDetails != null ? PlatformType.CloudRun :
             PlatformType.Unknown;
 
         /// <summary>
@@ -725,6 +853,8 @@ should be projects/<project_number>/zones/<zone_name>. {nameof(ZoneName)} curren
                     return GceDetails.ToString();
                 case PlatformType.Gke:
                     return GkeDetails.ToString();
+                case PlatformType.CloudRun:
+                    return CloudRunDetails.ToString();
                 case PlatformType.Unknown:
                     return "[Unknown platform]";
                 default:
