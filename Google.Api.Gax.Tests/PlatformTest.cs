@@ -1,6 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -54,6 +59,29 @@ namespace Google.Api.Gax.Tests
             var metadataJson = "{'project':{'projectId':'FakeProjectId'},'instance':{'id':'123','zone':'FakeLocation'}}";
             var gce = new GcePlatformDetails(metadataJson, "FakeProjectId", "123", "FakeLocation");
             Assert.Throws<InvalidOperationException>(() => gce.Location);
+        }
+
+        [Fact]
+        public void CloudRun_Valid()
+        {
+            var details = new CloudRunPlatformDetails("json", "project", "location", "service", "revision", "configuration");
+            Assert.Equal("json", details.MetadataJson);
+            Assert.Equal("project", details.ProjectId);
+            Assert.Equal("location", details.Location);
+            Assert.Equal("service", details.ServiceName);
+            Assert.Equal("revision", details.RevisionName);
+            Assert.Equal("configuration", details.ConfigurationName);
+        }
+
+        [Fact]
+        public void CloudRun_Invalid()
+        {
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails(null, "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails("", null, "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails("", "", null, "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails("", "", "", null, "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails("", "", "", "", null, ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunPlatformDetails("", "", "", "", "", null));
         }
 
         [Fact]

@@ -98,6 +98,21 @@ namespace Google.Api.Gax.Grpc
                             { "zone", gke.Location }
                         }
                     };
+                case PlatformType.CloudRun:
+                    var cloudRun = platform.CloudRunDetails;
+                    return new MonitoredResource
+                    {
+                        Type = "cloud_run_revision",
+                        Labels =
+                        {
+                            { "project_id", cloudRun.ProjectId },
+                            { "service_name", cloudRun.ServiceName },
+                            { "revision_name", cloudRun.RevisionName },
+                            { "location", cloudRun.Location },
+                            { "configuration_name", cloudRun.ConfigurationName }
+                        }
+                    };
+
                 default:
                     // This isn't great, but is better than throwing an exception.
                     return GlobalResource;
