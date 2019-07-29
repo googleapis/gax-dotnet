@@ -233,23 +233,11 @@ namespace Google.Api.Gax
         /// The current Project ID.
         /// <c>null</c> if the Project ID cannot be determined on the current execution platform.
         /// </summary>
-        public string ProjectId
-        {
-            get
-            {
-                switch (Type)
-                {
-                    case PlatformType.Gae:
-                        return GaeDetails.ProjectId;
-                    case PlatformType.Gce:
-                        return GceDetails.ProjectId;
-                    case PlatformType.Gke:
-                        return GkeDetails.ProjectId;
-                    default:
-                        return null;
-                }
-            }
-        }
+        public string ProjectId =>
+            GaeDetails?.ProjectId ??
+            GceDetails?.ProjectId ??
+            GkeDetails?.ProjectId ??
+            CloudRunDetails?.ProjectId;
 
         /// <inheritdoc/>
         public override string ToString()

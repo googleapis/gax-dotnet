@@ -216,5 +216,46 @@ namespace Google.Api.Gax.Tests
                 Assert.Equal("", gke.ContainerName);
             }
         }
+
+        [Fact]
+        public void Project_Gke()
+        {
+            var details = new GkePlatformDetails(
+                "json", "gke-project", "cluster", "location", "host", "instance",
+                "projects/123/zone", "namespace", "pod", "container");
+            var platform = new Platform(details);
+            Assert.Equal("gke-project", platform.ProjectId);
+        }
+
+        [Fact]
+        public void Project_Gce()
+        {
+            var details = new GcePlatformDetails("json", "gce-project", "instance", "projects/123/zones/zone");
+            var platform = new Platform(details);
+            Assert.Equal("gce-project", platform.ProjectId);
+        }
+
+        [Fact]
+        public void Project_Gae()
+        {
+            var details = new GaePlatformDetails("gae-project", "instance", "service", "version");
+            var platform = new Platform(details);
+            Assert.Equal("gae-project", platform.ProjectId);
+        }
+
+        [Fact]
+        public void Project_CloudRun()
+        {
+            var details = new CloudRunPlatformDetails("json", "cr-project", "location", "service", "revision", "configuration");
+            var platform = new Platform(details);
+            Assert.Equal("cr-project", platform.ProjectId);
+        }
+
+        [Fact]
+        public void Project_Unknown()
+        {
+            var platform = new Platform();
+            Assert.Null(platform.ProjectId);
+        }
     }
 }
