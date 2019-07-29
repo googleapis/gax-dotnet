@@ -26,6 +26,15 @@ namespace Google.Api.Gax
         /// <c>null</c> otherwise.</returns>
         public static CloudRunPlatformDetails TryLoad(string metadataJson)
         {
+            // Check environment variables first, to avoid more expensive JSON parsing.
+            string serviceName = Environment.GetEnvironmentVariable("K_SERVICE");
+            string revisionName = Environment.GetEnvironmentVariable("K_REVISION");
+            string configurationName = Environment.GetEnvironmentVariable("K_CONFIGURATION");
+            if (serviceName is null || revisionName is null || configurationName is null)
+            {
+                return null;
+            }
+
             GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
             JObject metadata;
             try
@@ -44,13 +53,6 @@ namespace Google.Api.Gax
                 return null;
             }
             string location = zoneResourceName[1];
-            string serviceName = Environment.GetEnvironmentVariable("K_SERVICE");
-            string revisionName = Environment.GetEnvironmentVariable("K_REVISION");
-            string configurationName = Environment.GetEnvironmentVariable("K_CONFIGURATION");
-            if (serviceName is null || revisionName is null || configurationName is null)
-            {
-                return null;
-            }
             return new CloudRunPlatformDetails(metadataJson, projectId, location, serviceName, revisionName, configurationName);
         }
 
