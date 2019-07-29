@@ -14,6 +14,15 @@ using System.Threading.Tasks;
 
 namespace Google.Api.Gax
 {
+    // Steps for adding a new platform:
+    // - Create an appropriate "details" class
+    // - Add to PlatformType
+    // - Add detection in Platform.LoadInstanceAsync
+    // - Add an instance property in Platform
+    // - Add suppoer in Platform.Type
+    // - Add support in Platform.ToString()
+    // - Add support in Platform.ProjectId
+
     /// <summary>
     /// Information about the current execution platform.
     /// Supported execution platforms are Google App Engine (GAE), Google Container Engine (GKE), and Google Compute Engine (GCE).
@@ -109,6 +118,7 @@ namespace Google.Api.Gax
             // The order matters here:
             // * GAE runs on GCE, so do GAE before GCE.
             // * GKE runs on GCE, so do GKE before GCE.
+            // * Cloud Run runs on GCE, so do Cloud Run before GCE.
             // * Metadata server access can take time, so do GAE first.
             GaePlatformDetails gaeDetails = LoadGaeDetails();
             if (gaeDetails != null)
@@ -127,15 +137,15 @@ namespace Google.Api.Gax
                         return new Platform(gkeDetails);
                     }
                 }
-                GcePlatformDetails gceDetails = GcePlatformDetails.TryLoad(metadataJson);
-                if (gceDetails != null)
-                {
-                    return new Platform(gceDetails);
-                }
                 CloudRunPlatformDetails cloudRunDetails = CloudRunPlatformDetails.TryLoad(metadataJson);
                 if (cloudRunDetails != null)
                 {
                     return new Platform(cloudRunDetails);
+                }
+                GcePlatformDetails gceDetails = GcePlatformDetails.TryLoad(metadataJson);
+                if (gceDetails != null)
+                {
+                    return new Platform(gceDetails);
                 }
             }
             return new Platform();
