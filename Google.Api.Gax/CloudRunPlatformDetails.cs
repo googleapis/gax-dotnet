@@ -7,6 +7,7 @@
 
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 
 namespace Google.Api.Gax
 {
@@ -52,8 +53,8 @@ namespace Google.Api.Gax
             {
                 return null;
             }
-            string location = zoneResourceName[1];
-            return new CloudRunPlatformDetails(metadataJson, projectId, location, serviceName, revisionName, configurationName);
+            string zone = zoneResourceName[1];
+            return new CloudRunPlatformDetails(metadataJson, projectId, zone, serviceName, revisionName, configurationName);
         }
 
         /// <summary>
@@ -62,17 +63,18 @@ namespace Google.Api.Gax
         /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.
         /// Must not be <c>null</c>.</param>
         /// <param name="projectId">The project ID. Must not be null.</param>
-        /// <param name="location">The location in which the service code is running. Must not be null.</param>
+        /// <param name="zone">The zone in which the service code is running. Must not be null.</param>
         /// <param name="serviceName">The name of the service. Must not be null.</param>
         /// <param name="revisionName">The name of the revision. Must not be null.</param>
         /// <param name="configurationName">The name of the configuration. Must not be null.</param>
         public CloudRunPlatformDetails(
-            string metadataJson, string projectId, string location,
+            string metadataJson, string projectId, string zone,
             string serviceName, string revisionName, string configurationName)
         {
             MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
             ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
-            Location = GaxPreconditions.CheckNotNull(location, nameof(location));
+            Zone = GaxPreconditions.CheckNotNull(zone, nameof(zone));
+            Region = string.Join("-", Zone.Split('-').Take(2));
             ServiceName = GaxPreconditions.CheckNotNull(serviceName, nameof(serviceName));
             RevisionName = GaxPreconditions.CheckNotNull(revisionName, nameof(revisionName));
             ConfigurationName = GaxPreconditions.CheckNotNull(configurationName, nameof(configurationName));
@@ -89,9 +91,15 @@ namespace Google.Api.Gax
         public string ProjectId { get; }
 
         /// <summary>
-        /// The location, e.g. "us-central1". This is never null.
+        /// The zone of the service, e.g. "us-central1-1". This is never null.
         /// </summary>
-        public string Location { get; }
+        public string Zone { get; }
+        
+        /// <summary>
+        /// The region part of the zone. For example, a zone of "us-central1-1" has a region 
+        /// of "us-central1".
+        /// </summary>
+        public string Region { get; }
 
         /// <summary>
         /// The name of the Cloud Run service being run. This is never null.
@@ -110,7 +118,7 @@ namespace Google.Api.Gax
 
         /// <inheritdoc/>
         public override string ToString() =>
-            $"[Cloud Run: ProjectId='{ProjectId}', Location='{Location}', " +
+            $"[Cloud Run: ProjectId='{ProjectId}', Zone='{Zone}', " +
             $"ServiceName='{ServiceName}', RevisionName='{RevisionName}', ConfigurationName='{ConfigurationName}']";
     }
 

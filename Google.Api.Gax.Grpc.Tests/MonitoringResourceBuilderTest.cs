@@ -65,13 +65,14 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void CloudRunPlatform()
         {
-            var details = new CloudRunPlatformDetails("json", "projectId", "location", "service", "revision", "configuration");
+            var details = new CloudRunPlatformDetails("json", "projectId", "us-central1-1", "service", "revision", "configuration");
             var resource = MonitoredResourceBuilder.FromPlatform(new Platform(details));
             Assert.Equal("cloud_run_revision", resource.Type);
             Assert.Equal(new Dictionary<string, string>
             {
                 { "project_id", "projectId" },
-                { "location", "location" },
+                // Note this is the region, not the zone
+                { "location", "us-central1" },
                 { "service_name", "service" },
                 { "revision_name", "revision" },
                 { "configuration_name", "configuration" }
