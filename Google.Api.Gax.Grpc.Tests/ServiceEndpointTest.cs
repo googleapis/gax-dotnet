@@ -12,10 +12,25 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class ServiceEndpointTest
     {
+        [Fact]
+        public void Construction_Invalid_HostOnly()
+        {
+            Assert.Throws<ArgumentException>(() => new ServiceEndpoint(""));
+            Assert.Throws<ArgumentNullException>(() => new ServiceEndpoint(null));
+        }
+
+        [Fact]
+        public void Construction_Valid_HostOnly()
+        {
+            var settings = new ServiceEndpoint("foo");
+            Assert.Equal("foo", settings.Host);
+            Assert.Equal(443, settings.Port);
+        }
+
         [Theory]
         [InlineData("foo", 1)]
         [InlineData("bar", 65535)]
-        public void Construction_Valid(string host, int port)
+        public void Construction_Valid_HostAndPort(string host, int port)
         {
             var settings = new ServiceEndpoint(host, port);
             Assert.Equal(host, settings.Host);
@@ -28,7 +43,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [InlineData("host", 0, typeof(ArgumentOutOfRangeException))]
         [InlineData("host", -1, typeof(ArgumentOutOfRangeException))]
         [InlineData("host", 65536, typeof(ArgumentOutOfRangeException))]
-        public void Construction_Invalid(string host, int port, global::System.Type exceptionType)
+        public void Construction_Invalid_HostAndPort(string host, int port, global::System.Type exceptionType)
         {
             Assert.Throws(exceptionType, () => new ServiceEndpoint(host, port));
         }

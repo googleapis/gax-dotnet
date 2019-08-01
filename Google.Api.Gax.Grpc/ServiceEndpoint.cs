@@ -17,6 +17,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ServiceEndpoint : IEquatable<ServiceEndpoint>
     {
+        private const int HttpsPort = 443;
+        
         /// <summary>
         /// The host name to connect to. Never null or empty.
         /// </summary>
@@ -26,6 +28,16 @@ namespace Google.Api.Gax.Grpc
         /// The port to connect to, in the range 1 to 65535 inclusive.
         /// </summary>
         public int Port { get; }
+
+        /// <summary>
+        /// Creates a new endpoint with the given host, using a port of 443.
+        /// </summary>
+        /// <param name="host">The host name to connect to. Must not be null or empty.</param>
+        public ServiceEndpoint(string host)
+        {
+            Host = GaxPreconditions.CheckNotNullOrEmpty(host, nameof(host));
+            Port = HttpsPort;
+        }
 
         /// <summary>
         /// Creates a new endpoint with the given host and port.
@@ -97,7 +109,7 @@ namespace Google.Api.Gax.Grpc
             if (colonIndex == -1)
             {
                 host = text;
-                port = 443;
+                port = HttpsPort;
             }
             else
             {
