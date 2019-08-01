@@ -108,7 +108,7 @@ namespace Google.Api.Gax.Grpc
                             { "project_id", cloudRun.ProjectId },
                             { "service_name", cloudRun.ServiceName },
                             { "revision_name", cloudRun.RevisionName },
-                            { "location", cloudRun.Location },
+                            { "location", cloudRun.Region },
                             { "configuration_name", cloudRun.ConfigurationName }
                         }
                     };

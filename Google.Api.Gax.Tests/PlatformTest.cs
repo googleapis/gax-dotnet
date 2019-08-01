@@ -64,10 +64,11 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void CloudRun_Valid()
         {
-            var details = new CloudRunPlatformDetails("json", "project", "location", "service", "revision", "configuration");
+            var details = new CloudRunPlatformDetails("json", "project", "us-central1-1", "service", "revision", "configuration");
             Assert.Equal("json", details.MetadataJson);
             Assert.Equal("project", details.ProjectId);
-            Assert.Equal("location", details.Location);
+            Assert.Equal("us-central1-1", details.Zone);
+            Assert.Equal("us-central1", details.Region);
             Assert.Equal("service", details.ServiceName);
             Assert.Equal("revision", details.RevisionName);
             Assert.Equal("configuration", details.ConfigurationName);
@@ -246,7 +247,7 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void Project_CloudRun()
         {
-            var details = new CloudRunPlatformDetails("json", "cr-project", "location", "service", "revision", "configuration");
+            var details = new CloudRunPlatformDetails("json", "cr-project", "us-central1-1", "service", "revision", "configuration");
             var platform = new Platform(details);
             Assert.Equal("cr-project", platform.ProjectId);
         }
