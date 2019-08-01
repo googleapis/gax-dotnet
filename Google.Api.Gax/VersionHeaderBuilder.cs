@@ -61,6 +61,21 @@ namespace Google.Api.Gax
 
         private static string GetEnvironmentVersion()
         {
+            // We can pick between the version reported by System.Environment.Version, or the version in the
+            // entry assembly, if any. Neither gives us exactly what we might want, 
+            string systemEnvironmentVersion =
+#if NETSTANDARD1_3
+                null;
+#else
+                FormatVersion(Environment.Version);
+#endif
+            string entryAssemblyVersion = GetEntryAssemblyVersionOrNull();
+
+            return entryAssemblyVersion ?? systemEnvironmentVersion ?? "";
+        }
+
+        private static string GetEntryAssemblyVersionOrNull()
+        {
             try
             {
                 // Assembly.GetEntryAssembly() isn't available in netstandard1.3. Attempt to fetch it with reflection, which is ugly but should work.
@@ -72,18 +87,19 @@ namespace Google.Api.Gax
                     .FirstOrDefault();
                 if (getEntryAssemblyMethod == null)
                 {
-                    return "";
+                    return null;
                 }
-                Assembly entryAssembly = (Assembly) getEntryAssemblyMethod.Invoke(null, new object[0]);
+                Assembly entryAssembly = (Assembly)getEntryAssemblyMethod.Invoke(null, new object[0]);
                 var frameworkName = entryAssembly?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
-                return frameworkName == null ? "" : FormatVersion(new FrameworkName(frameworkName).Version);
+                return frameworkName == null ? null : FormatVersion(new FrameworkName(frameworkName).Version);
             }
             catch
             {
                 // If we simply can't get the version for whatever reason, don't fail.
-                return "";
+                return null;
             }
         }
+
 
         private static string FormatAssemblyVersion(System.Type type)
         {

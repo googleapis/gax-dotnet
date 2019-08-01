@@ -18,18 +18,22 @@ namespace Google.Api.Gax.Tests
             Assert.Equal("", new VersionHeaderBuilder().ToString());
         }
 
-        // We can't test the version header on the full framework or on .NET Core non-1.0, as
-        // the entry assembly's target framework isn't present or is "wrong". There's no simple,
-        // portable, reliable way to get the framework version at runtime. Benchmark.NET does a reasonable
-        // job, but it only targets netstandard2.0 which makes things a lot simpler.
-#if NETCOREAPP1_0
-        [Fact]
-        public void AppendDotNetEnvironment_AddsDotNetEntry()
+        // This theory will only have a single test case per framework, but it's the simplest way of expressing what we mean.
+        [Theory]
+#if NETCOREAPP1_0 || NETCOREAPP2_1
+        // In test frameworks, .NET Core is always reported as 1.0.0.
+        [InlineData("1.0.0")]
+#elif NET452
+        // This will be the runtime version, which will always be 4.0.x, but we don't know x.
+        [InlineData("4.0.")]
+#else
+#error Unsupported test frameowrk
+#endif
+        public void AppendDotNetEnvironment_AddsDotNetEntry(string expectedVersionPrefix)
         {
             string versionHeader = new VersionHeaderBuilder().AppendDotNetEnvironment().ToString();
-            Assert.StartsWith("gl-dotnet/1.0", versionHeader);
+            Assert.StartsWith($"gl-dotnet/{expectedVersionPrefix}", versionHeader);
         }
-#endif
 
         [Theory]
         [InlineData("foo", "1.2.3-bar", "foo/1.2.3-bar")]
