@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc
                     var gke = platform.GkeDetails;
                     return new MonitoredResource
                     {
-                        Type = "container",
+                        Type = "gke_container",
                         Labels =
                         {
                             { "project_id", gke.ProjectId },
