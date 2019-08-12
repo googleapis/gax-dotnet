@@ -92,26 +92,30 @@ namespace Google.Api.Gax.Rest
         /// </summary>
         /// <returns>An initializer for the service.</returns>
         protected virtual BaseClientService.Initializer CreateServiceInitializer() =>
-            new BaseClientService.Initializer
-            {
-                HttpClientInitializer = GetHttpClientInitializer(),
-                ApiKey = ApiKey,
-                ApplicationName = ApplicationName ?? GetDefaultApplicationName(),
-                BaseUri = BaseUri
-            };
+            CreateServiceInitializerImpl(GetHttpClientInitializer());
 
         /// <summary>
         /// Creates an initializer for the service asynchronously. This method does not perform any validation.
         /// </summary>
         /// <returns>An initializer for the service.</returns>
         protected virtual async Task<BaseClientService.Initializer> CreateServiceInitializerAsync(CancellationToken cancellationToken) =>
-            new BaseClientService.Initializer
+            CreateServiceInitializerImpl(await GetHttpClientInitializerAsync(cancellationToken).ConfigureAwait(false));
+
+        private BaseClientService.Initializer CreateServiceInitializerImpl(IConfigurableHttpClientInitializer clientInitializer)
+        {
+            var initializer = new BaseClientService.Initializer
             {
-                HttpClientInitializer = await GetHttpClientInitializerAsync(cancellationToken).ConfigureAwait(false),
+                HttpClientInitializer = clientInitializer,
                 ApiKey = ApiKey,
                 ApplicationName = ApplicationName ?? GetDefaultApplicationName(),
                 BaseUri = BaseUri
             };
+            initializer.VersionHeaderBuilder
+                .AppendAssemblyVersion("gccl", GetType())
+                .AppendAssemblyVersion("gax", typeof(ClientBuilderBase<TClient>));
+
+            return initializer;
+        }
 
         /// <summary>
         /// Obtains credentials synchronously. Override this method in a concrete builder type if more

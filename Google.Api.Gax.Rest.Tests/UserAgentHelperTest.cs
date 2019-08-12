@@ -19,6 +19,7 @@ namespace Google.Api.Gax.Rest.Tests
             Assert.StartsWith("gcloud-dotnet/1.0.0", UserAgentHelper.GetDefaultUserAgent(typeof(UserAgentHelperTest)));
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public void ModifyHeader_NewHeader()
         {
@@ -47,4 +48,5 @@ namespace Google.Api.Gax.Rest.Tests
             Assert.Contains("gccl/", values[0]);
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }
