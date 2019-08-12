@@ -13,6 +13,10 @@ using System.Runtime.Versioning;
 
 namespace Google.Api.Gax
 {
+    // Note: this code is now duplicated in Google.Apis.
+    // The duplication is annoying, but hard to avoid due to dependencies.
+    // Any changes should be made in both places.
+
     /// <summary>
     /// Helps build version strings for the x-goog-api-client header.
     /// The value is a space-separated list of name/value pairs, where the value
@@ -39,8 +43,8 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(name, nameof(name));
             GaxPreconditions.CheckNotNull(version, nameof(version));
             // Names can't be empty, but versions can. (We use the empty string to indicate an unknown version.)
-            GaxPreconditions.CheckArgument(name.Length > 0 && !name.Contains(' ') && !name.Contains('/'), nameof(name), $"Invalid name: {name}");
-            GaxPreconditions.CheckArgument(!version.Contains(' ') && !version.Contains('/'), nameof(version), $"Invalid version: {version}");
+            GaxPreconditions.CheckArgument(name.Length > 0 && !name.Contains(" ") && !name.Contains("/"), nameof(name), $"Invalid name: {name}");
+            GaxPreconditions.CheckArgument(!version.Contains(" ") && !version.Contains("/"), nameof(version), $"Invalid version: {version}");
             GaxPreconditions.CheckArgument(!_names.Contains(name), nameof(name), "Names in version headers must be unique");
             _names.Add(name);
             _values.Add(version);

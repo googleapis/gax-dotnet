@@ -27,6 +27,7 @@ namespace Google.Api.Gax.Rest
         /// </summary>
         /// <param name="type">The type to extract the version number from.</param>
         /// <returns>A request modifier.</returns>
+        [Obsolete("Use BaseClientService.Initializer.VersionHeaderBuilder instead")]
         public static Action<HttpRequestMessage> CreateRequestModifier(Type type)
         {
             var value = new VersionHeaderBuilder()
