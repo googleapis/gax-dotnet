@@ -122,7 +122,7 @@ namespace Google.Api.Gax.Grpc.Tests
             };
             var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
-            Assert.Equal("container", resource.Type);
+            Assert.Equal("gke_container", resource.Type);
             Assert.Equal(new Dictionary<string, string>
             {
                 { "project_id", "FakeProjectId" },
