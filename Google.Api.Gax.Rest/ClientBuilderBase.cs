@@ -23,11 +23,13 @@ namespace Google.Api.Gax.Rest
     {
         /// <summary>
         /// The path to the credentials file to use, or null if credentials are being provided in a different way.
+        /// The resulting credential is automatically scoped with the default scopes for the API.
         /// </summary>
         public string CredentialsPath { get; set; }
 
         /// <summary>
         /// The credentials to use as a JSON string, or null if credentials are being provided in a different way.
+        /// The resulting credential is automatically scoped with the default scopes for the API.
         /// </summary>
         public string JsonCredentials { get; set; }
 
@@ -43,6 +45,8 @@ namespace Google.Api.Gax.Rest
 
         /// <summary>
         /// The credential to use for authentication. This cannot be specified alongside other authentication properties.
+        /// Note that scopes are not automatically applied to this credential; if a scoped credential is required, the
+        /// scoping must be applied by the calling code.
         /// </summary>
         public ICredential Credential { get; set; }
 
