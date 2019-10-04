@@ -3,8 +3,8 @@
   <Import Project="..\CommonProperties.Test.xml" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.1;net452</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.1</TargetFrameworks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

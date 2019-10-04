@@ -53,7 +53,7 @@ namespace Google.Api.Gax
             public string[] MountInfo { get; set; }
         }
 
-#if NETSTANDARD1_3 || NETSTANDARD2_0
+#if NETSTANDARD2_0
         internal static async Task<KubernetesData> LoadKubernetesDataAsync()
         {
             var kubernetesServiceHost = Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_HOST");
@@ -135,11 +135,11 @@ namespace Google.Api.Gax
                 MountInfo = mountInfo
             };
         }
-#elif NET45
+#elif NET461
         internal static Task<KubernetesData> LoadKubernetesDataAsync()
         {
-            // .NET45 code cannot currently run on Kubernetes.
-            // And .NET45 does not support the certificate functionality that we require.
+            // TODO: See if we can support Kubernetes on .NET 4.6.1
+            // (We'll need to check support for certificates.)
             return Task.FromResult<KubernetesData>(null);
         }
 #else
