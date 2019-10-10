@@ -54,7 +54,7 @@ namespace Google.Api.Gax
         }
 
         /// <inheritdoc />
-        public virtual IAsyncEnumerator<TResource> GetEnumerator()
+        public virtual IAsyncEnumerator<TResource> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
     <ProjectReference Include="..\Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj" />
   </ItemGroup>

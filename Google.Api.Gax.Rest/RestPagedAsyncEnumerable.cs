@@ -51,8 +51,69 @@ namespace Google.Api.Gax.Rest
             _pages.GetCompletePageAsync(pageSize, cancellationToken);
 
         /// <inheritdoc/>
-        public override IAsyncEnumerator<TResource> GetEnumerator() =>
-            _pages.SelectMany(page => _pageManager.GetResourcesEmptyIfNull(page).ToAsyncEnumerable()).GetEnumerator();
+        public override IAsyncEnumerator<TResource> GetAsyncEnumerator(CancellationToken cancellationToken) =>
+            new ResourceEnumerator<TRequest, TResource, TResponse>(
+                _pages.GetAsyncEnumerator(cancellationToken), _pageManager, cancellationToken);
+    }
+
+
+    /// <summary>
+    /// Class to effectively perform SelectMany on the pages, extracting resources.
+    /// This allows us to avoid taking a dependency on System.Linq.Async.
+    /// </summary>
+    internal sealed class ResourceEnumerator<TRequest, TResource, TResponse> : IAsyncEnumerator<TResource>
+    {
+        private readonly CancellationToken _cancellationToken;
+        private readonly IAsyncEnumerator<TResponse> _responseEnumerator;
+        private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
+
+        public TResource Current { get; private set; }
+        private IEnumerator<TResource> _currentResources;
+        private bool _finished;
+
+        internal ResourceEnumerator(
+            IAsyncEnumerator<TResponse> responseEnumerator,
+            IPageManager<TRequest, TResponse, TResource> pageManager,
+            CancellationToken cancellationToken)
+        {
+            _responseEnumerator = responseEnumerator;
+            _pageManager = pageManager;
+            _cancellationToken = cancellationToken;
+        }
+
+        public ValueTask DisposeAsync() => _responseEnumerator.DisposeAsync();
+
+        public async ValueTask<bool> MoveNextAsync()
+        {
+            if (_finished)
+            {
+                return false;
+            }
+            // This needs to be in a loop to handle the case where we get multiple empty responses.
+            while (true)
+            {
+                _cancellationToken.ThrowIfCancellationRequested();
+                if (_currentResources == null)
+                {
+                    var hasNextResponse = await _responseEnumerator.MoveNextAsync().ConfigureAwait(false);
+                    if (!hasNextResponse)
+                    {
+                        _finished = true;
+                        return false;
+                    }
+                    _currentResources = _pageManager.GetResourcesEmptyIfNull(_responseEnumerator.Current).GetEnumerator();
+                }
+                if (_currentResources.MoveNext())
+                {
+                    Current = _currentResources.Current;
+                    return true;
+                }
+                else
+                {
+                    _currentResources = null;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -76,11 +137,8 @@ namespace Google.Api.Gax.Rest
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerator<TResponse> GetEnumerator() =>
-            new ResponseAsyncEnumerator(_requestProvider(), _pageManager);
-
-        /// <inheritdoc />
-        IAsyncEnumerator<TResponse> IAsyncEnumerable<TResponse>.GetEnumerator() => GetEnumerator();
+        public IAsyncEnumerator<TResponse> GetAsyncEnumerator(CancellationToken cancellationToken = default) =>
+            new ResponseAsyncEnumerator(_requestProvider(), _pageManager, cancellationToken);
 
         internal async Task<Page<TResource>> GetCompletePageAsync(
             int pageSize, CancellationToken cancellationToken = default(CancellationToken))
@@ -113,26 +171,28 @@ namespace Google.Api.Gax.Rest
 
         private class ResponseAsyncEnumerator : IAsyncEnumerator<TResponse>
         {
+            private readonly CancellationToken _cancellationToken;
             private readonly TRequest _request; // This is mutated during iteration
             private readonly IPageManager<TRequest, TResponse, TResource> _pageManager;
             private bool _finished;
 
-            public ResponseAsyncEnumerator(TRequest request, IPageManager<TRequest, TResponse, TResource> pageManager)
+            public ResponseAsyncEnumerator(TRequest request, IPageManager<TRequest, TResponse, TResource> pageManager, CancellationToken cancellationToken)
             {
                 _request = request;
                 _pageManager = pageManager;
+                _cancellationToken = cancellationToken;
             }
 
             public TResponse Current { get; private set; }
 
-            public async Task<bool> MoveNext(CancellationToken cancellationToken)
+            public async ValueTask<bool> MoveNextAsync()
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                _cancellationToken.ThrowIfCancellationRequested();
                 if (_finished)
                 {
                     return false;
                 }
-                Current = await _request.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+                Current = await _request.ExecuteAsync(_cancellationToken).ConfigureAwait(false);
                 var nextPageToken = _pageManager.GetNextPageToken(Current);
                 if (nextPageToken == null)
                 {
@@ -143,7 +203,7 @@ namespace Google.Api.Gax.Rest
                 return true;
             }
 
-            public void Dispose() { }
+            public ValueTask DisposeAsync() => default;
         }        
     }
 }
