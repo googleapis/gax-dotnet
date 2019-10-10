@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <!-- Packaging information -->
@@ -14,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Interactive.Async" Version="[3.2.0,4.0)" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />

@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
     <PackageReference Include="Grpc.Gcp" Version="1.1.1" />
-    <PackageReference Include="Grpc.Core" Version="[1.22.0,2.0)" />
+    <PackageReference Include="Grpc.Core" Version="2.24.0" />
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>

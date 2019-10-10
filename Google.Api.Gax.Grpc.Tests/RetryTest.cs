@@ -335,7 +335,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallTimes.Add(_scheduler.Clock.GetCurrentDateTimeUtc());
                 CallSettingsReceived.Add(callSettings);
                 var responses = new[] { new SimpleResponse { Name = request.Name } };
-                var responseStream = new AsyncStreamAdapter<SimpleResponse>(responses.ToAsyncEnumerable().GetEnumerator());
+                var responseStream = new AsyncStreamAdapter<SimpleResponse>(responses.ToAsyncEnumerable().GetAsyncEnumerator());
                 var responseHeaders = Task.Run(async () =>
                 {
                     await _scheduler.Delay(_callDuration, callSettings.CancellationToken.GetValueOrDefault());

@@ -170,7 +170,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
-            Assert.Equal(pagedResource.Resource, await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArray());
+            Assert.Equal(pagedResource.Resource, await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArrayAsync());
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0, PageToken = "1:0" };
             var paged = server.PagedAsync(request);
-            Assert.Equal(s_resourceA.Resource.Skip(1), await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArray());
+            Assert.Equal(s_resourceA.Resource.Skip(1), await paged.AsRawResponses().Select(x => x.Items.ToArray()).ToArrayAsync());
         }
 
         public static MatrixTheoryData<PagedResource, int> s_flatten = MatrixTheoryData.Create(
@@ -210,7 +210,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(pagedResource);
             var request = new PageStreamingRequest(server) { PageSize = pageSize };
             var paged = server.PagedAsync(request);
-            Assert.Equal(pagedResource.All, await paged.ToArray());
+            Assert.Equal(pagedResource.All, await paged.ToArrayAsync());
         }
 
         public static MatrixTheoryData<PagedResource, int> s_fixedPageSize = MatrixTheoryData.Create(
@@ -278,12 +278,12 @@ namespace Google.Api.Gax.Rest
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
             // Natural pages
-            Assert.Equal(1, await paged.AsRawResponses().Count());
-            var page1 = await paged.AsRawResponses().First();
+            Assert.Equal(1, await paged.AsRawResponses().CountAsync());
+            var page1 = await paged.AsRawResponses().FirstAsync();
             Assert.Null(page1.Items);
             Assert.Null(page1.NextPageToken);
             // Unnatural things
-            Assert.Empty(await paged.ToArray());
+            Assert.Empty(await paged.ToArrayAsync());
             Assert.Empty(await paged.ReadPageAsync(1));
         }
 
