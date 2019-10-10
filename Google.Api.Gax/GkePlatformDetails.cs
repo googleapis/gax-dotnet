@@ -147,17 +147,6 @@ namespace Google.Api.Gax
 #endif
 
         /// <summary>
-        /// Builds a <see cref="GkePlatformDetails"/> from the given metadata.
-        /// This metadata is normally retrieved from the GCE metadata server.
-        /// </summary>
-        /// <param name="metadataJson">JSON metadata, normally retrieved from the GCE metadata server.</param>
-        /// <returns>A populated <see cref="GkePlatformDetails"/> if the metadata represents and GKE instance;
-        /// <c>null</c> otherwise.</returns>
-        [Obsolete("Use TryLoad(string, KubernetesData) instead.")]
-        public static GkePlatformDetails TryLoad(string metadataJson) =>
-            TryLoad(metadataJson, GkePlatformDetails.LoadKubernetesDataAsync().Result);
-
-        /// <summary>
         /// Builds a <see cref="GkePlatformDetails"/> from the given metadata and kubernetes data.
         /// The metadata is normally retrieved from the GCE metadata server.
         /// The kubernetes data is normally retrieved using the kubernetes API.
@@ -228,20 +217,6 @@ namespace Google.Api.Gax
                 }
             }
             return null;
-        }
-
-        /// <summary>
-        /// Construct details of Google Container (Kubernetes) Engine
-        /// </summary>
-        /// <param name="metadataJson">The full JSON string retrieved from the metadata server. Must not be <c>null</c>.</param>
-        /// <param name="projectId">The project ID. Must not be <c>null</c>.</param>
-        /// <param name="clusterName">The cluster name. Must not be <c>null</c>.</param>
-        /// <param name="location">The location. Must not be <c>null</c>.</param>
-        /// <param name="hostName">The instance host name. Must not be <c>null</c>.</param>
-        [Obsolete("Only partially fills instance with data; use alternative constructor.")]
-        public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName)
-            : this(metadataJson, projectId, clusterName, location, hostName, "", "", "", "", "")
-        {
         }
 
         /// <summary>

@@ -21,25 +21,5 @@ namespace Google.Api.Gax.Rest
         /// <param name="type">The type to extract the version number from.</param>
         /// <returns>A user agent value.</returns>
         public static string GetDefaultUserAgent(Type type) => new VersionHeaderBuilder().AppendAssemblyVersion("gcloud-dotnet", type).ToString();
-
-        /// <summary>
-        /// Creates a request modifier which sets the Google-specific version header in HTTP requests.
-        /// </summary>
-        /// <param name="type">The type to extract the version number from.</param>
-        /// <returns>A request modifier.</returns>
-        [Obsolete("Use BaseClientService.Initializer.VersionHeaderBuilder instead")]
-        public static Action<HttpRequestMessage> CreateRequestModifier(Type type)
-        {
-            var value = new VersionHeaderBuilder()
-                .AppendDotNetEnvironment()
-                .AppendAssemblyVersion("gccl", type)
-                .AppendAssemblyVersion("gax", typeof(UserAgentHelper))
-                .ToString();
-            return request =>
-            {
-                request.Headers.Remove(VersionHeaderBuilder.HeaderName);
-                request.Headers.Add(VersionHeaderBuilder.HeaderName, value);
-            };
-        }
     }
 }
