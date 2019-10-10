@@ -78,34 +78,6 @@ namespace Google.Api.Gax.Testing
             AddTimer(Clock.GetCurrentDateTimeUtc() + delay, cancellationToken);
 
         /// <summary>
-        /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
-        /// </summary>
-        /// <remarks>
-        /// If you pass in a delegate which returns a task, that's almost always because you want to run it
-        /// until that task completes - which is what <see cref="RunAsync(Func{Task})"/> does.
-        /// </remarks>
-        /// <param name="taskProvider">A task provider.</param>
-        [Obsolete("Use RunAsync to run a function returning a task", true)]
-        public void Run(Func<Task> taskProvider)
-        {
-            throw new InvalidOperationException("Use RunAsync to run a function returning a task");
-        }
-
-        /// <summary>
-        /// Specialization of <see cref="Run{T}(Func{T})"/> for tasks, to prevent a common usage error.
-        /// </summary>
-        /// <remarks>
-        /// If you pass in a delegate which returns a task, that's almost always because you want to run it
-        /// until that task completes - which is what <see cref="RunAsync{T}(Func{Task{T}})"/> does.
-        /// </remarks>
-        /// <param name="taskProvider">A task provider.</param>
-        [Obsolete("Use RunAsync to run a function returning a task", true)]
-        public void Run<T>(Func<Task<T>> taskProvider)
-        {
-            throw new InvalidOperationException("Use RunAsync to run a function returning a task");
-        }
-
-        /// <summary>
         /// <para>
         /// Invokes the given action in a separate thread, and then runs the scheduler until one of four conditions is met:
         /// </para>
