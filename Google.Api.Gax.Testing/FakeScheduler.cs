@@ -332,7 +332,10 @@ namespace Google.Api.Gax.Testing
                         // Repeats until no further delays are created within IdleTimeBeforeAdvancing.
                         // It would be much better to track all created Tasks and make sure they've all completed;
                         // But that's fairly invasive.
-                        while (DateTime.UtcNow < realDeadline && Monitor.Wait(_monitor, IdleTimeBeforeAdvancing)) ;
+                        while (DateTime.UtcNow < realDeadline && Monitor.Wait(_monitor, IdleTimeBeforeAdvancing))
+                        {
+                            // Deliberately empty body
+                        }
 
                         // We don't expect this to be observed, as the calling code will probably have timed
                         // out already, but it's clearer than returning normally.
