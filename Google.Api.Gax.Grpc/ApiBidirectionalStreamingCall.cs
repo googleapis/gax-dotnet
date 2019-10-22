@@ -70,10 +70,11 @@ namespace Google.Api.Gax.Grpc
             return _call(effectiveCallSettings);
         }
 
-        internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
-            new ApiBidirectionalStreamingCall<TRequest, TResponse>(
-                _call,
-                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader).MergedWith(BaseCallSettings),
-                StreamingSettings);
+        /// <summary>
+        /// Returns a new API call using the original base call settings merged with <paramref name="callSettings"/>.
+        /// Where there's a conflict, the original base call settings have priority.
+        /// </summary>
+        internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
+            new ApiBidirectionalStreamingCall<TRequest, TResponse>(_call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
     }
 }
