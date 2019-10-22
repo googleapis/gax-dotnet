@@ -17,10 +17,18 @@ namespace Google.Api.Gax.Grpc
     public abstract class ServiceSettingsBase
     {
         /// <summary>
-        /// Constructs a new service settings base object with a default version header, unset call settings and
+        /// Constructs a new service settings base object for a stable API with a default version header, unset call settings and
         /// unset clock.
         /// </summary>
-        protected ServiceSettingsBase()
+        protected ServiceSettingsBase() : this(LaunchStage.Ga)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new service settings base object for the given API stability level with a default version header, unset call settings and
+        /// unset clock.
+        /// </summary>
+        protected ServiceSettingsBase(LaunchStage stabilityLevel)
         {
             VersionHeaderBuilder = new VersionHeaderBuilder()
                 .AppendDotNetEnvironment()
@@ -28,6 +36,7 @@ namespace Google.Api.Gax.Grpc
                 .AppendAssemblyVersion("gapic", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
                 .AppendAssemblyVersion("grpc", typeof(Channel));
+            StabilityLevel = stabilityLevel;
         }
 
         /// <summary>
@@ -42,7 +51,14 @@ namespace Google.Api.Gax.Grpc
             Scheduler = existing.Scheduler;
             VersionHeaderBuilder = existing.VersionHeaderBuilder.Clone();
             Interceptor = existing.Interceptor;
+            StabilityLevel = existing.StabilityLevel;
         }
+
+        /// <summary>
+        /// The stability view of the API to be accessed. This affects whether/what X-Goog-Visibilities header
+        /// is sent. We may make this public in the future.
+        /// </summary>
+        internal LaunchStage StabilityLevel { get; }
 
         /// <summary>
         /// A builder for x-goog-api-client version headers. Additional library versions can be appended via this property.
