@@ -72,11 +72,12 @@ namespace Google.Api.Gax.Grpc
         public AsyncServerStreamingCall<TResponse> Call(TRequest request, CallSettings perCallCallSettings) =>
             _syncCall(request, BaseCallSettings.MergedWith(perCallCallSettings));
 
-        internal ApiServerStreamingCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
-            new ApiServerStreamingCall<TRequest, TResponse>(
-                _asyncCall,
-                _syncCall,
-                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader).MergedWith(BaseCallSettings));
+        /// <summary>
+        /// Returns a new API call using the original base call settings merged with <paramref name="callSettings"/>.
+        /// Where there's a conflict, the original base call settings have priority.
+        /// </summary>
+        internal ApiServerStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
+            new ApiServerStreamingCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
         internal ApiServerStreamingCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
             new ApiServerStreamingCall<TRequest, TResponse>(

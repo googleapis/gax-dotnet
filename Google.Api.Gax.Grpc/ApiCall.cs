@@ -144,15 +144,12 @@ namespace Google.Api.Gax.Grpc
         public TResponse Sync(TRequest request, CallSettings perCallCallSettings) =>
             _syncCall(request, BaseCallSettings.MergedWith(perCallCallSettings));
 
-        internal ApiCall<TRequest, TResponse> WithVersionHeader(string versionHeader) =>
-            // TODO: Check that this is what we want. It allows call settings to remove our
-            // version header. The caller can always do this manually anyway, of course, so
-            // I'm tempted to leave it...
-            new ApiCall<TRequest, TResponse>(
-                _asyncCall,
-                _syncCall,
-                CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, versionHeader)
-                    .MergedWith(BaseCallSettings));
+        /// <summary>
+        /// Returns a new API call using the original base call settings merged with <paramref name="callSettings"/>.
+        /// Where there's a conflict, the original base call settings have priority.
+        /// </summary>
+        internal ApiCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
+            new ApiCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
             new ApiCall<TRequest, TResponse>(

@@ -17,7 +17,7 @@ namespace Google.Api.Gax.Grpc
     public class ClientHelper
     {
         private readonly CallSettings _clientCallSettings;
-        private readonly string _versionHeader;
+        private readonly CallSettings _versionCallSettings;
 
         /// <summary>
         /// Constructs a helper from the given settings.
@@ -30,7 +30,7 @@ namespace Google.Api.Gax.Grpc
             Clock = settings.Clock ?? SystemClock.Instance;
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
-            _versionHeader = settings.VersionHeader;
+            _versionCallSettings = CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, settings.VersionHeader);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Google.Api.Gax.Grpc
             // I.e. Version header is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
                 .WithRetry(Clock, Scheduler)
-                .WithVersionHeader(_versionHeader);
+                .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Google.Api.Gax.Grpc
             // I.e. Version header is added first, then retry is performed.
             return ApiServerStreamingCall.Create(grpcCall, baseCallSettings, Clock)
                 .WithRetry(Clock, Scheduler)
-                .WithVersionHeader(_versionHeader);
+                .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
-                .WithVersionHeader(_versionHeader);
+                .WithMergedBaseCallSettings(_versionCallSettings);
         }
     }
 }
