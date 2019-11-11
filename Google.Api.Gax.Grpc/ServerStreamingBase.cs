@@ -8,6 +8,8 @@
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -26,11 +28,16 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Async stream to read streaming responses.
+        /// Async stream to read streaming responses, exposed as an async sequence.
+        /// The default implementation will use <see cref="GrpcCall"/> to extract a response
+        /// stream, and adapt it to <see cref="IAsyncEnumerator{T}"/>, passing in the specified cancellation
+        /// token on each call to the gRPC stream.
         /// </summary>
-        public virtual IAsyncEnumerator<TResponse> ResponseStream
-        {
-            get { throw new NotImplementedException(); }
-        }
+        /// <remarks>
+        /// If this method is called more than once, all the returned enumerators will be enumerating over the
+        /// same underlying response stream, which may cause confusion.
+        /// </remarks>
+        public virtual IAsyncEnumerator<TResponse> GetResponseStream(CancellationToken cancellationToken) =>
+            new ResponseStreamAdapter<TResponse>(GrpcCall.ResponseStream, cancellationToken);
     }
 }
