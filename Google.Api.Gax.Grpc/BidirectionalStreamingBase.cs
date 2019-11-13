@@ -118,9 +118,11 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <remarks>
         /// If this method is called more than once, all the returned enumerators will be enumerating over the
-        /// same underlying response stream, which may cause confusion.
+        /// same underlying response stream, which may cause confusion. Additionally, the sequence returned by
+        /// this method can only be iterated over a single time. Attempting to iterate more than once will cause
+        /// an <see cref="InvalidOperationException"/>.
         /// </remarks>
-        public virtual IAsyncEnumerator<TResponse> GetResponseStream(CancellationToken cancellationToken) =>
-            new ResponseStreamAdapter<TResponse>(GrpcCall.ResponseStream, cancellationToken);
+        public virtual IAsyncEnumerable<TResponse> GetResponseStream() =>
+            new ResponseStreamAdapter<TResponse>(GrpcCall.ResponseStream);
     }
 }
