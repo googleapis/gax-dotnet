@@ -73,7 +73,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void MoveNextAsync_Parameterless_AfterGetAsyncEnumerator_RespectsToken()
+        public void MoveNextAsync_Parameterless_AfterGetAsyncEnumerator_PropagatesToken()
         {
             var token = new CancellationTokenSource().Token;
             var mock = new Mock<IAsyncStreamReader<int>>(MockBehavior.Strict);
@@ -87,7 +87,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void MoveNextAsync_WithCancellationToken_RespectsToken()
+        public void MoveNextAsync_WithCancellationToken_PropagatesToken()
         {
             var token = new CancellationTokenSource().Token;
             var mock = new Mock<IAsyncStreamReader<int>>(MockBehavior.Strict);
