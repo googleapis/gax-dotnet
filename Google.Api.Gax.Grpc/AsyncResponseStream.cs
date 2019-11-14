@@ -53,7 +53,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>An iterator over the response stream.</returns>
         public IAsyncEnumerator<TResponse> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            if (Interlocked.CompareExchange(ref _getEnumeratorCalled, 0, 1) != 0)
+            if (Interlocked.CompareExchange(ref _getEnumeratorCalled, 1, 0) != 0)
             {
                 throw new InvalidOperationException($"{nameof(GetAsyncEnumerator)} can only be called once for a gRPC response stream wrapper.");
             }
