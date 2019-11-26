@@ -19,8 +19,8 @@ namespace Google.Api.Gax.Grpc
             IClock clock)
         {
             return new ApiServerStreamingCall<TRequest, TResponse>(
-                (req, cs) => Task.FromResult(grpcCall(req, cs.ToCallOptions(clock))),
-                (req, cs) => grpcCall(req, cs.ToCallOptions(clock)),
+                (req, cs) => Task.FromResult(grpcCall(req, cs.ValidateNoRetry().ToCallOptions(clock))),
+                (req, cs) => grpcCall(req, cs.ValidateNoRetry().ToCallOptions(clock)),
                 baseCallSettings);
         }
     }

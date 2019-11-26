@@ -4,6 +4,8 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+
+using Grpc.Core;
 using System;
 using Xunit;
 
@@ -11,35 +13,82 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class RetrySettingsTest
     {
-        private static BackoffSettings s_sampleBackoff = new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-
-        [Fact]
-        public void NullChecking()
+        [Theory]
+        [InlineData(0.0, 1.0)]
+        [InlineData(0.75, 1.5)]
+        [InlineData(1.0, 2.0)]
+        [InlineData(2.0, 4.0)]
+        [InlineData(4.0, 5.0)]
+        public void NextBackoff(double current, double expectedNext)
         {
-            Assert.Throws<ArgumentNullException>(() => new RetrySettings(null, s_sampleBackoff, Expiration.None).ToString());
-            Assert.Throws<ArgumentNullException>(() => new RetrySettings(s_sampleBackoff, null, Expiration.None).ToString());
-            Assert.Throws<ArgumentNullException>(() => new RetrySettings(s_sampleBackoff, s_sampleBackoff, null).ToString());
+            var settings = new RetrySettings(
+                maxAttempts: 5,
+                initialBackoff: TimeSpan.FromSeconds(1.0),
+                maxBackoff: TimeSpan.FromSeconds(5.0),
+                backoffMultiplier: 2.0,
+                e => true,
+                RetrySettings.NoJitter);
 
-            // No exceptions here...
-            var settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null);
-            settings = new RetrySettings(s_sampleBackoff, s_sampleBackoff, Expiration.None, null, null);
+            var expected = TimeSpan.FromSeconds(expectedNext);
+            var actual = settings.NextBackoff(TimeSpan.FromSeconds(current));
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void WithNewExpiration()
+        public void FromConstantBackoff_DefaultJitter()
         {
-            var retryBackoff = new BackoffSettings(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3));
-            var timeoutBackoff = new BackoffSettings(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3));
-            var original = new RetrySettings(retryBackoff, timeoutBackoff, Expiration.FromTimeout(TimeSpan.FromSeconds(5)),
-                e => false, RetrySettings.NoJitter);
-            var newExpiration = Expiration.FromDeadline(DateTime.UtcNow);
-            var newSettings = original.WithTotalExpiration(newExpiration);
+            var backoff = TimeSpan.FromSeconds(3);
+            var filter = RetrySettings.FilterForStatusCodes(StatusCode.Aborted);
+            var settings = RetrySettings.FromConstantBackoff(10, backoff, filter);
+            Assert.Equal(10, settings.MaxAttempts);
+            Assert.Equal(backoff, settings.InitialBackoff);
+            Assert.Equal(backoff, settings.MaxBackoff);
+            Assert.Same(filter, settings.RetryFilter);
+            Assert.Same(RetrySettings.RandomJitter, settings.BackoffJitter);
+        }
 
-            Assert.Same(original.RetryBackoff, newSettings.RetryBackoff);
-            Assert.Same(original.TimeoutBackoff, newSettings.TimeoutBackoff);
-            Assert.Same(original.RetryFilter, newSettings.RetryFilter);
-            Assert.Same(original.DelayJitter, newSettings.DelayJitter);
-            Assert.Same(newExpiration, newSettings.TotalExpiration);
+        [Fact]
+        public void FromConstantBackoff_SpecificJitter()
+        {
+            var backoff = TimeSpan.FromSeconds(3);
+            var filter = RetrySettings.FilterForStatusCodes(StatusCode.Aborted);
+            var settings = RetrySettings.FromConstantBackoff(10, backoff, filter, RetrySettings.NoJitter);
+            Assert.Equal(10, settings.MaxAttempts);
+            Assert.Equal(backoff, settings.InitialBackoff);
+            Assert.Equal(backoff, settings.MaxBackoff);
+            Assert.Equal(1.0, settings.BackoffMultiplier);
+            Assert.Same(filter, settings.RetryFilter);
+            Assert.Same(RetrySettings.NoJitter, settings.BackoffJitter);
+        }
+
+        [Fact]
+        public void FromExponentialBackoff_DefaultJitter()
+        {
+            var initialBackoff = TimeSpan.FromSeconds(3);
+            var maxBackoff = TimeSpan.FromSeconds(5);
+            var filter = RetrySettings.FilterForStatusCodes(StatusCode.Aborted);
+            var settings = RetrySettings.FromExponentialBackoff(10, initialBackoff, maxBackoff, 1.5, filter);
+            Assert.Equal(10, settings.MaxAttempts);
+            Assert.Equal(initialBackoff, settings.InitialBackoff);
+            Assert.Equal(maxBackoff, settings.MaxBackoff);
+            Assert.Equal(1.5, settings.BackoffMultiplier);
+            Assert.Same(filter, settings.RetryFilter);
+            Assert.Same(RetrySettings.RandomJitter, settings.BackoffJitter);
+        }
+
+        [Fact]
+        public void FromExponentialBackoff_SpecificJitter()
+        {
+            var initialBackoff = TimeSpan.FromSeconds(3);
+            var maxBackoff = TimeSpan.FromSeconds(5);
+            var filter = RetrySettings.FilterForStatusCodes(StatusCode.Aborted);
+            var settings = RetrySettings.FromExponentialBackoff(10, initialBackoff, maxBackoff, 1.5, filter, RetrySettings.NoJitter);
+            Assert.Equal(10, settings.MaxAttempts);
+            Assert.Equal(initialBackoff, settings.InitialBackoff);
+            Assert.Equal(maxBackoff, settings.MaxBackoff);
+            Assert.Equal(1.5, settings.BackoffMultiplier);
+            Assert.Same(filter, settings.RetryFilter);
+            Assert.Same(RetrySettings.NoJitter, settings.BackoffJitter);
         }
     }
 }

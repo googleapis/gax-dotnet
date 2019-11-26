@@ -34,7 +34,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void Clone()
         {
             var clock = new Mock<IClock>();
-            var callSettings = new CallSettings(new CancellationTokenSource().Token, null, null, null, null, null);
+            var callSettings = new CallSettings(new CancellationTokenSource().Token, null, null, null, null, null, null);
             var settings = new TestSettings
             {
                 CallSettings = callSettings,

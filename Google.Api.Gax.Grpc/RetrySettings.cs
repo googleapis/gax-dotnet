@@ -18,33 +18,39 @@ namespace Google.Api.Gax.Grpc
     public sealed class RetrySettings
     {
         /// <summary>
-        /// The backoff policy for the time between retries. This is never null.
+        /// The maximum number of attempts to make. Always greater than or equal to 1.
         /// </summary>
-        public BackoffSettings RetryBackoff { get; }
+        public int MaxAttempts { get; }
 
         /// <summary>
-        /// The backoff policy for timeouts of retries. This is never null.
+        /// The backoff time between the first attempt and the first retry. Always non-negative.
+        /// </summary>
+        public TimeSpan InitialBackoff { get; }
+        
+        /// <summary>
+        /// The maximum backoff time between retries. Always non-negative.
+        /// </summary>
+        public TimeSpan MaxBackoff { get; }
+
+        /// <summary>
+        /// The multiplier to apply to the backoff on each iteration; always greater than or equal to 1.0.
         /// </summary>
         /// <remarks>
-        /// This allows an increasing timeout, initially requesting a fast call,
-        /// then allowing a bit more time, then a bit more, and so on. However,
-        /// the timeout will also be adjusted to accommodate <see cref="TotalExpiration"/>.
+        /// <para>
+        /// As an example, a multiplier of 2.0 with an initial backoff of 0.1s on an RPC would then apply
+        /// a backoff of 0.2s, then 0.4s until it is capped by <see cref="MaxBackoff"/>.
+        /// </para>
         /// </remarks>
-        public BackoffSettings TimeoutBackoff { get; }
-
-        /// <summary>
-        /// The total expiration, across all retries. This is never null.
-        /// </summary>
-        public Expiration TotalExpiration { get; }
+        public double BackoffMultiplier { get; }
 
         /// <summary>
         /// A predicate to determine whether or not a particular exception should cause the operation to be retried.
-        /// Usually this is simply a matter of checking the status codes.
+        /// Usually this is simply a matter of checking the status codes. This is never null.
         /// </summary>
         public Predicate<RpcException> RetryFilter { get; }
 
         /// <summary>
-        /// The delay jitter to apply for delays, defaulting to <see cref="RandomJitter"/>.
+        /// The delay jitter to apply for delays, defaulting to <see cref="RandomJitter"/>. This is never null.
         /// </summary>
         /// <remarks>
         /// "Jitter" is used to introduce randomness into the pattern of delays. This is to avoid multiple
@@ -53,64 +59,67 @@ namespace Google.Api.Gax.Grpc
         /// and returns an actual delay which is a uniformly random value between 0 and the maximum. This
         /// is good enough for most applications, but makes precise testing difficult.
         /// </remarks>
-        public IJitter DelayJitter { get; }
+        public IJitter BackoffJitter { get; }
 
         /// <summary>
-        /// Constructs an instance with the given backoff configuration, the default RPC filter and
-        /// jitter.
+        /// Creates a new instance with the given settings.
         /// </summary>
-        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
-        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
-        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
-        public RetrySettings(
-            BackoffSettings retryBackoff,
-            BackoffSettings timeoutBackoff,
-            Expiration totalExpiration) : this(retryBackoff, timeoutBackoff, totalExpiration, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Constructs an instance with the given configuration, and the default jitter.
-        /// </summary>
-        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
-        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
-        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
-        /// <param name="retryFilter">A predicate to determine whether or not a particular exception should cause the operation to be retried,
-        /// or null for the default filter.</param>
-        public RetrySettings(
-            BackoffSettings retryBackoff,
-            BackoffSettings timeoutBackoff,
-            Expiration totalExpiration,
-            Predicate<RpcException> retryFilter) : this(retryBackoff, timeoutBackoff, totalExpiration, retryFilter, null)
-        {
-        }
-
-        /// <summary>
-        /// Constructs an instance with the given configuration.
-        /// </summary>
-        /// <param name="retryBackoff">The backoff policy for the time between retries. Must not be null.</param>
-        /// <param name="timeoutBackoff">The backoff policy for timeouts of retries. Must not be null.</param>
-        /// <param name="totalExpiration">The total expiration, across all retries. Must not be null.</param>
-        /// <param name="retryFilter">A predicate to determine whether or not a particular exception should cause the operation to be retried,
-        /// or null for the default filter.</param>
-        /// <param name="delayJitter">The delay jitter to apply for delays, or null for the defautl (random) jitter.</param>
-        public RetrySettings(
-            BackoffSettings retryBackoff,
-            BackoffSettings timeoutBackoff,
-            Expiration totalExpiration,
+        /// <param name="maxAttempts">The maximum number of attempts to make. Must be positive.</param>
+        /// <param name="initialBackoff">The backoff after the initial failure. Must be non-negative.</param>
+        /// <param name="maxBackoff">The maximum backoff. Must be at least <paramref name="initialBackoff"/>.</param>
+        /// <param name="backoffMultiplier">The multiplier to apply to backoff times. Must be at least 1.0.</param>
+        /// <param name="retryFilter">The predicate to use to check whether an error should be retried. Must not be null.</param>
+        /// <param name="backoffJitter">The jitter to use on each backoff. Must not be null.</param>
+        internal RetrySettings(
+            int maxAttempts,
+            TimeSpan initialBackoff,
+            TimeSpan maxBackoff,
+            double backoffMultiplier,
             Predicate<RpcException> retryFilter,
-            IJitter delayJitter)
+            IJitter backoffJitter)
         {
-            RetryBackoff = GaxPreconditions.CheckNotNull(retryBackoff, nameof(retryBackoff));
-            TimeoutBackoff = GaxPreconditions.CheckNotNull(timeoutBackoff, nameof(timeoutBackoff));
-            TotalExpiration = GaxPreconditions.CheckNotNull(totalExpiration, nameof(totalExpiration));
-            RetryFilter = retryFilter ?? DefaultFilter;
-            DelayJitter = delayJitter ?? RandomJitter;
+            MaxAttempts = GaxPreconditions.CheckArgumentRange(maxAttempts, nameof(maxAttempts), 1, int.MaxValue);
+            InitialBackoff = GaxPreconditions.CheckNonNegativeDelay(initialBackoff, nameof(initialBackoff));
+            MaxBackoff = GaxPreconditions.CheckNonNegativeDelay(maxBackoff, nameof(maxBackoff));
+            GaxPreconditions.CheckArgument(maxBackoff >= initialBackoff, nameof(maxBackoff), "Maximum backoff must be at least as large as initial backoff");
+            BackoffMultiplier = GaxPreconditions.CheckArgumentRange(backoffMultiplier, nameof(backoffMultiplier), 1.0, double.MaxValue);
+            RetryFilter = GaxPreconditions.CheckNotNull(retryFilter, nameof(retryFilter));
+            BackoffJitter = GaxPreconditions.CheckNotNull(backoffJitter, nameof(backoffJitter));
         }
+
+        /// <summary>
+        /// Returns a <see cref="RetrySettings"/> using the specified maximum number of attempts and a constant backoff.
+        /// Jitter is still applied to each backoff, but the "base" value of the backoff is always <paramref name="backoff"/>.
+        /// </summary>
+        /// <param name="maxAttempts">The maximum number of attempts to make. Must be positive.</param>
+        /// <param name="backoff">The backoff after each failure. Must be non-negative.</param>
+        /// <param name="retryFilter">The predicate to use to check whether an error should be retried. Must not be null.</param>
+        /// <param name="backoffJitter">The jitter to use on each backoff. May be null, in which case <see cref="RandomJitter"/> is used.</param>
+        /// <returns>A retry with constant backoff.</returns>
+        public static RetrySettings FromConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<RpcException> retryFilter, IJitter backoffJitter = null) =>
+            new RetrySettings(maxAttempts, backoff, backoff, 1.0, retryFilter, backoffJitter ?? RandomJitter);
+
+        /// <summary>
+        /// Returns a <see cref="RetrySettings"/> using the specified maximum number of attempts and an exponential backoff.
+        /// </summary>
+        /// <param name="maxAttempts">The maximum number of attempts to make. Must be positive.</param>
+        /// <param name="initialBackoff">The backoff after the initial failure. Must be non-negative.</param>
+        /// <param name="maxBackoff">The maximum backoff. Must be at least <paramref name="initialBackoff"/>.</param>
+        /// <param name="backoffMultiplier">The multiplier to apply to backoff times. Must be at least 1.0.</param>
+        /// <param name="retryFilter">The predicate to use to check whether an error should be retried. Must not be null.</param>
+        /// <param name="backoffJitter">The jitter to use on each backoff. May be null, in which case <see cref="RandomJitter"/> is used.</param>
+        /// <returns>A retry with exponential backoff.</returns>
+        public static RetrySettings FromExponentialBackoff(int maxAttempts,
+            TimeSpan initialBackoff,
+            TimeSpan maxBackoff,
+            double backoffMultiplier,
+            Predicate<RpcException> retryFilter,
+            IJitter backoffJitter = null) => 
+            new RetrySettings(maxAttempts, initialBackoff, maxBackoff, backoffMultiplier, retryFilter, backoffJitter ?? RandomJitter);
 
         /// <summary>
         /// Provides a mechanism for applying jitter to delays between retries.
-        /// See the <see cref="DelayJitter"/> property for more information.
+        /// See the <see cref="BackoffJitter"/> property for more information.
         /// </summary>
         public interface IJitter
         {
@@ -133,13 +142,6 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public static IJitter NoJitter { get; } = new NoJitterImpl();
 
-        // TODO: Is this a reasonable default? Does it make sense to have a default at all?
-
-        /// <summary>
-        /// The default retry filter, which retries operations which fail due to a status code of "not found".
-        /// </summary>
-        public static Predicate<RpcException> DefaultFilter { get; } = FilterForStatusCodes(StatusCode.NotFound);
-
         /// <summary>
         /// Creates a retry filter based on status codes.
         /// </summary>
@@ -161,11 +163,21 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Builds a new RetrySettings which is identical to this one, but with the given expiration.
+        /// Works out the next backoff from the current one, based on the multiplier and maximum.
         /// </summary>
-        /// <param name="expiration">New expiration</param>
-        public RetrySettings WithTotalExpiration(Expiration expiration) =>
-            new RetrySettings(RetryBackoff, TimeoutBackoff, expiration, RetryFilter, DelayJitter);
+        /// <param name="currentBackoff">The current backoff to use as a basis for the next one.</param>
+        /// <returns>The next backoff to use, which is always at least <see cref="InitialBackoff"/> and at most <see cref="MaxBackoff"/>.</returns>
+        public TimeSpan NextBackoff(TimeSpan currentBackoff)
+        {
+            checked
+            {
+                TimeSpan next = new TimeSpan((long) (currentBackoff.Ticks * BackoffMultiplier));
+                return
+                    next < InitialBackoff ? InitialBackoff:        // Lower bound capping
+                    next > MaxBackoff ? MaxBackoff:  // Upper bound capping
+                    next;
+            }
+        }
 
         private sealed class RandomJitterImpl : IJitter
         {

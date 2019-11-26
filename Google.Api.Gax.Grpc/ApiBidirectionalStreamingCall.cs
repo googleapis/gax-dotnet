@@ -19,7 +19,7 @@ namespace Google.Api.Gax.Grpc
             IClock clock)
         {
             return new ApiBidirectionalStreamingCall<TRequest, TResponse>(
-                cs => grpcCall(cs.ToCallOptions(clock)),
+                cs => grpcCall(cs.ValidateNoRetry().ToCallOptions(clock)),
                 baseCallSettings,
                 streamingSettings);
         }
@@ -62,13 +62,8 @@ namespace Google.Api.Gax.Grpc
         /// <param name="perCallCallSettings">The call settings to apply to this specific call,
         /// overriding defaults where necessary.</param>
         /// <returns>A gRPC duplex streaming call object.</returns>
-        public AsyncDuplexStreamingCall<TRequest, TResponse> Call(CallSettings perCallCallSettings)
-        {
-            CallSettings effectiveCallSettings = BaseCallSettings.MergedWith(perCallCallSettings);
-            GaxPreconditions.CheckState(effectiveCallSettings?.Timing?.Type != CallTimingType.Retry,
-                "Retry cannot be used in a bidirectional streaming method.");
-            return _call(effectiveCallSettings);
-        }
+        public AsyncDuplexStreamingCall<TRequest, TResponse> Call(CallSettings perCallCallSettings) =>
+            _call(BaseCallSettings.MergedWith(perCallCallSettings).ValidateNoRetry());
 
         /// <summary>
         /// Returns a new API call using the original base call settings merged with <paramref name="callSettings"/>.

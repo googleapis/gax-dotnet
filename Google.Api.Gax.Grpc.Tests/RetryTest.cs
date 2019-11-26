@@ -21,11 +21,7 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class RetryTest
     {
-        private static readonly BackoffSettings DoublingBackoff =
-            new BackoffSettings(TimeSpan.FromTicks(1000), TimeSpan.FromTicks(5000), 2.0);
-
-        private static readonly BackoffSettings ConstantBackoff =
-            new BackoffSettings(TimeSpan.FromTicks(1500), TimeSpan.FromTicks(6000), 1.0);
+        private static readonly Predicate<RpcException> NotFoundFilter = RetrySettings.FilterForStatusCodes(StatusCode.NotFound);
 
         private static async Task<TResponse> Call<TRequest, TResponse>(
             bool async, ApiCall<TRequest, TResponse> call, TRequest request, CallSettings callSettings)
@@ -67,15 +63,16 @@ namespace Google.Api.Gax.Grpc.Tests
             var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
             var server = new Server(0, TimeSpan.FromTicks(300), scheduler);
             var retrySettings = new RetrySettings(
-                retryBackoff: DoublingBackoff,
-                timeoutBackoff: ConstantBackoff,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                retryFilter: null,
-                delayJitter: RetrySettings.NoJitter);
+                maxAttempts: 5,
+                initialBackoff: TimeSpan.FromSeconds(1),
+                maxBackoff: TimeSpan.FromSeconds(5),
+                backoffMultiplier: 2.0,  
+                retryFilter: NotFoundFilter,
+                backoffJitter: RetrySettings.NoJitter);
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
+                var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = name };
                 var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
@@ -96,15 +93,16 @@ namespace Google.Api.Gax.Grpc.Tests
             var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
             var server = new Server(failures, callDuration, scheduler);
             var retrySettings = new RetrySettings(
-                retryBackoff: DoublingBackoff,
-                timeoutBackoff: ConstantBackoff,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                retryFilter: null,
-                delayJitter: RetrySettings.NoJitter);
+                maxAttempts: 5, 
+                initialBackoff: TimeSpan.FromTicks(1000),
+                maxBackoff: TimeSpan.FromTicks(5000),
+                backoffMultiplier: 2.0,
+                retryFilter: NotFoundFilter,
+                backoffJitter: RetrySettings.NoJitter);
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
+                var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = name };
                 var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
@@ -130,17 +128,19 @@ namespace Google.Api.Gax.Grpc.Tests
             var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
             var server = new Server(failures, callDuration, scheduler);
             var callable = server.Callable;
+            var timeout = TimeSpan.FromTicks(2500);
             var retrySettings = new RetrySettings(
-                retryBackoff: DoublingBackoff,
-                timeoutBackoff: ConstantBackoff,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromTicks(2500)),
-                retryFilter: null,
-                delayJitter: RetrySettings.NoJitter);
+                maxAttempts: 5,
+                initialBackoff: TimeSpan.FromTicks(1000),
+                maxBackoff: TimeSpan.FromTicks(5000),
+                backoffMultiplier: 2.0,
+                retryFilter: NotFoundFilter,
+                backoffJitter: RetrySettings.NoJitter);
 
             var task = scheduler.RunAsync(async () =>
             {
                 // Expiration makes it fail while waiting to make third call
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
+                var callSettings = CallSettings.FromRetry(retrySettings).WithTimeout(timeout);
                 var request = new SimpleRequest { Name = "irrelevant" };
                 await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
@@ -149,42 +149,12 @@ namespace Google.Api.Gax.Grpc.Tests
             var firstCall = time0;
             var secondCall = firstCall + callDuration + TimeSpan.FromTicks(1000);
             server.AssertCallTimes(firstCall, secondCall);
+            // We use the same deadline for all calls.
+            server.AssertDeadlines(time0 + timeout, time0 + timeout);
 
             // We fail immediately when we work out that we would time out before we make the third
             // call - so this is before the actual total timeout.
             Assert.Equal((secondCall + callDuration).Ticks, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
-        }
-
-        [Theory, CombinatorialData]
-        public async Task ExponentialTimeouts(bool async, bool serverStreaming)
-        {
-            var callDuration = TimeSpan.FromTicks(300);
-            var failures = 2;
-            var scheduler = new FakeScheduler();
-            var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
-            var server = new Server(failures, callDuration, scheduler);
-            var callable = server.Callable;
-            var retrySettings = new RetrySettings(
-                retryBackoff: ConstantBackoff, // 1500 ticks always
-                timeoutBackoff: DoublingBackoff, // 1000, then 2000, then 4000
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromTicks(4500)),
-                retryFilter: null,
-                delayJitter: RetrySettings.NoJitter);
-
-            await scheduler.RunAsync(async () =>
-            {
-                // Expiration truncates the third timeout. We expect:
-                // Call 1: t=0, deadline=1000, completes at 300
-                // Call 2: t=1800, deadline=3800 (2000+1800), completes at 2100
-                // Call 3, t=3600, deadline=4500 (would be 7600, but overall deadline truncates), completes at 3900 (with success)
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
-                var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
-            });
-
-            server.AssertCallTimes(time0, time0 + TimeSpan.FromTicks(1800), time0 + TimeSpan.FromTicks(3600));
-            server.AssertDeadlines(time0 + TimeSpan.FromTicks(1000), time0 + TimeSpan.FromTicks(3800), time0 + TimeSpan.FromTicks(4500));
-            Assert.Equal(3900L, scheduler.Clock.GetCurrentDateTimeUtc().Ticks);
         }
 
         [Theory, CombinatorialData]
@@ -197,21 +167,38 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var server = new Server(failures, callDuration, scheduler, failureCode);
             // We're not really interested in the timing in this test.
-            var retrySettings = new RetrySettings(
-                retryBackoff: ConstantBackoff,
-                timeoutBackoff: ConstantBackoff,
-                delayJitter: RetrySettings.NoJitter,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                retryFilter: RetrySettings.FilterForStatusCodes(filterCodes));
+            var retrySettings = ConstantBackoff(5, TimeSpan.Zero, RetrySettings.FilterForStatusCodes(filterCodes));
 
             await scheduler.RunAsync(async () =>
             {
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
+                var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = "irrelevant" };
                 await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
 
             Assert.True(server.CallTimes.Count() > 1);
+        }
+
+        [Theory, CombinatorialData]
+        public async Task MaxAttemptsObserved(bool async, bool serverStreaming)
+        {
+            var callDuration = TimeSpan.FromTicks(300);
+            var failures = 4; // Fifth call would succeed, but we won't get that far.
+            var scheduler = new FakeScheduler();
+            var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
+            var server = new Server(failures, callDuration, scheduler);
+            var callable = server.Callable;
+            var retrySettings = ConstantBackoff(failures, TimeSpan.Zero, NotFoundFilter);
+
+            var task = scheduler.RunAsync(async () =>
+            {
+                // MaxAttempts makes the overall operation fail on the 4th RPC.
+                var callSettings = CallSettings.FromRetry(retrySettings);
+                var request = new SimpleRequest { Name = "irrelevant" };
+                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+            });
+            await Assert.ThrowsAsync<RpcException>(() => task);
+            Assert.Equal(4, server.CallTimes.Count);
         }
 
         [Theory]
@@ -231,15 +218,16 @@ namespace Google.Api.Gax.Grpc.Tests
             var server = new Server(failures, callDuration, scheduler, failureCode);
             // We're not really interested in the timing in this test.
             var retrySettings = new RetrySettings(
-                retryBackoff: ConstantBackoff,
-                timeoutBackoff: ConstantBackoff,
-                delayJitter: RetrySettings.NoJitter,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(1)),
-                retryFilter: RetrySettings.FilterForStatusCodes(filterCodes));
+                maxAttempts: 5,
+                initialBackoff: TimeSpan.Zero,
+                maxBackoff: TimeSpan.Zero,
+                backoffMultiplier: 1.0,
+                retryFilter: RetrySettings.FilterForStatusCodes(filterCodes),
+                backoffJitter: RetrySettings.NoJitter);
 
             var task = scheduler.RunAsync(async () =>
             {
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings));
+                var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = "irrelevant" };
                 await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
@@ -256,12 +244,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var scheduler = new FakeScheduler();
             var time0 = scheduler.Clock.GetCurrentDateTimeUtc();
             var server = new Server(10, TimeSpan.FromSeconds(1), scheduler);
-            var retrySettings = new RetrySettings(
-                retryBackoff: new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), 1.0),
-                timeoutBackoff: new BackoffSettings(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), 1.0),
-                delayJitter: RetrySettings.NoJitter,
-                totalExpiration: Expiration.FromTimeout(TimeSpan.FromSeconds(10)),
-                retryFilter: RetrySettings.DefaultFilter);
+            var retrySettings = ConstantBackoff(5, TimeSpan.FromSeconds(1), NotFoundFilter);
             var delay = TimeSpan.FromMilliseconds(delayMs);
             Task task = scheduler.RunAsync(async () =>
             {
@@ -271,13 +254,18 @@ namespace Google.Api.Gax.Grpc.Tests
                     await scheduler.Delay(delay);
                     cts.Cancel();
                 });
-                var callSettings = CallSettings.FromCallTiming(CallTiming.FromRetry(retrySettings)).WithCancellationToken(cts.Token);
+                var callSettings = CallSettings.FromRetry(retrySettings).WithCancellationToken(cts.Token);
                 var request = new SimpleRequest { Name = "irrelevant" };
                 await Call(async, serverStreaming, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<TaskCanceledException>(() => task);
             Assert.Equal(time0 + delay, scheduler.Clock.GetCurrentDateTimeUtc());
+        }
 
+        private static RetrySettings ConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<RpcException> retryFilter)
+        {
+            GaxPreconditions.CheckNonNegativeDelay(backoff, nameof(backoff));
+            return new RetrySettings(maxAttempts, backoff, backoff, 1.0, retryFilter, RetrySettings.NoJitter);
         }
 
         private class Server
@@ -361,7 +349,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public void AssertDeadlines(params DateTime[] times)
             {
                 // Note that this effectively asserts we always end up with a CallSettings with a deadline.
-                Assert.Equal(times, CallSettingsReceived.Select(cs => cs.Timing.Expiration.Deadline.Value).ToArray());
+                Assert.Equal(times, CallSettingsReceived.Select(cs => cs.Expiration.Deadline.Value).ToArray());
             }
         }
     }

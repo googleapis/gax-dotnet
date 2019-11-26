@@ -19,24 +19,26 @@ namespace Google.Api.Gax.Grpc
         internal const string FieldMaskHeader = "x-goog-fieldmask";
         internal const string RequestParamsHeader = "x-goog-request-params";
 
-        internal static CallSettings CancellationTokenNone { get; } = new CallSettings(default(CancellationToken), null, null, null, null, null);
+        internal static CallSettings CancellationTokenNone { get; } = new CallSettings(default(CancellationToken), null, null, null, null, null, null);
 
         /// <summary>
         /// Constructs an instance with the specified settings.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
         /// <param name="credentials">Credentials to use for the call.</param>
-        /// <param name="timing"><see cref="CallTiming"/> to use, or null for default retry/expiration behavior.</param>
+        /// <param name="expiration"><see cref="Expiration"/> to use, or null for default expiration behavior.</param>
+        /// <param name="retry"><see cref="Retry"/> to use, or null for default retry behavior.</param>
         /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
         /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
         /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
         public CallSettings(
             CancellationToken? cancellationToken,
             CallCredentials credentials,
-            CallTiming timing,
+            Expiration expiration,
+            RetrySettings retry,
             Action<Metadata> headerMutation,
             WriteOptions writeOptions,
-            ContextPropagationToken propagationToken) : this(cancellationToken, credentials, timing, headerMutation, writeOptions, propagationToken, null, null)
+            ContextPropagationToken propagationToken) : this(cancellationToken, credentials, expiration, retry, headerMutation, writeOptions, propagationToken, null, null)
         {
         }
 
@@ -45,7 +47,8 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
         /// <param name="credentials">Credentials to use for the call.</param>
-        /// <param name="timing"><see cref="CallTiming"/> to use, or null for default retry/expiration behavior.</param>
+        /// <param name="expiration"><see cref="Expiration"/> to use, or null for default expiration behavior.</param>
+        /// <param name="retry"><see cref="Retry"/> to use, or null for default retry behavior.</param>
         /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
         /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
         /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
@@ -54,7 +57,8 @@ namespace Google.Api.Gax.Grpc
         public CallSettings(
             CancellationToken? cancellationToken,
             CallCredentials credentials,
-            CallTiming timing,
+            Expiration expiration,
+            RetrySettings retry,
             Action<Metadata> headerMutation,
             WriteOptions writeOptions,
             ContextPropagationToken propagationToken,
@@ -63,7 +67,8 @@ namespace Google.Api.Gax.Grpc
         {
             CancellationToken = cancellationToken;
             Credentials = credentials;
-            Timing = timing;
+            Expiration = expiration;
+            Retry = retry;
             HeaderMutation = headerMutation;
             WriteOptions = writeOptions;
             PropagationToken = propagationToken;
@@ -98,12 +103,14 @@ namespace Google.Api.Gax.Grpc
         public CallCredentials Credentials { get; }
 
         /// <summary>
-        /// <see cref="CallTiming"/> to use, or null for default retry/expiration behavior.
+        /// The expiration for the call (either a timeout or a deadline), or null for the default expiration.
         /// </summary>
-        /// <remarks>
-        /// Allows selecting between retry and simple expiration.
-        /// </remarks>
-        public CallTiming Timing { get; }
+        public Expiration Expiration { get; }
+
+        /// <summary>
+        /// <see cref="RetrySettings"/> to use, or null for default retry behavior.
+        /// </summary>
+        public RetrySettings Retry { get; }
 
         /// <summary>
         /// Delegate to receive the metadata associated with a response.
@@ -128,18 +135,19 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A merged set of call settings.</returns>
         internal static CallSettings Merge(CallSettings original, CallSettings overlaid)
         {
-            if (original == null)
+            if (original is null)
             {
                 return overlaid;
             }
-            if (overlaid == null)
+            if (overlaid is null)
             {
                 return original;
             }
             return new CallSettings(
                 overlaid.CancellationToken ?? original.CancellationToken,
                 overlaid.Credentials ?? original.Credentials,
-                overlaid.Timing ?? original.Timing,
+                overlaid.Expiration ?? original.Expiration,
+                overlaid.Retry ?? original.Retry,
                 // Combine mutations so that the overlaid mutation happens last; it can overwrite
                 // anything that the previous mutation does.
                 original.HeaderMutation + overlaid.HeaderMutation,
@@ -155,7 +163,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="cancellationToken">The cancellation token for the new settings.</param>
         /// <returns>A new instance.</returns>
         public static CallSettings FromCancellationToken(CancellationToken cancellationToken) =>
-            cancellationToken.CanBeCanceled ? new CallSettings(cancellationToken, null, null, null, null, null) : CancellationTokenNone;
+            cancellationToken.CanBeCanceled ? new CallSettings(cancellationToken, null, null, null, null, null, null) : CancellationTokenNone;
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified call credentials, or returns null
@@ -164,16 +172,25 @@ namespace Google.Api.Gax.Grpc
         /// <param name="credentials">The call credentials for the new settings.</param>
         /// <returns>A new instance, or null if <paramref name="credentials"/> is null.</returns>
         public static CallSettings FromCallCredentials(CallCredentials credentials) =>
-            credentials == null ? null : new CallSettings(null, credentials, null, null, null, null);
+            credentials == null ? null : new CallSettings(null, credentials, null, null, null, null, null);
 
         /// <summary>
-        /// Creates a <see cref="CallSettings"/> for the specified call timing, or returns null
-        /// if <paramref name="timing"/> is null.
+        /// Creates a <see cref="CallSettings"/> for the specified call expiration, or returns null
+        /// if <paramref name="expiration"/> is null.
         /// </summary>
-        /// <param name="timing">The call timing for the new settings.</param>
-        /// <returns>A new instance or null if <paramref name="timing"/> is null..</returns>
-        public static CallSettings FromCallTiming(CallTiming timing) =>
-            timing == null ? null : new CallSettings(null, null, timing, null, null, null);
+        /// <param name="expiration">The call timing for the new settings.</param>
+        /// <returns>A new instance or null if <paramref name="expiration"/> is null..</returns>
+        public static CallSettings FromExpiration(Expiration expiration) =>
+            expiration == null ? null : new CallSettings(null, null, expiration,  null, null, null, null);
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> for the specified retry settings, or returns null
+        /// if <paramref name="retry"/> is null.
+        /// </summary>
+        /// <param name="retry">The call timing for the new settings.</param>
+        /// <returns>A new instance or null if <paramref name="retry"/> is null..</returns>
+        public static CallSettings FromRetry(RetrySettings retry) =>
+            retry == null ? null : new CallSettings(null, null, null, retry, null, null, null);
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified header mutation, or returns null
@@ -182,7 +199,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
         /// <returns>A new instance, or null if <paramref name="headerMutation"/> is null..</returns>
         public static CallSettings FromHeaderMutation(Action<Metadata> headerMutation) =>
-            headerMutation == null ? null : new CallSettings(null, null, null, headerMutation, null, null);
+            headerMutation == null ? null : new CallSettings(null, null, null, null, headerMutation, null, null);
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified response metadata handler, or returns null
@@ -191,7 +208,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="responseMetadataHandler">Action to receive response metadata when the call completes.</param>
         /// <returns>A new instance, or null if <paramref name="responseMetadataHandler"/> is null..</returns>
         public static CallSettings FromResponseMetadataHandler(Action<Metadata> responseMetadataHandler) =>
-            responseMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, responseMetadataHandler, null);
+            responseMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, null, responseMetadataHandler, null);
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified trailing metadata handler, or returns null
@@ -200,7 +217,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="trailingMetadataHandler">Action to receive trailing metadata when the call completes.</param>
         /// <returns>A new instance, or null if <paramref name="trailingMetadataHandler"/> is null..</returns>
         public static CallSettings FromTrailingMetadataHandler(Action<Metadata> trailingMetadataHandler) =>
-            trailingMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, null, trailingMetadataHandler);
+            trailingMetadataHandler == null ? null : new CallSettings(null, null, null, null, null, null, null, null, trailingMetadataHandler);
         
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified header name and value.

@@ -18,10 +18,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
                 callOptions => null,
-                CallSettings.FromCallTiming(CallTiming.FromRetry(new RetrySettings(
-                    new BackoffSettings(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(100), 2.0),
-                    new BackoffSettings(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(100), 2.0),
-                    Expiration.FromTimeout(TimeSpan.FromSeconds(100))))),
+                CallSettings.FromRetry(new RetrySettings(5, TimeSpan.Zero, TimeSpan.Zero, 1.0, e => false, RetrySettings.RandomJitter)),
                 new BidirectionalStreamingSettings(100),
                 new FakeClock());
             Assert.Throws<InvalidOperationException>(() => apiCall.Call(null));
@@ -32,7 +29,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
                 callOptions => null,
-                CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100)))),
+                CallSettings.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100))),
                 new BidirectionalStreamingSettings(100),
                 new FakeClock());
             Assert.Null(apiCall.Call(null));

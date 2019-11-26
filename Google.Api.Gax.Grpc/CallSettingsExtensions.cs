@@ -61,28 +61,48 @@ namespace Google.Api.Gax.Grpc
             settings == null
                 ? CallSettings.FromCallCredentials(credentials)
                 : new CallSettings(settings.CancellationToken, credentials,
-                    settings.Timing, settings.HeaderMutation,
+                    settings.Expiration, settings.Retry, settings.HeaderMutation,
                     settings.WriteOptions, settings.PropagationToken,
                     settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
 
         /// <summary>
-        /// Returns a new <see cref="CallSettings"/> with the specified call timing,
+        /// Returns a new <see cref="CallSettings"/> with the specified expiration,
+        /// merged with the (optional) original settings specified by <paramref name="settings"/>.
+        /// </summary>
+        /// <param name="settings">Original settings. May be null, in which case the returned settings
+        /// will only contain the expiration.</param>
+        /// <param name="expiration">Expiration to use in the returned settings, possibly as part of a retry. May be null,
+        /// in which case any expiration in <paramref name="settings"/> is not present in the new call settings. If
+        /// both this and <paramref name="settings"/> are null, the return value is null.</param>
+        /// <returns>A new set of call settings with the specified expiration, or null of both parameters are null.</returns>
+        public static CallSettings WithExpiration(
+            this CallSettings settings,
+            Expiration expiration) =>
+            settings == null
+                ? CallSettings.FromExpiration(expiration)
+                : new CallSettings(settings.CancellationToken, settings.Credentials,
+                    expiration, settings.Retry, settings.HeaderMutation,
+                    settings.WriteOptions, settings.PropagationToken,
+                    settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
+
+        /// <summary>
+        /// Returns a new <see cref="CallSettings"/> with the specified retry settings,
         /// merged with the (optional) original settings specified by <paramref name="settings"/>.
         /// </summary>
         /// <param name="settings">Original settings. May be null, in which case the returned settings
         /// will only contain call timing.</param>
-        /// <param name="timing">Call timing for the new call settings.
-        /// This may be null, in which case any call timing in <paramref name="settings"/> are
+        /// <param name="retry">Call timing for the new call settings.
+        /// This may be null, in which case any retry settings in <paramref name="settings"/> are
         /// not present in the new call settings. If both this and <paramref name="settings"/> are null,
         /// the return value is null.</param>
         /// <returns>A new set of call settings, or null if both parameters are null.</returns>
-        public static CallSettings WithCallTiming(
+        public static CallSettings WithRetry(
             this CallSettings settings,
-            CallTiming timing) =>
+            RetrySettings retry) =>
             settings == null
-                ? CallSettings.FromCallTiming(timing)
+                ? CallSettings.FromRetry(retry)
                 : new CallSettings(settings.CancellationToken, settings.Credentials,
-                    timing, settings.HeaderMutation,
+                    settings.Expiration, retry, settings.HeaderMutation,
                     settings.WriteOptions, settings.PropagationToken,
                     settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
 
@@ -117,6 +137,24 @@ namespace Google.Api.Gax.Grpc
             settings.MergedWith(CallSettings.FromTrailingMetadataHandler(handler));
 
         /// <summary>
+        /// Returns a <see cref="CallSettings"/> which will have the specified timeout.
+        /// </summary>
+        /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
+        /// <param name="deadline">The deadline for the new settings.</param>
+        /// <returns>A new <see cref="CallSettings"/> with the given deadline.</returns>
+        public static CallSettings WithDeadline(this CallSettings settings, DateTime deadline) =>
+            settings.WithExpiration(Expiration.FromDeadline(deadline));
+
+        /// <summary>
+        /// Returns a <see cref="CallSettings"/> which will have the specified deadline.
+        /// </summary>
+        /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
+        /// <param name="timeout">The timeout for the new settings.</param>
+        /// <returns>A new <see cref="CallSettings"/> with the given timeout.</returns>
+        public static CallSettings WithTimeout(this CallSettings settings, TimeSpan timeout) =>
+            settings.WithExpiration(Expiration.FromTimeout(timeout));
+
+        /// <summary>
         /// Returns a <see cref="CallSettings"/> which will have an effective deadline of at least <paramref name="deadline"/>.
         /// If <paramref name="settings"/> already observes an earlier deadline (with respect to <paramref name="clock"/>),
         /// or if <paramref name="deadline"/> is null, the original settings will be returned.
@@ -133,55 +171,33 @@ namespace Google.Api.Gax.Grpc
             {
                 return settings;
             }
-            // No settings, or no timing in the settings? Create a simple expiration.
-            if (settings == null || settings.Timing == null)
+            // No settings, or no expiration in the settings? Create a simple expiration.
+            var expiration = settings?.Expiration;
+            if (expiration == null)
             {
-                // WithCallTiming (above) is an extension method - it's fine for settings to be null.
-                return settings.WithCallTiming(CallTiming.FromDeadline(deadline.Value));
+                // WithDeadline (above) is an extension method - it's fine for settings to be null.
+                return settings.WithDeadline(deadline.Value);
             }
-            // Okay, we have settings with a genuine timing component and a new deadline.
+            // Okay, we have settings with am existing expiration and a new deadline.
             // We may still return the existing settings, if the new deadline is later than the existing
             // one in the settings. But if the new deadline is earlier, we need to build new settings to accommodate
             // it.
-            var timing = settings.Timing;
-            switch (timing.Type)
-            {
-                // For simple expirations, we can just replace one deadline for another simple one,
-                // if necessary.
-                case CallTimingType.Expiration:
-                    return timing.Expiration.CalculateDeadline(clock) < deadline.Value
-                        ? settings
-                        : settings.WithCallTiming(CallTiming.FromDeadline(deadline.Value));
-                // For retries, we may need to create a new RetrySettings with all the same other aspects,
-                // but a new deadline.
-                case CallTimingType.Retry:
-                    if (timing.Retry.TotalExpiration.CalculateDeadline(clock) < deadline.Value)
-                    {
-                        return settings;
-                    }
-                    var newTiming = CallTiming.FromRetry(timing.Retry.WithTotalExpiration(Expiration.FromDeadline(deadline.Value)));
-                    return settings.WithCallTiming(newTiming);
-                default:
-                    throw new InvalidOperationException("Invalid call timing type");
-            }
+            var existingDeadline = expiration.CalculateDeadline(clock);
+            return existingDeadline < deadline.Value
+                ? settings
+                : settings.WithDeadline(deadline.Value);
         }
 
         /// <summary>
-        /// Returns a new <see cref="CallSettings"/> with the given the expiration, merged with the (optional) original settings specified by <paramref name="settings"/>.
+        /// Throws <see cref="InvalidOperationException"/> if <paramref name="callSettings"/> is non-null and has a Retry;
+        /// otherwise returns the parameter.
         /// </summary>
-        /// <remarks>
-        /// If <paramref name="settings"/> is non-null and has retry-based timing, the returned settings will have the same timing, but with the specified
-        /// expiration. Otherwise, the returned settings will have a simple expiration.
-        /// </remarks>
-        /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
-        /// <param name="expiration">Expiration to use in the returned settings, possibly as part of a retry. Must not be null.</param>
-        /// <returns></returns>
-        public static CallSettings WithExpiration(this CallSettings settings, Expiration expiration)
+        /// <param name="callSettings">The call settings for the call. May be null.</param>
+        /// <returns><paramref name="callSettings"/></returns>
+        internal static CallSettings ValidateNoRetry(this CallSettings callSettings)
         {
-            GaxPreconditions.CheckNotNull(expiration, nameof(expiration));
-            var retry = settings?.Timing?.Retry?.WithTotalExpiration(expiration);
-            var timing = retry == null ? CallTiming.FromExpiration(expiration) : CallTiming.FromRetry(retry);
-            return settings.WithCallTiming(timing);
+            GaxPreconditions.CheckState(callSettings?.Retry is null, "Retry not permitted for this operation type");
+            return callSettings;
         }
 
         /// <summary>
@@ -200,7 +216,8 @@ namespace Google.Api.Gax.Grpc
             callSettings.HeaderMutation?.Invoke(metadata);
             return new CallOptions(
                 headers: metadata,
-                deadline: callSettings.Timing.CalculateDeadline(clock),
+                // Note: extension method which handles a null expiration.
+                deadline: callSettings.Expiration.CalculateDeadline(clock),
                 cancellationToken: callSettings.CancellationToken ?? default(CancellationToken),
                 writeOptions: callSettings.WriteOptions,
                 propagationToken: callSettings.PropagationToken,
