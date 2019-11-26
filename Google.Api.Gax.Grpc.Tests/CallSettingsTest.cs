@@ -23,8 +23,8 @@ namespace Google.Api.Gax.Grpc.Tests
             Action<Metadata> clearAndAddFoo = m => { m.Clear(); m.Add("foo", "bar"); };
             Action<Metadata> addSample = m => m.Add("sample", "value");
 
-            CallSettings clearAndAddFooSettings = new CallSettings(null, null, null, clearAndAddFoo, null, null);
-            CallSettings addSampleSettings = new CallSettings(null, null, null, addSample, null, null);
+            CallSettings clearAndAddFooSettings = new CallSettings(null, null, null, null, clearAndAddFoo, null, null);
+            CallSettings addSampleSettings = new CallSettings(null, null, null, null, addSample, null, null);
 
             var merged1 = CallSettings.Merge(clearAndAddFooSettings, addSampleSettings);
             var merged2 = CallSettings.Merge(addSampleSettings, clearAndAddFooSettings);
@@ -41,35 +41,57 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void ToCallOptions_CallTimingNull()
+        public void ToCallOptions_NullSettings()
         {
             var mockClock = new Mock<IClock>();
-            CallSettings callSettings = CallSettings.FromCallTiming(null);
+            CallSettings callSettings = null;
             var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
         }
 
         [Fact]
-        public void ToCallOptions_CallTimingExpirationTimeout()
+        public void ToCallOptions_NoExpiration()
+        {
+            var mockClock = new Mock<IClock>();
+            CallSettings callSettings = CallSettings.CancellationTokenNone;
+            Assert.Null(callSettings.Expiration);
+            var options = callSettings.ToCallOptions(mockClock.Object);
+            Assert.Null(options.Deadline);
+            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+        }
+
+        [Fact]
+        public void ToCallOptions_ExpirationTimeout()
         {
             var clock = new FakeClock();
             var timeout = TimeSpan.FromSeconds(1);
-            CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromTimeout(timeout)));
+            CallSettings callSettings = CallSettings.FromExpiration(Expiration.FromTimeout(timeout));
             var options = callSettings.ToCallOptions(clock);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, clock.GetCurrentDateTimeUtc() + timeout);
         }
 
         [Fact]
-        public void ToCallOptions_CallTimingExpirationDeadline()
+        public void ToCallOptions_ExpirationDeadline()
         {
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
             var mockClock = new Mock<IClock>();
-            CallSettings callSettings = CallSettings.FromCallTiming(CallTiming.FromExpiration(Expiration.FromDeadline(deadline)));
+            CallSettings callSettings = CallSettings.FromExpiration(Expiration.FromDeadline(deadline));
             var options = callSettings.ToCallOptions(mockClock.Object);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, deadline);
+            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+        }
+
+        [Fact]
+        public void ToCallOptions_ExpirationNone()
+        {
+            var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
+            var mockClock = new Mock<IClock>();
+            CallSettings callSettings = CallSettings.FromExpiration(Expiration.None);
+            var options = callSettings.ToCallOptions(mockClock.Object);
+            Assert.Null(options.Deadline);
             mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
         }
 
@@ -80,7 +102,9 @@ namespace Google.Api.Gax.Grpc.Tests
             var callSettings = new CallSettings
             (
                 headerMutation: metadata => metadata.Add(new Metadata.Entry("1", "one")),
-                timing: CallTiming.FromExpiration(Expiration.None),
+                expiration: Expiration.None,
+                // The retry settings aren't used in the call options, but we'll include them anyway.
+                retry: new RetrySettings(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), 2.0, RetrySettings.FilterForStatusCodes(), RetrySettings.RandomJitter),
                 cancellationToken: new CancellationTokenSource().Token,
                 writeOptions: new WriteOptions(WriteFlags.NoCompress),
                 propagationToken: null, // Not possible to create/mock
@@ -112,12 +136,21 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void FromCallTiming()
+        public void FromExpiration()
         {
-            Assert.Null(CallSettings.FromCallTiming(null));
-            var timing = CallTiming.FromExpiration(Expiration.None);
-            var settings = CallSettings.FromCallTiming(timing);
-            Assert.Same(timing, settings.Timing);
+            Assert.Null(CallSettings.FromExpiration(null));
+            var expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            var settings = CallSettings.FromExpiration(expiration);
+            Assert.Same(expiration, settings.Expiration);
+        }
+
+        [Fact]
+        public void FromRetry()
+        {
+            Assert.Null(CallSettings.FromRetry(null));
+            var retry = new RetrySettings(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), 2.0, RetrySettings.FilterForStatusCodes(), RetrySettings.RandomJitter);
+            var settings = CallSettings.FromRetry(retry);
+            Assert.Same(retry, settings.Retry);
         }
 
         [Fact]
