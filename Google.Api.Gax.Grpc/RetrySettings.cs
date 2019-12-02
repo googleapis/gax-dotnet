@@ -164,10 +164,12 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Works out the next backoff from the current one, based on the multiplier and maximum.
+        /// This does not apply any jitter; the intention is that NextBackoff is applied to an unjittered sequence of
+        /// values, but jitter is then applied to each one for actual delays.
         /// </summary>
         /// <param name="currentBackoff">The current backoff to use as a basis for the next one.</param>
         /// <returns>The next backoff to use, which is always at least <see cref="InitialBackoff"/> and at most <see cref="MaxBackoff"/>.</returns>
-        public TimeSpan NextBackoff(TimeSpan currentBackoff)
+        internal TimeSpan NextBackoff(TimeSpan currentBackoff)
         {
             checked
             {
@@ -176,6 +178,24 @@ namespace Google.Api.Gax.Grpc
                     next < InitialBackoff ? InitialBackoff:        // Lower bound capping
                     next > MaxBackoff ? MaxBackoff:  // Upper bound capping
                     next;
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of already-jittered backoffs. A caller can just iterate over this
+        /// sequence and delay by each returned timespan. This sequence is infinite; callers do not
+        /// need to test the result of MoveNext.
+        /// </summary>
+        /// <param name="initialBackoffOverride">The initial backoff to apply, or null to use <see cref="InitialBackoff"/>;
+        /// this can be used to retry immediately after an initial failure, or to start with a longer-than-normal backoff.</param>
+        /// <returns>A sequence of jittered backoffs, suitable for delays.</returns>
+        public IEnumerator<TimeSpan> GetJitteredBackoffSequence(TimeSpan? initialBackoffOverride = null)
+        {
+            TimeSpan unjittered = initialBackoffOverride ?? InitialBackoff;
+            while (true)
+            {
+                yield return BackoffJitter.GetDelay(unjittered);
+                unjittered = NextBackoff(unjittered);
             }
         }
 

@@ -32,30 +32,32 @@ namespace Google.Api.Gax.Grpc
                 {
                     callSettings = callSettings.WithDeadline(overallDeadline.Value);
                 }
-                TimeSpan backoffDelay = retrySettings.InitialBackoff;
-                int attempt = 0;
-                while (true)
+                using (var backoffIterator = retrySettings.GetJitteredBackoffSequence())
                 {
-                    try
+                    int attempt = 0;
+                    while (true)
                     {
-                        attempt++;
-                        var response = await fn(request, callSettings).ConfigureAwait(false);
-                        if (postResponse != null)
+                        try
                         {
-                            await postResponse(response).ConfigureAwait(false);
+                            attempt++;
+                            var response = await fn(request, callSettings).ConfigureAwait(false);
+                            if (postResponse != null)
+                            {
+                                await postResponse(response).ConfigureAwait(false);
+                            }
+                            return response;
                         }
-                        return response;
-                    }
-                    catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
-                    {
-                        TimeSpan actualDelay = retrySettings.BackoffJitter.GetDelay(backoffDelay);
-                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
-                        if (expectedRetryTime > overallDeadline)
+                        catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
                         {
-                            throw;
+                            backoffIterator.MoveNext();
+                            TimeSpan actualDelay = backoffIterator.Current;
+                            DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
+                            if (expectedRetryTime > overallDeadline)
+                            {
+                                throw;
+                            }
+                            await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
                         }
-                        await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
-                        backoffDelay = retrySettings.NextBackoff(backoffDelay);
                     }
                 }
             };
@@ -77,30 +79,31 @@ namespace Google.Api.Gax.Grpc
                 {
                     callSettings = callSettings.WithDeadline(overallDeadline.Value);
                 }
-                TimeSpan backoffDelay = retrySettings.InitialBackoff;
-                int attempt = 0;
-                while (true)
+                using (var backoffIterator = retrySettings.GetJitteredBackoffSequence())
                 {
-                    try
+                    int attempt = 0;
+                    while (true)
                     {
-                        attempt++;
-                        var response = fn(request, callSettings);
-                        postResponse?.Invoke(response);
-                        return response;
-                    }
-                    catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
-                    {
-                        TimeSpan actualDelay = retrySettings.BackoffJitter.GetDelay(backoffDelay);
-                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
-                        if (expectedRetryTime > overallDeadline)
+                        try
                         {
-                            throw;
+                            attempt++;
+                            var response = fn(request, callSettings);
+                            postResponse?.Invoke(response);
+                            return response;
                         }
-                        scheduler.Sleep(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
-                        backoffDelay = retrySettings.NextBackoff(backoffDelay);
+                        catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
+                        {
+                            backoffIterator.MoveNext();
+                            TimeSpan actualDelay = backoffIterator.Current;
+                            DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
+                            if (expectedRetryTime > overallDeadline)
+                            {
+                                throw;
+                            }
+                            scheduler.Sleep(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
+                        }
                     }
                 }
             };
-
     }
 }
