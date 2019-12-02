@@ -184,12 +184,12 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Returns a sequence of already-jittered backoffs. A caller can just iterate over this
         /// sequence and delay by each returned timespan. This sequence is infinite; callers do not
-        /// need to test the result of MoveNext.
+        /// need to test the result of MoveNext. (In particular, this sequence does *not* request MaxAttempts.)
         /// </summary>
         /// <param name="initialBackoffOverride">The initial backoff to apply, or null to use <see cref="InitialBackoff"/>;
         /// this can be used to retry immediately after an initial failure, or to start with a longer-than-normal backoff.</param>
         /// <returns>A sequence of jittered backoffs, suitable for delays.</returns>
-        public IEnumerator<TimeSpan> GetJitteredBackoffSequence(TimeSpan? initialBackoffOverride = null)
+        public IEnumerable<TimeSpan> GetJitteredBackoffSequence(TimeSpan? initialBackoffOverride = null)
         {
             TimeSpan unjittered = initialBackoffOverride ?? InitialBackoff;
             while (true)
