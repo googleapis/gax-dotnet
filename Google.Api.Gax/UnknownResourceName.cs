@@ -59,7 +59,7 @@ namespace Google.Api.Gax
         }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Unknown;
+        public bool IsKnown => false;
 
         /// <inheritdoc />
         public override string ToString() => _name;

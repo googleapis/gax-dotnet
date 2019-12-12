@@ -92,7 +92,7 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void Kind()
         {
-            Assert.Equal(ResourceNameKind.Templated, new TemplatedResourceName(s_template, "foo", "bar").Kind);
+            Assert.True(new TemplatedResourceName(s_template, "foo", "bar").IsKnown);
         }
     }
 }

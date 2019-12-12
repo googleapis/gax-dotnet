@@ -127,7 +127,7 @@ namespace Google.Api.Gax
         }
 
         /// <inheritdoc />
-        public ResourceNameKind Kind => ResourceNameKind.Templated;
+        public bool IsKnown => true;
 
         /// <summary>
         /// Returns a string representation of this resource name, expanding the template
