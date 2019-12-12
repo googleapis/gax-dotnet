@@ -90,7 +90,7 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
-        public void Kind()
+        public void IsKnownPattern()
         {
             Assert.True(new TemplatedResourceName(s_template, "foo", "bar").IsKnownPattern);
         }

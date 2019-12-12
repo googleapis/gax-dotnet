@@ -15,8 +15,8 @@ namespace Google.Api.Gax.Tests
     public class ResourceNameListTest
     {
         private IList<string> List(params string[] items) => new List<string>(items);
-        private ResourceNameList<UnknownResourceName> ResourceList(IList<string> list) =>
-            new ResourceNameList<UnknownResourceName>(list, s => new UnknownResourceName(s));
+        private ResourceNameList<UnparsedResourceName> ResourceList(IList<string> list) =>
+            new ResourceNameList<UnparsedResourceName>(list, s => new UnparsedResourceName(s));
 
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Google.Api.Gax.Tests
         {
             var list = List("a", "b");
             var resourceList = ResourceList(list);
-            resourceList[1] = new UnknownResourceName("c");
+            resourceList[1] = new UnparsedResourceName("c");
             Assert.Equal("c", list[1]);
             Assert.Equal("a", resourceList[0].ToString());
         }
@@ -46,7 +46,7 @@ namespace Google.Api.Gax.Tests
         {
             var list = List("a", "b");
             var resourceList = ResourceList(list);
-            resourceList.Add(new UnknownResourceName("c"));
+            resourceList.Add(new UnparsedResourceName("c"));
             Assert.Equal(List("a", "b", "c"), list);
         }
 
@@ -55,7 +55,7 @@ namespace Google.Api.Gax.Tests
         {
             var list = List("a", "b");
             var resourceList = ResourceList(list);
-            resourceList.Add(new[] { new UnknownResourceName("c"), new UnknownResourceName("d") });
+            resourceList.Add(new[] { new UnparsedResourceName("c"), new UnparsedResourceName("d") });
             Assert.Equal(List("a", "b", "c", "d"), list);
         }
 
@@ -63,14 +63,14 @@ namespace Google.Api.Gax.Tests
         public void Add_NullElement()
         {
             var resourceList = ResourceList(List());
-            Assert.Throws<ArgumentNullException>(() => resourceList.Add((UnknownResourceName)null));
+            Assert.Throws<ArgumentNullException>(() => resourceList.Add((UnparsedResourceName)null));
         }
 
         [Fact]
         public void AddRange_NullEnumerable()
         {
             var resourceList = ResourceList(List());
-            Assert.Throws<ArgumentNullException>(() => resourceList.Add((IEnumerable<UnknownResourceName>)null));
+            Assert.Throws<ArgumentNullException>(() => resourceList.Add((IEnumerable<UnparsedResourceName>)null));
         }
 
         [Fact]
@@ -87,9 +87,9 @@ namespace Google.Api.Gax.Tests
             var list = List("a", "b");
             var resourceList = ResourceList(list);
 #pragma warning disable xUnit2017 // We're testing the Contains method...
-            Assert.True(resourceList.Contains(new UnknownResourceName("a")));
-            Assert.True(resourceList.Contains(new UnknownResourceName("b")));
-            Assert.False(resourceList.Contains(new UnknownResourceName("c")));
+            Assert.True(resourceList.Contains(new UnparsedResourceName("a")));
+            Assert.True(resourceList.Contains(new UnparsedResourceName("b")));
+            Assert.False(resourceList.Contains(new UnparsedResourceName("c")));
 #pragma warning restore xUnit2017            
         }
 
@@ -99,11 +99,11 @@ namespace Google.Api.Gax.Tests
             var list = List("a", "b");
             var resourceList = ResourceList(list);
             Assert.Throws<ArgumentNullException>(() => resourceList.CopyTo(null, 0));
-            UnknownResourceName[] copy = new UnknownResourceName[4];
+            UnparsedResourceName[] copy = new UnparsedResourceName[4];
             Assert.Throws<ArgumentOutOfRangeException>(() => resourceList.CopyTo(copy, -1));
             Assert.Throws<ArgumentException>(() => resourceList.CopyTo(copy, 3));
             resourceList.CopyTo(copy, 1);
-            Assert.Equal(new[] { null, new UnknownResourceName("a"), new UnknownResourceName("b"), null }, copy);
+            Assert.Equal(new[] { null, new UnparsedResourceName("a"), new UnparsedResourceName("b"), null }, copy);
         }
 
         [Fact]
@@ -118,15 +118,15 @@ namespace Google.Api.Gax.Tests
         public void IndexOf()
         {
             var resourceList = ResourceList(List("a", "b"));
-            Assert.Equal(0, resourceList.IndexOf(new UnknownResourceName("a")));
-            Assert.Equal(1, resourceList.IndexOf(new UnknownResourceName("b")));
+            Assert.Equal(0, resourceList.IndexOf(new UnparsedResourceName("a")));
+            Assert.Equal(1, resourceList.IndexOf(new UnparsedResourceName("b")));
         }
 
         [Fact]
         public void Insert()
         {
             var list = List("a", "b");
-            ResourceList(list).Insert(1, new UnknownResourceName("c"));
+            ResourceList(list).Insert(1, new UnparsedResourceName("c"));
             Assert.Equal(List("a", "c", "b"), list);
         }
 
@@ -134,7 +134,7 @@ namespace Google.Api.Gax.Tests
         public void Remove()
         {
             var list = List("a", "b");
-            ResourceList(list).Remove(new UnknownResourceName("b"));
+            ResourceList(list).Remove(new UnparsedResourceName("b"));
             Assert.Equal(List("a"), list);
         }
 

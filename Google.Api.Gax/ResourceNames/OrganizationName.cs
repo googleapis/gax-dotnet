@@ -20,8 +20,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <summary>The possible contents of <see cref="OrganizationName"/>.</summary>
         public enum ResourceNameType
         {
-            /// <summary>A resource of an unknown type.</summary>
-            Unknown = 0,
+            /// <summary>An unparsed resource name.</summary>
+            Unparsed = 0,
 
             /// <summary>A resource name with pattern <c>organizations/{organization}</c>.</summary>
             Organization = 1
@@ -29,14 +29,14 @@ namespace Google.Api.Gax.ResourceNames
 
         private static gax::PathTemplate s_organization = new gax::PathTemplate("organizations/{organization}");
 
-        /// <summary>Creates a <see cref="OrganizationName"/> containing an unknown resource name.</summary>
-        /// <param name="unknownResourceName">The unknown resource name. Must not be <c>null</c>.</param>
+        /// <summary>Creates a <see cref="OrganizationName"/> containing an unparsed resource name.</summary>
+        /// <param name="unparsedResourceName">The unparsed resource name. Must not be <c>null</c>.</param>
         /// <returns>
         /// A new instance of <see cref="OrganizationName"/> containing the provided
-        /// <paramref name="unknownResourceName"/>.
+        /// <paramref name="unparsedResourceName"/>.
         /// </returns>
-        public static OrganizationName FromUnknown(gax::UnknownResourceName unknownResourceName) =>
-            new OrganizationName(ResourceNameType.Unknown, gax::GaxPreconditions.CheckNotNull(unknownResourceName, nameof(unknownResourceName)));
+        public static OrganizationName FromUnparsed(gax::UnparsedResourceName unparsedResourceName) =>
+            new OrganizationName(ResourceNameType.Unparsed, gax::GaxPreconditions.CheckNotNull(unparsedResourceName, nameof(unparsedResourceName)));
 
         /// <summary>
         /// Creates a <see cref="OrganizationName"/> with the pattern <c>organizations/{organization}</c>.
@@ -80,22 +80,22 @@ namespace Google.Api.Gax.ResourceNames
 
         /// <summary>
         /// Parses the given resource name string into a new <see cref="OrganizationName"/> instance; optionally
-        /// allowing an unknown resource name to be successfully parsed
+        /// allowing an unparseable resource name.
         /// </summary>
         /// <remarks>
         /// To parse successfully, the resource name must be formatted as one of the following:
         /// <list type="bullet"><item><description><c>organizations/{organization}</c></description></item></list>
-        /// Or may be in any format if <paramref name="allowUnknown"/> is <c>true</c>.
+        /// Or may be in any format if <paramref name="allowUnparsed"/> is <c>true</c>.
         /// </remarks>
         /// <param name="organizationName">The resource name in string form. Must not be <c>null</c>.</param>
-        /// <param name="allowUnknown">
-        /// If <c>true</c> will successfully parse an unknown resource name into the <see cref="UnknownResource"/>
-        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unknown resource name is
+        /// <param name="allowUnparsed">
+        /// If <c>true</c> will successfully store an unparseable resource name into the <see cref="UnparsedResource"/>
+        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unparseable resource name is
         /// specified.
         /// </param>
         /// <returns>The parsed <see cref="OrganizationName"/> if successful.</returns>
-        public static OrganizationName Parse(string organizationName, bool allowUnknown) =>
-            TryParse(organizationName, allowUnknown, out OrganizationName result) ? result : throw new sys::ArgumentException("The given resource-name matches no pattern.");
+        public static OrganizationName Parse(string organizationName, bool allowUnparsed) =>
+            TryParse(organizationName, allowUnparsed, out OrganizationName result) ? result : throw new sys::ArgumentException("The given resource-name matches no pattern.");
 
         /// <summary>
         /// Tries to parse the given resource name string into a new <see cref="OrganizationName"/> instance.
@@ -114,24 +114,24 @@ namespace Google.Api.Gax.ResourceNames
 
         /// <summary>
         /// Tries to parse the given resource name string into a new <see cref="OrganizationName"/> instance; optionally
-        /// allowing an unknown resource name to be successfully parsed.
+        /// allowing an unparseable resource name.
         /// </summary>
         /// <remarks>
         /// To parse successfully, the resource name must be formatted as one of the following:
         /// <list type="bullet"><item><description><c>organizations/{organization}</c></description></item></list>
-        /// Or may be in any format if <paramref name="allowUnknown"/> is <c>true</c>.
+        /// Or may be in any format if <paramref name="allowUnparsed"/> is <c>true</c>.
         /// </remarks>
         /// <param name="organizationName">The resource name in string form. Must not be <c>null</c>.</param>
-        /// <param name="allowUnknown">
-        /// If <c>true</c> will successfully parse an unknown resource name into the <see cref="UnknownResource"/>
-        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unknown resource name is
+        /// <param name="allowUnparsed">
+        /// If <c>true</c> will successfully store an unparseable resource name into the <see cref="UnparsedResource"/>
+        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unparseable resource name is
         /// specified.
         /// </param>
         /// <param name="result">
         /// When this method returns, the parsed <see cref="OrganizationName"/>, or <c>null</c> if parsing failed.
         /// </param>
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
-        public static bool TryParse(string organizationName, bool allowUnknown, out OrganizationName result)
+        public static bool TryParse(string organizationName, bool allowUnparsed, out OrganizationName result)
         {
             gax::GaxPreconditions.CheckNotNull(organizationName, nameof(organizationName));
             gax::TemplatedResourceName resourceName;
@@ -140,11 +140,11 @@ namespace Google.Api.Gax.ResourceNames
                 result = FromOrganization(resourceName[0]);
                 return true;
             }
-            if (allowUnknown)
+            if (allowUnparsed)
             {
-                if (gax::UnknownResourceName.TryParse(organizationName, out gax::UnknownResourceName unknownResourceName))
+                if (gax::UnparsedResourceName.TryParse(organizationName, out gax::UnparsedResourceName unparsedResourceName))
                 {
-                    result = FromUnknown(unknownResourceName);
+                    result = FromUnparsed(unparsedResourceName);
                     return true;
                 }
             }
@@ -152,10 +152,10 @@ namespace Google.Api.Gax.ResourceNames
             return false;
         }
 
-        private OrganizationName(ResourceNameType type, gax::UnknownResourceName unknownResourceName = null, string organizationId = null)
+        private OrganizationName(ResourceNameType type, gax::UnparsedResourceName unparsedResourceName = null, string organizationId = null)
         {
             Type = type;
-            UnknownResource = unknownResourceName;
+            UnparsedResource = unparsedResourceName;
             OrganizationId = organizationId;
         }
 
@@ -172,25 +172,26 @@ namespace Google.Api.Gax.ResourceNames
         public ResourceNameType Type { get; }
 
         /// <summary>
-        /// The contained <see cref="gax::UnknownResourceName"/>. Only non-<c>null</c>if this instance contains an
-        /// unknown resource name.
+        /// The contained <see cref="gax::UnparsedResourceName"/>. Only non-<c>null</c>if this instance contains an
+        /// unparsed resource name.
         /// </summary>
-        public gax::UnknownResourceName UnknownResource { get; }
+        public gax::UnparsedResourceName UnparsedResource { get; }
 
         /// <summary>
-        /// The <c>Organization</c> ID. Will not be <c>null</c>, unless this instance contains an unknown resource name.
+        /// The <c>Organization</c> ID. Will not be <c>null</c>, unless this instance contains an unparsed resource
+        /// name.
         /// </summary>
         public string OrganizationId { get; }
 
         /// <inheritdoc/>
-        public bool IsKnownPattern => Type != ResourceNameType.Unknown;
+        public bool IsKnownPattern => Type != ResourceNameType.Unparsed;
 
         /// <inheritdoc/>
         public override string ToString()
         {
             switch (Type)
             {
-                case ResourceNameType.Unknown: return UnknownResource.ToString();
+                case ResourceNameType.Unparsed: return UnparsedResource.ToString();
                 case ResourceNameType.Organization: return s_organization.Expand(OrganizationId);
                 default: throw new sys::InvalidOperationException("Unrecognized resource-type.");
             }
