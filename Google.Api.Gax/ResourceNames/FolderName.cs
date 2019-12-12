@@ -177,7 +177,7 @@ namespace Google.Api.Gax.ResourceNames
         public string FolderId { get; }
 
         /// <inheritdoc/>
-        public bool IsKnown => Type != ResourceNameType.Unknown;
+        public bool IsKnownPattern => Type != ResourceNameType.Unknown;
 
         /// <inheritdoc/>
         public override string ToString()

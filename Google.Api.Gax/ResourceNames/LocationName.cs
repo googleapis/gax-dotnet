@@ -199,7 +199,7 @@ namespace Google.Api.Gax.ResourceNames
         public string ProjectId { get; }
 
         /// <inheritdoc/>
-        public bool IsKnown => Type != ResourceNameType.Unknown;
+        public bool IsKnownPattern => Type != ResourceNameType.Unknown;
 
         /// <inheritdoc/>
         public override string ToString()

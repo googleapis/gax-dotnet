@@ -59,7 +59,7 @@ namespace Google.Api.Gax
         }
 
         /// <inheritdoc />
-        public bool IsKnown => false;
+        public bool IsKnownPattern => false;
 
         /// <inheritdoc />
         public override string ToString() => _name;

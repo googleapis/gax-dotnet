@@ -33,7 +33,7 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void Kind()
         {
-            Assert.False(UnknownResourceName.Parse("a").IsKnown);
+            Assert.False(UnknownResourceName.Parse("a").IsKnownPattern);
         }
 
         [Fact]
