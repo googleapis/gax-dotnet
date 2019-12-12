@@ -183,7 +183,7 @@ namespace Google.Api.Gax.ResourceNames
         public string OrganizationId { get; }
 
         /// <inheritdoc/>
-        public gax::ResourceNameKind Kind => Type == ResourceNameType.Unknown ? gax::ResourceNameKind.Unknown : gax::ResourceNameKind.Simple;
+        public bool IsKnown => Type != ResourceNameType.Unknown;
 
         /// <inheritdoc/>
         public override string ToString()
