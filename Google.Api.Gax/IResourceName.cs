@@ -13,9 +13,9 @@ namespace Google.Api.Gax
     public interface IResourceName
     {
         /// <summary>
-        /// The kind of resource name.
+        /// Whether this instance contains a resource name with a known pattern.
         /// </summary>
-        ResourceNameKind Kind { get; }
+        bool IsKnownPattern { get; }
 
         /// <summary>
         /// The string representation of the resource name.
