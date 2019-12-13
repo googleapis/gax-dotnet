@@ -16,7 +16,7 @@ namespace Google.Api.Gax
     {
         /// <summary>
         /// Parse a resource name into an <see cref="UnparsedResourceName"/>.
-        /// Only minimal verification is carried out that <paramref name="name"/> is a value resource name string.
+        /// Only minimal verification is carried out that <paramref name="name"/> is a valid resource name string.
         /// </summary>
         /// <param name="name">A resource name.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
