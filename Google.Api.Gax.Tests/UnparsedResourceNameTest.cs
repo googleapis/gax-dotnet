@@ -10,37 +10,37 @@ using Xunit;
 
 namespace Google.Api.Gax.Tests
 {
-    public class UnknownResourceNameTest
+    public class UnparsedResourceNameTest
     {
         [Fact]
         public void Parse()
         {
-            Assert.Equal("a", UnknownResourceName.Parse("a").ToString());
-            Assert.Throws<ArgumentNullException>(() => UnknownResourceName.Parse(null));
-            Assert.Throws<ArgumentException>(() => UnknownResourceName.Parse(""));
+            Assert.Equal("a", UnparsedResourceName.Parse("a").ToString());
+            Assert.Throws<ArgumentNullException>(() => UnparsedResourceName.Parse(null));
+            Assert.Throws<ArgumentException>(() => UnparsedResourceName.Parse(""));
         }
 
         [Fact]
         public void TryParse()
         {
-            UnknownResourceName result;
-            Assert.True(UnknownResourceName.TryParse("a", out result));
+            UnparsedResourceName result;
+            Assert.True(UnparsedResourceName.TryParse("a", out result));
             Assert.Equal("a", result.ToString());
-            Assert.False(UnknownResourceName.TryParse(null, out result));
-            Assert.False(UnknownResourceName.TryParse("", out result));
+            Assert.False(UnparsedResourceName.TryParse(null, out result));
+            Assert.False(UnparsedResourceName.TryParse("", out result));
         }
 
         [Fact]
-        public void Kind()
+        public void IsKnownPattern()
         {
-            Assert.False(UnknownResourceName.Parse("a").IsKnownPattern);
+            Assert.False(UnparsedResourceName.Parse("a").IsKnownPattern);
         }
 
         [Fact]
         public void ValueEquality()
         {
-            var name1 = UnknownResourceName.Parse("a");
-            var name2 = UnknownResourceName.Parse("a");
+            var name1 = UnparsedResourceName.Parse("a");
+            var name2 = UnparsedResourceName.Parse("a");
             Assert.True(name1.GetHashCode() == name2.GetHashCode());
             Assert.True(name1.Equals(name2));
             Assert.True(name1.Equals((object)name2));
@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Tests
             Assert.True(name2.Equals((object)name1));
             Assert.True(name1 == name2);
             Assert.False(name1 != name2);
-            var name3 = UnknownResourceName.Parse("b");
+            var name3 = UnparsedResourceName.Parse("b");
             Assert.False(name1.GetHashCode() == name3.GetHashCode());
             Assert.False(name1.Equals(name3));
             Assert.False(name1.Equals((object)name3));

@@ -20,8 +20,8 @@ namespace Google.Api.Gax.ResourceNames
         /// <summary>The possible contents of <see cref="LocationName"/>.</summary>
         public enum ResourceNameType
         {
-            /// <summary>A resource of an unknown type.</summary>
-            Unknown = 0,
+            /// <summary>An unparsed resource name.</summary>
+            Unparsed = 0,
 
             /// <summary>A resource name with pattern <c>projects/{project}/locations/{location}</c>.</summary>
             ProjectLocation = 1
@@ -29,13 +29,14 @@ namespace Google.Api.Gax.ResourceNames
 
         private static gax::PathTemplate s_projectLocation = new gax::PathTemplate("projects/{project}/locations/{location}");
 
-        /// <summary>Creates a <see cref="LocationName"/> containing an unknown resource name.</summary>
-        /// <param name="unknownResourceName">The unknown resource name. Must not be <c>null</c>.</param>
+        /// <summary>Creates a <see cref="LocationName"/> containing an unparsed resource name.</summary>
+        /// <param name="unparsedResourceName">The unparsed resource name. Must not be <c>null</c>.</param>
         /// <returns>
-        /// A new instance of <see cref="LocationName"/> containing the provided <paramref name="unknownResourceName"/>.
+        /// A new instance of <see cref="LocationName"/> containing the provided <paramref name="unparsedResourceName"/>
+        /// .
         /// </returns>
-        public static LocationName FromUnknown(gax::UnknownResourceName unknownResourceName) =>
-            new LocationName(ResourceNameType.Unknown, gax::GaxPreconditions.CheckNotNull(unknownResourceName, nameof(unknownResourceName)));
+        public static LocationName FromUnparsed(gax::UnparsedResourceName unparsedResourceName) =>
+            new LocationName(ResourceNameType.Unparsed, gax::GaxPreconditions.CheckNotNull(unparsedResourceName, nameof(unparsedResourceName)));
 
         /// <summary>
         /// Creates a <see cref="LocationName"/> with the pattern <c>projects/{project}/locations/{location}</c>.
@@ -84,24 +85,24 @@ namespace Google.Api.Gax.ResourceNames
 
         /// <summary>
         /// Parses the given resource name string into a new <see cref="LocationName"/> instance; optionally allowing an
-        /// unknown resource name to be successfully parsed
+        /// unparseable resource name.
         /// </summary>
         /// <remarks>
         /// To parse successfully, the resource name must be formatted as one of the following:
         /// <list type="bullet">
         /// <item><description><c>projects/{project}/locations/{location}</c></description></item>
         /// </list>
-        /// Or may be in any format if <paramref name="allowUnknown"/> is <c>true</c>.
+        /// Or may be in any format if <paramref name="allowUnparsed"/> is <c>true</c>.
         /// </remarks>
         /// <param name="locationName">The resource name in string form. Must not be <c>null</c>.</param>
-        /// <param name="allowUnknown">
-        /// If <c>true</c> will successfully parse an unknown resource name into the <see cref="UnknownResource"/>
-        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unknown resource name is
+        /// <param name="allowUnparsed">
+        /// If <c>true</c> will successfully store an unparseable resource name into the <see cref="UnparsedResource"/>
+        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unparseable resource name is
         /// specified.
         /// </param>
         /// <returns>The parsed <see cref="LocationName"/> if successful.</returns>
-        public static LocationName Parse(string locationName, bool allowUnknown) =>
-            TryParse(locationName, allowUnknown, out LocationName result) ? result : throw new sys::ArgumentException("The given resource-name matches no pattern.");
+        public static LocationName Parse(string locationName, bool allowUnparsed) =>
+            TryParse(locationName, allowUnparsed, out LocationName result) ? result : throw new sys::ArgumentException("The given resource-name matches no pattern.");
 
         /// <summary>
         /// Tries to parse the given resource name string into a new <see cref="LocationName"/> instance.
@@ -121,26 +122,26 @@ namespace Google.Api.Gax.ResourceNames
 
         /// <summary>
         /// Tries to parse the given resource name string into a new <see cref="LocationName"/> instance; optionally
-        /// allowing an unknown resource name to be successfully parsed.
+        /// allowing an unparseable resource name.
         /// </summary>
         /// <remarks>
         /// To parse successfully, the resource name must be formatted as one of the following:
         /// <list type="bullet">
         /// <item><description><c>projects/{project}/locations/{location}</c></description></item>
         /// </list>
-        /// Or may be in any format if <paramref name="allowUnknown"/> is <c>true</c>.
+        /// Or may be in any format if <paramref name="allowUnparsed"/> is <c>true</c>.
         /// </remarks>
         /// <param name="locationName">The resource name in string form. Must not be <c>null</c>.</param>
-        /// <param name="allowUnknown">
-        /// If <c>true</c> will successfully parse an unknown resource name into the <see cref="UnknownResource"/>
-        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unknown resource name is
+        /// <param name="allowUnparsed">
+        /// If <c>true</c> will successfully store an unparseable resource name into the <see cref="UnparsedResource"/>
+        /// property; otherwise will throw an <see cref="sys::ArgumentException"/> if an unparseable resource name is
         /// specified.
         /// </param>
         /// <param name="result">
         /// When this method returns, the parsed <see cref="LocationName"/>, or <c>null</c> if parsing failed.
         /// </param>
         /// <returns><c>true</c> if the name was parsed successfully; <c>false</c> otherwise.</returns>
-        public static bool TryParse(string locationName, bool allowUnknown, out LocationName result)
+        public static bool TryParse(string locationName, bool allowUnparsed, out LocationName result)
         {
             gax::GaxPreconditions.CheckNotNull(locationName, nameof(locationName));
             gax::TemplatedResourceName resourceName;
@@ -149,11 +150,11 @@ namespace Google.Api.Gax.ResourceNames
                 result = FromProjectLocation(resourceName[0], resourceName[1]);
                 return true;
             }
-            if (allowUnknown)
+            if (allowUnparsed)
             {
-                if (gax::UnknownResourceName.TryParse(locationName, out gax::UnknownResourceName unknownResourceName))
+                if (gax::UnparsedResourceName.TryParse(locationName, out gax::UnparsedResourceName unparsedResourceName))
                 {
-                    result = FromUnknown(unknownResourceName);
+                    result = FromUnparsed(unparsedResourceName);
                     return true;
                 }
             }
@@ -161,10 +162,10 @@ namespace Google.Api.Gax.ResourceNames
             return false;
         }
 
-        private LocationName(ResourceNameType type, gax::UnknownResourceName unknownResourceName = null, string locationId = null, string projectId = null)
+        private LocationName(ResourceNameType type, gax::UnparsedResourceName unparsedResourceName = null, string locationId = null, string projectId = null)
         {
             Type = type;
-            UnknownResource = unknownResourceName;
+            UnparsedResource = unparsedResourceName;
             LocationId = locationId;
             ProjectId = projectId;
         }
@@ -183,30 +184,30 @@ namespace Google.Api.Gax.ResourceNames
         public ResourceNameType Type { get; }
 
         /// <summary>
-        /// The contained <see cref="gax::UnknownResourceName"/>. Only non-<c>null</c>if this instance contains an
-        /// unknown resource name.
+        /// The contained <see cref="gax::UnparsedResourceName"/>. Only non-<c>null</c>if this instance contains an
+        /// unparsed resource name.
         /// </summary>
-        public gax::UnknownResourceName UnknownResource { get; }
+        public gax::UnparsedResourceName UnparsedResource { get; }
 
         /// <summary>
-        /// The <c>Location</c> ID. Will not be <c>null</c>, unless this instance contains an unknown resource name.
+        /// The <c>Location</c> ID. Will not be <c>null</c>, unless this instance contains an unparsed resource name.
         /// </summary>
         public string LocationId { get; }
 
         /// <summary>
-        /// The <c>Project</c> ID. Will not be <c>null</c>, unless this instance contains an unknown resource name.
+        /// The <c>Project</c> ID. Will not be <c>null</c>, unless this instance contains an unparsed resource name.
         /// </summary>
         public string ProjectId { get; }
 
         /// <inheritdoc/>
-        public bool IsKnownPattern => Type != ResourceNameType.Unknown;
+        public bool IsKnownPattern => Type != ResourceNameType.Unparsed;
 
         /// <inheritdoc/>
         public override string ToString()
         {
             switch (Type)
             {
-                case ResourceNameType.Unknown: return UnknownResource.ToString();
+                case ResourceNameType.Unparsed: return UnparsedResource.ToString();
                 case ResourceNameType.ProjectLocation: return s_projectLocation.Expand(ProjectId, LocationId);
                 default: throw new sys::InvalidOperationException("Unrecognized resource-type.");
             }
