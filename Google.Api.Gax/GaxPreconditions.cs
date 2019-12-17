@@ -305,6 +305,6 @@ namespace Google.Api.Gax
         /// <param name="value">The value to check.</param>
         /// <param name="paramName">The name of the parameter whose value is being tested.</param>
         public static TimeSpan CheckNonNegativeDelay(TimeSpan value, string paramName) =>
-            value < TimeSpan.Zero ? throw new ArgumentOutOfRangeException(nameof(value), value, "Delay must not be negative") : value;
+            value < TimeSpan.Zero ? throw new ArgumentOutOfRangeException(paramName, value, "Delay must not be negative") : value;
     }
 }
