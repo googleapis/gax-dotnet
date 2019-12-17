@@ -22,12 +22,10 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private static readonly IReadOnlyList<ChannelOption> s_defaultOptions = new List<ChannelOption>
-        {
-            GrpcChannelOptions.OneMinuteKeepalive,
-            GrpcChannelOptions.DisableServiceConfigResolution
-        };
-        
+        private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.FromKeepAlive(TimeSpan.FromMinutes(1))
+            .MergedWith(GrpcChannelOptions.FromEnableServiceConfigResolution(false));
+
+        private readonly ChannelFactory _channelFactory;
         private readonly IEnumerable<string> _scopes;
 
         /// <summary>
@@ -41,16 +39,18 @@ namespace Google.Api.Gax.Grpc
 
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
         // "clear and fetch values" for shutdown.
-        private readonly Dictionary<Key, Channel> _channels = new Dictionary<Key, Channel>();
+        private readonly Dictionary<Key, ChannelBase> _channels = new Dictionary<Key, ChannelBase>();
         private readonly object _lock = new object();
 
         /// <summary>
         /// Creates a channel pool which will apply the specified scopes to the default application credentials
         /// if they require any.
         /// </summary>
+        /// <param name="channelFactory">The channel factory to use, or null for the default channel factory.</param>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ChannelPool(IEnumerable<string> scopes)
+        public ChannelPool(ChannelFactory channelFactory, IEnumerable<string> scopes)
         {
+            _channelFactory = channelFactory;
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
@@ -76,14 +76,17 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A task which will complete when all the (current) channels have been shut down.</returns>
         public Task ShutdownChannelsAsync()
         {
-            List<Channel> channelsToShutdown;
+            List<ChannelBase> channelsToShutdown;
             lock (_lock)
             {
                 channelsToShutdown = _channels.Values.ToList();
                 _channels.Clear();
             }
+            // FIXME: Reinstate this
+            return Task.CompletedTask;
+            /*
             var shutdownTasks = channelsToShutdown.Select(c => c.ShutdownAsync());
-            return Task.WhenAll(shutdownTasks);
+            return Task.WhenAll(shutdownTasks);*/
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, s_defaultOptions);
+        public ChannelBase GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
@@ -101,7 +104,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public Task<Channel> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
+        public Task<ChannelBase> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
@@ -111,7 +114,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
+        public ChannelBase GetChannel(ServiceEndpoint endpoint, GrpcChannelOptions channelOptions)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
@@ -127,25 +130,24 @@ namespace Google.Api.Gax.Grpc
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
+        public async Task<ChannelBase> GetChannelAsync(ServiceEndpoint endpoint, GrpcChannelOptions channelOptions)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
             return GetChannel(endpoint, channelOptions, credentials);
         }
 
-        private Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions, ChannelCredentials credentials)
+        private ChannelBase GetChannel(ServiceEndpoint endpoint, GrpcChannelOptions channelOptions, ChannelCredentials credentials)
         {
-            var optionsList = channelOptions?.ToList() ?? new List<ChannelOption>();
-
-            var key = new Key(endpoint, optionsList);
+            var key = new Key(endpoint, channelOptions);
 
             lock (_lock)
             {
-                Channel channel;
+                ChannelBase channel;
                 if (!_channels.TryGetValue(key, out channel))
                 {
-                    channel = new Channel(endpoint.Host, endpoint.Port, credentials, optionsList);
+                    // FIXME: Handle a default channel factory (null).
+                    channel = _channelFactory.Invoke(endpoint, credentials, channelOptions);
                     _channels[key] = channel;
                 }
                 return channel;
@@ -155,9 +157,9 @@ namespace Google.Api.Gax.Grpc
         private struct Key : IEquatable<Key>
         {
             public readonly ServiceEndpoint Endpoint;
-            public readonly List<ChannelOption> Options;
+            public readonly GrpcChannelOptions Options;
 
-            public Key(ServiceEndpoint endpoint, List<ChannelOption> options)
+            public Key(ServiceEndpoint endpoint, GrpcChannelOptions options)
             {
                 Endpoint = endpoint;
                 Options = options;
@@ -166,12 +168,12 @@ namespace Google.Api.Gax.Grpc
             public override int GetHashCode() =>
                 GaxEqualityHelpers.CombineHashCodes(
                     Endpoint.GetHashCode(),
-                    GaxEqualityHelpers.GetListHashCode(Options));
+                    Options.GetHashCode());
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                Endpoint.Equals(other.Endpoint) && Options.SequenceEqual(other.Options);
+                Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
         }
     }
 }

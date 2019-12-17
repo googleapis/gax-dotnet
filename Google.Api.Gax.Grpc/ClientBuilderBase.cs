@@ -22,11 +22,8 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
-        private static readonly IReadOnlyList<ChannelOption> s_defaultChannelPoolOptions = new List<ChannelOption>
-        {
-            GrpcChannelOptions.OneMinuteKeepalive,
-            GrpcChannelOptions.DisableServiceConfigResolution
-        };
+        private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.FromKeepAlive(TimeSpan.FromMinutes(1))
+            .MergedWith(GrpcChannelOptions.FromEnableServiceConfigResolution(false));
 
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
@@ -73,6 +70,11 @@ namespace Google.Api.Gax.Grpc
         /// A custom user agent to specify in the channel metadata, or null if no custom user agent is required.
         /// </summary>
         public string UserAgent { get; set; }
+
+        /// <summary>
+        /// The channel factory to use, or null to use the default channel factory.
+        /// </summary>
+        public ChannelFactory ChannelFactory { get; set; }
 
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
@@ -154,7 +156,7 @@ namespace Google.Api.Gax.Grpc
                 return CallInvoker;
             }
             var endpoint = Endpoint ?? GetDefaultEndpoint();
-            Channel channel;
+            ChannelBase channel;
             if (CanUseChannelPool)
             {
                 channel = GetChannelPool().GetChannel(endpoint, GetChannelOptions());
@@ -164,7 +166,7 @@ namespace Google.Api.Gax.Grpc
                 var credentials = GetChannelCredentials();
                 channel = CreateChannel(endpoint, credentials);
             }
-            return new DefaultCallInvoker(channel);
+            return channel.CreateCallInvoker();
         }
 
         /// <summary>
@@ -180,7 +182,7 @@ namespace Google.Api.Gax.Grpc
                 return CallInvoker;
             }
             var endpoint = Endpoint ?? GetDefaultEndpoint();
-            Channel channel;
+            ChannelBase channel;
             if (CanUseChannelPool)
             {
                 channel = await GetChannelPool().GetChannelAsync(endpoint, GetChannelOptions()).ConfigureAwait(false);
@@ -190,7 +192,7 @@ namespace Google.Api.Gax.Grpc
                 var credentials = await GetChannelCredentialsAsync(cancellationToken).ConfigureAwait(false);
                 channel = CreateChannel(endpoint, credentials);
             }
-            return new DefaultCallInvoker(channel);
+            return channel.CreateCallInvoker();
         }
 
         /// <summary>
@@ -256,10 +258,10 @@ namespace Google.Api.Gax.Grpc
         /// Returns the options to use when creating a channel.
         /// </summary>
         /// <returns>The options to use when creating a channel.</returns>
-        protected virtual IReadOnlyList<ChannelOption> GetChannelOptions() =>
+        protected virtual GrpcChannelOptions GetChannelOptions() =>
             UserAgent == null
-            ? s_defaultChannelPoolOptions
-            : new List<ChannelOption>(s_defaultChannelPoolOptions) { GrpcChannelOptions.PrimaryUserAgent(UserAgent) };
+            ? s_defaultOptions
+            : s_defaultOptions.MergedWith(GrpcChannelOptions.FromPrimaryUserAgent(UserAgent));
 
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
@@ -289,8 +291,9 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
-        private protected virtual Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials) =>
-            new Channel(endpoint.Host, endpoint.Port, credentials, GetChannelOptions());
+        // FIXME: Handle a default channel factory (null).
+        private protected virtual ChannelBase CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials) =>
+            ChannelFactory.Invoke(endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccess
         {
