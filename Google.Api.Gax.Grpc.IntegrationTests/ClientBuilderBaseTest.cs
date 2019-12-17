@@ -56,7 +56,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            Channel channelFromPool = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -73,8 +73,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            Channel channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
-            Channel channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel("custom.nowhere.com");
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
+            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel("custom.nowhere.com");
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -263,7 +263,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
-            public Channel ChannelCreated { get; private set; }
+            public ChannelBase ChannelCreated { get; private set; }
 
             private readonly string _name;
 
@@ -303,7 +303,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 ChannelCreated = null;
             }
 
-            private protected override Channel CreateChannel(string endpoint, ChannelCredentials credentials)
+            private protected override ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials)
             {
                 CredentialsUsedToCreateChannel = credentials;
                 EndpointUsedToCreateChannel = endpoint;

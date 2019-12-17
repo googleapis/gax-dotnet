@@ -7,7 +7,6 @@
 
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using System;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -27,7 +26,9 @@ namespace Google.Api.Gax.Grpc
                 .AppendAssemblyVersion("gccl", GetType())
                 .AppendAssemblyVersion("gapic", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
-                .AppendAssemblyVersion("grpc", typeof(Channel));
+                // Note: this will be the version of gRPC Core API that we're using, not necessarily the implementation.
+                // But the implementation will depend on the API, so it's likely that it's all in sync.
+                .AppendAssemblyVersion("grpc", typeof(ChannelBase));
         }
 
         /// <summary>

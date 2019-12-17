@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <DefineConstants Condition="'$(CORE_API_ONLY)' == 'True'">CORE_API_ONLY</DefineConstants>
   </PropertyGroup>
 
   <!-- Packaging information -->
@@ -18,8 +19,11 @@
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
 
     <PackageReference Include="Grpc.Auth" Version="2.25.0" />
-    <PackageReference Include="Grpc.Core" Version="2.25.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.42.0" />
+    
+    <PackageReference Include="Grpc.Core" Version="2.25.0" Condition="'$(CORE_API_ONLY)' != 'True'" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.25.0" Condition="'$(CORE_API_ONLY)' == 'True'" />
+    
 
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
