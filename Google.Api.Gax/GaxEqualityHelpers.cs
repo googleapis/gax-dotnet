@@ -51,7 +51,7 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// Computes an ordering-sensitive hash code for a list, using the given equality comparer.
+        /// Computes an ordering-sensitive hash code for a list, using the default equality comparer for the type.
         /// </summary>
         /// <param name="list">The list to compute a hash code for. May be null.</param>
         /// <returns>The computed hash code.</returns>

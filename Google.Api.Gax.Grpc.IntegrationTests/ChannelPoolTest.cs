@@ -43,8 +43,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void SameOptions_SameChannel()
         {
-            var options1 = new[] { new ChannelOption("x", 5) };
-            var options2 = new[] { new ChannelOption("x", 5) };
+            var options1 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
+            var options2 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
@@ -57,8 +57,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void DifferentOptions_DifferentChannel()
         {
-            var options1 = new[] { new ChannelOption("x", 5) };
-            var options2 = new[] { new ChannelOption("x", 6) };
+            var options1 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
+            var options2 = GrpcChannelOptions.Empty.WithCustomOption("x", 6);
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
@@ -74,7 +74,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel = pool.GetChannel(fixture.Endpoint);
+                var channel = (Channel) pool.GetChannel(fixture.Endpoint);
                 Assert.NotEqual(ChannelState.Shutdown, channel.State);
                 await pool.ShutdownChannelsAsync();
                 Assert.Equal(ChannelState.Shutdown, channel.State);
