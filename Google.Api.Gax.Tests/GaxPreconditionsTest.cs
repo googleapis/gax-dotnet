@@ -337,5 +337,20 @@ namespace Google.Api.Gax.Tests
         {
             DefinedValue = 1
         }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(long.MaxValue)]
+        public void CheckNonNegativeDelay_Valid(long ticks) => GaxPreconditions.CheckNonNegativeDelay(TimeSpan.FromTicks(ticks), "value");
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(long.MinValue)]
+        public void CheckNonNegativeDelay_Invalid(long ticks)
+        {
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => GaxPreconditions.CheckNonNegativeDelay(TimeSpan.FromTicks(ticks), "param_name"));
+            Assert.Equal("param_name", ex.ParamName);
+        }
     }
 }
