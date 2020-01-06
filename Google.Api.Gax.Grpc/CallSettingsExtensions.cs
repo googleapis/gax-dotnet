@@ -137,7 +137,7 @@ namespace Google.Api.Gax.Grpc
             settings.MergedWith(CallSettings.FromTrailingMetadataHandler(handler));
 
         /// <summary>
-        /// Returns a <see cref="CallSettings"/> which will have the specified timeout.
+        /// Returns a <see cref="CallSettings"/> which will have the specified deadline.
         /// </summary>
         /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
         /// <param name="deadline">The deadline for the new settings.</param>
@@ -146,7 +146,7 @@ namespace Google.Api.Gax.Grpc
             settings.WithExpiration(Expiration.FromDeadline(deadline));
 
         /// <summary>
-        /// Returns a <see cref="CallSettings"/> which will have the specified deadline.
+        /// Returns a <see cref="CallSettings"/> which will have the specified timeout.
         /// </summary>
         /// <param name="settings">Existing settings. May be null, meaning there are currently no settings.</param>
         /// <param name="timeout">The timeout for the new settings.</param>
