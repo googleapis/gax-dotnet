@@ -118,7 +118,7 @@ namespace Google.Api.CommonProtos.Tests.Type
         [Theory, MemberData(nameof(ValidDates))]
         public void IsConvertedToDateFromDateTime(int year, int month, int day)
         {
-            var subjectUnderTest = new DateTime(year, month, day);
+            var subjectUnderTest = new System.DateTime(year, month, day);
             var actualDate = subjectUnderTest.ToDate();
             Assert.Equal(year, actualDate.Year);
             Assert.Equal(month, actualDate.Month);
