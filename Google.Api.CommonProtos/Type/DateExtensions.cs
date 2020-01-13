@@ -15,11 +15,11 @@ namespace Google.Type
     public static class DateExtensions
     {
         /// <summary>
-        /// Converts the <see cref="DateTime.Date"/> part of <see cref="DateTime"/> to <see cref="Date"/>.
+        /// Converts the <see cref="System.DateTime.Date"/> part of <see cref="System.DateTime"/> to <see cref="Date"/>.
         /// </summary>
-        /// <param name="dateTime">The <see cref="DateTime"/> instance being converted.</param>
+        /// <param name="dateTime">The <see cref="System.DateTime"/> instance being converted.</param>
         /// <returns>The <see cref="Date"/>.</returns>
-        public static Date ToDate(this DateTime dateTime) =>
+        public static Date ToDate(this System.DateTime dateTime) =>
             Date.FromDateTime(dateTime);
 
         /// <summary>

@@ -12,15 +12,15 @@ namespace Google.Type
     public partial class Date
     {
         /// <summary>
-        /// Converts <see cref="Date"/> to <see cref="DateTime"/>.
+        /// Converts <see cref="Date"/> to <see cref="System.DateTime"/>.
         /// </summary>
-        /// <returns>The converted <see cref="DateTime"/> with time at midnight and <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>.</returns>
+        /// <returns>The converted <see cref="DateTime"/> with time at midnight and <see cref="System.DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when <see cref="Year"/>, <see cref="Month"/>, and/or <see cref="Day"/> are not within the valid range.</exception>
-        public DateTime ToDateTime()
+        public System.DateTime ToDateTime()
         {
             try
             {
-                return new DateTime(Year, Month, Day);
+                return new System.DateTime(Year, Month, Day);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -31,7 +31,7 @@ namespace Google.Type
         /// <summary>
         /// Converts <see cref="Date"/> to <see cref="DateTimeOffset"/>.
         /// </summary>
-        /// <returns>The converted <see cref="DateTimeOffset"/> with time at midnight, <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>, and an <see cref="DateTimeOffset.Offset"/> of <see cref="TimeSpan.Zero"/>.</returns>
+        /// <returns>The converted <see cref="DateTimeOffset"/> with time at midnight, <see cref="System.DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>, and an <see cref="DateTimeOffset.Offset"/> of <see cref="TimeSpan.Zero"/>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when <see cref="Year"/>, <see cref="Month"/>, and/or <see cref="Day"/> are not within the valid range.</exception>        
         public DateTimeOffset ToDateTimeOffset()
         {
@@ -46,11 +46,11 @@ namespace Google.Type
         }
 
         /// <summary>
-        /// Creates a <see cref="Date"/> instance from the <see cref="DateTime.Date"/> part of <see cref="DateTime"/>.
+        /// Creates a <see cref="Date"/> instance from the <see cref="System.DateTime.Date"/> part of <see cref="DateTime"/>.
         /// </summary>     
-        /// <param name="dateTime">The <see cref="DateTime"/> value being converted.</param>
+        /// <param name="dateTime">The <see cref="System.DateTime"/> value being converted.</param>
         /// <returns>The created <see cref="Date"/>.</returns>
-        public static Date FromDateTime(DateTime dateTime) =>
+        public static Date FromDateTime(System.DateTime dateTime) =>
             new Date
             {
                 Year = dateTime.Year,
