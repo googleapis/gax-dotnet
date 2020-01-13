@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -43,9 +43,9 @@ namespace Google.Api {
             "O2NvbmZpZ2NoYW5nZaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ChangeType), }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ConfigChange), global::Google.Api.ConfigChange.Parser, new[]{ "Element", "OldValue", "NewValue", "ChangeType", "Advices" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Advice), global::Google.Api.Advice.Parser, new[]{ "Description" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ChangeType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ConfigChange), global::Google.Api.ConfigChange.Parser, new[]{ "Element", "OldValue", "NewValue", "ChangeType", "Advices" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Advice), global::Google.Api.Advice.Parser, new[]{ "Description" }, null, null, null, null)
           }));
     }
     #endregion
@@ -181,7 +181,7 @@ namespace Google.Api {
 
     /// <summary>Field number for the "change_type" field.</summary>
     public const int ChangeTypeFieldNumber = 4;
-    private global::Google.Api.ChangeType changeType_ = 0;
+    private global::Google.Api.ChangeType changeType_ = global::Google.Api.ChangeType.Unspecified;
     /// <summary>
     /// The type for this change, either ADDED, REMOVED, or MODIFIED.
     /// </summary>
@@ -234,7 +234,7 @@ namespace Google.Api {
       if (Element.Length != 0) hash ^= Element.GetHashCode();
       if (OldValue.Length != 0) hash ^= OldValue.GetHashCode();
       if (NewValue.Length != 0) hash ^= NewValue.GetHashCode();
-      if (ChangeType != 0) hash ^= ChangeType.GetHashCode();
+      if (ChangeType != global::Google.Api.ChangeType.Unspecified) hash ^= ChangeType.GetHashCode();
       hash ^= advices_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -261,7 +261,7 @@ namespace Google.Api {
         output.WriteRawTag(26);
         output.WriteString(NewValue);
       }
-      if (ChangeType != 0) {
+      if (ChangeType != global::Google.Api.ChangeType.Unspecified) {
         output.WriteRawTag(32);
         output.WriteEnum((int) ChangeType);
       }
@@ -283,7 +283,7 @@ namespace Google.Api {
       if (NewValue.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(NewValue);
       }
-      if (ChangeType != 0) {
+      if (ChangeType != global::Google.Api.ChangeType.Unspecified) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ChangeType);
       }
       size += advices_.CalculateSize(_repeated_advices_codec);
@@ -307,7 +307,7 @@ namespace Google.Api {
       if (other.NewValue.Length != 0) {
         NewValue = other.NewValue;
       }
-      if (other.ChangeType != 0) {
+      if (other.ChangeType != global::Google.Api.ChangeType.Unspecified) {
         ChangeType = other.ChangeType;
       }
       advices_.Add(other.advices_);

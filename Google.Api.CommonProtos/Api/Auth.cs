@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -48,12 +48,12 @@ namespace Google.Api {
             "ZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Authentication), global::Google.Api.Authentication.Parser, new[]{ "Rules", "Providers" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthenticationRule), global::Google.Api.AuthenticationRule.Parser, new[]{ "Selector", "Oauth", "AllowWithoutCredential", "Requirements" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthProvider), global::Google.Api.AuthProvider.Parser, new[]{ "Id", "Issuer", "JwksUri", "Audiences", "AuthorizationUrl" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.OAuthRequirements), global::Google.Api.OAuthRequirements.Parser, new[]{ "CanonicalScopes" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthRequirement), global::Google.Api.AuthRequirement.Parser, new[]{ "ProviderId", "Audiences" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Authentication), global::Google.Api.Authentication.Parser, new[]{ "Rules", "Providers" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthenticationRule), global::Google.Api.AuthenticationRule.Parser, new[]{ "Selector", "Oauth", "AllowWithoutCredential", "Requirements" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthProvider), global::Google.Api.AuthProvider.Parser, new[]{ "Id", "Issuer", "JwksUri", "Audiences", "AuthorizationUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.OAuthRequirements), global::Google.Api.OAuthRequirements.Parser, new[]{ "CanonicalScopes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthRequirement), global::Google.Api.AuthRequirement.Parser, new[]{ "ProviderId", "Audiences" }, null, null, null, null)
           }));
     }
     #endregion

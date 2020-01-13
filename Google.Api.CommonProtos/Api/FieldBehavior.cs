@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -42,12 +42,32 @@ namespace Google.Api {
             "bGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc6ICBEdBUEliBnBy",
             "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { pbr::FileDescriptor.DescriptorProtoFileDescriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.FieldBehavior), }, null));
+          new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.FieldBehavior), }, new pb::Extension[] { FieldBehaviorExtensions.FieldBehavior }, null));
     }
     #endregion
 
   }
+  /// <summary>Holder for extension identifiers generated from the top level of google/api/field_behavior.proto</summary>
+  public static partial class FieldBehaviorExtensions {
+    /// <summary>
+    /// A designation of a specific field behavior (required, output only, etc.)
+    /// in protobuf messages.
+    ///
+    /// Examples:
+    ///
+    ///   string name = 1 [(google.api.field_behavior) = REQUIRED];
+    ///   State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+    ///   google.protobuf.Duration ttl = 1
+    ///     [(google.api.field_behavior) = INPUT_ONLY];
+    ///   google.protobuf.Timestamp expire_time = 1
+    ///     [(google.api.field_behavior) = OUTPUT_ONLY,
+    ///      (google.api.field_behavior) = IMMUTABLE];
+    /// </summary>
+    public static readonly pb::RepeatedExtension<global::Google.Protobuf.Reflection.FieldOptions, global::Google.Api.FieldBehavior> FieldBehavior =
+      new pb::RepeatedExtension<global::Google.Protobuf.Reflection.FieldOptions, global::Google.Api.FieldBehavior>(1052, pb::FieldCodec.ForEnum(8418, x => (int) x, x => (global::Google.Api.FieldBehavior) x));
+  }
+
   #region Enums
   /// <summary>
   /// An indicator of the behavior of a given field (for example, that a field

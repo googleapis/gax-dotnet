@@ -34,13 +34,13 @@ namespace Google.Api.Gax.Grpc {
             "ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingRequest), global::Google.Api.Gax.Grpc.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingResponse), global::Google.Api.Gax.Grpc.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleRequest), global::Google.Api.Gax.Grpc.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleResponse), global::Google.Api.Gax.Grpc.SimpleResponse.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingRequest), global::Google.Api.Gax.Grpc.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingResponse), global::Google.Api.Gax.Grpc.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingRequest), global::Google.Api.Gax.Grpc.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingResponse), global::Google.Api.Gax.Grpc.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleRequest), global::Google.Api.Gax.Grpc.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleResponse), global::Google.Api.Gax.Grpc.SimpleResponse.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingRequest), global::Google.Api.Gax.Grpc.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingResponse), global::Google.Api.Gax.Grpc.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null, null)
           }));
     }
     #endregion

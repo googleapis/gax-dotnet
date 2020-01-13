@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -49,10 +49,10 @@ namespace Google.Api {
             "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Quota), global::Google.Api.Quota.Parser, new[]{ "Limits", "MetricRules" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricRule), global::Google.Api.MetricRule.Parser, new[]{ "Selector", "MetricCosts" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.QuotaLimit), global::Google.Api.QuotaLimit.Parser, new[]{ "Name", "Description", "DefaultLimit", "MaxLimit", "FreeTier", "Duration", "Metric", "Unit", "Values", "DisplayName" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Quota), global::Google.Api.Quota.Parser, new[]{ "Limits", "MetricRules" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricRule), global::Google.Api.MetricRule.Parser, new[]{ "Selector", "MetricCosts" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.QuotaLimit), global::Google.Api.QuotaLimit.Parser, new[]{ "Name", "Description", "DefaultLimit", "MaxLimit", "FreeTier", "Duration", "Metric", "Unit", "Values", "DisplayName" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
     #endregion
@@ -315,7 +315,7 @@ namespace Google.Api {
     /// <summary>Field number for the "metric_costs" field.</summary>
     public const int MetricCostsFieldNumber = 2;
     private static readonly pbc::MapField<string, long>.Codec _map_metricCosts_codec
-        = new pbc::MapField<string, long>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForInt64(16), 18);
+        = new pbc::MapField<string, long>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForInt64(16, 0L), 18);
     private readonly pbc::MapField<string, long> metricCosts_ = new pbc::MapField<string, long>();
     /// <summary>
     /// Metrics to update when the selected methods are called, and the associated
@@ -632,7 +632,7 @@ namespace Google.Api {
     /// <summary>Field number for the "values" field.</summary>
     public const int ValuesFieldNumber = 10;
     private static readonly pbc::MapField<string, long>.Codec _map_values_codec
-        = new pbc::MapField<string, long>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForInt64(16), 82);
+        = new pbc::MapField<string, long>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForInt64(16, 0L), 82);
     private readonly pbc::MapField<string, long> values_ = new pbc::MapField<string, long>();
     /// <summary>
     /// Tiered limit values. You must specify this as a key:value pair, with an

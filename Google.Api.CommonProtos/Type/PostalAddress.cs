@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -37,14 +37,14 @@ namespace Google.Type {
             "YWxfY29kZRgEIAEoCRIUCgxzb3J0aW5nX2NvZGUYBSABKAkSGwoTYWRtaW5p",
             "c3RyYXRpdmVfYXJlYRgGIAEoCRIQCghsb2NhbGl0eRgHIAEoCRITCgtzdWJs",
             "b2NhbGl0eRgIIAEoCRIVCg1hZGRyZXNzX2xpbmVzGAkgAygJEhIKCnJlY2lw",
-            "aWVudHMYCiADKAkSFAoMb3JnYW5pemF0aW9uGAsgASgJQnUKD2NvbS5nb29n",
+            "aWVudHMYCiADKAkSFAoMb3JnYW5pemF0aW9uGAsgASgJQngKD2NvbS5nb29n",
             "bGUudHlwZUISUG9zdGFsQWRkcmVzc1Byb3RvUAFaRmdvb2dsZS5nb2xhbmcu",
             "b3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvdHlwZS9wb3N0YWxhZGRyZXNzO3Bv",
-            "c3RhbGFkZHJlc3OiAgNHVFBiBnByb3RvMw=="));
+            "c3RhbGFkZHJlc3P4AQGiAgNHVFBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.PostalAddress), global::Google.Type.PostalAddress.Parser, new[]{ "Revision", "RegionCode", "LanguageCode", "PostalCode", "SortingCode", "AdministrativeArea", "Locality", "Sublocality", "AddressLines", "Recipients", "Organization" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.PostalAddress), global::Google.Type.PostalAddress.Parser, new[]{ "Revision", "RegionCode", "LanguageCode", "PostalCode", "SortingCode", "AdministrativeArea", "Locality", "Sublocality", "AddressLines", "Recipients", "Organization" }, null, null, null, null)
           }));
     }
     #endregion
@@ -118,7 +118,9 @@ namespace Google.Type {
     public const int RevisionFieldNumber = 1;
     private int revision_;
     /// <summary>
-    /// The schema revision of the `PostalAddress`.
+    /// The schema revision of the `PostalAddress`. This must be set to 0, which is
+    /// the latest revision.
+    ///
     /// All new revisions **must** be backward compatible with old revisions.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
