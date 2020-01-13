@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # TODO: Use some appropriate way of determining OS. Ideally, shouldn't need dotnet installed.
 #[[ $(dotnet --info | grep "OS Platform" | grep -c Windows) -ne 0 ]] && OS=windows || OS=linux
 OS=windows
@@ -21,7 +23,7 @@ nuget_install() {
   then
     echo Fetching $1 version $2
     mkdir -p $outdir
-    wget --quiet -Otmp.zip http://www.nuget.org/api/v2/package/$1/$2    
+    curl -sSL https://www.nuget.org/api/v2/package/$1/$2 --output tmp.zip
     unzip -q -d $outdir tmp.zip
     if [ -d "packages/$1.$2/tools" ]
     then 
