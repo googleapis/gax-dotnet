@@ -32,9 +32,9 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
             "Yy5pbnRlZ3JhdGlvbl90ZXN0cy5TaW1wbGVSZXNwb25zZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest), global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse), global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse.Parser, new[]{ "Name" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest), global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse), global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse.Parser, new[]{ "Name" }, null, null, null, null)
           }));
     }
     #endregion

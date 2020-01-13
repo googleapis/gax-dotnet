@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -38,8 +38,8 @@ namespace Google.Type {
             "eXBlL3F1YXRlcm5pb247cXVhdGVybmlvbvgBAaICA0dUUGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.Quaternion), global::Google.Type.Quaternion.Parser, new[]{ "X", "Y", "Z", "W" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Type.Quaternion), global::Google.Type.Quaternion.Parser, new[]{ "X", "Y", "Z", "W" }, null, null, null, null)
           }));
     }
     #endregion
@@ -59,35 +59,35 @@ namespace Google.Type {
   ///
   /// Quaternions are generally represented in this form:
   ///
-  ///   w + xi + yj + zk
+  ///     w + xi + yj + zk
   ///
   /// where x, y, z, and w are real numbers, and i, j, and k are three imaginary
   /// numbers.
   ///
-  /// Our naming choice (x, y, z, w) comes from the desire to avoid confusion for
+  /// Our naming choice `(x, y, z, w)` comes from the desire to avoid confusion for
   /// those interested in the geometric properties of the quaternion in the 3D
   /// Cartesian space. Other texts often use alternative names or subscripts, such
-  /// as (a, b, c, d), (1, i, j, k), or (0, 1, 2, 3), which are perhaps better
-  /// suited for mathematical interpretations.
+  /// as `(a, b, c, d)`, `(1, i, j, k)`, or `(0, 1, 2, 3)`, which are perhaps
+  /// better suited for mathematical interpretations.
   ///
   /// To avoid any confusion, as well as to maintain compatibility with a large
   /// number of software libraries, the quaternions represented using the protocol
-  /// buffer below *must* follow the Hamilton convention, which defines ij = k
+  /// buffer below *must* follow the Hamilton convention, which defines `ij = k`
   /// (i.e. a right-handed algebra), and therefore:
   ///
-  ///   i^2 = j^2 = k^2 = ijk = −1
-  ///   ij = −ji = k
-  ///   jk = −kj = i
-  ///   ki = −ik = j
+  ///     i^2 = j^2 = k^2 = ijk = −1
+  ///     ij = −ji = k
+  ///     jk = −kj = i
+  ///     ki = −ik = j
   ///
   /// Please DO NOT use this to represent quaternions that follow the JPL
   /// convention, or any of the other quaternion flavors out there.
   ///
   /// Definitions:
   ///
-  ///   - Quaternion norm (or magnitude): sqrt(x^2 + y^2 + z^2 + w^2).
+  ///   - Quaternion norm (or magnitude): `sqrt(x^2 + y^2 + z^2 + w^2)`.
   ///   - Unit (or normalized) quaternion: a quaternion whose norm is 1.
-  ///   - Pure quaternion: a quaternion whose scalar component (w) is 0.
+  ///   - Pure quaternion: a quaternion whose scalar component (`w`) is 0.
   ///   - Rotation quaternion: a unit quaternion used to represent rotation.
   ///   - Orientation quaternion: a unit quaternion used to represent orientation.
   ///
@@ -97,12 +97,11 @@ namespace Google.Type {
   /// quaternions, to avoid rounding errors:
   /// https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions
   ///
-  /// Note that (x, y, z, w) and (-x, -y, -z, -w) represent the same rotation, but
-  /// normalization would be even more useful, e.g. for comparison purposes, if it
-  /// would produce a unique representation. It is thus recommended that w be kept
-  /// positive, which can be achieved by changing all the signs when w is negative.
-  ///
-  /// Next available tag: 5
+  /// Note that `(x, y, z, w)` and `(-x, -y, -z, -w)` represent the same rotation,
+  /// but normalization would be even more useful, e.g. for comparison purposes, if
+  /// it would produce a unique representation. It is thus recommended that `w` be
+  /// kept positive, which can be achieved by changing all the signs when `w` is
+  /// negative.
   /// </summary>
   public sealed partial class Quaternion : pb::IMessage<Quaternion> {
     private static readonly pb::MessageParser<Quaternion> _parser = new pb::MessageParser<Quaternion>(() => new Quaternion());

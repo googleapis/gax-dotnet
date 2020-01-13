@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -51,10 +51,10 @@ namespace Google.Api {
             "b25pdG9yZWRyZXM7bW9uaXRvcmVkcmVz+AEBogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceDescriptor), global::Google.Api.MonitoredResourceDescriptor.Parser, new[]{ "Name", "Type", "DisplayName", "Description", "Labels", "LaunchStage" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResource), global::Google.Api.MonitoredResource.Parser, new[]{ "Type", "Labels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceMetadata), global::Google.Api.MonitoredResourceMetadata.Parser, new[]{ "SystemLabels", "UserLabels" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceDescriptor), global::Google.Api.MonitoredResourceDescriptor.Parser, new[]{ "Name", "Type", "DisplayName", "Description", "Labels", "LaunchStage" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResource), global::Google.Api.MonitoredResource.Parser, new[]{ "Type", "Labels" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MonitoredResourceMetadata), global::Google.Api.MonitoredResourceMetadata.Parser, new[]{ "SystemLabels", "UserLabels" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
     #endregion
@@ -195,7 +195,7 @@ namespace Google.Api {
 
     /// <summary>Field number for the "launch_stage" field.</summary>
     public const int LaunchStageFieldNumber = 7;
-    private global::Google.Api.LaunchStage launchStage_ = 0;
+    private global::Google.Api.LaunchStage launchStage_ = global::Google.Api.LaunchStage.Unspecified;
     /// <summary>
     /// Optional. The launch stage of the monitored resource definition.
     /// </summary>
@@ -237,7 +237,7 @@ namespace Google.Api {
       if (DisplayName.Length != 0) hash ^= DisplayName.GetHashCode();
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       hash ^= labels_.GetHashCode();
-      if (LaunchStage != 0) hash ^= LaunchStage.GetHashCode();
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) hash ^= LaunchStage.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -268,7 +268,7 @@ namespace Google.Api {
         output.WriteRawTag(42);
         output.WriteString(Name);
       }
-      if (LaunchStage != 0) {
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
         output.WriteRawTag(56);
         output.WriteEnum((int) LaunchStage);
       }
@@ -293,7 +293,7 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
       }
       size += labels_.CalculateSize(_repeated_labels_codec);
-      if (LaunchStage != 0) {
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LaunchStage);
       }
       if (_unknownFields != null) {
@@ -320,7 +320,7 @@ namespace Google.Api {
         Description = other.Description;
       }
       labels_.Add(other.labels_);
-      if (other.LaunchStage != 0) {
+      if (other.LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
         LaunchStage = other.LaunchStage;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -433,7 +433,7 @@ namespace Google.Api {
     /// <summary>Field number for the "labels" field.</summary>
     public const int LabelsFieldNumber = 2;
     private static readonly pbc::MapField<string, string>.Codec _map_labels_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 18);
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 18);
     private readonly pbc::MapField<string, string> labels_ = new pbc::MapField<string, string>();
     /// <summary>
     /// Required. Values for all of the labels listed in the associated monitored
@@ -607,7 +607,7 @@ namespace Google.Api {
     /// <summary>Field number for the "user_labels" field.</summary>
     public const int UserLabelsFieldNumber = 2;
     private static readonly pbc::MapField<string, string>.Codec _map_userLabels_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 18);
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 18);
     private readonly pbc::MapField<string, string> userLabels_ = new pbc::MapField<string, string>();
     /// <summary>
     /// Output only. A map of user-defined metadata labels.

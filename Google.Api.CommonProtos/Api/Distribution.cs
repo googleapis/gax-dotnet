@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -58,12 +58,12 @@ namespace Google.Api {
             "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution), global::Google.Api.Distribution.Parser, new[]{ "Count", "Mean", "SumOfSquaredDeviation", "Range", "BucketOptions", "BucketCounts", "Exemplars" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Range), global::Google.Api.Distribution.Types.Range.Parser, new[]{ "Min", "Max" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions), global::Google.Api.Distribution.Types.BucketOptions.Parser, new[]{ "LinearBuckets", "ExponentialBuckets", "ExplicitBuckets" }, new[]{ "Options" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Linear), global::Google.Api.Distribution.Types.BucketOptions.Types.Linear.Parser, new[]{ "NumFiniteBuckets", "Width", "Offset" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential), global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential.Parser, new[]{ "NumFiniteBuckets", "GrowthFactor", "Scale" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit), global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit.Parser, new[]{ "Bounds" }, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Exemplar), global::Google.Api.Distribution.Types.Exemplar.Parser, new[]{ "Value", "Timestamp", "Attachments" }, null, null, null)})
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution), global::Google.Api.Distribution.Parser, new[]{ "Count", "Mean", "SumOfSquaredDeviation", "Range", "BucketOptions", "BucketCounts", "Exemplars" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Range), global::Google.Api.Distribution.Types.Range.Parser, new[]{ "Min", "Max" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions), global::Google.Api.Distribution.Types.BucketOptions.Parser, new[]{ "LinearBuckets", "ExponentialBuckets", "ExplicitBuckets" }, new[]{ "Options" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Linear), global::Google.Api.Distribution.Types.BucketOptions.Types.Linear.Parser, new[]{ "NumFiniteBuckets", "Width", "Offset" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential), global::Google.Api.Distribution.Types.BucketOptions.Types.Exponential.Parser, new[]{ "NumFiniteBuckets", "GrowthFactor", "Scale" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit), global::Google.Api.Distribution.Types.BucketOptions.Types.Explicit.Parser, new[]{ "Bounds" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Distribution.Types.Exemplar), global::Google.Api.Distribution.Types.Exemplar.Parser, new[]{ "Value", "Timestamp", "Attachments" }, null, null, null, null)})
           }));
     }
     #endregion

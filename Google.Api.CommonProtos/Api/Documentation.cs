@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -45,10 +45,10 @@ namespace Google.Api {
             "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Documentation), global::Google.Api.Documentation.Parser, new[]{ "Summary", "Pages", "Rules", "DocumentationRootUrl", "Overview" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DocumentationRule), global::Google.Api.DocumentationRule.Parser, new[]{ "Selector", "Description", "DeprecationDescription" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Page), global::Google.Api.Page.Parser, new[]{ "Name", "Content", "Subpages" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Documentation), global::Google.Api.Documentation.Parser, new[]{ "Summary", "Pages", "Rules", "DocumentationRootUrl", "Overview" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DocumentationRule), global::Google.Api.DocumentationRule.Parser, new[]{ "Selector", "Description", "DeprecationDescription" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Page), global::Google.Api.Page.Parser, new[]{ "Name", "Content", "Subpages" }, null, null, null, null)
           }));
     }
     #endregion
