@@ -68,7 +68,6 @@ $PROTOC \
   --csharp_out=$OUTDIR \
   --csharp_opt=base_namespace=Google \
   googleapis/google/api/*.proto \
-  googleapis/google/api/experimental/*.proto \
   $(find googleapis/google/rpc -name '*.proto') \
   $(find googleapis/google/type -name '*.proto')
   
