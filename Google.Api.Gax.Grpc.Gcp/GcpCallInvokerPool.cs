@@ -79,7 +79,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// control the <see cref="GcpCallInvoker"/> behavior itself.
         /// </param>
         /// <returns>A call invoker for the specified endpoint.</returns>
-        public GcpCallInvoker GetCallInvoker(ServiceEndpoint endpoint, IEnumerable<ChannelOption> options = null)
+        public GcpCallInvoker GetCallInvoker(string endpoint, IEnumerable<ChannelOption> options = null)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _credentialsCache.GetCredentials();
@@ -98,14 +98,14 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be a call invoker for the specified endpoint.</returns>
-        public async Task<GcpCallInvoker> GetCallInvokerAsync(ServiceEndpoint endpoint, IEnumerable<ChannelOption> options = null)
+        public async Task<GcpCallInvoker> GetCallInvokerAsync(string endpoint, IEnumerable<ChannelOption> options = null)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _credentialsCache.GetCredentialsAsync().ConfigureAwait(false);
             return GetCallInvoker(endpoint, options, credentials);
         }
 
-        private GcpCallInvoker GetCallInvoker(ServiceEndpoint endpoint, IEnumerable<ChannelOption> options, ChannelCredentials credentials)
+        private GcpCallInvoker GetCallInvoker(string endpoint, IEnumerable<ChannelOption> options, ChannelCredentials credentials)
         {
             var optionsList = options?.ToList() ?? new List<ChannelOption>();
 
@@ -133,10 +133,10 @@ namespace Google.Api.Gax.Grpc.Gcp
 
         private struct Key : IEquatable<Key>
         {
-            public readonly ServiceEndpoint Endpoint;
+            public readonly string Endpoint;
             public readonly List<ChannelOption> Options;
 
-            public Key(ServiceEndpoint endpoint, List<ChannelOption> options)
+            public Key(string endpoint, List<ChannelOption> options)
             {
                 Endpoint = endpoint;
                 Options = options;

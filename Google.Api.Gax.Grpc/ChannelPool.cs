@@ -92,7 +92,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint) => GetChannel(endpoint, s_defaultOptions);
+        public Channel GetChannel(string endpoint) => GetChannel(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
@@ -101,7 +101,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public Task<Channel> GetChannelAsync(ServiceEndpoint endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
+        public Task<Channel> GetChannelAsync(string endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
@@ -111,7 +111,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
+        public Channel GetChannel(string endpoint, IEnumerable<ChannelOption> channelOptions)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
@@ -127,14 +127,14 @@ namespace Google.Api.Gax.Grpc
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<Channel> GetChannelAsync(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions)
+        public async Task<Channel> GetChannelAsync(string endpoint, IEnumerable<ChannelOption> channelOptions)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
             return GetChannel(endpoint, channelOptions, credentials);
         }
 
-        private Channel GetChannel(ServiceEndpoint endpoint, IEnumerable<ChannelOption> channelOptions, ChannelCredentials credentials)
+        private Channel GetChannel(string endpoint, IEnumerable<ChannelOption> channelOptions, ChannelCredentials credentials)
         {
             var optionsList = channelOptions?.ToList() ?? new List<ChannelOption>();
 
@@ -145,7 +145,7 @@ namespace Google.Api.Gax.Grpc
                 Channel channel;
                 if (!_channels.TryGetValue(key, out channel))
                 {
-                    channel = new Channel(endpoint.Host, endpoint.Port, credentials, optionsList);
+                    channel = new Channel(endpoint, credentials, optionsList);
                     _channels[key] = channel;
                 }
                 return channel;
@@ -154,10 +154,10 @@ namespace Google.Api.Gax.Grpc
 
         private struct Key : IEquatable<Key>
         {
-            public readonly ServiceEndpoint Endpoint;
+            public readonly string Endpoint;
             public readonly List<ChannelOption> Options;
 
-            public Key(ServiceEndpoint endpoint, List<ChannelOption> options)
+            public Key(string endpoint, List<ChannelOption> options)
             {
                 Endpoint = endpoint;
                 Options = options;

@@ -22,7 +22,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         private readonly Server _server;
 
         public int Port => _server.Ports.First().BoundPort;
-        public ServiceEndpoint Endpoint => new ServiceEndpoint("localhost", Port);
+        public string Endpoint => $"localhost:{Port}";
 
         public TestServiceFixture()
         {

@@ -31,7 +31,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
-        public ServiceEndpoint Endpoint { get; set; }
+        public string Endpoint { get; set; }
 
         /// <summary>
         /// The scopes to use, or null to use the default scopes.
@@ -243,7 +243,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Returns the endpoint for this builder type, used if no endpoint is otherwise specified.
         /// </summary>
-        protected abstract ServiceEndpoint GetDefaultEndpoint();
+        protected abstract string GetDefaultEndpoint();
 
         /// <summary>
         /// Returns the channel pool to use when no other options are specified. This method is not called unless
@@ -289,8 +289,8 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
-        private protected virtual Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials) =>
-            new Channel(endpoint.Host, endpoint.Port, credentials, GetChannelOptions());
+        private protected virtual Channel CreateChannel(string endpoint, ChannelCredentials credentials) =>
+            new Channel(endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccess
         {
