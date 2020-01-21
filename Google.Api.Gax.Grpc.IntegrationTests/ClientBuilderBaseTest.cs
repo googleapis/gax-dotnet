@@ -70,11 +70,11 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task DifferentEndpoint_StillFromChannelPool()
         {
-            var endpoint = new ServiceEndpoint("custom.nowhere.com", 443); ;
+            var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
             Channel channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
-            Channel channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(new ServiceEndpoint("custom.nowhere.com", 443));
+            Channel channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel("custom.nowhere.com");
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -104,7 +104,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task CustomChannelCredentialsAndEndpoint()
         {
-            var endpoint = new ServiceEndpoint("custom.nowhere.com", 443);
+            var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { ChannelCredentials = ChannelCredentials.Insecure, Endpoint = endpoint };
 
             Action<CallInvoker> validator = invoker =>
@@ -257,11 +257,11 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         
         public class SampleClientBuilder : ClientBuilderBase<CallInvoker>
         {
-            public static ServiceEndpoint DefaultEndpoint { get; } = new ServiceEndpoint("default.nowhere.com", 443);
+            public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
             public ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes);
 
-            public ServiceEndpoint EndpointUsedToCreateChannel { get; private set; }
+            public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
             public Channel ChannelCreated { get; private set; }
 
@@ -292,7 +292,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             protected override ChannelPool GetChannelPool() => ChannelPool;
 
-            protected override ServiceEndpoint GetDefaultEndpoint() => DefaultEndpoint;
+            protected override string GetDefaultEndpoint() => DefaultEndpoint;
 
             protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
 
@@ -303,7 +303,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 ChannelCreated = null;
             }
 
-            private protected override Channel CreateChannel(ServiceEndpoint endpoint, ChannelCredentials credentials)
+            private protected override Channel CreateChannel(string endpoint, ChannelCredentials credentials)
             {
                 CredentialsUsedToCreateChannel = credentials;
                 EndpointUsedToCreateChannel = endpoint;
