@@ -19,6 +19,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/googleapis/gax-dotnet</RepositoryUrl>
     <PackageIconUrl>https://www.gstatic.com/images/branding/product/1x/google_developers_64dp.png</PackageIconUrl>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
       - suggested in docs, due to us using a file with no extension.
       -->
     <None Include="../LICENSE" Pack="true" PackagePath="" />
+    <None Include="../NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <Import Project="ReleaseVersion.xml" />
