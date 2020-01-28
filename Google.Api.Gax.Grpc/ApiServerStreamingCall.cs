@@ -79,12 +79,6 @@ namespace Google.Api.Gax.Grpc
         internal ApiServerStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
             new ApiServerStreamingCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
-        internal ApiServerStreamingCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
-            new ApiServerStreamingCall<TRequest, TResponse>(
-                _asyncCall.WithRetry(clock, scheduler, response => response.ResponseHeadersAsync),
-                _syncCall.WithRetry(clock, scheduler, response => response.ResponseHeadersAsync.WaitWithUnwrappedExceptions()),
-                BaseCallSettings);
-
         /// <summary>
         /// Constructs a new <see cref="ApiServerStreamingCall{TRequest, TResponse}"/> that applies an overlay to
         /// the underlying <see cref="CallSettings"/>. If a value exists in both the original and
