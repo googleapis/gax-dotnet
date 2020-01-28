@@ -41,22 +41,14 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         private Task<SimpleResponse> Call(
-            bool async, bool serverStreaming, FakeScheduler scheduler, Server server, SimpleRequest request, CallSettings callSettings)
+            bool async, FakeScheduler scheduler, Server server, SimpleRequest request, CallSettings callSettings)
         {
-            if (serverStreaming)
-            {
-                var retryingCallable = server.ServerStreamingCallable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, request, callSettings);
-            }
-            else
-            {
-                var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
-                return Call(async, retryingCallable, request, callSettings);
-            }
+            var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
+            return Call(async, retryingCallable, request, callSettings);
         }
 
         [Theory, CombinatorialData]
-        public async Task FirstCallSucceeds(bool async, bool serverStreaming)
+        public async Task FirstCallSucceeds(bool async)
         {
             var name = "name"; // Copied from request to response
             var scheduler = new FakeScheduler();
@@ -74,7 +66,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = name };
-                var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                var result = await Call(async, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
             });
 
@@ -84,7 +76,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Theory, CombinatorialData]
-        public async Task MultipleCallsEventualSuccess(bool async, bool serverStreaming)
+        public async Task MultipleCallsEventualSuccess(bool async)
         {
             var callDuration = TimeSpan.FromTicks(300);
             var failures = 4; // Fifth call will succeed
@@ -104,7 +96,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = name };
-                var result = await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                var result = await Call(async, scheduler, server, request, callSettings);
                 Assert.Equal(name, result.Name);
             });
 
@@ -120,7 +112,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Theory, CombinatorialData]
-        public async Task CallSettingsDeadlineIsObserved(bool async, bool serverStreaming)
+        public async Task CallSettingsDeadlineIsObserved(bool async)
         {
             var callDuration = TimeSpan.FromTicks(300);
             var failures = 4; // Fifth call would succeed, but we won't get that far.
@@ -142,7 +134,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 // Expiration makes it fail while waiting to make third call
                 var callSettings = CallSettings.FromRetry(retrySettings).WithTimeout(timeout);
                 var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                await Call(async, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<RpcException>(() => task);
 
@@ -158,7 +150,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Theory, CombinatorialData]
-        public async Task RetryFilter_EventualSuccess(bool async, bool serverStreaming)
+        public async Task RetryFilter_EventualSuccess(bool async)
         {
             StatusCode failureCode = StatusCode.NotFound;
             StatusCode[] filterCodes = new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded };
@@ -173,14 +165,14 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                await Call(async, scheduler, server, request, callSettings);
             });
 
             Assert.True(server.CallTimes.Count() > 1);
         }
 
         [Theory, CombinatorialData]
-        public async Task MaxAttemptsObserved(bool async, bool serverStreaming)
+        public async Task MaxAttemptsObserved(bool async)
         {
             var callDuration = TimeSpan.FromTicks(300);
             var failures = 4; // Fifth call would succeed, but we won't get that far.
@@ -195,22 +187,18 @@ namespace Google.Api.Gax.Grpc.Tests
                 // MaxAttempts makes the overall operation fail on the 4th RPC.
                 var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                await Call(async, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<RpcException>(() => task);
             Assert.Equal(4, server.CallTimes.Count);
         }
 
         [Theory]
-        [InlineData(true, false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
-        [InlineData(true, false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
-        [InlineData(false, false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
-        [InlineData(false, false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
-        [InlineData(true, true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
-        [InlineData(true, true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
-        [InlineData(false, true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
-        [InlineData(false, true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
-        public async Task RetryFilter_EventualFailure(bool async, bool serverStreaming, StatusCode failureCode, StatusCode[] filterCodes)
+        [InlineData(true, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        [InlineData(true, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
+        [InlineData(false, StatusCode.Internal, new[] { StatusCode.NotFound, StatusCode.DeadlineExceeded })]
+        [InlineData(false, StatusCode.DeadlineExceeded, new[] { StatusCode.NotFound })]
+        public async Task RetryFilter_EventualFailure(bool async, StatusCode failureCode, StatusCode[] filterCodes)
         {
             var callDuration = TimeSpan.FromTicks(100);
             var failures = 1;
@@ -229,7 +217,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var callSettings = CallSettings.FromRetry(retrySettings);
                 var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                await Call(async, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<RpcException>(() => task);
 
@@ -237,7 +225,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Theory, CombinatorialData]
-        public async Task RetryCancellation(bool serverStreaming, [CombinatorialValues(1500, 3500)] int delayMs)
+        public async Task RetryCancellation([CombinatorialValues(1500, 3500)] int delayMs)
         {
             // Note: Cannot test cancellation during wait for response header, due to FakeScheduler shortcomings.
             var async = true;
@@ -256,7 +244,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 });
                 var callSettings = CallSettings.FromRetry(retrySettings).WithCancellationToken(cts.Token);
                 var request = new SimpleRequest { Name = "irrelevant" };
-                await Call(async, serverStreaming, scheduler, server, request, callSettings);
+                await Call(async, scheduler, server, request, callSettings);
             });
             await Assert.ThrowsAsync<TaskCanceledException>(() => task);
             Assert.Equal(time0 + delay, scheduler.Clock.GetCurrentDateTimeUtc());
