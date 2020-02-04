@@ -116,7 +116,7 @@ namespace Google.Api.Gax.Grpc.Tests
         /// Creates a Metadata instance for a single key/value pair.
         /// </summary>
         private static Metadata CreateMetadata(string key, string value) =>
-            new Metadata { new Metadata.Entry("kind", "response") };
+            new Metadata { new Metadata.Entry(key, value) };
 
         [Fact]
         public void WithGoogleRequestParam()
