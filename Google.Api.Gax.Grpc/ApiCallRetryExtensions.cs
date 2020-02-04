@@ -18,7 +18,7 @@ namespace Google.Api.Gax.Grpc
         // Async retry
         internal static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, Task<TResponse>> fn,
-            IClock clock, IScheduler scheduler, Func<TResponse, Task> postResponse) =>
+            IClock clock, IScheduler scheduler) =>
             async (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Retry;
@@ -39,12 +39,7 @@ namespace Google.Api.Gax.Grpc
                     try
                     {
                         attempt++;
-                        var response = await fn(request, callSettings).ConfigureAwait(false);
-                        if (postResponse != null)
-                        {
-                            await postResponse(response).ConfigureAwait(false);
-                        }
-                        return response;
+                        return await fn(request, callSettings).ConfigureAwait(false);
                     }
                     catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
                     {
@@ -63,7 +58,7 @@ namespace Google.Api.Gax.Grpc
         // Sync retry
         internal static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, TResponse> fn,
-            IClock clock, IScheduler scheduler, Action<TResponse> postResponse) =>
+            IClock clock, IScheduler scheduler) =>
             (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Retry;
@@ -84,9 +79,7 @@ namespace Google.Api.Gax.Grpc
                     try
                     {
                         attempt++;
-                        var response = fn(request, callSettings);
-                        postResponse?.Invoke(response);
-                        return response;
+                        return fn(request, callSettings);
                     }
                     catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
                     {
