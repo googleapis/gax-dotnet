@@ -118,52 +118,6 @@ namespace Google.Api.Gax.Grpc.Tests
         private static Metadata CreateMetadata(string key, string value) =>
             new Metadata { new Metadata.Entry("kind", "response") };
 
-        [Theory, CombinatorialData]
-        public async Task WithExceptionCustomizer_NoException(bool sync)
-        {
-            var response = new SimpleResponse();
-            var call = FakeApiCall.Create<SimpleRequest, SimpleResponse>((req, options) => response);
-            bool called = false;
-            call = call.WithExceptionCustomizer(original => { called = true; return null; });
-            var request = new SimpleRequest();
-            var actualResponse = sync ? call.Sync(request, null) : await call.Async(request, null);
-            Assert.Same(response, actualResponse);
-            Assert.False(called);
-        }
-
-        [Theory, CombinatorialData]
-        public async Task WithCustomExceptions_UncustomizedException(bool sync)
-        {
-            var response = new SimpleResponse();
-            var original = new RpcException(Status.DefaultCancelled);
-            var call = FakeApiCall.Create<SimpleRequest, SimpleResponse>((req, options) => throw original);
-            RpcException callbackException = null;
-            call = call.WithExceptionCustomizer(x => { callbackException = x; return null; });
-            var request = new SimpleRequest();
-            // It's slightly awkward to call ThrowsAsync on its own and specify the lambda there.
-            Func<Task<SimpleResponse>> func = async () => sync ? call.Sync(request, null) : await call.Async(request, null);
-            var thrown = await Assert.ThrowsAsync<RpcException>(func);
-            Assert.Same(original, thrown);
-            Assert.Same(original, callbackException);
-        }
-
-        [Theory, CombinatorialData]
-        public async Task WithCustomExceptions_CustomizedException(bool sync)
-        {
-            var response = new SimpleResponse();
-            var original = new RpcException(Status.DefaultCancelled);
-            var replacement = new RpcException(Status.DefaultCancelled, "This is the replacement");
-            var call = FakeApiCall.Create<SimpleRequest, SimpleResponse>((req, options) => throw original);
-            RpcException callbackException = null;
-            call = call.WithExceptionCustomizer(x => { callbackException = x; return replacement; });
-            var request = new SimpleRequest();
-            // It's slightly awkward to call ThrowsAsync on its own and specify the lambda there.
-            Func<Task<SimpleResponse>> func = async () => sync ? call.Sync(request, null) : await call.Async(request, null);
-            var thrown = await Assert.ThrowsAsync<RpcException>(func);
-            Assert.Same(replacement, thrown);
-            Assert.Same(original, callbackException);
-        }
-
         [Fact]
         public void WithGoogleRequestParam()
         {
