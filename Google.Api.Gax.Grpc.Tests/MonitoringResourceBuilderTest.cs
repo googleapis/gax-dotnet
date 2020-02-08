@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -136,6 +137,66 @@ namespace Google.Api.Gax.Grpc.Tests
                 { "pod_id", "podname" },
                 { "container_name", "containername" },
                 { "zone", "FakeLocation" }
+            }, resource.Labels);
+        }
+
+        [Fact]
+        public void GkePlatform_NewStackdriver()
+        {
+            const string metadataJson = @"
+{
+  'project': {
+    'projectId': 'FakeProjectId'
+  },
+  'instance': {
+    'attributes': {
+      'cluster-location': 'europe-west2',
+      'cluster-name': 'FakeClusterName',
+      'kube-env': 'ALLOCATE_NODE_CIDRS: ""true""\nAPI_SERVER_TEST_LOG_LEVEL: --v=3\nHEAPSTER_USE_NEW_STACKDRIVER_RESOURCES: ""true""\nHEAPSTER_USE_OLD_STACKDRIVER_RESOURCES: ""false""\nHPA_USE_REST_CLIENTS: ""true""'
+    },
+    'id': '123',
+    'zone': 'projects/FakeProject/zones/europe-west2-a'
+  }
+}
+";
+
+            const string namespaceJson = @"
+{
+  'kind': 'Namespace',
+  'metadata': {
+    'uid': 'namespaceid',
+    'name':'namespacename'
+  }
+}
+";
+
+            const string podJson = @"
+{
+  'kind': 'Pod',
+  'metadata': {
+    'name': 'podname',
+    'uid': 'podid'
+  }
+}
+";
+
+            var kubernetesData = new GkePlatformDetails.KubernetesData
+            {
+                NamespaceJson = namespaceJson,
+                PodJson = podJson,
+                MountInfo = new[] { "/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log" }
+            };
+            var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
+            var resource = MonitoredResourceBuilder.FromPlatform(platform);
+            Assert.Equal("k8s_container", resource.Type);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "FakeProjectId" },
+                { "location", "europe-west2" },
+                { "cluster_name", "FakeClusterName" },
+                { "namespace_name", "namespacename" },
+                { "pod_name", "podname" },
+                { "container_name", "containername" },
             }, resource.Labels);
         }
     }

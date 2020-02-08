@@ -5,7 +5,11 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -83,21 +87,8 @@ namespace Google.Api.Gax.Grpc
                         }
                     };
                 case PlatformType.Gke:
-                    var gke = platform.GkeDetails;
-                    return new MonitoredResource
-                    {
-                        Type = "gke_container",
-                        Labels =
-                        {
-                            { "project_id", gke.ProjectId },
-                            { "cluster_name", gke.ClusterName },
-                            { "namespace_id", gke.NamespaceId },
-                            { "instance_id", gke.InstanceId },
-                            { "pod_id", gke.PodId },
-                            { "container_name", gke.ContainerName },
-                            { "zone", gke.Location }
-                        }
-                    };
+                    return KubernetesEngine(platform.GkeDetails);
+
                 case PlatformType.CloudRun:
                     var cloudRun = platform.CloudRunDetails;
                     return new MonitoredResource
@@ -117,6 +108,57 @@ namespace Google.Api.Gax.Grpc
                     // This isn't great, but is better than throwing an exception.
                     return GlobalResource;
             }
+        }
+
+        private static MonitoredResource KubernetesEngine(GkePlatformDetails gke)
+        {
+            var metaData = JObject.Parse(gke.MetadataJson);
+
+            if (IsNewStackDriver(metaData))
+                return new MonitoredResource
+                {
+                    Type = "k8s_container",
+                    Labels =
+                    {
+                        { "project_id", gke.ProjectId },
+                        { "location", metaData.SelectToken("instance.attributes.cluster-location")?.Value<string>() },
+                        { "cluster_name", gke.ClusterName },
+                        { "namespace_name", gke.NamespaceId },
+                        { "pod_name", gke.HostName },
+                        { "container_name", gke.ContainerName },
+                    }
+                };
+            
+            return new MonitoredResource
+            {
+                Type = "gke_container",
+                Labels =
+                {
+                    { "project_id", gke.ProjectId },
+                    { "cluster_name", gke.ClusterName },
+                    { "namespace_id", gke.NamespaceId },
+                    { "instance_id", gke.InstanceId },
+                    { "pod_id", gke.PodId },
+                    { "container_name", gke.ContainerName },
+                    { "zone", gke.Location }
+                }
+            };
+        }
+
+        private static bool IsNewStackDriver(JObject gkeMetadata)
+        {
+            var kubeEnv = gkeMetadata.SelectToken("instance.attributes.kube-env");
+
+            if (kubeEnv == null)
+                return false;
+
+            var newStackdriver = kubeEnv
+                .Value<string>()
+                ?.Split('\n')
+                .FirstOrDefault(x => x.StartsWith("HEAPSTER_USE_NEW_STACKDRIVER_RESOURCES"))
+                ?.Split(':');
+
+            return newStackdriver?.Length == 2 && newStackdriver[1].Trim() == "\"true\"";
         }
     }
 }
