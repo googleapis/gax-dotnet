@@ -20,7 +20,11 @@ namespace Google.Api.Gax.Grpc
     /// Base class for API-specific builders.
     /// </summary>
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
-    public abstract class ClientBuilderBase<TClient>
+    /// <typeparam name="TEmulatorConfiguration">The type of the emulator configuration used by this builder.</typeparam>
+    /// <typeparam name="TSelf">The type of the class given value to <typeparamref name="TSelf"/></typeparam>
+    public abstract class ClientBuilderBase<TClient, TEmulatorConfiguration, TSelf>
+        where TEmulatorConfiguration : EmulatorConfiguration
+        where TSelf : ClientBuilderBase<TClient, TEmulatorConfiguration, TSelf>
     {
         private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.Empty
             .WithKeepAliveTime(TimeSpan.FromMinutes(1))
@@ -77,6 +81,13 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         internal GrpcImplementation GrpcImplementation { get; set; }
 
+        /// <summary>
+        /// The EmulatorDetector to use, or null if this client does not have emulator support.
+        /// </summary>
+        /// <remarks>In clients that do have emulator support this propety should be made public
+        /// and shoule be assigned a value other than null.</remarks>
+        internal protected EmulatorDetector<TEmulatorConfiguration> EmulatorDetector { get; }
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
         /// <summary>
@@ -87,11 +98,51 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// Creates a new instance with the given emulator detector.
+        /// </summary>
+        /// <param name="emulatorDetector">The emulator detector to use in this instance.</param>
+        protected ClientBuilderBase(EmulatorDetector<TEmulatorConfiguration> emulatorDetector) =>
+            EmulatorDetector = emulatorDetector;
+
+        /// <summary>
+        /// Returns a shallow copy of this client builder, but replacing the relevant settings
+        /// with those from the <paramref name="emulatorConfiguration"/>.
+        /// This method should clear settings that, althoug not specified on the <paramref name="emulatorConfiguration"/>
+        /// might conflict with some that are.
+        /// </summary>
+        /// <param name="emulatorConfiguration">The emulator configuration to apply.
+        /// Must not be null and must be a valid emulator configuration.</param>
+        /// <returns>A shallow copy of this client builder with the <paramref name="emulatorConfiguration"/> applied.</returns>
+        protected virtual TSelf WithEmulatorConfiguration(TEmulatorConfiguration emulatorConfiguration)
+        {
+            GaxPreconditions.CheckArgument(emulatorConfiguration?.IsValid ?? false, nameof(emulatorConfiguration), "The emulator configuration should be non-null and valid.");
+
+            var withEmulator = (TSelf) MemberwiseClone();
+
+            // Let's clean up all conflicting settings on the clone.
+            withEmulator.CallInvoker = null;
+            withEmulator.CredentialsPath = null;
+            withEmulator.JsonCredentials = null;
+            withEmulator.Scopes = null;
+            withEmulator.TokenAccessMethod = null;
+
+            // Override with the emulator configuration.
+            withEmulator.Endpoint = emulatorConfiguration.Endpoint;
+            withEmulator.ChannelCredentials = ChannelCredentials.Insecure;
+
+            return withEmulator;
+        }
+
+        /// <summary>
         /// Copies common settings from the specified builder into this one. This is a shallow copy.
         /// </summary>
-        /// <typeparam name="TOther">The other client type</typeparam>
+        /// <typeparam name="TOtherClient">The other client type</typeparam>
+        /// <typeparam name="TOtherEmulatorConfig">The other client emulator configuration type.</typeparam>
+        /// <typeparam name="TOtherSelf">The other client builder type.</typeparam>
         /// <param name="source">The builder to copy from.</param>
-        protected void CopyCommonSettings<TOther>(ClientBuilderBase<TOther> source)
+        protected void CopyCommonSettings<TOtherClient, TOtherEmulatorConfig, TOtherSelf>(ClientBuilderBase<TOtherClient, TOtherEmulatorConfig, TOtherSelf> source)
+            where TOtherEmulatorConfig : EmulatorConfiguration
+            where TOtherSelf : ClientBuilderBase<TOtherClient, TOtherEmulatorConfig, TOtherSelf>
         {
             GaxPreconditions.CheckNotNull(source, nameof(source));
             Endpoint = source.Endpoint;
@@ -276,21 +327,60 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod == null &&
             Scopes == null;
 
-        // Note: The implementation is responsible for performing validation before constructing the client.
-        // The Validate method can be used as-is for most builders.
+        /// <summary>
+        /// Builds the resulting client.
+        /// </summary>
+        /// <remarks>
+        /// This method validates that the client builder settings are not conflicting.
+        /// If the client supports an emulator this method will attempt to detect an emulator
+        /// configuration and use that configuration to create the client. This client builder settings
+        /// won't change as a result of using an emulator configuration.
+        /// Validation is done for non-emulator settings so that configuration of the client builder
+        /// is not dependent on wheter an emulator configuration is detected or not.
+        /// </remarks>
+        // TODO: This virtual as well?
+        public TClient Build()
+        {
+            Validate();
+            if (EmulatorDetector != null && EmulatorDetector.TryDetectEmulator(out TEmulatorConfiguration config))
+            {
+                return WithEmulatorConfiguration(config).BuildImpl();
+            }
+            return BuildImpl();
+        }
 
         /// <summary>
         /// Builds the resulting client.
         /// </summary>
-        public abstract TClient Build();
-
-        // Note: The implementation is responsible for performing validation before constructing the client.
-        // The Validate method can be used as-is for most builders.
+        /// <remarks>
+        /// This method validates that the client builder settings are not conflicting.
+        /// If the client supports an emulator this method will attempt to detect an emulator
+        /// configuration and use that configuration to create the client. This client builder settings
+        /// won't change as a result of using an emulator configuration.
+        /// Validation is done for non-emulator settings so that configuration of the client builder
+        /// is not dependent on wheter an emulator configuration is detected or not.
+        /// </remarks>
+        protected abstract TClient BuildImpl();
 
         /// <summary>
         /// Builds the resulting client asynchronously.
         /// </summary>
-        public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+        /// <remarks>Validation and emulator detection has already happened at this point.</remarks>
+        public Task<TClient> BuildAsync(CancellationToken cancellationToken = default)
+        {
+            Validate();
+            if (EmulatorDetector != null && EmulatorDetector.TryDetectEmulator(out TEmulatorConfiguration config))
+            {
+                return WithEmulatorConfiguration(config).BuildImplAsync(cancellationToken);
+            }
+            return BuildImplAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Builds the resulting client asynchronously.
+        /// </summary>
+        /// <remarks>Validation and emulator detection has already happened at this point.</remarks>
+        protected abstract Task<TClient> BuildImplAsync(CancellationToken cancellationToken);
 
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
             (GrpcImplementation ?? GrpcImplementation.Default).CreateChannel(endpoint, credentials, GetChannelOptions());

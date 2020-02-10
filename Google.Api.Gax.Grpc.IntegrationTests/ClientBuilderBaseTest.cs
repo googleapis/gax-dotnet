@@ -255,7 +255,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             Assert.Throws<InvalidOperationException>(builder.ValidateForTest);
         }
         
-        public class SampleClientBuilder : ClientBuilderBase<CallInvoker>
+        public class SampleClientBuilder : ClientBuilderBase<CallInvoker, EmulatorConfiguration, SampleClientBuilder>
         {
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
@@ -276,19 +276,12 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             {
             }
 
-            public override CallInvoker Build()
-            {
-                base.Validate();
-                return CreateCallInvoker();
-            }
-
             public void ValidateForTest() => Validate();
 
-            public override async Task<CallInvoker> BuildAsync(CancellationToken cancellationToken = default(CancellationToken))
-            {
-                base.Validate();
-                return await CreateCallInvokerAsync(cancellationToken);
-            }
+            protected override CallInvoker BuildImpl() => CreateCallInvoker();
+
+            protected override Task<CallInvoker> BuildImplAsync(CancellationToken cancellationToken) => 
+                CreateCallInvokerAsync(cancellationToken);
 
             protected override ChannelPool GetChannelPool() => ChannelPool;
 
