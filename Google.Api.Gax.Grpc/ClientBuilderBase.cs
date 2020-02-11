@@ -102,6 +102,7 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod = source.TokenAccessMethod;
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
+            GrpcImplementation = source.GrpcImplementation;
         }
 
         /// <summary>
