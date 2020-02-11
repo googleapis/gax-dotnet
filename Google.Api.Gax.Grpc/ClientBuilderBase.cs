@@ -77,6 +77,24 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         internal GrpcImplementation GrpcImplementation { get; set; }
 
+        private EmulatorDetection _emulatorDetection;
+        /// <summary>
+        /// The emulator detection policy to apply when building a client. Derived classes which support
+        /// emulators should create public properties which delegate to this one.
+        /// </summary>
+        protected EmulatorDetection EmulatorDetection
+        {
+            get => _emulatorDetection;
+            set => _emulatorDetection = GaxPreconditions.CheckEnumValue(value, nameof(value));
+        }
+
+        /// <summary>
+        /// The provider used to retrieve environment variables. This is used to faciliate testing, and defaults
+        /// to using <see cref="Environment.GetEnvironmentVariable(string)"/>.
+        /// </summary>
+        protected Func<string, string> EnvrionmentVariableProvider { get; set; } =
+            variable => Environment.GetEnvironmentVariable(variable);
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
         /// <summary>
@@ -102,6 +120,8 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod = source.TokenAccessMethod;
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
+            GrpcImplementation = source.GrpcImplementation;
+            EmulatorDetection = source.EmulatorDetection;
         }
 
         /// <summary>
@@ -121,6 +141,112 @@ namespace Google.Api.Gax.Grpc
             ValidateOptionExcludesOthers("Scopes are not relevant when a token access method or channel credentials are supplied", Scopes,
                 TokenAccessMethod, ChannelCredentials);
         }
+
+        /// <summary>
+        /// If emulation is configured, this creates another builder containing the emulator settings, which can be used
+        /// to build a client synchronously or asynchronously. This method validates the environment, and delegates to
+        /// <see cref="BuildEmulatorClientBuilder(Dictionary{string, string})"/> if emulator-based configuration is required.
+        /// </summary>
+        protected ClientBuilderBase<TClient> MaybeUseEmulator()
+        {
+            // Assumption: any class allowing EmulatorDetection to be set will also
+            // provide emulator environment variables.
+            var variables = AllEmulatorEnvironmentVariables;
+            if (variables is null)
+            {
+                return default;
+            }
+
+            var environment = variables.ToDictionary(GetEnvironmentVariableOrNull);
+            
+            switch (EmulatorDetection)
+            {
+                case EmulatorDetection.None:
+                    return default;
+                case EmulatorDetection.ProductionOnly:
+                    foreach (var variable in AllEmulatorEnvironmentVariables)
+                    {
+                        GaxPreconditions.CheckState(
+                            environment[variable] is null,
+                            "Emulator environment variable '{0}' is set, contrary to use of {1}.{2}",
+                            variable, nameof(EmulatorDetection), nameof(EmulatorDetection.ProductionOnly));
+                    }
+                    return default;
+                case EmulatorDetection.EmulatorOnly:
+                    foreach (var variable in RequiredEmulatorEnvironmentVariables)
+                    {
+                        GaxPreconditions.CheckState(
+                            environment[variable] is object,
+                            "Emulator environment variable '{0}' is not set, contrary to use of {1}.{2}",
+                            variable, nameof(EmulatorDetection), nameof(EmulatorDetection.EmulatorOnly));
+                    }
+                    break;
+                case EmulatorDetection.EmulatorOrProduction:
+                    bool anySet = AllEmulatorEnvironmentVariables.Any(v => environment[v] is object);
+                    if (!anySet)
+                    {
+                        return default;
+                    }
+                    bool allRequiredSet = RequiredEmulatorEnvironmentVariables.All(v => environment[v] is object);
+                    if (!allRequiredSet)
+                    {
+                        var sampleSet = AllEmulatorEnvironmentVariables.First(v => environment[v] is object);
+                        var sampleNotSet = RequiredEmulatorEnvironmentVariables.First(v => environment[v] is object);
+                        GaxPreconditions.CheckState(false,
+                            "Emulator environment variable '{0}' is set, but '{1}' is not set.",
+                            sampleSet, sampleNotSet);
+                    }
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid emulator detection value: {EmulatorDetection}");
+            }
+
+            // We know we want to use the emulator. Validate nothing else has been set that shouldn't be.
+            GaxPreconditions.CheckState(Endpoint == null, "{0} should not be set when connecting to an emulator", nameof(Endpoint));
+            GaxPreconditions.CheckState(CallInvoker == null, "{0} should not be set when connecting to an emulator", nameof(CallInvoker));
+            GaxPreconditions.CheckState(ChannelCredentials == null, "{0} should not be set when connecting to an emulator", nameof(ChannelCredentials));
+            GaxPreconditions.CheckState(CredentialsPath == null, "{0} should not be set when connecting to an emulator", nameof(CredentialsPath));
+            GaxPreconditions.CheckState(JsonCredentials == null, "{0} should not be set when connecting to an emulator", nameof(JsonCredentials));
+            GaxPreconditions.CheckState(Scopes == null, "{0} should not be set when connecting to an emulator", nameof(Scopes));
+            GaxPreconditions.CheckState(TokenAccessMethod == null, "{0} should not be set when connecting to an emulator", nameof(TokenAccessMethod));
+
+            return BuildEmulatorClientBuilder(environment);
+        }
+
+        /// <summary>
+        /// Creates a client builder based on emulator environment variables, as well as (potentially)
+        /// any state in this builder. This must be overridden by any client builder with emulator support.
+        /// </summary>
+        /// <param name="environment">The environment variable values. Every variable in <see cref="AllEmulatorEnvironmentVariables"/>
+        /// will be present, with a null value if it was missing or empty/whitespace.</param>
+        /// <returns>A client builder based on the given environment.</returns>
+        protected virtual ClientBuilderBase<TClient> BuildEmulatorClientBuilder(Dictionary<string, string> environment) =>
+            throw new NotImplementedException("This client builder does not support emulation.");
+
+        /// <summary>
+        /// Retrieves an environment variable from <see cref="EnvrionmentVariableProvider"/>, mapping
+        /// empty or whitespace-only strings to null.
+        /// </summary>
+        /// <param name="variable">The name of the variable to retrieve.</param>
+        private string GetEnvironmentVariableOrNull(string variable)
+        {
+            var value = EnvrionmentVariableProvider(variable);
+            return string.IsNullOrWhiteSpace(value) ? null : value;
+        }
+
+        /// <summary>
+        /// The required environment variables used for emulator detection, or null if this builder does not
+        /// support emulators (the default). This should include all environment variables that are required
+        /// to successfully configure the emulator.
+        /// </summary>
+        protected virtual IReadOnlyList<string> RequiredEmulatorEnvironmentVariables => null;
+
+        /// <summary>
+        /// All environment variables used for emulator detection, or null if this builder does not
+        /// support emulators (the default). This should include all environment variables that must not
+        /// be set for production-only use, and must include everything in <see cref="RequiredEmulatorEnvironmentVariables"/>.
+        /// </summary>
+        protected virtual IReadOnlyList<string> AllEmulatorEnvironmentVariables => null;
 
         /// <summary>
         /// Validates that at most one of the given values is not null.
