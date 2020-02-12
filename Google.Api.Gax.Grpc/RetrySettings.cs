@@ -9,6 +9,8 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -47,7 +49,7 @@ namespace Google.Api.Gax.Grpc
         /// A predicate to determine whether or not a particular exception should cause the operation to be retried.
         /// Usually this is simply a matter of checking the status codes. This is never null.
         /// </summary>
-        public Predicate<RpcException> RetryFilter { get; }
+        public Predicate<Exception> RetryFilter { get; }
 
         /// <summary>
         /// The delay jitter to apply for delays, defaulting to <see cref="RandomJitter"/>. This is never null.
@@ -75,7 +77,7 @@ namespace Google.Api.Gax.Grpc
             TimeSpan initialBackoff,
             TimeSpan maxBackoff,
             double backoffMultiplier,
-            Predicate<RpcException> retryFilter,
+            Predicate<Exception> retryFilter,
             IJitter backoffJitter)
         {
             MaxAttempts = GaxPreconditions.CheckArgumentRange(maxAttempts, nameof(maxAttempts), 1, int.MaxValue);
@@ -96,7 +98,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="retryFilter">The predicate to use to check whether an error should be retried. Must not be null.</param>
         /// <param name="backoffJitter">The jitter to use on each backoff. May be null, in which case <see cref="RandomJitter"/> is used.</param>
         /// <returns>A retry with constant backoff.</returns>
-        public static RetrySettings FromConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<RpcException> retryFilter, IJitter backoffJitter = null) =>
+        public static RetrySettings FromConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<Exception> retryFilter, IJitter backoffJitter = null) =>
             new RetrySettings(maxAttempts, backoff, backoff, 1.0, retryFilter, backoffJitter ?? RandomJitter);
 
         /// <summary>
@@ -113,7 +115,7 @@ namespace Google.Api.Gax.Grpc
             TimeSpan initialBackoff,
             TimeSpan maxBackoff,
             double backoffMultiplier,
-            Predicate<RpcException> retryFilter,
+            Predicate<Exception> retryFilter,
             IJitter backoffJitter = null) => 
             new RetrySettings(maxAttempts, initialBackoff, maxBackoff, backoffMultiplier, retryFilter, backoffJitter ?? RandomJitter);
 
@@ -147,7 +149,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="statusCodes">The status codes to retry. Must not be null.</param>
         /// <returns>A retry filter based on status codes.</returns>
-        public static Predicate<RpcException> FilterForStatusCodes(params StatusCode[] statusCodes) =>
+        public static Predicate<Exception> FilterForStatusCodes(params StatusCode[] statusCodes) =>
             FilterForStatusCodes((IEnumerable<StatusCode>) statusCodes);
 
         /// <summary>
@@ -155,11 +157,11 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="statusCodes">The status codes to retry. Must not be null.</param>
         /// <returns>A retry filter based on status codes.</returns>
-        public static Predicate<RpcException> FilterForStatusCodes(IEnumerable<StatusCode> statusCodes)
+        public static Predicate<Exception> FilterForStatusCodes(IEnumerable<StatusCode> statusCodes)
         {
             GaxPreconditions.CheckNotNull(statusCodes, nameof(statusCodes));
             // TODO: Take a copy? Optimize for common cases?
-            return ex => statusCodes.Contains(ex.Status.StatusCode);
+            return ex => ex is RpcException rpcEx && statusCodes.Contains(rpcEx.Status.StatusCode);
         }
 
         /// <summary>

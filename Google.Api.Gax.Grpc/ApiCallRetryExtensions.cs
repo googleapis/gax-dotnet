@@ -32,27 +32,18 @@ namespace Google.Api.Gax.Grpc
                 {
                     callSettings = callSettings.WithDeadline(overallDeadline.Value);
                 }
-                TimeSpan backoffDelay = retrySettings.InitialBackoff;
-                int attempt = 0;
-                while (true)
+                foreach (var attempt in RetryAttempt.CreateRetrySequence(retrySettings, scheduler, overallDeadline, clock))
                 {
                     try
                     {
-                        attempt++;
                         return await fn(request, callSettings).ConfigureAwait(false);
                     }
-                    catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
+                    catch (Exception e) when (attempt.ShouldRetry(e))
                     {
-                        TimeSpan actualDelay = retrySettings.BackoffJitter.GetDelay(backoffDelay);
-                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
-                        if (expectedRetryTime > overallDeadline)
-                        {
-                            throw;
-                        }
-                        await scheduler.Delay(actualDelay, callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
-                        backoffDelay = retrySettings.NextBackoff(backoffDelay);
+                        await attempt.BackoffAsync(callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
                     }
                 }
+                throw new InvalidOperationException("Bug in GAX retry handling: finished sequence of attempts");
             };
 
         // Sync retry
@@ -72,27 +63,18 @@ namespace Google.Api.Gax.Grpc
                 {
                     callSettings = callSettings.WithDeadline(overallDeadline.Value);
                 }
-                TimeSpan backoffDelay = retrySettings.InitialBackoff;
-                int attempt = 0;
-                while (true)
+                foreach (var attempt in RetryAttempt.CreateRetrySequence(retrySettings, scheduler, overallDeadline, clock))
                 {
                     try
                     {
-                        attempt++;
                         return fn(request, callSettings);
                     }
-                    catch (RpcException e) when (attempt < retrySettings.MaxAttempts && retrySettings.RetryFilter(e))
+                    catch (Exception e) when (attempt.ShouldRetry(e))
                     {
-                        TimeSpan actualDelay = retrySettings.BackoffJitter.GetDelay(backoffDelay);
-                        DateTime expectedRetryTime = clock.GetCurrentDateTimeUtc() + actualDelay;
-                        if (expectedRetryTime > overallDeadline)
-                        {
-                            throw;
-                        }
-                        scheduler.Sleep(actualDelay, callSettings.CancellationToken.GetValueOrDefault());
-                        backoffDelay = retrySettings.NextBackoff(backoffDelay);
+                        attempt.Backoff(callSettings.CancellationToken.GetValueOrDefault());
                     }
                 }
+                throw new InvalidOperationException("Bug in GAX retry handling: finished sequence of attempts");
             };
 
     }

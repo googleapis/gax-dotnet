@@ -21,7 +21,7 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     public class RetryTest
     {
-        private static readonly Predicate<RpcException> NotFoundFilter = RetrySettings.FilterForStatusCodes(StatusCode.NotFound);
+        private static readonly Predicate<Exception> NotFoundFilter = RetrySettings.FilterForStatusCodes(StatusCode.NotFound);
 
         private static async Task<TResponse> Call<TRequest, TResponse>(
             bool async, ApiCall<TRequest, TResponse> call, TRequest request, CallSettings callSettings)
@@ -250,7 +250,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(time0 + delay, scheduler.Clock.GetCurrentDateTimeUtc());
         }
 
-        private static RetrySettings ConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<RpcException> retryFilter)
+        private static RetrySettings ConstantBackoff(int maxAttempts, TimeSpan backoff, Predicate<Exception> retryFilter)
         {
             GaxPreconditions.CheckNonNegativeDelay(backoff, nameof(backoff));
             return new RetrySettings(maxAttempts, backoff, backoff, 1.0, retryFilter, RetrySettings.NoJitter);
