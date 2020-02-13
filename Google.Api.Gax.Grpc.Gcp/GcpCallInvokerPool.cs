@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Grpc.GrpcCore;
 using Grpc.Core;
 using Grpc.Gcp;
 using System;
@@ -21,22 +22,9 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// </summary>
     public sealed class GcpCallInvokerPool
     {
-        private static readonly IReadOnlyList<ChannelOption> s_defaultOptions = new List<ChannelOption>
-        {
-            // "After a duration of this time the client/server pings its peer to see if the
-            // transport is still alive. Int valued, milliseconds."
-            // Required for any channel using a streaming RPC, to ensure an idle stream doesn't
-            // allow the TCP connection to be silently dropped by any intermediary network devices.
-            // 60 second keepalive time is reasonable. This will only add minimal network traffic,
-            // and only if the channel is idle for more than 60 seconds.
-            new ChannelOption("grpc.keepalive_time_ms", 60_000),
-            // "Disable looking up the service config via the name resolver."
-            //
-            // Currently this defaults to "on" (so disabled) anyway, but that may change later.
-            // Explicitly disable service config resolution for now; we'll allow it to be enabled when we have code to change
-            // our retry policy.
-            new ChannelOption("grpc.service_config_disable_resolution", 1)
-        };
+        private static GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.Empty
+            .WithEnableServiceConfigResolution(false)
+            .WithKeepAliveTime(TimeSpan.FromSeconds(60));
 
         private readonly DefaultChannelCredentialsCache _credentialsCache;
 
@@ -74,12 +62,12 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="options">
-        /// The options to use for each channel created by the call invoker and/or the special
+        /// The options to use for each channel created by the call invoker, possibly including the special
         /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
         /// control the <see cref="GcpCallInvoker"/> behavior itself.
         /// </param>
         /// <returns>A call invoker for the specified endpoint.</returns>
-        public GcpCallInvoker GetCallInvoker(string endpoint, IEnumerable<ChannelOption> options = null)
+        public GcpCallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options = null)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _credentialsCache.GetCredentials();
@@ -92,39 +80,29 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="options">
-        /// The options to use for each channel created by the call invoker and/or the special
+        /// The options to use for each channel created by the call invoker, possibly including the special
         /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
         /// control the <see cref="GcpCallInvoker"/> behavior itself.
         /// </param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be a call invoker for the specified endpoint.</returns>
-        public async Task<GcpCallInvoker> GetCallInvokerAsync(string endpoint, IEnumerable<ChannelOption> options = null)
+        public async Task<GcpCallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options = null)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _credentialsCache.GetCredentialsAsync().ConfigureAwait(false);
             return GetCallInvoker(endpoint, options, credentials);
         }
 
-        private GcpCallInvoker GetCallInvoker(string endpoint, IEnumerable<ChannelOption> options, ChannelCredentials credentials)
+        private GcpCallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ChannelCredentials credentials)
         {
-            var optionsList = options?.ToList() ?? new List<ChannelOption>();
-
-            // Add in any options from our defaults that aren't already specified.
-            foreach (var extra in s_defaultOptions)
-            {
-                if (!optionsList.Any(option => option.Name == extra.Name))
-                {
-                    optionsList.Add(extra);
-                }
-            }
-
-            var key = new Key(endpoint, optionsList);
+            var effectiveOptions = s_defaultOptions.MergedWith(options ?? GrpcChannelOptions.Empty);
+            var key = new Key(endpoint, effectiveOptions);
 
             lock (_lock)
             {
                 if (!_callInvokers.TryGetValue(key, out GcpCallInvoker callInvoker))
                 {
-                    callInvoker = new GcpCallInvoker(endpoint.ToString(), credentials, optionsList);
+                    callInvoker = new GcpCallInvoker(endpoint, credentials, GrpcCoreAdapter.Instance.ConvertOptions(effectiveOptions));
                     _callInvokers[key] = callInvoker;
                 }
                 return callInvoker;
@@ -134,9 +112,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         private struct Key : IEquatable<Key>
         {
             public readonly string Endpoint;
-            public readonly List<ChannelOption> Options;
+            public readonly GrpcChannelOptions Options;
 
-            public Key(string endpoint, List<ChannelOption> options)
+            public Key(string endpoint, GrpcChannelOptions options)
             {
                 Endpoint = endpoint;
                 Options = options;
@@ -145,12 +123,12 @@ namespace Google.Api.Gax.Grpc.Gcp
             public override int GetHashCode() =>
                 GaxEqualityHelpers.CombineHashCodes(
                     Endpoint.GetHashCode(),
-                    GaxEqualityHelpers.GetListHashCode(Options));
+                    Options.GetHashCode());
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                Endpoint.Equals(other.Endpoint) && Options.SequenceEqual(other.Options);
+                Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
         }
     }
 }

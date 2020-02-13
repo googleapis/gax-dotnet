@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 using Google.Api.Gax.Grpc.IntegrationTests;
-using Grpc.Core;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -20,7 +19,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         public void SameEndpointAndOptions_SameCallInvoker()
         {
             var pool = new GcpCallInvokerPool(EmptyScopes);
-            var options = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
+            var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             using (var fixture = new TestServiceFixture())
             {
                 var callInvoker1 = pool.GetCallInvoker(fixture.Endpoint, options);
@@ -33,8 +32,8 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         public void SameEndpointAndEqualOptions_SameCallInvoker()
         {
             var pool = new GcpCallInvokerPool(EmptyScopes);
-            var options1 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
-            var options2 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
+            var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
+            var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             using (var fixture = new TestServiceFixture())
             {
                 var callInvoker1 = pool.GetCallInvoker(fixture.Endpoint, options1);
@@ -47,7 +46,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         public void DifferentEndpoint_DifferentCallInvoker()
         {
             var pool = new GcpCallInvokerPool(EmptyScopes);
-            var options = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
+            var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             using (TestServiceFixture fixture1 = new TestServiceFixture(), fixture2 = new TestServiceFixture())
             {
                 var callInvoker1 = pool.GetCallInvoker(fixture1.Endpoint, options);
@@ -60,8 +59,8 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         public void DifferentOptions_DifferentCallInvoker()
         {
             var pool = new GcpCallInvokerPool(EmptyScopes);
-            var options1 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "abc") };
-            var options2 = new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "def") };
+            var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
+            var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("def");
             using (var fixture = new TestServiceFixture())
             {
                 var callInvoker1 = pool.GetCallInvoker(fixture.Endpoint, options1);
