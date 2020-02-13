@@ -26,7 +26,6 @@ namespace Google.Api.Gax.Grpc
             .WithKeepAliveTime(TimeSpan.FromMinutes(1))
             .WithEnableServiceConfigResolution(false);
 
-        private readonly GrpcImplementation _grpcImplementation;
         private readonly IEnumerable<string> _scopes;
 
         /// <summary>
@@ -48,25 +47,14 @@ namespace Google.Api.Gax.Grpc
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="grpcImplementation">The gRPC implementation to use, or null for the default implementation.</param>
-        internal ChannelPool(IEnumerable<string> scopes, GrpcImplementation grpcImplementation = null)
+        public ChannelPool(IEnumerable<string> scopes)
         {
-            _grpcImplementation = grpcImplementation ?? GrpcImplementation.Default;
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
             // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
             // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
             _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
-        }
-
-        /// <summary>
-        /// Creates a channel pool which will apply the specified scopes to the default application credentials
-        /// if they require any.
-        /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ChannelPool(IEnumerable<string> scopes) : this(scopes, null)
-        {
         }
 
         private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
@@ -92,9 +80,7 @@ namespace Google.Api.Gax.Grpc
                 channelsToShutdown = _channels.Values.ToList();
                 _channels.Clear();
             }
-            // FIXME: Get rid of the reflection here! When the next version of Grpc.Core.Api ships,
-            // we can use ChannelBase.ShutdownAsync.
-            var shutdownTasks = channelsToShutdown.Select(c => (Task) c.GetType().GetMethod("ShutdownAsync").Invoke(c, null));
+            var shutdownTasks = channelsToShutdown.Select(c => c.ShutdownAsync());
             return Task.WhenAll(shutdownTasks);
         }
 
@@ -102,32 +88,38 @@ namespace Google.Api.Gax.Grpc
         /// Returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
         /// </summary>
+        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public ChannelBase GetChannel(string endpoint) => GetChannel(endpoint, s_defaultOptions);
+        public ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint) =>
+            GetChannel(grpcAdapter, endpoint, s_defaultOptions);
 
         /// <summary>
         /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
         /// </summary>
+        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public Task<ChannelBase> GetChannelAsync(string endpoint) => GetChannelAsync(endpoint, s_defaultOptions);
+        public Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint) =>
+            GetChannelAsync(grpcAdapter, endpoint, s_defaultOptions);
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>.
         /// The specified channel options are applied, but only those options.
         /// </summary>
+        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public ChannelBase GetChannel(string endpoint, GrpcChannelOptions channelOptions)
+        public ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
         {
+            GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
-            return GetChannel(endpoint, channelOptions, credentials);
+            return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 
         /// <summary>
@@ -135,27 +127,29 @@ namespace Google.Api.Gax.Grpc
         /// already associated with <paramref name="endpoint"/>.
         /// The specified channel options are applied, but only those options.
         /// </summary>
+        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<ChannelBase> GetChannelAsync(string endpoint, GrpcChannelOptions channelOptions)
+        public async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
         {
+            GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
-            return GetChannel(endpoint, channelOptions, credentials);
+            return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 
-        private ChannelBase GetChannel(string endpoint, GrpcChannelOptions channelOptions, ChannelCredentials credentials)
+        private ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, ChannelCredentials credentials)
         {
-            var key = new Key(endpoint, channelOptions);
+            var key = new Key(grpcAdapter, endpoint, channelOptions);
 
             lock (_lock)
             {
                 ChannelBase channel;
                 if (!_channels.TryGetValue(key, out channel))
                 {
-                    channel = _grpcImplementation.CreateChannel(endpoint, credentials, channelOptions);
+                    channel = grpcAdapter.CreateChannel(endpoint, credentials, channelOptions);
                     _channels[key] = channel;
                 }
                 return channel;
@@ -166,22 +160,21 @@ namespace Google.Api.Gax.Grpc
         {
             public readonly string Endpoint;
             public readonly GrpcChannelOptions Options;
+            public readonly GrpcAdapter GrpcAdapter;
 
-            public Key(string endpoint, GrpcChannelOptions options)
-            {
-                Endpoint = endpoint;
-                Options = options;
-            }
+            public Key(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions options) =>
+                (GrpcAdapter, Endpoint, Options) = (grpcAdapter, endpoint, options);
 
             public override int GetHashCode() =>
                 GaxEqualityHelpers.CombineHashCodes(
+                    GrpcAdapter.GetHashCode(),
                     Endpoint.GetHashCode(),
                     Options.GetHashCode());
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
+                GrpcAdapter.Equals(other.GrpcAdapter) && Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
         }
     }
 }

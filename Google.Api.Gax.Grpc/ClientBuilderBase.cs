@@ -73,9 +73,9 @@ namespace Google.Api.Gax.Grpc
         public string UserAgent { get; set; }
 
         /// <summary>
-        /// The gRPC implementation to use, or null to use the default channel factory.
+        /// The gRPC implementation to use, or null to use the default implementation.
         /// </summary>
-        internal GrpcImplementation GrpcImplementation { get; set; }
+        public GrpcAdapter GrpcAdapter { get; set; }
 
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
@@ -102,7 +102,7 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod = source.TokenAccessMethod;
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
-            GrpcImplementation = source.GrpcImplementation;
+            GrpcAdapter = source.GrpcAdapter;
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Google.Api.Gax.Grpc
             ChannelBase channel;
             if (CanUseChannelPool)
             {
-                channel = GetChannelPool().GetChannel(endpoint, GetChannelOptions());
+                channel = GetChannelPool().GetChannel(EffectiveGrpcAdapter, endpoint, GetChannelOptions());
             }
             else
             {
@@ -187,7 +187,9 @@ namespace Google.Api.Gax.Grpc
             ChannelBase channel;
             if (CanUseChannelPool)
             {
-                channel = await GetChannelPool().GetChannelAsync(endpoint, GetChannelOptions()).ConfigureAwait(false);
+                channel = await GetChannelPool()
+                    .GetChannelAsync(EffectiveGrpcAdapter, endpoint, GetChannelOptions())
+                    .ConfigureAwait(false);
             }
             else
             {
@@ -257,6 +259,14 @@ namespace Google.Api.Gax.Grpc
         protected abstract ChannelPool GetChannelPool();
 
         /// <summary>
+        /// Returns the default <see cref="GrpcAdapter"/> to use if
+        /// <see cref="GrpcAdapter"/> is not set.
+        /// </summary>
+        protected abstract GrpcAdapter DefaultGrpcAdapter { get; }
+
+        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? DefaultGrpcAdapter;
+
+        /// <summary>
         /// Returns the options to use when creating a channel.
         /// </summary>
         /// <returns>The options to use when creating a channel.</returns>
@@ -294,7 +304,7 @@ namespace Google.Api.Gax.Grpc
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
-            (GrpcImplementation ?? GrpcImplementation.Default).CreateChannel(endpoint, credentials, GetChannelOptions());
+            EffectiveGrpcAdapter.CreateChannel(endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccess
         {

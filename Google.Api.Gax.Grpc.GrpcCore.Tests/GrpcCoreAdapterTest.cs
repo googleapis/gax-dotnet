@@ -9,16 +9,16 @@ using Grpc.Core;
 using System;
 using Xunit;
 
-namespace Google.Api.Gax.Grpc.Tests
+namespace Google.Api.Gax.Grpc.GrpcCore.Tests
 {
-    public class GrpcCoreChannelFactoryTest
+    public class GrpcCoreAdapterTest
     {
         // We just test option conversion so far.
         [Fact]
         public void ConvertOptions_PrimaryUserAgent()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithPrimaryUserAgent("agent");
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
 
             Assert.Equal(new[] { new ChannelOption(ChannelOptions.PrimaryUserAgentString, "agent") }, grpcCoreOptions);
         }
@@ -27,25 +27,25 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ConvertOptions_EnableServiceConfigResolution()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithEnableServiceConfigResolution(false);
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
 
-            Assert.Equal(new[] { new ChannelOption(GrpcCoreChannelFactory.ServiceConfigDisableResolution, 1) }, grpcCoreOptions);
+            Assert.Equal(new[] { new ChannelOption(GrpcCoreAdapter.ServiceConfigDisableResolution, 1) }, grpcCoreOptions);
         }
 
         [Fact]
         public void ConvertOptions_KeepAliveTime()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithKeepAliveTime(TimeSpan.FromSeconds(2));
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
 
-            Assert.Equal(new[] { new ChannelOption(GrpcCoreChannelFactory.KeepAliveTimeMs, 2000) }, grpcCoreOptions);
+            Assert.Equal(new[] { new ChannelOption(GrpcCoreAdapter.KeepAliveTimeMs, 2000) }, grpcCoreOptions);
         }
 
         [Fact]
         public void ConvertOptions_MaxReceiveSize()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithMaxReceiveMessageSize(150);
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
 
             Assert.Equal(new[] { new ChannelOption(ChannelOptions.MaxReceiveMessageLength, 150) }, grpcCoreOptions);
         }
@@ -54,7 +54,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ConvertOptions_MaxSendSize()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithMaxSendMessageSize(150);
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
 
             Assert.Equal(new[] { new ChannelOption(ChannelOptions.MaxSendMessageLength, 150) }, grpcCoreOptions);
         }
@@ -63,7 +63,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ConvertOptions_CustomOptions()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithCustomOption("c1", 1).WithCustomOption("c2", "two");
-            var grpcCoreOptions = GrpcCoreChannelFactory.ConvertOptions(gaxOptions);
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
             var expectedOptions = new[]
             {
                 new ChannelOption("c1", 1),

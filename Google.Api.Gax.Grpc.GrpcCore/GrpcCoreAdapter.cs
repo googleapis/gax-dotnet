@@ -9,32 +9,47 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Google.Api.Gax.Grpc
+namespace Google.Api.Gax.Grpc.GrpcCore
 {
-    internal sealed class GrpcCoreChannelFactory
+    /// <summary>
+    /// Implementation of <see cref="GrpcAdapter"/> for Grpc.Core.
+    /// </summary>
+    public sealed class GrpcCoreAdapter : GrpcAdapter
     {
         internal const string ServiceConfigDisableResolution = "grpc.service_config_disable_resolution";
         internal const string KeepAliveTimeMs = "grpc.keepalive_time_ms";
 
-#if CORE_API_ONLY
-        internal ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
-            throw new NotImplementedException("GrpcCoreChannelFactory is not implemented in CORE_API_ONLY builds");
-#else
-        internal ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
+        /// <summary>
+        /// Returns the singleton instance of this class.
+        /// </summary>
+        public static GrpcCoreAdapter Instance { get; } = new GrpcCoreAdapter();
+
+        private GrpcCoreAdapter()
+        {
+        }
+
+        /// <inheritdoc />
+        protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
             // TODO: Cache the result of ConvertOptions? It's probably not called terribly frequently.
             new Channel(endpoint, credentials, ConvertOptions(options));
 
-        // Internal for the sake of testing.
-        internal static List<ChannelOption> ConvertOptions(GrpcChannelOptions options)
+        /// <summary>
+        /// Converts a <see cref="GrpcChannelOptions"/> (defined in Google.Api.Gax.Grpc) into a list
+        /// of <see cref="ChannelOption"/> (defined in Grpc.Core).
+        /// </summary>
+        /// <param name="options">The options to convert. Must not be null.</param>
+        /// <returns>The converted list of options.</returns>
+        public IReadOnlyList<ChannelOption> ConvertOptions(GrpcChannelOptions options)
         {
+            GaxPreconditions.CheckNotNull(options, nameof(options));
             List<ChannelOption> ret = new List<ChannelOption>();
             if (options.EnableServiceConfigResolution is bool enableServiceConfigResolution)
             {
-                ret.Add(new ChannelOption("grpc.service_config_disable_resolution", enableServiceConfigResolution ? 0 : 1));
+                ret.Add(new ChannelOption(ServiceConfigDisableResolution, enableServiceConfigResolution ? 0 : 1));
             }
             if (options.KeepAliveTime is TimeSpan keepAlive)
             {
-                ret.Add(new ChannelOption("grpc.keepalive_time_ms", (int) keepAlive.TotalMilliseconds));
+                ret.Add(new ChannelOption(KeepAliveTimeMs, (int) keepAlive.TotalMilliseconds));
             }
             if (options.MaxReceiveMessageSize is int maxReceiveMessageSize)
             {
@@ -58,8 +73,7 @@ namespace Google.Api.Gax.Grpc
                 };
                 ret.Add(channelOption);
             }
-            return ret;
+            return ret.AsReadOnly();
         }
-#endif
     }
 }
