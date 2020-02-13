@@ -4,17 +4,20 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <!-- Packaging information -->
   <PropertyGroup>
-    <Title>Google Cloud Platform gRPC API Extensions</Title>
-    <Description>Additional gRPC API extensions for Google Cloud Platform APIs</Description>
+    <Title>Grpc.Core bridge Google.Api.Gax.Grpc</Title>
+    <Description>Implementation of the GAX GrpcAdapter abstract class based on Grpc.Core</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Google.Api.Gax.Grpc.GrpcCore\Google.Api.Gax.Grpc.GrpcCore.csproj" />
-    <PackageReference Include="Grpc.Gcp" Version="2.0.0" />
+    <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
+    <PackageReference Include="Grpc.Core" Version="2.27.0"/>
+
+
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" />

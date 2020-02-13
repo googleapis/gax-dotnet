@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Grpc.GrpcCore;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -73,8 +74,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(SampleClientBuilder.DefaultEndpoint);
-            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel("custom.nowhere.com");
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint);
+            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, "custom.nowhere.com");
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -295,6 +296,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             protected override string GetDefaultEndpoint() => DefaultEndpoint;
 
             protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
+
+            protected override GrpcAdapter DefaultGrpcAdapter => GrpcCoreAdapter.Instance;
 
             public void ResetChannelCreation()
             {

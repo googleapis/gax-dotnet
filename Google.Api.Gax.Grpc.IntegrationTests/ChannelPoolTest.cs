@@ -4,6 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+using Google.Api.Gax.Grpc.GrpcCore;
 using Grpc.Core;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
     public class ChannelPoolTest
     {
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
+        private static readonly GrpcAdapter Grpc = GrpcCoreAdapter.Instance;
 
         [Fact]
         public void SameEndpoint_SameChannel()
@@ -22,8 +24,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(fixture.Endpoint);
-                var channel2 = pool.GetChannel(fixture.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint);
                 Assert.Same(channel1, channel2);                
             }
         }
@@ -34,8 +36,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (TestServiceFixture fixture1 = new TestServiceFixture(), fixture2 = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(fixture1.Endpoint);
-                var channel2 = pool.GetChannel(fixture2.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture1.Endpoint);
+                var channel2 = pool.GetChannel(Grpc, fixture2.Endpoint);
                 Assert.NotSame(channel1, channel2);
             }
         }
@@ -48,8 +50,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(fixture.Endpoint, options1);
-                var channel2 = pool.GetChannel(fixture.Endpoint, options2);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, options1);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint, options2);
                 Assert.Same(channel1, channel2);
             }
         }
@@ -62,8 +64,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(fixture.Endpoint, options1);
-                var channel2 = pool.GetChannel(fixture.Endpoint, options2);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, options1);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint, options2);
                 Assert.NotSame(channel1, channel2);
             }
         }
@@ -74,7 +76,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel = (Channel) pool.GetChannel(fixture.Endpoint);
+                var channel = (Channel) pool.GetChannel(Grpc, fixture.Endpoint);
                 Assert.NotEqual(ChannelState.Shutdown, channel.State);
                 await pool.ShutdownChannelsAsync();
                 Assert.Equal(ChannelState.Shutdown, channel.State);
@@ -87,10 +89,10 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(fixture.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint);
                 // Note: *not* waiting for this to complete.
                 pool.ShutdownChannelsAsync();
-                var channel2 = pool.GetChannel(fixture.Endpoint);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint);
                 Assert.NotSame(channel1, channel2);
             }
         }
