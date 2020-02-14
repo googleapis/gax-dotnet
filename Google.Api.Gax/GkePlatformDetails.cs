@@ -191,7 +191,8 @@ namespace Google.Api.Gax
             var projectId = metadata["project"]?["projectId"]?.Value<string>();
             var clusterName = metadata["instance"]?["attributes"]?["cluster-name"]?.Value<string>();
             var instanceId = metadata["instance"]?["id"]?.Value<string>();
-            var zone = metadata["instance"]?["zone"]?.Value<string>();
+            var instanceZone = metadata["instance"]?["zone"]?.Value<string>();
+            var clusterLocation = metadata["instance"]?["attributes"]?["cluster-location"]?.Value<string>();
             var namespaceId = namespaceData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.NamespaceName ?? "";
             var podId = podData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.PodName ?? "";
             var podUid = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
@@ -208,12 +209,12 @@ namespace Google.Api.Gax
             }).Where(x => x != null).ToList();
             var containerName = containerNames?.Count == 1 ? containerNames[0] : "";
             if (hostName != null && projectId != null && clusterName != null && instanceId != null &&
-                zone != null && namespaceId != null && podId != null && containerName != null)
+                instanceZone != null && clusterLocation != null && namespaceId != null && podId != null && containerName != null)
             {
-                if (Platform.s_zoneTemplate.TryParseName(zone, out var zoneResourceName))
+                if (Platform.s_zoneTemplate.TryParseName(instanceZone, out var instanceLocation))
                 {
-                    return new GkePlatformDetails(metadataJson, projectId, clusterName, zoneResourceName[1], hostName,
-                        instanceId, zone, namespaceId, podId, containerName);
+                    return new GkePlatformDetails(metadataJson, projectId, clusterName, instanceLocation[1], hostName,
+                        instanceId, instanceZone, namespaceId, podId, containerName, clusterLocation);
                 }
             }
             return null;
@@ -232,8 +233,9 @@ namespace Google.Api.Gax
         /// <param name="namespaceId">The kubernetes namespace ID. Must not be <c>null</c>.</param>
         /// <param name="podId">The kubernetes pod ID. Must not be <c>null</c>.</param>
         /// <param name="containerName">The container name. Must not be <c>null</c>.</param>
+        /// <param name="clusterLocation">The location of the cluster. Must not be null.</param>
         public GkePlatformDetails(string metadataJson, string projectId, string clusterName, string location, string hostName,
-            string instanceId, string zone, string namespaceId, string podId, string containerName)
+            string instanceId, string zone, string namespaceId, string podId, string containerName, string clusterLocation)
         {
             MetadataJson = GaxPreconditions.CheckNotNull(metadataJson, nameof(metadataJson));
             ProjectId = GaxPreconditions.CheckNotNull(projectId, nameof(projectId));
@@ -245,6 +247,7 @@ namespace Google.Api.Gax
             NamespaceId = GaxPreconditions.CheckNotNull(namespaceId, nameof(namespaceId));
             PodId = GaxPreconditions.CheckNotNull(podId, nameof(podId));
             ContainerName = GaxPreconditions.CheckNotNull(containerName, nameof(containerName));
+            ClusterLocation = GaxPreconditions.CheckNotNull(clusterLocation, nameof(clusterLocation));
         }
 
         /// <summary>
@@ -300,9 +303,15 @@ namespace Google.Api.Gax
         /// </summary>
         public string ContainerName { get; }
 
+        /// <summary>
+        /// The location of the cluster.
+        /// May be different from node / pod location.
+        /// </summary>
+        public string ClusterLocation { get; }
+
         /// <inheritdoc/>
         public override string ToString() =>
-            $"[GKE: ProjectId='{ProjectId}', ClusterName='{ClusterName}', HostName='{HostName}', " +
+            $"[GKE: ProjectId='{ProjectId}', ClusterLocation='{ClusterLocation}', ClusterName='{ClusterName}', HostName='{HostName}', " +
             $"InstanceId='{InstanceId}', Zone='{Zone}', NamespaceId='{NamespaceId}', PodId='{PodId}', ContainerName='{ContainerName}']";
     }
 }

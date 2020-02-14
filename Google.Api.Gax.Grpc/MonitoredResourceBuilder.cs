@@ -86,16 +86,15 @@ namespace Google.Api.Gax.Grpc
                     var gke = platform.GkeDetails;
                     return new MonitoredResource
                     {
-                        Type = "gke_container",
+                        Type = "k8s_container",
                         Labels =
                         {
                             { "project_id", gke.ProjectId },
                             { "cluster_name", gke.ClusterName },
-                            { "namespace_id", gke.NamespaceId },
-                            { "instance_id", gke.InstanceId },
-                            { "pod_id", gke.PodId },
+                            { "namespace_name", gke.NamespaceId}, // The field really only contains the name.
+                            { "pod_name", gke.PodId },
                             { "container_name", gke.ContainerName },
-                            { "zone", gke.Location }
+                            { "location", gke.ClusterLocation }
                         }
                     };
                 case PlatformType.CloudRun:
