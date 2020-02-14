@@ -91,16 +91,17 @@ namespace Google.Api.Gax.Tests
             Assert.Throws<ArgumentNullException>(() => GkePlatformDetails.TryLoad(null, new GkePlatformDetails.KubernetesData()));
             Assert.Throws<ArgumentNullException>(() => GkePlatformDetails.TryLoad("", null));
             Assert.Null(GkePlatformDetails.TryLoad("", new GkePlatformDetails.KubernetesData()));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails(null, "", "", "", "", "", "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", null, "", "", "", "", "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", null, "", "", "", "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", null, "", "", "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", null, "", "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", null, "", "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", null, "", "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", null, "", ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", null, ""));
-            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", "", null));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails(null, "", "", "", "", "", "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", null, "", "", "", "", "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", null, "", "", "", "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", null, "", "", "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", null, "", "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", null, "", "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", null, "", "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", null, "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", null, "", ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", "", null, ""));
+            Assert.Throws<ArgumentNullException>(() => new GkePlatformDetails("", "", "", "", "", "", "", "", "", "", null));
         }
 
         [Theory]
@@ -156,7 +157,7 @@ namespace Google.Api.Gax.Tests
             Assert.Equal("platformintegrationtest", gke.ContainerName);
         }
 
-        const string metadataValid = "{'project':{'projectId':'FakeProjectId'},'instance':{'attributes':{'cluster-name':'FakeClusterName'},'id':'123','zone':'projects/FakeProject/zones/FakeLocation'}}";
+        const string metadataValid = "{'project':{'projectId':'FakeProjectId'},'instance':{'attributes':{'cluster-name':'FakeClusterName', 'cluster-location':'FakeClusterLocation'},'id':'123','zone':'projects/FakeProject/zones/FakeLocation'}}";
         const string metadataIncomplete = "{'project':{'projectId':'FakeProjectId'},'instance':{'attr";
         const string namespaceValid = "{'kind':'Namespace','metadata':{'name':'namespacename'}}";
         const string namespaceMissingKind = "{'notkind':'Namespace','metadata':{'name':'namespacename'}}";
@@ -223,7 +224,7 @@ namespace Google.Api.Gax.Tests
         {
             var details = new GkePlatformDetails(
                 "json", "gke-project", "cluster", "location", "host", "instance",
-                "projects/123/zone", "namespace", "pod", "container");
+                "projects/123/zone", "namespace", "pod", "container", "clusterLocation");
             var platform = new Platform(details);
             Assert.Equal("gke-project", platform.ProjectId);
         }

@@ -90,6 +90,7 @@ namespace Google.Api.Gax.Grpc.Tests
   'instance': {
     'attributes': {
       'cluster-name': 'FakeClusterName',
+      'cluster-location': 'FakeClusterLocation'
     },
     'id': '123',
     'zone': 'projects/FakeProject/zones/FakeLocation'
@@ -122,20 +123,15 @@ namespace Google.Api.Gax.Grpc.Tests
             };
             var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
-            Assert.Equal("gke_container", resource.Type);
+            Assert.Equal("k8s_container", resource.Type);
             Assert.Equal(new Dictionary<string, string>
             {
                 { "project_id", "FakeProjectId" },
                 { "cluster_name", "FakeClusterName" },
-                // Although the name of the label is namespace_id, the actual value returned and expected
-                // by Stackdriver is the namespace name.
-                { "namespace_id", "namespacename" },
-                { "instance_id", "123" },
-                // Although the name of the label is pod_id, the actual value returned and expected
-                // by Stackdriver is the pod name.
-                { "pod_id", "podname" },
+                { "namespace_name", "namespacename" },
+                { "pod_name", "podname" },
                 { "container_name", "containername" },
-                { "zone", "FakeLocation" }
+                { "location", "FakeClusterLocation" }
             }, resource.Labels);
         }
     }

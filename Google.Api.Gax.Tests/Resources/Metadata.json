@@ -2,6 +2,7 @@
   "instance": {
     "attributes": {
       "cluster-name": "platformintegrationtest",
+      "cluster-location": "europe-west2-c",
       "created-by": "projects/233772281425/zones/europe-west2-c/instanceGroupManagers/gke-platformintegrationt-default-pool-bf36c574-grp",
       "gci-ensure-gke-docker": "true",
       "gci-update-strategy": "update_disabled",
