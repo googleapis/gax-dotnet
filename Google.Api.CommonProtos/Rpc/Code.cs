@@ -50,7 +50,7 @@ namespace Google.Rpc {
   }
   #region Enums
   /// <summary>
-  /// The canonical error codes for Google APIs.
+  /// The canonical error codes for gRPC APIs.
   ///
   /// Sometimes multiple error codes may apply.  Services should return
   /// the most specific error code that applies.  For example, prefer
@@ -214,7 +214,8 @@ namespace Google.Rpc {
     /// <summary>
     /// The service is currently unavailable.  This is most likely a
     /// transient condition, which can be corrected by retrying with
-    /// a backoff.
+    /// a backoff. Note that it is not always safe to retry
+    /// non-idempotent operations.
     ///
     /// See the guidelines above for deciding between `FAILED_PRECONDITION`,
     /// `ABORTED`, and `UNAVAILABLE`.

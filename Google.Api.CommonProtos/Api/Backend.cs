@@ -33,21 +33,22 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
-            "yAIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
+            "8gIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
             "AiABKAkSEAoIZGVhZGxpbmUYAyABKAESFAoMbWluX2RlYWRsaW5lGAQgASgB",
             "EhoKEm9wZXJhdGlvbl9kZWFkbGluZRgFIAEoARJBChBwYXRoX3RyYW5zbGF0",
             "aW9uGAYgASgOMicuZ29vZ2xlLmFwaS5CYWNrZW5kUnVsZS5QYXRoVHJhbnNs",
-            "YXRpb24SFgoMand0X2F1ZGllbmNlGAcgASgJSAAiZQoPUGF0aFRyYW5zbGF0",
-            "aW9uEiAKHFBBVEhfVFJBTlNMQVRJT05fVU5TUEVDSUZJRUQQABIUChBDT05T",
-            "VEFOVF9BRERSRVNTEAESGgoWQVBQRU5EX1BBVEhfVE9fQUREUkVTUxACQhAK",
-            "DmF1dGhlbnRpY2F0aW9uQm4KDmNvbS5nb29nbGUuYXBpQgxCYWNrZW5kUHJv",
-            "dG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9h",
-            "cGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "YXRpb24SFgoMand0X2F1ZGllbmNlGAcgASgJSAASFgoMZGlzYWJsZV9hdXRo",
+            "GAggASgISAASEAoIcHJvdG9jb2wYCSABKAkiZQoPUGF0aFRyYW5zbGF0aW9u",
+            "EiAKHFBBVEhfVFJBTlNMQVRJT05fVU5TUEVDSUZJRUQQABIUChBDT05TVEFO",
+            "VF9BRERSRVNTEAESGgoWQVBQRU5EX1BBVEhfVE9fQUREUkVTUxACQhAKDmF1",
+            "dGhlbnRpY2F0aW9uQm4KDmNvbS5nb29nbGUuYXBpQgxCYWNrZW5kUHJvdG9Q",
+            "AVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkv",
+            "c2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Backend), global::Google.Api.Backend.Parser, new[]{ "Rules" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline", "OperationDeadline", "PathTranslation", "JwtAudience" }, new[]{ "Authentication" }, new[]{ typeof(global::Google.Api.BackendRule.Types.PathTranslation) }, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline", "OperationDeadline", "PathTranslation", "JwtAudience", "DisableAuth", "Protocol" }, new[]{ "Authentication" }, new[]{ typeof(global::Google.Api.BackendRule.Types.PathTranslation) }, null, null)
           }));
     }
     #endregion
@@ -217,9 +218,13 @@ namespace Google.Api {
       minDeadline_ = other.minDeadline_;
       operationDeadline_ = other.operationDeadline_;
       pathTranslation_ = other.pathTranslation_;
+      protocol_ = other.protocol_;
       switch (other.AuthenticationCase) {
         case AuthenticationOneofCase.JwtAudience:
           JwtAudience = other.JwtAudience;
+          break;
+        case AuthenticationOneofCase.DisableAuth:
+          DisableAuth = other.DisableAuth;
           break;
       }
 
@@ -252,6 +257,25 @@ namespace Google.Api {
     private string address_ = "";
     /// <summary>
     /// The address of the API backend.
+    ///
+    /// The scheme is used to determine the backend protocol and security.
+    /// The following schemes are accepted:
+    ///
+    ///    SCHEME        PROTOCOL    SECURITY
+    ///    http://       HTTP        None
+    ///    https://      HTTP        TLS
+    ///    grpc://       gRPC        None
+    ///    grpcs://      gRPC        TLS
+    ///
+    /// It is recommended to explicitly include a scheme. Leaving out the scheme
+    /// may cause constrasting behaviors across platforms.
+    ///
+    /// If the port is unspecified, the default is:
+    /// - 80 for schemes without TLS
+    /// - 443 for schemes with TLS
+    ///
+    /// For HTTP backends, use [protocol][google.api.BackendRule.protocol]
+    /// to specify the protocol version.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Address {
@@ -265,8 +289,8 @@ namespace Google.Api {
     public const int DeadlineFieldNumber = 3;
     private double deadline_;
     /// <summary>
-    /// The number of seconds to wait for a response from a request.  The default
-    /// deadline for gRPC is infinite (no deadline) and HTTP requests is 5 seconds.
+    /// The number of seconds to wait for a response from a request. The default
+    /// varies based on the request protocol and deployment environment.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Deadline {
@@ -320,7 +344,9 @@ namespace Google.Api {
     /// <summary>Field number for the "jwt_audience" field.</summary>
     public const int JwtAudienceFieldNumber = 7;
     /// <summary>
-    /// The JWT audience is used when generating a JWT id token for the backend.
+    /// The JWT audience is used when generating a JWT ID token for the backend.
+    /// This ID token will be added in the HTTP "authorization" header, and sent
+    /// to the backend.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string JwtAudience {
@@ -331,11 +357,63 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "disable_auth" field.</summary>
+    public const int DisableAuthFieldNumber = 8;
+    /// <summary>
+    /// When disable_auth is true, a JWT ID token won't be generated and the
+    /// original "Authorization" HTTP header will be preserved. If the header is
+    /// used to carry the original token and is expected by the backend, this
+    /// field must be set to true to preserve the header.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool DisableAuth {
+      get { return authenticationCase_ == AuthenticationOneofCase.DisableAuth ? (bool) authentication_ : false; }
+      set {
+        authentication_ = value;
+        authenticationCase_ = AuthenticationOneofCase.DisableAuth;
+      }
+    }
+
+    /// <summary>Field number for the "protocol" field.</summary>
+    public const int ProtocolFieldNumber = 9;
+    private string protocol_ = "";
+    /// <summary>
+    /// The protocol used for sending a request to the backend.
+    /// The supported values are "http/1.1" and "h2".
+    ///
+    /// The default value is inferred from the scheme in the
+    /// [address][google.api.BackendRule.address] field:
+    ///
+    ///    SCHEME        PROTOCOL
+    ///    http://       http/1.1
+    ///    https://      http/1.1
+    ///    grpc://       h2
+    ///    grpcs://      h2
+    ///
+    /// For secure HTTP backends (https://) that support HTTP/2, set this field
+    /// to "h2" for improved performance.
+    ///
+    /// Configuring this field to non-default values is only supported for secure
+    /// HTTP backends. This field will be ignored for all other backends.
+    ///
+    /// See
+    /// https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
+    /// for more details on the supported values.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Protocol {
+      get { return protocol_; }
+      set {
+        protocol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     private object authentication_;
     /// <summary>Enum of possible cases for the "authentication" oneof.</summary>
     public enum AuthenticationOneofCase {
       None = 0,
       JwtAudience = 7,
+      DisableAuth = 8,
     }
     private AuthenticationOneofCase authenticationCase_ = AuthenticationOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -369,6 +447,8 @@ namespace Google.Api {
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(OperationDeadline, other.OperationDeadline)) return false;
       if (PathTranslation != other.PathTranslation) return false;
       if (JwtAudience != other.JwtAudience) return false;
+      if (DisableAuth != other.DisableAuth) return false;
+      if (Protocol != other.Protocol) return false;
       if (AuthenticationCase != other.AuthenticationCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -383,6 +463,8 @@ namespace Google.Api {
       if (OperationDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(OperationDeadline);
       if (PathTranslation != global::Google.Api.BackendRule.Types.PathTranslation.Unspecified) hash ^= PathTranslation.GetHashCode();
       if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) hash ^= JwtAudience.GetHashCode();
+      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) hash ^= DisableAuth.GetHashCode();
+      if (Protocol.Length != 0) hash ^= Protocol.GetHashCode();
       hash ^= (int) authenticationCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -425,6 +507,14 @@ namespace Google.Api {
         output.WriteRawTag(58);
         output.WriteString(JwtAudience);
       }
+      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+        output.WriteRawTag(64);
+        output.WriteBool(DisableAuth);
+      }
+      if (Protocol.Length != 0) {
+        output.WriteRawTag(74);
+        output.WriteString(Protocol);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -453,6 +543,12 @@ namespace Google.Api {
       }
       if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(JwtAudience);
+      }
+      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+        size += 1 + 1;
+      }
+      if (Protocol.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Protocol);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -483,9 +579,15 @@ namespace Google.Api {
       if (other.PathTranslation != global::Google.Api.BackendRule.Types.PathTranslation.Unspecified) {
         PathTranslation = other.PathTranslation;
       }
+      if (other.Protocol.Length != 0) {
+        Protocol = other.Protocol;
+      }
       switch (other.AuthenticationCase) {
         case AuthenticationOneofCase.JwtAudience:
           JwtAudience = other.JwtAudience;
+          break;
+        case AuthenticationOneofCase.DisableAuth:
+          DisableAuth = other.DisableAuth;
           break;
       }
 
@@ -526,6 +628,14 @@ namespace Google.Api {
           }
           case 58: {
             JwtAudience = input.ReadString();
+            break;
+          }
+          case 64: {
+            DisableAuth = input.ReadBool();
+            break;
+          }
+          case 74: {
+            Protocol = input.ReadString();
             break;
           }
         }
