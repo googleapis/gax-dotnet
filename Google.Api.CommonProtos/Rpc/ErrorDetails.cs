@@ -37,29 +37,33 @@ namespace Google.Rpc {
             "b24iMgoJRGVidWdJbmZvEhUKDXN0YWNrX2VudHJpZXMYASADKAkSDgoGZGV0",
             "YWlsGAIgASgJInkKDFF1b3RhRmFpbHVyZRI2Cgp2aW9sYXRpb25zGAEgAygL",
             "MiIuZ29vZ2xlLnJwYy5RdW90YUZhaWx1cmUuVmlvbGF0aW9uGjEKCVZpb2xh",
-            "dGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJIpUB",
-            "ChNQcmVjb25kaXRpb25GYWlsdXJlEj0KCnZpb2xhdGlvbnMYASADKAsyKS5n",
-            "b29nbGUucnBjLlByZWNvbmRpdGlvbkZhaWx1cmUuVmlvbGF0aW9uGj8KCVZp",
-            "b2xhdGlvbhIMCgR0eXBlGAEgASgJEg8KB3N1YmplY3QYAiABKAkSEwoLZGVz",
-            "Y3JpcHRpb24YAyABKAkigwEKCkJhZFJlcXVlc3QSPwoQZmllbGRfdmlvbGF0",
-            "aW9ucxgBIAMoCzIlLmdvb2dsZS5ycGMuQmFkUmVxdWVzdC5GaWVsZFZpb2xh",
-            "dGlvbho0Cg5GaWVsZFZpb2xhdGlvbhINCgVmaWVsZBgBIAEoCRITCgtkZXNj",
-            "cmlwdGlvbhgCIAEoCSI3CgtSZXF1ZXN0SW5mbxISCgpyZXF1ZXN0X2lkGAEg",
-            "ASgJEhQKDHNlcnZpbmdfZGF0YRgCIAEoCSJgCgxSZXNvdXJjZUluZm8SFQoN",
-            "cmVzb3VyY2VfdHlwZRgBIAEoCRIVCg1yZXNvdXJjZV9uYW1lGAIgASgJEg0K",
-            "BW93bmVyGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJIlYKBEhlbHASJAoF",
-            "bGlua3MYASADKAsyFS5nb29nbGUucnBjLkhlbHAuTGluaxooCgRMaW5rEhMK",
-            "C2Rlc2NyaXB0aW9uGAEgASgJEgsKA3VybBgCIAEoCSIzChBMb2NhbGl6ZWRN",
-            "ZXNzYWdlEg4KBmxvY2FsZRgBIAEoCRIPCgdtZXNzYWdlGAIgASgJQmwKDmNv",
-            "bS5nb29nbGUucnBjQhFFcnJvckRldGFpbHNQcm90b1ABWj9nb29nbGUuZ29s",
-            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3JwYy9lcnJkZXRhaWxzO2Vy",
-            "cmRldGFpbHOiAgNSUENiBnByb3RvMw=="));
+            "dGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJIpEB",
+            "CglFcnJvckluZm8SDAoEdHlwZRgBIAEoCRIOCgZkb21haW4YAiABKAkSNQoI",
+            "bWV0YWRhdGEYAyADKAsyIy5nb29nbGUucnBjLkVycm9ySW5mby5NZXRhZGF0",
+            "YUVudHJ5Gi8KDU1ldGFkYXRhRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
+            "GAIgASgJOgI4ASKVAQoTUHJlY29uZGl0aW9uRmFpbHVyZRI9Cgp2aW9sYXRp",
+            "b25zGAEgAygLMikuZ29vZ2xlLnJwYy5QcmVjb25kaXRpb25GYWlsdXJlLlZp",
+            "b2xhdGlvbho/CglWaW9sYXRpb24SDAoEdHlwZRgBIAEoCRIPCgdzdWJqZWN0",
+            "GAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJIoMBCgpCYWRSZXF1ZXN0Ej8K",
+            "EGZpZWxkX3Zpb2xhdGlvbnMYASADKAsyJS5nb29nbGUucnBjLkJhZFJlcXVl",
+            "c3QuRmllbGRWaW9sYXRpb24aNAoORmllbGRWaW9sYXRpb24SDQoFZmllbGQY",
+            "ASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkiNwoLUmVxdWVzdEluZm8SEgoK",
+            "cmVxdWVzdF9pZBgBIAEoCRIUCgxzZXJ2aW5nX2RhdGEYAiABKAkiYAoMUmVz",
+            "b3VyY2VJbmZvEhUKDXJlc291cmNlX3R5cGUYASABKAkSFQoNcmVzb3VyY2Vf",
+            "bmFtZRgCIAEoCRINCgVvd25lchgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEo",
+            "CSJWCgRIZWxwEiQKBWxpbmtzGAEgAygLMhUuZ29vZ2xlLnJwYy5IZWxwLkxp",
+            "bmsaKAoETGluaxITCgtkZXNjcmlwdGlvbhgBIAEoCRILCgN1cmwYAiABKAki",
+            "MwoQTG9jYWxpemVkTWVzc2FnZRIOCgZsb2NhbGUYASABKAkSDwoHbWVzc2Fn",
+            "ZRgCIAEoCUJsCg5jb20uZ29vZ2xlLnJwY0IRRXJyb3JEZXRhaWxzUHJvdG9Q",
+            "AVo/Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9ycGMv",
+            "ZXJyZGV0YWlscztlcnJkZXRhaWxzogIDUlBDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Type", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure), global::Google.Rpc.PreconditionFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure.Types.Violation), global::Google.Rpc.PreconditionFailure.Types.Violation.Parser, new[]{ "Type", "Subject", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null, null),
@@ -84,7 +88,7 @@ namespace Google.Rpc {
   /// receiving the error response before retrying.  If retrying requests also
   /// fail, clients should use an exponential backoff scheme to gradually increase
   /// the delay between retries based on `retry_delay`, until either a maximum
-  /// number of retires have been reached or a maximum retry delay cap has been
+  /// number of retries have been reached or a maximum retry delay cap has been
   /// reached.
   /// </summary>
   public sealed partial class RetryInfo : pb::IMessage<RetryInfo> {
@@ -393,7 +397,7 @@ namespace Google.Rpc {
   /// a service could respond with the project id and set `service_disabled`
   /// to true.
   ///
-  /// Also see RetryDetail and Help types for other details about handling a
+  /// Also see RetryInfo and Help types for other details about handling a
   /// quota failure.
   /// </summary>
   public sealed partial class QuotaFailure : pb::IMessage<QuotaFailure> {
@@ -703,6 +707,229 @@ namespace Google.Rpc {
   }
 
   /// <summary>
+  /// Describes the cause of the error with structured details.
+  ///
+  /// Example of an error when contacting the "pubsub.googleapis.com" API when it
+  /// is not enabled:
+  ///     { "type":   "API_DISABLED"
+  ///       "domain": "googleapis.com"
+  ///       "metadata": {
+  ///         "resource": "projects/123",
+  ///         "service": "pubsub.googleapis.com"
+  ///       }
+  ///     }
+  /// This response indicates that the pubsub.googleapis.com API is not enabled.
+  ///
+  /// Example of an error that is returned when attempting to create a Spanner
+  /// instance in a region that is out of stock:
+  ///     { "type":   "STOCKOUT"
+  ///       "domain": "spanner.googleapis.com",
+  ///       "metadata": {
+  ///         "availableRegions": ""us-central1,us-east2"
+  ///       }
+  ///     }
+  /// </summary>
+  public sealed partial class ErrorInfo : pb::IMessage<ErrorInfo> {
+    private static readonly pb::MessageParser<ErrorInfo> _parser = new pb::MessageParser<ErrorInfo>(() => new ErrorInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ErrorInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ErrorInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ErrorInfo(ErrorInfo other) : this() {
+      type_ = other.type_;
+      domain_ = other.domain_;
+      metadata_ = other.metadata_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ErrorInfo Clone() {
+      return new ErrorInfo(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private string type_ = "";
+    /// <summary>
+    /// The type of the error. This is a constant value that identifies the
+    /// proximate cause of the error. Error types are unique within a particular
+    /// source of errors. This should be at most 63 characters and match
+    /// /[A-Z0-9_]+/.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Type {
+      get { return type_; }
+      set {
+        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "domain" field.</summary>
+    public const int DomainFieldNumber = 2;
+    private string domain_ = "";
+    /// <summary>
+    /// The logical grouping to which the "type" belongs.  Often "domain" will
+    /// contain the registered service name of the tool or product that is the
+    /// source of the error. Example: "pubsub.googleapis.com". If the error is
+    /// common across many APIs, the first segment of the example above will be
+    /// omitted.  The value will be, "googleapis.com".
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Domain {
+      get { return domain_; }
+      set {
+        domain_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "metadata" field.</summary>
+    public const int MetadataFieldNumber = 3;
+    private static readonly pbc::MapField<string, string>.Codec _map_metadata_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 26);
+    private readonly pbc::MapField<string, string> metadata_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Additional structured details about this error.
+    ///
+    /// Keys should match /[a-zA-Z0-9-_]/ and be limited to 64 characters in
+    /// length. When identifying the current value of an exceeded limit, the units
+    /// should be contained in the key, not the value.  For example, rather than
+    /// {"instanceLimit": "100/request"}, should be returned as,
+    /// {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
+    /// instances that can be created in a single (batch) request.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> Metadata {
+      get { return metadata_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ErrorInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ErrorInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (Domain != other.Domain) return false;
+      if (!Metadata.Equals(other.Metadata)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type.Length != 0) hash ^= Type.GetHashCode();
+      if (Domain.Length != 0) hash ^= Domain.GetHashCode();
+      hash ^= Metadata.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      if (Domain.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Domain);
+      }
+      metadata_.WriteTo(output, _map_metadata_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
+      }
+      if (Domain.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Domain);
+      }
+      size += metadata_.CalculateSize(_map_metadata_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ErrorInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type.Length != 0) {
+        Type = other.Type;
+      }
+      if (other.Domain.Length != 0) {
+        Domain = other.Domain;
+      }
+      metadata_.Add(other.metadata_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            Domain = input.ReadString();
+            break;
+          }
+          case 26: {
+            metadata_.AddEntriesFrom(input, _map_metadata_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
   /// Describes what preconditions have failed.
   ///
   /// For example, if an RPC failed because it required the Terms of Service to be
@@ -717,7 +944,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -879,7 +1106,7 @@ namespace Google.Rpc {
         private string type_ = "";
         /// <summary>
         /// The type of PreconditionFailure. We recommend using a service-specific
-        /// enum type to define the supported precondition violation types. For
+        /// enum type to define the supported precondition violation subjects. For
         /// example, "TOS" for "Terms of Service violation".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -895,8 +1122,8 @@ namespace Google.Rpc {
         private string subject_ = "";
         /// <summary>
         /// The subject, relative to the type, that failed.
-        /// For example, "google.com/cloud" relative to the "TOS" type would
-        /// indicate which terms of service is being referenced.
+        /// For example, "google.com/cloud" relative to the "TOS" type would indicate
+        /// which terms of service is being referenced.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Subject {
@@ -1056,7 +1283,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1359,7 +1586,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1527,7 +1754,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1578,8 +1805,7 @@ namespace Google.Rpc {
     /// <summary>
     /// The name of the resource being accessed.  For example, a shared calendar
     /// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
-    /// error is
-    /// [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+    /// error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ResourceName {
@@ -1768,7 +1994,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2069,7 +2295,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
