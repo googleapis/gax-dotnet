@@ -8,6 +8,7 @@ using Google.Apis.Auth.OAuth2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Rest
@@ -58,11 +59,12 @@ namespace Google.Api.Gax.Rest
         /// </summary>
         /// <param name="credentials">Existing credentials, if any. This may be null,
         /// in which case the default application credentials will be used.</param>
+        /// <param name="cancellationToken">A cancellation token for the operation.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task
         /// is the scoped credentials.</returns>
-        public Task<GoogleCredential> GetCredentialsAsync(GoogleCredential credentials) =>
+        public Task<GoogleCredential> GetCredentialsAsync(GoogleCredential credentials, CancellationToken cancellationToken) =>
             credentials == null
-                ? _lazyScopedDefaultCredentials.Value
+                ? WithCancellationToken(_lazyScopedDefaultCredentials.Value, cancellationToken)
                 : Task.FromResult(ApplyScopes(credentials));
 
         private async Task<GoogleCredential> CreateDefaultCredentialsUncached()
@@ -77,6 +79,33 @@ namespace Google.Api.Gax.Rest
             return original.IsCreateScopedRequired && _scopes.Count > 0
                 ? original.CreateScoped(_scopes)
                 : original;
+        }
+
+        // Note: this is duplicated in Google.Apis.Auth, Google.Apis.Core and Google.Api.Gax.Grpc as well so it can stay internal.
+        // Please change all implementations at the same time.
+        /// <summary>
+        /// Returns a task which can be cancelled by the given cancellation token, but otherwise observes the original
+        /// task's state. This does *not* cancel any work that the original task was doing, and should be used carefully.
+        /// </summary>
+        private static Task<T> WithCancellationToken<T>(Task<T> task, CancellationToken cancellationToken)
+        {
+            if (!cancellationToken.CanBeCanceled)
+            {
+                return task;
+            }
+
+            return ImplAsync();
+
+            // Separate async method to allow the above optimization to avoid creating any new state machines etc.
+            async Task<T> ImplAsync()
+            {
+                var cts = new TaskCompletionSource<T>();
+                using (cancellationToken.Register(() => cts.TrySetCanceled()))
+                {
+                    var completedTask = await Task.WhenAny(task, cts.Task).ConfigureAwait(false);
+                    return await completedTask.ConfigureAwait(false);
+                }
+            }
         }
     }
 }
