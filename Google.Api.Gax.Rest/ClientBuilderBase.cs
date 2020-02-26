@@ -151,7 +151,7 @@ namespace Google.Api.Gax.Rest
                 return Credential;
             }
             GoogleCredential unscoped =
-                CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) : // TODO: Use an async method when one is available
+                CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 null; // Use default credentials (maybe - see below)
             // While we accept any credentials that are specified even if there's an API key,

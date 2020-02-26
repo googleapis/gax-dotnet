@@ -235,9 +235,9 @@ namespace Google.Api.Gax.Grpc
                 return new DelegatedTokenAccess(TokenAccessMethod).ToChannelCredentials();
             }
             GoogleCredential unscoped =
-                CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) : // TODO: Use an async method when one is available
+                CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
-                await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
+                await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
             return unscoped.CreateScoped(Scopes ?? GetDefaultScopes()).ToChannelCredentials();
         }
 
