@@ -11,6 +11,7 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
@@ -22,10 +23,6 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.Empty
-            .WithKeepAliveTime(TimeSpan.FromMinutes(1))
-            .WithEnableServiceConfigResolution(false);
-
         private readonly IEnumerable<string> _scopes;
 
         /// <summary>
@@ -86,27 +83,6 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Returns a channel from this pool, creating a new one if there is no channel
-        /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
-        /// </summary>
-        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
-        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <returns>A channel for the specified endpoint.</returns>
-        public ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint) =>
-            GetChannel(grpcAdapter, endpoint, s_defaultOptions);
-
-        /// <summary>
-        /// Asynchronously returns a channel from this pool, creating a new one if there is no channel
-        /// already associated with <paramref name="endpoint"/>. Default channel options are applied.
-        /// </summary>
-        /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
-        /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <returns>A task representing the asynchronous operation. The value of the completed
-        /// task will be channel for the specified endpoint.</returns>
-        public Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint) =>
-            GetChannelAsync(grpcAdapter, endpoint, s_defaultOptions);
-
-        /// <summary>
-        /// Returns a channel from this pool, creating a new one if there is no channel
         /// already associated with <paramref name="endpoint"/>.
         /// The specified channel options are applied, but only those options.
         /// </summary>
@@ -130,13 +106,14 @@ namespace Google.Api.Gax.Grpc
         /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
+        /// <param name="cancellationToken">A cancellation token for the operation.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
+        public async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, CancellationToken cancellationToken)
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await _lazyScopedDefaultChannelCredentials.Value.ConfigureAwait(false);
+            var credentials = await WithCancellationToken(_lazyScopedDefaultChannelCredentials.Value, cancellationToken).ConfigureAwait(false);
             return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 
@@ -153,6 +130,33 @@ namespace Google.Api.Gax.Grpc
                     _channels[key] = channel;
                 }
                 return channel;
+            }
+        }
+
+        // Note: this is duplicated in Google.Apis.Auth and Google.Apis.Core as well so it can stay internal.
+        // Please change all implementations at the same time.
+        /// <summary>
+        /// Returns a task which can be cancelled by the given cancellation token, but otherwise observes the original
+        /// task's state. This does *not* cancel any work that the original task was doing, and should be used carefully.
+        /// </summary>
+        private static Task<T> WithCancellationToken<T>(Task<T> task, CancellationToken cancellationToken)
+        {
+            if (!cancellationToken.CanBeCanceled)
+            {
+                return task;
+            }
+
+            return ImplAsync();
+
+            // Separate async method to allow the above optimization to avoid creating any new state machines etc.
+            async Task<T> ImplAsync()
+            {
+                var cts = new TaskCompletionSource<T>();
+                using (cancellationToken.Register(() => cts.TrySetCanceled()))
+                {
+                    var completedTask = await Task.WhenAny(task, cts.Task).ConfigureAwait(false);
+                    return await completedTask.ConfigureAwait(false);
+                }
             }
         }
 

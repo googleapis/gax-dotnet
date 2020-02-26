@@ -24,8 +24,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint);
-                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
                 Assert.Same(channel1, channel2);                
             }
         }
@@ -36,8 +36,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (TestServiceFixture fixture1 = new TestServiceFixture(), fixture2 = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(Grpc, fixture1.Endpoint);
-                var channel2 = pool.GetChannel(Grpc, fixture2.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture1.Endpoint, GrpcChannelOptions.Empty);
+                var channel2 = pool.GetChannel(Grpc, fixture2.Endpoint, GrpcChannelOptions.Empty);
                 Assert.NotSame(channel1, channel2);
             }
         }
@@ -76,7 +76,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel = (Channel) pool.GetChannel(Grpc, fixture.Endpoint);
+                var channel = (Channel) pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
                 Assert.NotEqual(ChannelState.Shutdown, channel.State);
                 await pool.ShutdownChannelsAsync();
                 Assert.Equal(ChannelState.Shutdown, channel.State);
@@ -89,10 +89,10 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var pool = new ChannelPool(EmptyScopes);
             using (var fixture = new TestServiceFixture())
             {
-                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint);
+                var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
                 // Note: *not* waiting for this to complete.
                 pool.ShutdownChannelsAsync();
-                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint);
+                var channel2 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
                 Assert.NotSame(channel1, channel2);
             }
         }

@@ -188,7 +188,7 @@ namespace Google.Api.Gax.Grpc
             if (CanUseChannelPool)
             {
                 channel = await GetChannelPool()
-                    .GetChannelAsync(EffectiveGrpcAdapter, endpoint, GetChannelOptions())
+                    .GetChannelAsync(EffectiveGrpcAdapter, endpoint, GetChannelOptions(), cancellationToken)
                     .ConfigureAwait(false);
             }
             else
