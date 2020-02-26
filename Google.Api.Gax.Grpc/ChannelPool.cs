@@ -90,7 +90,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        public ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
+        internal ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
@@ -109,7 +109,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="cancellationToken">A cancellation token for the operation.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        public async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, CancellationToken cancellationToken)
+        internal async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, CancellationToken cancellationToken)
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
