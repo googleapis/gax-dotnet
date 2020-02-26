@@ -9,6 +9,7 @@ using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -58,7 +59,7 @@ j5XmfIZhC9k =
         {
             var provider = new ScopedCredentialProvider(new string[0]);
             var originalCredentials = CreateServiceCredentials();
-            var provided = await provider.GetCredentialsAsync(originalCredentials);
+            var provided = await provider.GetCredentialsAsync(originalCredentials, CancellationToken.None);
             Assert.Same(originalCredentials, provided);
         }
 
@@ -67,7 +68,7 @@ j5XmfIZhC9k =
         {
             var provider = new ScopedCredentialProvider(new[] { "abc" });
             var originalCredentials = CreateServiceCredentials();
-            var provided = await provider.GetCredentialsAsync(originalCredentials);
+            var provided = await provider.GetCredentialsAsync(originalCredentials, CancellationToken.None);
             // Can't actually test the scopes...
             Assert.NotSame(originalCredentials, provided);
         }

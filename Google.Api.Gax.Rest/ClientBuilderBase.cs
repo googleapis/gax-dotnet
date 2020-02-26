@@ -160,7 +160,7 @@ namespace Google.Api.Gax.Rest
             {
                 return null;
             }
-            return await GetScopedCredentialProvider().GetCredentialsAsync(unscoped).ConfigureAwait(false);
+            return await GetScopedCredentialProvider().GetCredentialsAsync(unscoped, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

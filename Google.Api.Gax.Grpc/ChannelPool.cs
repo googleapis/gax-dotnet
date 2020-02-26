@@ -133,7 +133,7 @@ namespace Google.Api.Gax.Grpc
             }
         }
 
-        // Note: this is duplicated in Google.Apis.Auth and Google.Apis.Core as well so it can stay internal.
+        // Note: this is duplicated in Google.Apis.Auth, Google.Apis.Core and Google.Api.Gax.Rest as well so it can stay internal.
         // Please change all implementations at the same time.
         /// <summary>
         /// Returns a task which can be cancelled by the given cancellation token, but otherwise observes the original
