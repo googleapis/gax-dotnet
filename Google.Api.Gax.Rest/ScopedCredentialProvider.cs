@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Rest
         /// in which case the default application credentials will be used.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task
         /// is the scoped credentials.</returns>
-        public GoogleCredential GetCredentials(GoogleCredential credentials) =>
+        internal GoogleCredential GetCredentials(GoogleCredential credentials) =>
             credentials == null
                 // No need to apply scopes here - they're already applied.
                 ? _lazyScopedDefaultCredentials.Value.ResultWithUnwrappedExceptions()
@@ -62,7 +62,7 @@ namespace Google.Api.Gax.Rest
         /// <param name="cancellationToken">A cancellation token for the operation.</param>
         /// <returns>A task representing the asynchronous operation. The result of the task
         /// is the scoped credentials.</returns>
-        public Task<GoogleCredential> GetCredentialsAsync(GoogleCredential credentials, CancellationToken cancellationToken) =>
+        internal Task<GoogleCredential> GetCredentialsAsync(GoogleCredential credentials, CancellationToken cancellationToken) =>
             credentials == null
                 ? WithCancellationToken(_lazyScopedDefaultCredentials.Value, cancellationToken)
                 : Task.FromResult(ApplyScopes(credentials));
