@@ -57,7 +57,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, GrpcChannelOptions.Empty);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -74,8 +74,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, GrpcChannelOptions.Empty);
-            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, "custom.nowhere.com", GrpcChannelOptions.Empty);
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -261,6 +261,9 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
             public ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes);
+            public static GrpcChannelOptions DefaultOptions = GrpcChannelOptions.Empty
+                .WithKeepAliveTime(TimeSpan.FromMinutes(1))
+                .WithEnableServiceConfigResolution(false);
 
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
