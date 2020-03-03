@@ -23,7 +23,6 @@ namespace Google.Api.Gax.Grpc
         {
             VersionHeaderBuilder = new VersionHeaderBuilder()
                 .AppendDotNetEnvironment()
-                .AppendAssemblyVersion("gccl", GetType())
                 .AppendAssemblyVersion("gapic", GetType())
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
                 // Note: this will be the version of gRPC Core API that we're using, not necessarily the implementation.
@@ -47,8 +46,10 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// A builder for x-goog-api-client version headers. Additional library versions can be appended via this property.
+        /// End-users should almost never need to use this property; it is primarily for use in Google libraries which provide
+        /// a higher level abstraction over the generated client libraries.
         /// </summary>
-        internal VersionHeaderBuilder VersionHeaderBuilder { get; }
+        public VersionHeaderBuilder VersionHeaderBuilder { get; }
 
         internal string VersionHeader => VersionHeaderBuilder.ToString();
 
