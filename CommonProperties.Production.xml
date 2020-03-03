@@ -12,7 +12,7 @@
   <!-- Packaging information -->
   <PropertyGroup>
     <Copyright>Copyright 2020 Google LLC</Copyright>
-    <Authors>Google Inc.</Authors>
+    <Authors>Google LLC</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/googleapis/gax-dotnet</PackageProjectUrl>
     <PackageTags>Google</PackageTags>
