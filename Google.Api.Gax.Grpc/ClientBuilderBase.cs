@@ -77,6 +77,18 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public GrpcAdapter GrpcAdapter { get; set; }
 
+        private EmulatorDetection _emulatorDetection = EmulatorDetection.None;
+        /// <summary>
+        /// The emulator detection policy to apply when building a client. Derived classes which support
+        /// emulators should create public properties which delegate to this one. The default value is
+        /// <see cref="EmulatorDetection.None"/>.
+        /// </summary>
+        protected EmulatorDetection EmulatorDetection
+        {
+            get => _emulatorDetection;
+            set => _emulatorDetection = GaxPreconditions.CheckEnumValue(value, nameof(value));
+        }
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
         /// <summary>
@@ -103,6 +115,12 @@ namespace Google.Api.Gax.Grpc
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
+
+            // Note that we may be copying from one type that supports emulators (e.g. FirestoreDbBuilder)
+            // to another type that doesn't (e.g. FirestoreClientBuilder). That ends up in a slightly odd situation,
+            // but the code in the emulator-unaware type won't use the property anyway. If we're ever copying from
+            // one type that supports emulators to another, it would make sense to propagate the setting anyway.
+            EmulatorDetection = source.EmulatorDetection;
         }
 
         /// <summary>
@@ -121,6 +139,104 @@ namespace Google.Api.Gax.Grpc
 
             ValidateOptionExcludesOthers("Scopes are not relevant when a token access method or channel credentials are supplied", Scopes,
                 TokenAccessMethod, ChannelCredentials);
+        }
+
+        /// <summary>
+        /// Performs basic emulator detection and validation based on the given environment variables.
+        /// This method is expected to be called by a derived class that supports emulators, in order to perform the common
+        /// work of checking whether the emulator is configured in the environment.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the emulator should not be used, either due to being disabled in <see cref="EmulatorDetection"/> or
+        /// the appropriate environment variables not being set, this method returns null.
+        /// </para>
+        /// <para>
+        /// Otherwise, a dictionary is returned mapping every value in <paramref name="allEmulatorEnvironmentVariables"/> to the value in
+        /// the environment. Any missing, empty or whitespace-only values are mapped to a null reference in the returned dictionary, but
+        /// the entry will still be present (so callers can use an indexer with the returned dictionary for every environment variable passed in).
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The configuration is inconsistent, e.g. due to some environment variables
+        /// being set but not all the required ones, or any environment variables being set in a production-only environment.</exception>
+        /// <param name="requiredEmulatorEnvironmentVariables">Required emulator environment variables.</param>
+        /// <param name="allEmulatorEnvironmentVariables">All emulator environment variables.</param>
+        /// <param name="environmentVariableProvider">The provider used to retrieve environment variables. This is used to faciliate testing, and defaults
+        /// to using <see cref="Environment.GetEnvironmentVariable(string)"/>.</param>
+        /// <returns>A key/value mapping of the emulator environment variables to their values, or null if the emulator should not be used.</returns>
+        protected Dictionary<string, string> GetEmulatorEnvironment(
+            IEnumerable<string> requiredEmulatorEnvironmentVariables,
+            IEnumerable<string> allEmulatorEnvironmentVariables,
+            Func<string, string> environmentVariableProvider = null)
+        {
+            environmentVariableProvider ??= Environment.GetEnvironmentVariable;
+            var environment = allEmulatorEnvironmentVariables.ToDictionary(key => key, key => GetEnvironmentVariableOrNull(key));
+            
+            switch (EmulatorDetection)
+            {
+                case EmulatorDetection.None:
+                    return default;
+                case EmulatorDetection.ProductionOnly:
+                    foreach (var variable in allEmulatorEnvironmentVariables)
+                    {
+                        GaxPreconditions.CheckState(
+                            environment[variable] is null,
+                            "Emulator environment variable '{0}' is set, contrary to use of {1}.{2}",
+                            variable, nameof(EmulatorDetection), nameof(EmulatorDetection.ProductionOnly));
+                    }
+                    return default;
+                case EmulatorDetection.EmulatorOnly:
+                    foreach (var variable in requiredEmulatorEnvironmentVariables)
+                    {
+                        GaxPreconditions.CheckState(
+                            environment[variable] is object,
+                            "Emulator environment variable '{0}' is not set, contrary to use of {1}.{2}",
+                            variable, nameof(EmulatorDetection), nameof(EmulatorDetection.EmulatorOnly));
+                    }
+                    // When the settings *only* support the use of an emulator, the other properties shouldn't be set.
+                    CheckNotSet(Endpoint, nameof(Endpoint));
+                    CheckNotSet(CallInvoker, nameof(CallInvoker));
+                    CheckNotSet(ChannelCredentials, nameof(ChannelCredentials));
+                    CheckNotSet(CredentialsPath, nameof(CredentialsPath));
+                    CheckNotSet(JsonCredentials, nameof(JsonCredentials));
+                    CheckNotSet(Scopes, nameof(Scopes));
+                    CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
+
+                    void CheckNotSet(object obj, string name)
+                    {
+                        GaxPreconditions.CheckState(obj is null, "{0} is set, contrary to use of {1}.{2}",
+                            name, nameof(EmulatorDetection), nameof(EmulatorDetection.EmulatorOnly));
+                    }
+                    return environment;
+                case EmulatorDetection.EmulatorOrProduction:
+                    bool anySet = allEmulatorEnvironmentVariables.Any(v => environment[v] is object);
+                    if (!anySet)
+                    {
+                        return default;
+                    }
+                    bool allRequiredSet = requiredEmulatorEnvironmentVariables.All(v => environment[v] is object);
+                    if (!allRequiredSet)
+                    {
+                        var sampleSet = allEmulatorEnvironmentVariables.First(v => environment[v] is object);
+                        var sampleNotSet = requiredEmulatorEnvironmentVariables.First(v => environment[v] is null);
+                        GaxPreconditions.CheckState(false,
+                            "Emulator environment variable '{0}' is set, but '{1}' is not set.",
+                            sampleSet, sampleNotSet);
+                    }
+                    // We allow other properties such as the endpoint to be set, although we expect them to be ignored
+                    // by the calling code. This allows users to write code that has customizations in settings, but still doesn't need
+                    // to be changed at all in order to use the emulator.
+                    return environment;
+                default:
+                    throw new InvalidOperationException($"Invalid emulator detection value: {EmulatorDetection}");
+            }
+
+            // Retrieves an environment variable from <see cref="EnvrionmentVariableProvider"/>, mapping empty or whitespace-only strings to null.
+            string GetEnvironmentVariableOrNull(string variable)
+            {
+                var value = environmentVariableProvider(variable);
+                return string.IsNullOrWhiteSpace(value) ? null : value;
+            }
         }
 
         /// <summary>
