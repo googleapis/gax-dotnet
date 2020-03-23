@@ -10,8 +10,6 @@ using System.Collections.Generic;
 
 namespace Google.Api.Gax
 {
-    // TODO: Use this type from Firestore, and remove the implementation there.
-
     /// <summary>
     /// Convenience methods to simplify implementing equality comparisons and hash codes.
     /// </summary>
