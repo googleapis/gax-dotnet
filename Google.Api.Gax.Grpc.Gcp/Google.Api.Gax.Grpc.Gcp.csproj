@@ -14,6 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Grpc.GrpcCore\Google.Api.Gax.Grpc.GrpcCore.csproj" />
-    <PackageReference Include="Grpc.Gcp" Version="2.0.0" />
+    <PackageReference Include="Grpc.Gcp" Version="[2.0.0, 3.0.0)" />
   </ItemGroup>
 </Project>
