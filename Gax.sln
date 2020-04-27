@@ -39,7 +39,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.GrpcCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.GrpcNetClient", "Google.Api.Gax.Grpc.GrpcNetClient\Google.Api.Gax.Grpc.GrpcNetClient.csproj", "{F6409F1B-0C13-4C8B-BB15-10714BCE7C5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Api.Gax.Grpc.GrpcNetClient.Tests", "Google.Api.Gax.Grpc.GrpcNetClient.Tests\Google.Api.Gax.Grpc.GrpcNetClient.Tests.csproj", "{FCC61D31-98E6-4ACA-B6B3-29AC16819A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.GrpcNetClient.Tests", "Google.Api.Gax.Grpc.GrpcNetClient.Tests\Google.Api.Gax.Grpc.GrpcNetClient.Tests.csproj", "{FCC61D31-98E6-4ACA-B6B3-29AC16819A5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{68EA9222-DF5D-4DE9-B3F2-9E33C57156B2}"
+	ProjectSection(SolutionItems) = preProject
+		CommonProperties.xml = CommonProperties.xml
+		Directory.Build.targets = Directory.Build.targets
+		ReleaseVersion.xml = ReleaseVersion.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

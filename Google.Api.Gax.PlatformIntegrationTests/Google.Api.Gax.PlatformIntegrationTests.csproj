@@ -6,6 +6,7 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <OutputType>Exe</OutputType>
     <IsPackable>False</IsPackable>
+    <WarnOnPackingNonPackableProject>False</WarnOnPackingNonPackableProject>
   </PropertyGroup>
 
   <ItemGroup>
