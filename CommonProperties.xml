@@ -1,5 +1,8 @@
 <Project>
-  <!-- Properties common to all projects under this directory -->
+  <!-- Properties common to all packaged projects (production and testing)
+    -  This does not apply to test and tool projects, hence
+    -  why it's imported rather than being in Directory.Build.props etc.
+    -->
 
   <!-- Build information -->
   <PropertyGroup>
@@ -7,10 +10,9 @@
     <AssemblyOriginatorKeyFile>../Gax.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+    <Deterministic>true</Deterministic>
 
-  <!-- Packaging information -->
-  <PropertyGroup>
+    <!-- Packaging information -->
     <Copyright>Copyright 2020 Google LLC</Copyright>
     <Authors>Google LLC</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -20,6 +22,11 @@
     <RepositoryUrl>https://github.com/googleapis/gax-dotnet</RepositoryUrl>
     <PackageIconUrl>https://www.gstatic.com/images/branding/product/1x/google_developers_64dp.png</PackageIconUrl>
     <PackageIcon>NuGetIcon.png</PackageIcon>
+
+    <!-- Properties to get SourceLink to work -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +36,12 @@
       -->
     <None Include="../LICENSE" Pack="true" PackagePath="" />
     <None Include="../NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <!-- Common references -->
+  <ItemGroup>
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
   </ItemGroup>
 
   <Import Project="ReleaseVersion.xml" />

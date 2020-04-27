@@ -32,9 +32,8 @@ git clone https://github.com/googleapis/gax-dotnet.git releasebuild -c core.auto
 
 cd releasebuild
 git checkout $commit
-export CI=true # Forces SourceLink in the main build.
+
 ./build.sh
-dotnet pack Gax.sln --no-build -o $PWD/nuget -c Release
 
 # Turn the multi-line output of git tag --points-at into space-separated list of projects
 projects=$(git tag --points-at $commit | sed 's/-.*//g' | awk -vORS=\  '{print $1}' | sed 's/ $//')

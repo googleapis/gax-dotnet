@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\CommonProperties.Testing.xml" />
+  <Import Project="..\CommonProperties.xml" />
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
@@ -15,9 +15,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
     <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
-
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="All" />
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
   </ItemGroup>
 </Project>
