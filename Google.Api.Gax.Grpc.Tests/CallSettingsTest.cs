@@ -242,6 +242,13 @@ namespace Google.Api.Gax.Grpc.Tests
             AssertSingleHeader(callSettings, CallSettings.RequestParamsHeader, expectedHeaderValue);
         }
 
+        [Fact]
+        public void FromRequestReasonHeader()
+        {
+            var callSettings = CallSettings.FromRequestReasonHeader("diagnostics");
+            AssertSingleHeader(callSettings, CallSettings.RequestReasonHeader, "diagnostics");
+        }
+
         internal static void AssertSingleHeader(CallSettings callSettings, string expectedHeaderName, string expectedHeaderValue)
         {
             var metadata = new Metadata();
