@@ -18,6 +18,7 @@ namespace Google.Api.Gax.Grpc
     {
         internal const string FieldMaskHeader = "x-goog-fieldmask";
         internal const string RequestParamsHeader = "x-goog-request-params";
+        internal const string RequestReasonHeader = "x-goog-request-reason";
 
         internal static CallSettings CancellationTokenNone { get; } = new CallSettings(default(CancellationToken), null, null, null, null, null, null);
 
@@ -260,6 +261,14 @@ namespace Google.Api.Gax.Grpc
         /// <param name="value">The value of the parameter, which may be null. A null value is equivalent to providing an empty string.</param>
         /// <returns>A CallSettings which applies the appropriate parameter.</returns>
         internal static CallSettings FromGoogleRequestParamsHeader(string parameterName, string value) =>
-            CallSettings.FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
+            FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
+
+        /// <summary>
+        /// Creates a CallSettings which applies an x-goog-request-reason header with the specified reason.
+        /// </summary>
+        /// <param name="reason">The request reason to specify in the x-goog-request-reason header. Must not be null</param>
+        /// <returns>A CallSettings which applies the appropriate header.</returns>
+        internal static CallSettings FromRequestReasonHeader(string reason) =>
+            FromHeader(RequestReasonHeader, GaxPreconditions.CheckNotNull(reason, nameof(reason)));
     }
 }
