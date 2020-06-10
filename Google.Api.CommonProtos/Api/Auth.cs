@@ -38,20 +38,24 @@ namespace Google.Api {
             "GAEgASgJEiwKBW9hdXRoGAIgASgLMh0uZ29vZ2xlLmFwaS5PQXV0aFJlcXVp",
             "cmVtZW50cxIgChhhbGxvd193aXRob3V0X2NyZWRlbnRpYWwYBSABKAgSMQoM",
             "cmVxdWlyZW1lbnRzGAcgAygLMhsuZ29vZ2xlLmFwaS5BdXRoUmVxdWlyZW1l",
-            "bnQiagoMQXV0aFByb3ZpZGVyEgoKAmlkGAEgASgJEg4KBmlzc3VlchgCIAEo",
-            "CRIQCghqd2tzX3VyaRgDIAEoCRIRCglhdWRpZW5jZXMYBCABKAkSGQoRYXV0",
-            "aG9yaXphdGlvbl91cmwYBSABKAkiLQoRT0F1dGhSZXF1aXJlbWVudHMSGAoQ",
-            "Y2Fub25pY2FsX3Njb3BlcxgBIAEoCSI5Cg9BdXRoUmVxdWlyZW1lbnQSEwoL",
-            "cHJvdmlkZXJfaWQYASABKAkSEQoJYXVkaWVuY2VzGAIgASgJQmsKDmNvbS5n",
-            "b29nbGUuYXBpQglBdXRoUHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
-            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
-            "ZmlnogIER0FQSWIGcHJvdG8z"));
+            "bnQiTAoLSnd0TG9jYXRpb24SEAoGaGVhZGVyGAEgASgJSAASDwoFcXVlcnkY",
+            "AiABKAlIABIUCgx2YWx1ZV9wcmVmaXgYAyABKAlCBAoCaW4imgEKDEF1dGhQ",
+            "cm92aWRlchIKCgJpZBgBIAEoCRIOCgZpc3N1ZXIYAiABKAkSEAoIandrc191",
+            "cmkYAyABKAkSEQoJYXVkaWVuY2VzGAQgASgJEhkKEWF1dGhvcml6YXRpb25f",
+            "dXJsGAUgASgJEi4KDWp3dF9sb2NhdGlvbnMYBiADKAsyFy5nb29nbGUuYXBp",
+            "Lkp3dExvY2F0aW9uIi0KEU9BdXRoUmVxdWlyZW1lbnRzEhgKEGNhbm9uaWNh",
+            "bF9zY29wZXMYASABKAkiOQoPQXV0aFJlcXVpcmVtZW50EhMKC3Byb3ZpZGVy",
+            "X2lkGAEgASgJEhEKCWF1ZGllbmNlcxgCIAEoCUJrCg5jb20uZ29vZ2xlLmFw",
+            "aUIJQXV0aFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dv",
+            "b2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdB",
+            "UEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Authentication), global::Google.Api.Authentication.Parser, new[]{ "Rules", "Providers" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthenticationRule), global::Google.Api.AuthenticationRule.Parser, new[]{ "Selector", "Oauth", "AllowWithoutCredential", "Requirements" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthProvider), global::Google.Api.AuthProvider.Parser, new[]{ "Id", "Issuer", "JwksUri", "Audiences", "AuthorizationUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JwtLocation), global::Google.Api.JwtLocation.Parser, new[]{ "Header", "Query", "ValuePrefix" }, new[]{ "In" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthProvider), global::Google.Api.AuthProvider.Parser, new[]{ "Id", "Issuer", "JwksUri", "Audiences", "AuthorizationUrl", "JwtLocations" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.OAuthRequirements), global::Google.Api.OAuthRequirements.Parser, new[]{ "CanonicalScopes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthRequirement), global::Google.Api.AuthRequirement.Parser, new[]{ "ProviderId", "Audiences" }, null, null, null, null)
           }));
@@ -462,6 +466,241 @@ namespace Google.Api {
   }
 
   /// <summary>
+  /// Specifies a location to extract JWT from an API request.
+  /// </summary>
+  public sealed partial class JwtLocation : pb::IMessage<JwtLocation> {
+    private static readonly pb::MessageParser<JwtLocation> _parser = new pb::MessageParser<JwtLocation>(() => new JwtLocation());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<JwtLocation> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public JwtLocation() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public JwtLocation(JwtLocation other) : this() {
+      valuePrefix_ = other.valuePrefix_;
+      switch (other.InCase) {
+        case InOneofCase.Header:
+          Header = other.Header;
+          break;
+        case InOneofCase.Query:
+          Query = other.Query;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public JwtLocation Clone() {
+      return new JwtLocation(this);
+    }
+
+    /// <summary>Field number for the "header" field.</summary>
+    public const int HeaderFieldNumber = 1;
+    /// <summary>
+    /// Specifies HTTP header name to extract JWT token.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Header {
+      get { return inCase_ == InOneofCase.Header ? (string) in_ : ""; }
+      set {
+        in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        inCase_ = InOneofCase.Header;
+      }
+    }
+
+    /// <summary>Field number for the "query" field.</summary>
+    public const int QueryFieldNumber = 2;
+    /// <summary>
+    /// Specifies URL query parameter name to extract JWT token.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Query {
+      get { return inCase_ == InOneofCase.Query ? (string) in_ : ""; }
+      set {
+        in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        inCase_ = InOneofCase.Query;
+      }
+    }
+
+    /// <summary>Field number for the "value_prefix" field.</summary>
+    public const int ValuePrefixFieldNumber = 3;
+    private string valuePrefix_ = "";
+    /// <summary>
+    /// The value prefix. The value format is "value_prefix{token}"
+    /// Only applies to "in" header type. Must be empty for "in" query type.
+    /// If not empty, the header value has to match (case sensitive) this prefix.
+    /// If not matched, JWT will not be extracted. If matched, JWT will be
+    /// extracted after the prefix is removed.
+    ///
+    /// For example, for "Authorization: Bearer {JWT}",
+    /// value_prefix="Bearer " with a space at the end.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ValuePrefix {
+      get { return valuePrefix_; }
+      set {
+        valuePrefix_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    private object in_;
+    /// <summary>Enum of possible cases for the "in" oneof.</summary>
+    public enum InOneofCase {
+      None = 0,
+      Header = 1,
+      Query = 2,
+    }
+    private InOneofCase inCase_ = InOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InOneofCase InCase {
+      get { return inCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearIn() {
+      inCase_ = InOneofCase.None;
+      in_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as JwtLocation);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(JwtLocation other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Header != other.Header) return false;
+      if (Query != other.Query) return false;
+      if (ValuePrefix != other.ValuePrefix) return false;
+      if (InCase != other.InCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (inCase_ == InOneofCase.Header) hash ^= Header.GetHashCode();
+      if (inCase_ == InOneofCase.Query) hash ^= Query.GetHashCode();
+      if (ValuePrefix.Length != 0) hash ^= ValuePrefix.GetHashCode();
+      hash ^= (int) inCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (inCase_ == InOneofCase.Header) {
+        output.WriteRawTag(10);
+        output.WriteString(Header);
+      }
+      if (inCase_ == InOneofCase.Query) {
+        output.WriteRawTag(18);
+        output.WriteString(Query);
+      }
+      if (ValuePrefix.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ValuePrefix);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (inCase_ == InOneofCase.Header) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Header);
+      }
+      if (inCase_ == InOneofCase.Query) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Query);
+      }
+      if (ValuePrefix.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ValuePrefix);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(JwtLocation other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ValuePrefix.Length != 0) {
+        ValuePrefix = other.ValuePrefix;
+      }
+      switch (other.InCase) {
+        case InOneofCase.Header:
+          Header = other.Header;
+          break;
+        case InOneofCase.Query:
+          Query = other.Query;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Header = input.ReadString();
+            break;
+          }
+          case 18: {
+            Query = input.ReadString();
+            break;
+          }
+          case 26: {
+            ValuePrefix = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
   /// Configuration for an authentication provider, including support for
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
@@ -474,7 +713,7 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -496,6 +735,7 @@ namespace Google.Api {
       jwksUri_ = other.jwksUri_;
       audiences_ = other.audiences_;
       authorizationUrl_ = other.authorizationUrl_;
+      jwtLocations_ = other.jwtLocations_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -572,11 +812,15 @@ namespace Google.Api {
     /// The list of JWT
     /// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).
     /// that are allowed to access. A JWT containing any of these audiences will
-    /// be accepted. When this setting is absent, only JWTs with audience
-    /// "https://[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name]"
-    /// will be accepted. For example, if no audiences are in the setting,
-    /// LibraryService API will only accept JWTs with the following audience
-    /// "https://library-example.googleapis.com/google.example.library.v1.LibraryService".
+    /// be accepted. When this setting is absent, JWTs with audiences:
+    ///   - "https://[service.name]/[google.protobuf.Api.name]"
+    ///   - "https://[service.name]/"
+    /// will be accepted.
+    /// For example, if no audiences are in the setting, LibraryService API will
+    /// accept JWTs with the following audiences:
+    ///   -
+    ///   https://library-example.googleapis.com/google.example.library.v1.LibraryService
+    ///   - https://library-example.googleapis.com/
     ///
     /// Example:
     ///
@@ -606,6 +850,35 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "jwt_locations" field.</summary>
+    public const int JwtLocationsFieldNumber = 6;
+    private static readonly pb::FieldCodec<global::Google.Api.JwtLocation> _repeated_jwtLocations_codec
+        = pb::FieldCodec.ForMessage(50, global::Google.Api.JwtLocation.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.JwtLocation> jwtLocations_ = new pbc::RepeatedField<global::Google.Api.JwtLocation>();
+    /// <summary>
+    /// Defines the locations to extract the JWT.
+    ///
+    /// JWT locations can be either from HTTP headers or URL query parameters.
+    /// The rule is that the first match wins. The checking order is: checking
+    /// all headers first, then URL query parameters.
+    ///
+    /// If not specified,  default to use following 3 locations:
+    ///    1) Authorization: Bearer
+    ///    2) x-goog-iap-jwt-assertion
+    ///    3) access_token query parameter
+    ///
+    /// Default locations can be specified as followings:
+    ///    jwt_locations:
+    ///    - header: Authorization
+    ///      value_prefix: "Bearer "
+    ///    - header: x-goog-iap-jwt-assertion
+    ///    - query: access_token
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Google.Api.JwtLocation> JwtLocations {
+      get { return jwtLocations_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AuthProvider);
@@ -624,6 +897,7 @@ namespace Google.Api {
       if (JwksUri != other.JwksUri) return false;
       if (Audiences != other.Audiences) return false;
       if (AuthorizationUrl != other.AuthorizationUrl) return false;
+      if(!jwtLocations_.Equals(other.jwtLocations_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -635,6 +909,7 @@ namespace Google.Api {
       if (JwksUri.Length != 0) hash ^= JwksUri.GetHashCode();
       if (Audiences.Length != 0) hash ^= Audiences.GetHashCode();
       if (AuthorizationUrl.Length != 0) hash ^= AuthorizationUrl.GetHashCode();
+      hash ^= jwtLocations_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -668,6 +943,7 @@ namespace Google.Api {
         output.WriteRawTag(42);
         output.WriteString(AuthorizationUrl);
       }
+      jwtLocations_.WriteTo(output, _repeated_jwtLocations_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -691,6 +967,7 @@ namespace Google.Api {
       if (AuthorizationUrl.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(AuthorizationUrl);
       }
+      size += jwtLocations_.CalculateSize(_repeated_jwtLocations_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -717,6 +994,7 @@ namespace Google.Api {
       if (other.AuthorizationUrl.Length != 0) {
         AuthorizationUrl = other.AuthorizationUrl;
       }
+      jwtLocations_.Add(other.jwtLocations_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -746,6 +1024,10 @@ namespace Google.Api {
           }
           case 42: {
             AuthorizationUrl = input.ReadString();
+            break;
+          }
+          case 50: {
+            jwtLocations_.AddEntriesFrom(input, _repeated_jwtLocations_codec);
             break;
           }
         }
@@ -782,7 +1064,7 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -925,7 +1207,7 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Google.Api.AuthReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

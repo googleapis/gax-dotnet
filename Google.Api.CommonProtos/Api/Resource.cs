@@ -107,12 +107,12 @@ namespace Google.Api {
   ///
   /// The ResourceDescriptor Yaml config will look like:
   ///
-  ///    resources:
-  ///    - type: "pubsub.googleapis.com/Topic"
-  ///      name_descriptor:
-  ///        - pattern: "projects/{project}/topics/{topic}"
-  ///          parent_type: "cloudresourcemanager.googleapis.com/Project"
-  ///          parent_name_extractor: "projects/{project}"
+  ///     resources:
+  ///     - type: "pubsub.googleapis.com/Topic"
+  ///       name_descriptor:
+  ///         - pattern: "projects/{project}/topics/{topic}"
+  ///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+  ///           parent_name_extractor: "projects/{project}"
   ///
   /// Sometimes, resources have multiple patterns, typically because they can
   /// live under multiple parents.
@@ -332,10 +332,14 @@ namespace Google.Api {
     public const int PluralFieldNumber = 5;
     private string plural_ = "";
     /// <summary>
-    /// The plural name used in the resource name, such as 'projects' for
-    /// the name of 'projects/{project}'. It is the same concept of the `plural`
-    /// field in k8s CRD spec
+    /// The plural name used in the resource name and permission names, such as
+    /// 'projects' for the resource name of 'projects/{project}' and the permission
+    /// name of 'cloudresourcemanager.googleapis.com/projects.get'. It is the same
+    /// concept of the `plural` field in k8s CRD spec
     /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    ///
+    /// Note: The plural form is required even for singleton resources. See
+    /// https://aip.dev/156
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Plural {
@@ -599,6 +603,17 @@ namespace Google.Api {
     ///         type: "pubsub.googleapis.com/Topic"
     ///       }];
     ///     }
+    ///
+    /// Occasionally, a field may reference an arbitrary resource. In this case,
+    /// APIs use the special value * in their resource reference.
+    ///
+    /// Example:
+    ///
+    ///     message GetIamPolicyRequest {
+    ///       string resource = 2 [(google.api.resource_reference) = {
+    ///         type: "*"
+    ///       }];
+    ///     }
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -618,11 +633,11 @@ namespace Google.Api {
     ///
     /// Example:
     ///
-    ///   message ListLogEntriesRequest {
-    ///     string parent = 1 [(google.api.resource_reference) = {
-    ///       child_type: "logging.googleapis.com/LogEntry"
-    ///     };
-    ///   }
+    ///     message ListLogEntriesRequest {
+    ///       string parent = 1 [(google.api.resource_reference) = {
+    ///         child_type: "logging.googleapis.com/LogEntry"
+    ///       };
+    ///     }
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ChildType {
