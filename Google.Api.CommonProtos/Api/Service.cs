@@ -172,6 +172,7 @@ namespace Google.Api {
     /// The semantic version of the service configuration. The config version
     /// affects the interpretation of the service configuration. For example,
     /// certain features are enabled by default for certain config versions.
+    ///
     /// The latest config version is `3`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -205,8 +206,9 @@ namespace Google.Api {
     private string id_ = "";
     /// <summary>
     /// A unique ID for a specific instance of this message, typically assigned
-    /// by the client for tracking purpose. If empty, the server may choose to
-    /// generate one instead. Must be no longer than 60 characters.
+    /// by the client for tracking purpose. Must be no longer than 63 characters
+    /// and only lower case letters, digits, '.', '_' and '-' are allowed. If
+    /// empty, the server may choose to generate one instead.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Id {

@@ -576,10 +576,7 @@ namespace Google.Api {
     public const int DurationFieldNumber = 5;
     private string duration_ = "";
     /// <summary>
-    /// Duration of this limit in textual notation. Example: "100s", "24h", "1d".
-    /// For duration longer than a day, only multiple of days is supported. We
-    /// support only "100s" and "1d" for now. Additional support will be added in
-    /// the future. "0" indicates indefinite duration.
+    /// Duration of this limit in textual notation. Must be "100s" or "1d".
     ///
     /// Used by group-based quotas only.
     /// </summary>

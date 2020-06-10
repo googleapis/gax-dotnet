@@ -37,33 +37,33 @@ namespace Google.Rpc {
             "b24iMgoJRGVidWdJbmZvEhUKDXN0YWNrX2VudHJpZXMYASADKAkSDgoGZGV0",
             "YWlsGAIgASgJInkKDFF1b3RhRmFpbHVyZRI2Cgp2aW9sYXRpb25zGAEgAygL",
             "MiIuZ29vZ2xlLnJwYy5RdW90YUZhaWx1cmUuVmlvbGF0aW9uGjEKCVZpb2xh",
-            "dGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJIpEB",
-            "CglFcnJvckluZm8SDAoEdHlwZRgBIAEoCRIOCgZkb21haW4YAiABKAkSNQoI",
-            "bWV0YWRhdGEYAyADKAsyIy5nb29nbGUucnBjLkVycm9ySW5mby5NZXRhZGF0",
-            "YUVudHJ5Gi8KDU1ldGFkYXRhRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
-            "GAIgASgJOgI4ASKVAQoTUHJlY29uZGl0aW9uRmFpbHVyZRI9Cgp2aW9sYXRp",
-            "b25zGAEgAygLMikuZ29vZ2xlLnJwYy5QcmVjb25kaXRpb25GYWlsdXJlLlZp",
-            "b2xhdGlvbho/CglWaW9sYXRpb24SDAoEdHlwZRgBIAEoCRIPCgdzdWJqZWN0",
-            "GAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJIoMBCgpCYWRSZXF1ZXN0Ej8K",
-            "EGZpZWxkX3Zpb2xhdGlvbnMYASADKAsyJS5nb29nbGUucnBjLkJhZFJlcXVl",
-            "c3QuRmllbGRWaW9sYXRpb24aNAoORmllbGRWaW9sYXRpb24SDQoFZmllbGQY",
-            "ASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkiNwoLUmVxdWVzdEluZm8SEgoK",
-            "cmVxdWVzdF9pZBgBIAEoCRIUCgxzZXJ2aW5nX2RhdGEYAiABKAkiYAoMUmVz",
-            "b3VyY2VJbmZvEhUKDXJlc291cmNlX3R5cGUYASABKAkSFQoNcmVzb3VyY2Vf",
-            "bmFtZRgCIAEoCRINCgVvd25lchgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEo",
-            "CSJWCgRIZWxwEiQKBWxpbmtzGAEgAygLMhUuZ29vZ2xlLnJwYy5IZWxwLkxp",
-            "bmsaKAoETGluaxITCgtkZXNjcmlwdGlvbhgBIAEoCRILCgN1cmwYAiABKAki",
-            "MwoQTG9jYWxpemVkTWVzc2FnZRIOCgZsb2NhbGUYASABKAkSDwoHbWVzc2Fn",
-            "ZRgCIAEoCUJsCg5jb20uZ29vZ2xlLnJwY0IRRXJyb3JEZXRhaWxzUHJvdG9Q",
-            "AVo/Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9ycGMv",
-            "ZXJyZGV0YWlscztlcnJkZXRhaWxzogIDUlBDYgZwcm90bzM="));
+            "dGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJIpMB",
+            "CglFcnJvckluZm8SDgoGcmVhc29uGAEgASgJEg4KBmRvbWFpbhgCIAEoCRI1",
+            "CghtZXRhZGF0YRgDIAMoCzIjLmdvb2dsZS5ycGMuRXJyb3JJbmZvLk1ldGFk",
+            "YXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFs",
+            "dWUYAiABKAk6AjgBIpUBChNQcmVjb25kaXRpb25GYWlsdXJlEj0KCnZpb2xh",
+            "dGlvbnMYASADKAsyKS5nb29nbGUucnBjLlByZWNvbmRpdGlvbkZhaWx1cmUu",
+            "VmlvbGF0aW9uGj8KCVZpb2xhdGlvbhIMCgR0eXBlGAEgASgJEg8KB3N1Ympl",
+            "Y3QYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkigwEKCkJhZFJlcXVlc3QS",
+            "PwoQZmllbGRfdmlvbGF0aW9ucxgBIAMoCzIlLmdvb2dsZS5ycGMuQmFkUmVx",
+            "dWVzdC5GaWVsZFZpb2xhdGlvbho0Cg5GaWVsZFZpb2xhdGlvbhINCgVmaWVs",
+            "ZBgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCSI3CgtSZXF1ZXN0SW5mbxIS",
+            "CgpyZXF1ZXN0X2lkGAEgASgJEhQKDHNlcnZpbmdfZGF0YRgCIAEoCSJgCgxS",
+            "ZXNvdXJjZUluZm8SFQoNcmVzb3VyY2VfdHlwZRgBIAEoCRIVCg1yZXNvdXJj",
+            "ZV9uYW1lGAIgASgJEg0KBW93bmVyGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQg",
+            "ASgJIlYKBEhlbHASJAoFbGlua3MYASADKAsyFS5nb29nbGUucnBjLkhlbHAu",
+            "TGluaxooCgRMaW5rEhMKC2Rlc2NyaXB0aW9uGAEgASgJEgsKA3VybBgCIAEo",
+            "CSIzChBMb2NhbGl6ZWRNZXNzYWdlEg4KBmxvY2FsZRgBIAEoCRIPCgdtZXNz",
+            "YWdlGAIgASgJQmwKDmNvbS5nb29nbGUucnBjQhFFcnJvckRldGFpbHNQcm90",
+            "b1ABWj9nb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3Jw",
+            "Yy9lcnJkZXRhaWxzO2VycmRldGFpbHOiAgNSUENiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Type", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Reason", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure), global::Google.Rpc.PreconditionFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure.Types.Violation), global::Google.Rpc.PreconditionFailure.Types.Violation.Parser, new[]{ "Type", "Subject", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null, null),
@@ -711,7 +711,7 @@ namespace Google.Rpc {
   ///
   /// Example of an error when contacting the "pubsub.googleapis.com" API when it
   /// is not enabled:
-  ///     { "type":   "API_DISABLED"
+  ///     { "reason": "API_DISABLED"
   ///       "domain": "googleapis.com"
   ///       "metadata": {
   ///         "resource": "projects/123",
@@ -722,10 +722,10 @@ namespace Google.Rpc {
   ///
   /// Example of an error that is returned when attempting to create a Spanner
   /// instance in a region that is out of stock:
-  ///     { "type":   "STOCKOUT"
+  ///     { "reason": "STOCKOUT"
   ///       "domain": "spanner.googleapis.com",
   ///       "metadata": {
-  ///         "availableRegions": ""us-central1,us-east2"
+  ///         "availableRegions": "us-central1,us-east2"
   ///       }
   ///     }
   /// </summary>
@@ -754,7 +754,7 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ErrorInfo(ErrorInfo other) : this() {
-      type_ = other.type_;
+      reason_ = other.reason_;
       domain_ = other.domain_;
       metadata_ = other.metadata_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -765,20 +765,20 @@ namespace Google.Rpc {
       return new ErrorInfo(this);
     }
 
-    /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 1;
-    private string type_ = "";
+    /// <summary>Field number for the "reason" field.</summary>
+    public const int ReasonFieldNumber = 1;
+    private string reason_ = "";
     /// <summary>
-    /// The type of the error. This is a constant value that identifies the
-    /// proximate cause of the error. Error types are unique within a particular
-    /// source of errors. This should be at most 63 characters and match
+    /// The reason of the error. This is a constant value that identifies the
+    /// proximate cause of the error. Error reasons are unique within a particular
+    /// domain of errors. This should be at most 63 characters and match
     /// /[A-Z0-9_]+/.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Type {
-      get { return type_; }
+    public string Reason {
+      get { return reason_; }
       set {
-        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -786,7 +786,7 @@ namespace Google.Rpc {
     public const int DomainFieldNumber = 2;
     private string domain_ = "";
     /// <summary>
-    /// The logical grouping to which the "type" belongs.  Often "domain" will
+    /// The logical grouping to which the "reason" belongs.  Often "domain" will
     /// contain the registered service name of the tool or product that is the
     /// source of the error. Example: "pubsub.googleapis.com". If the error is
     /// common across many APIs, the first segment of the example above will be
@@ -833,7 +833,7 @@ namespace Google.Rpc {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Type != other.Type) return false;
+      if (Reason != other.Reason) return false;
       if (Domain != other.Domain) return false;
       if (!Metadata.Equals(other.Metadata)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -842,7 +842,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type.Length != 0) hash ^= Type.GetHashCode();
+      if (Reason.Length != 0) hash ^= Reason.GetHashCode();
       if (Domain.Length != 0) hash ^= Domain.GetHashCode();
       hash ^= Metadata.GetHashCode();
       if (_unknownFields != null) {
@@ -858,9 +858,9 @@ namespace Google.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Type.Length != 0) {
+      if (Reason.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Type);
+        output.WriteString(Reason);
       }
       if (Domain.Length != 0) {
         output.WriteRawTag(18);
@@ -875,8 +875,8 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Type.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
+      if (Reason.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
       }
       if (Domain.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Domain);
@@ -893,8 +893,8 @@ namespace Google.Rpc {
       if (other == null) {
         return;
       }
-      if (other.Type.Length != 0) {
-        Type = other.Type;
+      if (other.Reason.Length != 0) {
+        Reason = other.Reason;
       }
       if (other.Domain.Length != 0) {
         Domain = other.Domain;
@@ -912,7 +912,7 @@ namespace Google.Rpc {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Type = input.ReadString();
+            Reason = input.ReadString();
             break;
           }
           case 18: {

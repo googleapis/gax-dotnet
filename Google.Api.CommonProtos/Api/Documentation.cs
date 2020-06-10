@@ -32,21 +32,21 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch5nb29nbGUvYXBpL2RvY3VtZW50YXRpb24ucHJvdG8SCmdvb2dsZS5hcGki",
-            "oQEKDURvY3VtZW50YXRpb24SDwoHc3VtbWFyeRgBIAEoCRIfCgVwYWdlcxgF",
+            "uwEKDURvY3VtZW50YXRpb24SDwoHc3VtbWFyeRgBIAEoCRIfCgVwYWdlcxgF",
             "IAMoCzIQLmdvb2dsZS5hcGkuUGFnZRIsCgVydWxlcxgDIAMoCzIdLmdvb2ds",
             "ZS5hcGkuRG9jdW1lbnRhdGlvblJ1bGUSHgoWZG9jdW1lbnRhdGlvbl9yb290",
-            "X3VybBgEIAEoCRIQCghvdmVydmlldxgCIAEoCSJbChFEb2N1bWVudGF0aW9u",
-            "UnVsZRIQCghzZWxlY3RvchgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIf",
-            "ChdkZXByZWNhdGlvbl9kZXNjcmlwdGlvbhgDIAEoCSJJCgRQYWdlEgwKBG5h",
-            "bWUYASABKAkSDwoHY29udGVudBgCIAEoCRIiCghzdWJwYWdlcxgDIAMoCzIQ",
-            "Lmdvb2dsZS5hcGkuUGFnZUJ0Cg5jb20uZ29vZ2xlLmFwaUISRG9jdW1lbnRh",
-            "dGlvblByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
-            "ZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEli",
-            "BnByb3RvMw=="));
+            "X3VybBgEIAEoCRIYChBzZXJ2aWNlX3Jvb3RfdXJsGAYgASgJEhAKCG92ZXJ2",
+            "aWV3GAIgASgJIlsKEURvY3VtZW50YXRpb25SdWxlEhAKCHNlbGVjdG9yGAEg",
+            "ASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEh8KF2RlcHJlY2F0aW9uX2Rlc2Ny",
+            "aXB0aW9uGAMgASgJIkkKBFBhZ2USDAoEbmFtZRgBIAEoCRIPCgdjb250ZW50",
+            "GAIgASgJEiIKCHN1YnBhZ2VzGAMgAygLMhAuZ29vZ2xlLmFwaS5QYWdlQnQK",
+            "DmNvbS5nb29nbGUuYXBpQhJEb2N1bWVudGF0aW9uUHJvdG9QAVpFZ29vZ2xl",
+            "LmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNv",
+            "bmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Documentation), global::Google.Api.Documentation.Parser, new[]{ "Summary", "Pages", "Rules", "DocumentationRootUrl", "Overview" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Documentation), global::Google.Api.Documentation.Parser, new[]{ "Summary", "Pages", "Rules", "DocumentationRootUrl", "ServiceRootUrl", "Overview" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DocumentationRule), global::Google.Api.DocumentationRule.Parser, new[]{ "Selector", "Description", "DeprecationDescription" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Page), global::Google.Api.Page.Parser, new[]{ "Name", "Content", "Subpages" }, null, null, null, null)
           }));
@@ -141,6 +141,7 @@ namespace Google.Api {
       pages_ = other.pages_.Clone();
       rules_ = other.rules_.Clone();
       documentationRootUrl_ = other.documentationRootUrl_;
+      serviceRootUrl_ = other.serviceRootUrl_;
       overview_ = other.overview_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -207,6 +208,23 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "service_root_url" field.</summary>
+    public const int ServiceRootUrlFieldNumber = 6;
+    private string serviceRootUrl_ = "";
+    /// <summary>
+    /// Specifies the service root url if the default one (the service name
+    /// from the yaml file) is not suitable. This can be seen in any fully
+    /// specified service urls as well as sections that show a base that other
+    /// urls are relative to.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ServiceRootUrl {
+      get { return serviceRootUrl_; }
+      set {
+        serviceRootUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "overview" field.</summary>
     public const int OverviewFieldNumber = 2;
     private string overview_ = "";
@@ -250,6 +268,7 @@ namespace Google.Api {
       if(!pages_.Equals(other.pages_)) return false;
       if(!rules_.Equals(other.rules_)) return false;
       if (DocumentationRootUrl != other.DocumentationRootUrl) return false;
+      if (ServiceRootUrl != other.ServiceRootUrl) return false;
       if (Overview != other.Overview) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -261,6 +280,7 @@ namespace Google.Api {
       hash ^= pages_.GetHashCode();
       hash ^= rules_.GetHashCode();
       if (DocumentationRootUrl.Length != 0) hash ^= DocumentationRootUrl.GetHashCode();
+      if (ServiceRootUrl.Length != 0) hash ^= ServiceRootUrl.GetHashCode();
       if (Overview.Length != 0) hash ^= Overview.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -289,6 +309,10 @@ namespace Google.Api {
         output.WriteString(DocumentationRootUrl);
       }
       pages_.WriteTo(output, _repeated_pages_codec);
+      if (ServiceRootUrl.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(ServiceRootUrl);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -304,6 +328,9 @@ namespace Google.Api {
       size += rules_.CalculateSize(_repeated_rules_codec);
       if (DocumentationRootUrl.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(DocumentationRootUrl);
+      }
+      if (ServiceRootUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ServiceRootUrl);
       }
       if (Overview.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Overview);
@@ -326,6 +353,9 @@ namespace Google.Api {
       rules_.Add(other.rules_);
       if (other.DocumentationRootUrl.Length != 0) {
         DocumentationRootUrl = other.DocumentationRootUrl;
+      }
+      if (other.ServiceRootUrl.Length != 0) {
+        ServiceRootUrl = other.ServiceRootUrl;
       }
       if (other.Overview.Length != 0) {
         Overview = other.Overview;
@@ -359,6 +389,10 @@ namespace Google.Api {
           }
           case 42: {
             pages_.AddEntriesFrom(input, _repeated_pages_codec);
+            break;
+          }
+          case 50: {
+            ServiceRootUrl = input.ReadString();
             break;
           }
         }

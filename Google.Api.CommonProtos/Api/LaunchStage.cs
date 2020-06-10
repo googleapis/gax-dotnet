@@ -31,12 +31,13 @@ namespace Google.Api {
     static LaunchStageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2xhdW5jaF9zdGFnZS5wcm90bxIKZ29vZ2xlLmFwaSpq",
-            "CgtMYXVuY2hTdGFnZRIcChhMQVVOQ0hfU1RBR0VfVU5TUEVDSUZJRUQQABIQ",
-            "CgxFQVJMWV9BQ0NFU1MQARIJCgVBTFBIQRACEggKBEJFVEEQAxIGCgJHQRAE",
-            "Eg4KCkRFUFJFQ0FURUQQBUJaCg5jb20uZ29vZ2xlLmFwaUIQTGF1bmNoU3Rh",
-            "Z2VQcm90b1ABWi1nb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVh",
-            "cGlzL2FwaTthcGmiAgRHQVBJYgZwcm90bzM="));
+            "Ch1nb29nbGUvYXBpL2xhdW5jaF9zdGFnZS5wcm90bxIKZ29vZ2xlLmFwaSqM",
+            "AQoLTGF1bmNoU3RhZ2USHAoYTEFVTkNIX1NUQUdFX1VOU1BFQ0lGSUVEEAAS",
+            "EQoNVU5JTVBMRU1FTlRFRBAGEg0KCVBSRUxBVU5DSBAHEhAKDEVBUkxZX0FD",
+            "Q0VTUxABEgkKBUFMUEhBEAISCAoEQkVUQRADEgYKAkdBEAQSDgoKREVQUkVD",
+            "QVRFRBAFQloKDmNvbS5nb29nbGUuYXBpQhBMYXVuY2hTdGFnZVByb3RvUAFa",
+            "LWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpO2Fw",
+            "aaICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.LaunchStage), }, null, null));
@@ -54,6 +55,14 @@ namespace Google.Api {
     /// Do not use this default value.
     /// </summary>
     [pbr::OriginalName("LAUNCH_STAGE_UNSPECIFIED")] Unspecified = 0,
+    /// <summary>
+    /// The feature is not yet implemented. Users can not use it.
+    /// </summary>
+    [pbr::OriginalName("UNIMPLEMENTED")] Unimplemented = 6,
+    /// <summary>
+    /// Prelaunch features are hidden from users and are only visible internally.
+    /// </summary>
+    [pbr::OriginalName("PRELAUNCH")] Prelaunch = 7,
     /// <summary>
     /// Early Access features are limited to a closed group of testers. To use
     /// these features, you must sign up in advance and sign a Trusted Tester

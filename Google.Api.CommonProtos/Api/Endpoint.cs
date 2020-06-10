@@ -31,16 +31,16 @@ namespace Google.Api {
     static EndpointReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpImMKCEVu",
-            "ZHBvaW50EgwKBG5hbWUYASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESEAoI",
-            "ZmVhdHVyZXMYBCADKAkSDgoGdGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMY",
-            "BSABKAhCbwoOY29tLmdvb2dsZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29v",
-            "Z2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2Vydmlj",
-            "ZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpIlEKCEVu",
+            "ZHBvaW50EgwKBG5hbWUYASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESDgoG",
+            "dGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdvb2ds",
+            "ZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
+            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
+            "ZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Features", "Target", "AllowCors" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Endpoint), global::Google.Api.Endpoint.Parser, new[]{ "Name", "Aliases", "Target", "AllowCors" }, null, null, null, null)
           }));
     }
     #endregion
@@ -92,7 +92,6 @@ namespace Google.Api {
     public Endpoint(Endpoint other) : this() {
       name_ = other.name_;
       aliases_ = other.aliases_.Clone();
-      features_ = other.features_.Clone();
       target_ = other.target_;
       allowCors_ = other.allowCors_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -133,19 +132,6 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Aliases {
       get { return aliases_; }
-    }
-
-    /// <summary>Field number for the "features" field.</summary>
-    public const int FeaturesFieldNumber = 4;
-    private static readonly pb::FieldCodec<string> _repeated_features_codec
-        = pb::FieldCodec.ForString(34);
-    private readonly pbc::RepeatedField<string> features_ = new pbc::RepeatedField<string>();
-    /// <summary>
-    /// The list of features enabled on this endpoint.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> Features {
-      get { return features_; }
     }
 
     /// <summary>Field number for the "target" field.</summary>
@@ -200,7 +186,6 @@ namespace Google.Api {
       }
       if (Name != other.Name) return false;
       if(!aliases_.Equals(other.aliases_)) return false;
-      if(!features_.Equals(other.features_)) return false;
       if (Target != other.Target) return false;
       if (AllowCors != other.AllowCors) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -211,7 +196,6 @@ namespace Google.Api {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       hash ^= aliases_.GetHashCode();
-      hash ^= features_.GetHashCode();
       if (Target.Length != 0) hash ^= Target.GetHashCode();
       if (AllowCors != false) hash ^= AllowCors.GetHashCode();
       if (_unknownFields != null) {
@@ -232,7 +216,6 @@ namespace Google.Api {
         output.WriteString(Name);
       }
       aliases_.WriteTo(output, _repeated_aliases_codec);
-      features_.WriteTo(output, _repeated_features_codec);
       if (AllowCors != false) {
         output.WriteRawTag(40);
         output.WriteBool(AllowCors);
@@ -253,7 +236,6 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
       size += aliases_.CalculateSize(_repeated_aliases_codec);
-      size += features_.CalculateSize(_repeated_features_codec);
       if (Target.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(Target);
       }
@@ -275,7 +257,6 @@ namespace Google.Api {
         Name = other.Name;
       }
       aliases_.Add(other.aliases_);
-      features_.Add(other.features_);
       if (other.Target.Length != 0) {
         Target = other.Target;
       }
@@ -299,10 +280,6 @@ namespace Google.Api {
           }
           case 18: {
             aliases_.AddEntriesFrom(input, _repeated_aliases_codec);
-            break;
-          }
-          case 34: {
-            features_.AddEntriesFrom(input, _repeated_features_codec);
             break;
           }
           case 40: {

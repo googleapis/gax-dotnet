@@ -33,7 +33,7 @@ namespace Google.Api {
           string.Concat(
             "Chdnb29nbGUvYXBpL21ldHJpYy5wcm90bxIKZ29vZ2xlLmFwaRoWZ29vZ2xl",
             "L2FwaS9sYWJlbC5wcm90bxodZ29vZ2xlL2FwaS9sYXVuY2hfc3RhZ2UucHJv",
-            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byL9BQoQTWV0cmlj",
+            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byKfBgoQTWV0cmlj",
             "RGVzY3JpcHRvchIMCgRuYW1lGAEgASgJEgwKBHR5cGUYCCABKAkSKwoGbGFi",
             "ZWxzGAIgAygLMhsuZ29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3ISPAoLbWV0",
             "cmljX2tpbmQYAyABKA4yJy5nb29nbGUuYXBpLk1ldHJpY0Rlc2NyaXB0b3Iu",
@@ -42,24 +42,25 @@ namespace Google.Api {
             "c2NyaXB0aW9uGAYgASgJEhQKDGRpc3BsYXlfbmFtZRgHIAEoCRJHCghtZXRh",
             "ZGF0YRgKIAEoCzI1Lmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvci5NZXRy",
             "aWNEZXNjcmlwdG9yTWV0YWRhdGESLQoMbGF1bmNoX3N0YWdlGAwgASgOMhcu",
-            "Z29vZ2xlLmFwaS5MYXVuY2hTdGFnZRqwAQoYTWV0cmljRGVzY3JpcHRvck1l",
-            "dGFkYXRhEjEKDGxhdW5jaF9zdGFnZRgBIAEoDjIXLmdvb2dsZS5hcGkuTGF1",
-            "bmNoU3RhZ2VCAhgBEjAKDXNhbXBsZV9wZXJpb2QYAiABKAsyGS5nb29nbGUu",
-            "cHJvdG9idWYuRHVyYXRpb24SLwoMaW5nZXN0X2RlbGF5GAMgASgLMhkuZ29v",
-            "Z2xlLnByb3RvYnVmLkR1cmF0aW9uIk8KCk1ldHJpY0tpbmQSGwoXTUVUUklD",
-            "X0tJTkRfVU5TUEVDSUZJRUQQABIJCgVHQVVHRRABEgkKBURFTFRBEAISDgoK",
-            "Q1VNVUxBVElWRRADInEKCVZhbHVlVHlwZRIaChZWQUxVRV9UWVBFX1VOU1BF",
-            "Q0lGSUVEEAASCAoEQk9PTBABEgkKBUlOVDY0EAISCgoGRE9VQkxFEAMSCgoG",
-            "U1RSSU5HEAQSEAoMRElTVFJJQlVUSU9OEAUSCQoFTU9ORVkQBiJ1CgZNZXRy",
-            "aWMSDAoEdHlwZRgDIAEoCRIuCgZsYWJlbHMYAiADKAsyHi5nb29nbGUuYXBp",
-            "Lk1ldHJpYy5MYWJlbHNFbnRyeRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASAB",
-            "KAkSDQoFdmFsdWUYAiABKAk6AjgBQl8KDmNvbS5nb29nbGUuYXBpQgtNZXRy",
-            "aWNQcm90b1ABWjdnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVh",
-            "cGlzL2FwaS9tZXRyaWM7bWV0cmljogIER0FQSWIGcHJvdG8z"));
+            "Z29vZ2xlLmFwaS5MYXVuY2hTdGFnZRIgChhtb25pdG9yZWRfcmVzb3VyY2Vf",
+            "dHlwZXMYDSADKAkasAEKGE1ldHJpY0Rlc2NyaXB0b3JNZXRhZGF0YRIxCgxs",
+            "YXVuY2hfc3RhZ2UYASABKA4yFy5nb29nbGUuYXBpLkxhdW5jaFN0YWdlQgIY",
+            "ARIwCg1zYW1wbGVfcGVyaW9kGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1",
+            "cmF0aW9uEi8KDGluZ2VzdF9kZWxheRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1",
+            "Zi5EdXJhdGlvbiJPCgpNZXRyaWNLaW5kEhsKF01FVFJJQ19LSU5EX1VOU1BF",
+            "Q0lGSUVEEAASCQoFR0FVR0UQARIJCgVERUxUQRACEg4KCkNVTVVMQVRJVkUQ",
+            "AyJxCglWYWx1ZVR5cGUSGgoWVkFMVUVfVFlQRV9VTlNQRUNJRklFRBAAEggK",
+            "BEJPT0wQARIJCgVJTlQ2NBACEgoKBkRPVUJMRRADEgoKBlNUUklORxAEEhAK",
+            "DERJU1RSSUJVVElPThAFEgkKBU1PTkVZEAYidQoGTWV0cmljEgwKBHR5cGUY",
+            "AyABKAkSLgoGbGFiZWxzGAIgAygLMh4uZ29vZ2xlLmFwaS5NZXRyaWMuTGFi",
+            "ZWxzRW50cnkaLQoLTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
+            "GAIgASgJOgI4AUJfCg5jb20uZ29vZ2xlLmFwaUILTWV0cmljUHJvdG9QAVo3",
+            "Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvbWV0",
+            "cmljO21ldHJpY6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata", "LaunchStage" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata", "LaunchStage", "MonitoredResourceTypes" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Metric), global::Google.Api.Metric.Parser, new[]{ "Type", "Labels" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
@@ -71,6 +72,18 @@ namespace Google.Api {
   /// Defines a metric type and its schema. Once a metric descriptor is created,
   /// deleting or altering it stops data collection and makes the metric type's
   /// existing data unusable.
+  ///
+  /// The following are specific rules for service defined Monitoring metric
+  /// descriptors:
+  ///
+  /// * `type`, `metric_kind`, `value_type`, `description`, `display_name`,
+  ///   `launch_stage` fields are all required. The `unit` field must be specified
+  ///   if the `value_type` is any of DOUBLE, INT64, DISTRIBUTION.
+  /// * Maximum of default 500 metric descriptors per service is allowed.
+  /// * Maximum of default 10 labels per metric descriptor is allowed.
+  ///
+  /// The default maximum limit can be overridden. Please follow
+  /// https://cloud.google.com/monitoring/quotas
   /// </summary>
   public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor> {
     private static readonly pb::MessageParser<MetricDescriptor> _parser = new pb::MessageParser<MetricDescriptor>(() => new MetricDescriptor());
@@ -107,6 +120,7 @@ namespace Google.Api {
       displayName_ = other.displayName_;
       metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
       launchStage_ = other.launchStage_;
+      monitoredResourceTypes_ = other.monitoredResourceTypes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -134,9 +148,23 @@ namespace Google.Api {
     private string type_ = "";
     /// <summary>
     /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded.  All user-defined metric types have the DNS name
-    /// `custom.googleapis.com` or `external.googleapis.com`.  Metric types should
-    /// use a natural hierarchical grouping. For example:
+    /// URL-encoded.
+    ///
+    /// All service defined metrics must be prefixed with the service name, in the
+    /// format of `{service name}/{relative metric name}`, such as
+    /// `cloudsql.googleapis.com/database/cpu/utilization`. The relative metric
+    /// name must follow:
+    ///
+    /// * Only upper and lower-case letters, digits, '/' and underscores '_' are
+    ///   allowed.
+    /// * The maximum number of characters allowed for the relative_metric_name is
+    ///   100.
+    ///
+    /// All user-defined metric types have the DNS name
+    /// `custom.googleapis.com`, `external.googleapis.com`, or
+    /// `logging.googleapis.com/user/`.
+    ///
+    /// Metric types should use a natural hierarchical grouping. For example:
     ///
     ///     "custom.googleapis.com/invoice/paid/amount"
     ///     "external.googleapis.com/prometheus/up"
@@ -157,7 +185,16 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.LabelDescriptor> labels_ = new pbc::RepeatedField<global::Google.Api.LabelDescriptor>();
     /// <summary>
     /// The set of labels that can be used to describe a specific
-    /// instance of this metric type. For example, the
+    /// instance of this metric type.
+    ///
+    /// The label key name must follow:
+    ///
+    /// * Only upper and lower-case letters, digits and underscores (_) are
+    ///   allowed.
+    /// * Label name must start with a letter or digit.
+    /// * The maximum length of a label name is 100 characters.
+    ///
+    /// For example, the
     /// `appengine.googleapis.com/http/server/response_latencies` metric
     /// type has a label for the HTTP response code, `response_code`, so
     /// you can look at latencies for successful responses or just
@@ -217,7 +254,7 @@ namespace Google.Api {
     /// `s{CPU}` (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
     /// CPU-seconds, then the value is written as `12005`.
     ///
-    /// Alternatively, if you want a custome metric to record data in a more
+    /// Alternatively, if you want a custom metric to record data in a more
     /// granular way, you can create a `DOUBLE CUMULATIVE` metric whose `unit` is
     /// `ks{CPU}`, and then write the value `12.005` (which is `12005/1000`),
     /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
@@ -371,6 +408,23 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "monitored_resource_types" field.</summary>
+    public const int MonitoredResourceTypesFieldNumber = 13;
+    private static readonly pb::FieldCodec<string> _repeated_monitoredResourceTypes_codec
+        = pb::FieldCodec.ForString(106);
+    private readonly pbc::RepeatedField<string> monitoredResourceTypes_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// Read-only. If present, then a [time
+    /// series][google.monitoring.v3.TimeSeries], which is identified partially by
+    /// a metric type and a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that is associated
+    /// with this metric type can only be associated with one of the monitored
+    /// resource types listed here.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> MonitoredResourceTypes {
+      get { return monitoredResourceTypes_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as MetricDescriptor);
@@ -394,6 +448,7 @@ namespace Google.Api {
       if (DisplayName != other.DisplayName) return false;
       if (!object.Equals(Metadata, other.Metadata)) return false;
       if (LaunchStage != other.LaunchStage) return false;
+      if(!monitoredResourceTypes_.Equals(other.monitoredResourceTypes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -410,6 +465,7 @@ namespace Google.Api {
       if (DisplayName.Length != 0) hash ^= DisplayName.GetHashCode();
       if (metadata_ != null) hash ^= Metadata.GetHashCode();
       if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) hash ^= LaunchStage.GetHashCode();
+      hash ^= monitoredResourceTypes_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -460,6 +516,7 @@ namespace Google.Api {
         output.WriteRawTag(96);
         output.WriteEnum((int) LaunchStage);
       }
+      monitoredResourceTypes_.WriteTo(output, _repeated_monitoredResourceTypes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -496,6 +553,7 @@ namespace Google.Api {
       if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LaunchStage);
       }
+      size += monitoredResourceTypes_.CalculateSize(_repeated_monitoredResourceTypes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -538,6 +596,7 @@ namespace Google.Api {
       if (other.LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
         LaunchStage = other.LaunchStage;
       }
+      monitoredResourceTypes_.Add(other.monitoredResourceTypes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -590,6 +649,10 @@ namespace Google.Api {
           }
           case 96: {
             LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
+          case 106: {
+            monitoredResourceTypes_.AddEntriesFrom(input, _repeated_monitoredResourceTypes_codec);
             break;
           }
         }
@@ -705,8 +768,7 @@ namespace Google.Api {
         public const int LaunchStageFieldNumber = 1;
         private global::Google.Api.LaunchStage launchStage_ = global::Google.Api.LaunchStage.Unspecified;
         /// <summary>
-        /// Deprecated. Please use the MetricDescriptor.launch_stage instead.
-        /// The launch stage of the metric definition.
+        /// Deprecated. Must use the [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage] instead.
         /// </summary>
         [global::System.ObsoleteAttribute]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
