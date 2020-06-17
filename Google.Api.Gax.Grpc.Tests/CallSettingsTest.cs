@@ -117,6 +117,14 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Same(callSettings.WriteOptions, options.WriteOptions);
         }
 
+        [Theory]
+        [InlineData("x-goog-user-project", "my-project")]
+        public void ToCallOptions_InvalidHeaderMutations(string header, string value) =>
+            Assert.Throws<InvalidOperationException>(
+                () => CallSettings
+                .FromHeaderMutation(metadata => metadata.Add(new Metadata.Entry(header, value)))
+                .ToCallOptions(new Mock<IClock>().Object));
+
         [Fact]
         public void CancellationTokenNone()
         {
@@ -182,6 +190,11 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal("name", metadata[0].Key);
             Assert.Equal("value", metadata[0].Value);
         }
+
+        [Theory]
+        [InlineData("x-goog-user-project", "my-project")]
+        public void FromHeader_Invalid(string header, string value) =>
+            Assert.Throws<InvalidOperationException>(() => CallSettings.FromHeader(header, value));
 
         // Note: this test may well need to change, e.g. if we start to use a side channel.
         [Fact]

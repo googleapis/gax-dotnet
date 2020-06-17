@@ -17,6 +17,13 @@ namespace Google.Api.Gax.Grpc
     public static class CallSettingsExtensions
     {
         /// <summary>
+        /// The header used to send the project ID used for billing and quotas.
+        /// The value should be set through the credential or the client builder,
+        /// never explicitly as a header.
+        /// </summary>
+        private const string QuotaProjectHeaderName = "x-goog-user-project";
+
+        /// <summary>
         /// This method merges the settings in <paramref name="overlaid"/> with those in
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
         /// If both arguments are null, the result is null. If one argument is null,
@@ -222,6 +229,7 @@ namespace Google.Api.Gax.Grpc
             }
             var metadata = new Metadata();
             callSettings.HeaderMutation?.Invoke(metadata);
+            CheckMetadata(metadata);
             return new CallOptions(
                 headers: metadata,
                 // Note: extension method which handles a null expiration.
@@ -233,6 +241,34 @@ namespace Google.Api.Gax.Grpc
                 // But as long as user code can specify credentials we should continue to respect that.
                 credentials: callSettings.Credentials);
 #pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <summary>
+        /// Method used to check that the headers set by the uer are valid.
+        /// Current only checks that the <code>x-goog-user-project</code> header is not set
+        /// directly by the user. It should be set either through the credential or the client builder.
+        /// </summary>
+        /// <param name="metadata">The user set headers.</param>
+        internal static void CheckMetadata(Metadata metadata)
+        {
+            foreach (var entry in metadata)
+            {
+                CheckHeader(entry.Key);
+            }
+        }
+
+        /// <summary>
+        /// Method used to check if a header set by the uer is valid.
+        /// Current only checks that the <code>x-goog-user-project</code> header is not set
+        /// directly by the user. It should be set either through the credential or the client builder.
+        /// </summary>
+        /// <param name="header">The user set header.</param>
+        internal static void CheckHeader(string header)
+        {
+            if (header == QuotaProjectHeaderName)
+            {
+                throw new InvalidOperationException($"Can't set {QuotaProjectHeaderName} header directly. You can set it through the <Product>ClientBuilder.QuotaProject property instead.");
+            }
         }
     }
 }

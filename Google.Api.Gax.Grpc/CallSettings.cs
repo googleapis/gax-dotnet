@@ -289,6 +289,7 @@ namespace Google.Api.Gax.Grpc
         public static CallSettings FromHeader(string name, string value)
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
+            CallSettingsExtensions.CheckHeader(name);
             GaxPreconditions.CheckNotNull(value, nameof(value));
             return FromHeaderMutation(metadata => metadata.Add(name, value));
         }
