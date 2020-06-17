@@ -23,15 +23,13 @@ Contributing
 ------------
 
 Contributions to this library are always welcome and highly encouraged.
+See the	[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/master/.github/CONTRIBUTING.md)
+documentation for more information on how to get started.
 
 Versioning
 ----------
 
 This library follows [semantic versioning](http://semver.org).
-
-It is currently in major version zero (`0.y.z`), which means that anything
-may change at any time and the public API should not be considered
-stable.
 
 License
 -------
