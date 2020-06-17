@@ -23,8 +23,8 @@ namespace Google.Api.Gax.Grpc.Tests
             Action<Metadata> clearAndAddFoo = m => { m.Clear(); m.Add("foo", "bar"); };
             Action<Metadata> addSample = m => m.Add("sample", "value");
 
-            CallSettings clearAndAddFooSettings = new CallSettings(null, null, null, null, clearAndAddFoo, null, null);
-            CallSettings addSampleSettings = new CallSettings(null, null, null, null, addSample, null, null);
+            CallSettings clearAndAddFooSettings = new CallSettings(null, null, null, clearAndAddFoo, null, null);
+            CallSettings addSampleSettings = new CallSettings(null, null, null, addSample, null, null);
 
             var merged1 = CallSettings.Merge(clearAndAddFooSettings, addSampleSettings);
             var merged2 = CallSettings.Merge(addSampleSettings, clearAndAddFooSettings);
@@ -107,8 +107,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 retry: new RetrySettings(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), 2.0, RetrySettings.FilterForStatusCodes(), RetrySettings.RandomJitter),
                 cancellationToken: new CancellationTokenSource().Token,
                 writeOptions: new WriteOptions(WriteFlags.NoCompress),
-                propagationToken: null, // Not possible to create/mock
-                credentials: null // Not possible to create/mock
+                propagationToken: null // Not possible to create/mock
             );
             var options = callSettings.ToCallOptions(mockClock.Object);
             Assert.Equal(1, options.Headers.Count);
@@ -156,11 +155,13 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void FromCredential()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Null(CallSettings.FromCallCredentials(null));
             AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
             var credential = CallCredentials.FromInterceptor(interceptor);
             var settings = CallSettings.FromCallCredentials(credential);
             Assert.Same(credential, settings.Credentials);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Fact]

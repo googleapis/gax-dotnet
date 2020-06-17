@@ -45,6 +45,7 @@ namespace Google.Api.Gax.Grpc
             settings.MergedWith(CallSettings.FromCancellationToken(cancellationToken));
 
         /// <summary>
+        /// Obsolete. https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md
         /// Returns a new <see cref="CallSettings"/> with the specified call credentials,
         /// merged with the (optional) original settings specified by <paramref name="settings"/>.
         /// </summary>
@@ -55,6 +56,7 @@ namespace Google.Api.Gax.Grpc
         /// not present in the new call settings. If both this and <paramref name="settings"/> are null,
         /// the return value is null.</param>
         /// <returns>A new set of call settings, or null if both parameters are null.</returns>
+        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md")]
         public static CallSettings WithCallCredentials(
             this CallSettings settings,
             CallCredentials credentials) =>
@@ -80,10 +82,13 @@ namespace Google.Api.Gax.Grpc
             Expiration expiration) =>
             settings == null
                 ? CallSettings.FromExpiration(expiration)
+#pragma warning disable CS0618 // Type or member is obsolete
+                // But as long as user code can specify credentials we should continue to respect that.
                 : new CallSettings(settings.CancellationToken, settings.Credentials,
                     expiration, settings.Retry, settings.HeaderMutation,
                     settings.WriteOptions, settings.PropagationToken,
                     settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified retry settings,
@@ -101,10 +106,13 @@ namespace Google.Api.Gax.Grpc
             RetrySettings retry) =>
             settings == null
                 ? CallSettings.FromRetry(retry)
+#pragma warning disable CS0618 // Type or member is obsolete
+                // But as long as user code can specify credentials we should continue to respect that.
                 : new CallSettings(settings.CancellationToken, settings.Credentials,
                     settings.Expiration, retry, settings.HeaderMutation,
                     settings.WriteOptions, settings.PropagationToken,
                     settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified header,
@@ -221,7 +229,10 @@ namespace Google.Api.Gax.Grpc
                 cancellationToken: callSettings.CancellationToken ?? default(CancellationToken),
                 writeOptions: callSettings.WriteOptions,
                 propagationToken: callSettings.PropagationToken,
+#pragma warning disable CS0618 // Type or member is obsolete
+                // But as long as user code can specify credentials we should continue to respect that.
                 credentials: callSettings.Credentials);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void MergedWith_OneNull()
         {
-            CallSettings settings1 = new CallSettings(null, null, null, null, null, null, null);
+            CallSettings settings1 = new CallSettings(null, null, null, null, null, null);
             CallSettings settings2 = null;
             Assert.Same(settings1, settings1.MergedWith(settings2));
             Assert.Same(settings1, settings2.MergedWith(settings1));
@@ -40,8 +40,8 @@ namespace Google.Api.Gax.Grpc.Tests
 
             CancellationToken token = new CancellationTokenSource().Token;
 
-            var settings1 = new CallSettings(token, null, expiration1, null, null, null, null);
-            var settings2 = new CallSettings(null, null, expiration2, null, null, null, null);
+            var settings1 = new CallSettings(token, expiration1, null, null, null, null);
+            var settings2 = new CallSettings(null, expiration2, null, null, null, null);
             var merged = settings1.MergedWith(settings2);
             Assert.Equal(token, merged.CancellationToken);
             Assert.Same(expiration2, merged.Expiration);
@@ -51,7 +51,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void WithCancellationToken()
         {
             CancellationToken token1 = new CancellationTokenSource().Token;
-            var original = new CallSettings(token1, null, Expiration.None, null, null, null, null);
+            var original = new CallSettings(token1, Expiration.None, null, null, null, null);
 
             CancellationToken token2 = new CancellationTokenSource().Token;
             var result = original.WithCancellationToken(token2);
@@ -69,9 +69,11 @@ namespace Google.Api.Gax.Grpc.Tests
 
             CancellationToken token = new CancellationTokenSource().Token;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var original = new CallSettings(token, credentials1, null, null, null, null, null);
             var result = original.WithCallCredentials(credentials2);
             Assert.Same(credentials2, result.Credentials);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.Equal(token, result.CancellationToken);
         }
 
@@ -79,11 +81,13 @@ namespace Google.Api.Gax.Grpc.Tests
         public void WithCallCredentials_NullSettings()
         {
             CallSettings noSettings = null;
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Null(noSettings.WithCallCredentials(null));
             AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
             var credentials = CallCredentials.FromInterceptor(interceptor);
             var result = noSettings.WithCallCredentials(credentials);
             Assert.Same(credentials, result.Credentials);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Fact]
@@ -93,9 +97,11 @@ namespace Google.Api.Gax.Grpc.Tests
             var credentials = CallCredentials.FromInterceptor(interceptor);
             CancellationToken token = new CancellationTokenSource().Token;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var original = new CallSettings(token, credentials, null, null, null, null, null);
             var result = original.WithCallCredentials(null);
             Assert.Null(result.Credentials);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.Equal(token, result.CancellationToken);
         }
 
