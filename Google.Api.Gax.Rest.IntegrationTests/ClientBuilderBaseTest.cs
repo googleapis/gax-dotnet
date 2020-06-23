@@ -6,9 +6,12 @@
  */
 
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Http;
 using Google.Apis.Services;
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,7 +22,8 @@ namespace Google.Api.Gax.Rest.IntegrationTests
     {
         private const string SampleApiKey = "SampleApiKey";
         private const string DefaultApplicationName = "DefaultApplicationName";
-        
+        private const string SampleQuotaProject = "SampleQuotaProject";
+
         private const string DummyServiceAccountCredentialFileContents = @"{
 ""private_key_id"": ""PRIVATE_KEY_ID"",
 ""private_key"": ""-----BEGIN PRIVATE KEY-----
@@ -56,6 +60,35 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         }
 
         [Fact]
+        public async Task ApiKey_NoOtherCredentials_QuotaProject()
+        {
+            var builder = new SampleClientBuilder 
+            { 
+                ApiKey = SampleApiKey,
+                QuotaProject = SampleQuotaProject 
+            };
+
+            Action<BaseClientService.Initializer> validator = initializer =>
+            {
+                Assert.Equal(SampleApiKey, initializer.ApiKey);
+                Assert.NotNull(initializer.HttpClientInitializer);
+
+                var quotaProjectInitializer = initializer.HttpClientInitializer;
+                using var handler = new FakeMessageHandler();
+                using var client = new ConfigurableHttpClient(new ConfigurableMessageHandler(handler));
+
+                quotaProjectInitializer.Initialize(client);
+                client.GetAsync("https://will.be.ignored").Wait();
+
+                var header = Assert.Single(handler.LatestRequestHeaders, header => header.Key == "x-goog-user-project");
+                var value = Assert.Single(header.Value);
+                Assert.Equal(SampleQuotaProject, value);
+            };
+
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
         public async Task ApiKey_WithOtherCredentials()
         {
             var builder = new SampleClientBuilder
@@ -69,6 +102,26 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 Assert.NotNull(initializer.HttpClientInitializer);
                 Assert.Equal(SampleApiKey, initializer.ApiKey);
             };
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
+        public async Task ApiKey_WithOtherCredentials_QuotaProject()
+        {
+            var builder = new SampleClientBuilder
+            {
+                ApiKey = SampleApiKey,
+                JsonCredentials = DummyServiceAccountCredentialFileContents,
+                QuotaProject = SampleQuotaProject
+            };
+
+            Action<BaseClientService.Initializer> validator = initializer =>
+            {
+                Assert.Equal(SampleApiKey, initializer.ApiKey);
+                var credential = Assert.IsAssignableFrom<GoogleCredential>(initializer.HttpClientInitializer);
+                Assert.Equal(SampleQuotaProject, credential.QuotaProject);
+            };
+
             await ValidateResultAsync(builder, validator);
         }
 
@@ -103,6 +156,24 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         }
 
         [Fact]
+        public async Task JsonCredentials_QuotaProject()
+        {
+            var builder = new SampleClientBuilder 
+            { 
+                JsonCredentials = DummyServiceAccountCredentialFileContents,
+                QuotaProject = SampleQuotaProject
+            };
+
+            Action<BaseClientService.Initializer> validator = initializer =>
+            {
+                var credential = Assert.IsAssignableFrom<GoogleCredential>(initializer.HttpClientInitializer);
+                Assert.Equal(SampleQuotaProject, credential.QuotaProject);
+            };
+
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
         public async Task CredentialsFilePath()
         {
             var file = Path.GetTempFileName();
@@ -112,6 +183,34 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             {
                 var builder = new SampleClientBuilder { CredentialsPath = file };
                 await ValidateResultAsync(builder, initializer => Assert.IsAssignableFrom<GoogleCredential>(initializer.HttpClientInitializer));
+            }
+            finally
+            {
+                File.Delete(file);
+            }
+        }
+
+        [Fact]
+        public async Task CredentialsFilePath_QuotaProject()
+        {
+            var file = Path.GetTempFileName();
+            File.WriteAllText(file, DummyServiceAccountCredentialFileContents);
+
+            try
+            {
+                var builder = new SampleClientBuilder 
+                { 
+                    CredentialsPath = file,
+                    QuotaProject = SampleQuotaProject
+                };
+
+                Action<BaseClientService.Initializer> validator = initializer =>
+                {
+                    var credential = Assert.IsAssignableFrom<GoogleCredential>(initializer.HttpClientInitializer);
+                    Assert.Equal(SampleQuotaProject, credential.QuotaProject);
+                };
+
+                await ValidateResultAsync(builder, validator);
             }
             finally
             {
@@ -132,6 +231,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("CredentialsPathAndJsonCredentials") { CredentialsPath = "foo.json", JsonCredentials = DummyServiceAccountCredentialFileContents },
             new SampleClientBuilder("CredentialAndJsonCredentials") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), JsonCredentials = DummyServiceAccountCredentialFileContents },
             new SampleClientBuilder("CredentialAndCredentialsPath") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), CredentialsPath = "foo.json" },
+            new SampleClientBuilder("CredentialAndQuotaProject") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), QuotaProject = SampleQuotaProject },
         };
 
         [Theory, MemberData(nameof(InvalidCombinationsTheoryData))]
@@ -181,6 +281,17 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 new ScopedCredentialProvider(new[] { "SampleScope" });
 
             public override string ToString() => _name;
+        }
+
+        private class FakeMessageHandler : HttpMessageHandler
+        {
+            public HttpRequestHeaders LatestRequestHeaders { get; private set; }
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                LatestRequestHeaders = request.Headers;
+                return Task.FromResult(new HttpResponseMessage());
+            }
         }
     }
 }
