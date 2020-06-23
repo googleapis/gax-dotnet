@@ -52,6 +52,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
         private static readonly Func<string, CancellationToken, Task<string>> CustomTokenAccess = (authUri, cancellationToken) => Task.FromResult("token");
 
+        private const string SampleQuotaProject = "SampleQuotaProject";
+
         [Fact]
         public async Task DefaultsToChannelPool()
         {
@@ -178,6 +180,22 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         }
 
         [Fact]
+        public async Task QuotaProject()
+        {
+            var builder = new SampleClientBuilder { QuotaProject = SampleQuotaProject };
+
+            // We won't use the channel pool when there is a quota project.
+            // We can't easily check anything about the actual credentials though.
+            Action<CallInvoker> validator = invoker =>
+            {
+                Assert.NotNull(builder.ChannelCreated);
+                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
+                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
+            };
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
         public async Task CustomCallInvoker()
         {
             var builder = new SampleClientBuilder { CallInvoker = CustomInvoker };
@@ -237,6 +255,10 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("CallInvokerAndChannelCredentials") { CallInvoker = CustomInvoker, ChannelCredentials = ChannelCredentials.Insecure },
             new SampleClientBuilder("CallInvokerAndJsonCredentials") { CallInvoker = CustomInvoker, JsonCredentials = DummyServiceAccountCredentialFileContents },
             new SampleClientBuilder("CallInvokerAndTokenAccesMethod") { CallInvoker = CustomInvoker, TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("CallInvokerAndQuotaProject") { CallInvoker = CustomInvoker, QuotaProject = SampleQuotaProject },
+
+            // ChannelCredentials also excludes quota project.
+            new SampleClientBuilder("ChannelCredentialsAndQuotaProject") { ChannelCredentials = ChannelCredentials.Insecure, QuotaProject = SampleQuotaProject },
 
             // Each method of specifying credentials excludes the rest (tests are not exhaustive)
             new SampleClientBuilder("ChannelCredentialsAndCredentialsPath") { ChannelCredentials = ChannelCredentials.Insecure, CredentialsPath = "foo.json" },

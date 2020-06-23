@@ -89,6 +89,12 @@ namespace Google.Api.Gax.Grpc
             set => _emulatorDetection = GaxPreconditions.CheckEnumValue(value, nameof(value));
         }
 
+        /// <summary>
+        /// The GCP project ID that should be used for quota and billing purposes.
+        /// May be null.
+        /// </summary>
+        public string QuotaProject { get; set; }
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated.
 
         /// <summary>
@@ -115,6 +121,7 @@ namespace Google.Api.Gax.Grpc
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
+            QuotaProject = source.QuotaProject;
 
             // Note that we may be copying from one type that supports emulators (e.g. FirestoreDbBuilder)
             // to another type that doesn't (e.g. FirestoreClientBuilder). That ends up in a slightly odd situation,
@@ -131,7 +138,7 @@ namespace Google.Api.Gax.Grpc
         protected virtual void Validate()
         {
             // If there's a call invoker, we shouldn't have any credentials-related information or an endpoint.
-            ValidateOptionExcludesOthers("CallInvoker cannot be specified with credentials settings or an endpoint", CallInvoker,
+            ValidateOptionExcludesOthers($"{nameof(CallInvoker)} cannot be specified with credentials settings or an endpoint", CallInvoker,
                 ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod);
 
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
@@ -139,6 +146,9 @@ namespace Google.Api.Gax.Grpc
 
             ValidateOptionExcludesOthers("Scopes are not relevant when a token access method or channel credentials are supplied", Scopes,
                 TokenAccessMethod, ChannelCredentials);
+
+            ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)} or a {nameof(ChannelCredentials)} is specified", QuotaProject,
+                CallInvoker, ChannelCredentials);
         }
 
         /// <summary>
@@ -201,6 +211,7 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(JsonCredentials, nameof(JsonCredentials));
                     CheckNotSet(Scopes, nameof(Scopes));
                     CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
+                    CheckNotSet(QuotaProject, nameof(QuotaProject));
 
                     void CheckNotSet(object obj, string name)
                     {
@@ -327,13 +338,15 @@ namespace Google.Api.Gax.Grpc
             }
             if (TokenAccessMethod != null)
             {
-                return new DelegatedTokenAccess(TokenAccessMethod).ToChannelCredentials();
+                return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
             }
             GoogleCredential unscoped =
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
-            return unscoped.CreateScoped(Scopes ?? GetDefaultScopes()).ToChannelCredentials();
+            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
+            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            return maybeWithProject.ToChannelCredentials();
         }
 
         /// <summary>
@@ -348,13 +361,15 @@ namespace Google.Api.Gax.Grpc
             }
             if (TokenAccessMethod != null)
             {
-                return new DelegatedTokenAccess(TokenAccessMethod).ToChannelCredentials();
+                return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
             }
             GoogleCredential unscoped =
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
-            return unscoped.CreateScoped(Scopes ?? GetDefaultScopes()).ToChannelCredentials();
+            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
+            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            return maybeWithProject.ToChannelCredentials();
         }
 
         /// <summary>
@@ -393,7 +408,7 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
-        /// true if and only if no scopes, credentials or token access method have been specified. Derived classes should
+        /// true if and only if no quota project, scopes, credentials or token access method have been specified. Derived classes should
         /// override this property if there are other reasons why the channel pool should not be used.
         /// </summary>
         protected virtual bool CanUseChannelPool =>
@@ -401,7 +416,8 @@ namespace Google.Api.Gax.Grpc
             CredentialsPath == null &&
             JsonCredentials == null &&
             TokenAccessMethod == null &&
-            Scopes == null;
+            Scopes == null &&
+            QuotaProject == null;
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.
@@ -422,15 +438,24 @@ namespace Google.Api.Gax.Grpc
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
             EffectiveGrpcAdapter.CreateChannel(endpoint, credentials, GetChannelOptions());
 
-        private class DelegatedTokenAccess : ITokenAccess
+        private class DelegatedTokenAccess : ITokenAccessWithHeaders
         {
             private readonly Func<string, CancellationToken, Task<string>> _tokenAccessMethod;
+            private readonly string _quotaProject;
 
-            internal DelegatedTokenAccess(Func<string, CancellationToken, Task<string>> tokenAccessMethod) =>
-                _tokenAccessMethod = tokenAccessMethod;
+            internal DelegatedTokenAccess(Func<string, CancellationToken, Task<string>> tokenAccessMethod, string quotaProject) =>
+                (_tokenAccessMethod, _quotaProject) = (tokenAccessMethod, quotaProject);
 
             public Task<string> GetAccessTokenForRequestAsync(string authUri, CancellationToken cancellationToken) =>
                 _tokenAccessMethod(authUri, cancellationToken);
+
+            public async Task<AccessTokenWithHeaders> GetAccessTokenWithHeadersForRequestAsync(string authUri = null, CancellationToken cancellationToken = default)
+            {
+                string token = await _tokenAccessMethod(authUri, cancellationToken).ConfigureAwait(false);
+                return _quotaProject is null ? 
+                    new AccessTokenWithHeaders(token, null) : 
+                    new AccessTokenWithHeaders.Builder { QuotaProject = _quotaProject }.Build(token);
+            }
         }
     }
 }
