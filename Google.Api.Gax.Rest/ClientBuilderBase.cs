@@ -10,6 +10,7 @@ using Google.Apis.Http;
 using Google.Apis.Services;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,6 +59,12 @@ namespace Google.Api.Gax.Rest
         public string ApiKey { get; set; }
 
         /// <summary>
+        /// The GCP project ID that should be used for quota and billing purposes.
+        /// May be null.
+        /// </summary>
+        public string QuotaProject { get; set; }
+
+        /// <summary>
         /// Creates a new instance with no settings.
         /// </summary>
         protected ClientBuilderBase()
@@ -73,6 +80,9 @@ namespace Google.Api.Gax.Rest
         {
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
                 CredentialsPath, JsonCredentials, Credential);
+
+            ValidateAtMostOneNotNull($"If an alreayd built credential is specified, {nameof(QuotaProject)} must be null.",
+                Credential, QuotaProject);
         }
 
         /// <summary>
@@ -131,13 +141,17 @@ namespace Google.Api.Gax.Rest
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 null; // Use default credentials (maybe - see below)
+
             // While we accept any credentials that are specified even if there's an API key,
             // we don't try to load default credentials.
             if (ApiKey != null && unscoped is null)
             {
-                return null;
+                return QuotaProject is null ? null :
+                    new ExtraHeadersInitializer(
+                        new AccessTokenWithHeaders.Builder { QuotaProject = QuotaProject }.Build(null));
             }
-            return GetScopedCredentialProvider().GetCredentials(unscoped);
+            GoogleCredential scoped = GetScopedCredentialProvider().GetCredentials(unscoped);
+            return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
         }
 
         /// <summary>
@@ -154,13 +168,17 @@ namespace Google.Api.Gax.Rest
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 null; // Use default credentials (maybe - see below)
+
             // While we accept any credentials that are specified even if there's an API key,
             // we don't try to load default credentials.
             if (ApiKey != null && unscoped is null)
             {
-                return null;
+                return QuotaProject is null ? null :
+                    new ExtraHeadersInitializer( 
+                        new AccessTokenWithHeaders.Builder {  QuotaProject = QuotaProject }.Build(null));
             }
-            return await GetScopedCredentialProvider().GetCredentialsAsync(unscoped, cancellationToken).ConfigureAwait(false);
+            GoogleCredential scoped = await GetScopedCredentialProvider().GetCredentialsAsync(unscoped, cancellationToken).ConfigureAwait(false);
+            return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
         }
 
         /// <summary>
@@ -185,5 +203,33 @@ namespace Google.Api.Gax.Rest
         /// Builds the resulting client asynchronously.
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Class to be used to set the quota project on request headers when
+        /// an ApiKey is being used for authentication instead of a credential.
+        /// </summary>
+        private class ExtraHeadersInitializer : IConfigurableHttpClientInitializer
+        {
+            private readonly AccessTokenWithHeaders _headers;
+
+            public ExtraHeadersInitializer(AccessTokenWithHeaders headers) =>
+                _headers = GaxPreconditions.CheckNotNull(headers, nameof(headers));
+
+            public void Initialize(ConfigurableHttpClient httpClient) =>
+                httpClient.MessageHandler.Credential = new ExtraHeadersInterceptor(_headers);
+        }
+
+        private class ExtraHeadersInterceptor : IHttpExecuteInterceptor
+        {
+            private readonly AccessTokenWithHeaders _headers;
+
+            public ExtraHeadersInterceptor(AccessTokenWithHeaders headers) => _headers = headers;
+
+            public Task InterceptAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                _headers.AddHeaders(request);
+                return Task.FromResult(true);
+            }
+        }
     }
 }
