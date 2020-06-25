@@ -42,7 +42,10 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Obsolete. Plese use <see cref="CallSettings(System.Threading.CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken)"/> instead.
+        /// Obsolete.
+        /// This is obsolete as it allows per-call credentials to be specified.
+        /// Please use <see cref="CallSettings(System.Threading.CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken)"/>,
+        /// and see https://github.com/googleapis/gax-dotnet/blob/master/docs/PER_CALL_CREDENTIAL.md for more information.
         /// Constructs an instance with the specified settings.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
@@ -52,7 +55,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
         /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
         /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
-        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md")]
+        [Obsolete("This is obsolete as it allows per-call credentials to be specified. Please use an alternative overload and see https://github.com/googleapis/gax-dotnet/blob/master/docs/PER_CALL_CREDENTIAL.md for more information.")]
         public CallSettings(
             CancellationToken? cancellationToken,
             CallCredentials credentials,
@@ -84,19 +87,17 @@ namespace Google.Api.Gax.Grpc
             ContextPropagationToken propagationToken,
             Action<Metadata> responseMetadataHandler,
             Action<Metadata> trailingMetadataHandler)
+#pragma warning disable CS0618 // Type or member is obsolete
+            : this(cancellationToken, null, expiration, retry, headerMutation, writeOptions, propagationToken, responseMetadataHandler, trailingMetadataHandler)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
-            CancellationToken = cancellationToken;
-            Expiration = expiration;
-            Retry = retry;
-            HeaderMutation = headerMutation;
-            WriteOptions = writeOptions;
-            PropagationToken = propagationToken;
-            ResponseMetadataHandler = responseMetadataHandler;
-            TrailingMetadataHandler = trailingMetadataHandler;
         }
 
         /// <summary>
-        /// Obsolete. Please use <see cref="CallSettings(CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken, Action{Metadata}, Action{Metadata})"/> instead.
+        /// Obsolete.
+        /// This is obsolete as it allows per-call credentials to be specified.
+        /// Please use <see cref="CallSettings(CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken, Action{Metadata}, Action{Metadata})"/>,
+        /// and see https://github.com/googleapis/gax-dotnet/blob/master/docs/PER_CALL_CREDENTIAL.md for more information.
         /// Constructs an instance with the specified settings.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
@@ -108,7 +109,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
         /// <param name="responseMetadataHandler">Action to invoke when response metadata is received.</param>
         /// <param name="trailingMetadataHandler">Action to invoke when trailing metadata is received.</param>
-        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md")]
+        [Obsolete("This is obsolete as it allows per-call credentials to be specified. Please use an alternative overload and see https://github.com/googleapis/gax-dotnet/blob/master/docs/PER_CALL_CREDENTIAL.md for more information.")]
         public CallSettings(
             CancellationToken? cancellationToken,
             CallCredentials credentials,
