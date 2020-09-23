@@ -51,7 +51,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     {
       /// <summary>Creates a new client for TestService</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
-      public TestServiceClient(grpc::Channel channel) : base(channel)
+      public TestServiceClient(grpc::ChannelBase channel) : base(channel)
       {
       }
       /// <summary>Creates a new client for TestService that uses a custom <c>CallInvoker</c>.</summary>
