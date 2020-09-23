@@ -58,7 +58,11 @@ namespace Google.Api {
   /// <summary>
   /// `Backend` defines the backend configuration for a service.
   /// </summary>
-  public sealed partial class Backend : pb::IMessage<Backend> {
+  public sealed partial class Backend : pb::IMessage<Backend>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Backend> _parser = new pb::MessageParser<Backend>(() => new Backend());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -141,11 +145,25 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       rules_.WriteTo(output, _repeated_rules_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      rules_.WriteTo(ref output, _repeated_rules_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -168,6 +186,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -180,14 +201,37 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            rules_.AddEntriesFrom(ref input, _repeated_rules_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// A backend rule provides configuration for an individual API element.
   /// </summary>
-  public sealed partial class BackendRule : pb::IMessage<BackendRule> {
+  public sealed partial class BackendRule : pb::IMessage<BackendRule>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<BackendRule> _parser = new pb::MessageParser<BackendRule>(() => new BackendRule());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -479,6 +523,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Selector);
@@ -518,7 +565,53 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
+      if (Address.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Address);
+      }
+      if (Deadline != 0D) {
+        output.WriteRawTag(25);
+        output.WriteDouble(Deadline);
+      }
+      if (MinDeadline != 0D) {
+        output.WriteRawTag(33);
+        output.WriteDouble(MinDeadline);
+      }
+      if (OperationDeadline != 0D) {
+        output.WriteRawTag(41);
+        output.WriteDouble(OperationDeadline);
+      }
+      if (PathTranslation != global::Google.Api.BackendRule.Types.PathTranslation.Unspecified) {
+        output.WriteRawTag(48);
+        output.WriteEnum((int) PathTranslation);
+      }
+      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+        output.WriteRawTag(58);
+        output.WriteString(JwtAudience);
+      }
+      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+        output.WriteRawTag(64);
+        output.WriteBool(DisableAuth);
+      }
+      if (Protocol.Length != 0) {
+        output.WriteRawTag(74);
+        output.WriteString(Protocol);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -596,6 +689,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -640,7 +736,58 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
+          case 18: {
+            Address = input.ReadString();
+            break;
+          }
+          case 25: {
+            Deadline = input.ReadDouble();
+            break;
+          }
+          case 33: {
+            MinDeadline = input.ReadDouble();
+            break;
+          }
+          case 41: {
+            OperationDeadline = input.ReadDouble();
+            break;
+          }
+          case 48: {
+            PathTranslation = (global::Google.Api.BackendRule.Types.PathTranslation) input.ReadEnum();
+            break;
+          }
+          case 58: {
+            JwtAudience = input.ReadString();
+            break;
+          }
+          case 64: {
+            DisableAuth = input.ReadBool();
+            break;
+          }
+          case 74: {
+            Protocol = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the BackendRule message type.</summary>

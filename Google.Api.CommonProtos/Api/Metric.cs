@@ -85,7 +85,11 @@ namespace Google.Api {
   /// The default maximum limit can be overridden. Please follow
   /// https://cloud.google.com/monitoring/quotas
   /// </summary>
-  public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor> {
+  public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<MetricDescriptor> _parser = new pb::MessageParser<MetricDescriptor>(() => new MetricDescriptor());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -270,6 +274,7 @@ namespace Google.Api {
     /// * `min`   minute
     /// * `h`     hour
     /// * `d`     day
+    /// * `1`     dimensionless
     ///
     /// **Prefixes (PREFIX)**
     ///
@@ -479,6 +484,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Name.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Name);
@@ -520,7 +528,55 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      labels_.WriteTo(ref output, _repeated_labels_codec);
+      if (MetricKind != global::Google.Api.MetricDescriptor.Types.MetricKind.Unspecified) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) MetricKind);
+      }
+      if (ValueType != global::Google.Api.MetricDescriptor.Types.ValueType.Unspecified) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) ValueType);
+      }
+      if (Unit.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Unit);
+      }
+      if (Description.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Description);
+      }
+      if (DisplayName.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(DisplayName);
+      }
+      if (Type.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Type);
+      }
+      if (metadata_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(Metadata);
+      }
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        output.WriteRawTag(96);
+        output.WriteEnum((int) LaunchStage);
+      }
+      monitoredResourceTypes_.WriteTo(ref output, _repeated_monitoredResourceTypes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -602,6 +658,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -657,7 +716,69 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            labels_.AddEntriesFrom(ref input, _repeated_labels_codec);
+            break;
+          }
+          case 24: {
+            MetricKind = (global::Google.Api.MetricDescriptor.Types.MetricKind) input.ReadEnum();
+            break;
+          }
+          case 32: {
+            ValueType = (global::Google.Api.MetricDescriptor.Types.ValueType) input.ReadEnum();
+            break;
+          }
+          case 42: {
+            Unit = input.ReadString();
+            break;
+          }
+          case 50: {
+            Description = input.ReadString();
+            break;
+          }
+          case 58: {
+            DisplayName = input.ReadString();
+            break;
+          }
+          case 66: {
+            Type = input.ReadString();
+            break;
+          }
+          case 82: {
+            if (metadata_ == null) {
+              Metadata = new global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata();
+            }
+            input.ReadMessage(Metadata);
+            break;
+          }
+          case 96: {
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
+          case 106: {
+            monitoredResourceTypes_.AddEntriesFrom(ref input, _repeated_monitoredResourceTypes_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the MetricDescriptor message type.</summary>
@@ -728,7 +849,11 @@ namespace Google.Api {
       /// <summary>
       /// Additional annotations that can be used to guide the usage of a metric.
       /// </summary>
-      public sealed partial class MetricDescriptorMetadata : pb::IMessage<MetricDescriptorMetadata> {
+      public sealed partial class MetricDescriptorMetadata : pb::IMessage<MetricDescriptorMetadata>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<MetricDescriptorMetadata> _parser = new pb::MessageParser<MetricDescriptorMetadata>(() => new MetricDescriptorMetadata());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -850,6 +975,9 @@ namespace Google.Api {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
             output.WriteRawTag(8);
             output.WriteEnum((int) LaunchStage);
@@ -865,7 +993,29 @@ namespace Google.Api {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+            output.WriteRawTag(8);
+            output.WriteEnum((int) LaunchStage);
+          }
+          if (samplePeriod_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(SamplePeriod);
+          }
+          if (ingestDelay_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(IngestDelay);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -910,6 +1060,9 @@ namespace Google.Api {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -936,7 +1089,40 @@ namespace Google.Api {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+                break;
+              }
+              case 18: {
+                if (samplePeriod_ == null) {
+                  SamplePeriod = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(SamplePeriod);
+                break;
+              }
+              case 26: {
+                if (ingestDelay_ == null) {
+                  IngestDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(IngestDelay);
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -949,7 +1135,11 @@ namespace Google.Api {
   /// A specific metric, identified by specifying values for all of the
   /// labels of a [`MetricDescriptor`][google.api.MetricDescriptor].
   /// </summary>
-  public sealed partial class Metric : pb::IMessage<Metric> {
+  public sealed partial class Metric : pb::IMessage<Metric>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Metric> _parser = new pb::MessageParser<Metric>(() => new Metric());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1049,6 +1239,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       labels_.WriteTo(output, _map_labels_codec);
       if (Type.Length != 0) {
         output.WriteRawTag(26);
@@ -1057,7 +1250,22 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      labels_.WriteTo(ref output, _map_labels_codec);
+      if (Type.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Type);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1086,6 +1294,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1102,7 +1313,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 18: {
+            labels_.AddEntriesFrom(ref input, _map_labels_codec);
+            break;
+          }
+          case 26: {
+            Type = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

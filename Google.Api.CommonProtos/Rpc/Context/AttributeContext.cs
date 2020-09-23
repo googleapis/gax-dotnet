@@ -32,51 +32,53 @@ namespace Google.Rpc.Context {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cipnb29nbGUvcnBjL2NvbnRleHQvYXR0cmlidXRlX2NvbnRleHQucHJvdG8S",
-            "Emdvb2dsZS5ycGMuY29udGV4dBocZ29vZ2xlL3Byb3RvYnVmL3N0cnVjdC5w",
-            "cm90bxofZ29vZ2xlL3Byb3RvYnVmL3RpbWVzdGFtcC5wcm90byLGDAoQQXR0",
-            "cmlidXRlQ29udGV4dBI5CgZvcmlnaW4YByABKAsyKS5nb29nbGUucnBjLmNv",
-            "bnRleHQuQXR0cmlidXRlQ29udGV4dC5QZWVyEjkKBnNvdXJjZRgBIAEoCzIp",
-            "Lmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlBlZXISPgoL",
-            "ZGVzdGluYXRpb24YAiABKAsyKS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmli",
-            "dXRlQ29udGV4dC5QZWVyEj0KB3JlcXVlc3QYAyABKAsyLC5nb29nbGUucnBj",
-            "LmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5SZXF1ZXN0Ej8KCHJlc3BvbnNl",
-            "GAQgASgLMi0uZ29vZ2xlLnJwYy5jb250ZXh0LkF0dHJpYnV0ZUNvbnRleHQu",
-            "UmVzcG9uc2USPwoIcmVzb3VyY2UYBSABKAsyLS5nb29nbGUucnBjLmNvbnRl",
-            "eHQuQXR0cmlidXRlQ29udGV4dC5SZXNvdXJjZRI1CgNhcGkYBiABKAsyKC5n",
-            "b29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5BcGkavgEKBFBl",
-            "ZXISCgoCaXAYASABKAkSDAoEcG9ydBgCIAEoAxJFCgZsYWJlbHMYBiADKAsy",
-            "NS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5QZWVyLkxh",
-            "YmVsc0VudHJ5EhEKCXByaW5jaXBhbBgHIAEoCRITCgtyZWdpb25fY29kZRgI",
-            "IAEoCRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiAB",
-            "KAk6AjgBGkwKA0FwaRIPCgdzZXJ2aWNlGAEgASgJEhEKCW9wZXJhdGlvbhgC",
-            "IAEoCRIQCghwcm90b2NvbBgDIAEoCRIPCgd2ZXJzaW9uGAQgASgJGn8KBEF1",
-            "dGgSEQoJcHJpbmNpcGFsGAEgASgJEhEKCWF1ZGllbmNlcxgCIAMoCRIRCglw",
-            "cmVzZW50ZXIYAyABKAkSJwoGY2xhaW1zGAQgASgLMhcuZ29vZ2xlLnByb3Rv",
-            "YnVmLlN0cnVjdBIVCg1hY2Nlc3NfbGV2ZWxzGAUgAygJGu8CCgdSZXF1ZXN0",
-            "EgoKAmlkGAEgASgJEg4KBm1ldGhvZBgCIAEoCRJKCgdoZWFkZXJzGAMgAygL",
-            "MjkuZ29vZ2xlLnJwYy5jb250ZXh0LkF0dHJpYnV0ZUNvbnRleHQuUmVxdWVz",
-            "dC5IZWFkZXJzRW50cnkSDAoEcGF0aBgEIAEoCRIMCgRob3N0GAUgASgJEg4K",
-            "BnNjaGVtZRgGIAEoCRINCgVxdWVyeRgHIAEoCRIoCgR0aW1lGAkgASgLMhou",
-            "Z29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRzaXplGAogASgDEhAKCHBy",
-            "b3RvY29sGAsgASgJEg4KBnJlYXNvbhgMIAEoCRI3CgRhdXRoGA0gASgLMiku",
-            "Z29vZ2xlLnJwYy5jb250ZXh0LkF0dHJpYnV0ZUNvbnRleHQuQXV0aBouCgxI",
-            "ZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARrN",
-            "AQoIUmVzcG9uc2USDAoEY29kZRgBIAEoAxIMCgRzaXplGAIgASgDEksKB2hl",
-            "YWRlcnMYAyADKAsyOi5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29u",
-            "dGV4dC5SZXNwb25zZS5IZWFkZXJzRW50cnkSKAoEdGltZRgEIAEoCzIaLmdv",
-            "b2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAaLgoMSGVhZGVyc0VudHJ5EgsKA2tl",
-            "eRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEasQEKCFJlc291cmNlEg8KB3Nl",
-            "cnZpY2UYASABKAkSDAoEbmFtZRgCIAEoCRIMCgR0eXBlGAMgASgJEkkKBmxh",
-            "YmVscxgEIAMoCzI5Lmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250",
-            "ZXh0LlJlc291cmNlLkxhYmVsc0VudHJ5Gi0KC0xhYmVsc0VudHJ5EgsKA2tl",
-            "eRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCiwEKFmNvbS5nb29nbGUucnBj",
-            "LmNvbnRleHRCFUF0dHJpYnV0ZUNvbnRleHRQcm90b1ABWlVnb29nbGUuZ29s",
-            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3JwYy9jb250ZXh0L2F0dHJp",
-            "YnV0ZV9jb250ZXh0O2F0dHJpYnV0ZV9jb250ZXh0+AEBYgZwcm90bzM="));
+            "Emdvb2dsZS5ycGMuY29udGV4dBoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90",
+            "bxocZ29vZ2xlL3Byb3RvYnVmL3N0cnVjdC5wcm90bxofZ29vZ2xlL3Byb3Rv",
+            "YnVmL3RpbWVzdGFtcC5wcm90byLwDAoQQXR0cmlidXRlQ29udGV4dBI5CgZv",
+            "cmlnaW4YByABKAsyKS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29u",
+            "dGV4dC5QZWVyEjkKBnNvdXJjZRgBIAEoCzIpLmdvb2dsZS5ycGMuY29udGV4",
+            "dC5BdHRyaWJ1dGVDb250ZXh0LlBlZXISPgoLZGVzdGluYXRpb24YAiABKAsy",
+            "KS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5QZWVyEj0K",
+            "B3JlcXVlc3QYAyABKAsyLC5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRl",
+            "Q29udGV4dC5SZXF1ZXN0Ej8KCHJlc3BvbnNlGAQgASgLMi0uZ29vZ2xlLnJw",
+            "Yy5jb250ZXh0LkF0dHJpYnV0ZUNvbnRleHQuUmVzcG9uc2USPwoIcmVzb3Vy",
+            "Y2UYBSABKAsyLS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4",
+            "dC5SZXNvdXJjZRI1CgNhcGkYBiABKAsyKC5nb29nbGUucnBjLmNvbnRleHQu",
+            "QXR0cmlidXRlQ29udGV4dC5BcGkSKAoKZXh0ZW5zaW9ucxgIIAMoCzIULmdv",
+            "b2dsZS5wcm90b2J1Zi5BbnkavgEKBFBlZXISCgoCaXAYASABKAkSDAoEcG9y",
+            "dBgCIAEoAxJFCgZsYWJlbHMYBiADKAsyNS5nb29nbGUucnBjLmNvbnRleHQu",
+            "QXR0cmlidXRlQ29udGV4dC5QZWVyLkxhYmVsc0VudHJ5EhEKCXByaW5jaXBh",
+            "bBgHIAEoCRITCgtyZWdpb25fY29kZRgIIAEoCRotCgtMYWJlbHNFbnRyeRIL",
+            "CgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGkwKA0FwaRIPCgdzZXJ2",
+            "aWNlGAEgASgJEhEKCW9wZXJhdGlvbhgCIAEoCRIQCghwcm90b2NvbBgDIAEo",
+            "CRIPCgd2ZXJzaW9uGAQgASgJGn8KBEF1dGgSEQoJcHJpbmNpcGFsGAEgASgJ",
+            "EhEKCWF1ZGllbmNlcxgCIAMoCRIRCglwcmVzZW50ZXIYAyABKAkSJwoGY2xh",
+            "aW1zGAQgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIVCg1hY2Nlc3Nf",
+            "bGV2ZWxzGAUgAygJGu8CCgdSZXF1ZXN0EgoKAmlkGAEgASgJEg4KBm1ldGhv",
+            "ZBgCIAEoCRJKCgdoZWFkZXJzGAMgAygLMjkuZ29vZ2xlLnJwYy5jb250ZXh0",
+            "LkF0dHJpYnV0ZUNvbnRleHQuUmVxdWVzdC5IZWFkZXJzRW50cnkSDAoEcGF0",
+            "aBgEIAEoCRIMCgRob3N0GAUgASgJEg4KBnNjaGVtZRgGIAEoCRINCgVxdWVy",
+            "eRgHIAEoCRIoCgR0aW1lGAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVz",
+            "dGFtcBIMCgRzaXplGAogASgDEhAKCHByb3RvY29sGAsgASgJEg4KBnJlYXNv",
+            "bhgMIAEoCRI3CgRhdXRoGA0gASgLMikuZ29vZ2xlLnJwYy5jb250ZXh0LkF0",
+            "dHJpYnV0ZUNvbnRleHQuQXV0aBouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEg",
+            "ASgJEg0KBXZhbHVlGAIgASgJOgI4ARrNAQoIUmVzcG9uc2USDAoEY29kZRgB",
+            "IAEoAxIMCgRzaXplGAIgASgDEksKB2hlYWRlcnMYAyADKAsyOi5nb29nbGUu",
+            "cnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5SZXNwb25zZS5IZWFkZXJz",
+            "RW50cnkSKAoEdGltZRgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3Rh",
+            "bXAaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
+            "CToCOAEasQEKCFJlc291cmNlEg8KB3NlcnZpY2UYASABKAkSDAoEbmFtZRgC",
+            "IAEoCRIMCgR0eXBlGAMgASgJEkkKBmxhYmVscxgEIAMoCzI5Lmdvb2dsZS5y",
+            "cGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlc291cmNlLkxhYmVsc0Vu",
+            "dHJ5Gi0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
+            "CToCOAFCiwEKFmNvbS5nb29nbGUucnBjLmNvbnRleHRCFUF0dHJpYnV0ZUNv",
+            "bnRleHRQcm90b1ABWlVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
+            "bGVhcGlzL3JwYy9jb250ZXh0L2F0dHJpYnV0ZV9jb250ZXh0O2F0dHJpYnV0",
+            "ZV9jb250ZXh0+AEBYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext), global::Google.Rpc.Context.AttributeContext.Parser, new[]{ "Origin", "Source", "Destination", "Request", "Response", "Resource", "Api" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Peer), global::Google.Rpc.Context.AttributeContext.Types.Peer.Parser, new[]{ "Ip", "Port", "Labels", "Principal", "RegionCode" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext), global::Google.Rpc.Context.AttributeContext.Parser, new[]{ "Origin", "Source", "Destination", "Request", "Response", "Resource", "Api", "Extensions" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Peer), global::Google.Rpc.Context.AttributeContext.Types.Peer.Parser, new[]{ "Ip", "Port", "Labels", "Principal", "RegionCode" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Api), global::Google.Rpc.Context.AttributeContext.Types.Api.Parser, new[]{ "Service", "Operation", "Protocol", "Version" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Auth), global::Google.Rpc.Context.AttributeContext.Types.Auth.Parser, new[]{ "Principal", "Audiences", "Presenter", "Claims", "AccessLevels" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Request), global::Google.Rpc.Context.AttributeContext.Types.Request.Parser, new[]{ "Id", "Method", "Headers", "Path", "Host", "Scheme", "Query", "Time", "Size", "Protocol", "Reason", "Auth" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
@@ -107,7 +109,11 @@ namespace Google.Rpc.Context {
   /// verify the system specification before relying on an attribute generated
   /// a system.
   /// </summary>
-  public sealed partial class AttributeContext : pb::IMessage<AttributeContext> {
+  public sealed partial class AttributeContext : pb::IMessage<AttributeContext>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AttributeContext> _parser = new pb::MessageParser<AttributeContext>(() => new AttributeContext());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -139,6 +145,7 @@ namespace Google.Rpc.Context {
       response_ = other.response_ != null ? other.response_.Clone() : null;
       resource_ = other.resource_ != null ? other.resource_.Clone() : null;
       api_ = other.api_ != null ? other.api_.Clone() : null;
+      extensions_ = other.extensions_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -253,6 +260,19 @@ namespace Google.Rpc.Context {
       }
     }
 
+    /// <summary>Field number for the "extensions" field.</summary>
+    public const int ExtensionsFieldNumber = 8;
+    private static readonly pb::FieldCodec<global::Google.Protobuf.WellKnownTypes.Any> _repeated_extensions_codec
+        = pb::FieldCodec.ForMessage(66, global::Google.Protobuf.WellKnownTypes.Any.Parser);
+    private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> extensions_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any>();
+    /// <summary>
+    /// Supports extensions for advanced use cases, such as logs and metrics.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> Extensions {
+      get { return extensions_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AttributeContext);
@@ -273,6 +293,7 @@ namespace Google.Rpc.Context {
       if (!object.Equals(Response, other.Response)) return false;
       if (!object.Equals(Resource, other.Resource)) return false;
       if (!object.Equals(Api, other.Api)) return false;
+      if(!extensions_.Equals(other.extensions_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -286,6 +307,7 @@ namespace Google.Rpc.Context {
       if (response_ != null) hash ^= Response.GetHashCode();
       if (resource_ != null) hash ^= Resource.GetHashCode();
       if (api_ != null) hash ^= Api.GetHashCode();
+      hash ^= extensions_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -299,6 +321,9 @@ namespace Google.Rpc.Context {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (source_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(Source);
@@ -327,10 +352,50 @@ namespace Google.Rpc.Context {
         output.WriteRawTag(58);
         output.WriteMessage(Origin);
       }
+      extensions_.WriteTo(output, _repeated_extensions_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (source_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Source);
+      }
+      if (destination_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Destination);
+      }
+      if (request_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Request);
+      }
+      if (response_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Response);
+      }
+      if (resource_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(Resource);
+      }
+      if (api_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(Api);
+      }
+      if (origin_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(Origin);
+      }
+      extensions_.WriteTo(ref output, _repeated_extensions_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -356,6 +421,7 @@ namespace Google.Rpc.Context {
       if (api_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Api);
       }
+      size += extensions_.CalculateSize(_repeated_extensions_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -409,11 +475,15 @@ namespace Google.Rpc.Context {
         }
         Api.MergeFrom(other.Api);
       }
+      extensions_.Add(other.extensions_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -469,9 +539,81 @@ namespace Google.Rpc.Context {
             input.ReadMessage(Origin);
             break;
           }
+          case 66: {
+            extensions_.AddEntriesFrom(input, _repeated_extensions_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (source_ == null) {
+              Source = new global::Google.Rpc.Context.AttributeContext.Types.Peer();
+            }
+            input.ReadMessage(Source);
+            break;
+          }
+          case 18: {
+            if (destination_ == null) {
+              Destination = new global::Google.Rpc.Context.AttributeContext.Types.Peer();
+            }
+            input.ReadMessage(Destination);
+            break;
+          }
+          case 26: {
+            if (request_ == null) {
+              Request = new global::Google.Rpc.Context.AttributeContext.Types.Request();
+            }
+            input.ReadMessage(Request);
+            break;
+          }
+          case 34: {
+            if (response_ == null) {
+              Response = new global::Google.Rpc.Context.AttributeContext.Types.Response();
+            }
+            input.ReadMessage(Response);
+            break;
+          }
+          case 42: {
+            if (resource_ == null) {
+              Resource = new global::Google.Rpc.Context.AttributeContext.Types.Resource();
+            }
+            input.ReadMessage(Resource);
+            break;
+          }
+          case 50: {
+            if (api_ == null) {
+              Api = new global::Google.Rpc.Context.AttributeContext.Types.Api();
+            }
+            input.ReadMessage(Api);
+            break;
+          }
+          case 58: {
+            if (origin_ == null) {
+              Origin = new global::Google.Rpc.Context.AttributeContext.Types.Peer();
+            }
+            input.ReadMessage(Origin);
+            break;
+          }
+          case 66: {
+            extensions_.AddEntriesFrom(ref input, _repeated_extensions_codec);
+            break;
+          }
         }
       }
     }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the AttributeContext message type.</summary>
@@ -483,7 +625,11 @@ namespace Google.Rpc.Context {
       /// or receives the request. Service peers should fill in
       /// `principal` and `labels` as appropriate.
       /// </summary>
-      public sealed partial class Peer : pb::IMessage<Peer> {
+      public sealed partial class Peer : pb::IMessage<Peer>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Peer> _parser = new pb::MessageParser<Peer>(() => new Peer());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -636,6 +782,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Ip.Length != 0) {
             output.WriteRawTag(10);
             output.WriteString(Ip);
@@ -656,7 +805,34 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Ip.Length != 0) {
+            output.WriteRawTag(10);
+            output.WriteString(Ip);
+          }
+          if (Port != 0L) {
+            output.WriteRawTag(16);
+            output.WriteInt64(Port);
+          }
+          labels_.WriteTo(ref output, _map_labels_codec);
+          if (Principal.Length != 0) {
+            output.WriteRawTag(58);
+            output.WriteString(Principal);
+          }
+          if (RegionCode.Length != 0) {
+            output.WriteRawTag(66);
+            output.WriteString(RegionCode);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -703,6 +879,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -731,7 +910,42 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                Ip = input.ReadString();
+                break;
+              }
+              case 16: {
+                Port = input.ReadInt64();
+                break;
+              }
+              case 50: {
+                labels_.AddEntriesFrom(ref input, _map_labels_codec);
+                break;
+              }
+              case 58: {
+                Principal = input.ReadString();
+                break;
+              }
+              case 66: {
+                RegionCode = input.ReadString();
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -740,7 +954,11 @@ namespace Google.Rpc.Context {
       /// a network API request. The terminology is based on the conventions used
       /// by Google APIs, Istio, and OpenAPI.
       /// </summary>
-      public sealed partial class Api : pb::IMessage<Api> {
+      public sealed partial class Api : pb::IMessage<Api>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Api> _parser = new pb::MessageParser<Api>(() => new Api());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -879,6 +1097,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Service.Length != 0) {
             output.WriteRawTag(10);
             output.WriteString(Service);
@@ -898,7 +1119,33 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Service.Length != 0) {
+            output.WriteRawTag(10);
+            output.WriteString(Service);
+          }
+          if (Operation.Length != 0) {
+            output.WriteRawTag(18);
+            output.WriteString(Operation);
+          }
+          if (Protocol.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(Protocol);
+          }
+          if (Version.Length != 0) {
+            output.WriteRawTag(34);
+            output.WriteString(Version);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -943,6 +1190,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -967,7 +1217,38 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                Service = input.ReadString();
+                break;
+              }
+              case 18: {
+                Operation = input.ReadString();
+                break;
+              }
+              case 26: {
+                Protocol = input.ReadString();
+                break;
+              }
+              case 34: {
+                Version = input.ReadString();
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -976,7 +1257,11 @@ namespace Google.Rpc.Context {
       /// based on the JSON Web Token (JWT) standard, but the terms also
       /// correlate to concepts in other standards.
       /// </summary>
-      public sealed partial class Auth : pb::IMessage<Auth> {
+      public sealed partial class Auth : pb::IMessage<Auth>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Auth> _parser = new pb::MessageParser<Auth>(() => new Auth());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1043,10 +1328,10 @@ namespace Google.Rpc.Context {
         /// value(s) depends on the `issuer`, but typically include one or more of
         /// the following pieces of information:
         ///
-        /// *  The services intended to receive the credential such as
-        ///    ["pubsub.googleapis.com", "storage.googleapis.com"]
+        /// *  The services intended to receive the credential. For example,
+        ///    ["https://pubsub.googleapis.com/", "https://storage.googleapis.com/"].
         /// *  A set of service-based scopes. For example,
-        ///    ["https://www.googleapis.com/auth/cloud-platform"]
+        ///    ["https://www.googleapis.com/auth/cloud-platform"].
         /// *  The client id of an app, such as the Firebase project id for JWTs
         ///    from Firebase Auth.
         ///
@@ -1164,6 +1449,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Principal.Length != 0) {
             output.WriteRawTag(10);
             output.WriteString(Principal);
@@ -1181,7 +1469,31 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Principal.Length != 0) {
+            output.WriteRawTag(10);
+            output.WriteString(Principal);
+          }
+          audiences_.WriteTo(ref output, _repeated_audiences_codec);
+          if (Presenter.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(Presenter);
+          }
+          if (claims_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(Claims);
+          }
+          accessLevels_.WriteTo(ref output, _repeated_accessLevels_codec);
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -1227,6 +1539,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -1258,7 +1573,45 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                Principal = input.ReadString();
+                break;
+              }
+              case 18: {
+                audiences_.AddEntriesFrom(ref input, _repeated_audiences_codec);
+                break;
+              }
+              case 26: {
+                Presenter = input.ReadString();
+                break;
+              }
+              case 34: {
+                if (claims_ == null) {
+                  Claims = new global::Google.Protobuf.WellKnownTypes.Struct();
+                }
+                input.ReadMessage(Claims);
+                break;
+              }
+              case 42: {
+                accessLevels_.AddEntriesFrom(ref input, _repeated_accessLevels_codec);
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -1267,7 +1620,11 @@ namespace Google.Rpc.Context {
       /// request is not an HTTP request, the runtime system should try to map
       /// the actual request to an equivalent HTTP request.
       /// </summary>
-      public sealed partial class Request : pb::IMessage<Request> {
+      public sealed partial class Request : pb::IMessage<Request>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Request> _parser = new pb::MessageParser<Request>(() => new Request());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1546,6 +1903,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Id.Length != 0) {
             output.WriteRawTag(10);
             output.WriteString(Id);
@@ -1594,7 +1954,62 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Id.Length != 0) {
+            output.WriteRawTag(10);
+            output.WriteString(Id);
+          }
+          if (Method.Length != 0) {
+            output.WriteRawTag(18);
+            output.WriteString(Method);
+          }
+          headers_.WriteTo(ref output, _map_headers_codec);
+          if (Path.Length != 0) {
+            output.WriteRawTag(34);
+            output.WriteString(Path);
+          }
+          if (Host.Length != 0) {
+            output.WriteRawTag(42);
+            output.WriteString(Host);
+          }
+          if (Scheme.Length != 0) {
+            output.WriteRawTag(50);
+            output.WriteString(Scheme);
+          }
+          if (Query.Length != 0) {
+            output.WriteRawTag(58);
+            output.WriteString(Query);
+          }
+          if (time_ != null) {
+            output.WriteRawTag(74);
+            output.WriteMessage(Time);
+          }
+          if (Size != 0L) {
+            output.WriteRawTag(80);
+            output.WriteInt64(Size);
+          }
+          if (Protocol.Length != 0) {
+            output.WriteRawTag(90);
+            output.WriteString(Protocol);
+          }
+          if (Reason.Length != 0) {
+            output.WriteRawTag(98);
+            output.WriteString(Reason);
+          }
+          if (auth_ != null) {
+            output.WriteRawTag(106);
+            output.WriteMessage(Auth);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -1689,6 +2104,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -1751,7 +2169,76 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                Id = input.ReadString();
+                break;
+              }
+              case 18: {
+                Method = input.ReadString();
+                break;
+              }
+              case 26: {
+                headers_.AddEntriesFrom(ref input, _map_headers_codec);
+                break;
+              }
+              case 34: {
+                Path = input.ReadString();
+                break;
+              }
+              case 42: {
+                Host = input.ReadString();
+                break;
+              }
+              case 50: {
+                Scheme = input.ReadString();
+                break;
+              }
+              case 58: {
+                Query = input.ReadString();
+                break;
+              }
+              case 74: {
+                if (time_ == null) {
+                  Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(Time);
+                break;
+              }
+              case 80: {
+                Size = input.ReadInt64();
+                break;
+              }
+              case 90: {
+                Protocol = input.ReadString();
+                break;
+              }
+              case 98: {
+                Reason = input.ReadString();
+                break;
+              }
+              case 106: {
+                if (auth_ == null) {
+                  Auth = new global::Google.Rpc.Context.AttributeContext.Types.Auth();
+                }
+                input.ReadMessage(Auth);
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -1759,7 +2246,11 @@ namespace Google.Rpc.Context {
       /// This message defines attributes for a typical network response. It
       /// generally models semantics of an HTTP response.
       /// </summary>
-      public sealed partial class Response : pb::IMessage<Response> {
+      public sealed partial class Response : pb::IMessage<Response>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Response> _parser = new pb::MessageParser<Response>(() => new Response());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1894,6 +2385,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Code != 0L) {
             output.WriteRawTag(8);
             output.WriteInt64(Code);
@@ -1910,7 +2404,30 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Code != 0L) {
+            output.WriteRawTag(8);
+            output.WriteInt64(Code);
+          }
+          if (Size != 0L) {
+            output.WriteRawTag(16);
+            output.WriteInt64(Size);
+          }
+          headers_.WriteTo(ref output, _map_headers_codec);
+          if (time_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(Time);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -1954,6 +2471,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -1981,7 +2501,41 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                Code = input.ReadInt64();
+                break;
+              }
+              case 16: {
+                Size = input.ReadInt64();
+                break;
+              }
+              case 26: {
+                headers_.AddEntriesFrom(ref input, _map_headers_codec);
+                break;
+              }
+              case 34: {
+                if (time_ == null) {
+                  Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(Time);
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
@@ -1990,7 +2544,11 @@ namespace Google.Rpc.Context {
       /// addressable (named) entity provided by the destination service. For
       /// example, a file stored on a network storage service.
       /// </summary>
-      public sealed partial class Resource : pb::IMessage<Resource> {
+      public sealed partial class Resource : pb::IMessage<Resource>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<Resource> _parser = new pb::MessageParser<Resource>(() => new Resource());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2139,6 +2697,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           if (Service.Length != 0) {
             output.WriteRawTag(10);
             output.WriteString(Service);
@@ -2155,7 +2716,30 @@ namespace Google.Rpc.Context {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Service.Length != 0) {
+            output.WriteRawTag(10);
+            output.WriteString(Service);
+          }
+          if (Name.Length != 0) {
+            output.WriteRawTag(18);
+            output.WriteString(Name);
+          }
+          if (Type.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(Type);
+          }
+          labels_.WriteTo(ref output, _map_labels_codec);
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -2196,6 +2780,9 @@ namespace Google.Rpc.Context {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -2220,7 +2807,38 @@ namespace Google.Rpc.Context {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                Service = input.ReadString();
+                break;
+              }
+              case 18: {
+                Name = input.ReadString();
+                break;
+              }
+              case 26: {
+                Type = input.ReadString();
+                break;
+              }
+              case 34: {
+                labels_.AddEntriesFrom(ref input, _map_labels_codec);
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 
