@@ -32,27 +32,29 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chlnb29nbGUvYXBpL3Jlc291cmNlLnByb3RvEgpnb29nbGUuYXBpGiBnb29n",
-            "bGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byL/AQoSUmVzb3VyY2VEZXNj",
+            "bGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byLuAgoSUmVzb3VyY2VEZXNj",
             "cmlwdG9yEgwKBHR5cGUYASABKAkSDwoHcGF0dGVybhgCIAMoCRISCgpuYW1l",
             "X2ZpZWxkGAMgASgJEjcKB2hpc3RvcnkYBCABKA4yJi5nb29nbGUuYXBpLlJl",
             "c291cmNlRGVzY3JpcHRvci5IaXN0b3J5Eg4KBnBsdXJhbBgFIAEoCRIQCghz",
-            "aW5ndWxhchgGIAEoCSJbCgdIaXN0b3J5EhcKE0hJU1RPUllfVU5TUEVDSUZJ",
-            "RUQQABIdChlPUklHSU5BTExZX1NJTkdMRV9QQVRURVJOEAESGAoURlVUVVJF",
-            "X01VTFRJX1BBVFRFUk4QAiI1ChFSZXNvdXJjZVJlZmVyZW5jZRIMCgR0eXBl",
-            "GAEgASgJEhIKCmNoaWxkX3R5cGUYAiABKAk6WQoScmVzb3VyY2VfcmVmZXJl",
-            "bmNlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxifCCABKAsyHS5n",
-            "b29nbGUuYXBpLlJlc291cmNlUmVmZXJlbmNlOloKE3Jlc291cmNlX2RlZmlu",
-            "aXRpb24SHC5nb29nbGUucHJvdG9idWYuRmlsZU9wdGlvbnMYnQggAygLMh4u",
-            "Z29vZ2xlLmFwaS5SZXNvdXJjZURlc2NyaXB0b3I6UgoIcmVzb3VyY2USHy5n",
-            "b29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYnQggASgLMh4uZ29vZ2xl",
-            "LmFwaS5SZXNvdXJjZURlc2NyaXB0b3JCbgoOY29tLmdvb2dsZS5hcGlCDVJl",
-            "c291cmNlUHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29v",
-            "Z2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlvbnP4AQGiAgRHQVBJ",
-            "YgZwcm90bzM="));
+            "aW5ndWxhchgGIAEoCRIzCgVzdHlsZRgKIAMoDjIkLmdvb2dsZS5hcGkuUmVz",
+            "b3VyY2VEZXNjcmlwdG9yLlN0eWxlIlsKB0hpc3RvcnkSFwoTSElTVE9SWV9V",
+            "TlNQRUNJRklFRBAAEh0KGU9SSUdJTkFMTFlfU0lOR0xFX1BBVFRFUk4QARIY",
+            "ChRGVVRVUkVfTVVMVElfUEFUVEVSThACIjgKBVN0eWxlEhUKEVNUWUxFX1VO",
+            "U1BFQ0lGSUVEEAASGAoUREVDTEFSQVRJVkVfRlJJRU5ETFkQASI1ChFSZXNv",
+            "dXJjZVJlZmVyZW5jZRIMCgR0eXBlGAEgASgJEhIKCmNoaWxkX3R5cGUYAiAB",
+            "KAk6WQoScmVzb3VyY2VfcmVmZXJlbmNlEh0uZ29vZ2xlLnByb3RvYnVmLkZp",
+            "ZWxkT3B0aW9ucxifCCABKAsyHS5nb29nbGUuYXBpLlJlc291cmNlUmVmZXJl",
+            "bmNlOloKE3Jlc291cmNlX2RlZmluaXRpb24SHC5nb29nbGUucHJvdG9idWYu",
+            "RmlsZU9wdGlvbnMYnQggAygLMh4uZ29vZ2xlLmFwaS5SZXNvdXJjZURlc2Ny",
+            "aXB0b3I6UgoIcmVzb3VyY2USHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9w",
+            "dGlvbnMYnQggASgLMh4uZ29vZ2xlLmFwaS5SZXNvdXJjZURlc2NyaXB0b3JC",
+            "bgoOY29tLmdvb2dsZS5hcGlCDVJlc291cmNlUHJvdG9QAVpBZ29vZ2xlLmdv",
+            "bGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7",
+            "YW5ub3RhdGlvbnP4AQGiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pb::Extension[] { ResourceExtensions.ResourceReference, ResourceExtensions.ResourceDefinition, ResourceExtensions.Resource }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ResourceDescriptor), global::Google.Api.ResourceDescriptor.Parser, new[]{ "Type", "Pattern", "NameField", "History", "Plural", "Singular" }, null, new[]{ typeof(global::Google.Api.ResourceDescriptor.Types.History) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ResourceDescriptor), global::Google.Api.ResourceDescriptor.Parser, new[]{ "Type", "Pattern", "NameField", "History", "Plural", "Singular", "Style" }, null, new[]{ typeof(global::Google.Api.ResourceDescriptor.Types.History), typeof(global::Google.Api.ResourceDescriptor.Types.Style) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ResourceReference), global::Google.Api.ResourceReference.Parser, new[]{ "Type", "ChildType" }, null, null, null, null)
           }));
     }
@@ -192,7 +194,11 @@ namespace Google.Api {
   ///         - pattern: "shelves/{shelf}"
   ///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
   /// </summary>
-  public sealed partial class ResourceDescriptor : pb::IMessage<ResourceDescriptor> {
+  public sealed partial class ResourceDescriptor : pb::IMessage<ResourceDescriptor>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ResourceDescriptor> _parser = new pb::MessageParser<ResourceDescriptor>(() => new ResourceDescriptor());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -223,6 +229,7 @@ namespace Google.Api {
       history_ = other.history_;
       plural_ = other.plural_;
       singular_ = other.singular_;
+      style_ = other.style_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -365,6 +372,21 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "style" field.</summary>
+    public const int StyleFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::Google.Api.ResourceDescriptor.Types.Style> _repeated_style_codec
+        = pb::FieldCodec.ForEnum(82, x => (int) x, x => (global::Google.Api.ResourceDescriptor.Types.Style) x);
+    private readonly pbc::RepeatedField<global::Google.Api.ResourceDescriptor.Types.Style> style_ = new pbc::RepeatedField<global::Google.Api.ResourceDescriptor.Types.Style>();
+    /// <summary>
+    /// Style flag(s) for this resource.
+    /// These indicate that a resource is expected to conform to a given
+    /// style. See the specific style flags for additional information.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Google.Api.ResourceDescriptor.Types.Style> Style {
+      get { return style_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ResourceDescriptor);
@@ -384,6 +406,7 @@ namespace Google.Api {
       if (History != other.History) return false;
       if (Plural != other.Plural) return false;
       if (Singular != other.Singular) return false;
+      if(!style_.Equals(other.style_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -396,6 +419,7 @@ namespace Google.Api {
       if (History != global::Google.Api.ResourceDescriptor.Types.History.Unspecified) hash ^= History.GetHashCode();
       if (Plural.Length != 0) hash ^= Plural.GetHashCode();
       if (Singular.Length != 0) hash ^= Singular.GetHashCode();
+      hash ^= style_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -409,6 +433,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Type.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Type);
@@ -430,10 +457,43 @@ namespace Google.Api {
         output.WriteRawTag(50);
         output.WriteString(Singular);
       }
+      style_.WriteTo(output, _repeated_style_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      pattern_.WriteTo(ref output, _repeated_pattern_codec);
+      if (NameField.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(NameField);
+      }
+      if (History != global::Google.Api.ResourceDescriptor.Types.History.Unspecified) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) History);
+      }
+      if (Plural.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Plural);
+      }
+      if (Singular.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Singular);
+      }
+      style_.WriteTo(ref output, _repeated_style_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -454,6 +514,7 @@ namespace Google.Api {
       if (Singular.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Singular);
       }
+      size += style_.CalculateSize(_repeated_style_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -481,11 +542,15 @@ namespace Google.Api {
       if (other.Singular.Length != 0) {
         Singular = other.Singular;
       }
+      style_.Add(other.style_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -516,9 +581,58 @@ namespace Google.Api {
             Singular = input.ReadString();
             break;
           }
+          case 82:
+          case 80: {
+            style_.AddEntriesFrom(input, _repeated_style_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            pattern_.AddEntriesFrom(ref input, _repeated_pattern_codec);
+            break;
+          }
+          case 26: {
+            NameField = input.ReadString();
+            break;
+          }
+          case 32: {
+            History = (global::Google.Api.ResourceDescriptor.Types.History) input.ReadEnum();
+            break;
+          }
+          case 42: {
+            Plural = input.ReadString();
+            break;
+          }
+          case 50: {
+            Singular = input.ReadString();
+            break;
+          }
+          case 82:
+          case 80: {
+            style_.AddEntriesFrom(ref input, _repeated_style_codec);
+            break;
+          }
         }
       }
     }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the ResourceDescriptor message type.</summary>
@@ -546,6 +660,27 @@ namespace Google.Api {
         [pbr::OriginalName("FUTURE_MULTI_PATTERN")] FutureMultiPattern = 2,
       }
 
+      /// <summary>
+      /// A flag representing a specific style that a resource claims to conform to.
+      /// </summary>
+      public enum Style {
+        /// <summary>
+        /// The unspecified value. Do not use.
+        /// </summary>
+        [pbr::OriginalName("STYLE_UNSPECIFIED")] Unspecified = 0,
+        /// <summary>
+        /// This resource is intended to be "declarative-friendly".
+        ///
+        /// Declarative-friendly resources must be more strictly consistent, and
+        /// setting this to true communicates to tools that this resource should
+        /// adhere to declarative-friendly expectations.
+        ///
+        /// Note: This is used by the API linter (linter.aip.dev) to enable
+        /// additional checks.
+        /// </summary>
+        [pbr::OriginalName("DECLARATIVE_FRIENDLY")] DeclarativeFriendly = 1,
+      }
+
     }
     #endregion
 
@@ -555,7 +690,11 @@ namespace Google.Api {
   /// Defines a proto annotation that describes a string field that refers to
   /// an API resource.
   /// </summary>
-  public sealed partial class ResourceReference : pb::IMessage<ResourceReference> {
+  public sealed partial class ResourceReference : pb::IMessage<ResourceReference>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ResourceReference> _parser = new pb::MessageParser<ResourceReference>(() => new ResourceReference());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -683,6 +822,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Type.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Type);
@@ -694,7 +836,25 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      if (ChildType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ChildType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -727,6 +887,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -743,7 +906,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            ChildType = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

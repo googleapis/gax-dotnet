@@ -53,7 +53,11 @@ namespace Google.Api {
   /// <summary>
   /// Configuration controlling usage of a service.
   /// </summary>
-  public sealed partial class Usage : pb::IMessage<Usage> {
+  public sealed partial class Usage : pb::IMessage<Usage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Usage> _parser = new pb::MessageParser<Usage>(() => new Usage());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -178,6 +182,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       requirements_.WriteTo(output, _repeated_requirements_codec);
       rules_.WriteTo(output, _repeated_rules_codec);
       if (ProducerNotificationChannel.Length != 0) {
@@ -187,7 +194,23 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      requirements_.WriteTo(ref output, _repeated_requirements_codec);
+      rules_.WriteTo(ref output, _repeated_rules_codec);
+      if (ProducerNotificationChannel.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(ProducerNotificationChannel);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -218,6 +241,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -238,7 +264,34 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            requirements_.AddEntriesFrom(ref input, _repeated_requirements_codec);
+            break;
+          }
+          case 50: {
+            rules_.AddEntriesFrom(ref input, _repeated_rules_codec);
+            break;
+          }
+          case 58: {
+            ProducerNotificationChannel = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -268,7 +321,11 @@ namespace Google.Api {
   ///       - selector: "google.example.library.v1.LibraryService.CreateBook"
   ///         allow_unregistered_calls: true
   /// </summary>
-  public sealed partial class UsageRule : pb::IMessage<UsageRule> {
+  public sealed partial class UsageRule : pb::IMessage<UsageRule>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<UsageRule> _parser = new pb::MessageParser<UsageRule>(() => new UsageRule());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -391,6 +448,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Selector);
@@ -406,7 +466,29 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
+      if (AllowUnregisteredCalls != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(AllowUnregisteredCalls);
+      }
+      if (SkipServiceControl != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(SkipServiceControl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -445,6 +527,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -465,7 +550,34 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
+          case 16: {
+            AllowUnregisteredCalls = input.ReadBool();
+            break;
+          }
+          case 24: {
+            SkipServiceControl = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

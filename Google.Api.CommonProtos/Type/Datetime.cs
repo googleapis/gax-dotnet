@@ -71,7 +71,11 @@ namespace Google.Type {
   /// This type is more flexible than some applications may want. Make sure to
   /// document and validate your application's limitations.
   /// </summary>
-  public sealed partial class DateTime : pb::IMessage<DateTime> {
+  public sealed partial class DateTime : pb::IMessage<DateTime>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<DateTime> _parser = new pb::MessageParser<DateTime>(() => new DateTime());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -325,6 +329,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Year != 0) {
         output.WriteRawTag(8);
         output.WriteInt32(Year);
@@ -364,7 +371,53 @@ namespace Google.Type {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Year != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Year);
+      }
+      if (Month != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Month);
+      }
+      if (Day != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Day);
+      }
+      if (Hours != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Hours);
+      }
+      if (Minutes != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(Minutes);
+      }
+      if (Seconds != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Seconds);
+      }
+      if (Nanos != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(Nanos);
+      }
+      if (timeOffsetCase_ == TimeOffsetOneofCase.UtcOffset) {
+        output.WriteRawTag(66);
+        output.WriteMessage(UtcOffset);
+      }
+      if (timeOffsetCase_ == TimeOffsetOneofCase.TimeZone) {
+        output.WriteRawTag(74);
+        output.WriteMessage(TimeZone);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -448,6 +501,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -502,7 +558,68 @@ namespace Google.Type {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Year = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Month = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Day = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Hours = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            Minutes = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Seconds = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            Nanos = input.ReadInt32();
+            break;
+          }
+          case 66: {
+            global::Google.Protobuf.WellKnownTypes.Duration subBuilder = new global::Google.Protobuf.WellKnownTypes.Duration();
+            if (timeOffsetCase_ == TimeOffsetOneofCase.UtcOffset) {
+              subBuilder.MergeFrom(UtcOffset);
+            }
+            input.ReadMessage(subBuilder);
+            UtcOffset = subBuilder;
+            break;
+          }
+          case 74: {
+            global::Google.Type.TimeZone subBuilder = new global::Google.Type.TimeZone();
+            if (timeOffsetCase_ == TimeOffsetOneofCase.TimeZone) {
+              subBuilder.MergeFrom(TimeZone);
+            }
+            input.ReadMessage(subBuilder);
+            TimeZone = subBuilder;
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -510,7 +627,11 @@ namespace Google.Type {
   /// Represents a time zone from the
   /// [IANA Time Zone Database](https://www.iana.org/time-zones).
   /// </summary>
-  public sealed partial class TimeZone : pb::IMessage<TimeZone> {
+  public sealed partial class TimeZone : pb::IMessage<TimeZone>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<TimeZone> _parser = new pb::MessageParser<TimeZone>(() => new TimeZone());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -609,6 +730,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Id.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Id);
@@ -620,7 +744,25 @@ namespace Google.Type {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Id.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Version.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Version);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -653,6 +795,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -669,7 +814,30 @@ namespace Google.Type {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Id = input.ReadString();
+            break;
+          }
+          case 18: {
+            Version = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

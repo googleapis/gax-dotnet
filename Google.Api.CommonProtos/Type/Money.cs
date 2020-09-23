@@ -49,7 +49,11 @@ namespace Google.Type {
   /// <summary>
   /// Represents an amount of money with its currency type.
   /// </summary>
-  public sealed partial class Money : pb::IMessage<Money> {
+  public sealed partial class Money : pb::IMessage<Money>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Money> _parser = new pb::MessageParser<Money>(() => new Money());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -171,6 +175,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (CurrencyCode.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(CurrencyCode);
@@ -186,7 +193,29 @@ namespace Google.Type {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (CurrencyCode.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CurrencyCode);
+      }
+      if (Units != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(Units);
+      }
+      if (Nanos != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Nanos);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -225,6 +254,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -245,7 +277,34 @@ namespace Google.Type {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            CurrencyCode = input.ReadString();
+            break;
+          }
+          case 16: {
+            Units = input.ReadInt64();
+            break;
+          }
+          case 24: {
+            Nanos = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

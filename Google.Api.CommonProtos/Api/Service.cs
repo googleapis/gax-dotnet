@@ -106,7 +106,11 @@ namespace Google.Api {
   ///         requirements:
   ///           provider_id: google_calendar_auth
   /// </summary>
-  public sealed partial class Service : pb::IMessage<Service> {
+  public sealed partial class Service : pb::IMessage<Service>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Service> _parser = new pb::MessageParser<Service>(() => new Service());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -621,6 +625,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Name.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Name);
@@ -702,7 +709,95 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (Title.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Title);
+      }
+      apis_.WriteTo(ref output, _repeated_apis_codec);
+      types_.WriteTo(ref output, _repeated_types_codec);
+      enums_.WriteTo(ref output, _repeated_enums_codec);
+      if (documentation_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(Documentation);
+      }
+      if (backend_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Backend);
+      }
+      if (http_ != null) {
+        output.WriteRawTag(74);
+        output.WriteMessage(Http);
+      }
+      if (quota_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(Quota);
+      }
+      if (authentication_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(Authentication);
+      }
+      if (context_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(Context);
+      }
+      if (usage_ != null) {
+        output.WriteRawTag(122);
+        output.WriteMessage(Usage);
+      }
+      endpoints_.WriteTo(ref output, _repeated_endpoints_codec);
+      if (configVersion_ != null) {
+        _single_configVersion_codec.WriteTagAndValue(ref output, ConfigVersion);
+      }
+      if (control_ != null) {
+        output.WriteRawTag(170, 1);
+        output.WriteMessage(Control);
+      }
+      if (ProducerProjectId.Length != 0) {
+        output.WriteRawTag(178, 1);
+        output.WriteString(ProducerProjectId);
+      }
+      logs_.WriteTo(ref output, _repeated_logs_codec);
+      metrics_.WriteTo(ref output, _repeated_metrics_codec);
+      monitoredResources_.WriteTo(ref output, _repeated_monitoredResources_codec);
+      if (billing_ != null) {
+        output.WriteRawTag(210, 1);
+        output.WriteMessage(Billing);
+      }
+      if (logging_ != null) {
+        output.WriteRawTag(218, 1);
+        output.WriteMessage(Logging);
+      }
+      if (monitoring_ != null) {
+        output.WriteRawTag(226, 1);
+        output.WriteMessage(Monitoring);
+      }
+      if (systemParameters_ != null) {
+        output.WriteRawTag(234, 1);
+        output.WriteMessage(SystemParameters);
+      }
+      if (Id.Length != 0) {
+        output.WriteRawTag(138, 2);
+        output.WriteString(Id);
+      }
+      if (sourceInfo_ != null) {
+        output.WriteRawTag(170, 2);
+        output.WriteMessage(SourceInfo);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -886,6 +981,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1036,7 +1134,164 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            Title = input.ReadString();
+            break;
+          }
+          case 26: {
+            apis_.AddEntriesFrom(ref input, _repeated_apis_codec);
+            break;
+          }
+          case 34: {
+            types_.AddEntriesFrom(ref input, _repeated_types_codec);
+            break;
+          }
+          case 42: {
+            enums_.AddEntriesFrom(ref input, _repeated_enums_codec);
+            break;
+          }
+          case 50: {
+            if (documentation_ == null) {
+              Documentation = new global::Google.Api.Documentation();
+            }
+            input.ReadMessage(Documentation);
+            break;
+          }
+          case 66: {
+            if (backend_ == null) {
+              Backend = new global::Google.Api.Backend();
+            }
+            input.ReadMessage(Backend);
+            break;
+          }
+          case 74: {
+            if (http_ == null) {
+              Http = new global::Google.Api.Http();
+            }
+            input.ReadMessage(Http);
+            break;
+          }
+          case 82: {
+            if (quota_ == null) {
+              Quota = new global::Google.Api.Quota();
+            }
+            input.ReadMessage(Quota);
+            break;
+          }
+          case 90: {
+            if (authentication_ == null) {
+              Authentication = new global::Google.Api.Authentication();
+            }
+            input.ReadMessage(Authentication);
+            break;
+          }
+          case 98: {
+            if (context_ == null) {
+              Context = new global::Google.Api.Context();
+            }
+            input.ReadMessage(Context);
+            break;
+          }
+          case 122: {
+            if (usage_ == null) {
+              Usage = new global::Google.Api.Usage();
+            }
+            input.ReadMessage(Usage);
+            break;
+          }
+          case 146: {
+            endpoints_.AddEntriesFrom(ref input, _repeated_endpoints_codec);
+            break;
+          }
+          case 162: {
+            uint? value = _single_configVersion_codec.Read(ref input);
+            if (configVersion_ == null || value != 0) {
+              ConfigVersion = value;
+            }
+            break;
+          }
+          case 170: {
+            if (control_ == null) {
+              Control = new global::Google.Api.Control();
+            }
+            input.ReadMessage(Control);
+            break;
+          }
+          case 178: {
+            ProducerProjectId = input.ReadString();
+            break;
+          }
+          case 186: {
+            logs_.AddEntriesFrom(ref input, _repeated_logs_codec);
+            break;
+          }
+          case 194: {
+            metrics_.AddEntriesFrom(ref input, _repeated_metrics_codec);
+            break;
+          }
+          case 202: {
+            monitoredResources_.AddEntriesFrom(ref input, _repeated_monitoredResources_codec);
+            break;
+          }
+          case 210: {
+            if (billing_ == null) {
+              Billing = new global::Google.Api.Billing();
+            }
+            input.ReadMessage(Billing);
+            break;
+          }
+          case 218: {
+            if (logging_ == null) {
+              Logging = new global::Google.Api.Logging();
+            }
+            input.ReadMessage(Logging);
+            break;
+          }
+          case 226: {
+            if (monitoring_ == null) {
+              Monitoring = new global::Google.Api.Monitoring();
+            }
+            input.ReadMessage(Monitoring);
+            break;
+          }
+          case 234: {
+            if (systemParameters_ == null) {
+              SystemParameters = new global::Google.Api.SystemParameters();
+            }
+            input.ReadMessage(SystemParameters);
+            break;
+          }
+          case 266: {
+            Id = input.ReadString();
+            break;
+          }
+          case 298: {
+            if (sourceInfo_ == null) {
+              SourceInfo = new global::Google.Api.SourceInfo();
+            }
+            input.ReadMessage(SourceInfo);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

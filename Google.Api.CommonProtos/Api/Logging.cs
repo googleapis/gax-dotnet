@@ -81,7 +81,11 @@ namespace Google.Api {
   ///         logs:
   ///         - activity_history
   /// </summary>
-  public sealed partial class Logging : pb::IMessage<Logging> {
+  public sealed partial class Logging : pb::IMessage<Logging>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Logging> _parser = new pb::MessageParser<Logging>(() => new Logging());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -184,12 +188,27 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       producerDestinations_.WriteTo(output, _repeated_producerDestinations_codec);
       consumerDestinations_.WriteTo(output, _repeated_consumerDestinations_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      producerDestinations_.WriteTo(ref output, _repeated_producerDestinations_codec);
+      consumerDestinations_.WriteTo(ref output, _repeated_consumerDestinations_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -214,6 +233,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -230,7 +252,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            producerDestinations_.AddEntriesFrom(ref input, _repeated_producerDestinations_codec);
+            break;
+          }
+          case 18: {
+            consumerDestinations_.AddEntriesFrom(ref input, _repeated_consumerDestinations_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the Logging message type.</summary>
@@ -240,7 +285,11 @@ namespace Google.Api {
       /// Configuration of a specific logging destination (the producer project
       /// or the consumer project).
       /// </summary>
-      public sealed partial class LoggingDestination : pb::IMessage<LoggingDestination> {
+      public sealed partial class LoggingDestination : pb::IMessage<LoggingDestination>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
         private static readonly pb::MessageParser<LoggingDestination> _parser = new pb::MessageParser<LoggingDestination>(() => new LoggingDestination());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -342,6 +391,9 @@ namespace Google.Api {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
           logs_.WriteTo(output, _repeated_logs_codec);
           if (MonitoredResource.Length != 0) {
             output.WriteRawTag(26);
@@ -350,7 +402,22 @@ namespace Google.Api {
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          logs_.WriteTo(ref output, _repeated_logs_codec);
+          if (MonitoredResource.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(MonitoredResource);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
@@ -379,6 +446,9 @@ namespace Google.Api {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
             switch(tag) {
@@ -395,7 +465,30 @@ namespace Google.Api {
               }
             }
           }
+        #endif
         }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                logs_.AddEntriesFrom(ref input, _repeated_logs_codec);
+                break;
+              }
+              case 26: {
+                MonitoredResource = input.ReadString();
+                break;
+              }
+            }
+          }
+        }
+        #endif
 
       }
 

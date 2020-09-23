@@ -70,7 +70,11 @@ namespace Google.Type {
   /// For more guidance on how to use this schema, please see:
   /// https://support.google.com/business/answer/6397478
   /// </summary>
-  public sealed partial class PostalAddress : pb::IMessage<PostalAddress> {
+  public sealed partial class PostalAddress : pb::IMessage<PostalAddress>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<PostalAddress> _parser = new pb::MessageParser<PostalAddress>(() => new PostalAddress());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -378,6 +382,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Revision != 0) {
         output.WriteRawTag(8);
         output.WriteInt32(Revision);
@@ -419,7 +426,55 @@ namespace Google.Type {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Revision != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Revision);
+      }
+      if (RegionCode.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(RegionCode);
+      }
+      if (LanguageCode.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(LanguageCode);
+      }
+      if (PostalCode.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(PostalCode);
+      }
+      if (SortingCode.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(SortingCode);
+      }
+      if (AdministrativeArea.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(AdministrativeArea);
+      }
+      if (Locality.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(Locality);
+      }
+      if (Sublocality.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Sublocality);
+      }
+      addressLines_.WriteTo(ref output, _repeated_addressLines_codec);
+      recipients_.WriteTo(ref output, _repeated_recipients_codec);
+      if (Organization.Length != 0) {
+        output.WriteRawTag(90);
+        output.WriteString(Organization);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -498,6 +553,9 @@ namespace Google.Type {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -550,7 +608,66 @@ namespace Google.Type {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Revision = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            RegionCode = input.ReadString();
+            break;
+          }
+          case 26: {
+            LanguageCode = input.ReadString();
+            break;
+          }
+          case 34: {
+            PostalCode = input.ReadString();
+            break;
+          }
+          case 42: {
+            SortingCode = input.ReadString();
+            break;
+          }
+          case 50: {
+            AdministrativeArea = input.ReadString();
+            break;
+          }
+          case 58: {
+            Locality = input.ReadString();
+            break;
+          }
+          case 66: {
+            Sublocality = input.ReadString();
+            break;
+          }
+          case 74: {
+            addressLines_.AddEntriesFrom(ref input, _repeated_addressLines_codec);
+            break;
+          }
+          case 82: {
+            recipients_.AddEntriesFrom(ref input, _repeated_recipients_codec);
+            break;
+          }
+          case 90: {
+            Organization = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

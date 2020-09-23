@@ -80,7 +80,11 @@ namespace Google.Api {
   ///         requirements:
   ///           provider_id: google_calendar_auth
   /// </summary>
-  public sealed partial class Authentication : pb::IMessage<Authentication> {
+  public sealed partial class Authentication : pb::IMessage<Authentication>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Authentication> _parser = new pb::MessageParser<Authentication>(() => new Authentication());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -179,12 +183,27 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       rules_.WriteTo(output, _repeated_rules_codec);
       providers_.WriteTo(output, _repeated_providers_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      rules_.WriteTo(ref output, _repeated_rules_codec);
+      providers_.WriteTo(ref output, _repeated_providers_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -209,6 +228,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -225,7 +247,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 26: {
+            rules_.AddEntriesFrom(ref input, _repeated_rules_codec);
+            break;
+          }
+          case 34: {
+            providers_.AddEntriesFrom(ref input, _repeated_providers_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -240,7 +285,11 @@ namespace Google.Api {
   /// If a method doesn't have any auth requirements, request credentials will be
   /// ignored.
   /// </summary>
-  public sealed partial class AuthenticationRule : pb::IMessage<AuthenticationRule> {
+  public sealed partial class AuthenticationRule : pb::IMessage<AuthenticationRule>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AuthenticationRule> _parser = new pb::MessageParser<AuthenticationRule>(() => new AuthenticationRule());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -374,6 +423,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Selector.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Selector);
@@ -390,7 +442,30 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
+      if (oauth_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Oauth);
+      }
+      if (AllowWithoutCredential != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(AllowWithoutCredential);
+      }
+      requirements_.WriteTo(ref output, _repeated_requirements_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -434,6 +509,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -461,14 +539,52 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (oauth_ == null) {
+              Oauth = new global::Google.Api.OAuthRequirements();
+            }
+            input.ReadMessage(Oauth);
+            break;
+          }
+          case 40: {
+            AllowWithoutCredential = input.ReadBool();
+            break;
+          }
+          case 58: {
+            requirements_.AddEntriesFrom(ref input, _repeated_requirements_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Specifies a location to extract JWT from an API request.
   /// </summary>
-  public sealed partial class JwtLocation : pb::IMessage<JwtLocation> {
+  public sealed partial class JwtLocation : pb::IMessage<JwtLocation>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<JwtLocation> _parser = new pb::MessageParser<JwtLocation>(() => new JwtLocation());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -619,6 +735,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (inCase_ == InOneofCase.Header) {
         output.WriteRawTag(10);
         output.WriteString(Header);
@@ -634,7 +753,29 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (inCase_ == InOneofCase.Header) {
+        output.WriteRawTag(10);
+        output.WriteString(Header);
+      }
+      if (inCase_ == InOneofCase.Query) {
+        output.WriteRawTag(18);
+        output.WriteString(Query);
+      }
+      if (ValuePrefix.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ValuePrefix);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -676,6 +817,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -696,7 +840,34 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Header = input.ReadString();
+            break;
+          }
+          case 18: {
+            Query = input.ReadString();
+            break;
+          }
+          case 26: {
+            ValuePrefix = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -705,7 +876,11 @@ namespace Google.Api {
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
-  public sealed partial class AuthProvider : pb::IMessage<AuthProvider> {
+  public sealed partial class AuthProvider : pb::IMessage<AuthProvider>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AuthProvider> _parser = new pb::MessageParser<AuthProvider>(() => new AuthProvider());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -923,6 +1098,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Id.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Id);
@@ -947,7 +1125,38 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Id.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Issuer.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Issuer);
+      }
+      if (JwksUri.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(JwksUri);
+      }
+      if (Audiences.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Audiences);
+      }
+      if (AuthorizationUrl.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(AuthorizationUrl);
+      }
+      jwtLocations_.WriteTo(ref output, _repeated_jwtLocations_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1000,6 +1209,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1032,7 +1244,46 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Id = input.ReadString();
+            break;
+          }
+          case 18: {
+            Issuer = input.ReadString();
+            break;
+          }
+          case 26: {
+            JwksUri = input.ReadString();
+            break;
+          }
+          case 34: {
+            Audiences = input.ReadString();
+            break;
+          }
+          case 42: {
+            AuthorizationUrl = input.ReadString();
+            break;
+          }
+          case 50: {
+            jwtLocations_.AddEntriesFrom(ref input, _repeated_jwtLocations_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -1056,7 +1307,11 @@ namespace Google.Api {
   /// request to be accepted and passed to the backend, a request can still fail
   /// due to the backend requiring additional scopes or permissions.
   /// </summary>
-  public sealed partial class OAuthRequirements : pb::IMessage<OAuthRequirements> {
+  public sealed partial class OAuthRequirements : pb::IMessage<OAuthRequirements>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<OAuthRequirements> _parser = new pb::MessageParser<OAuthRequirements>(() => new OAuthRequirements());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1144,6 +1399,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (CanonicalScopes.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(CanonicalScopes);
@@ -1151,7 +1409,21 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (CanonicalScopes.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CanonicalScopes);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1178,6 +1450,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1190,7 +1465,26 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            CanonicalScopes = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -1199,7 +1493,11 @@ namespace Google.Api {
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
-  public sealed partial class AuthRequirement : pb::IMessage<AuthRequirement> {
+  public sealed partial class AuthRequirement : pb::IMessage<AuthRequirement>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AuthRequirement> _parser = new pb::MessageParser<AuthRequirement>(() => new AuthRequirement());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1317,6 +1615,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (ProviderId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(ProviderId);
@@ -1328,7 +1629,25 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ProviderId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ProviderId);
+      }
+      if (Audiences.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Audiences);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1361,6 +1680,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1377,7 +1699,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            ProviderId = input.ReadString();
+            break;
+          }
+          case 18: {
+            Audiences = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

@@ -78,14 +78,19 @@ namespace Google.Api {
   /// * The first label of the monitored resource descriptor must be
   ///   `resource_container`. There are legacy monitored resource descritptors
   ///   start with `project_id`.
-  /// * It must include a `location` label. * Maximum of default 5 service defined monitored resource descriptors
+  /// * It must include a `location` label.
+  /// * Maximum of default 5 service defined monitored resource descriptors
   ///   is allowed per service.
   /// * Maximum of default 10 labels per monitored resource is allowed.
   ///
   /// The default maximum limit can be overridden. Please follow
   /// https://cloud.google.com/monitoring/quotas
   /// </summary>
-  public sealed partial class MonitoredResourceDescriptor : pb::IMessage<MonitoredResourceDescriptor> {
+  public sealed partial class MonitoredResourceDescriptor : pb::IMessage<MonitoredResourceDescriptor>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<MonitoredResourceDescriptor> _parser = new pb::MessageParser<MonitoredResourceDescriptor>(() => new MonitoredResourceDescriptor());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -147,6 +152,19 @@ namespace Google.Api {
     public const int TypeFieldNumber = 1;
     private string type_ = "";
     /// <summary>
+    /// Required. The monitored resource type. For example, the type
+    /// `cloudsql_database` represents databases in Google Cloud SQL.
+    ///
+    /// All service defined monitored resource types must be prefixed with the
+    /// service name, in the format of `{service name}/{relative resource name}`.
+    /// The relative resource name must follow:
+    ///
+    /// * Only upper and lower-case letters and digits are allowed.
+    /// * It must start with upper case character and is recommended to use Upper
+    ///   Camel Case style.
+    /// * The maximum number of characters allowed for the relative_resource_name
+    ///   is 100.
+    ///
     /// Note there are legacy service monitored resources not following this rule.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -270,6 +288,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Type.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Type);
@@ -294,7 +315,38 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      if (DisplayName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DisplayName);
+      }
+      if (Description.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Description);
+      }
+      labels_.WriteTo(ref output, _repeated_labels_codec);
+      if (Name.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Name);
+      }
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        output.WriteRawTag(56);
+        output.WriteEnum((int) LaunchStage);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -347,6 +399,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -379,7 +434,46 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            DisplayName = input.ReadString();
+            break;
+          }
+          case 26: {
+            Description = input.ReadString();
+            break;
+          }
+          case 34: {
+            labels_.AddEntriesFrom(ref input, _repeated_labels_codec);
+            break;
+          }
+          case 42: {
+            Name = input.ReadString();
+            break;
+          }
+          case 56: {
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -398,7 +492,11 @@ namespace Google.Api {
   ///       "labels": { "instance_id": "12345678901234",
   ///                   "zone": "us-central1-a" }}
   /// </summary>
-  public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource> {
+  public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<MonitoredResource> _parser = new pb::MessageParser<MonitoredResource>(() => new MonitoredResource());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -500,6 +598,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Type.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Type);
@@ -508,7 +609,22 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      labels_.WriteTo(ref output, _map_labels_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -537,6 +653,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -553,7 +672,30 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            labels_.AddEntriesFrom(ref input, _map_labels_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
@@ -565,7 +707,11 @@ namespace Google.Api {
   /// pipeline to extract metadata for cloud resources of all types, and store
   /// the metadata in this message.
   /// </summary>
-  public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata> {
+  public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<MonitoredResourceMetadata> _parser = new pb::MessageParser<MonitoredResourceMetadata>(() => new MonitoredResourceMetadata());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -672,6 +818,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (systemLabels_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(SystemLabels);
@@ -680,7 +829,22 @@ namespace Google.Api {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (systemLabels_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(SystemLabels);
+      }
+      userLabels_.WriteTo(ref output, _map_userLabels_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -712,6 +876,9 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -731,7 +898,33 @@ namespace Google.Api {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (systemLabels_ == null) {
+              SystemLabels = new global::Google.Protobuf.WellKnownTypes.Struct();
+            }
+            input.ReadMessage(SystemLabels);
+            break;
+          }
+          case 18: {
+            userLabels_.AddEntriesFrom(ref input, _map_userLabels_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
