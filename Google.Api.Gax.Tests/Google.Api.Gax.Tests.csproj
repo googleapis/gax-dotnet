@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.1</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

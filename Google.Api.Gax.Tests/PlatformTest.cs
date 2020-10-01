@@ -259,5 +259,20 @@ namespace Google.Api.Gax.Tests
             var platform = new Platform();
             Assert.Null(platform.ProjectId);
         }
+
+        [Theory]
+        [InlineData(null, null, Platform.DefaultMetadataHost)]
+        [InlineData("", null, Platform.DefaultMetadataHost)]
+        [InlineData(null, "", Platform.DefaultMetadataHost)]
+        [InlineData("123.123.45.45", null, "123.123.45.45")]
+        [InlineData(null, "123.123.45.45", "123.123.45.45")]
+        // GCE_METADATA_HOST takes priority
+        [InlineData("111.111.111.111", "222.222.222.222", "111.111.111.111")]
+        public void GetEffectiveMetadataHost(string metadataHostEnv, string metadataEmulatorEnv, string expectedResult)
+        {
+            using var restorer1 = new EnvironmentVariableRestorer(Platform.MetadataHostOverrideEnvironmentVariable, metadataHostEnv);
+            using var restorer2 = new EnvironmentVariableRestorer(Platform.MetadataEmulatorHostEnvironmentVariable, metadataEmulatorEnv);
+            Assert.Equal(expectedResult, Platform.GetEffectiveMetadataHost());
+        }
     }
 }

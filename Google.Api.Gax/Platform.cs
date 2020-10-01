@@ -29,6 +29,10 @@ namespace Google.Api.Gax
     /// </summary>
     public sealed class Platform
     {
+        internal const string DefaultMetadataHost = "169.254.169.254";
+        internal const string MetadataHostOverrideEnvironmentVariable = "GCE_METADATA_HOST";
+        internal const string MetadataEmulatorHostEnvironmentVariable = "METADATA_EMULATOR_HOST";
+
         internal static readonly PathTemplate s_zoneTemplate = new PathTemplate("projects/*/zones/*");
         private static readonly Lazy<Task<Platform>> s_instance = new Lazy<Task<Platform>>(LoadInstanceAsync);
 
@@ -46,11 +50,6 @@ namespace Google.Api.Gax
 
         private static async Task<string> LoadMetadataAsync()
         {
-            // Check if emulator is in use by looking for an emulator host in environment variable
-            // METADATA_EMULATOR_HOST. This is the undocumented but the de-facto mechanism for doing this.
-            var metadataEmulatorHost = Environment.GetEnvironmentVariable("METADATA_EMULATOR_HOST");
-            // Use the IP address rather than the IP name to avoid a DNS lookup, which can cause intermittent failures.
-            const string metadataHost = "169.254.169.254";
             const string metadataFlavorKey = "Metadata-Flavor";
             const string metadataFlavorValue = "Google";
             const int metadataServerPingAttempts = 3;
@@ -59,8 +58,7 @@ namespace Google.Api.Gax
             // a retry is fast.
             TimeSpan timeout = TimeSpan.FromMilliseconds(500);
 
-            var effectiveMetadataHost = string.IsNullOrEmpty(metadataEmulatorHost) ? metadataHost : metadataEmulatorHost;
-            var metadataUrl = $"http://{effectiveMetadataHost}/computeMetadata/v1?recursive=true";
+            var metadataUrl = $"http://{GetEffectiveMetadataHost()}/computeMetadata/v1?recursive=true";
             // Using the built-in HttpClient, as we want bare bones functionality - we'll control retries.
             // Use the same one across all attempts, which may contribute to speedier retries.
             using (var httpClient = new HttpClient())
@@ -96,6 +94,30 @@ namespace Google.Api.Gax
                 // Multiple attempts failed.
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Determine the metadata host to use. In order of priority, this will use:
+        /// - GCE_METADATA_HOST environment variable, if set and non-empty
+        /// - METADATA_EMULATOR_HOST environment variable, if set and non-empty.
+        ///   This is the undocumented but the de-facto mechanism for using an emulator.
+        /// - The hard-coded IP address of "169.254.169.254". We use the IP address rather
+        ///   than the IP name to avoid a DNS lookup, which can cause intermittent failures.
+        /// </summary>
+        internal static string GetEffectiveMetadataHost() // Visible for testing
+        {
+            var metadataHostFromEnvironment = Environment.GetEnvironmentVariable(MetadataHostOverrideEnvironmentVariable);
+            if (!string.IsNullOrEmpty(metadataHostFromEnvironment))
+            {
+                return metadataHostFromEnvironment;
+            }
+            var metadataEmulatorHost = Environment.GetEnvironmentVariable(MetadataEmulatorHostEnvironmentVariable);
+            if (!string.IsNullOrEmpty(metadataEmulatorHost))
+            {
+                return metadataEmulatorHost;
+            }
+            // Normal case: no environment variables
+            return DefaultMetadataHost;
         }
 
         private static GaePlatformDetails LoadGaeDetails()
