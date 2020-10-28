@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/googleapis/gax-dotnet.svg?branch=master)](https://travis-ci.org/googleapis/gax-dotnet)
+[![GitHub Actions status](https://img.shields.io/github/workflow/status/googleapis/gax-dotnet/Build%20push)](https://github.com/googleapis/gax-dotnet/actions?query=workflow%3A%22Build+push%22)
 
 Google API Extensions for .NET
 ===
