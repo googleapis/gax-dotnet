@@ -1,4 +1,5 @@
-[![GitHub Actions status](https://img.shields.io/github/workflow/status/googleapis/gax-dotnet/Build%20push)](https://github.com/googleapis/gax-dotnet/actions?query=workflow%3A%22Build+push%22)
+[![GitHub Actions
+status](https://img.shields.io/github/workflow/status/googleapis/gax-dotnet/Build)](https://github.com/googleapis/gax-dotnet/actions?query=workflow%3ABuild)
 
 Google API Extensions for .NET
 ===
