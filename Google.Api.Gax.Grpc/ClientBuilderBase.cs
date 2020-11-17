@@ -346,6 +346,14 @@ namespace Google.Api.Gax.Grpc
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            // TODO: We probably want this method to keep the credential inmutable.
+            maybeWithProject.RegisterForJwtEmission(
+                new JwtAsAccessTokenOptions
+                {
+                    Endpoint = Endpoint ?? GetDefaultEndpoint(),
+                    Audience = GetDefaultEndpoint(), // We'd still need to patch that snowflake API until the localization is fixed
+                    AllowedScopes = GetDefaultScopes(),
+                }, false);
             return maybeWithProject.ToChannelCredentials();
         }
 
