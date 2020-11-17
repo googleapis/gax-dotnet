@@ -344,8 +344,26 @@ namespace Google.Api.Gax.Grpc
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
-            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
-            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+
+            var effectiveScopes = Scopes ?? GetDefaultScopes();
+            var effectiveEndpoint = Endpoint ?? GetDefaultEndpoint();
+
+            // Skip scoping if conditions are met for JWT emission as access tokens.
+            GoogleCredential maybeScoped =
+                // Only service accounts emit JWTs as access tokens.
+                unscoped.UnderlyingCredential is ServiceAccountCredential &&
+                // JWTs are only valid access tokens if scopes are at most the default scopes.
+                !effectiveScopes.Except(GetDefaultScopes()).Any() &&
+                // JWTs are only valid access tokens if the endpoint is the default endpoint.
+                effectiveEndpoint == GetDefaultEndpoint() &&
+                // JWTs are only valid access tokens if the endpoint is not regional, for now.
+                // Checking for _ seems to be the way to check for endpoints being regional,
+                // this is obviously a patch.
+                !effectiveEndpoint.Contains("_") ?
+                unscoped :
+                unscoped.CreateScoped(effectiveScopes);
+
+            GoogleCredential maybeWithProject = QuotaProject is null ? maybeScoped : maybeScoped.CreateWithQuotaProject(QuotaProject);
             return maybeWithProject.ToChannelCredentials();
         }
 
