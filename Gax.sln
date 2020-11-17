@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{68EA
 		ReleaseVersion.xml = ReleaseVersion.xml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Apis.Auth", "..\google-api-dotnet-client\Src\Support\Google.Apis.Auth\Google.Apis.Auth.csproj", "{A9AD691C-8482-4C98-81A6-70C9136BB063}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{FCC61D31-98E6-4ACA-B6B3-29AC16819A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC61D31-98E6-4ACA-B6B3-29AC16819A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCC61D31-98E6-4ACA-B6B3-29AC16819A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9AD691C-8482-4C98-81A6-70C9136BB063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AD691C-8482-4C98-81A6-70C9136BB063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AD691C-8482-4C98-81A6-70C9136BB063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AD691C-8482-4C98-81A6-70C9136BB063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
