@@ -92,3 +92,6 @@ rm -rf $OUTDIR
 
 (cd Google.Api.Gax.Grpc.Tests;
  $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
+
+(cd Google.Api.Gax.Grpc.Tests/Rest;
+ $PROTOC --csharp_out=. -I. *.proto)
