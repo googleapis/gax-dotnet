@@ -32,7 +32,9 @@ namespace Google.Api.Gax.Grpc
         public string Endpoint { get; set; }
 
         /// <summary>
-        /// The scopes to use, or null to use the default scopes.
+        /// The scopes to use, for credentials where scopes can be specified.
+        /// If this is null, self-signed JWTs are used by service account credentials,
+        /// instead of OAuth2 access tokens being requested with scopes.
         /// </summary>
         public IReadOnlyList<string> Scopes { get; set; }
 
@@ -357,8 +359,8 @@ namespace Google.Api.Gax.Grpc
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
-            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
-            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            GoogleCredential maybeScoped = Scopes is null ? unscoped : unscoped.CreateScoped(Scopes);
+            GoogleCredential maybeWithProject = QuotaProject is null ? maybeScoped : maybeScoped.CreateWithQuotaProject(QuotaProject);
             return maybeWithProject.ToChannelCredentials();
         }
 
@@ -380,13 +382,15 @@ namespace Google.Api.Gax.Grpc
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
-            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
-            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            GoogleCredential maybeScoped = Scopes is null ? unscoped : unscoped.CreateScoped(Scopes);
+            GoogleCredential maybeWithProject = QuotaProject is null ? maybeScoped : maybeScoped.CreateWithQuotaProject(QuotaProject);
             return maybeWithProject.ToChannelCredentials();
         }
 
         /// <summary>
-        /// Returns the default scopes for this builder type, used if no scopes are otherwise specified.
+        /// Returns the default scopes for this builder type. This is currently unused, but should still
+        /// be implemented in derived classes, in case a future change to authentication requires
+        /// scopes in some cases.
         /// </summary>
         protected abstract IReadOnlyList<string> GetDefaultScopes();
 
