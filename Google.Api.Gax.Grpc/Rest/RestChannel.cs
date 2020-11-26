@@ -126,7 +126,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private Metadata GetTrailers(Task<HttpResponseMessage> httpResponseTask)
         {
-            if (httpResponseTask.IsCompleted)
+            if (!httpResponseTask.IsCompleted)
             {
                 throw new InvalidOperationException("Cannot call GetTrailers with an incomplete HTTP call");
             }
