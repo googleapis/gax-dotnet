@@ -18,6 +18,7 @@ namespace Google.Api.Gax.Grpc.GrpcCore
     {
         internal const string ServiceConfigDisableResolution = "grpc.service_config_disable_resolution";
         internal const string KeepAliveTimeMs = "grpc.keepalive_time_ms";
+        internal const string KeepAliveTimeoutMs = "grpc.keepalive_timeout_ms";
 
         /// <summary>
         /// Returns the singleton instance of this class.
@@ -50,6 +51,10 @@ namespace Google.Api.Gax.Grpc.GrpcCore
             if (options.KeepAliveTime is TimeSpan keepAlive)
             {
                 ret.Add(new ChannelOption(KeepAliveTimeMs, (int) keepAlive.TotalMilliseconds));
+            }
+            if (options.KeepAliveTimeout is TimeSpan keepAliveout)
+            {
+                ret.Add(new ChannelOption(KeepAliveTimeoutMs, (int) keepAliveout.TotalMilliseconds));
             }
             if (options.MaxReceiveMessageSize is int maxReceiveMessageSize)
             {

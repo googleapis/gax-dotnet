@@ -29,6 +29,7 @@ namespace Google.Api.Gax.Grpc
         private GrpcChannelOptions(
             bool? enableServiceConfigResolution = null,
             TimeSpan? keepAliveTime = null,
+            TimeSpan? keepAliveTimeout = null,
             string primaryUserAgent = null,
             int? maxSendMessageSize = null,
             int? maxReceiveMessageSize = null,
@@ -36,6 +37,7 @@ namespace Google.Api.Gax.Grpc
         {
             EnableServiceConfigResolution = enableServiceConfigResolution;
             KeepAliveTime = keepAliveTime;
+            KeepAliveTimeout = keepAliveTimeout;
             PrimaryUserAgent = primaryUserAgent;
             MaxSendMessageSize = maxSendMessageSize;
             MaxReceiveMessageSize = maxReceiveMessageSize;
@@ -49,8 +51,16 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// If non-null, explicitly specifies the keep-alive period for the channel.
+        /// This specifies how often a keep-alive request is sent.
         /// </summary>
         public TimeSpan? KeepAliveTime { get; }
+
+        /// <summary>
+        /// If non-null, explicitly specifies the keep-alive timeout for the channel.
+        /// This specifies how long gRPC will wait for a keep-alive response before
+        /// assuming the channel is no longer valid, and closing it.
+        /// </summary>
+        public TimeSpan? KeepAliveTimeout { get; }
 
         /// <summary>
         /// If non-null, explicitly specifies the primary user agent for the channel.
@@ -98,6 +108,15 @@ namespace Google.Api.Gax.Grpc
         /// <returns>The new options.</returns>
         public GrpcChannelOptions WithKeepAliveTime(TimeSpan keepAliveTime) =>
             MergedWith(new GrpcChannelOptions(keepAliveTime: keepAliveTime));
+
+        /// <summary>
+        /// Returns a new instance with the same options as this one, but with <see cref="KeepAliveTimeout"/> set to
+        /// <paramref name="keepAliveTimeout"/>.
+        /// </summary>
+        /// <param name="keepAliveTimeout">The new keep-alive timeout.</param>
+        /// <returns>The new options.</returns>
+        public GrpcChannelOptions WithKeepAliveTimeout(TimeSpan keepAliveTimeout) =>
+            MergedWith(new GrpcChannelOptions(keepAliveTimeout: keepAliveTimeout));
 
         /// <summary>
         /// Returns a new instance with the same options as this one, but with <see cref="MaxSendMessageSize"/> set to
@@ -159,6 +178,7 @@ namespace Google.Api.Gax.Grpc
             return new GrpcChannelOptions(
                 overlaidOptions.EnableServiceConfigResolution ?? EnableServiceConfigResolution,
                 overlaidOptions.KeepAliveTime ?? KeepAliveTime,
+                overlaidOptions.KeepAliveTimeout ?? KeepAliveTimeout,
                 overlaidOptions.PrimaryUserAgent ?? PrimaryUserAgent,
                 overlaidOptions.MaxSendMessageSize ?? MaxSendMessageSize,
                 overlaidOptions.MaxReceiveMessageSize ?? MaxReceiveMessageSize,
@@ -191,6 +211,7 @@ namespace Google.Api.Gax.Grpc
             GaxEqualityHelpers.CombineHashCodes(
                 EnableServiceConfigResolution.GetHashCode(),
                 KeepAliveTime.GetHashCode(),
+                KeepAliveTimeout.GetHashCode(),
                 PrimaryUserAgent?.GetHashCode() ?? 0,
                 MaxSendMessageSize.GetHashCode(),
                 MaxReceiveMessageSize.GetHashCode(),
@@ -201,6 +222,7 @@ namespace Google.Api.Gax.Grpc
             other is object &&
             EnableServiceConfigResolution == other.EnableServiceConfigResolution &&
             KeepAliveTime == other.KeepAliveTime &&
+            KeepAliveTimeout == other.KeepAliveTimeout &&
             PrimaryUserAgent == other.PrimaryUserAgent &&
             MaxSendMessageSize == other.MaxSendMessageSize &&
             MaxReceiveMessageSize == other.MaxReceiveMessageSize &&
