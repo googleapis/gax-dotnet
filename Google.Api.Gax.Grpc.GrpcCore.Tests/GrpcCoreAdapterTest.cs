@@ -42,6 +42,15 @@ namespace Google.Api.Gax.Grpc.GrpcCore.Tests
         }
 
         [Fact]
+        public void ConvertOptions_KeepAliveTimeout()
+        {
+            var gaxOptions = GrpcChannelOptions.Empty.WithKeepAliveTimeout(TimeSpan.FromSeconds(2));
+            var grpcCoreOptions = GrpcCoreAdapter.Instance.ConvertOptions(gaxOptions);
+
+            Assert.Equal(new[] { new ChannelOption(GrpcCoreAdapter.KeepAliveTimeoutMs, 2000) }, grpcCoreOptions);
+        }
+
+        [Fact]
         public void ConvertOptions_MaxReceiveSize()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithMaxReceiveMessageSize(150);

@@ -46,6 +46,18 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
+        public void WithKeepAliveTimeout()
+        {
+            var original = GrpcChannelOptions.Empty.WithPrimaryUserAgent("agent");
+            var keepAliveTimeout = TimeSpan.FromSeconds(10);
+            var withChange = original.WithKeepAliveTimeout(keepAliveTimeout);
+
+            Assert.Null(original.KeepAliveTimeout);
+            Assert.Equal(keepAliveTimeout, withChange.KeepAliveTimeout);
+            Assert.Equal("agent", withChange.PrimaryUserAgent);
+        }
+
+        [Fact]
         public void WithMaxReceiveMessageSize()
         {
             var original = GrpcChannelOptions.Empty.WithPrimaryUserAgent("agent");
@@ -94,6 +106,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 options => options.WithPrimaryUserAgent("agent"),
                 options => options.WithEnableServiceConfigResolution(true),
                 options => options.WithKeepAliveTime(TimeSpan.FromSeconds(1)),
+                options => options.WithKeepAliveTimeout(TimeSpan.FromSeconds(2)),
                 options => options.WithMaxReceiveMessageSize(100),
                 options => options.WithMaxSendMessageSize(200),
                 options => options.WithCustomOption("custom", 1)
