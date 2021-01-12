@@ -95,7 +95,8 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public string QuotaProject { get; set; }
 
-        // Note: when adding any more properties, CopyCommonSettings must also be updated.
+        // Note: when adding any more properties, CopyCommonSettings must also be updated,
+        // and potentially CopySettingsForEmulator.
 
         /// <summary>
         /// Creates a new instance with no settings.
@@ -128,6 +129,18 @@ namespace Google.Api.Gax.Grpc
             // but the code in the emulator-unaware type won't use the property anyway. If we're ever copying from
             // one type that supports emulators to another, it would make sense to propagate the setting anyway.
             EmulatorDetection = source.EmulatorDetection;
+        }
+
+        /// <summary>
+        /// Copies common settings from the specified builder, expecting that any settings around
+        /// credentials and endpoints will be set by the caller, along with any client-specific settings.
+        /// Emulator detection is not copied, to avoid infinite recursion when building.
+        /// </summary>
+        protected void CopySettingsForEmulator(ClientBuilderBase<TClient> source)
+        {
+            GaxPreconditions.CheckNotNull(source, nameof(source));
+            UserAgent = source.UserAgent;
+            GrpcAdapter = source.GrpcAdapter;
         }
 
         /// <summary>
