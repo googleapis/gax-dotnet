@@ -93,24 +93,10 @@ namespace Google.Api.Gax.Grpc.Rest
             };
         }
 
-        /// <summary>
-        /// Parses the response 
-        /// </summary>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        internal async Task<IMessage> ConvertResponseAsync(HttpResponseMessage response)
-        {
-            var status = RestChannel.GetStatus(response);
-            if (status.StatusCode != StatusCode.OK)
-            {
-                throw new RpcException(status);
-            }
-            string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return _parser.Parse(json, _protoMethod.OutputType);
-        }
+        // TODO: Handle cancellation?
 
         /// <summary>
-        /// Parses the response 
+        /// Parses the response and converts it into the protobuf response type.
         /// </summary>
         internal async Task<TResponse> ReadResponseAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
         {
@@ -123,7 +109,5 @@ namespace Google.Api.Gax.Grpc.Rest
             string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             return (TResponse) _parser.Parse(json, _protoMethod.OutputType);
         }
-
-
     }
 }
