@@ -53,6 +53,8 @@ namespace Google.Api.Gax.Grpc.Rest
 
             var cancellationTokenSource = new CancellationTokenSource();
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
+
+            // TODO: Cancellation?
             var responseTask = restMethod.ReadResponseAsync<TResponse>(httpResponseTask);
             var responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(httpResponseTask);
