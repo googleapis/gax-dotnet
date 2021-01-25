@@ -28,7 +28,8 @@ namespace Google.Api.Gax.Grpc.Rest
             new RestChannel(_serviceCollection, endpoint, credentials, options);
 
         /// <summary>
-        /// 
+        /// Creates a gRPC adapter using HTTP/1.1 and JSON, based on the services within the
+        /// given file descriptors.
         /// </summary>
         /// <param name="fileDescriptors">File descriptors for all protos that may be involved in RPCs for this adapter.
         /// All services within the descriptors are expected to be accessible via the same host.</param>
