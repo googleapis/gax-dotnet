@@ -84,7 +84,7 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             string path = _pathPattern.Format(protoRequest);
             var uri = host is null ? new Uri(path, UriKind.Relative) : new UriBuilder { Host = host, Path = path }.Uri;
-            string jsonContent = _contentFactory(protoRequest);
+            string jsonContent = _contentFactory?.Invoke(protoRequest);
             return new HttpRequestMessage
             {
                 RequestUri = uri,
