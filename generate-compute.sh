@@ -136,6 +136,12 @@ $PROTOC \
   $COMMON_RESOURCES_PROTO \
   2>&1 | grep -v "is unused" || true # Ignore import warnings (and grep exit code)
 
+# Fix up Grpc.Core parts
+# We have a hand-written piece at the moment for the adapter.
+sed -i 's/using gaxgrpccore = Google.Api.Gax.Grpc.GrpcCore;//g' tmp/client/Google.Cloud.Compute.V1/*.g.cs
+sed -i 's/=> gaxgrpccore::GrpcCoreAdapter.Instance/=> ComputeRestAdapter.ComputeAdapter/g' tmp/client/Google.Cloud.Compute.V1/*.g.cs
+
 cp tmp/client/Google.Cloud.Compute.V1/*.g.cs Google.Cloud.Compute.V1/Google.Cloud.Compute.V1
 cp tmp/client/Google.Cloud.Compute.V1.Tests/*.g.cs Google.Cloud.Compute.V1/Google.Cloud.Compute.V1.Tests
 cp tmp/client/Google.Cloud.Compute.V1.Snippets/*.g.cs Google.Cloud.Compute.V1/Google.Cloud.Compute.V1.Snippets
+
