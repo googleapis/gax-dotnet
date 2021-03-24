@@ -23,6 +23,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
+        private readonly IEnumerable<string> _scopes;
+
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
         /// task can be used whenever channel credentials are required. The returned task always runs in the
@@ -30,9 +32,6 @@ namespace Google.Api.Gax.Grpc
         /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
         /// _scopes, and you can't refer to an instance field within an instance field initializer.
         /// </summary>
-        /// <remarks>
-        /// The name here indicates that the credentials are scoped if they need to be - which currently, they never are.
-        /// </remarks>
         private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
 
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
@@ -44,26 +43,24 @@ namespace Google.Api.Gax.Grpc
         /// Creates a channel pool which will apply the specified scopes to the default application credentials
         /// if they require any.
         /// </summary>
-        /// <remarks>
-        /// As of version 3.3.0 of this library, the scopes are not used by this class; self-signed JWTs are created
-        /// instead of scoped access tokens. However, the same validation is performed on <paramref name="scopes"/>
-        /// as in previous versions. Future versions of the library may apply the scopes if they are needed for specific
-        /// scenarios.
-        /// </remarks>
-        /// <param name="scopes">The scopes to apply, where they are required.
-        /// Must not be null, and must not contain null references. May be empty.</param>
+        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         public ChannelPool(IEnumerable<string> scopes)
         {
-            // We validate the scopes parameter, even though we don't actually use it any more. This means we
-            // can start using them again later if necessary, without breaking clients.
-            GaxPreconditions.CheckNotNull(scopes, nameof(scopes));
-            GaxPreconditions.CheckArgument(!scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+            // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
+            _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
+            GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+            // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
+            // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
             _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
         }
 
         private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
         {
             var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
+            if (appDefaultCredentials.IsCreateScopedRequired)
+            {
+                appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
+            }
             return appDefaultCredentials.ToChannelCredentials();
         }
 
