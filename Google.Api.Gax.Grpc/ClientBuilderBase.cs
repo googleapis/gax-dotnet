@@ -95,6 +95,14 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public string QuotaProject { get; set; }
 
+        /// <summary>
+        /// Any custom channel options to merge with the default options.
+        /// If an option specified both here and in the default options, the custom option
+        /// will take priority. This property may be null (the default) in which case the default
+        /// options are used.
+        /// </summary>
+        public GrpcChannelOptions GrpcChannelOptions { get; set; }
+
         // Note: when adding any more properties, CopyCommonSettings must also be updated,
         // and potentially CopySettingsForEmulator.
 
@@ -411,13 +419,22 @@ namespace Google.Api.Gax.Grpc
         private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? DefaultGrpcAdapter;
 
         /// <summary>
-        /// Returns the options to use when creating a channel.
+        /// Returns the options to use when creating a channel, taking <see cref="GrpcChannelOptions"/>
+        /// into account.
         /// </summary>
         /// <returns>The options to use when creating a channel.</returns>
-        protected virtual GrpcChannelOptions GetChannelOptions() =>
-            UserAgent == null
-            ? s_defaultOptions
-            : s_defaultOptions.WithPrimaryUserAgent(UserAgent);
+        protected virtual GrpcChannelOptions GetChannelOptions()
+        {
+            var defaultOptions = UserAgent == null
+                ? s_defaultOptions
+                : s_defaultOptions.WithPrimaryUserAgent(UserAgent);
+            // While we could use the "CustomChannelOptions ?? GrpcChannelOptions.Empty"
+            // and merge unconditionally, there's no point in creating a new object
+            // if we have no options.
+            return GrpcChannelOptions is null
+                ? defaultOptions
+                : defaultOptions.MergedWith(GrpcChannelOptions);
+        }
 
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
