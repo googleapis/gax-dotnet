@@ -189,6 +189,32 @@ namespace Google.Api.Gax.Grpc.Tests
                 Assert.Equal(expected, result);
             }
 
+            [Fact]
+            public void GetChannelOptions_UsesGrpcChannelOptions()
+            {
+                var builder = new FakeBuilder(EmulatorDetection.None);
+                var defaultOptions = builder.GetChannelOptions();
+                // Used to check the override behavior
+                var defaultKeepAliveTime = defaultOptions.KeepAliveTime.Value;
+                // Used to check the defaulting behavior
+                var defaultEnableServiceConfigResolution = defaultOptions.EnableServiceConfigResolution.Value;
+
+                var newKeepAliveTime = defaultKeepAliveTime + TimeSpan.FromMinutes(10);
+                builder.GrpcChannelOptions = GrpcChannelOptions.Empty
+                    .WithKeepAliveTime(newKeepAliveTime)
+                    .WithMaxReceiveMessageSize(1000);
+
+                var resultOptions = builder.GetChannelOptions();
+                // Specified in both
+                Assert.Equal(newKeepAliveTime, resultOptions.KeepAliveTime);
+                // Specified only in default options
+                Assert.Equal(defaultEnableServiceConfigResolution, resultOptions.EnableServiceConfigResolution);
+                // Specified only in client-provided options
+                Assert.Equal(1000, resultOptions.MaxReceiveMessageSize);
+                // Not specified in any options
+                Assert.Null(resultOptions.MaxSendMessageSize);
+            }
+
             /// <summary>
             /// Creates a dictionary where each of the specified variables maps to its own name with a "-value" suffix, for simplicity.
             /// </summary>
@@ -207,6 +233,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     GetEmulatorEnvironment(RequiredVariables, AllVariables,
                         key => environment.TryGetValue(key, out var value) ? value : null);
 
+                public new GrpcChannelOptions GetChannelOptions() => base.GetChannelOptions();
                 protected override GrpcAdapter DefaultGrpcAdapter => throw new NotImplementedException();
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
