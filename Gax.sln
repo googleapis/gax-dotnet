@@ -54,7 +54,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Cloud.Compute.V1.Sni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Cloud.Compute.V1.Tests", "Google.Cloud.Compute.V1\Google.Cloud.Compute.V1.Tests\Google.Cloud.Compute.V1.Tests.csproj", "{5AA0E0C8-99CB-452F-A14B-383A8C63A112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputeDemo", "ComputeDemo\ComputeDemo.csproj", "{52A01EDC-B0E2-4D32-8D2A-1ECD82853992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputeDemo", "ComputeDemo\ComputeDemo.csproj", "{52A01EDC-B0E2-4D32-8D2A-1ECD82853992}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Cloud.ClientTesting", "..\google-cloud-dotnet\tools\Google.Cloud.ClientTesting\Google.Cloud.ClientTesting.csproj", "{912C7C02-D6C5-456E-9A76-52DF2123B582}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,6 +156,10 @@ Global
 		{52A01EDC-B0E2-4D32-8D2A-1ECD82853992}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52A01EDC-B0E2-4D32-8D2A-1ECD82853992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52A01EDC-B0E2-4D32-8D2A-1ECD82853992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{912C7C02-D6C5-456E-9A76-52DF2123B582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{912C7C02-D6C5-456E-9A76-52DF2123B582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{912C7C02-D6C5-456E-9A76-52DF2123B582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{912C7C02-D6C5-456E-9A76-52DF2123B582}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
