@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Google.Cloud.Asset.V1;
 using gaxgrpc = Google.Api.Gax.Grpc;
 using grpccore = Grpc.Core;
 using moq = Moq;
@@ -17,7 +16,6 @@ namespace ComputeDemo
         private readonly string _region;
         private readonly AddressesClient _addrClient;
         private readonly RegionOperationsClient _ropsClient;
-        // private readonly AssetServiceClient _assetClient;
 
         const string CredentialsPath = @"C:\Users\virost\AppData\Roaming\gcloud\legacy_credentials\virost@google.com\adc.json";
 
@@ -32,30 +30,25 @@ namespace ComputeDemo
                 CredentialsPath = CredentialsPath
             }.Build();
 
-            _ropsClient = new RegionOperationsClientBuilder()
+            _ropsClient = new RegionOperationsClientBuilder
             {
                 CredentialsPath = CredentialsPath
             }.Build();
-
-            //_assetClient = new AssetServiceClientBuilder {CredentialsPath = CredentialsPath}.Build();
         }
-
-        //[xunit::Fact]
-        //public void AssetTest(ITestOutputHelper output)
-        //{
-        //    _assetClient.
-        //}
 
         [xunit::Fact]
         public void CreateDeleteIPIntegration()
         {
             AddressesClient addressesClient = _addrClient;
-            var addrName = $"testaddr_csharp_{Guid.NewGuid()}";
+            var addrName = $"testaddr-csharp-{Guid.NewGuid()}";
 
             _output.WriteLine($"Retrieving address with the name: {addrName}");
-            Address prevAddr = addressesClient.Get(_project, _region, addrName);
-            xunit.Assert.Null(prevAddr);
-            
+
+            var exc = xunit.Assert.ThrowsAny<grpccore.RpcException>(
+                () => addressesClient.Get(_project, _region, addrName)
+            );
+            xunit.Assert.Equal(grpccore.StatusCode.NotFound, exc.StatusCode);
+
             Address addressResource = new Address
             {
                 Name = addrName,
@@ -78,7 +71,7 @@ namespace ComputeDemo
             Operation deleteOp = addressesClient.Delete(_project, _region, addrName);
             _output.WriteLine($"Operation to delete address: {deleteOp.Name} status {deleteOp.Status}; start time {deleteOp.StartTime}");
             deleteOp = PollForCompletion(deleteOp, "delete");
-            _output.WriteLine($"Operation to create address completed: status {deleteOp.Status}; start time {deleteOp.StartTime}; end time {deleteOp.EndTime}");
+            _output.WriteLine($"Operation to delete address completed: status {deleteOp.Status}; start time {deleteOp.StartTime}; end time {deleteOp.EndTime}");
         }
 
         private Operation PollForCompletion(Operation insertOp, string alias)
@@ -96,7 +89,7 @@ namespace ComputeDemo
                 GetRegionOperationRequest request = new GetRegionOperationRequest
                 {
                     Operation = insertOp.Name,
-                    Region = insertOp.Region,
+                    Region = _region,
                     Project = _project,
                 };
                 _output.WriteLine($"Checking for {alias} operation status ...");
@@ -112,7 +105,7 @@ namespace ComputeDemo
                     throw new InvalidOperationException(
                         $"Timeout hit while polling for the status of the {alias} operation\n{localOps}");
                 }
-                _output.WriteLine($"Status:  #{localOps.Status}. Sleeping for the {timeOut.TotalSeconds}s");
+                _output.WriteLine($"Status: {localOps.Status}. Sleeping for the {pollInterval.TotalSeconds}s");
                 Thread.Sleep(pollInterval);
             }
 
