@@ -23,14 +23,14 @@ namespace Google.Api.Gax.Grpc.Rest
     {
         private static readonly Regex s_braceRegex = new Regex(@"\{[^}]*\}");
 
-        private readonly IEnumerable<Func<IMessage, string>> _segments;
+        private readonly IEnumerable<HttpRulePathPatternSegment> _segments;
 
-        private HttpRulePathPattern(List<Func<IMessage, string>> segments) =>
+        private HttpRulePathPattern(List<HttpRulePathPatternSegment> segments) =>
             _segments = segments;
 
         internal static HttpRulePathPattern Parse(string pattern, MessageDescriptor requestDescriptor)
         {
-            List<Func<IMessage, string>> segments = new List<Func<IMessage, string>>();
+            var segments = new List<HttpRulePathPatternSegment>();
             var matches = s_braceRegex.Matches(pattern);
             int lastEnd = 0;
             foreach (Match match in matches)
@@ -39,7 +39,7 @@ namespace Google.Api.Gax.Grpc.Rest
                 if (start > lastEnd)
                 {
                     string literal = pattern.Substring(lastEnd, start - lastEnd);
-                    segments.Add(message => literal);
+                    segments.Add(HttpRulePathPatternSegment.CreateLiteral(literal));
                 }
                 int endOfName = match.Value.IndexOf('=');
                 if (endOfName == -1)
@@ -48,19 +48,31 @@ namespace Google.Api.Gax.Grpc.Rest
                     endOfName = match.Value.Length - 1;
                 }
                 string propertyPath = match.Value.Substring(1, endOfName - 1);
-                segments.Add(CreatePropertyAccessor(requestDescriptor, propertyPath));
+                segments.Add(CreatePathPathPatternSegment(requestDescriptor, propertyPath));
                 lastEnd = match.Index + match.Length;
             }
             if (lastEnd != pattern.Length)
             {
                 string literal = pattern.Substring(lastEnd);
-                segments.Add(message => literal);
+                segments.Add(HttpRulePathPatternSegment.CreateLiteral(literal));
             }
             return new HttpRulePathPattern(segments);
         }
 
         // TODO: do we need to perform URL encoding of anything?
-        internal string Format(IMessage message) => string.Join("", _segments.Select(segment => segment(message)));
+        internal string Format(IMessage message) => string.Join("", _segments.Select(segment => segment.Format(message)));
+
+        internal List<string> TopLevelFieldNames => _segments.Where(segment => segment.TopLevelFieldName != null)
+            .Select(s => s.TopLevelFieldName).ToList();
+
+        private static HttpRulePathPatternSegment CreatePathPathPatternSegment(MessageDescriptor descriptor, string propertyPath)
+        {
+            int periodIndex = propertyPath.IndexOf('.');
+            bool singleFieldPath = periodIndex == -1;
+            string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
+
+            return new HttpRulePathPatternSegment(fieldName, CreatePropertyAccessor(descriptor, propertyPath));
+        }
 
         private static Func<IMessage, string> CreatePropertyAccessor(MessageDescriptor descriptor, string propertyPath)
         {
@@ -80,15 +92,27 @@ namespace Google.Api.Gax.Grpc.Rest
             {
                 return message => (string) accessor.GetValue(message);
             }
-            else
+
+            var remainder = CreatePropertyAccessor(field.MessageType, propertyPath.Substring(periodIndex + 1));
+            return message =>
             {
-                var remainder = CreatePropertyAccessor(field.MessageType, propertyPath.Substring(periodIndex + 1));
-                return message =>
-                {
-                    var nested = (IMessage)accessor.GetValue(message);
-                    return nested is null ? "" : remainder(nested);
-                };
-            }
+                var nested = (IMessage)accessor.GetValue(message);
+                return nested is null ? "" : remainder(nested);
+            };
+        }
+
+        internal sealed class HttpRulePathPatternSegment
+        {
+            private readonly Func<IMessage, string> _formatter;
+            internal string TopLevelFieldName { get; }
+            
+            internal HttpRulePathPatternSegment(string topLevelFieldName, Func<IMessage, string> formatter) =>
+                (TopLevelFieldName, _formatter) = (topLevelFieldName, formatter);
+
+            internal string Format(IMessage message) => _formatter(message);
+
+            internal static HttpRulePathPatternSegment CreateLiteral(string literal) =>
+                new HttpRulePathPatternSegment(null, _ => literal);
         }
     }
 }

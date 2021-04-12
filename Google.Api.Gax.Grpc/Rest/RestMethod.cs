@@ -9,9 +9,13 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Google.Api.Gax.Grpc.Rest
 {
@@ -25,15 +29,15 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private readonly MethodDescriptor _protoMethod;
         private readonly HttpRulePathPattern _pathPattern;
+        private readonly string _httpBody;
         private readonly HttpMethod _httpMethod;
-        private readonly Func<IMessage, string> _contentFactory;
         private readonly JsonParser _parser;
 
         internal string FullName { get; }
 
-        private RestMethod(MethodDescriptor protoMethod, HttpRulePathPattern pathPattern, HttpMethod httpMethod, Func<IMessage, string> contentFactory, JsonParser parser) =>
-            (_protoMethod, _pathPattern, _httpMethod, _contentFactory, _parser, FullName) =
-            (protoMethod, pathPattern, httpMethod, contentFactory, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}");
+        private RestMethod(MethodDescriptor protoMethod, HttpRulePathPattern pathPattern, string httpBody, HttpMethod httpMethod, JsonParser parser) =>
+            (_protoMethod, _pathPattern, _httpMethod, _httpBody, _parser, FullName) =
+            (protoMethod, pathPattern, httpMethod, httpBody, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}");
 
         /// <summary>
         /// Creates a <see cref="RestMethod"/> representation from the given protobuf method representation.
@@ -62,15 +66,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
             var pathPattern = HttpRulePathPattern.Parse(pattern, method.InputType);
 
-            Func<IMessage, string> contentFactory = rule.Body switch
-            {
-                "*" => message => message.ToString(),
-                "" => null,
-                string name when method.InputType.FindFieldByName(name) is FieldDescriptor field => message => field.Accessor.GetValue(message).ToString(),
-                _ => throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has body field {rule.Body} which is not a field in {method.InputType.Name}")
-            };
-
-            return new RestMethod(method, pathPattern, httpMethod, contentFactory, parser);
+            return new RestMethod(method, pathPattern, rule.Body, httpMethod, parser);
         }
 
         /// <summary>
@@ -82,19 +78,122 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <returns>A request with the URI, method and content populated.</returns>
         internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host)
         {
-            string path = _pathPattern.Format(protoRequest);
-            var uri = host is null ? new Uri(path, UriKind.Relative) : new UriBuilder { Host = host, Path = path }.Uri;
-            string jsonContent = _contentFactory?.Invoke(protoRequest);
+            var transcodingResult = Transcode(protoRequest);
+
+            var uriPathWithParams = QueryHelpers.AddQueryString(transcodingResult.UriPath, transcodingResult.QueryStringParameters);
+            var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = transcodingResult.UriPath }.Uri;
+            
             return new HttpRequestMessage
             {
                 RequestUri = uri,
                 Method = _httpMethod,
-                Content = jsonContent is null ? null : new StringContent(jsonContent, Encoding.UTF8, s_applicationJsonMediaType)
+                Content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType),
             };
         }
 
-        // TODO: Handle cancellation?
+        /// <summary>
+        /// GRPC Transcoding returns the parameters of the http request, namely
+        ///  - the path of the uri
+        ///  - the query string parameters
+        ///  - the body
+        /// based on the
+        ///  - method descriptor, specifically the list of input message fields, and the `google.api.http` annotation
+        ///  - the request message
+        /// It is described in the AIP-127 (https://google.aip.dev/127) and the proto comments for google.api.HttpRule
+        /// (https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312)
+        /// </summary>
+        /// <param name="protoRequest">the request message</param>
+        /// <returns>GRPC Transcoding output</returns>
+        private TranscodingOutput Transcode(IMessage protoRequest)
+        {
+            string path = _pathPattern.Format(protoRequest);
+            (bool allFieldsInBody, string bodyName, string bodyResult) = _httpBody switch
+            {
+                "*" => (true, null, protoRequest.ToString()),
+                "" => (false, null, null),
+                string name when _protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field 
+                    => (false, name, field.Accessor.GetValue(protoRequest).ToString()),
+                _ => throw new ArgumentException($"Method {_protoMethod.Name} in service {_protoMethod.Service.Name} has a body parameter {_httpBody} in the 'google.api.http. annotation which is not a field in {_protoMethod.InputType.Name}")
+            };
+            
+            var queryStringParams = new Dictionary<string, string>();
+            if (!allFieldsInBody)
+            {
+                var usedFieldNames = new HashSet<string>(_pathPattern.TopLevelFieldNames);
+                if (bodyName != null)
+                {
+                    usedFieldNames.Add(bodyName);
+                }
 
+                var ineligibleForQueryStringEncodingTypes = new HashSet<FieldType>
+                    {FieldType.Group, FieldType.Message, FieldType.Bytes};
+
+                var queryStringParamsEligibleFields = _protoMethod.InputType.Fields.InDeclarationOrder()
+                    .Where(f => !ineligibleForQueryStringEncodingTypes.Contains(f.FieldType));
+
+                var unusedEligibleFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
+
+                var fieldsToEncode = unusedEligibleFields.Where(
+                    field =>
+                    {
+                        // Always encode required unused eligible fields
+                        if (field.IsRequired)
+                            return true;
+
+                        var fieldValue = field.Accessor.GetValue(protoRequest);
+                        
+                        // Non-required fields should be encoded only if their value is not default.
+                        // For enums obtaining default string value is too complicated, so short-circuit the test
+                        if (field.FieldType == FieldType.Enum)
+                        {
+                            return (int) fieldValue != 0;
+                        }
+
+                        // For the rest just compare to the default
+                        var fieldDefault = GetFieldDefaultValueStringByType(field.FieldType, field);
+                        return fieldValue.ToString() != fieldDefault;
+                    });
+
+                queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
+                    field => field.Accessor.GetValue(protoRequest).ToString());
+            }
+
+            return new TranscodingOutput(path, queryStringParams, bodyResult);
+        }
+
+        private string GetFieldDefaultValueStringByType(FieldType type, FieldDescriptor field)
+        {
+            switch(type)
+            {
+                case FieldType.Bool:
+                    return "False";
+                case FieldType.Enum:
+                    return "0";
+                case FieldType.String:
+                    return "";
+                case FieldType.Message:
+                case FieldType.Bytes:
+                case FieldType.Group:
+                    return "null";
+                case FieldType.Double:
+                case FieldType.Fixed32:
+                case FieldType.Fixed64:
+                case FieldType.Float:
+                case FieldType.Int32:
+                case FieldType.Int64:
+                case FieldType.SFixed32:
+                case FieldType.SFixed64:
+                case FieldType.SInt32:
+                case FieldType.SInt64:
+                case FieldType.UInt32:
+                case FieldType.UInt64:
+                    return "0";
+            }
+
+            throw new ArgumentException($"Field {field.Name} in method service {field.MessageType.Name} has a type for which a default value is not recorded in the Gax");
+        }
+
+        // TODO: Handle cancellation?
         /// <summary>
         /// Parses the response and converts it into the protobuf response type.
         /// </summary>
@@ -108,6 +207,17 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             return (TResponse) _parser.Parse(json, _protoMethod.OutputType);
+        }
+
+        private class TranscodingOutput
+        {
+            internal string UriPath { get; }
+            internal Dictionary<string, string> QueryStringParameters { get; }
+            internal string Body { get; }
+
+            internal TranscodingOutput(string uriPath, Dictionary<string, string> queryStringParameters, string body) =>
+                (UriPath, QueryStringParameters, Body) =
+                (uriPath, new Dictionary<string, string>(queryStringParameters), body);
         }
     }
 }
