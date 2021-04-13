@@ -33,57 +33,67 @@ namespace Google.Rpc.Context {
           string.Concat(
             "Cipnb29nbGUvcnBjL2NvbnRleHQvYXR0cmlidXRlX2NvbnRleHQucHJvdG8S",
             "Emdvb2dsZS5ycGMuY29udGV4dBoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90",
-            "bxocZ29vZ2xlL3Byb3RvYnVmL3N0cnVjdC5wcm90bxofZ29vZ2xlL3Byb3Rv",
-            "YnVmL3RpbWVzdGFtcC5wcm90byLwDAoQQXR0cmlidXRlQ29udGV4dBI5CgZv",
-            "cmlnaW4YByABKAsyKS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29u",
-            "dGV4dC5QZWVyEjkKBnNvdXJjZRgBIAEoCzIpLmdvb2dsZS5ycGMuY29udGV4",
-            "dC5BdHRyaWJ1dGVDb250ZXh0LlBlZXISPgoLZGVzdGluYXRpb24YAiABKAsy",
-            "KS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5QZWVyEj0K",
-            "B3JlcXVlc3QYAyABKAsyLC5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRl",
-            "Q29udGV4dC5SZXF1ZXN0Ej8KCHJlc3BvbnNlGAQgASgLMi0uZ29vZ2xlLnJw",
-            "Yy5jb250ZXh0LkF0dHJpYnV0ZUNvbnRleHQuUmVzcG9uc2USPwoIcmVzb3Vy",
-            "Y2UYBSABKAsyLS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4",
-            "dC5SZXNvdXJjZRI1CgNhcGkYBiABKAsyKC5nb29nbGUucnBjLmNvbnRleHQu",
-            "QXR0cmlidXRlQ29udGV4dC5BcGkSKAoKZXh0ZW5zaW9ucxgIIAMoCzIULmdv",
-            "b2dsZS5wcm90b2J1Zi5BbnkavgEKBFBlZXISCgoCaXAYASABKAkSDAoEcG9y",
-            "dBgCIAEoAxJFCgZsYWJlbHMYBiADKAsyNS5nb29nbGUucnBjLmNvbnRleHQu",
-            "QXR0cmlidXRlQ29udGV4dC5QZWVyLkxhYmVsc0VudHJ5EhEKCXByaW5jaXBh",
-            "bBgHIAEoCRITCgtyZWdpb25fY29kZRgIIAEoCRotCgtMYWJlbHNFbnRyeRIL",
-            "CgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGkwKA0FwaRIPCgdzZXJ2",
-            "aWNlGAEgASgJEhEKCW9wZXJhdGlvbhgCIAEoCRIQCghwcm90b2NvbBgDIAEo",
-            "CRIPCgd2ZXJzaW9uGAQgASgJGn8KBEF1dGgSEQoJcHJpbmNpcGFsGAEgASgJ",
-            "EhEKCWF1ZGllbmNlcxgCIAMoCRIRCglwcmVzZW50ZXIYAyABKAkSJwoGY2xh",
-            "aW1zGAQgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBIVCg1hY2Nlc3Nf",
-            "bGV2ZWxzGAUgAygJGu8CCgdSZXF1ZXN0EgoKAmlkGAEgASgJEg4KBm1ldGhv",
-            "ZBgCIAEoCRJKCgdoZWFkZXJzGAMgAygLMjkuZ29vZ2xlLnJwYy5jb250ZXh0",
-            "LkF0dHJpYnV0ZUNvbnRleHQuUmVxdWVzdC5IZWFkZXJzRW50cnkSDAoEcGF0",
-            "aBgEIAEoCRIMCgRob3N0GAUgASgJEg4KBnNjaGVtZRgGIAEoCRINCgVxdWVy",
-            "eRgHIAEoCRIoCgR0aW1lGAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVz",
-            "dGFtcBIMCgRzaXplGAogASgDEhAKCHByb3RvY29sGAsgASgJEg4KBnJlYXNv",
-            "bhgMIAEoCRI3CgRhdXRoGA0gASgLMikuZ29vZ2xlLnJwYy5jb250ZXh0LkF0",
-            "dHJpYnV0ZUNvbnRleHQuQXV0aBouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEg",
-            "ASgJEg0KBXZhbHVlGAIgASgJOgI4ARrNAQoIUmVzcG9uc2USDAoEY29kZRgB",
-            "IAEoAxIMCgRzaXplGAIgASgDEksKB2hlYWRlcnMYAyADKAsyOi5nb29nbGUu",
-            "cnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4dC5SZXNwb25zZS5IZWFkZXJz",
-            "RW50cnkSKAoEdGltZRgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3Rh",
-            "bXAaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
-            "CToCOAEasQEKCFJlc291cmNlEg8KB3NlcnZpY2UYASABKAkSDAoEbmFtZRgC",
-            "IAEoCRIMCgR0eXBlGAMgASgJEkkKBmxhYmVscxgEIAMoCzI5Lmdvb2dsZS5y",
-            "cGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlc291cmNlLkxhYmVsc0Vu",
-            "dHJ5Gi0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
-            "CToCOAFCiwEKFmNvbS5nb29nbGUucnBjLmNvbnRleHRCFUF0dHJpYnV0ZUNv",
-            "bnRleHRQcm90b1ABWlVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
-            "bGVhcGlzL3JwYy9jb250ZXh0L2F0dHJpYnV0ZV9jb250ZXh0O2F0dHJpYnV0",
-            "ZV9jb250ZXh0+AEBYgZwcm90bzM="));
+            "bxoeZ29vZ2xlL3Byb3RvYnVmL2R1cmF0aW9uLnByb3RvGhxnb29nbGUvcHJv",
+            "dG9idWYvc3RydWN0LnByb3RvGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1w",
+            "LnByb3RvIoMQChBBdHRyaWJ1dGVDb250ZXh0EjkKBm9yaWdpbhgHIAEoCzIp",
+            "Lmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlBlZXISOQoG",
+            "c291cmNlGAEgASgLMikuZ29vZ2xlLnJwYy5jb250ZXh0LkF0dHJpYnV0ZUNv",
+            "bnRleHQuUGVlchI+CgtkZXN0aW5hdGlvbhgCIAEoCzIpLmdvb2dsZS5ycGMu",
+            "Y29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlBlZXISPQoHcmVxdWVzdBgDIAEo",
+            "CzIsLmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlcXVl",
+            "c3QSPwoIcmVzcG9uc2UYBCABKAsyLS5nb29nbGUucnBjLmNvbnRleHQuQXR0",
+            "cmlidXRlQ29udGV4dC5SZXNwb25zZRI/CghyZXNvdXJjZRgFIAEoCzItLmdv",
+            "b2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlc291cmNlEjUK",
+            "A2FwaRgGIAEoCzIoLmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250",
+            "ZXh0LkFwaRIoCgpleHRlbnNpb25zGAggAygLMhQuZ29vZ2xlLnByb3RvYnVm",
+            "LkFueRq+AQoEUGVlchIKCgJpcBgBIAEoCRIMCgRwb3J0GAIgASgDEkUKBmxh",
+            "YmVscxgGIAMoCzI1Lmdvb2dsZS5ycGMuY29udGV4dC5BdHRyaWJ1dGVDb250",
+            "ZXh0LlBlZXIuTGFiZWxzRW50cnkSEQoJcHJpbmNpcGFsGAcgASgJEhMKC3Jl",
+            "Z2lvbl9jb2RlGAggASgJGi0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRIN",
+            "CgV2YWx1ZRgCIAEoCToCOAEaTAoDQXBpEg8KB3NlcnZpY2UYASABKAkSEQoJ",
+            "b3BlcmF0aW9uGAIgASgJEhAKCHByb3RvY29sGAMgASgJEg8KB3ZlcnNpb24Y",
+            "BCABKAkafwoEQXV0aBIRCglwcmluY2lwYWwYASABKAkSEQoJYXVkaWVuY2Vz",
+            "GAIgAygJEhEKCXByZXNlbnRlchgDIAEoCRInCgZjbGFpbXMYBCABKAsyFy5n",
+            "b29nbGUucHJvdG9idWYuU3RydWN0EhUKDWFjY2Vzc19sZXZlbHMYBSADKAka",
+            "7wIKB1JlcXVlc3QSCgoCaWQYASABKAkSDgoGbWV0aG9kGAIgASgJEkoKB2hl",
+            "YWRlcnMYAyADKAsyOS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29u",
+            "dGV4dC5SZXF1ZXN0LkhlYWRlcnNFbnRyeRIMCgRwYXRoGAQgASgJEgwKBGhv",
+            "c3QYBSABKAkSDgoGc2NoZW1lGAYgASgJEg0KBXF1ZXJ5GAcgASgJEigKBHRp",
+            "bWUYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBHNpemUY",
+            "CiABKAMSEAoIcHJvdG9jb2wYCyABKAkSDgoGcmVhc29uGAwgASgJEjcKBGF1",
+            "dGgYDSABKAsyKS5nb29nbGUucnBjLmNvbnRleHQuQXR0cmlidXRlQ29udGV4",
+            "dC5BdXRoGi4KDEhlYWRlcnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUY",
+            "AiABKAk6AjgBGoECCghSZXNwb25zZRIMCgRjb2RlGAEgASgDEgwKBHNpemUY",
+            "AiABKAMSSwoHaGVhZGVycxgDIAMoCzI6Lmdvb2dsZS5ycGMuY29udGV4dC5B",
+            "dHRyaWJ1dGVDb250ZXh0LlJlc3BvbnNlLkhlYWRlcnNFbnRyeRIoCgR0aW1l",
+            "GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg9iYWNrZW5k",
+            "X2xhdGVuY3kYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24aLgoM",
+            "SGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEa",
+            "kAQKCFJlc291cmNlEg8KB3NlcnZpY2UYASABKAkSDAoEbmFtZRgCIAEoCRIM",
+            "CgR0eXBlGAMgASgJEkkKBmxhYmVscxgEIAMoCzI5Lmdvb2dsZS5ycGMuY29u",
+            "dGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlc291cmNlLkxhYmVsc0VudHJ5EgsK",
+            "A3VpZBgFIAEoCRJTCgthbm5vdGF0aW9ucxgGIAMoCzI+Lmdvb2dsZS5ycGMu",
+            "Y29udGV4dC5BdHRyaWJ1dGVDb250ZXh0LlJlc291cmNlLkFubm90YXRpb25z",
+            "RW50cnkSFAoMZGlzcGxheV9uYW1lGAcgASgJEi8KC2NyZWF0ZV90aW1lGAgg",
+            "ASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIvCgt1cGRhdGVfdGlt",
+            "ZRgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoLZGVsZXRl",
+            "X3RpbWUYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEgwKBGV0",
+            "YWcYCyABKAkSEAoIbG9jYXRpb24YDCABKAkaLQoLTGFiZWxzRW50cnkSCwoD",
+            "a2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARoyChBBbm5vdGF0aW9uc0Vu",
+            "dHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCiwEKFmNvbS5n",
+            "b29nbGUucnBjLmNvbnRleHRCFUF0dHJpYnV0ZUNvbnRleHRQcm90b1ABWlVn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3JwYy9jb250",
+            "ZXh0L2F0dHJpYnV0ZV9jb250ZXh0O2F0dHJpYnV0ZV9jb250ZXh0+AEBYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext), global::Google.Rpc.Context.AttributeContext.Parser, new[]{ "Origin", "Source", "Destination", "Request", "Response", "Resource", "Api", "Extensions" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Peer), global::Google.Rpc.Context.AttributeContext.Types.Peer.Parser, new[]{ "Ip", "Port", "Labels", "Principal", "RegionCode" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Api), global::Google.Rpc.Context.AttributeContext.Types.Api.Parser, new[]{ "Service", "Operation", "Protocol", "Version" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Auth), global::Google.Rpc.Context.AttributeContext.Types.Auth.Parser, new[]{ "Principal", "Audiences", "Presenter", "Claims", "AccessLevels" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Request), global::Google.Rpc.Context.AttributeContext.Types.Request.Parser, new[]{ "Id", "Method", "Headers", "Path", "Host", "Scheme", "Query", "Time", "Size", "Protocol", "Reason", "Auth" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Response), global::Google.Rpc.Context.AttributeContext.Types.Response.Parser, new[]{ "Code", "Size", "Headers", "Time" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Resource), global::Google.Rpc.Context.AttributeContext.Types.Resource.Parser, new[]{ "Service", "Name", "Type", "Labels" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Response), global::Google.Rpc.Context.AttributeContext.Types.Response.Parser, new[]{ "Code", "Size", "Headers", "Time", "BackendLatency" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Context.AttributeContext.Types.Resource), global::Google.Rpc.Context.AttributeContext.Types.Resource.Parser, new[]{ "Service", "Name", "Type", "Labels", "Uid", "Annotations", "DisplayName", "CreateTime", "UpdateTime", "DeleteTime", "Etag", "Location" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, })})
           }));
     }
     #endregion
@@ -1775,7 +1785,7 @@ namespace Google.Rpc.Context {
         public const int TimeFieldNumber = 9;
         private global::Google.Protobuf.WellKnownTypes.Timestamp time_;
         /// <summary>
-        /// The timestamp when the `destination` service receives the first byte of
+        /// The timestamp when the `destination` service receives the last byte of
         /// the request.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2279,6 +2289,7 @@ namespace Google.Rpc.Context {
           size_ = other.size_;
           headers_ = other.headers_.Clone();
           time_ = other.time_ != null ? other.time_.Clone() : null;
+          backendLatency_ = other.backendLatency_ != null ? other.backendLatency_.Clone() : null;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -2334,7 +2345,7 @@ namespace Google.Rpc.Context {
         public const int TimeFieldNumber = 4;
         private global::Google.Protobuf.WellKnownTypes.Timestamp time_;
         /// <summary>
-        /// The timestamp when the `destination` service generates the first byte of
+        /// The timestamp when the `destination` service sends the last byte of
         /// the response.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2342,6 +2353,23 @@ namespace Google.Rpc.Context {
           get { return time_; }
           set {
             time_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "backend_latency" field.</summary>
+        public const int BackendLatencyFieldNumber = 5;
+        private global::Google.Protobuf.WellKnownTypes.Duration backendLatency_;
+        /// <summary>
+        /// The length of time it takes the backend service to fully respond to a
+        /// request. Measured from when the destination service starts to send the
+        /// request to the backend until when the destination service receives the
+        /// complete response from the backend.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Duration BackendLatency {
+          get { return backendLatency_; }
+          set {
+            backendLatency_ = value;
           }
         }
 
@@ -2362,6 +2390,7 @@ namespace Google.Rpc.Context {
           if (Size != other.Size) return false;
           if (!Headers.Equals(other.Headers)) return false;
           if (!object.Equals(Time, other.Time)) return false;
+          if (!object.Equals(BackendLatency, other.BackendLatency)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -2372,6 +2401,7 @@ namespace Google.Rpc.Context {
           if (Size != 0L) hash ^= Size.GetHashCode();
           hash ^= Headers.GetHashCode();
           if (time_ != null) hash ^= Time.GetHashCode();
+          if (backendLatency_ != null) hash ^= BackendLatency.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -2401,6 +2431,10 @@ namespace Google.Rpc.Context {
             output.WriteRawTag(34);
             output.WriteMessage(Time);
           }
+          if (backendLatency_ != null) {
+            output.WriteRawTag(42);
+            output.WriteMessage(BackendLatency);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2423,6 +2457,10 @@ namespace Google.Rpc.Context {
             output.WriteRawTag(34);
             output.WriteMessage(Time);
           }
+          if (backendLatency_ != null) {
+            output.WriteRawTag(42);
+            output.WriteMessage(BackendLatency);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -2441,6 +2479,9 @@ namespace Google.Rpc.Context {
           size += headers_.CalculateSize(_map_headers_codec);
           if (time_ != null) {
             size += 1 + pb::CodedOutputStream.ComputeMessageSize(Time);
+          }
+          if (backendLatency_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(BackendLatency);
           }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -2465,6 +2506,12 @@ namespace Google.Rpc.Context {
               Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             Time.MergeFrom(other.Time);
+          }
+          if (other.backendLatency_ != null) {
+            if (backendLatency_ == null) {
+              BackendLatency = new global::Google.Protobuf.WellKnownTypes.Duration();
+            }
+            BackendLatency.MergeFrom(other.BackendLatency);
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -2499,6 +2546,13 @@ namespace Google.Rpc.Context {
                 input.ReadMessage(Time);
                 break;
               }
+              case 42: {
+                if (backendLatency_ == null) {
+                  BackendLatency = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(BackendLatency);
+                break;
+              }
             }
           }
         #endif
@@ -2530,6 +2584,13 @@ namespace Google.Rpc.Context {
                   Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
                 }
                 input.ReadMessage(Time);
+                break;
+              }
+              case 42: {
+                if (backendLatency_ == null) {
+                  BackendLatency = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(BackendLatency);
                 break;
               }
             }
@@ -2577,6 +2638,14 @@ namespace Google.Rpc.Context {
           name_ = other.name_;
           type_ = other.type_;
           labels_ = other.labels_.Clone();
+          uid_ = other.uid_;
+          annotations_ = other.annotations_.Clone();
+          displayName_ = other.displayName_;
+          createTime_ = other.createTime_ != null ? other.createTime_.Clone() : null;
+          updateTime_ = other.updateTime_ != null ? other.updateTime_.Clone() : null;
+          deleteTime_ = other.deleteTime_ != null ? other.deleteTime_.Clone() : null;
+          etag_ = other.etag_;
+          location_ = other.location_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -2657,6 +2726,138 @@ namespace Google.Rpc.Context {
           get { return labels_; }
         }
 
+        /// <summary>Field number for the "uid" field.</summary>
+        public const int UidFieldNumber = 5;
+        private string uid_ = "";
+        /// <summary>
+        /// The unique identifier of the resource. UID is unique in the time
+        /// and space for this resource within the scope of the service. It is
+        /// typically generated by the server on successful creation of a resource
+        /// and must not be changed. UID is used to uniquely identify resources
+        /// with resource name reuses. This should be a UUID4.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Uid {
+          get { return uid_; }
+          set {
+            uid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "annotations" field.</summary>
+        public const int AnnotationsFieldNumber = 6;
+        private static readonly pbc::MapField<string, string>.Codec _map_annotations_codec
+            = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 50);
+        private readonly pbc::MapField<string, string> annotations_ = new pbc::MapField<string, string>();
+        /// <summary>
+        /// Annotations is an unstructured key-value map stored with a resource that
+        /// may be set by external tools to store and retrieve arbitrary metadata.
+        /// They are not queryable and should be preserved when modifying objects.
+        ///
+        /// More info: https://kubernetes.io/docs/user-guide/annotations
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pbc::MapField<string, string> Annotations {
+          get { return annotations_; }
+        }
+
+        /// <summary>Field number for the "display_name" field.</summary>
+        public const int DisplayNameFieldNumber = 7;
+        private string displayName_ = "";
+        /// <summary>
+        /// Mutable. The display name set by clients. Must be &lt;= 63 characters.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string DisplayName {
+          get { return displayName_; }
+          set {
+            displayName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "create_time" field.</summary>
+        public const int CreateTimeFieldNumber = 8;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp createTime_;
+        /// <summary>
+        /// Output only. The timestamp when the resource was created. This may
+        /// be either the time creation was initiated or when it was completed.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp CreateTime {
+          get { return createTime_; }
+          set {
+            createTime_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "update_time" field.</summary>
+        public const int UpdateTimeFieldNumber = 9;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp updateTime_;
+        /// <summary>
+        /// Output only. The timestamp when the resource was last updated. Any
+        /// change to the resource made by users must refresh this value.
+        /// Changes to a resource made by the service should refresh this value.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp UpdateTime {
+          get { return updateTime_; }
+          set {
+            updateTime_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "delete_time" field.</summary>
+        public const int DeleteTimeFieldNumber = 10;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp deleteTime_;
+        /// <summary>
+        /// Output only. The timestamp when the resource was deleted.
+        /// If the resource is not deleted, this must be empty.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp DeleteTime {
+          get { return deleteTime_; }
+          set {
+            deleteTime_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "etag" field.</summary>
+        public const int EtagFieldNumber = 11;
+        private string etag_ = "";
+        /// <summary>
+        /// Output only. An opaque value that uniquely identifies a version or
+        /// generation of a resource. It can be used to confirm that the client
+        /// and server agree on the ordering of a resource being written.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Etag {
+          get { return etag_; }
+          set {
+            etag_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "location" field.</summary>
+        public const int LocationFieldNumber = 12;
+        private string location_ = "";
+        /// <summary>
+        /// Immutable. The location of the resource. The location encoding is
+        /// specific to the service provider, and new encoding may be introduced
+        /// as the service evolves.
+        ///
+        /// For Google Cloud products, the encoding is what is used by Google Cloud
+        /// APIs, such as `us-east1`, `aws-us-east-1`, and `azure-eastus2`. The
+        /// semantics of `location` is identical to the
+        /// `cloud.googleapis.com/location` label used by some Google Cloud APIs.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Location {
+          get { return location_; }
+          set {
+            location_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Resource);
@@ -2674,6 +2875,14 @@ namespace Google.Rpc.Context {
           if (Name != other.Name) return false;
           if (Type != other.Type) return false;
           if (!Labels.Equals(other.Labels)) return false;
+          if (Uid != other.Uid) return false;
+          if (!Annotations.Equals(other.Annotations)) return false;
+          if (DisplayName != other.DisplayName) return false;
+          if (!object.Equals(CreateTime, other.CreateTime)) return false;
+          if (!object.Equals(UpdateTime, other.UpdateTime)) return false;
+          if (!object.Equals(DeleteTime, other.DeleteTime)) return false;
+          if (Etag != other.Etag) return false;
+          if (Location != other.Location) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -2684,6 +2893,14 @@ namespace Google.Rpc.Context {
           if (Name.Length != 0) hash ^= Name.GetHashCode();
           if (Type.Length != 0) hash ^= Type.GetHashCode();
           hash ^= Labels.GetHashCode();
+          if (Uid.Length != 0) hash ^= Uid.GetHashCode();
+          hash ^= Annotations.GetHashCode();
+          if (DisplayName.Length != 0) hash ^= DisplayName.GetHashCode();
+          if (createTime_ != null) hash ^= CreateTime.GetHashCode();
+          if (updateTime_ != null) hash ^= UpdateTime.GetHashCode();
+          if (deleteTime_ != null) hash ^= DeleteTime.GetHashCode();
+          if (Etag.Length != 0) hash ^= Etag.GetHashCode();
+          if (Location.Length != 0) hash ^= Location.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -2713,6 +2930,35 @@ namespace Google.Rpc.Context {
             output.WriteString(Type);
           }
           labels_.WriteTo(output, _map_labels_codec);
+          if (Uid.Length != 0) {
+            output.WriteRawTag(42);
+            output.WriteString(Uid);
+          }
+          annotations_.WriteTo(output, _map_annotations_codec);
+          if (DisplayName.Length != 0) {
+            output.WriteRawTag(58);
+            output.WriteString(DisplayName);
+          }
+          if (createTime_ != null) {
+            output.WriteRawTag(66);
+            output.WriteMessage(CreateTime);
+          }
+          if (updateTime_ != null) {
+            output.WriteRawTag(74);
+            output.WriteMessage(UpdateTime);
+          }
+          if (deleteTime_ != null) {
+            output.WriteRawTag(82);
+            output.WriteMessage(DeleteTime);
+          }
+          if (Etag.Length != 0) {
+            output.WriteRawTag(90);
+            output.WriteString(Etag);
+          }
+          if (Location.Length != 0) {
+            output.WriteRawTag(98);
+            output.WriteString(Location);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2735,6 +2981,35 @@ namespace Google.Rpc.Context {
             output.WriteString(Type);
           }
           labels_.WriteTo(ref output, _map_labels_codec);
+          if (Uid.Length != 0) {
+            output.WriteRawTag(42);
+            output.WriteString(Uid);
+          }
+          annotations_.WriteTo(ref output, _map_annotations_codec);
+          if (DisplayName.Length != 0) {
+            output.WriteRawTag(58);
+            output.WriteString(DisplayName);
+          }
+          if (createTime_ != null) {
+            output.WriteRawTag(66);
+            output.WriteMessage(CreateTime);
+          }
+          if (updateTime_ != null) {
+            output.WriteRawTag(74);
+            output.WriteMessage(UpdateTime);
+          }
+          if (deleteTime_ != null) {
+            output.WriteRawTag(82);
+            output.WriteMessage(DeleteTime);
+          }
+          if (Etag.Length != 0) {
+            output.WriteRawTag(90);
+            output.WriteString(Etag);
+          }
+          if (Location.Length != 0) {
+            output.WriteRawTag(98);
+            output.WriteString(Location);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -2754,6 +3029,28 @@ namespace Google.Rpc.Context {
             size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
           }
           size += labels_.CalculateSize(_map_labels_codec);
+          if (Uid.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Uid);
+          }
+          size += annotations_.CalculateSize(_map_annotations_codec);
+          if (DisplayName.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(DisplayName);
+          }
+          if (createTime_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreateTime);
+          }
+          if (updateTime_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdateTime);
+          }
+          if (deleteTime_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(DeleteTime);
+          }
+          if (Etag.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Etag);
+          }
+          if (Location.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Location);
+          }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -2775,6 +3072,37 @@ namespace Google.Rpc.Context {
             Type = other.Type;
           }
           labels_.Add(other.labels_);
+          if (other.Uid.Length != 0) {
+            Uid = other.Uid;
+          }
+          annotations_.Add(other.annotations_);
+          if (other.DisplayName.Length != 0) {
+            DisplayName = other.DisplayName;
+          }
+          if (other.createTime_ != null) {
+            if (createTime_ == null) {
+              CreateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            CreateTime.MergeFrom(other.CreateTime);
+          }
+          if (other.updateTime_ != null) {
+            if (updateTime_ == null) {
+              UpdateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            UpdateTime.MergeFrom(other.UpdateTime);
+          }
+          if (other.deleteTime_ != null) {
+            if (deleteTime_ == null) {
+              DeleteTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            DeleteTime.MergeFrom(other.DeleteTime);
+          }
+          if (other.Etag.Length != 0) {
+            Etag = other.Etag;
+          }
+          if (other.Location.Length != 0) {
+            Location = other.Location;
+          }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -2805,6 +3133,47 @@ namespace Google.Rpc.Context {
                 labels_.AddEntriesFrom(input, _map_labels_codec);
                 break;
               }
+              case 42: {
+                Uid = input.ReadString();
+                break;
+              }
+              case 50: {
+                annotations_.AddEntriesFrom(input, _map_annotations_codec);
+                break;
+              }
+              case 58: {
+                DisplayName = input.ReadString();
+                break;
+              }
+              case 66: {
+                if (createTime_ == null) {
+                  CreateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreateTime);
+                break;
+              }
+              case 74: {
+                if (updateTime_ == null) {
+                  UpdateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(UpdateTime);
+                break;
+              }
+              case 82: {
+                if (deleteTime_ == null) {
+                  DeleteTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(DeleteTime);
+                break;
+              }
+              case 90: {
+                Etag = input.ReadString();
+                break;
+              }
+              case 98: {
+                Location = input.ReadString();
+                break;
+              }
             }
           }
         #endif
@@ -2833,6 +3202,47 @@ namespace Google.Rpc.Context {
               }
               case 34: {
                 labels_.AddEntriesFrom(ref input, _map_labels_codec);
+                break;
+              }
+              case 42: {
+                Uid = input.ReadString();
+                break;
+              }
+              case 50: {
+                annotations_.AddEntriesFrom(ref input, _map_annotations_codec);
+                break;
+              }
+              case 58: {
+                DisplayName = input.ReadString();
+                break;
+              }
+              case 66: {
+                if (createTime_ == null) {
+                  CreateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreateTime);
+                break;
+              }
+              case 74: {
+                if (updateTime_ == null) {
+                  UpdateTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(UpdateTime);
+                break;
+              }
+              case 82: {
+                if (deleteTime_ == null) {
+                  DeleteTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(DeleteTime);
+                break;
+              }
+              case 90: {
+                Etag = input.ReadString();
+                break;
+              }
+              case 98: {
+                Location = input.ReadString();
                 break;
               }
             }

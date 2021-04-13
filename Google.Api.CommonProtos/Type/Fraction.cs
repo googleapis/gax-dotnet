@@ -92,7 +92,7 @@ namespace Google.Type {
     public const int NumeratorFieldNumber = 1;
     private long numerator_;
     /// <summary>
-    /// The portion of the denominator in the faction, e.g. 2 in 2/3.
+    /// The numerator in the fraction, e.g. 2 in 2/3.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Numerator {

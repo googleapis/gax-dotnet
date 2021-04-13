@@ -72,18 +72,6 @@ namespace Google.Api {
   /// Defines a metric type and its schema. Once a metric descriptor is created,
   /// deleting or altering it stops data collection and makes the metric type's
   /// existing data unusable.
-  ///
-  /// The following are specific rules for service defined Monitoring metric
-  /// descriptors:
-  ///
-  /// * `type`, `metric_kind`, `value_type`, `description`, `display_name`,
-  ///   `launch_stage` fields are all required. The `unit` field must be specified
-  ///   if the `value_type` is any of DOUBLE, INT64, DISTRIBUTION.
-  /// * Maximum of default 500 metric descriptors per service is allowed.
-  /// * Maximum of default 10 labels per metric descriptor is allowed.
-  ///
-  /// The default maximum limit can be overridden. Please follow
-  /// https://cloud.google.com/monitoring/quotas
   /// </summary>
   public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -152,23 +140,9 @@ namespace Google.Api {
     private string type_ = "";
     /// <summary>
     /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded.
-    ///
-    /// All service defined metrics must be prefixed with the service name, in the
-    /// format of `{service name}/{relative metric name}`, such as
-    /// `cloudsql.googleapis.com/database/cpu/utilization`. The relative metric
-    /// name must follow:
-    ///
-    /// * Only upper and lower-case letters, digits, '/' and underscores '_' are
-    ///   allowed.
-    /// * The maximum number of characters allowed for the relative_metric_name is
-    ///   100.
-    ///
-    /// All user-defined metric types have the DNS name
-    /// `custom.googleapis.com`, `external.googleapis.com`, or
-    /// `logging.googleapis.com/user/`.
-    ///
-    /// Metric types should use a natural hierarchical grouping. For example:
+    /// URL-encoded. All user-defined metric types have the DNS name
+    /// `custom.googleapis.com` or `external.googleapis.com`. Metric types should
+    /// use a natural hierarchical grouping. For example:
     ///
     ///     "custom.googleapis.com/invoice/paid/amount"
     ///     "external.googleapis.com/prometheus/up"
@@ -189,16 +163,7 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Api.LabelDescriptor> labels_ = new pbc::RepeatedField<global::Google.Api.LabelDescriptor>();
     /// <summary>
     /// The set of labels that can be used to describe a specific
-    /// instance of this metric type.
-    ///
-    /// The label key name must follow:
-    ///
-    /// * Only upper and lower-case letters, digits and underscores (_) are
-    ///   allowed.
-    /// * Label name must start with a letter or digit.
-    /// * The maximum length of a label name is 100 characters.
-    ///
-    /// For example, the
+    /// instance of this metric type. For example, the
     /// `appengine.googleapis.com/http/server/response_latencies` metric
     /// type has a label for the HTTP response code, `response_code`, so
     /// you can look at latencies for successful responses or just
@@ -247,11 +212,11 @@ namespace Google.Api {
     /// if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
     /// defines the representation of the stored metric values.
     ///
-    /// Different systems may scale the values to be more easily displayed (so a
-    /// value of `0.02KBy` _might_ be displayed as `20By`, and a value of
-    /// `3523KBy` _might_ be displayed as `3.5MBy`). However, if the `unit` is
-    /// `KBy`, then the value of the metric is always in thousands of bytes, no
-    /// matter how it may be displayed..
+    /// Different systems might scale the values to be more easily displayed (so a
+    /// value of `0.02kBy` _might_ be displayed as `20By`, and a value of
+    /// `3523kBy` _might_ be displayed as `3.5MBy`). However, if the `unit` is
+    /// `kBy`, then the value of the metric is always in thousands of bytes, no
+    /// matter how it might be displayed.
     ///
     /// If you want a custom metric to record the exact number of CPU-seconds used
     /// by a job, you can create an `INT64 CUMULATIVE` metric whose `unit` is
@@ -264,7 +229,7 @@ namespace Google.Api {
     /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
     ///
     /// The supported units are a subset of [The Unified Code for Units of
-    /// Measure](http://unitsofmeasure.org/ucum.html) standard:
+    /// Measure](https://unitsofmeasure.org/ucum.html) standard:
     ///
     /// **Basic units (UNIT)**
     ///
@@ -786,6 +751,8 @@ namespace Google.Api {
     public static partial class Types {
       /// <summary>
       /// The kind of measurement. It describes how the data is reported.
+      /// For information on setting the start time and end time based on
+      /// the MetricKind, see [TimeInterval][google.monitoring.v3.TimeInterval].
       /// </summary>
       public enum MetricKind {
         /// <summary>

@@ -52,7 +52,7 @@ namespace Google.Type {
   /// </summary>
   public enum Month {
     /// <summary>
-    /// The unspecifed month.
+    /// The unspecified month.
     /// </summary>
     [pbr::OriginalName("MONTH_UNSPECIFIED")] Unspecified = 0,
     /// <summary>

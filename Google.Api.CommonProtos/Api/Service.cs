@@ -46,35 +46,35 @@ namespace Google.Api {
             "c2FnZS5wcm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90bxoZZ29vZ2xl",
             "L3Byb3RvYnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3RvYnVmL3R5cGUucHJv",
             "dG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byLWBwoHU2Vydmlj",
-            "ZRI0Cg5jb25maWdfdmVyc2lvbhgUIAEoCzIcLmdvb2dsZS5wcm90b2J1Zi5V",
-            "SW50MzJWYWx1ZRIMCgRuYW1lGAEgASgJEgoKAmlkGCEgASgJEg0KBXRpdGxl",
-            "GAIgASgJEhsKE3Byb2R1Y2VyX3Byb2plY3RfaWQYFiABKAkSIgoEYXBpcxgD",
-            "IAMoCzIULmdvb2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsyFS5n",
-            "b29nbGUucHJvdG9idWYuVHlwZRIkCgVlbnVtcxgFIAMoCzIVLmdvb2dsZS5w",
-            "cm90b2J1Zi5FbnVtEjAKDWRvY3VtZW50YXRpb24YBiABKAsyGS5nb29nbGUu",
-            "YXBpLkRvY3VtZW50YXRpb24SJAoHYmFja2VuZBgIIAEoCzITLmdvb2dsZS5h",
-            "cGkuQmFja2VuZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xlLmFwaS5IdHRwEiAK",
-            "BXF1b3RhGAogASgLMhEuZ29vZ2xlLmFwaS5RdW90YRIyCg5hdXRoZW50aWNh",
-            "dGlvbhgLIAEoCzIaLmdvb2dsZS5hcGkuQXV0aGVudGljYXRpb24SJAoHY29u",
-            "dGV4dBgMIAEoCzITLmdvb2dsZS5hcGkuQ29udGV4dBIgCgV1c2FnZRgPIAEo",
-            "CzIRLmdvb2dsZS5hcGkuVXNhZ2USJwoJZW5kcG9pbnRzGBIgAygLMhQuZ29v",
-            "Z2xlLmFwaS5FbmRwb2ludBIkCgdjb250cm9sGBUgASgLMhMuZ29vZ2xlLmFw",
-            "aS5Db250cm9sEicKBGxvZ3MYFyADKAsyGS5nb29nbGUuYXBpLkxvZ0Rlc2Ny",
-            "aXB0b3ISLQoHbWV0cmljcxgYIAMoCzIcLmdvb2dsZS5hcGkuTWV0cmljRGVz",
-            "Y3JpcHRvchJEChNtb25pdG9yZWRfcmVzb3VyY2VzGBkgAygLMicuZ29vZ2xl",
-            "LmFwaS5Nb25pdG9yZWRSZXNvdXJjZURlc2NyaXB0b3ISJAoHYmlsbGluZxga",
-            "IAEoCzITLmdvb2dsZS5hcGkuQmlsbGluZxIkCgdsb2dnaW5nGBsgASgLMhMu",
-            "Z29vZ2xlLmFwaS5Mb2dnaW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5nb29n",
-            "bGUuYXBpLk1vbml0b3JpbmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSABKAsy",
-            "HC5nb29nbGUuYXBpLlN5c3RlbVBhcmFtZXRlcnMSKwoLc291cmNlX2luZm8Y",
-            "JSABKAsyFi5nb29nbGUuYXBpLlNvdXJjZUluZm9CbgoOY29tLmdvb2dsZS5h",
+            "ZRIMCgRuYW1lGAEgASgJEg0KBXRpdGxlGAIgASgJEhsKE3Byb2R1Y2VyX3By",
+            "b2plY3RfaWQYFiABKAkSCgoCaWQYISABKAkSIgoEYXBpcxgDIAMoCzIULmdv",
+            "b2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsyFS5nb29nbGUucHJv",
+            "dG9idWYuVHlwZRIkCgVlbnVtcxgFIAMoCzIVLmdvb2dsZS5wcm90b2J1Zi5F",
+            "bnVtEjAKDWRvY3VtZW50YXRpb24YBiABKAsyGS5nb29nbGUuYXBpLkRvY3Vt",
+            "ZW50YXRpb24SJAoHYmFja2VuZBgIIAEoCzITLmdvb2dsZS5hcGkuQmFja2Vu",
+            "ZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xlLmFwaS5IdHRwEiAKBXF1b3RhGAog",
+            "ASgLMhEuZ29vZ2xlLmFwaS5RdW90YRIyCg5hdXRoZW50aWNhdGlvbhgLIAEo",
+            "CzIaLmdvb2dsZS5hcGkuQXV0aGVudGljYXRpb24SJAoHY29udGV4dBgMIAEo",
+            "CzITLmdvb2dsZS5hcGkuQ29udGV4dBIgCgV1c2FnZRgPIAEoCzIRLmdvb2ds",
+            "ZS5hcGkuVXNhZ2USJwoJZW5kcG9pbnRzGBIgAygLMhQuZ29vZ2xlLmFwaS5F",
+            "bmRwb2ludBIkCgdjb250cm9sGBUgASgLMhMuZ29vZ2xlLmFwaS5Db250cm9s",
+            "EicKBGxvZ3MYFyADKAsyGS5nb29nbGUuYXBpLkxvZ0Rlc2NyaXB0b3ISLQoH",
+            "bWV0cmljcxgYIAMoCzIcLmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvchJE",
+            "ChNtb25pdG9yZWRfcmVzb3VyY2VzGBkgAygLMicuZ29vZ2xlLmFwaS5Nb25p",
+            "dG9yZWRSZXNvdXJjZURlc2NyaXB0b3ISJAoHYmlsbGluZxgaIAEoCzITLmdv",
+            "b2dsZS5hcGkuQmlsbGluZxIkCgdsb2dnaW5nGBsgASgLMhMuZ29vZ2xlLmFw",
+            "aS5Mb2dnaW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5nb29nbGUuYXBpLk1v",
+            "bml0b3JpbmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSABKAsyHC5nb29nbGUu",
+            "YXBpLlN5c3RlbVBhcmFtZXRlcnMSKwoLc291cmNlX2luZm8YJSABKAsyFi5n",
+            "b29nbGUuYXBpLlNvdXJjZUluZm8SNAoOY29uZmlnX3ZlcnNpb24YFCABKAsy",
+            "HC5nb29nbGUucHJvdG9idWYuVUludDMyVmFsdWVCbgoOY29tLmdvb2dsZS5h",
             "cGlCDFNlcnZpY2VQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90",
             "by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWei",
             "AgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.ResourceReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "ConfigVersion", "Name", "Id", "Title", "ProducerProjectId", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "Name", "Title", "ProducerProjectId", "Id", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo", "ConfigVersion" }, null, null, null, null)
           }));
     }
     #endregion
@@ -135,11 +135,10 @@ namespace Google.Api {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Service(Service other) : this() {
-      ConfigVersion = other.ConfigVersion;
       name_ = other.name_;
-      id_ = other.id_;
       title_ = other.title_;
       producerProjectId_ = other.producerProjectId_;
+      id_ = other.id_;
       apis_ = other.apis_.Clone();
       types_ = other.types_.Clone();
       enums_ = other.enums_.Clone();
@@ -160,6 +159,7 @@ namespace Google.Api {
       monitoring_ = other.monitoring_ != null ? other.monitoring_.Clone() : null;
       systemParameters_ = other.systemParameters_ != null ? other.systemParameters_.Clone() : null;
       sourceInfo_ = other.sourceInfo_ != null ? other.sourceInfo_.Clone() : null;
+      ConfigVersion = other.ConfigVersion;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -167,26 +167,6 @@ namespace Google.Api {
     public Service Clone() {
       return new Service(this);
     }
-
-    /// <summary>Field number for the "config_version" field.</summary>
-    public const int ConfigVersionFieldNumber = 20;
-    private static readonly pb::FieldCodec<uint?> _single_configVersion_codec = pb::FieldCodec.ForStructWrapper<uint>(162);
-    private uint? configVersion_;
-    /// <summary>
-    /// The semantic version of the service configuration. The config version
-    /// affects the interpretation of the service configuration. For example,
-    /// certain features are enabled by default for certain config versions.
-    ///
-    /// The latest config version is `3`.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public uint? ConfigVersion {
-      get { return configVersion_; }
-      set {
-        configVersion_ = value;
-      }
-    }
-
 
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 1;
@@ -202,23 +182,6 @@ namespace Google.Api {
       get { return name_; }
       set {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "id" field.</summary>
-    public const int IdFieldNumber = 33;
-    private string id_ = "";
-    /// <summary>
-    /// A unique ID for a specific instance of this message, typically assigned
-    /// by the client for tracking purpose. Must be no longer than 63 characters
-    /// and only lower case letters, digits, '.', '_' and '-' are allowed. If
-    /// empty, the server may choose to generate one instead.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Id {
-      get { return id_; }
-      set {
-        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -247,6 +210,23 @@ namespace Google.Api {
       get { return producerProjectId_; }
       set {
         producerProjectId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 33;
+    private string id_ = "";
+    /// <summary>
+    /// A unique ID for a specific instance of this message, typically assigned
+    /// by the client for tracking purpose. Must be no longer than 63 characters
+    /// and only lower case letters, digits, '.', '_' and '-' are allowed. If
+    /// empty, the server may choose to generate one instead.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Id {
+      get { return id_; }
+      set {
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -543,6 +523,22 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "config_version" field.</summary>
+    public const int ConfigVersionFieldNumber = 20;
+    private static readonly pb::FieldCodec<uint?> _single_configVersion_codec = pb::FieldCodec.ForStructWrapper<uint>(162);
+    private uint? configVersion_;
+    /// <summary>
+    /// Deprecated. The service config compiler always sets this field to `3`.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint? ConfigVersion {
+      get { return configVersion_; }
+      set {
+        configVersion_ = value;
+      }
+    }
+
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Service);
@@ -556,11 +552,10 @@ namespace Google.Api {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ConfigVersion != other.ConfigVersion) return false;
       if (Name != other.Name) return false;
-      if (Id != other.Id) return false;
       if (Title != other.Title) return false;
       if (ProducerProjectId != other.ProducerProjectId) return false;
+      if (Id != other.Id) return false;
       if(!apis_.Equals(other.apis_)) return false;
       if(!types_.Equals(other.types_)) return false;
       if(!enums_.Equals(other.enums_)) return false;
@@ -581,17 +576,17 @@ namespace Google.Api {
       if (!object.Equals(Monitoring, other.Monitoring)) return false;
       if (!object.Equals(SystemParameters, other.SystemParameters)) return false;
       if (!object.Equals(SourceInfo, other.SourceInfo)) return false;
+      if (ConfigVersion != other.ConfigVersion) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (configVersion_ != null) hash ^= ConfigVersion.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
       if (Title.Length != 0) hash ^= Title.GetHashCode();
       if (ProducerProjectId.Length != 0) hash ^= ProducerProjectId.GetHashCode();
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
       hash ^= apis_.GetHashCode();
       hash ^= types_.GetHashCode();
       hash ^= enums_.GetHashCode();
@@ -612,6 +607,7 @@ namespace Google.Api {
       if (monitoring_ != null) hash ^= Monitoring.GetHashCode();
       if (systemParameters_ != null) hash ^= SystemParameters.GetHashCode();
       if (sourceInfo_ != null) hash ^= SourceInfo.GetHashCode();
+      if (configVersion_ != null) hash ^= ConfigVersion.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -802,20 +798,17 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (configVersion_ != null) {
-        size += _single_configVersion_codec.CalculateSizeWithTag(ConfigVersion);
-      }
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
-      }
-      if (Id.Length != 0) {
-        size += 2 + pb::CodedOutputStream.ComputeStringSize(Id);
       }
       if (Title.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
       }
       if (ProducerProjectId.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(ProducerProjectId);
+      }
+      if (Id.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(Id);
       }
       size += apis_.CalculateSize(_repeated_apis_codec);
       size += types_.CalculateSize(_repeated_types_codec);
@@ -863,6 +856,9 @@ namespace Google.Api {
       if (sourceInfo_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SourceInfo);
       }
+      if (configVersion_ != null) {
+        size += _single_configVersion_codec.CalculateSizeWithTag(ConfigVersion);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -874,22 +870,17 @@ namespace Google.Api {
       if (other == null) {
         return;
       }
-      if (other.configVersion_ != null) {
-        if (configVersion_ == null || other.ConfigVersion != 0) {
-          ConfigVersion = other.ConfigVersion;
-        }
-      }
       if (other.Name.Length != 0) {
         Name = other.Name;
-      }
-      if (other.Id.Length != 0) {
-        Id = other.Id;
       }
       if (other.Title.Length != 0) {
         Title = other.Title;
       }
       if (other.ProducerProjectId.Length != 0) {
         ProducerProjectId = other.ProducerProjectId;
+      }
+      if (other.Id.Length != 0) {
+        Id = other.Id;
       }
       apis_.Add(other.apis_);
       types_.Add(other.types_);
@@ -975,6 +966,11 @@ namespace Google.Api {
           SourceInfo = new global::Google.Api.SourceInfo();
         }
         SourceInfo.MergeFrom(other.SourceInfo);
+      }
+      if (other.configVersion_ != null) {
+        if (configVersion_ == null || other.ConfigVersion != 0) {
+          ConfigVersion = other.ConfigVersion;
+        }
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }

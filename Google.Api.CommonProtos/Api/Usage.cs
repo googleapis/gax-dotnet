@@ -102,6 +102,12 @@ namespace Google.Api {
     /// Requirements that must be satisfied before a consumer project can use the
     /// service. Each requirement is of the form &lt;service.name>/&lt;requirement-id>;
     /// for example 'serviceusage.googleapis.com/billing-enabled'.
+    ///
+    /// For Google APIs, a Terms of Service requirement must be included here.
+    /// Google Cloud APIs must include "serviceusage.googleapis.com/tos/cloud".
+    /// Other Google APIs should include
+    /// "serviceusage.googleapis.com/tos/universal". Additional ToS can be
+    /// included based on the business needs.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Requirements {
