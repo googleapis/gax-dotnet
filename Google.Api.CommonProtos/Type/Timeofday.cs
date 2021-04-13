@@ -50,7 +50,8 @@ namespace Google.Type {
   /// <summary>
   /// Represents a time of day. The date and time zone are either not significant
   /// or are specified elsewhere. An API may choose to allow leap seconds. Related
-  /// types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
+  /// types are [google.type.Date][google.type.Date] and
+  /// `google.protobuf.Timestamp`.
   /// </summary>
   public sealed partial class TimeOfDay : pb::IMessage<TimeOfDay>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE

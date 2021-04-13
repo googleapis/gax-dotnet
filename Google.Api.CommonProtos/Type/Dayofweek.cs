@@ -47,39 +47,39 @@ namespace Google.Type {
   }
   #region Enums
   /// <summary>
-  /// Represents a day of week.
+  /// Represents a day of the week.
   /// </summary>
   public enum DayOfWeek {
     /// <summary>
-    /// The unspecified day-of-week.
+    /// The day of the week is unspecified.
     /// </summary>
     [pbr::OriginalName("DAY_OF_WEEK_UNSPECIFIED")] Unspecified = 0,
     /// <summary>
-    /// The day-of-week of Monday.
+    /// Monday
     /// </summary>
     [pbr::OriginalName("MONDAY")] Monday = 1,
     /// <summary>
-    /// The day-of-week of Tuesday.
+    /// Tuesday
     /// </summary>
     [pbr::OriginalName("TUESDAY")] Tuesday = 2,
     /// <summary>
-    /// The day-of-week of Wednesday.
+    /// Wednesday
     /// </summary>
     [pbr::OriginalName("WEDNESDAY")] Wednesday = 3,
     /// <summary>
-    /// The day-of-week of Thursday.
+    /// Thursday
     /// </summary>
     [pbr::OriginalName("THURSDAY")] Thursday = 4,
     /// <summary>
-    /// The day-of-week of Friday.
+    /// Friday
     /// </summary>
     [pbr::OriginalName("FRIDAY")] Friday = 5,
     /// <summary>
-    /// The day-of-week of Saturday.
+    /// Saturday
     /// </summary>
     [pbr::OriginalName("SATURDAY")] Saturday = 6,
     /// <summary>
-    /// The day-of-week of Sunday.
+    /// Sunday
     /// </summary>
     [pbr::OriginalName("SUNDAY")] Sunday = 7,
   }

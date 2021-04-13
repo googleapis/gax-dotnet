@@ -32,15 +32,15 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch9nb29nbGUvYXBpL2ZpZWxkX2JlaGF2aW9yLnByb3RvEgpnb29nbGUuYXBp",
-            "GiBnb29nbGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byp7Cg1GaWVsZEJl",
-            "aGF2aW9yEh4KGkZJRUxEX0JFSEFWSU9SX1VOU1BFQ0lGSUVEEAASDAoIT1BU",
-            "SU9OQUwQARIMCghSRVFVSVJFRBACEg8KC09VVFBVVF9PTkxZEAMSDgoKSU5Q",
-            "VVRfT05MWRAEEg0KCUlNTVVUQUJMRRAFOlEKDmZpZWxkX2JlaGF2aW9yEh0u",
-            "Z29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxicCCADKA4yGS5nb29nbGUu",
-            "YXBpLkZpZWxkQmVoYXZpb3JCcAoOY29tLmdvb2dsZS5hcGlCEkZpZWxkQmVo",
-            "YXZpb3JQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29n",
-            "bGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc6ICBEdBUEliBnBy",
-            "b3RvMw=="));
+            "GiBnb29nbGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byqPAQoNRmllbGRC",
+            "ZWhhdmlvchIeChpGSUVMRF9CRUhBVklPUl9VTlNQRUNJRklFRBAAEgwKCE9Q",
+            "VElPTkFMEAESDAoIUkVRVUlSRUQQAhIPCgtPVVRQVVRfT05MWRADEg4KCklO",
+            "UFVUX09OTFkQBBINCglJTU1VVEFCTEUQBRISCg5VTk9SREVSRURfTElTVBAG",
+            "OlEKDmZpZWxkX2JlaGF2aW9yEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0",
+            "aW9ucxicCCADKA4yGS5nb29nbGUuYXBpLkZpZWxkQmVoYXZpb3JCcAoOY29t",
+            "Lmdvb2dsZS5hcGlCEkZpZWxkQmVoYXZpb3JQcm90b1ABWkFnb29nbGUuZ29s",
+            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczth",
+            "bm5vdGF0aW9uc6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.FieldBehavior), }, new pb::Extension[] { FieldBehaviorExtensions.FieldBehavior }, null));
@@ -113,6 +113,13 @@ namespace Google.Api {
     /// resource, but may not be changed thereafter.
     /// </summary>
     [pbr::OriginalName("IMMUTABLE")] Immutable = 5,
+    /// <summary>
+    /// Denotes that a (repeated) field is an unordered list.
+    /// This indicates that the service may provide the elements of the list
+    /// in any arbitrary  order, rather than the order the user originally
+    /// provided. Additionally, the list's order may or may not be stable.
+    /// </summary>
+    [pbr::OriginalName("UNORDERED_LIST")] UnorderedList = 6,
   }
 
   #endregion
