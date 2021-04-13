@@ -10,8 +10,8 @@ OS=windows
 declare -r ROOT=$(realpath $(dirname $0))
 cd $ROOT
 
-PROTOBUF_VERSION=3.13.0
-GRPC_VERSION=2.31.0
+PROTOBUF_VERSION=3.15.8
+GRPC_VERSION=2.36.4
 PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
 CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
 GRPC_PLUGIN=$ROOT/packages/Grpc.Tools.$GRPC_VERSION/tools/windows_x64/grpc_csharp_plugin.exe
