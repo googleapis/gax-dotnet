@@ -66,7 +66,7 @@ $PROTOC \
   -I googleapis \
   -I $CORE_PROTOS_ROOT \
   --csharp_out=$OUTDIR \
-  --csharp_opt=base_namespace=Google \
+  --csharp_opt=base_namespace=Google,file_extension=.g.cs \
   googleapis/google/api/*.proto \
   $(find googleapis/google/rpc -name '*.proto') \
   $(find googleapis/google/type -name '*.proto')
@@ -88,7 +88,7 @@ done
 rm -rf $OUTDIR
 
 (cd Google.Api.Gax.Grpc.IntegrationTests;
- $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
+ $PROTOC --csharp_opt=file_extension=.g.cs --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
 
 (cd Google.Api.Gax.Grpc.Tests;
- $PROTOC --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
+ $PROTOC --csharp_opt=file_extension=.g.cs --csharp_out=. --grpc_out=. -I. --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
