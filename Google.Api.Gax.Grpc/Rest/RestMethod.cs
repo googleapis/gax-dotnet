@@ -80,7 +80,7 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var transcodingResult = Transcode(protoRequest);
 
-            var uriPathWithParams = AppendQueryStringParameters(transcodingResult.UriPath, transcodingResult.QueryStringParameters);
+            var uriPathWithParams = AppendQueryStringParameters(transcodingResult.UriPath, transcodingResult.QueryStringParameters.OrderBy(kvp => kvp.Key));
 
             var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = transcodingResult.UriPath }.Uri;
             
@@ -99,7 +99,7 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <param name="uriPath">The path component of the service URI</param>
         /// <param name="queryStringParameters">The parameters to encode in the query string</param>
         /// <returns></returns>
-        private static string AppendQueryStringParameters(string uriPath, Dictionary<string, string> queryStringParameters)
+        private static string AppendQueryStringParameters(string uriPath, IOrderedEnumerable<KeyValuePair<string, string>> queryStringParameters)
         {
             var sb = new StringBuilder();
             sb.Append(uriPath);
