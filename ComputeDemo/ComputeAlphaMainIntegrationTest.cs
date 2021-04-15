@@ -1,10 +1,15 @@
-﻿using System;
+﻿/*
+ * Copyright 2020 Google LLC
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using System;
 using System.Threading;
-using gaxgrpc = Google.Api.Gax.Grpc;
-using grpccore = Grpc.Core;
-using moq = Moq;
-using xunit = Xunit;
+using Xunit;
 using Google.Cloud.Compute.V1;
+using Grpc.Core;
 using Xunit.Abstractions;
 
 namespace ComputeDemo
@@ -36,7 +41,7 @@ namespace ComputeDemo
             }.Build();
         }
 
-        [xunit::Fact]
+        [Fact]
         public void CreateDeleteIPIntegration()
         {
             AddressesClient addressesClient = _addrClient;
@@ -44,10 +49,10 @@ namespace ComputeDemo
 
             _output.WriteLine($"Retrieving address with the name: {addrName}");
 
-            var exc = xunit.Assert.ThrowsAny<grpccore.RpcException>(
+            var exc = Assert.ThrowsAny<RpcException>(
                 () => addressesClient.Get(_project, _region, addrName)
             );
-            xunit.Assert.Equal(grpccore.StatusCode.NotFound, exc.StatusCode);
+            Assert.Equal(StatusCode.NotFound, exc.StatusCode);
 
             Address addressResource = new Address
             {
@@ -64,8 +69,8 @@ namespace ComputeDemo
 
             _output.WriteLine($"Retrieving address with the name: {addrName}");
             Address readAddr = addressesClient.Get(_project, _region, addrName);
-            xunit.Assert.NotNull(readAddr);
-            xunit.Assert.Equal(readAddr.Name, addrName);
+            Assert.NotNull(readAddr);
+            Assert.Equal(readAddr.Name, addrName);
 
             _output.WriteLine($"Deleting address with the name: {addrName}");
             Operation deleteOp = addressesClient.Delete(_project, _region, addrName);
@@ -82,8 +87,8 @@ namespace ComputeDemo
 
             TimeSpan timeOut = TimeSpan.FromMinutes(3);
             TimeSpan pollInterval = TimeSpan.FromSeconds(15);
-            DateTime pollStartTime = DateTime.UtcNow;
 
+            DateTime deadline = DateTime.UtcNow + timeOut;
             while (localOps.Status != Operation.Types.Status.Done)
             {
                 GetRegionOperationRequest request = new GetRegionOperationRequest
@@ -94,13 +99,12 @@ namespace ComputeDemo
                 };
                 _output.WriteLine($"Checking for {alias} operation status ...");
                 localOps = regionOperationsClient.Get(request);
-                
 
                 if (localOps.Status == Operation.Types.Status.Done) 
                 {
                     break;
                 }
-                if((DateTime.UtcNow - pollStartTime) > timeOut)
+                if(DateTime.UtcNow > deadline)
                 {
                     throw new InvalidOperationException(
                         $"Timeout hit while polling for the status of the {alias} operation\n{localOps}");

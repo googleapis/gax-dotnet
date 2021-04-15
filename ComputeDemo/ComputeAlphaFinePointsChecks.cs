@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading;
-using gaxgrpc = Google.Api.Gax.Grpc;
-using grpccore = Grpc.Core;
-using moq = Moq;
-using xunit = Xunit;
+﻿/*
+ * Copyright 2020 Google LLC
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+using Xunit;
 using Google.Cloud.Compute.V1;
 using Xunit.Abstractions;
 
@@ -28,15 +29,15 @@ namespace ComputeDemo
             _zonesClient = new ZonesClientBuilder { CredentialsPath = CredentialsPath }.Build();
         }
 
-        [xunit::Fact]
+        [Fact]
         public void TestZonesListMaxResults()
         {
             var allZones = _zonesClient.List(_project);
-            xunit.Assert.True(allZones.Items.Count > 2);
+            Assert.True(allZones.Items.Count > 2);
             _output.WriteLine($"Total number of zones: {allZones.Items.Count}");
 
             var twoZones = _zonesClient.List(new ListZonesRequest { Project = _project, MaxResults = 2});
-            xunit.Assert.Equal(2, twoZones.Items.Count);
+            Assert.Equal(2, twoZones.Items.Count);
         }
     }
 }

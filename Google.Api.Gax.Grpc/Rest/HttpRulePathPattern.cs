@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc.Rest
                     endOfName = match.Value.Length - 1;
                 }
                 string propertyPath = match.Value.Substring(1, endOfName - 1);
-                segments.Add(CreatePathPathPatternSegment(requestDescriptor, propertyPath));
+                segments.Add(CreatePatternSegment(requestDescriptor, propertyPath));
                 lastEnd = match.Index + match.Length;
             }
             if (lastEnd != pattern.Length)
@@ -62,10 +62,15 @@ namespace Google.Api.Gax.Grpc.Rest
         // TODO: do we need to perform URL encoding of anything?
         internal string Format(IMessage message) => string.Join("", _segments.Select(segment => segment.Format(message)));
 
-        internal List<string> TopLevelFieldNames => _segments.Where(segment => segment.TopLevelFieldName != null)
-            .Select(s => s.TopLevelFieldName).ToList();
+        /// <summary>
+        /// Names of the fields of the top-level message that are bound by this pattern.
+        /// </summary>
+        internal List<string> TopLevelFieldNames => _segments
+            .Where(segment => segment.TopLevelFieldName != null)
+            .Select(s => s.TopLevelFieldName)
+            .ToList();
 
-        private static HttpRulePathPatternSegment CreatePathPathPatternSegment(MessageDescriptor descriptor, string propertyPath)
+        private static HttpRulePathPatternSegment CreatePatternSegment(MessageDescriptor descriptor, string propertyPath)
         {
             int periodIndex = propertyPath.IndexOf('.');
             bool singleFieldPath = periodIndex == -1;
@@ -101,9 +106,20 @@ namespace Google.Api.Gax.Grpc.Rest
             };
         }
 
+        /// <summary>
+        /// A segment of the HTTP Rule pattern.
+        /// </summary>
         internal sealed class HttpRulePathPatternSegment
         {
+            /// <summary>
+            /// Given a message, 'fill in' this segment's value.
+            /// </summary>
             private readonly Func<IMessage, string> _formatter;
+            
+            /// <summary>
+            /// A name of the field in the top-level message that the segment is bound to
+            /// (e.g. for a binding `{foo.bar}`, this will be `foo`)
+            /// </summary>
             internal string TopLevelFieldName { get; }
             
             internal HttpRulePathPatternSegment(string topLevelFieldName, Func<IMessage, string> formatter) =>

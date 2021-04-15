@@ -15,8 +15,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.WebUtilities;
-
 namespace Google.Api.Gax.Grpc.Rest
 {
     /// <summary>
@@ -32,6 +30,8 @@ namespace Google.Api.Gax.Grpc.Rest
         private readonly string _httpBody;
         private readonly HttpMethod _httpMethod;
         private readonly JsonParser _parser;
+
+        private static readonly FieldType[] TypesIneligibleForQueryStringEncoding = { FieldType.Group, FieldType.Message, FieldType.Bytes };
 
         internal string FullName { get; }
 
@@ -80,7 +80,8 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var transcodingResult = Transcode(protoRequest);
 
-            var uriPathWithParams = QueryHelpers.AddQueryString(transcodingResult.UriPath, transcodingResult.QueryStringParameters);
+            var uriPathWithParams = AppendQueryStringParameters(transcodingResult.UriPath, transcodingResult.QueryStringParameters);
+
             var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = transcodingResult.UriPath }.Uri;
             
             return new HttpRequestMessage
@@ -89,6 +90,27 @@ namespace Google.Api.Gax.Grpc.Rest
                 Method = _httpMethod,
                 Content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType),
             };
+        }
+
+        /// <summary>
+        /// Merges the uri path and the query string parameters, escaping them.
+        /// Ignores the possibility that the path can already have parameters or contain an anchor (`#`)
+        /// </summary>
+        /// <param name="uriPath">The path component of the service URI</param>
+        /// <param name="queryStringParameters">The parameters to encode in the query string</param>
+        /// <returns></returns>
+        private static string AppendQueryStringParameters(string uriPath, Dictionary<string, string> queryStringParameters)
+        {
+            var sb = new StringBuilder();
+            sb.Append(uriPath);
+            queryStringParameters.Select((kvpNameValue, i) => new
+            {
+                Name = Uri.EscapeDataString(kvpNameValue.Key),
+                Value = Uri.EscapeDataString(kvpNameValue.Value),
+                Separator = i == 0 ? '?' : '&'
+            }).Aggregate(sb, (sbUri, encodedParam) => sbUri.AppendFormat("{0}{1}={2}", encodedParam.Separator, encodedParam.Name, encodedParam.Value));
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -111,9 +133,8 @@ namespace Google.Api.Gax.Grpc.Rest
             {
                 "*" => (true, null, protoRequest.ToString()),
                 "" => (false, null, null),
-                string name when _protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field 
-                    => (false, name, field.Accessor.GetValue(protoRequest).ToString()),
-                _ => throw new ArgumentException($"Method {_protoMethod.Name} in service {_protoMethod.Service.Name} has a body parameter {_httpBody} in the 'google.api.http. annotation which is not a field in {_protoMethod.InputType.Name}")
+                string name when _protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field => (false, name, field.Accessor.GetValue(protoRequest).ToString()),
+                _ => throw new ArgumentException($"Method {_protoMethod.Name} in service {_protoMethod.Service.Name} has a body parameter {_httpBody} in the 'google.api.http' annotation which is not a field in {_protoMethod.InputType.Name}")
             };
             
             var queryStringParams = new Dictionary<string, string>();
@@ -125,34 +146,12 @@ namespace Google.Api.Gax.Grpc.Rest
                     usedFieldNames.Add(bodyName);
                 }
 
-                var ineligibleForQueryStringEncodingTypes = new HashSet<FieldType>
-                    {FieldType.Group, FieldType.Message, FieldType.Bytes};
-
                 var queryStringParamsEligibleFields = _protoMethod.InputType.Fields.InDeclarationOrder()
-                    .Where(f => !ineligibleForQueryStringEncodingTypes.Contains(f.FieldType));
+                    .Where(f => !TypesIneligibleForQueryStringEncoding.Contains(f.FieldType));
 
                 var unusedEligibleFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
 
-                var fieldsToEncode = unusedEligibleFields.Where(
-                    field =>
-                    {
-                        // Always encode required unused eligible fields
-                        if (field.IsRequired)
-                            return true;
-
-                        var fieldValue = field.Accessor.GetValue(protoRequest);
-                        
-                        // Non-required fields should be encoded only if their value is not default.
-                        // For enums obtaining default string value is too complicated, so short-circuit the test
-                        if (field.FieldType == FieldType.Enum)
-                        {
-                            return (int) fieldValue != 0;
-                        }
-
-                        // For the rest just compare to the default
-                        var fieldDefault = GetFieldDefaultValueStringByType(field.FieldType, field);
-                        return fieldValue.ToString() != fieldDefault;
-                    });
+                var fieldsToEncode = unusedEligibleFields.Where(field => field.IsRequired || !IsDefaultValueForTranscoding(field, field.Accessor.GetValue(protoRequest)));
 
                 queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
                     field => field.Accessor.GetValue(protoRequest).ToString());
@@ -161,36 +160,39 @@ namespace Google.Api.Gax.Grpc.Rest
             return new TranscodingOutput(path, queryStringParams, bodyResult);
         }
 
-        private string GetFieldDefaultValueStringByType(FieldType type, FieldDescriptor field)
+        private bool IsDefaultValueForTranscoding(FieldDescriptor field, object fieldValue)
         {
-            switch(type)
-            {
-                case FieldType.Bool:
-                    return "False";
-                case FieldType.Enum:
-                    return "0";
-                case FieldType.String:
-                    return "";
-                case FieldType.Message:
-                case FieldType.Bytes:
-                case FieldType.Group:
-                    return "null";
-                case FieldType.Double:
-                case FieldType.Fixed32:
-                case FieldType.Fixed64:
-                case FieldType.Float:
-                case FieldType.Int32:
-                case FieldType.Int64:
-                case FieldType.SFixed32:
-                case FieldType.SFixed64:
-                case FieldType.SInt32:
-                case FieldType.SInt64:
-                case FieldType.UInt32:
-                case FieldType.UInt64:
-                    return "0";
-            }
+            if (TypesIneligibleForQueryStringEncoding.Contains(field.FieldType))
+                throw new NotImplementedException($"Field {field.Name} in method service {field.MessageType.Name} has a type {field.FieldType} for which a default value comparison for GRPC Transcoding should not be performed since the type {field.FieldType} should not be transcoded.");
 
-            throw new ArgumentException($"Field {field.Name} in method service {field.MessageType.Name} has a type for which a default value is not recorded in the Gax");
+            switch(field.FieldType)
+            {   case FieldType.Bool:
+                    return (bool) fieldValue;
+                case FieldType.String:
+                    return (string) fieldValue == "";
+                case FieldType.Enum:
+                    return (int) fieldValue == 0;
+                case FieldType.Double:
+                    return (double) fieldValue == 0;
+                case FieldType.Float:
+                    return (float) fieldValue == 0F;
+                case FieldType.Int32:
+                case FieldType.SInt32:
+                case FieldType.SFixed32:
+                    return (int) fieldValue == 0;
+                case FieldType.Int64:
+                case FieldType.SInt64:
+                case FieldType.SFixed64:
+                    return (long) fieldValue == 0L;
+                case FieldType.UInt32:
+                case FieldType.Fixed32:
+                    return (uint) fieldValue == 0U;
+                case FieldType.UInt64:
+                case FieldType.Fixed64:
+                    return (ulong) fieldValue == 0UL;
+                default:
+                    throw new ArgumentException($"Field {field.Name} in method service {field.MessageType.Name} has a type {field.FieldType} for which a default value comparison is not defined in the Gax");
+            }
         }
 
         // TODO: Handle cancellation?
