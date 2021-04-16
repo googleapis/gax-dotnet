@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -7,14 +7,16 @@
 
 using System;
 using System.Threading;
-using Xunit;
-using Google.Cloud.Compute.V1;
 using Grpc.Core;
+using Xunit;
 using Xunit.Abstractions;
 
-namespace ComputeDemo
+namespace Google.Cloud.Compute.V1.AcceptanceTests
 {
-    public sealed class ComputeAlphaMainIntegrationTest
+    /// <summary>
+    /// Main integration test for the Compute Alpha
+    /// </summary>s
+    public sealed class MainIntegrationTest
     {
         private readonly ITestOutputHelper _output;
         private readonly string _project;
@@ -24,7 +26,7 @@ namespace ComputeDemo
 
         const string CredentialsPath = @"C:\Users\virost\AppData\Roaming\gcloud\legacy_credentials\virost@google.com\adc.json";
 
-        public ComputeAlphaMainIntegrationTest(ITestOutputHelper output)
+        public MainIntegrationTest(ITestOutputHelper output)
         {
             _output = output;
             _project = "client-debugging";

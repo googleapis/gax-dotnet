@@ -26,18 +26,17 @@ namespace Google.Api.Gax.Grpc.Rest
         private static readonly HttpMethod s_patchMethod = new HttpMethod("PATCH");
 
         private readonly MethodDescriptor _protoMethod;
-        private readonly HttpRulePathPattern _pathPattern;
-        private readonly string _httpBody;
         private readonly HttpMethod _httpMethod;
         private readonly JsonParser _parser;
+        private readonly Func<IMessage, TranscodingOutput> _contentFactory;
 
         private static readonly FieldType[] TypesIneligibleForQueryStringEncoding = { FieldType.Group, FieldType.Message, FieldType.Bytes };
 
         internal string FullName { get; }
 
-        private RestMethod(MethodDescriptor protoMethod, HttpRulePathPattern pathPattern, string httpBody, HttpMethod httpMethod, JsonParser parser) =>
-            (_protoMethod, _pathPattern, _httpMethod, _httpBody, _parser, FullName) =
-            (protoMethod, pathPattern, httpMethod, httpBody, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}");
+        private RestMethod(MethodDescriptor protoMethod, HttpMethod httpMethod, JsonParser parser, Func<IMessage, TranscodingOutput> contentFactory) =>
+            (_protoMethod,  _httpMethod,  _parser, FullName, _contentFactory) =
+                (protoMethod, httpMethod, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}", contentFactory);
 
         /// <summary>
         /// Creates a <see cref="RestMethod"/> representation from the given protobuf method representation.
@@ -66,7 +65,64 @@ namespace Google.Api.Gax.Grpc.Rest
 
             var pathPattern = HttpRulePathPattern.Parse(pattern, method.InputType);
 
-            return new RestMethod(method, pathPattern, rule.Body, httpMethod, parser);
+            Func<IMessage, TranscodingOutput> contentFactory = CreateTranscodingContentFactory(method, pathPattern, rule.Body);
+
+            return new RestMethod(method, httpMethod, parser, contentFactory);
+        }
+
+        /// <summary>
+        /// This function creates a GRPC Transcoding lambda with curried method descriptor
+        ///
+        /// GRPC Transcoding returns the parameters of the http request, namely
+        ///  - the path of the uri
+        ///  - the query string parameters
+        ///  - the body
+        /// based on the
+        ///  - method descriptor, specifically the list of input message fields, and the `google.api.http` annotation
+        ///  - the request message
+        /// It is described in the AIP-127 (https://google.aip.dev/127) and the proto comments for google.api.HttpRule
+        /// (https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312)
+        /// </summary>
+        /// <returns>A lambda that will provide the transcoding output when the request method is known</returns>
+        private static Func<IMessage, TranscodingOutput> CreateTranscodingContentFactory(MethodDescriptor protoMethod, HttpRulePathPattern pathPattern, string httpBodyPattern)
+        {
+            Func<IMessage, string> pathFactory =  pathPattern.Format;
+
+            (bool allFieldsInBody, string bodyName, Func<IMessage, string> bodyFactory) = httpBodyPattern switch {
+                "*" => (true, null, new Func<IMessage, string>(protoRequest =>  protoRequest.ToString())),
+                "" => (false, null, new Func<IMessage, string>(protoRequest => null)),
+                string name when protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field => (false, name, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
+                _ => throw new ArgumentException($"Method {protoMethod.Name} in service {protoMethod.Service.Name} has a body parameter {httpBodyPattern} in the 'google.api.http' annotation which is not a field in {protoMethod.InputType.Name}")
+            };
+
+            List<FieldDescriptor> unusedEligibleFields = new List<FieldDescriptor>();
+            if (!allFieldsInBody)
+            {
+                var usedFieldNames = new HashSet<string>(pathPattern.TopLevelFieldNames);
+                if (bodyName != null)
+                {
+                    usedFieldNames.Add(bodyName);
+                }
+
+                var queryStringParamsEligibleFields = protoMethod.InputType.Fields.InDeclarationOrder()
+                    .Where(f => !TypesIneligibleForQueryStringEncoding.Contains(f.FieldType));
+
+                unusedEligibleFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
+            }
+
+            return message =>
+            {
+                var path = pathFactory(message);
+                var body = bodyFactory(message);
+
+                var fieldsToEncode = unusedEligibleFields.Where(field =>
+                    field.IsRequired || !IsDefaultValueForTranscoding(field, field.Accessor.GetValue(message)));
+
+                var queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
+                    field => field.Accessor.GetValue(message).ToString());
+
+                return new TranscodingOutput(path, queryStringParams, body);
+            };
         }
 
         /// <summary>
@@ -78,11 +134,13 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <returns>A request with the URI, method and content populated.</returns>
         internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host)
         {
-            var transcodingResult = Transcode(protoRequest);
+            var transcodingResult = _contentFactory(protoRequest);
 
-            var uriPathWithParams = AppendQueryStringParameters(transcodingResult.UriPath, transcodingResult.QueryStringParameters.OrderBy(kvp => kvp.Key));
-
-            var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = transcodingResult.UriPath }.Uri;
+            var uriPathWithParams = transcodingResult.QueryStringParameters.Any() 
+                ? AppendQueryStringParameters(transcodingResult.UriPath, transcodingResult.QueryStringParameters.OrderBy(kvp => kvp.Key))
+                : transcodingResult.UriPath;
+            
+            var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = uriPathWithParams }.Uri;
             
             return new HttpRequestMessage
             {
@@ -98,69 +156,26 @@ namespace Google.Api.Gax.Grpc.Rest
         /// </summary>
         /// <param name="uriPath">The path component of the service URI</param>
         /// <param name="queryStringParameters">The parameters to encode in the query string</param>
-        /// <returns></returns>
+        /// <returns>An uri path merged with the encoded query string parameters</returns>
         private static string AppendQueryStringParameters(string uriPath, IOrderedEnumerable<KeyValuePair<string, string>> queryStringParameters)
         {
             var sb = new StringBuilder();
             sb.Append(uriPath);
-            queryStringParameters.Select((kvpNameValue, i) => new
-            {
-                Name = Uri.EscapeDataString(kvpNameValue.Key),
-                Value = Uri.EscapeDataString(kvpNameValue.Value),
-                Separator = i == 0 ? '?' : '&'
-            }).Aggregate(sb, (sbUri, encodedParam) => sbUri.AppendFormat("{0}{1}={2}", encodedParam.Separator, encodedParam.Name, encodedParam.Value));
+            bool sbHasParameters = false;
 
+            foreach (var kvpNameValue in queryStringParameters)
+            {
+                sb.Append(sbHasParameters ? "&" : "?");
+                sbHasParameters = true;
+                sb.Append(Uri.EscapeDataString(kvpNameValue.Key));
+                sb.Append("=");
+                sb.Append(Uri.EscapeDataString(kvpNameValue.Value));
+            }
+            
             return sb.ToString();
         }
-
-        /// <summary>
-        /// GRPC Transcoding returns the parameters of the http request, namely
-        ///  - the path of the uri
-        ///  - the query string parameters
-        ///  - the body
-        /// based on the
-        ///  - method descriptor, specifically the list of input message fields, and the `google.api.http` annotation
-        ///  - the request message
-        /// It is described in the AIP-127 (https://google.aip.dev/127) and the proto comments for google.api.HttpRule
-        /// (https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312)
-        /// </summary>
-        /// <param name="protoRequest">the request message</param>
-        /// <returns>GRPC Transcoding output</returns>
-        private TranscodingOutput Transcode(IMessage protoRequest)
-        {
-            string path = _pathPattern.Format(protoRequest);
-            (bool allFieldsInBody, string bodyName, string bodyResult) = _httpBody switch
-            {
-                "*" => (true, null, protoRequest.ToString()),
-                "" => (false, null, null),
-                string name when _protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field => (false, name, field.Accessor.GetValue(protoRequest).ToString()),
-                _ => throw new ArgumentException($"Method {_protoMethod.Name} in service {_protoMethod.Service.Name} has a body parameter {_httpBody} in the 'google.api.http' annotation which is not a field in {_protoMethod.InputType.Name}")
-            };
-            
-            var queryStringParams = new Dictionary<string, string>();
-            if (!allFieldsInBody)
-            {
-                var usedFieldNames = new HashSet<string>(_pathPattern.TopLevelFieldNames);
-                if (bodyName != null)
-                {
-                    usedFieldNames.Add(bodyName);
-                }
-
-                var queryStringParamsEligibleFields = _protoMethod.InputType.Fields.InDeclarationOrder()
-                    .Where(f => !TypesIneligibleForQueryStringEncoding.Contains(f.FieldType));
-
-                var unusedEligibleFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
-
-                var fieldsToEncode = unusedEligibleFields.Where(field => field.IsRequired || !IsDefaultValueForTranscoding(field, field.Accessor.GetValue(protoRequest)));
-
-                queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
-                    field => field.Accessor.GetValue(protoRequest).ToString());
-            }
-
-            return new TranscodingOutput(path, queryStringParams, bodyResult);
-        }
-
-        private bool IsDefaultValueForTranscoding(FieldDescriptor field, object fieldValue)
+        
+        private static bool IsDefaultValueForTranscoding(FieldDescriptor field, object fieldValue)
         {
             if (TypesIneligibleForQueryStringEncoding.Contains(field.FieldType))
                 throw new NotImplementedException($"Field {field.Name} in method service {field.MessageType.Name} has a type {field.FieldType} for which a default value comparison for GRPC Transcoding should not be performed since the type {field.FieldType} should not be transcoded.");

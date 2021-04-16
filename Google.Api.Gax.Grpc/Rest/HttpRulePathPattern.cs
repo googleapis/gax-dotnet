@@ -39,7 +39,7 @@ namespace Google.Api.Gax.Grpc.Rest
                 if (start > lastEnd)
                 {
                     string literal = pattern.Substring(lastEnd, start - lastEnd);
-                    segments.Add(HttpRulePathPatternSegment.CreateLiteral(literal));
+                    segments.Add(HttpRulePathPatternSegment.CreateFromLiteral(literal));
                 }
                 int endOfName = match.Value.IndexOf('=');
                 if (endOfName == -1)
@@ -47,14 +47,14 @@ namespace Google.Api.Gax.Grpc.Rest
                     // If we don't have an '=', just go as far as the closing brace.
                     endOfName = match.Value.Length - 1;
                 }
-                string propertyPath = match.Value.Substring(1, endOfName - 1);
-                segments.Add(CreatePatternSegment(requestDescriptor, propertyPath));
+                string boundFieldPath = match.Value.Substring(1, endOfName - 1);
+                segments.Add(HttpRulePathPatternSegment.CreateFromBoundField(boundFieldPath, requestDescriptor));
                 lastEnd = match.Index + match.Length;
             }
             if (lastEnd != pattern.Length)
             {
                 string literal = pattern.Substring(lastEnd);
-                segments.Add(HttpRulePathPatternSegment.CreateLiteral(literal));
+                segments.Add(HttpRulePathPatternSegment.CreateFromLiteral(literal));
             }
             return new HttpRulePathPattern(segments);
         }
@@ -69,42 +69,6 @@ namespace Google.Api.Gax.Grpc.Rest
             .Where(segment => segment.TopLevelFieldName != null)
             .Select(s => s.TopLevelFieldName)
             .ToList();
-
-        private static HttpRulePathPatternSegment CreatePatternSegment(MessageDescriptor descriptor, string propertyPath)
-        {
-            int periodIndex = propertyPath.IndexOf('.');
-            bool singleFieldPath = periodIndex == -1;
-            string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
-
-            return new HttpRulePathPatternSegment(fieldName, CreatePropertyAccessor(descriptor, propertyPath));
-        }
-
-        private static Func<IMessage, string> CreatePropertyAccessor(MessageDescriptor descriptor, string propertyPath)
-        {
-            int periodIndex = propertyPath.IndexOf('.');
-            bool singleFieldPath = periodIndex == -1;
-            string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
-            var field = descriptor.FindFieldByName(fieldName) ?? throw new ArgumentException($"Field {fieldName} not found in message {descriptor.FullName}");
-            var expectedFieldType = singleFieldPath ? FieldType.String : FieldType.Message;
-
-            if (field.FieldType != expectedFieldType || field.IsRepeated || field.IsMap)
-            {
-                throw new ArgumentException($"Field {fieldName} in message {descriptor.FullName} cannot be used in a resource pattern");
-            }
-
-            var accessor = field.Accessor;
-            if (singleFieldPath)
-            {
-                return message => (string) accessor.GetValue(message);
-            }
-
-            var remainder = CreatePropertyAccessor(field.MessageType, propertyPath.Substring(periodIndex + 1));
-            return message =>
-            {
-                var nested = (IMessage)accessor.GetValue(message);
-                return nested is null ? "" : remainder(nested);
-            };
-        }
 
         /// <summary>
         /// A segment of the HTTP Rule pattern.
@@ -122,13 +86,60 @@ namespace Google.Api.Gax.Grpc.Rest
             /// </summary>
             internal string TopLevelFieldName { get; }
             
-            internal HttpRulePathPatternSegment(string topLevelFieldName, Func<IMessage, string> formatter) =>
+            private HttpRulePathPatternSegment(string topLevelFieldName, Func<IMessage, string> formatter) =>
                 (TopLevelFieldName, _formatter) = (topLevelFieldName, formatter);
 
             internal string Format(IMessage message) => _formatter(message);
 
-            internal static HttpRulePathPatternSegment CreateLiteral(string literal) =>
+            /// <summary>
+            /// Creates a new path pattern segment from a literal path segment, e.g. `resources` in `v1/resources/{resource.id}`
+            /// </summary>
+            /// <param name="literal">A literal path segment</param>
+            /// <returns>A new HttpRulePathPatternSegment</returns>
+            internal static HttpRulePathPatternSegment CreateFromLiteral(string literal) =>
                 new HttpRulePathPatternSegment(null, _ => literal);
+
+            /// <summary>
+            /// Creates a new path pattern segment from a path segment with the bound field, e.g. `{resource.id}` in `v1/resources/{resource.id}`
+            /// </summary>
+            /// <param name="propertyPath">A </param>
+            /// <param name="descriptor"></param>
+            /// <returns></returns>
+            internal static HttpRulePathPatternSegment CreateFromBoundField(string propertyPath, MessageDescriptor descriptor)
+            {
+                int periodIndex = propertyPath.IndexOf('.');
+                bool singleFieldPath = periodIndex == -1;
+                string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
+
+                return new HttpRulePathPatternSegment(fieldName, CreatePropertyAccessor(descriptor, propertyPath));
+            }
+
+            private static Func<IMessage, string> CreatePropertyAccessor(MessageDescriptor descriptor, string propertyPath)
+            {
+                int periodIndex = propertyPath.IndexOf('.');
+                bool singleFieldPath = periodIndex == -1;
+                string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
+                var field = descriptor.FindFieldByName(fieldName) ?? throw new ArgumentException($"Field {fieldName} not found in message {descriptor.FullName}");
+                var expectedFieldType = singleFieldPath ? FieldType.String : FieldType.Message;
+
+                if (field.FieldType != expectedFieldType || field.IsRepeated || field.IsMap)
+                {
+                    throw new ArgumentException($"Field {fieldName} in message {descriptor.FullName} cannot be used in a resource pattern");
+                }
+
+                var accessor = field.Accessor;
+                if (singleFieldPath)
+                {
+                    return message => (string) accessor.GetValue(message);
+                }
+
+                var remainder = CreatePropertyAccessor(field.MessageType, propertyPath.Substring(periodIndex + 1));
+                return message =>
+                {
+                    var nested = (IMessage)accessor.GetValue(message);
+                    return nested is null ? "" : remainder(nested);
+                };
+            }
         }
     }
 }

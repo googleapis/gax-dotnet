@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
@@ -11,7 +11,10 @@ using Xunit.Abstractions;
 
 namespace ComputeDemo
 {
-    public sealed class ComputeAlphaFinePointsChecks
+    /// <summary>
+    /// Integration tests focused on the GRPC Transcoding
+    /// </summary>
+    public sealed class TranscodingIntegrationTests
     {
         private readonly ITestOutputHelper _output;
         private readonly string _project;
@@ -20,7 +23,7 @@ namespace ComputeDemo
 
         const string CredentialsPath = @"C:\Users\virost\AppData\Roaming\gcloud\legacy_credentials\virost@google.com\adc.json";
 
-        public ComputeAlphaFinePointsChecks(ITestOutputHelper output)
+        public TranscodingIntegrationTests(ITestOutputHelper output)
         {
             _output = output;
             _project = "client-debugging";
@@ -33,8 +36,8 @@ namespace ComputeDemo
         public void TestZonesListMaxResults()
         {
             var allZones = _zonesClient.List(_project);
-            Assert.True(allZones.Items.Count > 2);
             _output.WriteLine($"Total number of zones: {allZones.Items.Count}");
+            Assert.True(allZones.Items.Count > 2);
 
             var twoZones = _zonesClient.List(new ListZonesRequest { Project = _project, MaxResults = 2});
             Assert.Equal(2, twoZones.Items.Count);
