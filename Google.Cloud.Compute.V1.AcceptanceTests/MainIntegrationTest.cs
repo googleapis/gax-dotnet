@@ -24,22 +24,43 @@ namespace Google.Cloud.Compute.V1.AcceptanceTests
         private readonly AddressesClient _addrClient;
         private readonly RegionOperationsClient _ropsClient;
 
-        const string CredentialsPath = @"C:\Users\virost\AppData\Roaming\gcloud\legacy_credentials\virost@google.com\adc.json";
+        private const string TestCredentialsEnvironmentVariable = "GOOGLE_APPLICATION_CREDENTIALS";
+        private const string TestProjectEnvironmentVariable = "COMPUTE_TEST_PROJECT";
+        private const string TestRegionEnvironmentVariable = "COMPUTE_TEST_REGION";
 
         public MainIntegrationTest(ITestOutputHelper output)
         {
             _output = output;
-            _project = "client-debugging";
-            _region = "us-central1";
+            
+            // e.g. "client-debugging";
+            _project =  Environment.GetEnvironmentVariable(TestProjectEnvironmentVariable);
+            if (string.IsNullOrWhiteSpace(_project))
+            {
+                throw new ArgumentException($"Test project not set via the {TestProjectEnvironmentVariable} environment variable");
+            }
+
+            // e.g. "us-central1";
+            _region =  Environment.GetEnvironmentVariable("COMPUTE_TEST_REGION");
+            if (string.IsNullOrWhiteSpace(_region))
+            {
+                throw new ArgumentException($"Test region not set via the {TestRegionEnvironmentVariable} environment variable");
+            }
+
+            // e.g. "C:\Path\to\adc.json"
+            var credentialsPath = Environment.GetEnvironmentVariable(TestCredentialsEnvironmentVariable);
+            if (string.IsNullOrWhiteSpace(credentialsPath))
+            {
+                throw new ArgumentException($"Credentials are not set via the {TestCredentialsEnvironmentVariable} environment variable");
+            }
             
             _addrClient = new AddressesClientBuilder
             {
-                CredentialsPath = CredentialsPath
+                CredentialsPath = credentialsPath
             }.Build();
 
             _ropsClient = new RegionOperationsClientBuilder
             {
-                CredentialsPath = CredentialsPath
+                CredentialsPath = credentialsPath
             }.Build();
         }
 

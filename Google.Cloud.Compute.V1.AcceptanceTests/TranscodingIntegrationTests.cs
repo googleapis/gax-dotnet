@@ -4,6 +4,8 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+
+using System;
 using Xunit;
 using Google.Cloud.Compute.V1;
 using Xunit.Abstractions;
@@ -18,18 +20,29 @@ namespace ComputeDemo
     {
         private readonly ITestOutputHelper _output;
         private readonly string _project;
-        private readonly string _region;
         private readonly ZonesClient _zonesClient;
 
-        const string CredentialsPath = @"C:\Users\virost\AppData\Roaming\gcloud\legacy_credentials\virost@google.com\adc.json";
-
+        private const string TestCredentialsEnvironmentVariable = "GOOGLE_APPLICATION_CREDENTIALS";
+        private const string TestProjectEnvironmentVariable = "COMPUTE_TEST_PROJECT";
+        
         public TranscodingIntegrationTests(ITestOutputHelper output)
         {
             _output = output;
-            _project = "client-debugging";
-            _region = "us-central1";
+            // e.g. "client-debugging";
+            _project =  Environment.GetEnvironmentVariable(TestProjectEnvironmentVariable);
+            if (string.IsNullOrWhiteSpace(_project))
+            {
+                throw new ArgumentException($"Test project not set via the {TestProjectEnvironmentVariable} environment variable");
+            }
+
+            // e.g. "C:\Path\to\adc.json"
+            var credentialsPath = Environment.GetEnvironmentVariable(TestCredentialsEnvironmentVariable);
+            if (string.IsNullOrWhiteSpace(credentialsPath))
+            {
+                throw new ArgumentException($"Credentials are not set via the {TestCredentialsEnvironmentVariable} environment variable");
+            }
             
-            _zonesClient = new ZonesClientBuilder { CredentialsPath = CredentialsPath }.Build();
+            _zonesClient = new ZonesClientBuilder { CredentialsPath = credentialsPath }.Build();
         }
 
         [Fact]
