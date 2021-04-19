@@ -25,21 +25,24 @@ namespace Google.Api.Gax.Grpc.Rest {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChJ0ZXN0X3NlcnZpY2UucHJvdG8SGGdvb2dsZS5hcGkuZ2F4LmdycGMucmVz",
-            "dCJ+Cg9SdWxlVGVzdFJlcXVlc3QSCQoBeBgBIAEoCRIJCgF5GAIgASgJEkAK",
-            "Bm5lc3RlZBgDIAEoCzIwLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5SdWxl",
-            "VGVzdFJlcXVlc3QuTmVzdGVkGhMKBk5lc3RlZBIJCgFhGAEgASgJIjAKD0J1",
-            "bmRsaW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMYAiADKAki",
-            "MQoQQnVuZGxpbmdSZXNwb25zZRIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMY",
-            "AiADKAkiHQoNU2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJIh4KDlNpbXBs",
-            "ZVJlc3BvbnNlEgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWluZ1JlcXVl",
-            "c3QSEgoKcGFnZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSDQoF",
-            "Y2hlY2sYAyABKAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0KBWl0ZW1z",
-            "GAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTIICgZTYW1wbGViBnBy",
-            "b3RvMw=="));
+            "dCKKAgoPUnVsZVRlc3RSZXF1ZXN0EgkKAXgYASABKAkSCQoBeRgCIAEoCRIL",
+            "CgNpbnQYAyABKAUSEAoIcmVwZWF0ZWQYBCADKAkSPwoDbWFwGAUgAygLMjIu",
+            "Z29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LlJ1bGVUZXN0UmVxdWVzdC5NYXBF",
+            "bnRyeRJACgZuZXN0ZWQYBiABKAsyMC5nb29nbGUuYXBpLmdheC5ncnBjLnJl",
+            "c3QuUnVsZVRlc3RSZXF1ZXN0Lk5lc3RlZBoqCghNYXBFbnRyeRILCgNrZXkY",
+            "ASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGhMKBk5lc3RlZBIJCgFhGAEgASgJ",
+            "IjAKD0J1bmRsaW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMY",
+            "AiADKAkiMQoQQnVuZGxpbmdSZXNwb25zZRIMCgRuYW1lGAEgASgJEg8KB2Vu",
+            "dHJpZXMYAiADKAkiHQoNU2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJIh4K",
+            "DlNpbXBsZVJlc3BvbnNlEgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWlu",
+            "Z1JlcXVlc3QSEgoKcGFnZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiAB",
+            "KAUSDQoFY2hlY2sYAyABKAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0K",
+            "BWl0ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTIICgZTYW1w",
+            "bGViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Parser, new[]{ "X", "Y", "Nested" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested.Parser, new[]{ "A" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Parser, new[]{ "X", "Y", "Int", "Repeated", "Map", "Nested" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested.Parser, new[]{ "A" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BundlingRequest), global::Google.Api.Gax.Grpc.Rest.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BundlingResponse), global::Google.Api.Gax.Grpc.Rest.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.SimpleRequest), global::Google.Api.Gax.Grpc.Rest.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
@@ -86,6 +89,9 @@ namespace Google.Api.Gax.Grpc.Rest {
     public RuleTestRequest(RuleTestRequest other) : this() {
       x_ = other.x_;
       y_ = other.y_;
+      int_ = other.int_;
+      repeated_ = other.repeated_.Clone();
+      map_ = other.map_.Clone();
       nested_ = other.nested_ != null ? other.nested_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -117,8 +123,39 @@ namespace Google.Api.Gax.Grpc.Rest {
       }
     }
 
+    /// <summary>Field number for the "int" field.</summary>
+    public const int IntFieldNumber = 3;
+    private int int_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Int {
+      get { return int_; }
+      set {
+        int_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "repeated" field.</summary>
+    public const int RepeatedFieldNumber = 4;
+    private static readonly pb::FieldCodec<string> _repeated_repeated_codec
+        = pb::FieldCodec.ForString(34);
+    private readonly pbc::RepeatedField<string> repeated_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> Repeated {
+      get { return repeated_; }
+    }
+
+    /// <summary>Field number for the "map" field.</summary>
+    public const int MapFieldNumber = 5;
+    private static readonly pbc::MapField<string, string>.Codec _map_map_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 42);
+    private readonly pbc::MapField<string, string> map_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> Map {
+      get { return map_; }
+    }
+
     /// <summary>Field number for the "nested" field.</summary>
-    public const int NestedFieldNumber = 3;
+    public const int NestedFieldNumber = 6;
     private global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested nested_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested Nested {
@@ -143,6 +180,9 @@ namespace Google.Api.Gax.Grpc.Rest {
       }
       if (X != other.X) return false;
       if (Y != other.Y) return false;
+      if (Int != other.Int) return false;
+      if(!repeated_.Equals(other.repeated_)) return false;
+      if (!Map.Equals(other.Map)) return false;
       if (!object.Equals(Nested, other.Nested)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -152,6 +192,9 @@ namespace Google.Api.Gax.Grpc.Rest {
       int hash = 1;
       if (X.Length != 0) hash ^= X.GetHashCode();
       if (Y.Length != 0) hash ^= Y.GetHashCode();
+      if (Int != 0) hash ^= Int.GetHashCode();
+      hash ^= repeated_.GetHashCode();
+      hash ^= Map.GetHashCode();
       if (nested_ != null) hash ^= Nested.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -177,8 +220,14 @@ namespace Google.Api.Gax.Grpc.Rest {
         output.WriteRawTag(18);
         output.WriteString(Y);
       }
+      if (Int != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Int);
+      }
+      repeated_.WriteTo(output, _repeated_repeated_codec);
+      map_.WriteTo(output, _map_map_codec);
       if (nested_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(50);
         output.WriteMessage(Nested);
       }
       if (_unknownFields != null) {
@@ -198,8 +247,14 @@ namespace Google.Api.Gax.Grpc.Rest {
         output.WriteRawTag(18);
         output.WriteString(Y);
       }
+      if (Int != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Int);
+      }
+      repeated_.WriteTo(ref output, _repeated_repeated_codec);
+      map_.WriteTo(ref output, _map_map_codec);
       if (nested_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(50);
         output.WriteMessage(Nested);
       }
       if (_unknownFields != null) {
@@ -217,6 +272,11 @@ namespace Google.Api.Gax.Grpc.Rest {
       if (Y.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Y);
       }
+      if (Int != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Int);
+      }
+      size += repeated_.CalculateSize(_repeated_repeated_codec);
+      size += map_.CalculateSize(_map_map_codec);
       if (nested_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Nested);
       }
@@ -237,6 +297,11 @@ namespace Google.Api.Gax.Grpc.Rest {
       if (other.Y.Length != 0) {
         Y = other.Y;
       }
+      if (other.Int != 0) {
+        Int = other.Int;
+      }
+      repeated_.Add(other.repeated_);
+      map_.Add(other.map_);
       if (other.nested_ != null) {
         if (nested_ == null) {
           Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
@@ -265,7 +330,19 @@ namespace Google.Api.Gax.Grpc.Rest {
             Y = input.ReadString();
             break;
           }
-          case 26: {
+          case 24: {
+            Int = input.ReadInt32();
+            break;
+          }
+          case 34: {
+            repeated_.AddEntriesFrom(input, _repeated_repeated_codec);
+            break;
+          }
+          case 42: {
+            map_.AddEntriesFrom(input, _map_map_codec);
+            break;
+          }
+          case 50: {
             if (nested_ == null) {
               Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
             }
@@ -294,7 +371,19 @@ namespace Google.Api.Gax.Grpc.Rest {
             Y = input.ReadString();
             break;
           }
-          case 26: {
+          case 24: {
+            Int = input.ReadInt32();
+            break;
+          }
+          case 34: {
+            repeated_.AddEntriesFrom(ref input, _repeated_repeated_codec);
+            break;
+          }
+          case 42: {
+            map_.AddEntriesFrom(ref input, _map_map_codec);
+            break;
+          }
+          case 50: {
             if (nested_ == null) {
               Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
             }
@@ -322,7 +411,7 @@ namespace Google.Api.Gax.Grpc.Rest {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
-          get { return global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Descriptor.NestedTypes[0]; }
+          get { return global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Descriptor.NestedTypes[1]; }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
