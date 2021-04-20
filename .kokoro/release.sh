@@ -8,7 +8,11 @@ SCRIPT_DIR=$(dirname "$SCRIPT")
 cd $SCRIPT_DIR
 cd ..
 
-export NUGET_API_KEY="$(cat "$KOKORO_KEYSTORE_DIR"/73609_google-apis-nuget-api-key)"
+# Make sure secrets are loaded in a well known localtion before running releasetool
+source ./populatesecrets.sh
+populate_all_secrets
+
+export NUGET_API_KEY="$(cat "$SECRETS_LOCATION"/google-apis-nuget-api-key)"
 
 # Build the release and run the tests.
 ./buildrelease.sh $(git rev-parse HEAD)
