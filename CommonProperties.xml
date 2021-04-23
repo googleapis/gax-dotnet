@@ -6,6 +6,10 @@
 
   <!-- Build information -->
   <PropertyGroup>
+
+    <!-- Exclude REGAPIC (Google.Api.Grpc.Rest) unless the REGAPIC property is set to "true" -->
+    <DefineConstants Condition="'$(REGAPIC)' == 'true'">REGAPIC</DefineConstants>
+
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyOriginatorKeyFile>../Gax.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
