@@ -7,9 +7,25 @@ SCRIPT_DIR=$(dirname "$SCRIPT")
 
 cd $SCRIPT_DIR
 
-# Make sure secrets are loaded in a well known localtion before running releasetool
+# Make sure secrets are loaded in a well known location before running releasetool
 source ./populatesecrets.sh
-populate_all_secrets
+
+# Only populate secrets if we have to.
+# Else, we assume secrets have already been populated by the caller.
+populatesecrets=true
+if [[ "$#" -eq 1 ]] && [[ "$1" == "--skippopulatesecrets" ]]
+then
+    populatesecrets=false
+    echo "Skipping populate secrets."
+elif [[ "$#" -gt 0 ]]
+then
+    echo "Usage: $0 [--skippopulatesecrets]"
+    exit 1
+fi
+if [[ "$populatesecrets" == "true" ]]
+then
+    populate_all_secrets
+fi
 
 cd ..
 
