@@ -116,7 +116,7 @@ namespace Google.Api.Gax.Grpc.Rest
                 var path = pathFactory(message);
                 var body = bodyFactory(message);
 
-                var fieldsToEncode = unusedEligibleFields.Where(field => !field.HasPresence || field.HasPresence && field.Accessor.HasValue(message));
+                var fieldsToEncode = unusedEligibleFields.Where(field => !field.HasPresence || field.Accessor.HasValue(message));
 
                 var queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
                     field => field.Accessor.GetValue(message).ToString());
@@ -146,7 +146,6 @@ namespace Google.Api.Gax.Grpc.Rest
             
             return new HttpRequestMessage
             {
-                Headers = { { HttpRequestHeader.ContentType.ToString(), "application/json" } },
                 RequestUri = uri,
                 Method = _httpMethod,
                 Content = content,
