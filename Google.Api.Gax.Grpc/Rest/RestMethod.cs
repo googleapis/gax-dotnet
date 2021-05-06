@@ -11,6 +11,7 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,8 +116,7 @@ namespace Google.Api.Gax.Grpc.Rest
                 var path = pathFactory(message);
                 var body = bodyFactory(message);
 
-                var fieldsToEncode = unusedEligibleFields.Where(field =>
-                    field.IsRequired || !IsDefaultValueForTranscoding(field, field.Accessor.GetValue(message)));
+                var fieldsToEncode = unusedEligibleFields.Where(field => !field.HasPresence || field.HasPresence && field.Accessor.HasValue(message));
 
                 var queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
                     field => field.Accessor.GetValue(message).ToString());
@@ -142,11 +142,14 @@ namespace Google.Api.Gax.Grpc.Rest
             
             var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = uriPathWithParams }.Uri;
             
+            var content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType);
+            
             return new HttpRequestMessage
             {
+                Headers = { { HttpRequestHeader.ContentType.ToString(), "application/json" } },
                 RequestUri = uri,
                 Method = _httpMethod,
-                Content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType),
+                Content = content,
             };
         }
 
@@ -173,41 +176,6 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             
             return sb.ToString();
-        }
-        
-        private static bool IsDefaultValueForTranscoding(FieldDescriptor field, object fieldValue)
-        {
-            if (TypesIneligibleForQueryStringEncoding.Contains(field.FieldType))
-                throw new NotImplementedException($"Field {field.Name} in method service {field.MessageType.Name} has a type {field.FieldType} for which a default value comparison for GRPC Transcoding should not be performed since the type {field.FieldType} should not be transcoded.");
-
-            switch(field.FieldType)
-            {   case FieldType.Bool:
-                    return (bool) fieldValue;
-                case FieldType.String:
-                    return (string) fieldValue == "";
-                case FieldType.Enum:
-                    return (int) fieldValue == 0;
-                case FieldType.Double:
-                    return (double) fieldValue == 0;
-                case FieldType.Float:
-                    return (float) fieldValue == 0F;
-                case FieldType.Int32:
-                case FieldType.SInt32:
-                case FieldType.SFixed32:
-                    return (int) fieldValue == 0;
-                case FieldType.Int64:
-                case FieldType.SInt64:
-                case FieldType.SFixed64:
-                    return (long) fieldValue == 0L;
-                case FieldType.UInt32:
-                case FieldType.Fixed32:
-                    return (uint) fieldValue == 0U;
-                case FieldType.UInt64:
-                case FieldType.Fixed64:
-                    return (ulong) fieldValue == 0UL;
-                default:
-                    throw new ArgumentException($"Field {field.Name} in method service {field.MessageType.Name} has a type {field.FieldType} for which a default value comparison is not defined in the Gax");
-            }
         }
 
         // TODO: Handle cancellation?
