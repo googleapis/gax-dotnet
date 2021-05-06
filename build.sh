@@ -10,8 +10,6 @@ rm -rf {src,test,testing}/*/bin {src,test,testing}/*/obj
 export Configuration=Release
 export ContinuousIntegrationBuild=true
 
-echo CLI args: $DOTNET_BUILD_ARGS
-
 echo Building
 dotnet build -nologo -clp:NoSummary -v quiet Gax.sln
 
