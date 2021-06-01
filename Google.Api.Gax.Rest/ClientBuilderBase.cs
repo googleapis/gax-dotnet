@@ -65,6 +65,31 @@ namespace Google.Api.Gax.Rest
         public string QuotaProject { get; set; }
 
         /// <summary>
+        /// An <see cref="IHttpClientFactory"/> that will be used to obtain
+        /// <see cref="ConfigurableHttpClient"/> for making API Http calls.
+        /// May be null, in which case an <see cref="Apis.Http.HttpClientFactory"/>
+        /// will be used.
+        /// </summary>
+        /// <remarks>
+        /// If you want to use custom HTTP clients, for instance, if you need to set a proxy,
+        /// you may do so by either
+        /// <list type="bullet">
+        /// <item>
+        /// Extending <see cref="Apis.Http.HttpClientFactory"/>. Refer to
+        /// <see cref="Apis.Http.HttpClientFactory" /> documentation for more information.
+        /// </item>
+        /// <item>
+        /// On .NET Core 2.1 and above, using <see cref="HttpClientFromMessageHandlerFactory"/>
+        /// in combination with <code>System.Net.Http.IHttpClientFactory</code>. Refer to
+        /// <see cref="HttpClientFromMessageHandlerFactory"/> documentation and
+        /// https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
+        /// for more information.
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public IHttpClientFactory HttpClientFactory { get; set; }
+
+        /// <summary>
         /// Creates a new instance with no settings.
         /// </summary>
         protected ClientBuilderBase()
@@ -118,7 +143,8 @@ namespace Google.Api.Gax.Rest
                 HttpClientInitializer = clientInitializer,
                 ApiKey = ApiKey,
                 ApplicationName = ApplicationName ?? GetDefaultApplicationName(),
-                BaseUri = BaseUri
+                BaseUri = BaseUri,
+                HttpClientFactory = HttpClientFactory
             };
             initializer.VersionHeaderBuilder
                 .AppendAssemblyVersion("gccl", GetType())
