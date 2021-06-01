@@ -240,6 +240,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             Assert.Throws<InvalidOperationException>(builder.ValidateForTest);
         }
 
+        [Fact]
+        public async Task HttpClientFactory()
+        {
+            var factory = new HttpClientFactory();
+            var builder = new SampleClientBuilder { HttpClientFactory = factory };
+            await ValidateResultAsync(builder, initializer => Assert.Same(factory, initializer.HttpClientFactory));
+        }
+
         private async Task ValidateResultAsync(SampleClientBuilder builder, Action<BaseClientService.Initializer> validator)
         {
             var initializer = builder.Build();
