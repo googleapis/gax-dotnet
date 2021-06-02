@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
@@ -53,12 +54,26 @@ namespace Google.Api.Gax
             public string[] MountInfo { get; set; }
         }
 
-#if NETSTANDARD2_0
         internal static async Task<KubernetesData> LoadKubernetesDataAsync()
         {
             var kubernetesServiceHost = Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_HOST");
             int.TryParse(Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_PORT"), out var kubernetesServicePort);
             var podName = Environment.GetEnvironmentVariable("HOSTNAME");
+
+            // Kubernetes Windows doesn't populate HOSTNAME. It populate COMPUTERNAME, but not with
+            // the full podname. Dns.GetHostName() returns the full value, but we need to guard against it throwing.
+            if (string.IsNullOrEmpty(podName))
+            {
+                try
+                {
+                    podName = Dns.GetHostName();
+                }
+                catch
+                {
+                    // Leave it empty; we'll end up returning null.
+                }
+            }
+
             if (string.IsNullOrEmpty(kubernetesServiceHost) || kubernetesServicePort == 0 || string.IsNullOrEmpty(podName))
             {
                 // Not running on kubernetes
@@ -74,7 +89,14 @@ namespace Google.Api.Gax
             {
                 kubernetesNamespace = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/namespace");
                 kubernetesToken = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/token");
+                // On Windows GKE, we currently fail to load this certificate - so just skipping even an attempt
+                // when on .NET Framework seems reasonable.
+#if NETSTANDARD2_0
                 kubernetesCaCert = new X509Certificate2("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt");
+#elif NET461
+#else
+#error Unsupported platform
+#endif
                 mountInfo = File.ReadAllLines("/proc/self/mountinfo");
             }
             catch
@@ -135,16 +157,6 @@ namespace Google.Api.Gax
                 MountInfo = mountInfo
             };
         }
-#elif NET461
-        internal static Task<KubernetesData> LoadKubernetesDataAsync()
-        {
-            // TODO: See if we can support Kubernetes on .NET 4.6.1
-            // (We'll need to check support for certificates.)
-            return Task.FromResult<KubernetesData>(null);
-        }
-#else
-#error Unsupported platform
-#endif
 
         /// <summary>
         /// Builds a <see cref="GkePlatformDetails"/> from the given metadata and kubernetes data.
