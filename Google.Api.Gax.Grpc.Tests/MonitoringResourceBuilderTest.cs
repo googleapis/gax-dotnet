@@ -119,7 +119,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 NamespaceJson = namespaceJson,
                 PodJson = podJson,
-                MountInfo = new[] { "/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log" }
+                MountInfo = new[] { "1 2 3 /var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log xyz" }
             };
             var platform = new Platform(GkePlatformDetails.TryLoad(metadataJson, kubernetesData));
             var resource = MonitoredResourceBuilder.FromPlatform(platform);
