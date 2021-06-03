@@ -58,7 +58,7 @@ namespace Google.Api.Gax
             // a retry is fast.
             TimeSpan timeout = TimeSpan.FromMilliseconds(500);
 
-            var metadataUrl = $"http://{GetEffectiveMetadataHost()}/computeMetadata/v1?recursive=true";
+            var metadataUrl = $"http://{GetEffectiveMetadataHost()}/computeMetadata/v1/?recursive=true";
             // Using the built-in HttpClient, as we want bare bones functionality - we'll control retries.
             // Use the same one across all attempts, which may contribute to speedier retries.
             using (var httpClient = new HttpClient())
