@@ -163,20 +163,22 @@ namespace Google.Api.Gax.Tests
         const string namespaceMissingKind = "{'notkind':'Namespace','metadata':{'name':'namespacename'}}";
         const string namespaceWrongKind = "{'kind':'NotNamespace','metadata':{'name':'namespacename'}}";
         const string namespaceIncomplete = "{'kind':'Namespace','m";
-        const string podValid = "{'kind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
-        const string podMissingKind = "{'notkind':'Pod','metadata':{'name':'podname','uid':'podid'}}";
-        const string podWrongKind = "{'kind':'NotPod','metadata':{'name':'podname','uid':'podid'}}";
+        const string podValid = "{'kind':'Pod','metadata':{'name':'podname','uid':'poduid'}}";
+        const string podMissingKind = "{'notkind':'Pod','metadata':{'name':'podname','uid':'poduid'}}";
+        const string podWrongKind = "{'kind':'NotPod','metadata':{'name':'podname','uid':'poduid'}}";
         const string podIncomplete = "{'kind':'Pod','metadata':{";
-        const string mountInfoValid = "123\n/var/lib/kubelet/pods/podid/containers/containername/ /dev/termination-log\nabc";
-        const string mountInfoMultiple = "var/lib/kubelet/pods/podid/containers/containername1/ /dev/termination-log\nvar/lib/kubelet/pods/podid/containers/containername2/ /dev/termination-log";
-        const string mountInfoMissing = "123\n/var/lib/kubelet/pods/podid/notcontainers/containername/ /dev/termination-log\nabc";
+        const string mountInfoValid = "1 2 3 /var/lib/kubelet/pods/poduid/containers/containername/ /dev/termination-log xyz\nabc";
+        const string mountInfoMultipleContainers = "/var/lib/kubelet/pods/poduid/containers/containername1/ /dev/termination-log xyz\n1 2 3/var/lib/kubelet/pods/poduid/containers/containername2/ /dev/termination-log xyz";
+        const string mountInfoMissing = "1 2 3 /var/lib/kubelet/pods/poduid/notcontainers/containername/ /dev/termination-log xyz\nabc";
+        const string mountInfoOtherPod = "1 2 3 /var/lib/kubelet/pods/otherpoduid/containers/containername/ /dev/termination-log xyz\nabc";
+        const string mountInfoMixedPods = mountInfoValid + "\n" + mountInfoOtherPod;
 
         [Theory, PairwiseData]
         public void Gke_IncompleteData(
             [CombinatorialValues("", metadataIncomplete, metadataValid)] string metadataJson,
             [CombinatorialValues(null, "", namespaceIncomplete, namespaceWrongKind, namespaceMissingKind, namespaceValid)] string namespaceJson,
             [CombinatorialValues(null, "", podIncomplete, podWrongKind, podMissingKind, podValid)] string podJson,
-            [CombinatorialValues(null, "", mountInfoMultiple, mountInfoMissing, mountInfoValid)] string mountInfo)
+            [CombinatorialValues(null, "", mountInfoMultipleContainers, mountInfoMissing, mountInfoValid)] string mountInfo)
         {
             var kubernetesData = new GkePlatformDetails.KubernetesData
             {
@@ -209,7 +211,7 @@ namespace Google.Api.Gax.Tests
                 Assert.Equal("", gke.PodId);
                 Assert.Equal("", gke.HostName);
             }
-            if (mountInfo == mountInfoValid && podJson == podValid)
+            if (mountInfo == mountInfoValid)
             {
                 Assert.Equal("containername", gke.ContainerName);
             }
@@ -217,6 +219,31 @@ namespace Google.Api.Gax.Tests
             {
                 Assert.Equal("", gke.ContainerName);
             }
+        }
+
+        [Theory]
+        [InlineData(true, mountInfoValid, "containername")]
+        [InlineData(true, mountInfoMultipleContainers, "")]
+        [InlineData(true, mountInfoOtherPod, "")]
+        // Even though we *could* tell which is correct here, it's an unexpected situation: just say we don't know.
+        [InlineData(true, mountInfoMixedPods, "")]
+        [InlineData(false, mountInfoValid, "containername")]
+        [InlineData(false, mountInfoMultipleContainers, "")]
+        // When we have the "wrong" pod in the mountinfo but we can't tell, we'll use that
+        [InlineData(false, mountInfoOtherPod, "containername")]
+        // When there are multiple pods but we don't have a pod ID, we can't tell which is right.
+        [InlineData(false, mountInfoMixedPods, "")]
+        public void Gke_ContainerNameFromMountInfo(bool havePodUid, string mountInfo, string expectedContainerName)
+        {
+            var kubernetesData = new GkePlatformDetails.KubernetesData
+            {
+                NamespaceJson = "",
+                PodJson = havePodUid ? podValid : "",
+                MountInfo = mountInfo?.Split('\n').ToArray()
+            };
+            var gke = GkePlatformDetails.TryLoad(metadataValid, kubernetesData);
+            Assert.NotNull(gke);
+            Assert.Equal(expectedContainerName, gke.ContainerName);
         }
 
         [Fact]

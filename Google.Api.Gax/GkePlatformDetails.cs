@@ -207,19 +207,11 @@ namespace Google.Api.Gax
             var clusterLocation = metadata["instance"]?["attributes"]?["cluster-location"]?.Value<string>();
             var namespaceId = namespaceData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.NamespaceName ?? "";
             var podId = podData?["metadata"]?["name"]?.Value<string>() ?? kubernetesData.PodName ?? "";
-            var podUid = podData?["metadata"]?["uid"]?.Value<string>() ?? "";
-            // A hack to find the container name. There appears to be no official way to do this.
-            var regex = new Regex($"/var/lib/kubelet/pods/{podUid}/containers/([^/]+)/.*/dev/termination-log");
-            var containerNames = kubernetesData.MountInfo?.Select(x =>
-            {
-                var match = regex.Match(x);
-                if (match.Success)
-                {
-                    return match.Groups[1].Value;
-                }
-                return null;
-            }).Where(x => x != null).ToList();
-            var containerName = containerNames?.Count == 1 ? containerNames[0] : "";
+
+            // Note: unlike other variables, we keep null as null here - we're not propagating it anywhere beyond the DeriveContainerName method.
+            var podUid = podData?["metadata"]?["uid"]?.Value<string>();
+            var containerName = DeriveContainerName(podUid, kubernetesData.MountInfo) ?? "";
+
             if (hostName != null && projectId != null && clusterName != null && instanceId != null &&
                 instanceZone != null && clusterLocation != null && namespaceId != null && podId != null && containerName != null)
             {
@@ -231,6 +223,52 @@ namespace Google.Api.Gax
             }
             return null;
         }
+
+        // A hack to find the container name. There appears to be no official way to do this.
+        private static readonly Regex s_mountInfoPathPattern = new Regex("/var/lib/kubelet/pods/(?<uid>[^/]+)/containers/(?<container>[^/]+)/.*");
+
+        private static string DeriveContainerName(string podUid, string[] mountInfoLines)
+        {
+            if (mountInfoLines is null)
+            {
+                return null;
+            }
+
+            // We expect to find exactly one /dev/termination-log line in the mount info.
+            // If we have a pod UID, we check it matches. If we don't have a pod UID, we'll just assume it's okay.
+            var nameAndUidEntries = mountInfoLines
+                    .Select(GetContainerNameAndPodUidFromMountInfoLine)
+                    .Where(pair => pair.name is object)
+                    .Take(2)
+                    .ToList();
+
+            if (nameAndUidEntries.Count != 1)
+            {
+                return null;
+            }
+            
+            var (name, actualUid) = nameAndUidEntries[0];
+            return podUid is null || podUid == actualUid ? name : null;
+            
+            static (string name, string uid) GetContainerNameAndPodUidFromMountInfoLine(string line)
+            {
+                if (!line.Contains(" /dev/termination-log "))
+                {
+                    return default;
+                }
+                string[] bits = line.Split(' ');
+                if (bits.Length < 5 || bits[4] != "/dev/termination-log")
+                {
+                    return default;
+                }
+                var match = s_mountInfoPathPattern.Match(bits[3]);
+                return match.Success
+                    ? (name: match.Groups["container"].Value, uid: match.Groups["uid"].Value)
+                    : default;
+            }
+        }
+
+
 
         /// <summary>
         /// Construct details of Google Container (Kubernetes) Engine
