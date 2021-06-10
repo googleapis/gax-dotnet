@@ -8,6 +8,8 @@
 using Google.Protobuf;
 using Grpc.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -64,10 +66,24 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
         {
-            // TODO: Add headers from options.Headers, but intercept the x-goog-api-client header.
+            var headers = options.Headers
+                .Where(mh => !mh.IsBinary)
+                .Where(mh=> mh.Key != VersionHeaderBuilder.HeaderName)
+                .Select(mh => new KeyValuePair<string, string>(mh.Key, mh.Value))
+                .ToList();
+
+            var restVersion = new VersionHeaderBuilder()
+                .AppendDotNetEnvironment()
+                .AppendAssemblyVersion("gapic", GetType())
+                .AppendAssemblyVersion("gax", typeof(CallSettings))
+                .AppendAssemblyVersion("rest", typeof(HttpClient))
+                .ToString();
+
+            headers.Add(new KeyValuePair<string, string>(VersionHeaderBuilder.HeaderName, restVersion));
+
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
-            var httpRequest = restMethod.CreateRequest((IMessage) request, host);
+            var httpRequest = restMethod.CreateRequest((IMessage) request, host, headers);
             // TODO: How do we cancel this?
             await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
 

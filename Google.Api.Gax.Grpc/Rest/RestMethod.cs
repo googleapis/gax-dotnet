@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -131,8 +132,9 @@ namespace Google.Api.Gax.Grpc.Rest
         /// </summary>
         /// <param name="protoRequest">The request, in protobuf representation.</param>
         /// <param name="host">The host to create the request for, or null to use the default host for the client sending the request.</param>
+        /// <param name="headers">The headers to send along with the request</param>
         /// <returns>A request with the URI, method and content populated.</returns>
-        internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host)
+        internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host, List<KeyValuePair<string, string>> headers)
         {
             var transcodingResult = _contentFactory(protoRequest);
 
@@ -143,13 +145,20 @@ namespace Google.Api.Gax.Grpc.Rest
             var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = uriPathWithParams }.Uri;
             
             var content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType);
-            
-            return new HttpRequestMessage
+
+            var httpRequestMessage = new HttpRequestMessage
             {
                 RequestUri = uri,
                 Method = _httpMethod,
                 Content = content,
             };
+
+            foreach (var headerKeyValue in headers)
+            {
+                httpRequestMessage.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
+            }
+            
+            return httpRequestMessage;
         }
 
         /// <summary>
