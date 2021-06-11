@@ -24,6 +24,13 @@ namespace Google.Api.Gax.Grpc.Rest
     /// </summary>
     internal sealed class RestChannel : ChannelBase
     {
+        private static readonly string RestVersion = new VersionHeaderBuilder()
+            .AppendDotNetEnvironment()
+            .AppendAssemblyVersion("gapic", typeof(RestChannel))
+            .AppendAssemblyVersion("gax", typeof(CallSettings))
+            .AppendAssemblyVersion("rest", typeof(HttpClient))
+            .ToString();
+
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;
         private readonly HttpClient _httpClient;
         private readonly RestServiceCollection _serviceCollection;
@@ -66,24 +73,17 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
         {
-            var headers = options.Headers
-                .Where(mh => !mh.IsBinary)
-                .Where(mh=> mh.Key != VersionHeaderBuilder.HeaderName)
-                .Select(mh => new KeyValuePair<string, string>(mh.Key, mh.Value))
-                .ToList();
-
-            var restVersion = new VersionHeaderBuilder()
-                .AppendDotNetEnvironment()
-                .AppendAssemblyVersion("gapic", GetType())
-                .AppendAssemblyVersion("gax", typeof(CallSettings))
-                .AppendAssemblyVersion("rest", typeof(HttpClient))
-                .ToString();
-
-            headers.Add(new KeyValuePair<string, string>(VersionHeaderBuilder.HeaderName, restVersion));
-
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
-            var httpRequest = restMethod.CreateRequest((IMessage) request, host, headers);
+            var httpRequest = restMethod.CreateRequest((IMessage) request, host);
+            foreach (var headerKeyValue in options.Headers
+                .Where(mh => !mh.IsBinary)
+                .Where(mh=> mh.Key != VersionHeaderBuilder.HeaderName))
+            {
+                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
+            }
+            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
+
             // TODO: How do we cancel this?
             await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
 

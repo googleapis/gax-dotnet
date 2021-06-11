@@ -66,8 +66,8 @@ namespace Google.Api.Gax
         /// <summary>
         /// Whether the name or value that are supposed to be included in a header are valid
         /// </summary>
-        private static bool IsHeaderNameValueValid(string nameOrValue)
-            => !nameOrValue.Contains(" ") && !nameOrValue.Contains("/");
+        private static bool IsHeaderNameValueValid(string nameOrValue) => 
+            !nameOrValue.Contains(" ") && !nameOrValue.Contains("/");
 
         private static string GetEnvironmentVersion()
         {

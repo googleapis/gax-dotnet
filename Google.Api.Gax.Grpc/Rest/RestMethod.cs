@@ -132,9 +132,8 @@ namespace Google.Api.Gax.Grpc.Rest
         /// </summary>
         /// <param name="protoRequest">The request, in protobuf representation.</param>
         /// <param name="host">The host to create the request for, or null to use the default host for the client sending the request.</param>
-        /// <param name="headers">The headers to send along with the request</param>
         /// <returns>A request with the URI, method and content populated.</returns>
-        internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host, List<KeyValuePair<string, string>> headers)
+        internal HttpRequestMessage CreateRequest(IMessage protoRequest, string host)
         {
             var transcodingResult = _contentFactory(protoRequest);
 
@@ -152,11 +151,6 @@ namespace Google.Api.Gax.Grpc.Rest
                 Method = _httpMethod,
                 Content = content,
             };
-
-            foreach (var headerKeyValue in headers)
-            {
-                httpRequestMessage.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
-            }
             
             return httpRequestMessage;
         }
