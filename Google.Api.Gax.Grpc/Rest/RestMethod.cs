@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -144,15 +143,13 @@ namespace Google.Api.Gax.Grpc.Rest
             var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = uriPathWithParams }.Uri;
             
             var content = transcodingResult.Body is null ? null : new StringContent(transcodingResult.Body, Encoding.UTF8, s_applicationJsonMediaType);
-
-            var httpRequestMessage = new HttpRequestMessage
+            
+            return new HttpRequestMessage
             {
                 RequestUri = uri,
                 Method = _httpMethod,
                 Content = content,
             };
-            
-            return httpRequestMessage;
         }
 
         /// <summary>
