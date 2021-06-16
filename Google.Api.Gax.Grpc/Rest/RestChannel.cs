@@ -8,6 +8,8 @@
 using Google.Protobuf;
 using Grpc.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -22,6 +24,13 @@ namespace Google.Api.Gax.Grpc.Rest
     /// </summary>
     internal sealed class RestChannel : ChannelBase
     {
+        private static readonly string RestVersion = new VersionHeaderBuilder()
+            .AppendDotNetEnvironment()
+            .AppendAssemblyVersion("gapic", typeof(RestChannel))
+            .AppendAssemblyVersion("gax", typeof(CallSettings))
+            .AppendAssemblyVersion("rest", typeof(HttpClient))
+            .ToString();
+
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;
         private readonly HttpClient _httpClient;
         private readonly RestServiceCollection _serviceCollection;
@@ -64,10 +73,17 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
         {
-            // TODO: Add headers from options.Headers, but intercept the x-goog-api-client header.
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
             var httpRequest = restMethod.CreateRequest((IMessage) request, host);
+            foreach (var headerKeyValue in options.Headers
+                .Where(mh => !mh.IsBinary)
+                .Where(mh=> mh.Key != VersionHeaderBuilder.HeaderName))
+            {
+                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
+            }
+            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
+
             // TODO: How do we cancel this?
             await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
 

@@ -43,8 +43,8 @@ namespace Google.Api.Gax
             GaxPreconditions.CheckNotNull(name, nameof(name));
             GaxPreconditions.CheckNotNull(version, nameof(version));
             // Names can't be empty, but versions can. (We use the empty string to indicate an unknown version.)
-            GaxPreconditions.CheckArgument(name.Length > 0 && !name.Contains(" ") && !name.Contains("/"), nameof(name), $"Invalid name: {name}");
-            GaxPreconditions.CheckArgument(!version.Contains(" ") && !version.Contains("/"), nameof(version), $"Invalid version: {version}");
+            GaxPreconditions.CheckArgument(name.Length > 0 && IsHeaderNameValueValid(name), nameof(name), $"Invalid name: {name}");
+            GaxPreconditions.CheckArgument(IsHeaderNameValueValid(version), nameof(version), $"Invalid version: {version}");
             GaxPreconditions.CheckArgument(!_names.Contains(name), nameof(name), "Names in version headers must be unique");
             _names.Add(name);
             _values.Add(version);
@@ -62,6 +62,12 @@ namespace Google.Api.Gax
         /// Appends the .NET environment information to the list.
         /// </summary>
         public VersionHeaderBuilder AppendDotNetEnvironment() => AppendVersion("gl-dotnet", s_environmentVersion.Value);
+        
+        /// <summary>
+        /// Whether the name or value that are supposed to be included in a header are valid
+        /// </summary>
+        private static bool IsHeaderNameValueValid(string nameOrValue) => 
+            !nameOrValue.Contains(" ") && !nameOrValue.Contains("/");
 
         private static string GetEnvironmentVersion()
         {
@@ -103,8 +109,7 @@ namespace Google.Api.Gax
                 return null;
             }
         }
-
-
+        
         private static string FormatAssemblyVersion(System.Type type)
         {
             // Prefer AssemblyInformationalVersion, then AssemblyFileVersion,
@@ -112,7 +117,7 @@ namespace Google.Api.Gax
 
             var assembly = type.GetTypeInfo().Assembly;
             var info = assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault()?.InformationalVersion;
-            if (info != null)
+            if (info != null && IsHeaderNameValueValid(info)) // Skip informational version if it's not a valid header value
             {
                 return info;
             }
