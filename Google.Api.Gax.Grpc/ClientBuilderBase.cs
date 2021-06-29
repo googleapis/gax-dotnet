@@ -24,7 +24,8 @@ namespace Google.Api.Gax.Grpc
     {
         private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.Empty
             .WithKeepAliveTime(TimeSpan.FromMinutes(1))
-            .WithEnableServiceConfigResolution(false);
+            .WithEnableServiceConfigResolution(false)
+            .WithMaxReceiveMessageSize(int.MaxValue);
 
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
