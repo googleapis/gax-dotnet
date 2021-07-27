@@ -76,11 +76,11 @@ do
   if [[ ! -f $TARGETDIR/$src ]]
   then 
     # New file: use this year
-    cat copyright-header.txt | sed "s/MODIFY-YEAR/$(date +%Y)/g" > $TARGETDIR/$src
+    cat Google.Api.CommonProtos/proto-header.txt | sed "s/MODIFY-YEAR/$(date +%Y)/g" > $TARGETDIR/$src
     cat $OUTDIR/$src >> $TARGETDIR/$src
   else
     # Assume we've got the same size of copyright as before, and preserve it
-    head -n $(wc -l < copyright-header.txt) $TARGETDIR/$src > $OUTDIR/header
+    head -n $(wc -l < Google.Api.CommonProtos/proto-header.txt) $TARGETDIR/$src > $OUTDIR/header
     cat $OUTDIR/header $OUTDIR/$src > $TARGETDIR/$src
   fi
 done
