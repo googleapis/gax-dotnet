@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/aspnetcore:1.0.4
+FROM gcr.io/google-appengine/aspnetcore:3.1.9
 COPY . /app
 WORKDIR /app
 
