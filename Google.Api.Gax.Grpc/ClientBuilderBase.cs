@@ -27,6 +27,8 @@ namespace Google.Api.Gax.Grpc
             .WithEnableServiceConfigResolution(false)
             .WithMaxReceiveMessageSize(int.MaxValue);
 
+        private readonly bool _useUseJwtAccessWithScopes;
+
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
@@ -112,6 +114,15 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected ClientBuilderBase()
         {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="useUseJwtAccessWithScopes"></param>
+        protected ClientBuilderBase(bool useUseJwtAccessWithScopes)
+        {
+            _useUseJwtAccessWithScopes = useUseJwtAccessWithScopes;
         }
 
         /// <summary>
@@ -368,6 +379,13 @@ namespace Google.Api.Gax.Grpc
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+
+            if (_useUseJwtAccessWithScopes && maybeWithProject.UnderlyingCredential is ServiceAccountCredential)
+            {
+                ServiceAccountCredential serviceCredential = maybeWithProject.UnderlyingCredential as ServiceAccountCredential;
+                maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(true));
+            }
+
             return maybeWithProject.ToChannelCredentials();
         }
 

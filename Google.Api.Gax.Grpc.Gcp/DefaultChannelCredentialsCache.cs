@@ -25,6 +25,8 @@ namespace Google.Api.Gax.Grpc.Gcp
     {
         private readonly IEnumerable<string> _scopes;
 
+        private readonly bool _useUseJwtAccessWithScopes;
+
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
         /// task can be used whenever channel credentials are required. The returned task always runs in the
@@ -39,8 +41,11 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes)
+        /// <param name="useUseJwtAccessWithScopes"></param>
+        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useUseJwtAccessWithScopes)
         {
+            _useUseJwtAccessWithScopes = useUseJwtAccessWithScopes;
+
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
@@ -54,12 +59,22 @@ namespace Google.Api.Gax.Grpc.Gcp
                     {
                         appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
                     }
+
+                    if (_useUseJwtAccessWithScopes && appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential)
+                    {
+                        ServiceAccountCredential serviceCredential = appDefaultCredentials.UnderlyingCredential as ServiceAccountCredential;
+                        appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(true));
+                    }
                     return appDefaultCredentials.ToChannelCredentials();
                 }));
         }
 
+        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes) : this(scopes, false)
+        {
+        }
+
         internal ChannelCredentials GetCredentials() =>
-            GetCredentialsAsync().ResultWithUnwrappedExceptions();
+        GetCredentialsAsync().ResultWithUnwrappedExceptions();
 
         internal Task<ChannelCredentials> GetCredentialsAsync() =>
             _lazyScopedDefaultChannelCredentials.Value;
