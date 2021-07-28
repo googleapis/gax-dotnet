@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Testing", "Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj", "{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.PlatformIntegrationTests", "Google.Api.Gax.PlatformIntegrationTests\Google.Api.Gax.PlatformIntegrationTests.csproj", "{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.CommonProtos.Tests", "Google.Api.CommonProtos.Tests\Google.Api.CommonProtos.Tests.csproj", "{7839A366-B685-475E-AB76-E2DC8A7D8C44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Gcp", "Google.Api.Gax.Grpc.Gcp\Google.Api.Gax.Grpc.Gcp.csproj", "{966C1852-164C-4162-B727-04782706D787}"
@@ -94,10 +92,6 @@ Global
 		{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BFC4F8F-86F2-420C-9A44-2A90A44774F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
