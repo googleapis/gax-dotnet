@@ -31,4 +31,4 @@ This library follows [semantic versioning](http://semver.org).
 
 ## License
 
-BSD - See [LICENSE](./LICENSE) for more information.
+BSD-3-Clause - See [LICENSE](./LICENSE) for more information.
