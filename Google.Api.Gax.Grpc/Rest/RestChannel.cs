@@ -8,10 +8,10 @@
 using Google.Protobuf;
 using Grpc.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -71,7 +71,7 @@ namespace Google.Api.Gax.Grpc.Rest
             return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
         }
 
-        private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
+        private async Task<ReadHttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
@@ -87,8 +87,20 @@ namespace Google.Api.Gax.Grpc.Rest
             // TODO: How do we cancel this?
             await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
 
-            var task = _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationToken);
-            return await task.ConfigureAwait(false);
+            var httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                string content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return new ReadHttpResponseMessage(httpResponseMessage, content);
+            }
+            catch (Exception ex)
+            {
+                // Let's defer the throwing of this exception to when it's actually needed,
+                // so that we can at least read headers and other metadata.
+                var exInfo = ExceptionDispatchInfo.Capture(ex);
+                return new ReadHttpResponseMessage(httpResponseMessage, exInfo);
+            }
         }
 
         private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod method)
@@ -105,51 +117,97 @@ namespace Google.Api.Gax.Grpc.Rest
             }
         }
 
-        private async Task<Metadata> ReadHeadersAsync(Task<HttpResponseMessage> httpResponseTask)
-        {
-            var httpResponse = await httpResponseTask.ConfigureAwait(false);
-            // TODO: This could be very wrong. I don't know what headers we should really return, and I don't know about semi-colon joining.
-            var metadata = new Metadata();
-            foreach (var header in httpResponse.Headers)
-            {
-                metadata.Add(header.Key, string.Join(";", header.Value));
-            }
-            return metadata;
-        }
+        private async Task<Metadata> ReadHeadersAsync(Task<ReadHttpResponseMessage> httpResponseTask) =>
+            (await httpResponseTask.ConfigureAwait(false)).GetHeaders();
 
-        internal static Status GetStatus(Task<HttpResponseMessage> httpResponseTask) => httpResponseTask.Status switch
+        private static Status GetStatus(Task<ReadHttpResponseMessage> httpResponseTask) => httpResponseTask.Status switch
         {
-            TaskStatus.RanToCompletion => GetStatus(httpResponseTask.Result),
+            TaskStatus.RanToCompletion => httpResponseTask.Result.GetStatus(),
             TaskStatus.Faulted => new Status(StatusCode.Unknown, "HTTP task faulted", httpResponseTask.Exception.InnerException),
             TaskStatus.Canceled => new Status(StatusCode.Cancelled, "Request cancelled"),
             _ => throw new InvalidOperationException("Cannot call GetStatus with an incomplete HTTP call")
         };
 
-        // TODO: What about error details? Are they still available?
-        internal static Status GetStatus(HttpResponseMessage response) =>
-            new Status(ConvertHttpToGrpcStatusCode(response.StatusCode), "");
-
-        private static StatusCode ConvertHttpToGrpcStatusCode(HttpStatusCode httpStatusCode) => httpStatusCode switch
-        {
-            HttpStatusCode.OK => StatusCode.OK,
-            HttpStatusCode.Unauthorized => StatusCode.Unauthenticated,
-            HttpStatusCode.Forbidden => StatusCode.PermissionDenied,
-            HttpStatusCode.BadRequest => StatusCode.InvalidArgument,
-            HttpStatusCode.InternalServerError => StatusCode.Internal,
-            HttpStatusCode.NotFound => StatusCode.NotFound,
-            HttpStatusCode.Conflict => StatusCode.FailedPrecondition,
-            // TODO: Others!
-            _ => StatusCode.Unknown
-        };
-
-        private Metadata GetTrailers(Task<HttpResponseMessage> httpResponseTask)
+        private Metadata GetTrailers(Task<ReadHttpResponseMessage> httpResponseTask)
         {
             if (!httpResponseTask.IsCompleted)
             {
                 throw new InvalidOperationException("Cannot call GetTrailers with an incomplete HTTP call");
             }
-            // We never have any trailers.
-            return new Metadata();
+            return httpResponseTask.Result.GetTrailers();
+        }
+
+        /// <summary>
+        /// In <see cref="AsyncUnaryCall{TResponse}"/> the functions to obtain the TResponse
+        /// and the <see cref="Status"/> of the call are two different functions.
+        /// The function to obtain the response is async, but the function to obtain the
+        /// <see cref="Status"/> is not.
+        /// For being able to surface error details in <see cref="Status"/> we need to be
+        /// able to call <see cref="HttpContent.ReadAsStringAsync"/> which is an async method,
+        /// and thus cannot be done, without blocking, on the sync function that obtains the 
+        /// <see cref="Status"/> in the <see cref="AsyncUnaryCall{TResponse}"/>.
+        /// So we need to make async content reading part of sending the call and not part of
+        /// building the TResponse.
+        /// This class is just a convenient wrapper for passing together the <see cref="HttpResponseMessage"/>
+        /// and its read response.
+        /// </summary>
+        internal class ReadHttpResponseMessage
+        {
+            private HttpResponseMessage OriginalResponseMessage { get; }
+
+            private readonly string _content;
+            private readonly ExceptionDispatchInfo _readException;
+
+            internal string Content
+            {
+                get
+                {
+                    _readException?.Throw();
+                    return _content;
+                }
+            }
+
+            internal ReadHttpResponseMessage(HttpResponseMessage response, string content) =>
+                (OriginalResponseMessage, _content) = (response, content);
+
+            internal ReadHttpResponseMessage(HttpResponseMessage response, ExceptionDispatchInfo readException) =>
+                (OriginalResponseMessage, _readException) = (response, readException);
+
+            internal Metadata GetHeaders()
+            {
+                // TODO: This could be very wrong. I don't know what headers we should really return, and I don't know about semi-colon joining.
+                var metadata = new Metadata();
+                foreach (var header in OriginalResponseMessage.Headers)
+                {
+                    metadata.Add(header.Key, string.Join(";", header.Value));
+                }
+                return metadata;
+            }
+
+            internal Status GetStatus()
+            {
+                var grpcStatus = OriginalResponseMessage.StatusCode switch
+                {
+                    HttpStatusCode.OK => StatusCode.OK,
+                    HttpStatusCode.Unauthorized => StatusCode.Unauthenticated,
+                    HttpStatusCode.Forbidden => StatusCode.PermissionDenied,
+                    HttpStatusCode.BadRequest => StatusCode.InvalidArgument,
+                    HttpStatusCode.InternalServerError => StatusCode.Internal,
+                    HttpStatusCode.NotFound => StatusCode.NotFound,
+                    HttpStatusCode.Conflict => StatusCode.FailedPrecondition,
+                    // TODO: Others!
+                    _ => StatusCode.Unknown
+                };
+
+                return new Status(grpcStatus,
+                    // Notice that here, if there was an exception reading the content
+                    // we'll bubble it up. This is similar to what's done if there's an
+                    // exception while sending the request, and if there's an exception
+                    // reading the content for TResponse.
+                    grpcStatus == StatusCode.OK ? "" : Content);
+            }
+
+            internal Metadata GetTrailers() => new Metadata(); // We never have any trailers.
         }
     }
 }
