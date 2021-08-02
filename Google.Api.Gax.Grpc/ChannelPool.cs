@@ -25,7 +25,7 @@ namespace Google.Api.Gax.Grpc
     {
         private readonly IEnumerable<string> _scopes;
 
-        private readonly bool _useUseJwtAccessWithScopes;
+        internal readonly bool _useJwtAccessWithScopes = false;
 
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
@@ -46,25 +46,14 @@ namespace Google.Api.Gax.Grpc
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useUseJwtAccessWithScopes"></param>
-        public ChannelPool(IEnumerable<string> scopes, bool useUseJwtAccessWithScopes)
+        public ChannelPool(IEnumerable<string> scopes)
         {
-            _useUseJwtAccessWithScopes = useUseJwtAccessWithScopes;
-
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
             // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
             // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
             _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="scopes"></param>
-        public ChannelPool(IEnumerable<string> scopes) : this(scopes, false)
-        {
         }
 
         private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
@@ -75,10 +64,13 @@ namespace Google.Api.Gax.Grpc
                 appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
             }
 
-            if (_useUseJwtAccessWithScopes && appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential)
+            if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential)
             {
                 ServiceAccountCredential serviceCredential = appDefaultCredentials.UnderlyingCredential as ServiceAccountCredential;
-                appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(true));
+                if (serviceCredential.UseJwtAccessWithScopes != _useJwtAccessWithScopes)
+                {
+                    appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(_useJwtAccessWithScopes));
+                }
             }
             return appDefaultCredentials.ToChannelCredentials();
         }

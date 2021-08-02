@@ -37,7 +37,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         public GcpCallInvokerPool(IEnumerable<string> scopes) =>
-            _credentialsCache = new DefaultChannelCredentialsCache(scopes);
+            _credentialsCache = new DefaultChannelCredentialsCache(scopes, false);
 
         /// <summary>
         /// Shuts down all the open channels of all currently-allocated call invokers asynchronously. This does not prevent
