@@ -76,6 +76,6 @@ namespace Google.Api.Gax.Grpc.Gcp
         GetCredentialsAsync().ResultWithUnwrappedExceptions();
 
         internal Task<ChannelCredentials> GetCredentialsAsync() =>
-            _lazyScopedDefaultChannelCredentials.Value;
+        _lazyScopedDefaultChannelCredentials.Value;
     }
 }
