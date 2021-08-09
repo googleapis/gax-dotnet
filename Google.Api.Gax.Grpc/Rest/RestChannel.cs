@@ -186,16 +186,112 @@ namespace Google.Api.Gax.Grpc.Rest
 
             internal Status GetStatus()
             {
-                var grpcStatus = OriginalResponseMessage.StatusCode switch
+                var grpcStatus = (int) OriginalResponseMessage.StatusCode switch
                 {
-                    HttpStatusCode.OK => StatusCode.OK,
-                    HttpStatusCode.Unauthorized => StatusCode.Unauthenticated,
-                    HttpStatusCode.Forbidden => StatusCode.PermissionDenied,
-                    HttpStatusCode.BadRequest => StatusCode.InvalidArgument,
-                    HttpStatusCode.InternalServerError => StatusCode.Internal,
-                    HttpStatusCode.NotFound => StatusCode.NotFound,
-                    HttpStatusCode.Conflict => StatusCode.FailedPrecondition,
-                    // TODO: Others!
+                    // Note: this switch statement is organized numerically for ease of comparison with other implementations,
+                    // and to group 1xx, 2xx, 3xx etc codes together. The names in each comment correspond
+                    // with the names in the HttpStatusCode enumeration
+
+                    // 1xx range
+                    // Continue
+                    100  => StatusCode.Unknown, // We don't expect to get this
+                    // SwitchingProtocols
+                    101 => StatusCode.Unknown,
+
+                    // 2xx range
+                    // OK
+                    200 => StatusCode.OK,
+                    // Created
+                    201 => StatusCode.OK, // In the 200 range
+                    // Accepted
+                    202 => StatusCode.OK,
+                    // NonAuthoritativeInformation
+                    203 => StatusCode.OK, // In the 200 range
+                    // NoContent
+                    204 => StatusCode.OK, // In the 200 range,
+                    // ResetContent
+                    205 => StatusCode.Unknown, // While this isn't normally an error, our response won't contain what we expect.
+                    // PartialContent
+                    206 => StatusCode.Unknown, // While this isn't normally an error, our response won't contain what we expect.
+
+                    // 3xx range
+                    // Ambiguous, MultipleChoices
+                    300 => StatusCode.Unknown,
+                    // Moved, MovedPermanently
+                    301 => StatusCode.Unknown,
+                    // Redirect, Found
+                    302 => StatusCode.Unknown,
+                    // RedirectMethod, SeeOther
+                    303 => StatusCode.Unknown,
+                    // NotModified
+                    304 => StatusCode.Unknown, // While this isn't normally an error, our response won't contain what we expect.
+                    // UseProxy
+                    305 => StatusCode.Unknown,
+                    // Unused
+                    306 => StatusCode.Unknown,
+                    // TemporaryRedirect, RedirectKeepVerb
+                    307 => StatusCode.Unknown,
+
+                    // 4xx range
+                    // BadRequest
+                    400 => StatusCode.InvalidArgument, // Note: Java uses OutOfRange, FailedPrecondition or InvalidArgument based on the message
+                    // Unauthorized
+                    401 => StatusCode.Unauthenticated,
+                    // PaymentRequired
+                    402 => StatusCode.Unknown, // This is reserved for future use; we really shouldn't see it.
+                    // Forbidden
+                    403 => StatusCode.PermissionDenied,
+                    // NotFound
+                    404 => StatusCode.NotFound,
+                    // MethodNotAllowed
+                    405 => StatusCode.InvalidArgument,
+                    // NotAcceptable
+                    406 => StatusCode.InvalidArgument,
+                    // ProxyAuthenticationRequired
+                    407 => StatusCode.Unauthenticated,
+                    // RequestTimeout
+                    408 => StatusCode.DeadlineExceeded,
+                    // Conflict
+                    409 => StatusCode.FailedPrecondition, // Java uses AlreadyExists or Aborted based on the message
+                    // Gone
+                    410 => StatusCode.NotFound,
+                    // LengthRequired
+                    411 => StatusCode.InvalidArgument, // Java throws an IllegalStateException here
+                    // PreconditionFailed
+                    412 => StatusCode.FailedPrecondition,
+                    // RequestEntityTooLarge
+                    413 => StatusCode.InvalidArgument,
+                    // RequestUriTooLong
+                    414 => StatusCode.InvalidArgument,
+                    // UnsupportedMediaType
+                    415 => StatusCode.InvalidArgument,
+                    // RequestedRangeNotSatisfiable
+                    416 => StatusCode.InvalidArgument,
+                    // ExpectationFailed
+                    417 => StatusCode.FailedPrecondition,
+                    // UpgradeRequired
+                    426 => StatusCode.InvalidArgument,
+                    // Too many requests (unnamed in HttpStatusCode)
+                    429 => StatusCode.ResourceExhausted,
+                    // Client closed request (unnamed in HttpStatusCode)
+                    499 => StatusCode.Cancelled,
+
+                    // 5xx range
+                    // InternalServerError
+                    500 => StatusCode.Internal, // Java uses DataLoss, Unknown or Internal based on the message
+                    // NotImplemented
+                    501 => StatusCode.Unimplemented,
+                    // BadGateway
+                    502 => StatusCode.InvalidArgument,
+                    // ServiceUnavailable
+                    503 => StatusCode.Unavailable,
+                    // GatewayTimeout
+                    504 => StatusCode.DeadlineExceeded,
+                    // HttpVersionNotSupported
+                    505 => StatusCode.Unknown,
+
+                    // Anything else is really unexpected.
+                    // Java throws on anything unknown, including many of the above
                     _ => StatusCode.Unknown
                 };
 
