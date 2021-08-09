@@ -186,16 +186,36 @@ namespace Google.Api.Gax.Grpc.Rest
 
             internal Status GetStatus()
             {
-                var grpcStatus = OriginalResponseMessage.StatusCode switch
+                var httpStatus = (int) OriginalResponseMessage.StatusCode;
+                var grpcStatus = (httpStatus / 100) switch
                 {
-                    HttpStatusCode.OK => StatusCode.OK,
-                    HttpStatusCode.Unauthorized => StatusCode.Unauthenticated,
-                    HttpStatusCode.Forbidden => StatusCode.PermissionDenied,
-                    HttpStatusCode.BadRequest => StatusCode.InvalidArgument,
-                    HttpStatusCode.InternalServerError => StatusCode.Internal,
-                    HttpStatusCode.NotFound => StatusCode.NotFound,
-                    HttpStatusCode.Conflict => StatusCode.FailedPrecondition,
-                    // TODO: Others!
+                    // All 2xx responses map to OK
+                    2 => StatusCode.OK,
+
+                    // 4xx defaults to FailedPrecondition, with specific exceptions
+                    4 => httpStatus switch
+                    {
+                        400 => StatusCode.InvalidArgument,
+                        401 => StatusCode.Unauthenticated,
+                        403 => StatusCode.PermissionDenied,
+                        404 => StatusCode.NotFound,
+                        409 => StatusCode.Aborted,
+                        416 => StatusCode.OutOfRange,
+                        429 => StatusCode.ResourceExhausted,
+                        499 => StatusCode.Cancelled,
+                        _ => StatusCode.FailedPrecondition,
+                    },
+
+                    // 5xx defaults to Internal, with specific exceptions
+                    5 => httpStatus switch
+                    {
+                        501 => StatusCode.Unimplemented,
+                        503 => StatusCode.Unavailable,
+                        504 => StatusCode.DeadlineExceeded,
+                        _ => StatusCode.Internal
+                    },
+
+                    // Anything else (including all 1xx and 3xx) maps to Unknown
                     _ => StatusCode.Unknown
                 };
 
