@@ -369,13 +369,10 @@ namespace Google.Api.Gax.Grpc
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
 
-            if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential)
+            if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
             {
-                ServiceAccountCredential serviceCredential = maybeWithProject.UnderlyingCredential as ServiceAccountCredential;
-                if (serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
-                {
-                    maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
-                }
+                maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
             }
            
             return maybeWithProject.ToChannelCredentials();
@@ -449,9 +446,9 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
-        /// true if and only if no quota project, scopes, credentials or token access method have been specified. Derived classes should
-        /// override this property if there are other reasons why the channel pool should not be used.
-        /// We do not enable self-signed Jwts with channel pools until credentials are not part of the key
+        /// true if and only if no quota project, scopes, credentials or token access method have been specified and 
+        /// if UseJwtAccessWithScopes flag matches the flag in ChannelPool. 
+        /// Derived classes should override this property if there are other reasons why the channel pool should not be used.
         /// </summary>
         protected virtual bool CanUseChannelPool =>
             ChannelCredentials == null &&
@@ -460,12 +457,12 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod == null &&
             Scopes == null &&
             QuotaProject == null &&
-            UseJwtAccessWithScopes == GetChannelPool()._useJwtAccessWithScopes;
+            UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
 
         /// <summary>
         ///  Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.
         /// </summary>
-        protected virtual bool UseJwtAccessWithScopes => false;
+        protected virtual bool UseJwtAccessWithScopes { get; }
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.

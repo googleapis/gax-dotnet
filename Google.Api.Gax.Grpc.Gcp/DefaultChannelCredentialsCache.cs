@@ -60,22 +60,19 @@ namespace Google.Api.Gax.Grpc.Gcp
                         appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
                     }
 
-                    if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential)
+                    if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                        && serviceCredential.UseJwtAccessWithScopes != _useJwtAccessWithScopes)
                     {
-                        ServiceAccountCredential serviceCredential = appDefaultCredentials.UnderlyingCredential as ServiceAccountCredential;
-                        if (serviceCredential.UseJwtAccessWithScopes != _useJwtAccessWithScopes)
-                        {
-                            appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(_useJwtAccessWithScopes));
-                        }
+                        appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(_useJwtAccessWithScopes));
                     }
                     return appDefaultCredentials.ToChannelCredentials();
                 }));
         }
 
         internal ChannelCredentials GetCredentials() =>
-        GetCredentialsAsync().ResultWithUnwrappedExceptions();
+            GetCredentialsAsync().ResultWithUnwrappedExceptions();
 
         internal Task<ChannelCredentials> GetCredentialsAsync() =>
-        _lazyScopedDefaultChannelCredentials.Value;
+            _lazyScopedDefaultChannelCredentials.Value;
     }
 }
