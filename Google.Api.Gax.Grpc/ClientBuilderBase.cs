@@ -203,7 +203,7 @@ namespace Google.Api.Gax.Grpc
         {
             environmentVariableProvider ??= Environment.GetEnvironmentVariable;
             var environment = allEmulatorEnvironmentVariables.ToDictionary(key => key, key => GetEnvironmentVariableOrNull(key));
-            
+
             switch (EmulatorDetection)
             {
                 case EmulatorDetection.None:
@@ -368,13 +368,8 @@ namespace Google.Api.Gax.Grpc
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            maybeWithProject = SetUseJwtWithScopesFlag(maybeWithProject);
 
-            if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
-                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
-            {
-                maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
-            }
-           
             return maybeWithProject.ToChannelCredentials();
         }
 
@@ -398,6 +393,8 @@ namespace Google.Api.Gax.Grpc
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            maybeWithProject = SetUseJwtWithScopesFlag(maybeWithProject);
+
             return maybeWithProject.ToChannelCredentials();
         }
 
@@ -442,6 +439,22 @@ namespace Google.Api.Gax.Grpc
             return GrpcChannelOptions is null
                 ? defaultOptions
                 : defaultOptions.MergedWith(GrpcChannelOptions);
+        }
+
+        /// <summary>
+        /// Sets the UseJwtAccessWithScopes for the provided credential 
+        /// </summary>
+        /// <param name="credential">a <see cref="GoogleCredential"/></param>
+        /// <returns>A <see cref="GoogleCredential"/> with UseJwtAccessWithScopes flag set</returns>
+        protected virtual GoogleCredential SetUseJwtWithScopesFlag(GoogleCredential credential)
+        {
+            if (credential.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                credential = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
+            }
+
+            return credential;
         }
 
         /// <summary>

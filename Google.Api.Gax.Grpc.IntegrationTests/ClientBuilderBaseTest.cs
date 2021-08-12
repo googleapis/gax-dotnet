@@ -6,6 +6,7 @@
  */
 
 using Google.Api.Gax.Grpc.GrpcCore;
+using Google.Apis.Auth.OAuth2;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -132,6 +133,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 Assert.NotNull(builder.ChannelCreated);
                 Assert.Same(builder.ChannelCreated, GetChannel(invoker));
                 Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
+                Assert.False(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -226,6 +228,54 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             await ValidateResultAsync(builder, validator);
         }
 
+        [Fact]
+        public async Task JwtClientEnabledTest()
+        {
+            var builder = new SampleClientBuilderWithJwt() { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+
+            Action<CallInvoker> validator = invoker =>
+            {
+                var channelFromBuilder = GetChannel(invoker);
+                Assert.NotSame(channelFromPool, channelFromBuilder);
+                Assert.NotNull(builder.ChannelCreated);
+                Assert.True(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
+            };
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
+        public async Task JwtPoolEnabledTest()
+        {
+            var builder = new SampleClientBuilderWithJwtPool() { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+
+            Action<CallInvoker> validator = invoker =>
+            {
+                var channelFromBuilder = GetChannel(invoker);
+                Assert.NotSame(channelFromPool, channelFromBuilder);
+                Assert.NotNull(builder.ChannelCreated);
+                Assert.False(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
+            };
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
+        public async Task JwtClientAndPoolEnabledTest()
+        {
+            var builder = new SampleClientBuilderJwtAllEnabled();
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+
+            Action<CallInvoker> validator = invoker =>
+            {
+                var channelFromBuilder = GetChannel(invoker);
+                Assert.Null(builder.ChannelCreated);
+                Assert.Same(builder.ChannelCredentials, builder.CredentialsUsedToCreateChannel);
+                Assert.Null(builder.GoogleCredentialsUsedToCreateChannel);
+            };
+            await ValidateResultAsync(builder, validator);
+        }
+
         private static Channel GetChannel(CallInvoker invoker)
         {
             if (!(invoker is DefaultCallInvoker dci))
@@ -282,7 +332,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
-            public ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes);
+            public virtual ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes);
 
             // The default options are private in ClientBuilderBase, but we can access them by getting the effective
             // options if we don't apply any modifications.
@@ -290,6 +340,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
+            public GoogleCredential GoogleCredentialsUsedToCreateChannel { get; private set; }
             public ChannelBase ChannelCreated { get; private set; }
 
             private readonly string _name;
@@ -340,7 +391,29 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 return ChannelCreated;
             }
 
+            protected override GoogleCredential SetUseJwtWithScopesFlag(GoogleCredential credential)
+            {
+                GoogleCredentialsUsedToCreateChannel = base.SetUseJwtWithScopesFlag(credential);
+
+                return GoogleCredentialsUsedToCreateChannel;
+            }
+
             public override string ToString() => _name;
+        }
+
+        public class SampleClientBuilderWithJwt : SampleClientBuilder
+        {
+            protected override bool UseJwtAccessWithScopes => true;
+        }
+
+        public class SampleClientBuilderWithJwtPool : SampleClientBuilder
+        {
+            public override ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes, true);
+        }
+
+        public class SampleClientBuilderJwtAllEnabled : SampleClientBuilderWithJwt
+        {
+            public override ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes, true);
         }
     }
 }
