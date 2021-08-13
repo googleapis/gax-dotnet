@@ -133,7 +133,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 Assert.NotNull(builder.ChannelCreated);
                 Assert.Same(builder.ChannelCreated, GetChannel(invoker));
                 Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-                Assert.False(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -231,15 +230,16 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task JwtClientEnabledTest()
         {
-            var builder = new SampleClientBuilderWithJwt() { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            var builder = new SampleClientBuilder(true, false) { JsonCredentials = DummyServiceAccountCredentialFileContents };
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
+            // Jwt enabled for client and disabled for pool
+            // We won't use channel pool
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
                 Assert.NotSame(channelFromPool, channelFromBuilder);
                 Assert.NotNull(builder.ChannelCreated);
-                Assert.True(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -247,15 +247,16 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task JwtPoolEnabledTest()
         {
-            var builder = new SampleClientBuilderWithJwtPool() { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            var builder = new SampleClientBuilder(false, true) { JsonCredentials = DummyServiceAccountCredentialFileContents };
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
+            // Jwt enabled for pool and disabled for client
+            // We won't use channel pool
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
                 Assert.NotSame(channelFromPool, channelFromBuilder);
                 Assert.NotNull(builder.ChannelCreated);
-                Assert.False(((ServiceAccountCredential)builder.GoogleCredentialsUsedToCreateChannel.UnderlyingCredential).UseJwtAccessWithScopes);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -263,9 +264,11 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task JwtClientAndPoolEnabledTest()
         {
-            var builder = new SampleClientBuilderJwtAllEnabled();
+            var builder = new SampleClientBuilder(true, true);
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
+            // Jwt enabled for both client and pool
+            // We use channel pool
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
@@ -332,7 +335,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
-            public virtual ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes);
+            public virtual ChannelPool ChannelPool { get; } 
 
             // The default options are private in ClientBuilderBase, but we can access them by getting the effective
             // options if we don't apply any modifications.
@@ -348,10 +351,22 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             /// <summary>
             /// Constructor assigning a "name" to a builder for the sake of theory tests.
             /// </summary>
-            public SampleClientBuilder(string name) => _name = name;
+            public SampleClientBuilder(string name) : this(false, false)
+            {
+                _name = name;
+            }
 
             public SampleClientBuilder() : this("Unnamed")
             {
+            }
+
+            /// <summary>
+            /// Constructor assigning a "name" to a builder and Jwt flags for the sake of theory tests.
+            /// </summary>
+            public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
+            {
+                ChannelPool = new ChannelPool(DefaultScopes, poolUsesJwt);
+                UseJwtAccessWithScopes = clientUsesJwt;
             }
 
             public override CallInvoker Build()
@@ -391,29 +406,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 return ChannelCreated;
             }
 
-            protected override GoogleCredential SetUseJwtWithScopesFlag(GoogleCredential credential)
-            {
-                GoogleCredentialsUsedToCreateChannel = base.SetUseJwtWithScopesFlag(credential);
-
-                return GoogleCredentialsUsedToCreateChannel;
-            }
-
             public override string ToString() => _name;
-        }
-
-        public class SampleClientBuilderWithJwt : SampleClientBuilder
-        {
-            protected override bool UseJwtAccessWithScopes => true;
-        }
-
-        public class SampleClientBuilderWithJwtPool : SampleClientBuilder
-        {
-            public override ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes, true);
-        }
-
-        public class SampleClientBuilderJwtAllEnabled : SampleClientBuilderWithJwt
-        {
-            public override ChannelPool ChannelPool { get; } = new ChannelPool(DefaultScopes, true);
         }
     }
 }

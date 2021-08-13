@@ -132,6 +132,7 @@ namespace Google.Api.Gax.Grpc
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
             QuotaProject = source.QuotaProject;
+            UseJwtAccessWithScopes = source.UseJwtAccessWithScopes;
 
             // Note that we may be copying from one type that supports emulators (e.g. FirestoreDbBuilder)
             // to another type that doesn't (e.g. FirestoreClientBuilder). That ends up in a slightly odd situation,
@@ -368,7 +369,11 @@ namespace Google.Api.Gax.Grpc
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
-            maybeWithProject = SetUseJwtWithScopesFlag(maybeWithProject);
+            if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
+            }
 
             return maybeWithProject.ToChannelCredentials();
         }
@@ -393,7 +398,11 @@ namespace Google.Api.Gax.Grpc
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
-            maybeWithProject = SetUseJwtWithScopesFlag(maybeWithProject);
+            if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
+            }
 
             return maybeWithProject.ToChannelCredentials();
         }
@@ -442,22 +451,6 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Sets the UseJwtAccessWithScopes for the provided credential 
-        /// </summary>
-        /// <param name="credential">a <see cref="GoogleCredential"/></param>
-        /// <returns>A <see cref="GoogleCredential"/> with UseJwtAccessWithScopes flag set</returns>
-        protected virtual GoogleCredential SetUseJwtWithScopesFlag(GoogleCredential credential)
-        {
-            if (credential.UnderlyingCredential is ServiceAccountCredential serviceCredential
-                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
-            {
-                credential = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
-            }
-
-            return credential;
-        }
-
-        /// <summary>
         /// Returns whether or not a channel pool can be used if a channel is required. The default behavior is to return
         /// true if and only if no quota project, scopes, credentials or token access method have been specified and 
         /// if UseJwtAccessWithScopes flag matches the flag in ChannelPool. 
@@ -475,7 +468,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         ///  Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.
         /// </summary>
-        protected virtual bool UseJwtAccessWithScopes { get; }
+        protected bool UseJwtAccessWithScopes { get; set; }
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.

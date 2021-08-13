@@ -36,8 +36,19 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public GcpCallInvokerPool(IEnumerable<string> scopes) =>
-            _credentialsCache = new DefaultChannelCredentialsCache(scopes, false);
+        public GcpCallInvokerPool(IEnumerable<string> scopes) : this(scopes, false)
+        {
+        }
+
+        /// <summary>
+        /// Creates a call invoker pool which will apply the specified scopes to the default application credentials
+        /// if they require any.
+        /// </summary>
+        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
+        /// <param name="useJwtAccessWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
+        /// when OAuth scopes are explicitly set.</param>
+        public GcpCallInvokerPool(IEnumerable<string> scopes, bool useJwtAccessWithScopes) =>
+            _credentialsCache = new DefaultChannelCredentialsCache(scopes, useJwtAccessWithScopes);
 
         /// <summary>
         /// Shuts down all the open channels of all currently-allocated call invokers asynchronously. This does not prevent

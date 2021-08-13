@@ -41,10 +41,10 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useUseJwtAccessWithScopes">The flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
-        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useUseJwtAccessWithScopes)
+        /// <param name="useJwtAccessWithScopes">The flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
+        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useJwtAccessWithScopes)
         {
-            _useJwtAccessWithScopes = useUseJwtAccessWithScopes;
+            _useJwtAccessWithScopes = useJwtAccessWithScopes;
 
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();

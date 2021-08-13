@@ -46,7 +46,8 @@ namespace Google.Api.Gax.Grpc
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useJwtWithScopes"></param>
+        /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
+        /// when OAuth scopes are explicitly set.</param>
         public ChannelPool(IEnumerable<string> scopes, bool useJwtWithScopes)
         {
             UseJwtAccessWithScopes = useJwtWithScopes;
