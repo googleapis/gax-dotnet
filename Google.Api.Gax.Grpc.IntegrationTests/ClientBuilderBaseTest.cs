@@ -361,7 +361,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             }
 
             /// <summary>
-            /// Constructor assigning a "name" to a builder and Jwt flags for the sake of theory tests.
+            /// Constructor assigning Jwt flags for the sake of theory tests.
             /// </summary>
             public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
             {
