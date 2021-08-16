@@ -1,8 +1,7 @@
 [![GitHub Actions
 status](https://img.shields.io/github/workflow/status/googleapis/gax-dotnet/Build)](https://github.com/googleapis/gax-dotnet/actions?query=workflow%3ABuild)
 
-Google API Extensions for .NET
-===
+# Google API Extensions for .NET
 
 This repository contains code for support libraries for the
 [Google Cloud Libraries for
@@ -20,21 +19,16 @@ files](https://github.com/googleapis/googleapis/)
 can use services such as page streaming to provide
 a more convenient and idiomatic API surface to callers.
 
-Contributing
-------------
+## Contributing
 
 Contributions to this library are always welcome and highly encouraged.
 See the	[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/master/.github/CONTRIBUTING.md)
 documentation for more information on how to get started.
 
-Versioning
-----------
+## Versioning
 
 This library follows [semantic versioning](http://semver.org).
 
-License
--------
+## License
 
-BSD - See
-[LICENSE](https://github.com/googleapis/gax-dotnet/blob/master/LICENSE)
-for more information.
+BSD-3-Clause - See [LICENSE](./LICENSE) for more information.

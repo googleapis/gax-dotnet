@@ -11,10 +11,10 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static Google.Api.Gax.Grpc.Rest.RestChannel;
 
 namespace Google.Api.Gax.Grpc.Rest
 {
@@ -181,16 +181,15 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <summary>
         /// Parses the response and converts it into the protobuf response type.
         /// </summary>
-        internal async Task<TResponse> ReadResponseAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
+        internal async Task<TResponse> ReadResponseAsync<TResponse>(Task<ReadHttpResponseMessage> httpResponseTask)
         {
             var httpResponse = await httpResponseTask.ConfigureAwait(false);
-            var status = RestChannel.GetStatus(httpResponse);
+            var status = httpResponse.GetStatus();
             if (status.StatusCode != StatusCode.OK)
             {
-                throw new RpcException(status);
+                throw new RpcException(status, httpResponse.GetTrailers(), status.Detail);
             }
-            string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return (TResponse) _parser.Parse(json, _protoMethod.OutputType);
+            return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
         }
 
         private class TranscodingOutput
