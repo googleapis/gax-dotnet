@@ -25,6 +25,8 @@ namespace Google.Api.Gax.Grpc
     {
         private readonly IEnumerable<string> _scopes;
 
+        internal bool UseJwtAccessWithScopes { get; }
+
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
         /// task can be used whenever channel credentials are required. The returned task always runs in the
@@ -44,8 +46,12 @@ namespace Google.Api.Gax.Grpc
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ChannelPool(IEnumerable<string> scopes)
+        /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
+        /// when OAuth scopes are explicitly set.</param>
+        public ChannelPool(IEnumerable<string> scopes, bool useJwtWithScopes)
         {
+            UseJwtAccessWithScopes = useJwtWithScopes;
+
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
@@ -54,12 +60,27 @@ namespace Google.Api.Gax.Grpc
             _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
         }
 
+        /// <summary>
+        /// Creates a channel pool which will apply the specified scopes to the default application credentials
+        /// if they require any.
+        /// </summary>
+        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
+        public ChannelPool(IEnumerable<string> scopes) : this(scopes, false)
+        {
+        }
+
         private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
         {
             var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
             if (appDefaultCredentials.IsCreateScopedRequired)
             {
                 appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
+            }
+
+            if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
             }
             return appDefaultCredentials.ToChannelCredentials();
         }

@@ -25,6 +25,8 @@ namespace Google.Api.Gax.Grpc.Gcp
     {
         private readonly IEnumerable<string> _scopes;
 
+        private readonly bool _useJwtAccessWithScopes;
+
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
         /// task can be used whenever channel credentials are required. The returned task always runs in the
@@ -39,8 +41,11 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes)
+        /// <param name="useJwtAccessWithScopes">The flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
+        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useJwtAccessWithScopes)
         {
+            _useJwtAccessWithScopes = useJwtAccessWithScopes;
+
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
@@ -53,6 +58,12 @@ namespace Google.Api.Gax.Grpc.Gcp
                     if (appDefaultCredentials.IsCreateScopedRequired)
                     {
                         appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
+                    }
+
+                    if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                        && serviceCredential.UseJwtAccessWithScopes != _useJwtAccessWithScopes)
+                    {
+                        appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(_useJwtAccessWithScopes));
                     }
                     return appDefaultCredentials.ToChannelCredentials();
                 }));
