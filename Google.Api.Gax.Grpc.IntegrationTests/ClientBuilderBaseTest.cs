@@ -333,7 +333,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             private readonly string _name;
 
             /// <summary>
-            /// Constructor assigning a "name" to a builder and Jwt flags for the sake of theory tests.
+            /// Constructor assigning a "name" to a builder and setting Jwt flags for the sake of theory tests.
             /// </summary>
             public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt)
             {
