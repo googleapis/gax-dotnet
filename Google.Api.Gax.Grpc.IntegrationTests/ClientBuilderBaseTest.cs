@@ -347,12 +347,11 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             {
             }
 
-            public SampleClientBuilder(string name) : this(false, false)
+            public SampleClientBuilder(string name) : this(name, false, false)
             {
-                _name = name;
             }
 
-            public SampleClientBuilder() : this("Unnamed", false, false)
+            public SampleClientBuilder() : this(false, false)
             {
             }
 
