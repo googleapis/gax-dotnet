@@ -32,15 +32,16 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch9nb29nbGUvYXBpL2ZpZWxkX2JlaGF2aW9yLnByb3RvEgpnb29nbGUuYXBp",
-            "GiBnb29nbGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byqPAQoNRmllbGRC",
+            "GiBnb29nbGUvcHJvdG9idWYvZGVzY3JpcHRvci5wcm90byqmAQoNRmllbGRC",
             "ZWhhdmlvchIeChpGSUVMRF9CRUhBVklPUl9VTlNQRUNJRklFRBAAEgwKCE9Q",
             "VElPTkFMEAESDAoIUkVRVUlSRUQQAhIPCgtPVVRQVVRfT05MWRADEg4KCklO",
             "UFVUX09OTFkQBBINCglJTU1VVEFCTEUQBRISCg5VTk9SREVSRURfTElTVBAG",
-            "OlEKDmZpZWxkX2JlaGF2aW9yEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0",
-            "aW9ucxicCCADKA4yGS5nb29nbGUuYXBpLkZpZWxkQmVoYXZpb3JCcAoOY29t",
-            "Lmdvb2dsZS5hcGlCEkZpZWxkQmVoYXZpb3JQcm90b1ABWkFnb29nbGUuZ29s",
-            "YW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczth",
-            "bm5vdGF0aW9uc6ICBEdBUEliBnByb3RvMw=="));
+            "EhUKEU5PTl9FTVBUWV9ERUZBVUxUEAc6UQoOZmllbGRfYmVoYXZpb3ISHS5n",
+            "b29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGJwIIAMoDjIZLmdvb2dsZS5h",
+            "cGkuRmllbGRCZWhhdmlvckJwCg5jb20uZ29vZ2xlLmFwaUISRmllbGRCZWhh",
+            "dmlvclByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2ds",
+            "ZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIER0FQSWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.FieldBehavior), }, new pb::Extension[] { FieldBehaviorExtensions.FieldBehavior }, null));
@@ -120,6 +121,13 @@ namespace Google.Api {
     /// provided. Additionally, the list's order may or may not be stable.
     /// </summary>
     [pbr::OriginalName("UNORDERED_LIST")] UnorderedList = 6,
+    /// <summary>
+    /// Denotes that this field returns a non-empty default value if not set.
+    /// This indicates that if the user provides the empty value in a request,
+    /// a non-empty value will be returned. The user will not be aware of what
+    /// non-empty value to expect.
+    /// </summary>
+    [pbr::OriginalName("NON_EMPTY_DEFAULT")] NonEmptyDefault = 7,
   }
 
   #endregion

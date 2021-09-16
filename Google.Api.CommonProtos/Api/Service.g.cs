@@ -45,7 +45,7 @@ namespace Google.Api {
             "b2dsZS9hcGkvc3lzdGVtX3BhcmFtZXRlci5wcm90bxoWZ29vZ2xlL2FwaS91",
             "c2FnZS5wcm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90bxoZZ29vZ2xl",
             "L3Byb3RvYnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3RvYnVmL3R5cGUucHJv",
-            "dG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byLWBwoHU2Vydmlj",
+            "dG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90byLaBwoHU2Vydmlj",
             "ZRIMCgRuYW1lGAEgASgJEg0KBXRpdGxlGAIgASgJEhsKE3Byb2R1Y2VyX3By",
             "b2plY3RfaWQYFiABKAkSCgoCaWQYISABKAkSIgoEYXBpcxgDIAMoCzIULmdv",
             "b2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsyFS5nb29nbGUucHJv",
@@ -66,11 +66,11 @@ namespace Google.Api {
             "aS5Mb2dnaW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5nb29nbGUuYXBpLk1v",
             "bml0b3JpbmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSABKAsyHC5nb29nbGUu",
             "YXBpLlN5c3RlbVBhcmFtZXRlcnMSKwoLc291cmNlX2luZm8YJSABKAsyFi5n",
-            "b29nbGUuYXBpLlNvdXJjZUluZm8SNAoOY29uZmlnX3ZlcnNpb24YFCABKAsy",
-            "HC5nb29nbGUucHJvdG9idWYuVUludDMyVmFsdWVCbgoOY29tLmdvb2dsZS5h",
-            "cGlCDFNlcnZpY2VQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90",
-            "by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWei",
-            "AgRHQVBJYgZwcm90bzM="));
+            "b29nbGUuYXBpLlNvdXJjZUluZm8SOAoOY29uZmlnX3ZlcnNpb24YFCABKAsy",
+            "HC5nb29nbGUucHJvdG9idWYuVUludDMyVmFsdWVCAhgBQm4KDmNvbS5nb29n",
+            "bGUuYXBpQgxTZXJ2aWNlUHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
+            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
+            "ZmlnogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.ResourceReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -91,7 +91,6 @@ namespace Google.Api {
   /// Example:
   ///
   ///     type: google.api.Service
-  ///     config_version: 3
   ///     name: calendar.googleapis.com
   ///     title: Google Calendar API
   ///     apis:
@@ -528,8 +527,12 @@ namespace Google.Api {
     private static readonly pb::FieldCodec<uint?> _single_configVersion_codec = pb::FieldCodec.ForStructWrapper<uint>(162);
     private uint? configVersion_;
     /// <summary>
-    /// Deprecated. The service config compiler always sets this field to `3`.
+    /// Obsolete. Do not use.
+    ///
+    /// This field has no semantic meaning. The service config compiler always
+    /// sets this field to `3`.
     /// </summary>
+    [global::System.ObsoleteAttribute]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public uint? ConfigVersion {
       get { return configVersion_; }
