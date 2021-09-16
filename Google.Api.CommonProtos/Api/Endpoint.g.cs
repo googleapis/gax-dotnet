@@ -126,6 +126,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> aliases_ = new pbc::RepeatedField<string>();
     /// <summary>
+    /// Unimplemented. Dot not use.
+    ///
     /// DEPRECATED: This field is no longer supported. Instead of using aliases,
     /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended
     /// aliases.

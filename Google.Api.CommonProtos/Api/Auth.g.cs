@@ -65,9 +65,10 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// `Authentication` defines the authentication configuration for an API.
+  /// `Authentication` defines the authentication configuration for API methods
+  /// provided by an API service.
   ///
-  /// Example for an API targeted for external use:
+  /// Example:
   ///
   ///     name: calendar.googleapis.com
   ///     authentication:
@@ -79,6 +80,9 @@ namespace Google.Api {
   ///       - selector: "*"
   ///         requirements:
   ///           provider_id: google_calendar_auth
+  ///       - selector: google.calendar.Delegate
+  ///         oauth:
+  ///           canonical_scopes: https://www.googleapis.com/auth/calendar.read
   /// </summary>
   public sealed partial class Authentication : pb::IMessage<Authentication>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
