@@ -52,7 +52,7 @@ namespace Google.Api.Gax.Grpc
             settings.MergedWith(CallSettings.FromCancellationToken(cancellationToken));
 
         /// <summary>
-        /// Obsolete. https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md
+        /// Obsolete. https://github.com/googleapis/gax-dotnet/blob/main/PER_CALL_CREDENTIAL.md
         /// Returns a new <see cref="CallSettings"/> with the specified call credentials,
         /// merged with the (optional) original settings specified by <paramref name="settings"/>.
         /// </summary>
@@ -63,7 +63,7 @@ namespace Google.Api.Gax.Grpc
         /// not present in the new call settings. If both this and <paramref name="settings"/> are null,
         /// the return value is null.</param>
         /// <returns>A new set of call settings, or null if both parameters are null.</returns>
-        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/master/PER_CALL_CREDENTIAL.md")]
+        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/main/PER_CALL_CREDENTIAL.md")]
         public static CallSettings WithCallCredentials(
             this CallSettings settings,
             CallCredentials credentials) =>
