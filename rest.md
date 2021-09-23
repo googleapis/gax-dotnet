@@ -24,7 +24,7 @@ Contributing
 Contributions to this library are always welcome and highly encouraged.
 
 See the
-[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/master/CONTRIBUTING)
+[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/main/CONTRIBUTING)
 documentation for more information on how to get started.
 
 
@@ -41,6 +41,6 @@ License
 -------
 
 BSD - See
-[LICENSE](https://github.com/googleapis/gax-dotnet/blob/master/LICENSE)
+[LICENSE](https://github.com/googleapis/gax-dotnet/blob/main/LICENSE)
 for more information.
 

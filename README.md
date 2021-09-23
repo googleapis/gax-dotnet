@@ -22,7 +22,7 @@ a more convenient and idiomatic API surface to callers.
 ## Contributing
 
 Contributions to this library are always welcome and highly encouraged.
-See the	[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/master/.github/CONTRIBUTING.md)
+See the	[CONTRIBUTING](https://github.com/googleapis/gax-dotnet/blob/main/.github/CONTRIBUTING.md)
 documentation for more information on how to get started.
 
 ## Versioning
