@@ -1,0 +1,63 @@
+﻿/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+syntax = "proto3";
+
+package google.api.gax.grpc.integration_tests;
+
+service ForwardingSourceTestService {
+  rpc Method1(ForwardingSourceMethod1Request) returns (ForwardingSourceMethod1Response);
+  rpc Method2(ForwardingSourceMethod2Request) returns (ForwardingSourceMethod2Response);
+
+  // Streaming methods just to test the error mode.
+  rpc ServerStreamingMethod(Irrelevant) returns (stream Irrelevant);
+  rpc ClientStreamingMethod(stream Irrelevant) returns (Irrelevant);
+  rpc BidiStreamingMethod(stream Irrelevant) returns (stream Irrelevant);
+}
+
+service ForwardingTargetTestService {
+  rpc Method1(ForwardingTargetMethod1Request) returns (ForwardingTargetMethod1Response);
+  rpc Method2(ForwardingTargetMethod2Request) returns (ForwardingTargetMethod2Response);
+}
+
+// Note: unique field names to avoid any bugs around conversion going undetected.
+message ForwardingSourceMethod1Request {
+  string source_name = 1;
+}
+
+message ForwardingSourceMethod1Response {
+  string target_result = 2;
+  string source_request_name = 9;
+}
+
+message ForwardingSourceMethod2Request {
+  int32 abc = 3;
+}
+
+message ForwardingSourceMethod2Response {
+  int32 def = 4;
+}
+
+
+message ForwardingTargetMethod1Request {
+  string target_name = 5;
+}
+
+message ForwardingTargetMethod1Response {
+  string target_result = 6;
+}
+
+message ForwardingTargetMethod2Request {
+  bytes ghi = 7;
+}
+
+message ForwardingTargetMethod2Response {
+  bytes jkl = 8;
+}
+
+message Irrelevant {
+}
