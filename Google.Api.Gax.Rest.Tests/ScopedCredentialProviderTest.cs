@@ -45,13 +45,25 @@ j5XmfIZhC9k =
         }
 
         [Fact]
-        public void GetCredentials_ScopesApplied()
+        public void GetCredentials_ScopesApplied_UnspecifiedUseJwts()
         {
             var provider = new ScopedCredentialProvider(new[] { "abc" });
             var originalCredentials = CreateServiceCredentials();
             var provided = provider.GetCredentials(originalCredentials);
             // Can't actually test the scopes...
             Assert.NotSame(originalCredentials, provided);
+        }
+
+        [Theory, CombinatorialData]
+        public void GetCredentials_ScopesApplied_UseJwtWithScopesSpecified(bool useJwtWithScopes)
+        {
+            var provider = new ScopedCredentialProvider(new[] { "abc" }, useJwtWithScopes);
+            var originalCredentials = CreateServiceCredentials();
+            var provided = provider.GetCredentials(originalCredentials);
+            Assert.NotSame(originalCredentials, provided);
+            var serviceAccount = provided.UnderlyingCredential as ServiceAccountCredential;
+            Assert.NotNull(serviceAccount);
+            Assert.Equal(useJwtWithScopes, serviceAccount.UseJwtAccessWithScopes);
         }
 
         [Fact]
