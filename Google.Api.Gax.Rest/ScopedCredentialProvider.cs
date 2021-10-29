@@ -28,17 +28,30 @@ namespace Google.Api.Gax.Rest
         /// </summary>
         private readonly Lazy<Task<GoogleCredential>> _lazyScopedDefaultCredentials;
         private readonly List<string> _scopes;
+        private readonly bool _useJwtWithScopes;
 
         /// <summary>
         /// Creates a channel pool which will apply the specified scopes to the credentials if they require any.
         /// </summary>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ScopedCredentialProvider(IEnumerable<string> scopes)
+        /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
+        public ScopedCredentialProvider(IEnumerable<string> scopes, bool useJwtWithScopes)
         {
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+            _useJwtWithScopes = useJwtWithScopes;
             _lazyScopedDefaultCredentials = new Lazy<Task<GoogleCredential>>(() => Task.Run(CreateDefaultCredentialsUncached));
+        }
+
+        /// <summary>
+        /// Creates a channel pool which will apply the specified scopes to the credentials if they require any.
+        /// A provider created with this overload is equivalent to calling <see cref="ScopedCredentialProvider(IEnumerable{string}, bool)"/>
+        /// with a second argument of <c>false</c>.
+        /// </summary>
+        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
+        public ScopedCredentialProvider(IEnumerable<string> scopes) : this(scopes, false)
+        {
         }
 
         /// <summary>
@@ -74,11 +87,20 @@ namespace Google.Api.Gax.Rest
             return ApplyScopes(credentials);
         }
 
+        /// <summary>
+        /// Applies scopes when they're available, and potentially specifies a preference for
+        /// using self-signed JWTs.
+        /// </summary>
         private GoogleCredential ApplyScopes(GoogleCredential original)
         {
-            return original.IsCreateScopedRequired && _scopes.Count > 0
-                ? original.CreateScoped(_scopes)
-                : original;
+            if (!original.IsCreateScopedRequired || _scopes.Count == 0)
+            {
+                return original;
+            }
+            var scoped = original.CreateScoped(_scopes);
+            return _useJwtWithScopes && scoped.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                ? GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(true))
+                : scoped;
         }
 
         // Note: this is duplicated in Google.Apis.Auth, Google.Apis.Core and Google.Api.Gax.Grpc as well so it can stay internal.
