@@ -4,7 +4,6 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
-using Google.Api.Gax.Grpc.GrpcCore;
 using Grpc.Core;
 using System.Collections.Generic;
 using System.Linq;
