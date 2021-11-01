@@ -11,6 +11,7 @@ package google.api.gax.grpc.integration_tests;
 
 service TestService {
   rpc DoSimple(SimpleRequest) returns (SimpleResponse);
+  rpc EchoHeaders(EchoHeadersRequest) returns (EchoHeadersResponse);
 }
 
 message SimpleRequest {
@@ -19,4 +20,16 @@ message SimpleRequest {
 
 message SimpleResponse {
   string name = 2;
+}
+
+message EchoHeadersRequest {
+}
+
+message EchoHeadersResponse {
+  message HeaderValue {
+    bytes bytesValue = 1;
+    string stringValue = 2;
+  }
+
+  map<string, HeaderValue> headers = 1;
 }
