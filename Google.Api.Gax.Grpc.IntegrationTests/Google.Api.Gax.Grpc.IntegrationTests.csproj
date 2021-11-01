@@ -3,14 +3,14 @@
   <Import Project="..\CommonProperties.Test.xml" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net461;netcoreapp3.1</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.1</TargetFrameworks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
-    <ProjectReference Include="..\Google.Api.Gax.Grpc.GrpcCore\Google.Api.Gax.Grpc.GrpcCore.csproj" />
     <ProjectReference Include="..\Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj" />
+    <PackageReference Include="Grpc.Core" Version="[2.38.0, 3.0.0)"/>
   </ItemGroup>
 </Project>
