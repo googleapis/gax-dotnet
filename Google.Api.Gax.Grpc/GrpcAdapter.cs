@@ -6,6 +6,9 @@
  */
 
 using Grpc.Core;
+using Grpc.Net.Client;
+using System;
+using System.Threading;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -14,6 +17,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public abstract class GrpcAdapter
     {
+        private static readonly Lazy<GrpcAdapter> s_defaultFactory = new Lazy<GrpcAdapter>(CreateDefaultAdapter, LazyThreadSafetyMode.PublicationOnly);
+
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options.
         /// </summary>
@@ -38,5 +43,27 @@ namespace Google.Api.Gax.Grpc
         /// <param name="options">The channel options to use. Will not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
         protected abstract ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
+
+        /// <summary>
+        /// Returns the default gRPC adapter based on the available gRPC implementations.
+        /// </summary>
+        public static GrpcAdapter DefaultAdapter => s_defaultFactory.Value;
+
+        // TODO: Is this really what we want? Definitely simple, but not great in other ways...
+        // Perhaps have an environment variable that can be used to force one or the other?
+        // (In some situations it may be better to see "Grpc.Core fails immediately, but that's the one we want"
+        // rather than "Grpc.Net.Client looks like it will work, but then fails".)
+        private static GrpcAdapter CreateDefaultAdapter()
+        {
+            try
+            {
+                GrpcChannel.ForAddress("https://ignored.com");
+                return GrpcNetClientAdapter.Default;
+            }
+            catch
+            {
+                return GrpcCoreAdapter.Instance;
+            }
+        }
     }
 }
