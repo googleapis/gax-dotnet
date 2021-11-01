@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.Gax.Grpc.GrpcCore;
 using Grpc.Core;
 using Grpc.Gcp;
 using System;
@@ -113,7 +112,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             {
                 if (!_callInvokers.TryGetValue(key, out GcpCallInvoker callInvoker))
                 {
-                    callInvoker = new GcpCallInvoker(endpoint, credentials, GrpcCoreAdapter.Instance.ConvertOptions(effectiveOptions));
+                    callInvoker = new GcpCallInvoker(endpoint, credentials, ConvertOptions(effectiveOptions));
                     _callInvokers[key] = callInvoker;
                 }
                 return callInvoker;
@@ -140,6 +139,62 @@ namespace Google.Api.Gax.Grpc.Gcp
 
             public bool Equals(Key other) =>
                 Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
+        }
+
+        // TODO: Remove all of this... it's a temporary hack. (We want to move GcpCallInvokerPool into Google.Api.Gax.Grpc.)
+        // Option names, copied from ChannelOptions
+        internal const string ServiceConfigDisableResolution = "grpc.service_config_disable_resolution";
+        internal const string KeepAliveTimeMs = "grpc.keepalive_time_ms";
+        internal const string KeepAliveTimeoutMs = "grpc.keepalive_timeout_ms";
+        internal const string MaxReceiveMessageLength = "grpc.max_receive_message_length";
+        internal const string MaxSendMessageLength = "grpc.max_send_message_length";
+        internal const string PrimaryUserAgentString = "grpc.primary_user_agent";
+
+        /// <summary>
+        /// Converts a <see cref="GrpcChannelOptions"/> (defined in Google.Api.Gax.Grpc) into a list
+        /// of ChannelOption (defined in Grpc.Core). This is generic to allow the simple use of delegates
+        /// for option factories. Internal for testing.
+        /// </summary>
+        /// <param name="options">The options to convert. Must not be null.</param>
+        private static IReadOnlyList<ChannelOption> ConvertOptions(GrpcChannelOptions options)
+        {
+            GaxPreconditions.CheckNotNull(options, nameof(options));
+            List<ChannelOption> ret = new List<ChannelOption>();
+            if (options.EnableServiceConfigResolution is bool enableServiceConfigResolution)
+            {
+                ret.Add(new ChannelOption(ServiceConfigDisableResolution, enableServiceConfigResolution ? 0 : 1));
+            }
+            if (options.KeepAliveTime is TimeSpan keepAlive)
+            {
+                ret.Add(new ChannelOption(KeepAliveTimeMs, (int) keepAlive.TotalMilliseconds));
+            }
+            if (options.KeepAliveTimeout is TimeSpan keepAliveout)
+            {
+                ret.Add(new ChannelOption(KeepAliveTimeoutMs, (int) keepAliveout.TotalMilliseconds));
+            }
+            if (options.MaxReceiveMessageSize is int maxReceiveMessageSize)
+            {
+                ret.Add(new ChannelOption(MaxReceiveMessageLength, maxReceiveMessageSize));
+            }
+            if (options.MaxSendMessageSize is int maxSendMessageSize)
+            {
+                ret.Add(new ChannelOption(MaxSendMessageLength, maxSendMessageSize));
+            }
+            if (options.PrimaryUserAgent is string primaryUserAgent)
+            {
+                ret.Add(new ChannelOption(PrimaryUserAgentString, primaryUserAgent));
+            }
+            foreach (var customOption in options.CustomOptions)
+            {
+                var channelOption = customOption.Type switch
+                {
+                    GrpcChannelOptions.CustomOption.OptionType.Integer => new ChannelOption(customOption.Name, customOption.IntegerValue),
+                    GrpcChannelOptions.CustomOption.OptionType.String => new ChannelOption(customOption.Name, customOption.StringValue),
+                    _ => throw new InvalidOperationException($"Unknown custom option type: {customOption.Type}")
+                };
+                ret.Add(channelOption);
+            }
+            return ret.AsReadOnly();
         }
     }
 }
