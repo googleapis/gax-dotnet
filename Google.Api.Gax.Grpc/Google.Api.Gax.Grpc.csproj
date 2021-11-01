@@ -20,5 +20,6 @@
     <PackageReference Include="Grpc.Auth" Version="[2.41.0, 3.0.0)" />
     <PackageReference Include="Google.Apis.Auth" Version="[1.55.0, 2.0.0)" />
     <PackageReference Include="Grpc.Core.Api" Version="[2.41.0, 3.0.0)" />
+    <PackageReference Include="Grpc.Net.Client" Version="[2.41.0, 3.0.0)"/>
   </ItemGroup>
 </Project>
