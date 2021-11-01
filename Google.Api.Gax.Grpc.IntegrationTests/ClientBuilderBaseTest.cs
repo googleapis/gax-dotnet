@@ -5,8 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.Gax.Grpc.GrpcCore;
-using Google.Apis.Auth.OAuth2;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
