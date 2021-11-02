@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
-    <PackageReference Include="Grpc.Core" Version="[2.38.0, 3.0.0)"/>
+    <PackageReference Include="Grpc.Core" Version="[2.38.0, 3.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
