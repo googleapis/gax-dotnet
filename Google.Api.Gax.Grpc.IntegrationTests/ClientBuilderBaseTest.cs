@@ -318,11 +318,10 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
-            public ChannelPool ChannelPool { get; } 
+            public ChannelPool ChannelPool { get; }
 
-            // The default options are private in ClientBuilderBase, but we can access them by getting the effective
-            // options if we don't apply any modifications.
-            public static GrpcChannelOptions DefaultOptions => new SampleClientBuilder().GetChannelOptions();
+            // The default options are protected in ClientBuilderBase, but we want to access them for testing.
+            public static new GrpcChannelOptions DefaultOptions => ClientBuilderBase<CallInvoker>.DefaultOptions;
 
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
