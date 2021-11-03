@@ -23,13 +23,7 @@ namespace Google.Api.Gax.Grpc.Gcp
     {
         private static int clientChannelIdCounter;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string ApiConfigChannelArg = "grpc_gcp.api_config";
         private const string ClientChannelId = "grpc_gcp.client_channel.id";
-        private const int DefaultChannelPoolSize = 10;
-        private const int DefaultMaxCurrentStreams = 100;
 
         // Lock to protect the channel reference collections, as they're not thread-safe.
         private readonly object _thisLock = new object();

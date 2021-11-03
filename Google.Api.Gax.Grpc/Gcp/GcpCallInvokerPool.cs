@@ -70,13 +70,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// already associated with <paramref name="endpoint"/> and <paramref name="options"/>.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <param name="options">
-        /// The options to use for each channel created by the call invoker, possibly including the special
-        /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
-        /// control the <see cref="GcpCallInvoker"/> behavior itself.
-        /// </param>
-        /// <param name="adapter"></param>
-        /// <param name="apiConfig"></param>
+        /// <param name="options">The options to use for each channel created by the call invoker.</param>
+        /// <param name="apiConfig">The API configuration used to determine channel keys.</param>
+        /// <param name="adapter">The gRPC adapter to use to create call invokers.</param>
         /// <returns>A call invoker for the specified endpoint.</returns>
         public CallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
@@ -92,13 +88,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// already associated with <paramref name="endpoint"/> and <paramref name="options"/>.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <param name="options">
-        /// The options to use for each channel created by the call invoker, possibly including the special
-        /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
-        /// control the <see cref="GcpCallInvoker"/> behavior itself.
-        /// </param>
-        /// <param name="adapter"></param>
-        /// <param name="apiConfig"></param>
+        /// <param name="options">The options to use for each channel created by the call invoker</param>
+        /// <param name="apiConfig">The API configuration used to determine channel keys.</param>
+        /// <param name="adapter">The gRPC adapter to use to create call invokers.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be a call invoker for the specified endpoint.</returns>
         public async Task<CallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
