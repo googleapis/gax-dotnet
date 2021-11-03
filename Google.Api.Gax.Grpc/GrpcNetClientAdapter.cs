@@ -46,14 +46,10 @@ namespace Google.Api.Gax.Grpc
                 throw new ArgumentException($"{nameof(options.EnableServiceConfigResolution)} is not currently supported in {nameof(GrpcNetClientAdapter)}");
             }
 
-            if (options.CustomOptions.Count > 0)
-            {
-                throw new ArgumentException($"Custom options are not currently supported in {nameof(GrpcNetClientAdapter)}");
-            }
-
             // Options we ignore:
             // - PrimaryUserAgent
             // - KeepAliveTime
+            // - Custom options
 
             return new global::Grpc.Net.Client.GrpcChannelOptions
             {
