@@ -22,10 +22,11 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void ConvertOptions_CustomOptions_Throws()
+        public void ConvertOptions_CustomOptions_Ignored()
         {
             var gaxOptions = GrpcChannelOptions.Empty.WithCustomOption("foo", "bar");
-            Assert.Throws<ArgumentException>(() => GrpcNetClientAdapter.ConvertOptions(ChannelCredentials.Insecure, gaxOptions));
+            var result = GrpcNetClientAdapter.ConvertOptions(ChannelCredentials.Insecure, gaxOptions);
+            Assert.Same(ChannelCredentials.Insecure, result.Credentials);
         }
 
         [Fact]
