@@ -22,7 +22,10 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
-        private static readonly GrpcChannelOptions s_defaultOptions = GrpcChannelOptions.Empty
+        /// <summary>
+        /// The default gRPC options.
+        /// </summary>
+        protected static GrpcChannelOptions DefaultOptions { get; } = GrpcChannelOptions.Empty
             .WithKeepAliveTime(TimeSpan.FromMinutes(1))
             .WithEnableServiceConfigResolution(false)
             .WithMaxReceiveMessageSize(int.MaxValue);
@@ -440,8 +443,8 @@ namespace Google.Api.Gax.Grpc
         protected virtual GrpcChannelOptions GetChannelOptions()
         {
             var defaultOptions = UserAgent == null
-                ? s_defaultOptions
-                : s_defaultOptions.WithPrimaryUserAgent(UserAgent);
+                ? DefaultOptions
+                : DefaultOptions.WithPrimaryUserAgent(UserAgent);
             // While we could use the "CustomChannelOptions ?? GrpcChannelOptions.Empty"
             // and merge unconditionally, there's no point in creating a new object
             // if we have no options.
