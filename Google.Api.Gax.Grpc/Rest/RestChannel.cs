@@ -9,7 +9,6 @@ using Google.Protobuf;
 using Grpc.Core;
 using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -186,45 +185,21 @@ namespace Google.Api.Gax.Grpc.Rest
 
             internal Status GetStatus()
             {
-                var httpStatus = (int) OriginalResponseMessage.StatusCode;
-                var grpcStatus = (httpStatus / 100) switch
-                {
-                    // All 2xx responses map to OK
-                    2 => StatusCode.OK,
-
-                    // 4xx defaults to FailedPrecondition, with specific exceptions
-                    4 => httpStatus switch
-                    {
-                        400 => StatusCode.InvalidArgument,
-                        401 => StatusCode.Unauthenticated,
-                        403 => StatusCode.PermissionDenied,
-                        404 => StatusCode.NotFound,
-                        409 => StatusCode.Aborted,
-                        416 => StatusCode.OutOfRange,
-                        429 => StatusCode.ResourceExhausted,
-                        499 => StatusCode.Cancelled,
-                        _ => StatusCode.FailedPrecondition,
-                    },
-
-                    // 5xx defaults to Internal, with specific exceptions
-                    5 => httpStatus switch
-                    {
-                        501 => StatusCode.Unimplemented,
-                        503 => StatusCode.Unavailable,
-                        504 => StatusCode.DeadlineExceeded,
-                        _ => StatusCode.Internal
-                    },
-
-                    // Anything else (including all 1xx and 3xx) maps to Unknown
-                    _ => StatusCode.Unknown
-                };
-
+                // Note: we need this conditionality because it uses a public part of REGAPIC, and all public aspects
+                // are currently conditional. It's fine to throw if we're not in a REGAPIC-inclusive version, because
+                // this internal code will never be reached. It's only present to avoid having to make *everything*
+                // in REGAPIC conditional, which would be relatively annoying.
+#if REGAPIC
+                var grpcStatus = RestGrpcAdapter.ConvertHttpStatusCode((int) OriginalResponseMessage.StatusCode);
                 return new Status(grpcStatus,
                     // Notice that here, if there was an exception reading the content
                     // we'll bubble it up. This is similar to what's done if there's an
                     // exception while sending the request, and if there's an exception
                     // reading the content for TResponse.
                     grpcStatus == StatusCode.OK ? "" : Content);
+#else
+                throw new NotImplementedException();
+#endif
             }
 
             internal Metadata GetTrailers() => new Metadata(); // We never have any trailers.
