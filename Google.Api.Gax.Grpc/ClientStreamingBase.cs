@@ -15,7 +15,7 @@ namespace Google.Api.Gax.Grpc
     /// Base class for the client-side streaming RPC methods.
     /// </summary>
     /// <typeparam name="TRequest">RPC request type</typeparam>
-    /// <typeparam name="TResponse">[TODO(virost)]</typeparam>
+    /// <typeparam name="TResponse">RPC response type</typeparam>
     public abstract class ClientStreamingBase<TRequest, TResponse>
     {
         /// <summary>
@@ -101,5 +101,12 @@ namespace Google.Api.Gax.Grpc
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Asyncronous call result
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation. The result of the completed task
+        /// will be the RPC response.</returns>
+        public Task<TResponse> ResponseAsync => GrpcCall.ResponseAsync;
     }
 }
