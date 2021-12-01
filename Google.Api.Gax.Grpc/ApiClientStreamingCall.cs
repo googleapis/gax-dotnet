@@ -16,13 +16,13 @@ namespace Google.Api.Gax.Grpc
             Func<CallOptions, AsyncClientStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings baseCallSettings,
             ClientStreamingSettings streamingSettings,
-            IClock clock
-        ) => new(
-            cs => grpcCall(cs.ValidateNoRetry().ToCallOptions(clock)),
-            baseCallSettings,
-            streamingSettings
-        );
-
+            IClock clock)
+        {
+            return new ApiClientStreamingCall<TRequest, TResponse>(
+                cs => grpcCall(cs.ValidateNoRetry().ToCallOptions(clock)),
+                baseCallSettings,
+                streamingSettings);
+        }
     }
 
     /// <summary>
