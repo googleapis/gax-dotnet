@@ -58,6 +58,20 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
+        public void BuildClientStreamingApiCall_ClientSettings()
+        {
+            var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
+            var helper = new ClientHelper(new DummySettings
+            {
+                CallSettings = clientSettings
+            });
+            var server = new DummyServerClientStreaming();
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            apiCall.Call(null);
+            Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
+        }
+
+        [Fact]
         public void BuildApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
@@ -93,6 +107,18 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
+        public void BuildClientStreamingApiCall_PerMethodSettings()
+        {
+            var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
+            var helper = new ClientHelper(new DummySettings());
+            var server = new DummyServerClientStreaming();
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
+                server.Call, perMethodSettings, null);
+            apiCall.Call(null);
+            Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
+        }
+
+        [Fact]
         public void BuildApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
@@ -121,6 +147,17 @@ namespace Google.Api.Gax.Grpc.Tests
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new DummySettings());
             var server = new DummyServerBidiStreaming();
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            apiCall.Call(perCallSettings);
+            Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
+        }
+        
+        [Fact]
+        public void BuildClientStreamingApiCall_PerCallSettings()
+        {
+            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
+            var helper = new ClientHelper(new DummySettings());
+            var server = new DummyServerClientStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
             apiCall.Call(perCallSettings);
             Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
@@ -167,6 +204,17 @@ namespace Google.Api.Gax.Grpc.Tests
             public CallOptions CallOptions { get; private set; }
 
             internal AsyncDuplexStreamingCall<SimpleRequest, SimpleResponse> Call(CallOptions callOptions)
+            {
+                CallOptions = callOptions;
+                return null;
+            }
+        }
+
+        private class DummyServerClientStreaming
+        {
+            public CallOptions CallOptions { get; private set; }
+
+            internal AsyncClientStreamingCall<SimpleRequest, SimpleResponse> Call(CallOptions callOptions)
             {
                 CallOptions = callOptions;
                 return null;
