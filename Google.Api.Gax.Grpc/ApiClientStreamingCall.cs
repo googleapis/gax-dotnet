@@ -26,7 +26,8 @@ namespace Google.Api.Gax.Grpc
     }
 
     /// <summary>
-    /// 
+    /// Bridge between a client streaming RPC method and higher level
+    /// abstractions, applying call settings as required.
     /// </summary>
     /// <typeparam name="TRequest"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
@@ -45,12 +46,13 @@ namespace Google.Api.Gax.Grpc
         private readonly Func<CallSettings, AsyncClientStreamingCall<TRequest, TResponse>> _call;
 
         /// <summary>
-        /// 
+        /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
+        /// a <c>CallSettings</c> to <see cref="Call"/>.
         /// </summary>
         public CallSettings BaseCallSettings { get; }
 
         /// <summary>
-        /// 
+        /// Streaming settings.
         /// </summary>
         public ClientStreamingSettings StreamingSettings { get; }
 
@@ -59,7 +61,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="perCallCallSettings">The call settings to apply to this specific call,
         /// overriding defaults where necessary.</param>
-        /// <returns>A gRPC duplex streaming call object.</returns>
+        /// <returns>A gRPC client streaming call object.</returns>
         public AsyncClientStreamingCall<TRequest, TResponse> Call(CallSettings perCallCallSettings) =>
             _call(BaseCallSettings.MergedWith(perCallCallSettings).ValidateNoRetry());
 

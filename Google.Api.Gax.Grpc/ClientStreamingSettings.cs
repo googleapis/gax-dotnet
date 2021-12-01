@@ -9,12 +9,12 @@
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// 
+    /// Settings for client streaming.
     /// </summary>
     public sealed class ClientStreamingSettings
     {
         /// <summary>
-        /// 
+        /// Configure settings for client streaming.
         /// </summary>
         /// <param name="bufferedClientWriterCapacity"></param>
         public ClientStreamingSettings(int bufferedClientWriterCapacity)
@@ -23,7 +23,8 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// 
+        /// The capacity of the write buffer, that locally buffers streaming requests
+        /// before they are sent to the server.
         /// </summary>
         public int BufferedClientWriterCapacity { get; }
     }

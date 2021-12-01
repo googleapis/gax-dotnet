@@ -19,7 +19,11 @@ namespace Google.Api.Gax.Grpc
     public abstract class ClientStreamingBase<TRequest, TResponse>
     {
         /// <summary>
-        /// 
+        /// The underlying gRPC client streaming call.
+        /// Warning: DO NOT USE <c>GrpcCall.RequestStream</c> at all if using
+        /// <see cref="TryWriteAsync(TRequest)"/>, <see cref="WriteAsync(TRequest)"/>,
+        /// <see cref="TryWriteAsync(TRequest, WriteOptions)"/> , or <see cref="WriteAsync(TRequest, WriteOptions)"/>.
+        /// Doing so will cause conflict with the write-buffer used within the <c>[Try]WriteAsync</c> methods.
         /// </summary>
         public virtual AsyncClientStreamingCall<TRequest, TResponse> GrpcCall
         {
