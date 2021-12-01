@@ -25,10 +25,8 @@ namespace Google.Api.Gax.Grpc
         /// <see cref="TryWriteAsync(TRequest, WriteOptions)"/> , or <see cref="WriteAsync(TRequest, WriteOptions)"/>.
         /// Doing so will cause conflict with the write-buffer used within the <c>[Try]WriteAsync</c> methods.
         /// </summary>
-        public virtual AsyncClientStreamingCall<TRequest, TResponse> GrpcCall
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public virtual AsyncClientStreamingCall<TRequest, TResponse> GrpcCall =>
+            throw new NotImplementedException();
 
         // Streaming requests
 
@@ -39,10 +37,8 @@ namespace Google.Api.Gax.Grpc
         /// <param name="message">The message to write.</param>
         /// <returns><c>null</c> if the message queue is full or the stream has already been completed;
         /// otherwise, a <see cref="Task"/> which will complete when the message has been written to the stream.</returns>
-        public virtual Task TryWriteAsync(TRequest message)
-        {
+        public virtual Task TryWriteAsync(TRequest message) =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
@@ -52,10 +48,8 @@ namespace Google.Api.Gax.Grpc
         /// <exception cref="InvalidOperationException">There isn't enough space left in the buffer,
         /// or <see cref="WriteCompleteAsync"/> has already been called.</exception>
         /// <returns>A <see cref="Task"/> which will complete when the message has been written to the stream.</returns>
-        public virtual Task WriteAsync(TRequest message)
-        {
+        public virtual Task WriteAsync(TRequest message) =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
@@ -64,10 +58,8 @@ namespace Google.Api.Gax.Grpc
         /// <param name="message">The message to write.</param>
         /// <param name="options">The write options to use for this message.</param>
         /// <returns><c>null</c> if the message queue is full or the stream has already been completed.</returns>
-        public virtual Task TryWriteAsync(TRequest message, WriteOptions options)
-        {
+        public virtual Task TryWriteAsync(TRequest message, WriteOptions options) =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Writes a message to the stream, if there is enough space in the buffer and <see cref="WriteCompleteAsync"/>
@@ -78,10 +70,8 @@ namespace Google.Api.Gax.Grpc
         /// <exception cref="InvalidOperationException">There isn't enough space left in the buffer,
         /// or <see cref="WriteCompleteAsync"/> has already been called.</exception>
         /// <returns>A <see cref="Task"/> which will complete when the message has been written to the stream.</returns>
-        public virtual Task WriteAsync(TRequest message, WriteOptions options)
-        {
+        public virtual Task WriteAsync(TRequest message, WriteOptions options) =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Completes the stream when all buffered messages have been sent.
@@ -90,10 +80,8 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed;
         /// or <c>null</c> if this method has already been called.</returns>
-        public virtual Task TryWriteCompleteAsync()
-        {
+        public virtual Task TryWriteCompleteAsync() =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Completes the stream when all buffered messages have been sent. This method can only be called
@@ -101,13 +89,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
-        public virtual Task WriteCompleteAsync()
-        {
+        public virtual Task WriteCompleteAsync() =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
-        /// Asyncronous call result
+        /// Asyncronous call result. This task will only complete after
+        /// <see cref="WriteCompleteAsync"/> has already been called.
         /// </summary>
         /// <returns>A task representing the asynchronous operation. The result of the completed task
         /// will be the RPC response.</returns>
