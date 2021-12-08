@@ -51,8 +51,8 @@ namespace Google.Api.Gax.Grpc.Rest
                 {
                     // `startIndex: 1` for `{`; `endOfName - 1` for `=`
                     boundFieldPath = match.Value.Substring(1, endOfName - 1);
-                    // `endOfName + 1` for `=`; `boundFieldPath.Length - 3` for `={}`
-                    boundFieldPattern = match.Value.Substring(endOfName+1, match.Value.Length - boundFieldPath.Length - 3);
+                    // `endOfName + 1` for `=`; `match.Value.Length - 3` for `={}`
+                    boundFieldPattern = match.Value.Substring(endOfName+1, match.Value.Length - 3 - boundFieldPath.Length);
                 }
 
                 segments.Add(HttpRulePathPatternSegment.CreateFromBoundField(boundFieldPath, boundFieldPattern, requestDescriptor));
