@@ -29,7 +29,7 @@ namespace Google.Api.Gax.Grpc.Rest
             .AppendAssemblyVersion("gax", typeof(CallSettings))
             .AppendAssemblyVersion("rest", typeof(HttpClient))
             .ToString();
-
+ 
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;
         private readonly HttpClient _httpClient;
         private readonly RestServiceCollection _serviceCollection;
@@ -59,7 +59,12 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            var cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            if (options.Deadline.HasValue)
+            {
+                var timeout = (int) Math.Floor((options.Deadline.Value - DateTime.Now).TotalMilliseconds);
+                cancellationTokenSource = new CancellationTokenSource(timeout);
+            }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
             // TODO: Cancellation?
@@ -73,7 +78,6 @@ namespace Google.Api.Gax.Grpc.Rest
         private async Task<ReadHttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
-            // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
             var httpRequest = restMethod.CreateRequest((IMessage) request, host);
             foreach (var headerKeyValue in options.Headers
                 .Where(mh => !mh.IsBinary)
@@ -83,11 +87,14 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            // TODO: How do we cancel this?
-            await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
+            var addAuthHeadersTask = AddAuthHeadersAsync(httpRequest, restMethod);
+            var delayTask = Task.Delay(-1, cancellationToken);
+            if (delayTask == await Task.WhenAny(new[] {addAuthHeadersTask, delayTask}).ConfigureAwait(false))
+            {
+                throw new InvalidOperationException("Timeout was reached when waiting for auth headers to be added.");
+            }
 
             var httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
-
             try
             {
                 string content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
