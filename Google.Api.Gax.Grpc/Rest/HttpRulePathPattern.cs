@@ -41,14 +41,21 @@ namespace Google.Api.Gax.Grpc.Rest
                     string literal = pattern.Substring(lastEnd, start - lastEnd);
                     segments.Add(HttpRulePathPatternSegment.CreateFromLiteral(literal));
                 }
+
+                // `startIndex: 1` for `{`; `match.Value.Length - 2` for `{}`
+                string boundFieldPath = match.Value.Substring(1, match.Value.Length - 2);
+                string boundFieldPattern = "";
+
                 int endOfName = match.Value.IndexOf('=');
-                if (endOfName == -1)
+                if (endOfName != -1)
                 {
-                    // If we don't have an '=', just go as far as the closing brace.
-                    endOfName = match.Value.Length - 1;
+                    // `startIndex: 1` for `{`; `endOfName - 1` for `=`
+                    boundFieldPath = match.Value.Substring(1, endOfName - 1);
+                    // `endOfName + 1` for `=`; `boundFieldPath.Length - 3` for `={}`
+                    boundFieldPattern = match.Value.Substring(endOfName+1, match.Value.Length - boundFieldPath.Length - 3);
                 }
-                string boundFieldPath = match.Value.Substring(1, endOfName - 1);
-                segments.Add(HttpRulePathPatternSegment.CreateFromBoundField(boundFieldPath, requestDescriptor));
+
+                segments.Add(HttpRulePathPatternSegment.CreateFromBoundField(boundFieldPath, boundFieldPattern, requestDescriptor));
                 lastEnd = match.Index + match.Length;
             }
             if (lastEnd != pattern.Length)
@@ -59,7 +66,6 @@ namespace Google.Api.Gax.Grpc.Rest
             return new HttpRulePathPattern(segments);
         }
 
-        // TODO: do we need to perform URL encoding of anything?
         internal string Format(IMessage message) => string.Join("", _segments.Select(segment => segment.Format(message)));
 
         /// <summary>
@@ -103,15 +109,26 @@ namespace Google.Api.Gax.Grpc.Rest
             /// Creates a new path pattern segment from a path segment with the bound field, e.g. `{resource.id}` in `v1/resources/{resource.id}`
             /// </summary>
             /// <param name="propertyPath">A </param>
+            /// <param name="boundFieldPattern"></param>
             /// <param name="descriptor"></param>
             /// <returns></returns>
-            internal static HttpRulePathPatternSegment CreateFromBoundField(string propertyPath, MessageDescriptor descriptor)
+            internal static HttpRulePathPatternSegment CreateFromBoundField(string propertyPath,
+                string boundFieldPattern, MessageDescriptor descriptor)
             {
                 int periodIndex = propertyPath.IndexOf('.');
                 bool singleFieldPath = periodIndex == -1;
                 string fieldName = singleFieldPath  ? propertyPath : propertyPath.Substring(0, periodIndex);
 
-                return new HttpRulePathPatternSegment(fieldName, CreatePropertyAccessor(descriptor, propertyPath));
+                var propertyAccessor = CreatePropertyAccessor(descriptor, propertyPath);
+
+                // Per `google/api/http.proto`, if the pattern has  multiple path segments, such as `"{var=foo/*}"`,
+                // the `/` symbol should not be encoded, otherwise it should.
+                //TODO: [virost, 2021-12] Match pattern on the bound field, in addition to selecting the encoding
+                Func<string, string> escape = boundFieldPattern.Contains("/")
+                    ? value => string.Join("/", value.Split('/').Select(Uri.EscapeDataString))
+                    : Uri.EscapeDataString;
+
+                return new HttpRulePathPatternSegment(fieldName, msg => escape(propertyAccessor(msg)));
             }
 
             private static Func<IMessage, string> CreatePropertyAccessor(MessageDescriptor descriptor, string propertyPath)
