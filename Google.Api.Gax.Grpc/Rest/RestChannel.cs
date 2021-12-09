@@ -68,7 +68,6 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
-            // TODO: Cancellation?
             var responseTask = restMethod.ReadResponseAsync<TResponse>(httpResponseTask);
             var responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(httpResponseTask);
@@ -88,8 +87,12 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            // TODO: Cancellation?
-            await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
+            var addAuthHeadersTask = AddAuthHeadersAsync(httpRequest, restMethod);
+            var delayTask = Task.Delay(-1, cancellationToken);
+            if (delayTask == await Task.WhenAny(addAuthHeadersTask, delayTask).ConfigureAwait(false))
+            {
+                throw new InvalidOperationException("Timeout was reached when waiting for auth headers to be added for a method {restMethod.FullName}.");
+            }
 
             HttpResponseMessage httpResponseMessage;
             try
