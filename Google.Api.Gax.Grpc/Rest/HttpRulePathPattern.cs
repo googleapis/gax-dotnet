@@ -123,7 +123,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
                 // Per `google/api/http.proto`, if the pattern has  multiple path segments, such as `"{var=foo/*}"`,
                 // the `/` symbol should not be encoded, otherwise it should.
-                //TODO: [virost, 2021-12] Match pattern on the bound field, in addition to selecting the encoding
+                //TODO: [virost, 2021-12] Match pattern on the bound field, in addition to selecting the escape function
                 Func<string, string> escape = boundFieldPattern.Contains("/")
                     ? value => string.Join("/", value.Split('/').Select(segment => Uri.EscapeDataString(segment)))
                     : Uri.EscapeDataString;
