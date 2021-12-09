@@ -102,7 +102,7 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             catch(TaskCanceledException ex)
             {
-                throw new InvalidOperationException($"The timeout was reached when calling a method {restMethod.FullName}", ex);
+                throw new InvalidOperationException($"Timeout was reached when calling a method {restMethod.FullName}", ex);
             }
 
             try
