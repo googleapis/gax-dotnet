@@ -29,6 +29,7 @@ namespace Google.Api.Gax.Grpc.Rest
             .AppendAssemblyVersion("gax", typeof(CallSettings))
             .AppendAssemblyVersion("rest", typeof(HttpClient))
             .ToString();
+
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;
         private readonly HttpClient _httpClient;
         private readonly RestServiceCollection _serviceCollection;
@@ -61,8 +62,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var cancellationTokenSource = new CancellationTokenSource();
             if (options.Deadline.HasValue)
             {
-                var timeout = (int) Math.Floor((options.Deadline.Value - DateTime.UtcNow).TotalMilliseconds);
-                cancellationTokenSource = new CancellationTokenSource(Math.Max(timeout, 1));
+                cancellationTokenSource = new CancellationTokenSource(options.Deadline.Value - DateTime.UtcNow);
             }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
@@ -86,9 +86,9 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
+            // TODO: Cancellation?
             await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
 
-            
             HttpResponseMessage httpResponseMessage;
             try
             {
