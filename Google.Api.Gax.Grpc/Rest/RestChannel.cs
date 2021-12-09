@@ -29,7 +29,6 @@ namespace Google.Api.Gax.Grpc.Rest
             .AppendAssemblyVersion("gax", typeof(CallSettings))
             .AppendAssemblyVersion("rest", typeof(HttpClient))
             .ToString();
- 
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;
         private readonly HttpClient _httpClient;
         private readonly RestServiceCollection _serviceCollection;
@@ -59,11 +58,11 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var cancellationTokenSource = new CancellationTokenSource();
             if (options.Deadline.HasValue)
             {
-                var timeout = (int) Math.Floor((options.Deadline.Value - DateTime.Now).TotalMilliseconds);
-                cancellationTokenSource = new CancellationTokenSource(timeout);
+                var timeout = (int) Math.Floor((options.Deadline.Value - DateTime.UtcNow).TotalMilliseconds);
+                cancellationTokenSource = new CancellationTokenSource(Math.Max(timeout, 1));
             }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
@@ -87,14 +86,25 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            var addAuthHeadersTask = AddAuthHeadersAsync(httpRequest, restMethod);
-            var delayTask = Task.Delay(-1, cancellationToken);
-            if (delayTask == await Task.WhenAny(new[] {addAuthHeadersTask, delayTask}).ConfigureAwait(false))
+            await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
+
+            
+            HttpResponseMessage httpResponseMessage;
+            try
             {
-                throw new InvalidOperationException("Timeout was reached when waiting for auth headers to be added.");
+                httpResponseMessage = await _httpClient.SendAsync(httpRequest,
+                    HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
+            }
+            catch(OperationCanceledException ex)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new InvalidOperationException($"The timeout was reached when calling a method {restMethod.FullName}", ex);
+                }
+
+                throw;
             }
 
-            var httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
             try
             {
                 string content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -196,7 +206,6 @@ namespace Google.Api.Gax.Grpc.Rest
                 // are currently conditional. It's fine to throw if we're not in a REGAPIC-inclusive version, because
                 // this internal code will never be reached. It's only present to avoid having to make *everything*
                 // in REGAPIC conditional, which would be relatively annoying.
-#if REGAPIC
                 var grpcStatus = RestGrpcAdapter.ConvertHttpStatusCode((int) OriginalResponseMessage.StatusCode);
                 return new Status(grpcStatus,
                     // Notice that here, if there was an exception reading the content
@@ -204,9 +213,6 @@ namespace Google.Api.Gax.Grpc.Rest
                     // exception while sending the request, and if there's an exception
                     // reading the content for TResponse.
                     grpcStatus == StatusCode.OK ? "" : Content);
-#else
-                throw new NotImplementedException();
-#endif
             }
 
             internal Metadata GetTrailers() => new Metadata(); // We never have any trailers.
