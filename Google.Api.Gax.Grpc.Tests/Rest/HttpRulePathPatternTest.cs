@@ -20,7 +20,7 @@ namespace Google.Api.Gax.Grpc.GrpcRest.Tests
             { "combined/{x}-{y}/end", new RuleTestRequest { X = "xx", Y = "yy" }, "combined/xx-yy/end" },
             { "pattern/{x}", new RuleTestRequest { X = "abc/def" }, "pattern/abc%2Fdef" },
             { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/def" }, "pattern/abc/def" },
-            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/San José" }, "pattern/abc/San%20Jos%C3%A9" },
+            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/San Jose" }, "pattern/abc/San%20Jose" },
             { "pattern/{x=abc/**}", new RuleTestRequest { X = "abc/def/ghi" }, "pattern/abc/def/ghi" },
             { "nested/{nested.a}", new RuleTestRequest { Nested = new RuleTestRequest.Types.Nested { A = "aaa" } }, "nested/aaa" },
             // The segment resolves to an empty string instead of failing
