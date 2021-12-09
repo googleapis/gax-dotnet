@@ -42,9 +42,11 @@ namespace Google.Api.Gax.Grpc.Rest
             // Reuse a single CallInvoker however many times CreateCallInvoker is called.
             _callInvoker = new RestCallInvoker(this);
             // TODO: Handle endpoints better...
+            var baseAddress = new Uri($"https://{endpoint}");
 
             // TODO: Avoid creating an HTTP Client for every channel?
-            _httpClient = new HttpClient { BaseAddress = new Uri($"https://{endpoint}") };
+            _httpClient = new HttpClient { BaseAddress = baseAddress };
+            
             _channelAuthInterceptor = credentials.ToAsyncAuthInterceptor();
 
             // TODO: Use options where appropriate.
@@ -95,14 +97,9 @@ namespace Google.Api.Gax.Grpc.Rest
                 httpResponseMessage = await _httpClient.SendAsync(httpRequest,
                     HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
             }
-            catch(OperationCanceledException ex)
+            catch(TaskCanceledException ex)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new InvalidOperationException($"The timeout was reached when calling a method {restMethod.FullName}", ex);
-                }
-
-                throw;
+                throw new InvalidOperationException($"The timeout was reached when calling a method {restMethod.FullName}", ex);
             }
 
             try
