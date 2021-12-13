@@ -64,7 +64,13 @@ namespace Google.Api.Gax.Grpc.Rest
             var cancellationTokenSource = new CancellationTokenSource();
             if (options.Deadline.HasValue)
             {
-                cancellationTokenSource = new CancellationTokenSource(options.Deadline.Value - DateTime.UtcNow);
+                // TODO: [virost, 2021-12] Use IClock.
+                var delayInterval = options.Deadline.Value - DateTime.UtcNow;
+                if (delayInterval.TotalMilliseconds <= 0)
+                {
+                    throw new TimeoutException($"The timeout was reached when calling a method `{restMethod.FullName}`");
+                }
+                cancellationTokenSource = new CancellationTokenSource(delayInterval);
             }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
@@ -91,7 +97,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var delayTask = Task.Delay(-1, cancellationToken);
             if (delayTask == await Task.WhenAny(addAuthHeadersTask, delayTask).ConfigureAwait(false))
             {
-                throw new InvalidOperationException("Timeout was reached when waiting for auth headers to be added for a method {restMethod.FullName}.");
+                throw new TimeoutException($"Timeout was reached when waiting for auth headers to be added for a method `{restMethod.FullName}`.");
             }
 
             HttpResponseMessage httpResponseMessage;
@@ -102,7 +108,7 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             catch(TaskCanceledException ex)
             {
-                throw new InvalidOperationException($"Timeout was reached when calling a method {restMethod.FullName}", ex);
+                throw new TimeoutException($"The timeout was reached when calling a method `{restMethod.FullName}`", ex);
             }
 
             try
