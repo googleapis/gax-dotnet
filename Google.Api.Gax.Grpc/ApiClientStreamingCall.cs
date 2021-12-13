@@ -27,8 +27,8 @@ namespace Google.Api.Gax.Grpc
     /// Bridge between a client streaming RPC method and higher level
     /// abstractions, applying call settings as required.
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
-    /// <typeparam name="TResponse"></typeparam>
+    /// <typeparam name="TRequest">RPC request type</typeparam>
+    /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiClientStreamingCall<TRequest, TResponse>
     {
         internal ApiClientStreamingCall(

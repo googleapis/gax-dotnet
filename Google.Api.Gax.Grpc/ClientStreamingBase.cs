@@ -93,7 +93,7 @@ namespace Google.Api.Gax.Grpc
             throw new NotImplementedException();
 
         /// <summary>
-        /// Asyncronous call result. This task will only complete after
+        /// Asynchronous call result. This task will only complete after
         /// <see cref="WriteCompleteAsync"/> has already been called.
         /// </summary>
         /// <returns>A task representing the asynchronous operation. The result of the completed task

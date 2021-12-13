@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
