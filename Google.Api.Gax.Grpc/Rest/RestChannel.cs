@@ -93,23 +93,17 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            await AddAuthHeadersAsync(httpRequest, restMethod, options, deadlineToken).ConfigureAwait(false);
- 
             HttpResponseMessage httpResponseMessage;
             using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
             {
                 try
                 {
+                    await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
                     httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, linkedCts.Token).ConfigureAwait(false);
                 }
-                catch(TaskCanceledException)
+                catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
                 {
-                    if (deadlineToken.IsCancellationRequested)
-                    {
-                        throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`"));
-                    }
-
-                    throw;
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`",  ex));
                 }
             }
 
@@ -127,7 +121,7 @@ namespace Google.Api.Gax.Grpc.Rest
             }
         }
 
-        private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod restMethod, CallOptions options, CancellationToken deadlineToken)
+        private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod restMethod, CancellationToken combinedCancellationToken)
         {
             Uri hostUri = request.RequestUri.IsAbsoluteUri ? request.RequestUri : _httpClient.BaseAddress;
             string schemeAndAuthority = hostUri.GetLeftPart(UriPartial.Authority);
@@ -135,20 +129,25 @@ namespace Google.Api.Gax.Grpc.Rest
             var metadata = new Metadata();
             var context = new AuthInterceptorContext(schemeAndAuthority, restMethod.FullName);
 
-            var deadlineTask = Task.Delay(-1, deadlineToken);
-            var clientCancellationTask = Task.Delay(-1, options.CancellationToken);
+            var combinedCancellationTask = Task.Delay(-1, combinedCancellationToken);
             var channelTask = _channelAuthInterceptor(context, metadata);
-            var resultTask = await Task.WhenAny(channelTask, deadlineTask, clientCancellationTask).ConfigureAwait(false);
-            if (deadlineTask == resultTask)
+            var resultTask = await Task.WhenAny(channelTask, combinedCancellationTask).ConfigureAwait(false);
+            if (combinedCancellationTask == resultTask)
             {
-                throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"Timeout was reached when waiting for auth headers to be added for a method `{restMethod.FullName}`."));
+                throw new TaskCanceledException(
+                    $"The task was cancelled by the caller while waiting for the auth headers to be added for a method `{restMethod.FullName}`.");
             }
 
-            if (clientCancellationTask == resultTask)
+            if (channelTask.IsFaulted)
             {
-                throw new TaskCanceledException("The task was cancelled by the caller");
+                if (channelTask.Exception is object)
+                {
+                    throw channelTask.Exception;
+                }
+
+                throw new InvalidOperationException($"An unknown error has occurred when adding auth headers to a method `{restMethod.FullName}`.");
             }
-            
+
             foreach (var entry in metadata)
             {
                 request.Headers.Add(entry.Key, entry.Value);
