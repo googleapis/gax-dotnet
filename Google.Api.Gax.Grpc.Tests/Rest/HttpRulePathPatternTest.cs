@@ -18,7 +18,12 @@ namespace Google.Api.Gax.Grpc.GrpcRest.Tests
             { "x/y:custom", new RuleTestRequest(), "x/y:custom" },
             { "firstPart/{x}/secondPart/{y}", new RuleTestRequest { X = "x1", Y = "y2" }, "firstPart/x1/secondPart/y2" },
             { "combined/{x}-{y}/end", new RuleTestRequest { X = "xx", Y = "yy" }, "combined/xx-yy/end" },
+            { "pattern/{x}", new RuleTestRequest { X = "abc/def" }, "pattern/abc%2Fdef" },
             { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/def" }, "pattern/abc/def" },
+            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/New York" }, "pattern/abc/New%20York" },
+            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/abc/caf\u00e9" }, "pattern/abc/abc/caf%C3%A9" },
+            { "pattern/{x=abc/**}", new RuleTestRequest { X = "abc/def/ghi" }, "pattern/abc/def/ghi" },
+            { "pattern/{x=**}", new RuleTestRequest { X = "abc/New York" }, "pattern/abc/New%20York" },
             { "nested/{nested.a}", new RuleTestRequest { Nested = new RuleTestRequest.Types.Nested { A = "aaa" } }, "nested/aaa" },
             // The segment resolves to an empty string instead of failing
             { "nested/{nested.a}/end", new RuleTestRequest(), "nested//end" }
