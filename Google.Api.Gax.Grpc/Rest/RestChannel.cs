@@ -60,7 +60,7 @@ namespace Google.Api.Gax.Grpc.Rest
         internal AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
-            
+
             var cancellationTokenSource = new CancellationTokenSource();
             if (options.Deadline.HasValue)
             {
@@ -93,7 +93,7 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            await AddAuthHeadersAsync(httpRequest, restMethod, options, deadlineToken);
+            await AddAuthHeadersAsync(httpRequest, restMethod, options, deadlineToken).ConfigureAwait(false);
  
             HttpResponseMessage httpResponseMessage;
             using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
