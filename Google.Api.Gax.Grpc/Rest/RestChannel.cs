@@ -132,7 +132,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var combinedCancellationTask = Task.Delay(-1, combinedCancellationToken);
             var channelTask = _channelAuthInterceptor(context, metadata);
             var resultTask = await Task.WhenAny(channelTask, combinedCancellationTask).ConfigureAwait(false);
-            if (combinedCancellationTask == resultTask)
+            if (resultTask == combinedCancellationTask)
             {
                 throw new TaskCanceledException(
                     $"The task was cancelled by the caller while waiting for the auth headers to be added for a method `{restMethod.FullName}`.");
@@ -140,12 +140,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
             if (channelTask.IsFaulted)
             {
-                if (channelTask.Exception is object)
-                {
-                    throw channelTask.Exception;
-                }
-
-                throw new InvalidOperationException($"An unknown error has occurred when adding auth headers to a method `{restMethod.FullName}`.");
+                ExceptionDispatchInfo.Capture(channelTask.Exception).Throw();
             }
 
             foreach (var entry in metadata)
