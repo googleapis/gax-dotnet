@@ -136,7 +136,7 @@ namespace Google.Api.Gax.Grpc.Rest
             // If the combinedCancellationTask "wins" `Task.WhenAny` by being cancelled, the following await will throw TaskCancelledException.
             // If the channelTask "wins" by being faulted, the await will rethrow its exception.
             // Finally, if the channelTask completes, the await does nothing.
-            await resultTask;
+            await resultTask.ConfigureAwait(false);
             // If we're here, the channelTask has completed successfully.
            
             foreach (var entry in metadata)
