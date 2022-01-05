@@ -132,17 +132,13 @@ namespace Google.Api.Gax.Grpc.Rest
             var combinedCancellationTask = Task.Delay(-1, combinedCancellationToken);
             var channelTask = _channelAuthInterceptor(context, metadata);
             var resultTask = await Task.WhenAny(channelTask, combinedCancellationTask).ConfigureAwait(false);
-            if (resultTask == combinedCancellationTask)
-            {
-                throw new TaskCanceledException(
-                    $"The task was cancelled by the caller while waiting for the auth headers to be added for a method `{restMethod.FullName}`.");
-            }
 
-            if (channelTask.IsFaulted)
-            {
-                ExceptionDispatchInfo.Capture(channelTask.Exception).Throw();
-            }
-
+            // If the combinedCancellationTask "wins" `Task.WhenAny` by being cancelled, the following await will throw TaskCancelledException.
+            // If the channelTask "wins" by being faulted, the await will rethrow its exception.
+            // Finally, if the channelTask completes, the await does nothing.
+            await resultTask;
+            // If we're here, the channelTask has completed successfully.
+           
             foreach (var entry in metadata)
             {
                 request.Headers.Add(entry.Key, entry.Value);
