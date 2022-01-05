@@ -42,9 +42,11 @@ namespace Google.Api.Gax.Grpc.Rest
             // Reuse a single CallInvoker however many times CreateCallInvoker is called.
             _callInvoker = new RestCallInvoker(this);
             // TODO: Handle endpoints better...
+            var baseAddress = new Uri($"https://{endpoint}");
 
             // TODO: Avoid creating an HTTP Client for every channel?
-            _httpClient = new HttpClient { BaseAddress = new Uri($"https://{endpoint}") };
+            _httpClient = new HttpClient { BaseAddress = baseAddress };
+            
             _channelAuthInterceptor = credentials.ToAsyncAuthInterceptor();
 
             // TODO: Use options where appropriate.
@@ -60,9 +62,18 @@ namespace Google.Api.Gax.Grpc.Rest
             var restMethod = _serviceCollection.GetRestMethod(method);
 
             var cancellationTokenSource = new CancellationTokenSource();
+            if (options.Deadline.HasValue)
+            {
+                // TODO: [virost, 2021-12] Use IClock.
+                var delayInterval = options.Deadline.Value - DateTime.UtcNow;
+                if (delayInterval.TotalMilliseconds <= 0)
+                {
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`"));
+                }
+                cancellationTokenSource = new CancellationTokenSource(delayInterval);
+            }
             var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
-            // TODO: Cancellation?
             var responseTask = restMethod.ReadResponseAsync<TResponse>(httpResponseTask);
             var responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(httpResponseTask);
@@ -70,10 +81,9 @@ namespace Google.Api.Gax.Grpc.Rest
             return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
         }
 
-        private async Task<ReadHttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken cancellationToken)
+        private async Task<ReadHttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken deadlineToken)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
-            // TODO: Use options. How do we set the timeout for an individual HTTP request? We probably need to create a linked cancellation token.
             var httpRequest = restMethod.CreateRequest((IMessage) request, host);
             foreach (var headerKeyValue in options.Headers
                 .Where(mh => !mh.IsBinary)
@@ -83,10 +93,19 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            // TODO: How do we cancel this?
-            await AddAuthHeadersAsync(httpRequest, restMethod).ConfigureAwait(false);
-
-            var httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
+            HttpResponseMessage httpResponseMessage;
+            using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
+            {
+                try
+                {
+                    await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
+                    httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, linkedCts.Token).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
+                {
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`",  ex));
+                }
+            }
 
             try
             {
@@ -102,14 +121,24 @@ namespace Google.Api.Gax.Grpc.Rest
             }
         }
 
-        private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod method)
+        private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod restMethod, CancellationToken combinedCancellationToken)
         {
             Uri hostUri = request.RequestUri.IsAbsoluteUri ? request.RequestUri : _httpClient.BaseAddress;
             string schemeAndAuthority = hostUri.GetLeftPart(UriPartial.Authority);
 
             var metadata = new Metadata();
-            var context = new AuthInterceptorContext(schemeAndAuthority, method.FullName);
-            await _channelAuthInterceptor(context, metadata).ConfigureAwait(false);
+            var context = new AuthInterceptorContext(schemeAndAuthority, restMethod.FullName);
+
+            var combinedCancellationTask = Task.Delay(-1, combinedCancellationToken);
+            var channelTask = _channelAuthInterceptor(context, metadata);
+            var resultTask = await Task.WhenAny(channelTask, combinedCancellationTask).ConfigureAwait(false);
+
+            // If the combinedCancellationTask "wins" `Task.WhenAny` by being cancelled, the following await will throw TaskCancelledException.
+            // If the channelTask "wins" by being faulted, the await will rethrow its exception.
+            // Finally, if the channelTask completes, the await does nothing.
+            await resultTask.ConfigureAwait(false);
+            // If we're here, the channelTask has completed successfully.
+           
             foreach (var entry in metadata)
             {
                 request.Headers.Add(entry.Key, entry.Value);
