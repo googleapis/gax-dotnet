@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
 {
-#if REGAPIC
     /// <summary>
     /// Non-generic static class just for generic type inference, to make it easier to construct instances
     /// of <see cref="ForwardingCallInvoker{TSourceRequest, TSourceResponse, TTargetRequest, TTargetResponse}"/>.
@@ -47,7 +46,6 @@ namespace Google.Api.Gax.Grpc
             where TTargetResponse : class =>
             new ForwardingCallInvoker<TSourceRequest, TSourceResponse, TTargetRequest, TTargetResponse>(originalInvoker, sourceMethodFullName, targetMethod, requestConverter, responseConverter);
     }
-#endif
 
     /// <summary>
     /// A <see cref="CallInvoker"/> which forwards specific calls to an existing invoker,

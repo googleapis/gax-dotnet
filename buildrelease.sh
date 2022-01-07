@@ -33,12 +33,6 @@ git clone https://github.com/googleapis/gax-dotnet.git releasebuild -c core.auto
 cd releasebuild
 git checkout $commit
 
-# Automatically include the REGAPIC code for alpha/beta releases
-if grep -q '0-alpha' ReleaseVersion.xml || grep -q '0-beta' ReleaseVersion.xml
-then
-  export REGAPIC=true
-fi
-
 ./build.sh
 
 # Turn the multi-line output of git tag --points-at into space-separated list of projects
