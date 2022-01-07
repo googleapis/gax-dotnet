@@ -17,8 +17,8 @@
     <ProjectReference Include="..\Google.Api.CommonProtos\Google.Api.CommonProtos.csproj" />
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
 
-    <PackageReference Include="Grpc.Auth" Version="[2.38.0, 3.0.0)" />
-    <PackageReference Include="Google.Apis.Auth" Version="[1.53.0, 2.0.0)" />
-    <PackageReference Include="Grpc.Core.Api" Version="[2.38.0, 3.0.0)" />
+    <PackageReference Include="Grpc.Auth" Version="[2.41.0, 3.0.0)" />
+    <PackageReference Include="Google.Apis.Auth" Version="[1.55.0, 2.0.0)" />
+    <PackageReference Include="Grpc.Core.Api" Version="[2.41.0, 3.0.0)" />
   </ItemGroup>
 </Project>
