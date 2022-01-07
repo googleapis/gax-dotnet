@@ -214,11 +214,6 @@ namespace Google.Api.Gax.Grpc.Rest
 
             internal Status GetStatus()
             {
-                // Note: we need this conditionality because it uses a public part of REGAPIC, and all public aspects
-                // are currently conditional. It's fine to throw if we're not in a REGAPIC-inclusive version, because
-                // this internal code will never be reached. It's only present to avoid having to make *everything*
-                // in REGAPIC conditional, which would be relatively annoying.
-#if REGAPIC
                 var grpcStatus = RestGrpcAdapter.ConvertHttpStatusCode((int) OriginalResponseMessage.StatusCode);
                 return new Status(grpcStatus,
                     // Notice that here, if there was an exception reading the content
@@ -226,9 +221,6 @@ namespace Google.Api.Gax.Grpc.Rest
                     // exception while sending the request, and if there's an exception
                     // reading the content for TResponse.
                     grpcStatus == StatusCode.OK ? "" : Content);
-#else
-                throw new NotImplementedException();
-#endif
             }
 
             internal Metadata GetTrailers() => new Metadata(); // We never have any trailers.

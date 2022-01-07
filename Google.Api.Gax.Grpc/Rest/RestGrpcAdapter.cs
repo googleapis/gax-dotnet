@@ -4,7 +4,6 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
-#if REGAPIC
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System.Collections.Generic;
@@ -77,4 +76,3 @@ namespace Google.Api.Gax.Grpc.Rest
             };
     }
 }
-#endif
