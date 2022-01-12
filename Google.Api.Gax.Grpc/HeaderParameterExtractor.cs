@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Google.Api.Gax.Grpc
@@ -17,31 +19,34 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class HeaderParameterExtractor<TRequest>
     {
-        private readonly List<Regex> _regexes;
-        private readonly List<Func<TRequest, string>> _selectors;
+        private readonly IReadOnlyList<ParamExtraction> _extractions;
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="paramName"></param>
         /// <param name="regex"></param>
         /// <param name="selector"></param>
-        public HeaderParameterExtractor(Regex regex, Func<TRequest, string> selector)
+        public HeaderParameterExtractor(string paramName, Regex regex, Func<TRequest, string> selector)
         {
-            _regexes = new List<Regex> { regex };
-            _selectors = new List<Func<TRequest, string>> { selector };
+            _extractions = new List<ParamExtraction> { new ParamExtraction(paramName, regex, selector) };
+        }
+
+        private HeaderParameterExtractor(IEnumerable<ParamExtraction> extractions)
+        {
+            _extractions = new List<ParamExtraction>(extractions);
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="paramName"></param>
         /// <param name="regex"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public HeaderParameterExtractor<TRequest> Add(Regex regex, Func<TRequest, string> selector)
+        public HeaderParameterExtractor<TRequest> Add(string paramName, Regex regex, Func<TRequest, string> selector)
         {
-            _regexes.Add(regex);
-            _selectors.Add(selector);
-            return this;
+            return new HeaderParameterExtractor<TRequest>(_extractions.Concat(new[] { new ParamExtraction(paramName, regex, selector) }));
         }
 
         /// <summary>
@@ -49,20 +54,35 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public string Extract(TRequest request)
+        public Dictionary<string, string> Extract(TRequest request)
         {
-            foreach (var (extractionRegex, valueSelector) in _regexes.Zip(_selectors, (regex, func) => (regex, func))
-                .AsEnumerable().Reverse())
-            {
-                var value = valueSelector(request);
+            return _extractions.GroupBy(pe => pe.ParamName)
+                .ToDictionary(paramGroup => paramGroup.Key,
+                              paramGroup => paramGroup.Reverse()
+                                  .Select(pe => pe.Extract(request))
+                                  .FirstOrDefault(val => !string.IsNullOrEmpty(val)))
+                .Where(kvp => !string.IsNullOrEmpty(kvp.Value))
+                .ToDictionary(kvp=>kvp.Key, kvp => kvp.Value);
+        }
 
-                if (extractionRegex.IsMatch(value))
-                {
-                    return extractionRegex.Matches(value)[0].Value;
-                }
+        private class ParamExtraction
+        {
+            public string ParamName { get; }
+            private readonly Regex _regex;
+            private readonly Func<TRequest, string> _selector;
+
+            public ParamExtraction(string paramName, Regex regex, Func<TRequest, string> selector)
+            {
+                ParamName = paramName;
+                _regex = regex;
+                _selector = selector;
             }
 
-            return null;
+            public string Extract(TRequest request)
+            {
+                var match = _regex.Match(_selector(request) ?? "");
+                return match.Success ? match.Groups[1].Value : null;
+            }
         }
     }
 }

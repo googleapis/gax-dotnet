@@ -9,6 +9,8 @@ using Google.Api.Gax.Testing;
 using Grpc.Core;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -270,6 +272,26 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(1, metadata.Count);
             Assert.Equal(expectedHeaderName, metadata[0].Key);
             Assert.Equal(expectedHeaderValue, metadata[0].Value);
+        }
+
+        internal static void AssertRoutingHeader(CallSettings callSettings, string expectedHeaderValue)
+        {
+            if (string.IsNullOrEmpty(expectedHeaderValue))
+            {
+                Assert.Null(callSettings);
+            }
+            else
+            {
+                var metadata = new Metadata();
+                callSettings.HeaderMutation(metadata);
+                Assert.Equal(1, metadata.Count);
+                Assert.Equal(CallSettings.RequestParamsHeader, metadata[0].Key);
+                var escapedExpected = string.Join("&",
+                    expectedHeaderValue.Split('&')
+                        .Select(pair => $"{pair.Split('=')[0]}={Uri.EscapeDataString(pair.Split('=')[1])}")); 
+
+                Assert.Equal(escapedExpected, metadata[0].Value);
+            }
         }
     }
 }

@@ -7,6 +7,8 @@
 
 using Grpc.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc
@@ -324,6 +326,14 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A CallSettings which applies the appropriate parameter.</returns>
         internal static CallSettings FromGoogleRequestParamsHeader(string parameterName, string value) =>
             FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="paramNameValues"></param>
+        /// <returns></returns>
+        internal static CallSettings FromGoogleRequestParamsHeader(Dictionary<string, string> paramNameValues) =>
+            FromHeader(RequestParamsHeader, string.Join("&", paramNameValues.Select(nameVal => nameVal.Key + "=" + Uri.EscapeDataString(nameVal.Value ?? ""))));
 
         /// <summary>
         /// Creates a CallSettings which applies an x-goog-request-reason header with the specified reason.

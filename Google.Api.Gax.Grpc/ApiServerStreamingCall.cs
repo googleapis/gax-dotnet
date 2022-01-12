@@ -7,6 +7,7 @@
 
 using Grpc.Core;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -112,27 +113,18 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parameterName"></param>
-        /// <param name="extractionRegex"></param>
-        /// <param name="valueSelector"></param>
-        /// <returns></returns>
-        public ApiServerStreamingCall<TRequest, TResponse> WithExtractedGoogleRequestParam(string parameterName, Regex extractionRegex, Func<TRequest, string> valueSelector) =>
-            WithExtractedGoogleRequestParam(parameterName, new HeaderParameterExtractor<TRequest>(extractionRegex, valueSelector));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parameterName"></param>
         /// <param name="extractor"></param>
         /// <returns></returns>
-        public ApiServerStreamingCall<TRequest, TResponse> WithExtractedGoogleRequestParam(string parameterName, HeaderParameterExtractor<TRequest> extractor)
+        public ApiServerStreamingCall<TRequest, TResponse> WithExtractedGoogleRequestParam(HeaderParameterExtractor<TRequest> extractor)
         {
+            GaxPreconditions.CheckNotNull(extractor, nameof(extractor));
+
             return WithCallSettingsOverlay(request =>
             {
-                var value = extractor.Extract(request);
+                var paramValues = extractor.Extract(request);
 
-                return !string.IsNullOrEmpty(value)
-                    ? CallSettings.FromGoogleRequestParamsHeader(parameterName, value)
+                return paramValues.Any()
+                    ? CallSettings.FromGoogleRequestParamsHeader(paramValues)
                     : null; // CallSettings.Merge handles null correctly.
             });
         }
