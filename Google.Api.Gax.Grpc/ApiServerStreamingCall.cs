@@ -7,6 +7,7 @@
 
 using Grpc.Core;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
@@ -106,6 +107,34 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(parameterName, nameof(parameterName));
             GaxPreconditions.CheckNotNull(valueSelector, nameof(valueSelector));
             return WithCallSettingsOverlay(request => CallSettings.FromGoogleRequestParamsHeader(parameterName, valueSelector(request)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="extractionRegex"></param>
+        /// <param name="valueSelector"></param>
+        /// <returns></returns>
+        public ApiServerStreamingCall<TRequest, TResponse> WithExtractedGoogleRequestParam(string parameterName, Regex extractionRegex, Func<TRequest, string> valueSelector) =>
+            WithExtractedGoogleRequestParam(parameterName, new HeaderParameterExtractor<TRequest>(extractionRegex, valueSelector));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="extractor"></param>
+        /// <returns></returns>
+        public ApiServerStreamingCall<TRequest, TResponse> WithExtractedGoogleRequestParam(string parameterName, HeaderParameterExtractor<TRequest> extractor)
+        {
+            return WithCallSettingsOverlay(request =>
+            {
+                var value = extractor.Extract(request);
+
+                return !string.IsNullOrEmpty(value)
+                    ? CallSettings.FromGoogleRequestParamsHeader(parameterName, value)
+                    : null; // CallSettings.Merge handles null correctly.
+            });
         }
     }
 }
