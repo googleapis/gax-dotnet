@@ -137,8 +137,8 @@ namespace Google.Api.Gax.Grpc.Tests
             call1.Async(new SimpleRequest { Name = "test" }, null);
 
             var expectedHeader = "parent=test";
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -166,15 +166,16 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{table_name=regions/*/zones/*/**}" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>(headerName,
-                            new Regex("^(?<table_name>projects/[^/]+/instances/[^/]+(?:/.*)?)$"), request => request.TableName)
-                        .Add(headerName,
-                            new Regex("^(?<table_name>regions/[^/]+/zones/[^/]+(?:/.*)?)$"), request => request.TableName));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>()
+                        .WithParameter(headerName,
+                            "^(?<table_name>projects/[^/]+/instances/[^/]+(?:/.*)?)$", request => request.TableName)
+                        .WithParameter(headerName,
+                            "^(?<table_name>regions/[^/]+/zones/[^/]+(?:/.*)?)$", request => request.TableName));
             call1.Sync(new ExtractedRequestParamRequest { TableName = fieldValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = fieldValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -201,13 +202,13 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{routing_id=projects/*}/**" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>(headerName,
-                    new Regex("^(?<routing_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>().WithParameter(headerName,
+                    "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName));
             call1.Sync(new ExtractedRequestParamRequest { TableName = fieldValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = fieldValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -238,15 +239,15 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{routing_id=projects/*/instances/*}/**" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>(headerName,
-                            new Regex("^(?<routing_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add(headerName,
-                            new Regex("^(?<routing_id>projects/[^/]+/instances/[^/]+)(?:/.*)?$"), request => request.TableName));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>().WithParameter(headerName,
+                            "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter(headerName,
+                            "^(?<routing_id>projects/[^/]+/instances/[^/]+)(?:/.*)?$", request => request.TableName));
             call1.Sync(new ExtractedRequestParamRequest { TableName = fieldValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = fieldValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -272,15 +273,16 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "projects/*/{instance_id=instances/*}/**" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>("project_id",
-                        new Regex("^(?<project_id>projects/[^/]+)/instances/[^/]+(?:/.*)?$"), request => request.TableName)
-                        .Add("instance_id",
-                            new Regex("^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$"), request => request.TableName));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>()
+                        .WithParameter("project_id",
+                        "^(?<project_id>projects/[^/]+)/instances/[^/]+(?:/.*)?$", request => request.TableName)
+                        .WithParameter("instance_id",
+                            "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName));
             call1.Sync(new ExtractedRequestParamRequest { TableName = fieldValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = fieldValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -307,27 +309,28 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "projects/*/{instance_id=instances/*}/**" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>("project_id",
-                        new Regex("^(?<project_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add("instance_id",
-                            new Regex("^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$"), request => request.TableName));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>().WithParameter("project_id",
+                        "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter("instance_id",
+                            "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName));
             call1.Sync(new ExtractedRequestParamRequest { TableName = fieldValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = fieldValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
         /// Extracting multiple routing header key-value pairs by matching
         /// several path templates on multiple request fields.
+        /// Also tests the parameter names with the `.` and extracting values from a sub-request's field.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "project_id=projects/100&routing_id=profiles/profile_17")]
-        [InlineData("projects/100", "", "project_id=projects/100")]
-        [InlineData("projects/100", null, "project_id=projects/100")]
-        [InlineData(null, null, null)]
-        public void WithExtractedGoogleRequestParam_MultipleFields(string tableNameValue, string appProfileIdValue, string expectedHeader)
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects/100&legacy.routing_id=profiles/profile_17&sub_name=sub13")]
+        [InlineData("projects/100", "", "", "project_id=projects/100")]
+        [InlineData("projects/100", null, null, "project_id=projects/100")]
+        [InlineData(null, null, null, null)]
+        public void WithExtractedGoogleRequestParam_MultipleFields(string tableNameValue, string appProfileIdValue, string subName, string expectedHeader)
         {
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
@@ -338,18 +341,22 @@ namespace Google.Api.Gax.Grpc.Tests
 
             // call corresponding to the following routing parameters:
             // { field: "table_name", path_template: "{project_id=projects/*}/**" }
-            // { field: "app_profile_id", path_template: "{routing_id=**}" }
+            // { field: "sub_name", path_template: "subs/{sub.sub_name}" }
+            // { field: "app_profile_id", path_template: "{legacy.routing_id=**}" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>("project_id",
-                        new Regex("^(?<project_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add("routing_id",
-                            new Regex("^(?<routing_id>.*)$"), request => request.AppProfileId));
-            call1.Sync(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue}, null);
-            call1.Async(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue }, null);
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>()
+                        .WithParameter("project_id",
+                        "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter("sub_name",
+                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.SubName)
+                        .WithParameter("legacy.routing_id",
+                            "^(?<legacy_routing_id>.*)$", request => request.AppProfileId));
+            call1.Sync(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue, Sub = new ExtractedRequestParamRequest.SubRequest { SubName = subName } }, null);
+            call1.Async(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue, Sub = new ExtractedRequestParamRequest.SubRequest { SubName = subName } }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -375,17 +382,18 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "app_profile_id", path_template: "{routing_id=**}" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>("routing_id",
-                        new Regex("^(?<routing_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add("routing_id",
-                            new Regex("^(?<routing_id>regions/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add("routing_id",
-                            new Regex("^(?<routing_id>.*)$"), request => request.AppProfileId));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>()
+                        .WithParameter("routing_id",
+                        "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter("routing_id",
+                            "^(?<routing_id>regions/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter("routing_id",
+                            "^(?<routing_id>.*)$", request => request.AppProfileId));
             call1.Sync(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -412,27 +420,29 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "app_profile_id", path_template: "profiles/{routing_id=*}" }
             var call1 = call0
                 .WithExtractedGoogleRequestParam(
-                    new HeaderParameterExtractor<ExtractedRequestParamRequest>("table_location",
-                        new Regex("^projects/[^/]+/(?<table_location>instances/[^/]+)/tables/[^/]+/?$"), request => request.TableName)
-                        .Add("table_location",
-                            new Regex("^(?<table_location>regions/[^/]+/zones/[^/]+)/tables/[^/]+/?$"), request => request.TableName)
-                        .Add("routing_id",
-                            new Regex("^(?<routing_id>projects/[^/]+)(?:/.*)?$"), request => request.TableName)
-                        .Add("routing_id",
-                            new Regex("^(?<routing_id>.*)$"), request => request.AppProfileId)
-                        .Add("routing_id",
-                            new Regex("^profiles/(?<routing_id>[^/]+)/?$"), request => request.AppProfileId));
+                    new HeaderParameterExtractor<ExtractedRequestParamRequest>()
+                        .WithParameter("table_location",
+                        "^projects/[^/]+/(?<table_location>instances/[^/]+)/tables/[^/]+/?$", request => request.TableName)
+                        .WithParameter("table_location",
+                            "^(?<table_location>regions/[^/]+/zones/[^/]+)/tables/[^/]+/?$", request => request.TableName)
+                        .WithParameter("routing_id",
+                            "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithParameter("routing_id",
+                            "^(?<routing_id>.*)$", request => request.AppProfileId)
+                        .WithParameter("routing_id",
+                            "^profiles/(?<routing_id>[^/]+)/?$", request => request.AppProfileId));
             call1.Sync(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue}, null);
             call1.Async(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue }, null);
 
-            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
         }
 
         internal class ExtractedRequestParamRequest : IMessage<ExtractedRequestParamRequest>
         {
             public string TableName { get; set; }
             public string AppProfileId { get; set; }
+            public SubRequest Sub { get; set; }
             public void MergeFrom(ExtractedRequestParamRequest message) => throw new NotImplementedException();
             public void MergeFrom(CodedInputStream input) => throw new NotImplementedException();
             public void WriteTo(CodedOutputStream output) => throw new NotImplementedException();
@@ -440,6 +450,17 @@ namespace Google.Api.Gax.Grpc.Tests
             public MessageDescriptor Descriptor=> throw new NotImplementedException();
             public bool Equals(ExtractedRequestParamRequest other) => throw new NotImplementedException();
             public ExtractedRequestParamRequest Clone() => throw new NotImplementedException();
+            internal class SubRequest : IMessage<SubRequest>
+            {
+                public string SubName { get; set; }
+                public void MergeFrom(SubRequest message) => throw new NotImplementedException();
+                public void MergeFrom(CodedInputStream input) => throw new NotImplementedException();
+                public void WriteTo(CodedOutputStream output) => throw new NotImplementedException();
+                public int CalculateSize() => throw new NotImplementedException();
+                public MessageDescriptor Descriptor=> throw new NotImplementedException();
+                public bool Equals(SubRequest other) => throw new NotImplementedException();
+                public SubRequest Clone() => throw new NotImplementedException();
+            }
         }
     }
 }
