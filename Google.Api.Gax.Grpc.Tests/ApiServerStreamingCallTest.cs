@@ -119,15 +119,15 @@ namespace Google.Api.Gax.Grpc.Tests
                 .WithExtractedGoogleRequestParam(
                     new RoutingHeaderExtractor<ApiCallTest.ExtractedRequestParamRequest>()
                         .WithExtractedParameter("project_id",
-                        "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                            "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
                         .WithExtractedParameter("sub_name",
-                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.SubName)
+                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.TableName)
                         .WithExtractedParameter("legacy.routing_id",
                             "^(?<legacy_routing_id>.*)$", request => request.AppProfileId));
             var request = new ApiCallTest.ExtractedRequestParamRequest
             {
                 TableName = tableNameValue, AppProfileId = appProfileIdValue,
-                Sub = new ApiCallTest.ExtractedRequestParamRequest.SubRequest { SubName = subName }
+                Sub = new ApiCallTest.ExtractedRequestParamRequest { TableName = subName }
             };
 
             call1.Call(request, null);

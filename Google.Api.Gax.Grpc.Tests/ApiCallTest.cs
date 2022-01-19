@@ -8,10 +8,8 @@ using Google.Api.Gax.Grpc.Testing;
 using Google.Api.Gax.Testing;
 using Grpc.Core;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Xunit;
@@ -137,8 +135,8 @@ namespace Google.Api.Gax.Grpc.Tests
             call1.Async(new SimpleRequest { Name = "test" }, null);
 
             var expectedHeader = "parent=test";
-            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
         }
 
         /// <summary>
@@ -168,29 +166,29 @@ namespace Google.Api.Gax.Grpc.Tests
                 .WithExtractedGoogleRequestParam(
                     new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                         .WithExtractedParameter("project_id",
-                        "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                            "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
                         .WithExtractedParameter("sub_name",
-                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.SubName)
+                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.TableName)
                         .WithExtractedParameter("legacy.routing_id",
                             "^(?<legacy_routing_id>.*)$", request => request.AppProfileId));
             var request = new ExtractedRequestParamRequest
             {
                 TableName = tableNameValue, AppProfileId = appProfileIdValue,
-                Sub = new ExtractedRequestParamRequest.SubRequest { SubName = subName }
+                Sub = new ExtractedRequestParamRequest { TableName = subName }
             };
 
             call1.Sync(request, null);
             call1.Async(request, null);
 
-            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(syncCallSettings, expectedHeader);
-            CallSettingsTest.AssertRoutingHeaderIgnoringOrder(asyncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
         }
 
         internal class ExtractedRequestParamRequest : IMessage<ExtractedRequestParamRequest>
         {
             public string TableName { get; set; }
             public string AppProfileId { get; set; }
-            public SubRequest Sub { get; set; }
+            public ExtractedRequestParamRequest Sub { get; set; }
             public void MergeFrom(ExtractedRequestParamRequest message) => throw new NotImplementedException();
             public void MergeFrom(CodedInputStream input) => throw new NotImplementedException();
             public void WriteTo(CodedOutputStream output) => throw new NotImplementedException();
@@ -198,17 +196,6 @@ namespace Google.Api.Gax.Grpc.Tests
             public MessageDescriptor Descriptor=> throw new NotImplementedException();
             public bool Equals(ExtractedRequestParamRequest other) => throw new NotImplementedException();
             public ExtractedRequestParamRequest Clone() => throw new NotImplementedException();
-            internal class SubRequest : IMessage<SubRequest>
-            {
-                public string SubName { get; set; }
-                public void MergeFrom(SubRequest message) => throw new NotImplementedException();
-                public void MergeFrom(CodedInputStream input) => throw new NotImplementedException();
-                public void WriteTo(CodedOutputStream output) => throw new NotImplementedException();
-                public int CalculateSize() => throw new NotImplementedException();
-                public MessageDescriptor Descriptor=> throw new NotImplementedException();
-                public bool Equals(SubRequest other) => throw new NotImplementedException();
-                public SubRequest Clone() => throw new NotImplementedException();
-            }
         }
     }
 }

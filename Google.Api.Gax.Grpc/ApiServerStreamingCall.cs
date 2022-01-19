@@ -7,7 +7,6 @@
 
 using Grpc.Core;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
