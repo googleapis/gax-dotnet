@@ -274,7 +274,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(expectedHeaderValue, metadata[0].Value);
         }
 
-        internal static void AssertRoutingHeaderIgnoringOrder(CallSettings callSettings, string expectedHeaderValue)
+        internal static void AssertRoutingHeader(CallSettings callSettings, string expectedHeaderValue)
         {
             if (string.IsNullOrEmpty(expectedHeaderValue))
             {
@@ -287,18 +287,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 Assert.Equal(1, metadata.Count);
                 Assert.Equal(CallSettings.RequestParamsHeader, metadata[0].Key);
 
-                var expectedKeyValues = SplitToUnescapedKeyValues(expectedHeaderValue);
-                var metadataKeyValues = SplitToUnescapedKeyValues(metadata[0].Value);
-
-                Assert.Equal(expectedKeyValues, metadataKeyValues);
-
-                Dictionary<string, string> SplitToUnescapedKeyValues(string routingHeader)
-                {
-                    return routingHeader.Split('&')
-                        .Select(pairString =>
-                            new KeyValuePair<string, string>(pairString.Split('=')[0], Uri.UnescapeDataString(pairString.Split('=')[1])))
-                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                }
+                RoutingHeaderExtractorTest.AssertEqualEscaped(expectedHeaderValue, metadata[0].Value);
             }
         }
     }

@@ -328,12 +328,14 @@ namespace Google.Api.Gax.Grpc
             FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
 
         /// <summary>
-        /// 
+        /// Creates a CallSettings which applies an x-goog-request-params header with the specified
+        /// escaped header value.
         /// </summary>
-        /// <param name="paramNameValues"></param>
+        /// <param name="escapedHeaderValue">The value of the x-goog-request-params header.
+        /// Must be escaped. Must not be null or empty.</param>
         /// <returns></returns>
-        internal static CallSettings FromGoogleRequestParamsHeader(Dictionary<string, string> paramNameValues) =>
-            FromHeader(RequestParamsHeader, string.Join("&", paramNameValues.Select(nameVal => nameVal.Key + "=" + Uri.EscapeDataString(nameVal.Value ?? ""))));
+        internal static CallSettings FromGoogleRequestParamsHeader(string escapedHeaderValue) =>
+            FromHeader(RequestParamsHeader, GaxPreconditions.CheckNotNullOrEmpty(escapedHeaderValue, nameof(escapedHeaderValue)));
 
         /// <summary>
         /// Creates a CallSettings which applies an x-goog-request-reason header with the specified reason.
