@@ -284,8 +284,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 callSettings.HeaderMutation(metadata);
                 Assert.Equal(1, metadata.Count);
                 Assert.Equal(CallSettings.RequestParamsHeader, metadata[0].Key);
-
-                RoutingHeaderExtractorTest.AssertEqualEscaped(expectedHeaderValue, metadata[0].Value);
+                Assert.Equal(expectedHeaderValue, metadata[0].Value);
             }
         }
     }

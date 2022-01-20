@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Google.Api.Gax.Grpc
@@ -20,36 +21,52 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class RoutingHeaderExtractor<TRequest>
     {
-        private readonly IReadOnlyList<ParamExtraction> _extractions;
-        private readonly IReadOnlyDictionary<string, IEnumerable<ParamExtraction>> _groupings;
+        /// <summary>
+        /// The individual pattern extractors present in this extractor. These
+        /// are only present for chaining purposes while building up the full
+        /// extractor. (If we ever move to a builder pattern, we could remove these.)
+        /// These are retained in declaration order.
+        /// </summary>
+        private readonly IReadOnlyList<SinglePatternExtractor> _patternExtractors;
 
         /// <summary>
-        /// Create a new RoutingHeaderExtractor
+        /// The parameter extractors, created from <see cref="_patternExtractors"/>.
+        /// These are used at execution time to extract the values for parameters.
+        /// </summary>
+        private readonly IReadOnlyList<SingleParameterExtractor> _parameterExtractors;
+
+        /// <summary>
+        /// Create a new RoutingHeaderExtractor with no patterns. (This cannot be used
+        /// to extract headers; new instances must be created with <see cref="WithExtractedParameter"/>
+        /// which provides patterns to use to extract values.)
         /// </summary>
         public RoutingHeaderExtractor()
         {
-            _extractions = new List<ParamExtraction>();
+            _patternExtractors = new List<SinglePatternExtractor>();
         }
 
-        private RoutingHeaderExtractor(IEnumerable<ParamExtraction> extractions)
+        private RoutingHeaderExtractor(List<SinglePatternExtractor> patternExtractors)
         {
-            _extractions = new List<ParamExtraction>(extractions);
+            // Note: we rely on this constructor only being called by WithExtractedParameter, which
+            // constructs a new list. If we ever want to make this public, we'd probably
+            // change the parameter to IEnumerable<SinglePatternExtractor> and clone it
+            // in this constructor.
+            _patternExtractors = patternExtractors;
 
-            // It is important that we Reverse the parameters within the group.
-            // The extractions follow the `last successfully matched wins` rule for
-            // conflict resolution when there are multiple extractions for the same parameter name.
-            // (see `google/api/routing.proto` for further details)
-            // But we would prefer to stop evaluating on the first successfully matched extraction,
-            // thus the reverse.
-            _groupings = _extractions.GroupBy(pe => pe.ParamName)
-                .ToDictionary(paramGroup => paramGroup.Key, paramGroup => paramGroup.Reverse());
+            _parameterExtractors = patternExtractors
+                .GroupBy(pe => pe.ParameterName)
+                .Select(group => new SingleParameterExtractor(group))
+                .ToList();
         }
 
         /// <summary>
-        /// Adds a new header parameter extraction instruction.
-        /// The extractions follow the `last successfully matched wins` rule for
+        /// Returns a new instance with the same parameter extractors as this one, with an additional one specified as arguments.
+        /// The extractions follow the "last successfully matched wins" rule for
         /// conflict resolution when there are multiple extractions for the same parameter name.
-        /// (see `google/api/routing.proto` for further details)
+        /// (See `google/api/routing.proto` for further details.) If multiple parameters
+        /// with different names are present, the extracted header will contain them in the order
+        /// in which they have been added with this method, based on the first occurrence of
+        /// each parameter name.
         /// </summary>
         /// <param name="paramName">The name of the parameter in the routing header.</param>
         /// <param name="extractionRegexStr">The regular expression (in the string form) used to extract the value of the parameter.
@@ -66,56 +83,105 @@ namespace Google.Api.Gax.Grpc
             var extractionRegex = new Regex(extractionRegexStr);
 
             // All regexes have a capturing group named `0` that captures the whole regex
-            if (extractionRegex.GetGroupNames().Length != 2)
-            {
-                throw new ArgumentException("The regex used for the routing header extraction should have exactly one named capturing group.", nameof(extractionRegex));
-            }
+            GaxPreconditions.CheckArgument(
+                extractionRegex.GetGroupNames().Length == 2,
+                nameof(extractionRegex),
+                "The regex used for the routing header extraction should have exactly one named capturing group.");
 
-            return new RoutingHeaderExtractor<TRequest>(_extractions.Concat(new[] { new ParamExtraction(paramName, extractionRegex, selector) }));
+            var newExtractors = new List<SinglePatternExtractor>(_patternExtractors)
+            {
+                new SinglePatternExtractor(paramName, extractionRegex, selector)
+            };
+            return new RoutingHeaderExtractor<TRequest>(newExtractors);
         }
 
         /// <summary>
-        /// Extracts the dictionary of parameter names and values to add to the routing header.
+        /// Extracts the routing header value to apply based on a request.
         /// </summary>
         /// <param name="request">A request to extract the routing header parameters and values from</param>
-        /// <returns>The dictionary in the form `parameter name => parameter value` to add to the routing header</returns>
+        /// <returns>The value to use for the routing header. This may contain multiple &amp;-separated parameters.</returns>
         public string ExtractHeader(TRequest request)
         {
-            if (!_groupings.Any())
-            {
-                throw new InvalidOperationException(
-                    "Cannot extract routing header parameters with an empty list of extractions");
-            }
+            GaxPreconditions.CheckState(
+                _parameterExtractors is object,
+                "Cannot extract routing header parameters with an empty list of extractions");
 
-            var paramNameValues = _groupings.ToDictionary(
-                    headerToExtractions => headerToExtractions.Key,
-                    headerToExtractions => headerToExtractions.Value.Select(pe => pe.Extract(request))
-                        .FirstOrDefault(val => !string.IsNullOrEmpty(val)))
-                .Where(kvp => !string.IsNullOrEmpty(kvp.Value))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var keyValuePairs = _parameterExtractors
+                .Select(pe => pe.ExtractKeyValuePair(request))
+                .Where(kvp => kvp is object);
 
-            return string.Join("&",
-                paramNameValues.OrderBy(nameVal => nameVal.Key)
-                    .Select(nameVal => nameVal.Key + "=" + Uri.EscapeDataString(nameVal.Value)));
+            var candidate = string.Join("&", keyValuePairs);
+            return candidate == "" ? null : candidate;
         }
 
-        private class ParamExtraction
+        /// <summary>
+        /// An extractor for a single parameter, which may check multiple patterns to extract a value.
+        /// </summary>
+        private class SingleParameterExtractor
         {
-            public string ParamName { get; }
+            private readonly IReadOnlyList<SinglePatternExtractor> _patternExtractors;
+
+            /// <summary>
+            /// Creates an instance based on the single-pattern extractors, in the order in which they are
+            /// declared. They will be *applied* in reverse order. It is assumed that all pattern extractors
+            /// are for the same parameter name.
+            /// </summary>
+            internal SingleParameterExtractor(IEnumerable<SinglePatternExtractor> patternExtractorsInDeclarationOrder)
+            {
+                // It is important that we Reverse the parameters within the group.
+                // The extractions follow the `last successfully matched wins` rule for
+                // conflict resolution when there are multiple extractions for the same parameter name.
+                // (see `google/api/routing.proto` for further details)
+                // But we would prefer to stop evaluating on the first successfully matched extraction,
+                // thus the reverse.
+                _patternExtractors = patternExtractorsInDeclarationOrder.Reverse().ToList();
+            }
+
+            /// <summary>
+            /// Extracts the value from the request and returns it in a form ready to be included in the
+            /// header
+            /// </summary>
+            /// <param name="request"></param>
+            /// <returns></returns>
+            public string ExtractKeyValuePair(TRequest request) => 
+                _patternExtractors
+                    .Select(pe => pe.ExtractKeyValuePair(request))
+                    .FirstOrDefault(v => v is string);
+        }
+
+        /// <summary>
+        /// An extractor for a single pattern, used one option within a <see cref="SingleParameterExtractor"/>.
+        /// </summary>
+        private class SinglePatternExtractor
+        {
+            public string ParameterName { get; }
             private readonly Regex _regex;
             private readonly Func<TRequest, string> _selector;
 
-            public ParamExtraction(string paramName, Regex regex, Func<TRequest, string> selector)
+            public SinglePatternExtractor(string parameterName, Regex regex, Func<TRequest, string> selector)
             {
-                ParamName = paramName;
+                ParameterName = parameterName;
                 _regex = regex;
                 _selector = selector;
             }
 
-            public string Extract(TRequest request)
+            /// <summary>
+            /// Extracts the value from the request by matching it against the pattern,
+            /// returning the the key/value pair in the form key=value, after URI-escaping the value.
+            /// </summary>
+            public string ExtractKeyValuePair(TRequest request)
             {
                 var match = _regex.Match(_selector(request) ?? "");
-                return match.Success ? match.Groups[1].Value : null;
+                if (!match.Success)
+                {
+                    return null;
+                }
+                string value = match.Groups[1].Value;
+                if (value.Length == 0)
+                {
+                    return null;
+                }
+                return $"{ParameterName}={Uri.EscapeDataString(value)}";
             }
         }
     }
