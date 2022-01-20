@@ -98,9 +98,9 @@ namespace Google.Api.Gax.Grpc.Tests
         /// Also tests the parameter names with the `.` and extracting values from a sub-request's field.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects/100&legacy.routing_id=profiles/profile_17&sub_name=sub13")]
-        [InlineData("projects/100", "", "", "project_id=projects/100")]
-        [InlineData("projects/100", null, null, "project_id=projects/100")]
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects%2F100&sub_name=sub13&legacy.routing_id=profiles%2Fprofile_17")]
+        [InlineData("projects/100", "", "", "project_id=projects%2F100")]
+        [InlineData("projects/100", null, null, "project_id=projects%2F100")]
         [InlineData(null, null, null, null)]
         public void WithExtractedGoogleRequestParam_MultipleFields(string tableNameValue, string appProfileIdValue, string subName, string expectedHeader)
         {

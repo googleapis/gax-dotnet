@@ -19,9 +19,9 @@ namespace Google.Api.Gax.Grpc.Tests
         /// while matching a path template syntax on the field's value.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200", "table_name=projects/100/instances/200")]
-        [InlineData("projects/100/instances/200/whatever", "table_name=projects/100/instances/200/whatever")]
-        [InlineData("regions/100/zones/200", "table_name=regions/100/zones/200")]
+        [InlineData("projects/100/instances/200", "table_name=projects%2F100%2Finstances%2F200")]
+        [InlineData("projects/100/instances/200/whatever", "table_name=projects%2F100%2Finstances%2F200%2Fwhatever")]
+        [InlineData("regions/100/zones/200", "table_name=regions%2F100%2Fzones%2F200")]
         [InlineData("foo", null)]
         public void WithExtractedGoogleRequestParam_FieldMatch(string fieldValue, string expectedHeader)
         {
@@ -35,7 +35,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^(?<table_name>regions/[^/]+/zones/[^/]+(?:/.*)?)$", request => request.TableName);
 
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace Google.Api.Gax.Grpc.Tests
         /// template syntax on (a part of) a single request field.
         /// </summary>
         [Theory]
-        [InlineData("projects/100", "routing_id=projects/100")]
-        [InlineData("projects/100/instances/200", "routing_id=projects/100")]
+        [InlineData("projects/100", "routing_id=projects%2F100")]
+        [InlineData("projects/100/instances/200", "routing_id=projects%2F100")]
         [InlineData("foo/10/projects/100", null)]
         [InlineData("foo", null)]
         public void WithExtractedGoogleRequestParam_SimpleExtract(string fieldValue, string expectedHeader)
@@ -55,7 +55,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -64,10 +64,10 @@ namespace Google.Api.Gax.Grpc.Tests
         /// field. The last template to match "wins" the conflict.
         /// </summary>
         [Theory]
-        [InlineData("projects/100", "routing_id=projects/100")]
-        [InlineData("projects/100/shards/300", "routing_id=projects/100")]
-        [InlineData("projects/100/instances/200", "routing_id=projects/100/instances/200")]
-        [InlineData("projects/100/instances/200/shards/300", "routing_id=projects/100/instances/200")]
+        [InlineData("projects/100", "routing_id=projects%2F100")]
+        [InlineData("projects/100/shards/300", "routing_id=projects%2F100")]
+        [InlineData("projects/100/instances/200", "routing_id=projects%2F100%2Finstances%2F200")]
+        [InlineData("projects/100/instances/200/shards/300", "routing_id=projects%2F100%2Finstances%2F200")]
         [InlineData("orgs/1/projects/100/instances/200", null)]
         [InlineData("foo", null)]
         public void WithExtractedGoogleRequestParam_OverlappingPatterns(string fieldValue, string expectedHeader)
@@ -82,7 +82,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^(?<routing_id>projects/[^/]+/instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Google.Api.Gax.Grpc.Tests
         /// have an instance information, nothing is sent.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "project_id=projects/100&instance_id=instances/200")]
+        [InlineData("projects/100/instances/200/tables/300", "project_id=projects%2F100&instance_id=instances%2F200")]
         [InlineData("projects/100", null)]
         public void WithExtractedGoogleRequestParam_MultiplePairs(string fieldValue, string expectedHeader)
         {
@@ -106,7 +106,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace Google.Api.Gax.Grpc.Tests
         /// have an instance information, just the project id part is sent.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "project_id=projects/100&instance_id=instances/200")]
-        [InlineData("projects/100", "project_id=projects/100")]
+        [InlineData("projects/100/instances/200/tables/300", "project_id=projects%2F100&instance_id=instances%2F200")]
+        [InlineData("projects/100", "project_id=projects%2F100")]
         [InlineData("org/projects/100", null)]
         public void WithExtractedGoogleRequestParam_MultiplePairsLoose(string fieldValue, string expectedHeader)
         {
@@ -130,7 +130,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace Google.Api.Gax.Grpc.Tests
         /// Also tests the parameter names with the `.` and extracting values from a sub-request's field.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects/100&legacy.routing_id=profiles/profile_17&sub_name=sub13")]
-        [InlineData("projects/100", "", "", "project_id=projects/100")]
-        [InlineData("projects/100", null, null, "project_id=projects/100")]
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects%2F100&sub_name=sub13&legacy.routing_id=profiles%2Fprofile_17")]
+        [InlineData("projects/100", "", "", "project_id=projects%2F100")]
+        [InlineData("projects/100", null, null, "project_id=projects%2F100")]
         [InlineData(null, null, null, null)]
         public void WithExtractedGoogleRequestParam_MultipleFields(string tableNameValue, string appProfileIdValue, string subName, string expectedHeader)
         {
@@ -163,7 +163,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 Sub = new ExtractedRequestParamRequest { TableName = subName }
             });
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace Google.Api.Gax.Grpc.Tests
         /// last template to match "wins" the conflict.
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "routing_id=profiles/profile_17")]
-        [InlineData("regions/100", "", "routing_id=regions/100")]
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "routing_id=profiles%2Fprofile_17")]
+        [InlineData("regions/100", "", "routing_id=regions%2F100")]
         public void WithExtractedGoogleRequestParam_MultipleConflictsFields(string tableNameValue, string appProfileIdValue, string expectedHeader)
         {
             // call corresponding to the following routing parameters:
@@ -189,16 +189,16 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^(?<routing_id>.*)$", request => request.AppProfileId);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue});
 
-            AssertEqualEscaped(expectedHeader, header);
+            Assert.Equal(expectedHeader, header);
         }
 
         /// <summary>
         /// Test a complex scenario with a kitchen sink of concerns
         /// </summary>
         [Theory]
-        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "table_location=instances/200&routing_id=profile_17")]
-        [InlineData("projects/100/instances/200/tables/300", "profile_17", "table_location=instances/200&routing_id=profile_17")]
-        [InlineData("projects/100/instances/200/tables/300", null, "table_location=instances/200&routing_id=projects/100")]
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "table_location=instances%2F200&routing_id=profile_17")]
+        [InlineData("projects/100/instances/200/tables/300", "profile_17", "table_location=instances%2F200&routing_id=profile_17")]
+        [InlineData("projects/100/instances/200/tables/300", null, "table_location=instances%2F200&routing_id=projects%2F100")]
         public void WithExtractedGoogleRequestParam_KitchenSink(string tableNameValue, string appProfileIdValue, string expectedHeader)
         {
             // call corresponding to the following routing parameters:
@@ -220,32 +220,7 @@ namespace Google.Api.Gax.Grpc.Tests
                     "^profiles/(?<routing_id>[^/]+)/?$", request => request.AppProfileId);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue});
 
-            AssertEqualEscaped(expectedHeader, header);
-        }
-
-        internal static void AssertEqualEscaped(string expected, string actual)
-        {
-            if (string.IsNullOrWhiteSpace(expected))
-            {
-                Assert.True(string.IsNullOrWhiteSpace(actual));
-            }
-            else
-            {
-                // The extractor produces the header value string escaped and
-                // sorted by parameter name.
-                var expectedEscaped = EscapeAndSort(expected);
-                Assert.Equal(expectedEscaped, actual);
-            }
-
-            string EscapeAndSort(string routingHeader)
-            {
-                var escapedParamNameValues = routingHeader.Split('&')
-                    .Select(pairString => new KeyValuePair<string, string>(pairString.Split('=')[0],
-                        Uri.EscapeDataString(pairString.Split('=')[1])))
-                    .OrderBy(nameVal => nameVal.Key);
-
-                return string.Join("&", escapedParamNameValues.Select(nameVal => $"{nameVal.Key}={nameVal.Value}"));
-            }
+            Assert.Equal(expectedHeader, header);
         }
 
         internal class ExtractedRequestParamRequest
