@@ -315,15 +315,25 @@ namespace Google.Api.Gax.Grpc
         // exactly what to do with it.
 
         /// <summary>
-        /// Creates a CallSettings which applies an x-goog-request-params header with the specified
+        /// Creates a <see cref="CallSettings"/> which applies an x-goog-request-params header with the specified
         /// parameter name and value.
         /// </summary>
         /// <remarks>The value is URL-encoded; it is expected that <paramref name="parameterName"/> is already URL-encoded.</remarks>
         /// <param name="parameterName">The name of the parameter. Must not be null.</param>
         /// <param name="value">The value of the parameter, which may be null. A null value is equivalent to providing an empty string.</param>
-        /// <returns>A CallSettings which applies the appropriate parameter.</returns>
+        /// <returns>A <see cref="CallSettings"/> which applies the appropriate header with a single parameter.</returns>
         internal static CallSettings FromGoogleRequestParamsHeader(string parameterName, string value) =>
             FromHeader(RequestParamsHeader, parameterName + "=" + Uri.EscapeDataString(value ?? ""));
+
+        /// <summary>
+        /// Creates a <see cref="CallSettings"/> which applies an x-goog-request-params header with the specified
+        /// escaped header value.
+        /// </summary>
+        /// <param name="escapedHeaderValue">The value of the x-goog-request-params header.
+        /// Must be escaped. Must not be null or empty.</param>
+        /// <returns>A <see cref="CallSettings"/> which applies the appropriate header.</returns>
+        internal static CallSettings FromGoogleRequestParamsHeader(string escapedHeaderValue) =>
+            FromHeader(RequestParamsHeader, GaxPreconditions.CheckNotNullOrEmpty(escapedHeaderValue, nameof(escapedHeaderValue)));
 
         /// <summary>
         /// Creates a CallSettings which applies an x-goog-request-reason header with the specified reason.

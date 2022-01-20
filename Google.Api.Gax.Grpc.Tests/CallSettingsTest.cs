@@ -271,5 +271,22 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(expectedHeaderName, metadata[0].Key);
             Assert.Equal(expectedHeaderValue, metadata[0].Value);
         }
+
+        internal static void AssertRoutingHeader(CallSettings callSettings, string expectedHeaderValue)
+        {
+            if (string.IsNullOrEmpty(expectedHeaderValue))
+            {
+                Assert.Null(callSettings);
+            }
+            else
+            {
+                var metadata = new Metadata();
+                callSettings.HeaderMutation(metadata);
+                Assert.Equal(1, metadata.Count);
+                Assert.Equal(CallSettings.RequestParamsHeader, metadata[0].Key);
+
+                RoutingHeaderExtractorTest.AssertEqualEscaped(expectedHeaderValue, metadata[0].Value);
+            }
+        }
     }
 }

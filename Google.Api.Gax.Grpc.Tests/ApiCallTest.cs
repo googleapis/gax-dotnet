@@ -10,6 +10,8 @@ using Grpc.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
+using Google.Protobuf.Reflection;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -132,8 +134,68 @@ namespace Google.Api.Gax.Grpc.Tests
             call1.Sync(new SimpleRequest { Name = "test" }, null);
             call1.Async(new SimpleRequest { Name = "test" }, null);
 
-            CallSettingsTest.AssertSingleHeader(syncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
-            CallSettingsTest.AssertSingleHeader(asyncCallSettings, CallSettings.RequestParamsHeader, "parent=test");
+            var expectedHeader = "parent=test";
+            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+        }
+
+        /// <summary>
+        /// Extracting multiple routing header key-value pairs by matching
+        /// several path templates on multiple request fields.
+        /// Also tests the parameter names with the `.` and extracting values from a sub-request's field.
+        /// </summary>
+        [Theory]
+        [InlineData("projects/100/instances/200/tables/300", "profiles/profile_17", "subs/sub13", "project_id=projects/100&legacy.routing_id=profiles/profile_17&sub_name=sub13")]
+        [InlineData("projects/100", "", "", "project_id=projects/100")]
+        [InlineData("projects/100", null, null, "project_id=projects/100")]
+        [InlineData(null, null, null, null)]
+        public void WithExtractedGoogleRequestParam_MultipleFields(string tableNameValue, string appProfileIdValue, string subName, string expectedHeader)
+        {
+            CallSettings syncCallSettings = null;
+            CallSettings asyncCallSettings = null;
+            var call0 = new ApiCall<ExtractedRequestParamRequest, SimpleResponse>(
+                (req, cs) => { asyncCallSettings = cs; return null; },
+                (req, cs) => { syncCallSettings = cs; return null; },
+                null);
+
+            // call corresponding to the following routing parameters:
+            // { field: "table_name", path_template: "{project_id=projects/*}/**" }
+            // { field: "sub_name", path_template: "subs/{sub.sub_name}" }
+            // { field: "app_profile_id", path_template: "{legacy.routing_id=**}" }
+            var call1 = call0
+                .WithExtractedGoogleRequestParam(
+                    new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
+                        .WithExtractedParameter("project_id",
+                            "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                        .WithExtractedParameter("sub_name",
+                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.TableName)
+                        .WithExtractedParameter("legacy.routing_id",
+                            "^(?<legacy_routing_id>.*)$", request => request.AppProfileId));
+            var request = new ExtractedRequestParamRequest
+            {
+                TableName = tableNameValue, AppProfileId = appProfileIdValue,
+                Sub = new ExtractedRequestParamRequest { TableName = subName }
+            };
+
+            call1.Sync(request, null);
+            call1.Async(request, null);
+
+            CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
+            CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+        }
+
+        internal class ExtractedRequestParamRequest : IMessage<ExtractedRequestParamRequest>
+        {
+            public string TableName { get; set; }
+            public string AppProfileId { get; set; }
+            public ExtractedRequestParamRequest Sub { get; set; }
+            public void MergeFrom(ExtractedRequestParamRequest message) => throw new NotImplementedException();
+            public void MergeFrom(CodedInputStream input) => throw new NotImplementedException();
+            public void WriteTo(CodedOutputStream output) => throw new NotImplementedException();
+            public int CalculateSize() => throw new NotImplementedException();
+            public MessageDescriptor Descriptor=> throw new NotImplementedException();
+            public bool Equals(ExtractedRequestParamRequest other) => throw new NotImplementedException();
+            public ExtractedRequestParamRequest Clone() => throw new NotImplementedException();
         }
     }
 }

@@ -185,5 +185,26 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(valueSelector, nameof(valueSelector));
             return WithCallSettingsOverlay(request => CallSettings.FromGoogleRequestParamsHeader(parameterName, valueSelector(request)));
         }
+
+        /// <summary>
+        /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an x-goog-request-params header to each request,
+        /// using the <see cref="RoutingHeaderExtractor{TRequest}"/>.
+        /// </summary>
+        /// <remarks>Values produced by the function are URL-encoded.</remarks>
+        /// <param name="extractor">The <see cref="RoutingHeaderExtractor{TRequest}"/> that extracts the value of the routing header from a request.</param>
+        /// <returns>>A new <see cref="ApiCall{TRequest, TResponse}"/> which applies the header on each request.</returns>
+        public ApiCall<TRequest, TResponse> WithExtractedGoogleRequestParam(RoutingHeaderExtractor<TRequest> extractor)
+        {
+            GaxPreconditions.CheckNotNull(extractor, nameof(extractor));
+
+            return WithCallSettingsOverlay(request =>
+            {
+                var headerValue = extractor.ExtractHeader(request);
+
+                return !string.IsNullOrWhiteSpace(headerValue)
+                    ? CallSettings.FromGoogleRequestParamsHeader(headerValue)
+                    : null; // CallSettings.Merge handles null correctly.
+            });
+        }
     }
 }
