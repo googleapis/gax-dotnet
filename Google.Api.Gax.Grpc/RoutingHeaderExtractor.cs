@@ -69,28 +69,28 @@ namespace Google.Api.Gax.Grpc
         /// each parameter name.
         /// </summary>
         /// <param name="paramName">The name of the parameter in the routing header.</param>
-        /// <param name="extractionRegexStr">The regular expression (in the string form) used to extract the value of the parameter.
+        /// <param name="extractionRegex">The regular expression (in string form) used to extract the value of the parameter.
         /// Should have exactly one named capturing group.</param>
         /// <param name="selector">A function to call on each request, to determine the string to extract the header value from.
         /// The parameter must not be null, but may return null.</param>
         /// <returns></returns>
-        public RoutingHeaderExtractor<TRequest> WithExtractedParameter(string paramName, string extractionRegexStr, Func<TRequest, string> selector)
+        public RoutingHeaderExtractor<TRequest> WithExtractedParameter(string paramName, string extractionRegex, Func<TRequest, string> selector)
         {
             GaxPreconditions.CheckNotNullOrEmpty(paramName, nameof(paramName));
-            GaxPreconditions.CheckNotNull(extractionRegexStr, nameof(extractionRegexStr));
+            GaxPreconditions.CheckNotNull(extractionRegex, nameof(extractionRegex));
             GaxPreconditions.CheckNotNull(selector, nameof(selector));
 
-            var extractionRegex = new Regex(extractionRegexStr);
+            var regex = new Regex(extractionRegex);
 
             // All regexes have a capturing group named `0` that captures the whole regex
             GaxPreconditions.CheckArgument(
-                extractionRegex.GetGroupNames().Length == 2,
+                regex.GetGroupNames().Length == 2,
                 nameof(extractionRegex),
                 "The regex used for the routing header extraction should have exactly one named capturing group.");
 
             var newExtractors = new List<SinglePatternExtractor>(_patternExtractors)
             {
-                new SinglePatternExtractor(paramName, extractionRegex, selector)
+                new SinglePatternExtractor(paramName, regex, selector)
             };
             return new RoutingHeaderExtractor<TRequest>(newExtractors);
         }
