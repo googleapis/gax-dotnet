@@ -30,9 +30,9 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{table_name=regions/*/zones/*/**}" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("table_name",
-                    "^(?<table_name>projects/[^/]+/instances/[^/]+(?:/.*)?)$", request => request.TableName)
+                    "^(projects/[^/]+/instances/[^/]+(?:/.*)?)$", request => request.TableName)
                 .WithExtractedParameter("table_name",
-                    "^(?<table_name>regions/[^/]+/zones/[^/]+(?:/.*)?)$", request => request.TableName);
+                    "^(regions/[^/]+/zones/[^/]+(?:/.*)?)$", request => request.TableName);
 
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
             Assert.Equal(expectedHeader, header);
@@ -52,7 +52,7 @@ namespace Google.Api.Gax.Grpc.Tests
             // call corresponding to the following routing parameters:
             // { field: "table_name", path_template: "{routing_id=projects/*}/**" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>().WithExtractedParameter("routing_id",
-                "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName);
+                "^(projects/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
             Assert.Equal(expectedHeader, header);
@@ -77,9 +77,9 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{routing_id=projects/*/instances/*}/**" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>projects/[^/]+/instances/[^/]+)(?:/.*)?$", request => request.TableName);
+                    "^(projects/[^/]+/instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
             Assert.Equal(expectedHeader, header);
@@ -101,9 +101,9 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "projects/*/{instance_id=instances/*}/**" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("project_id",
-                    "^(?<project_id>projects/[^/]+)/instances/[^/]+(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)/instances/[^/]+(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("instance_id",
-                    "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName);
+                    "^projects/[^/]+/(instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
             Assert.Equal(expectedHeader, header);
@@ -125,9 +125,9 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "table_name", path_template: "{project_id=projects/*}/**" }
             // { field: "table_name", path_template: "projects/*/{instance_id=instances/*}/**" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>().WithExtractedParameter("project_id",
-                    "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("instance_id",
-                    "^projects/[^/]+/(?<instance_id>instances/[^/]+)(?:/.*)?$", request => request.TableName);
+                    "^projects/[^/]+/(instances/[^/]+)(?:/.*)?$", request => request.TableName);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = fieldValue });
 
             Assert.Equal(expectedHeader, header);
@@ -151,11 +151,11 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "app_profile_id", path_template: "{legacy.routing_id=**}" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("project_id",
-                    "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("sub_name",
-                    "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.TableName)
+                    "^subs/([^/]+)/?$", request => request.Sub.TableName)
                 .WithExtractedParameter("legacy.routing_id",
-                    "^(?<legacy_routing_id>.*)$", request => request.AppProfileId);
+                    "^(.*)$", request => request.AppProfileId);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest
             {
                 TableName = tableNameValue,
@@ -182,11 +182,11 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "app_profile_id", path_template: "{routing_id=**}" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>regions/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(regions/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>.*)$", request => request.AppProfileId);
+                    "^(.*)$", request => request.AppProfileId);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue});
 
             Assert.Equal(expectedHeader, header);
@@ -209,15 +209,15 @@ namespace Google.Api.Gax.Grpc.Tests
             // { field: "app_profile_id", path_template: "profiles/{routing_id=*}" }
             var extractor = new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                 .WithExtractedParameter("table_location",
-                    "^projects/[^/]+/(?<table_location>instances/[^/]+)/tables/[^/]+/?$", request => request.TableName)
+                    "^projects/[^/]+/(instances/[^/]+)/tables/[^/]+/?$", request => request.TableName)
                 .WithExtractedParameter("table_location",
-                    "^(?<table_location>regions/[^/]+/zones/[^/]+)/tables/[^/]+/?$", request => request.TableName)
+                    "^(regions/[^/]+/zones/[^/]+)/tables/[^/]+/?$", request => request.TableName)
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                    "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                 .WithExtractedParameter("routing_id",
-                    "^(?<routing_id>.*)$", request => request.AppProfileId)
+                    "^(.*)$", request => request.AppProfileId)
                 .WithExtractedParameter("routing_id",
-                    "^profiles/(?<routing_id>[^/]+)/?$", request => request.AppProfileId);
+                    "^profiles/([^/]+)/?$", request => request.AppProfileId);
             var header = extractor.ExtractHeader(new ExtractedRequestParamRequest { TableName = tableNameValue, AppProfileId = appProfileIdValue});
 
             Assert.Equal(expectedHeader, header);

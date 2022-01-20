@@ -70,7 +70,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="paramName">The name of the parameter in the routing header.</param>
         /// <param name="extractionRegex">The regular expression (in string form) used to extract the value of the parameter.
-        /// Should have exactly one named capturing group.</param>
+        /// Must have exactly one capturing group (in addition to the implicit "group 0" which captures the whole match).</param>
         /// <param name="selector">A function to call on each request, to determine the string to extract the header value from.
         /// The parameter must not be null, but may return null.</param>
         /// <returns></returns>
@@ -82,11 +82,12 @@ namespace Google.Api.Gax.Grpc
 
             var regex = new Regex(extractionRegex);
 
-            // All regexes have a capturing group named `0` that captures the whole regex
+            // All regexes have an implicit capturing group 0 that captures the whole regex; we require
+            // one additional capturing group which captures the value to include in the header.
             GaxPreconditions.CheckArgument(
-                regex.GetGroupNames().Length == 2,
+                regex.GetGroupNumbers().Length == 2,
                 nameof(extractionRegex),
-                "The regex used for the routing header extraction should have exactly one named capturing group.");
+                "The regex used for the routing header extraction must have exactly one capturing group.");
 
             var newExtractors = new List<SinglePatternExtractor>(_patternExtractors)
             {

@@ -166,11 +166,11 @@ namespace Google.Api.Gax.Grpc.Tests
                 .WithExtractedGoogleRequestParam(
                     new RoutingHeaderExtractor<ExtractedRequestParamRequest>()
                         .WithExtractedParameter("project_id",
-                            "^(?<project_id>projects/[^/]+)(?:/.*)?$", request => request.TableName)
+                            "^(projects/[^/]+)(?:/.*)?$", request => request.TableName)
                         .WithExtractedParameter("sub_name",
-                            "^subs/(?<sub_name>[^/]+)/?$", request => request.Sub.TableName)
+                            "^subs/([^/]+)/?$", request => request.Sub.TableName)
                         .WithExtractedParameter("legacy.routing_id",
-                            "^(?<legacy_routing_id>.*)$", request => request.AppProfileId));
+                            "^(.*)$", request => request.AppProfileId));
             var request = new ExtractedRequestParamRequest
             {
                 TableName = tableNameValue, AppProfileId = appProfileIdValue,
