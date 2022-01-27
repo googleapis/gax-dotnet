@@ -139,6 +139,30 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
         }
 
+        [Fact]
+        public void WithTwoGoogleRequestParams()
+        {
+            CallSettings syncCallSettings = null;
+            CallSettings asyncCallSettings = null;
+            var call0 = new ApiCall<SimpleRequest, SimpleResponse>(
+                (req, cs) => { asyncCallSettings = cs; return null; },
+                (req, cs) => { syncCallSettings = cs; return null; },
+                null);
+
+            var call1 = call0.WithGoogleRequestParam("parent", request => request.Name).WithGoogleRequestParam("something_else", request => request.Name);
+            call1.Sync(new SimpleRequest { Name = "test" }, null);
+            call1.Async(new SimpleRequest { Name = "test" }, null);
+
+            var metadata = new Metadata();
+            syncCallSettings.HeaderMutation(metadata);
+            Assert.Equal(2, metadata.Count);
+
+            foreach (var entry in metadata)
+            {
+                Assert.Equal("x-goog-request-params", entry.Key);
+            }
+        }
+
         /// <summary>
         /// Extracting multiple routing header key-value pairs by matching
         /// several path templates on multiple request fields.
