@@ -21,7 +21,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallSettings.FromRetry(new RetrySettings(5, TimeSpan.Zero, TimeSpan.Zero, 1.0, e => false, RetrySettings.RandomJitter)),
                 new BidirectionalStreamingSettings(100),
                 new FakeClock());
-            Assert.Throws<InvalidOperationException>(() => apiCall.Call(null));
+            Assert.Throws<InvalidOperationException>(() => apiCall.Call(0, null));
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallSettings.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100))),
                 new BidirectionalStreamingSettings(100),
                 new FakeClock());
-            Assert.Null(apiCall.Call(null));
+            Assert.Null(apiCall.Call(0, null));
         }
     }
 }

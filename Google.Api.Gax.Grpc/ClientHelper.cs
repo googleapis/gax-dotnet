@@ -109,7 +109,7 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
-            return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
+            return ApiBidirectionalStreamingCall.Create(options => grpcCall(options), baseCallSettings, streamingSettings, Clock)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
