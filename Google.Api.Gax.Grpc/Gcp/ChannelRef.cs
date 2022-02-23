@@ -8,7 +8,7 @@
 using Grpc.Core;
 using System.Threading;
 
-namespace Grpc.Gcp
+namespace Google.Api.Gax.Grpc.Gcp
 {
     /// <summary>
     /// Keeps record of channel affinity and active streams.

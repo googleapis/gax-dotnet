@@ -6,7 +6,6 @@
  */
 
 using Grpc.Core;
-using Grpc.Gcp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
