@@ -17,28 +17,28 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// </summary>
     /// <typeparam name="TRequest">The type representing the request.</typeparam>
     /// <typeparam name="TResponse">The type representing the response.</typeparam>
-    internal class GcpClientResponseStream<TRequest, TResponse> : IAsyncStreamReader<TResponse>
+    internal sealed class GcpClientResponseStream<TRequest, TResponse> : IAsyncStreamReader<TResponse>
         where TRequest : class
         where TResponse : class
     {
-        bool callbackDone = false;
-        readonly IAsyncStreamReader<TResponse> originalStreamReader;
-        TResponse lastResponse;
-        Action<TResponse> postProcess;
+        private bool _callbackDone = false;
+        private readonly IAsyncStreamReader<TResponse> _originalStreamReader;
+        private TResponse _lastResponse;
+        private Action<TResponse> _postProcess;
 
         public GcpClientResponseStream(IAsyncStreamReader<TResponse> originalStreamReader, Action<TResponse> postProcess)
         {
-            this.originalStreamReader = originalStreamReader;
-            this.postProcess = postProcess;
+            this._originalStreamReader = originalStreamReader;
+            this._postProcess = postProcess;
         }
 
         public TResponse Current
         {
             get
             {
-                TResponse current = originalStreamReader.Current;
+                TResponse current = _originalStreamReader.Current;
                 // Record the last response.
-                lastResponse = current;
+                _lastResponse = current;
                 return current;
             }
         }
@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             bool executeCallback = false;
             try
             {
-                bool result = await originalStreamReader.MoveNext(token).ConfigureAwait(false);
+                bool result = await _originalStreamReader.MoveNext(token).ConfigureAwait(false);
                 // The last invocation of originalStreamReader.MoveNext returns false if it finishes successfully.
                 if (!result)
                 {
@@ -60,10 +60,10 @@ namespace Google.Api.Gax.Grpc.Gcp
             {
                 // If stream is successfully processed or failed, execute the callback.
                 // We ensure the callback is called only once.
-                if (executeCallback && !callbackDone)
+                if (executeCallback && !_callbackDone)
                 {
-                    postProcess(lastResponse);
-                    callbackDone = true;
+                    _postProcess(_lastResponse);
+                    _callbackDone = true;
                 }
             }
         }
