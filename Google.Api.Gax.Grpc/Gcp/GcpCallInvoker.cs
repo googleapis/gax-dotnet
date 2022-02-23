@@ -22,22 +22,22 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// </summary>
     internal sealed class GcpCallInvoker : CallInvoker
     {
-        private static int clientChannelIdCounter;
+        private static int s_clientChannelIdCounter;
 
         private const string ClientChannelId = "grpc_gcp.client_channel.id";
 
         // Lock to protect the channel reference collections, as they're not thread-safe.
-        private readonly object thisLock = new object();
-        private readonly IDictionary<string, ChannelRef> channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
-        private readonly IList<ChannelRef> channelRefs = new List<ChannelRef>();
+        private readonly object _thisLock = new object();
+        private readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
+        private readonly IList<ChannelRef> _channelRefs = new List<ChannelRef>();
 
         // Access to these fields does not need to be protected by the lock: the objects are never modified.
-        private readonly string target;
-        private readonly ApiConfig apiConfig;
-        private readonly IDictionary<string, AffinityConfig> affinityByMethod;
-        private readonly ChannelCredentials credentials;
-        private readonly GrpcChannelOptions channelOptions;
-        private readonly GrpcAdapter adapter;
+        private readonly string _target;
+        private readonly ApiConfig _apiConfig;
+        private readonly IDictionary<string, AffinityConfig> _affinityByMethod;
+        private readonly ChannelCredentials _credentials;
+        private readonly GrpcChannelOptions _channelOptions;
+        private readonly GrpcAdapter _adapter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
@@ -49,14 +49,14 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="adapter">The adapter to use to create channels. Must not be null.</param>
         internal GcpCallInvoker(string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
-            this.target = GaxPreconditions.CheckNotNull(target, nameof(target));
-            this.credentials = GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
-            this.adapter = GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
-            this.apiConfig = GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig)).Clone();
-            channelOptions = GaxPreconditions.CheckNotNull(options, nameof(options));
+            this._target = GaxPreconditions.CheckNotNull(target, nameof(target));
+            this._credentials = GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
+            this._adapter = GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
+            this._apiConfig = GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig)).Clone();
+            _channelOptions = GaxPreconditions.CheckNotNull(options, nameof(options));
 
-            GaxPreconditions.CheckArgument(this.apiConfig.ChannelPool is object, nameof(apiConfig), "Invalid API config: no channel pool settings");
-            affinityByMethod = InitAffinityByMethodIndex(this.apiConfig);
+            GaxPreconditions.CheckArgument(this._apiConfig.ChannelPool is object, nameof(apiConfig), "Invalid API config: no channel pool settings");
+            _affinityByMethod = InitAffinityByMethodIndex(this._apiConfig);
         }
 
         private static IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
@@ -76,12 +76,12 @@ namespace Google.Api.Gax.Grpc.Gcp
         private ChannelRef GetChannelRef(string affinityKey = null)
         {
             // TODO(fengli): Supports load reporting.
-            lock (thisLock)
+            lock (_thisLock)
             {
                 if (!string.IsNullOrEmpty(affinityKey))
                 {
                     // Finds the gRPC channel according to the affinity key.
-                    if (channelRefByAffinityKey.TryGetValue(affinityKey, out ChannelRef channelRef))
+                    if (_channelRefByAffinityKey.TryGetValue(affinityKey, out ChannelRef channelRef))
                     {
                         return channelRef;
                     }
@@ -90,10 +90,10 @@ namespace Google.Api.Gax.Grpc.Gcp
 
                 // TODO(fengli): Creates new gRPC channels on demand, depends on the load reporting.
                 IOrderedEnumerable<ChannelRef> orderedChannelRefs =
-                    channelRefs.OrderBy(channelRef => channelRef.ActiveStreamCount);
+                    _channelRefs.OrderBy(channelRef => channelRef.ActiveStreamCount);
                 foreach (ChannelRef channelRef in orderedChannelRefs)
                 {
-                    if (channelRef.ActiveStreamCount < apiConfig.ChannelPool.MaxConcurrentStreamsLowWatermark)
+                    if (channelRef.ActiveStreamCount < _apiConfig.ChannelPool.MaxConcurrentStreamsLowWatermark)
                     {
                         // If there's a free channel, use it.
                         return channelRef;
@@ -104,15 +104,15 @@ namespace Google.Api.Gax.Grpc.Gcp
                         break;
                     }
                 }
-                int count = channelRefs.Count;
-                if (count < apiConfig.ChannelPool.MaxSize)
+                int count = _channelRefs.Count;
+                if (count < _apiConfig.ChannelPool.MaxSize)
                 {
                     // Creates a new gRPC channel.
                     // TODO: Logging?
                     // GrpcEnvironment.Logger.Info("Grpc.Gcp creating new channel");
-                    ChannelBase channel = adapter.CreateChannel(target, credentials, channelOptions.WithCustomOption(ClientChannelId, Interlocked.Increment(ref clientChannelIdCounter)));
+                    ChannelBase channel = _adapter.CreateChannel(_target, _credentials, _channelOptions.WithCustomOption(ClientChannelId, Interlocked.Increment(ref s_clientChannelIdCounter)));
                     ChannelRef channelRef = new ChannelRef(channel, count);
-                    channelRefs.Add(channelRef);
+                    _channelRefs.Add(channelRef);
                     return channelRef;
                 }
                 // If all channels are overloaded and the channel pool is full already,
@@ -187,14 +187,14 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
-                lock (thisLock)
+                lock (_thisLock)
                 {
                     // TODO: What should we do if the dictionary already contains this key, but for a different channel ref?
-                    if (!channelRefByAffinityKey.Keys.Contains(affinityKey))
+                    if (!_channelRefByAffinityKey.Keys.Contains(affinityKey))
                     {
-                        channelRefByAffinityKey.Add(affinityKey, channelRef);
+                        _channelRefByAffinityKey.Add(affinityKey, channelRef);
                     }
-                    channelRefByAffinityKey[affinityKey].AffinityCountIncr();
+                    _channelRefByAffinityKey[affinityKey].AffinityCountIncr();
                 }
             }
         }
@@ -203,16 +203,16 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
-                lock (thisLock)
+                lock (_thisLock)
                 {
-                    if (channelRefByAffinityKey.TryGetValue(affinityKey, out ChannelRef channelRef))
+                    if (_channelRefByAffinityKey.TryGetValue(affinityKey, out ChannelRef channelRef))
                     {
                         int newCount = channelRef.AffinityCountDecr();
 
                         // We would expect it to be exactly 0, but it doesn't hurt to be cautious.
                         if (newCount <= 0)
                         {
-                            channelRefByAffinityKey.Remove(affinityKey);
+                            _channelRefByAffinityKey.Remove(affinityKey);
                         }
                     }
                 }
@@ -330,7 +330,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override AsyncServerStreamingCall<TResponse>
             AsyncServerStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
@@ -348,7 +348,6 @@ namespace Google.Api.Gax.Grpc.Gcp
                 () => originalCall.GetStatus(),
                 () => originalCall.GetTrailers(),
                 () => originalCall.Dispose());
-
         }
 
         /// <summary>
@@ -357,7 +356,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override AsyncUnaryCall<TResponse>
             AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
@@ -395,7 +394,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override TResponse
             BlockingUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
@@ -417,9 +416,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         public async Task ShutdownAsync()
         {
-            for (int i = 0; i < channelRefs.Count; i++)
+            for (int i = 0; i < _channelRefs.Count; i++)
             {
-                await channelRefs[i].Channel.ShutdownAsync().ConfigureAwait(false);
+                await _channelRefs[i].Channel.ShutdownAsync().ConfigureAwait(false);
             }
         }
 
@@ -431,10 +430,10 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         internal IList<ChannelRef> GetChannelRefsForTest()
         {
-            lock (thisLock)
+            lock (_thisLock)
             {
                 // Create an independent copy
-                return channelRefs.Select(cr => cr.Clone()).ToList();
+                return _channelRefs.Select(cr => cr.Clone()).ToList();
             }
         }
 
@@ -444,10 +443,10 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         internal IDictionary<string, ChannelRef> GetChannelRefsByAffinityKeyForTest()
         {
-            lock (thisLock)
+            lock (_thisLock)
             {
                 // Create an independent copy
-                return channelRefByAffinityKey.ToDictionary(pair => pair.Key, pair => pair.Value.Clone());
+                return _channelRefByAffinityKey.ToDictionary(pair => pair.Key, pair => pair.Value.Clone());
             }
         }
     }

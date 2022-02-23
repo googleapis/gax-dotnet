@@ -16,30 +16,29 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// </summary>
     internal sealed class ChannelRef
     {
-        private int affinityCount;
-        private int activeStreamCount;
-        private int id;
+        private int _affinityCount;
+        private int _activeStreamCount;
+        private int _id;
 
         internal ChannelRef(ChannelBase channel, int id, int affinityCount = 0, int activeStreamCount = 0)
         {
             Channel = channel;
             CallInvoker = channel.CreateCallInvoker();
-            this.id = id;
-            this.affinityCount = affinityCount;
-            this.activeStreamCount = activeStreamCount;
+            this._id = id;
+            this._affinityCount = affinityCount;
+            this._activeStreamCount = activeStreamCount;
         }
 
         internal ChannelBase Channel { get; }
         internal CallInvoker CallInvoker { get; }
-        internal int AffinityCount => Interlocked.CompareExchange(ref affinityCount, 0, 0);
-        internal int ActiveStreamCount => Interlocked.CompareExchange(ref activeStreamCount, 0, 0);
+        internal int AffinityCount => Interlocked.CompareExchange(ref _affinityCount, 0, 0);
+        internal int ActiveStreamCount => Interlocked.CompareExchange(ref _activeStreamCount, 0, 0);
 
-        internal int AffinityCountIncr() => Interlocked.Increment(ref affinityCount);
-        internal int AffinityCountDecr() => Interlocked.Decrement(ref affinityCount);
-        internal int ActiveStreamCountIncr() => Interlocked.Increment(ref activeStreamCount);
-        internal int ActiveStreamCountDecr() => Interlocked.Decrement(ref activeStreamCount);
+        internal int AffinityCountIncr() => Interlocked.Increment(ref _affinityCount);
+        internal int AffinityCountDecr() => Interlocked.Decrement(ref _affinityCount);
+        internal int ActiveStreamCountIncr() => Interlocked.Increment(ref _activeStreamCount);
+        internal int ActiveStreamCountDecr() => Interlocked.Decrement(ref _activeStreamCount);
 
-        internal ChannelRef Clone() => new ChannelRef(Channel, id, AffinityCount, ActiveStreamCount);
+        internal ChannelRef Clone() => new ChannelRef(Channel, _id, AffinityCount, ActiveStreamCount);
     }
 }
- 
