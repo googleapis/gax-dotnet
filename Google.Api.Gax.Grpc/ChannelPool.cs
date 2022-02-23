@@ -5,8 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Apis.Auth.OAuth2;
-using Grpc.Auth;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -23,19 +21,10 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private readonly IEnumerable<string> _scopes;
+        private readonly DefaultChannelCredentialsCache _credentialCache;
 
-        internal bool UseJwtAccessWithScopes { get; }
-
-        /// <summary>
-        /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
-        /// task can be used whenever channel credentials are required. The returned task always runs in the
-        /// thread pool, so its result can be used synchronously from synchronous methods without risk of deadlock.
-        /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
-        /// _scopes, and you can't refer to an instance field within an instance field initializer.
-        /// </summary>
-        private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
-
+        internal bool UseJwtAccessWithScopes => _credentialCache.UseJwtAccessWithScopes;
+        
         // TODO: See if we could use ConcurrentDictionary instead of locking. I suspect the issue would be making an atomic
         // "clear and fetch values" for shutdown.
         private readonly Dictionary<Key, ChannelBase> _channels = new Dictionary<Key, ChannelBase>();
@@ -50,14 +39,7 @@ namespace Google.Api.Gax.Grpc
         /// when OAuth scopes are explicitly set.</param>
         public ChannelPool(IEnumerable<string> scopes, bool useJwtWithScopes)
         {
-            UseJwtAccessWithScopes = useJwtWithScopes;
-
-            // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
-            _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
-            GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
-            // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
-            // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
-            _lazyScopedDefaultChannelCredentials = new Lazy<Task<ChannelCredentials>>(() => Task.Run(CreateChannelCredentialsUncached));
+            _credentialCache = new DefaultChannelCredentialsCache(scopes, useJwtWithScopes);
         }
 
         /// <summary>
@@ -67,22 +49,6 @@ namespace Google.Api.Gax.Grpc
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         public ChannelPool(IEnumerable<string> scopes) : this(scopes, false)
         {
-        }
-
-        private async Task<ChannelCredentials> CreateChannelCredentialsUncached()
-        {
-            var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
-            if (appDefaultCredentials.IsCreateScopedRequired)
-            {
-                appDefaultCredentials = appDefaultCredentials.CreateScoped(_scopes);
-            }
-
-            if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential serviceCredential
-                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
-            {
-                appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
-            }
-            return appDefaultCredentials.ToChannelCredentials();
         }
 
         /// <summary>
@@ -115,7 +81,7 @@ namespace Google.Api.Gax.Grpc
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = _lazyScopedDefaultChannelCredentials.Value.ResultWithUnwrappedExceptions();
+            var credentials = _credentialCache.GetCredentials();
             return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 
@@ -134,7 +100,7 @@ namespace Google.Api.Gax.Grpc
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await WithCancellationToken(_lazyScopedDefaultChannelCredentials.Value, cancellationToken).ConfigureAwait(false);
+            var credentials = await WithCancellationToken(_credentialCache.GetCredentialsAsync(), cancellationToken).ConfigureAwait(false);
             return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 

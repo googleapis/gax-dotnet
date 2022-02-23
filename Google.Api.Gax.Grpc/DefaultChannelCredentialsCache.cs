@@ -13,11 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Google.Api.Gax.Grpc.Gcp
+namespace Google.Api.Gax.Grpc
 {
-    // TODO: Move this into Google.Api.Gax.Grpc and make it public? We could then avoid the duplication
-    // between this and code in Google.Api.Gax.Grpc.ChannelPool.
-
     /// <summary>
     /// Caches the application default channel credentials, applying a specified set of scopes if they require any.
     /// </summary>
@@ -25,7 +22,7 @@ namespace Google.Api.Gax.Grpc.Gcp
     {
         private readonly IEnumerable<string> _scopes;
 
-        private readonly bool _useJwtAccessWithScopes;
+        internal bool UseJwtAccessWithScopes { get; }
 
         /// <summary>
         /// Lazily-created task to retrieve the default application channel credentials. Once completed, this
@@ -44,11 +41,12 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="useJwtAccessWithScopes">The flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
         internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useJwtAccessWithScopes)
         {
-            _useJwtAccessWithScopes = useJwtAccessWithScopes;
+            UseJwtAccessWithScopes = useJwtAccessWithScopes;
 
             // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
             _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
             GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+
             // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
             // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
             _lazyScopedDefaultChannelCredentials =
@@ -61,9 +59,9 @@ namespace Google.Api.Gax.Grpc.Gcp
                     }
 
                     if (appDefaultCredentials.UnderlyingCredential is ServiceAccountCredential serviceCredential
-                        && serviceCredential.UseJwtAccessWithScopes != _useJwtAccessWithScopes)
+                        && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
                     {
-                        appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(_useJwtAccessWithScopes));
+                        appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
                     }
                     return appDefaultCredentials.ToChannelCredentials();
                 }));
