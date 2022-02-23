@@ -12,6 +12,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
+#if NET462
+using System.Reflection;
+#endif
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -115,9 +119,8 @@ namespace Google.Api.Gax
                 };
             }
 
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (msg, cert, chain, errs) =>
+            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> serverCertificateCustomValidationCallback =
+                (msg, cert, chain, errs) =>
                 {
                     // Add the kubernetes-provided ca
                     chain.ChainPolicy.ExtraStore.Add(kubernetesCaCert);
@@ -127,8 +130,24 @@ namespace Google.Api.Gax
                     chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
                     // Check that cert is trusted, and that the root ca is the kubernetes-provided ca
                     return chain.Build(cert) && chain.ChainElements[chain.ChainElements.Count - 1].Certificate.Thumbprint == kubernetesCaCert.Thumbprint;
-                }
-            };
+                };
+            var handler = new HttpClientHandler();
+#if NETSTANDARD2_1_OR_GREATER
+            handler.ServerCertificateCustomValidationCallback = serverCertificateCustomValidationCallback;
+#elif NET462
+            // .NET 4.6.2 supposedly supports .NET Standard (which defines HttpClientHandler.ServerCertificateCustomValidationCallback),
+            // but doesn't actually have that property. On the othe hand, it's possible that we're using this build of the library due to
+            // targeting a later version of .NET Framework.
+            // Rather than adding another target just for this oddity, let's set the property by reflection if we can.
+            // If we can't, the HTTP call is likely to fail below, but we'll handle it in the same way as anything else.
+            var callbackProperty = typeof(HttpClientHandler).GetProperty("ServerCertificateCustomValidationCallback", BindingFlags.Instance | BindingFlags.Public);
+            if (callbackProperty?.CanWrite == true && callbackProperty.GetSetMethod().IsPublic)
+            {
+                callbackProperty.SetValue(handler, serverCertificateCustomValidationCallback);
+            }
+#else
+#error Unsupported platform
+#endif
             string namespaceJson = null;
             string podJson = null;
             // TODO: Consider retrying.
