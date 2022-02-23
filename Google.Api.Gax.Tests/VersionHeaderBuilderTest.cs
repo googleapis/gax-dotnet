@@ -20,10 +20,10 @@ namespace Google.Api.Gax.Tests
 
         // This theory will only have a single test case per framework, but it's the simplest way of expressing what we mean.
         [Theory]
-#if NETCOREAPP2_1
+#if NETCOREAPP3_1_OR_GREATER
         // In test frameworks, .NET Core is always reported as 1.0.0.
         [InlineData("1.0.0")]
-#elif NET461
+#elif NET462
         // This will be the runtime version, which will always be 4.0.x, but we don't know x.
         [InlineData("4.0.")]
 #else

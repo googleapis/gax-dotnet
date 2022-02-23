@@ -91,9 +91,9 @@ namespace Google.Api.Gax
                 kubernetesToken = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/token");
                 // On Windows GKE, we currently fail to load this certificate - so just skipping even an attempt
                 // when on .NET Framework seems reasonable.
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER
                 kubernetesCaCert = new X509Certificate2("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt");
-#elif NET461
+#elif NET462
 #else
 #error Unsupported platform
 #endif
