@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             bool executeCallback = false;
             try
             {
-                bool result = await originalStreamReader.MoveNext(token);
+                bool result = await originalStreamReader.MoveNext(token).ConfigureAwait(false);
                 // The last invocation of originalStreamReader.MoveNext returns false if it finishes successfully.
                 if (!result)
                 {

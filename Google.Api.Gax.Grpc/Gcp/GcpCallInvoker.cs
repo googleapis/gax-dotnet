@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Grpc.Core;
@@ -18,20 +17,17 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Grpc.Gcp
 {
     /// <summary>
-    /// Invokes client RPCs using <see cref="Calls"/>.
-    /// Calls are made through underlying gcp channel pool.
+    /// Call invoker which can fan calls out to multiple underlying channels
+    /// based on request properties.
     /// </summary>
-    public class GcpCallInvoker : CallInvoker
+    internal sealed class GcpCallInvoker : CallInvoker
     {
         private static int clientChannelIdCounter;
 
-        public const string ApiConfigChannelArg = "grpc_gcp.api_config";
         private const string ClientChannelId = "grpc_gcp.client_channel.id";
-        private const Int32 DefaultChannelPoolSize = 10;
-        private const Int32 DefaultMaxCurrentStreams = 100;
 
         // Lock to protect the channel reference collections, as they're not thread-safe.
-        private readonly Object thisLock = new Object();
+        private readonly object thisLock = new object();
         private readonly IDictionary<string, ChannelRef> channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
         private readonly IList<ChannelRef> channelRefs = new List<ChannelRef>();
 
@@ -40,85 +36,38 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly ApiConfig apiConfig;
         private readonly IDictionary<string, AffinityConfig> affinityByMethod;
         private readonly ChannelCredentials credentials;
-        private readonly IEnumerable<ChannelOption> options;
+        private readonly GrpcChannelOptions channelOptions;
+        private readonly GrpcAdapter adapter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
         /// </summary>
-        /// <param name="target">Target of the underlying grpc channels.</param>
-        /// <param name="credentials">Credentials to secure the underlying grpc channels.</param>
-        /// <param name="options">Channel options to be used by the underlying grpc channels.</param>
-        public GcpCallInvoker(string target, ChannelCredentials credentials, IEnumerable<ChannelOption> options = null)
+        /// <param name="target">Target of the underlying grpc channels. Must not be null.</param>
+        /// <param name="credentials">Credentials to secure the underlying grpc channels. Must not be null.</param>
+        /// <param name="options">Channel options to be used by the underlying grpc channels. Must not be null.</param>
+        /// <param name="apiConfig">The API config to apply. Must not be null.</param>
+        /// <param name="adapter">The adapter to use to create channels. Must not be null.</param>
+        internal GcpCallInvoker(string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
-            this.target = target;
-            this.credentials = credentials;
-            this.apiConfig = InitDefaultApiConfig();
+            this.target = GaxPreconditions.CheckNotNull(target, nameof(target));
+            this.credentials = GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
+            this.adapter = GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
+            this.apiConfig = GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig)).Clone();
+            channelOptions = GaxPreconditions.CheckNotNull(options, nameof(options));
 
-            if (options != null)
-            {
-                ChannelOption option = options.FirstOrDefault(opt => opt.Name == ApiConfigChannelArg);
-                if (option != null)
-                {
-                    try
-                    {
-                        apiConfig = ApiConfig.Parser.ParseJson(option.StringValue);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex is InvalidOperationException || ex is InvalidJsonException || ex is InvalidProtocolBufferException)
-                        {
-                            throw new ArgumentException("Invalid API config!", ex);
-                        }
-                        throw;
-                    }
-                    if (apiConfig.ChannelPool == null)
-                    {
-                        throw new ArgumentException("Invalid API config: no channel pool settings");
-                    }
-                }
-                this.options = options.Where(o => o.Name != ApiConfigChannelArg).ToList();
-            }
-            else
-            {
-                this.options = Enumerable.Empty<ChannelOption>();
-            }
-
-            affinityByMethod = InitAffinityByMethodIndex(apiConfig);
+            GaxPreconditions.CheckArgument(this.apiConfig.ChannelPool is object, nameof(apiConfig), "Invalid API config: no channel pool settings");
+            affinityByMethod = InitAffinityByMethodIndex(this.apiConfig);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
-        /// </summary>
-        /// <param name="host">Hostname of target.</param>
-        /// <param name="port">Port number of target</param>
-        /// <param name="credentials">Credentials to secure the underlying grpc channels.</param>
-        /// <param name="options">Channel options to be used by the underlying grpc channels.</param>
-        public GcpCallInvoker(string host, int port, ChannelCredentials credentials, IEnumerable<ChannelOption> options = null) :
-            this($"{host}:{port}", credentials, options)
-        { }
-
-        private ApiConfig InitDefaultApiConfig() =>
-            new ApiConfig
-            {
-                ChannelPool = new ChannelPoolConfig
-                {
-                    MaxConcurrentStreamsLowWatermark = (uint)DefaultMaxCurrentStreams,
-                    MaxSize = (uint)DefaultChannelPoolSize
-                }
-            };
-
-        private IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
+        private static IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
         {
             IDictionary<string, AffinityConfig> index = new Dictionary<string, AffinityConfig>();
-            if (config != null)
+            foreach (MethodConfig method in config.Method)
             {
-                foreach (MethodConfig method in config.Method)
+                // TODO(fengli): supports wildcard in method selector.
+                foreach (string name in method.Name)
                 {
-                    // TODO(fengli): supports wildcard in method selector.
-                    foreach (string name in method.Name)
-                    {
-                        index.Add(name, method.Affinity);
-                    }
+                    index.Add(name, method.Affinity);
                 }
             }
             return index;
@@ -159,9 +108,9 @@ namespace Google.Api.Gax.Grpc.Gcp
                 if (count < apiConfig.ChannelPool.MaxSize)
                 {
                     // Creates a new gRPC channel.
-                    GrpcEnvironment.Logger.Info("Grpc.Gcp creating new channel");
-                    Channel channel = new Channel(target, credentials,
-                        options.Concat(new[] { new ChannelOption(ClientChannelId, Interlocked.Increment (ref clientChannelIdCounter)) }));
+                    // TODO: Logging?
+                    // GrpcEnvironment.Logger.Info("Grpc.Gcp creating new channel");
+                    ChannelBase channel = adapter.CreateChannel(target, credentials, channelOptions.WithCustomOption(ClientChannelId, Interlocked.Increment(ref clientChannelIdCounter)));
                     ChannelRef channelRef = new ChannelRef(channel, count);
                     channelRefs.Add(channelRef);
                     return channelRef;
@@ -319,8 +268,8 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             // No channel affinity feature for client streaming call.
             ChannelRef channelRef = GetChannelRef();
-            var callDetails = new CallInvocationDetails<TRequest, TResponse>(channelRef.Channel, method, host, options);
-            var originalCall = Calls.AsyncClientStreamingCall(callDetails);
+
+            var originalCall = channelRef.CallInvoker.AsyncClientStreamingCall(method, host, options);
 
             // Decrease the active streams count once async response finishes.
             var gcpResponseAsync = DecrementCountAndPropagateResult(originalCall.ResponseAsync);
@@ -357,8 +306,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             // No channel affinity feature for duplex streaming call.
             ChannelRef channelRef = GetChannelRef();
-            var callDetails = new CallInvocationDetails<TRequest, TResponse>(channelRef.Channel, method, host, options);
-            var originalCall = Calls.AsyncDuplexStreamingCall(callDetails);
+            var originalCall = channelRef.CallInvoker.AsyncDuplexStreamingCall(method, host, options);
 
             // Decrease the active streams count once the streaming response finishes its final batch.
             var gcpResponseStream = new GcpClientResponseStream<TRequest, TResponse>(
@@ -386,8 +334,7 @@ namespace Google.Api.Gax.Grpc.Gcp
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
-            var callDetails = new CallInvocationDetails<TRequest, TResponse>(channelRef.Channel, method, host, options);
-            var originalCall = Calls.AsyncServerStreamingCall(callDetails, request);
+            var originalCall = channelRef.CallInvoker.AsyncServerStreamingCall(method, host, options, request);
 
             // Executes affinity postprocess once the streaming response finishes its final batch.
             var gcpResponseStream = new GcpClientResponseStream<TRequest, TResponse>(
@@ -414,8 +361,7 @@ namespace Google.Api.Gax.Grpc.Gcp
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
-            var callDetails = new CallInvocationDetails<TRequest, TResponse>(channelRef.Channel, method, host, options);
-            var originalCall = Calls.AsyncUnaryCall(callDetails, request);
+            var originalCall = channelRef.CallInvoker.AsyncUnaryCall<TRequest, TResponse>(method, host, options, request);
 
             // Executes affinity postprocess once the async response finishes.
             var gcpResponseAsync = PostProcessPropagateResult(originalCall.ResponseAsync);
@@ -453,11 +399,10 @@ namespace Google.Api.Gax.Grpc.Gcp
 
             ChannelRef channelRef = PreProcess(affinityConfig, request);
 
-            var callDetails = new CallInvocationDetails<TRequest, TResponse>(channelRef.Channel, method, host, options);
             TResponse response = default(TResponse);
             try
             {
-                response = Calls.BlockingUnaryCall<TRequest, TResponse>(callDetails, request);
+                response = channelRef.CallInvoker.BlockingUnaryCall(method, host, options, request);
                 return response;
             }
             finally
@@ -474,7 +419,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             for (int i = 0; i < channelRefs.Count; i++)
             {
-                await channelRefs[i].Channel.ShutdownAsync();
+                await channelRefs[i].Channel.ShutdownAsync().ConfigureAwait(false);
             }
         }
 

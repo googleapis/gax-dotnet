@@ -70,17 +70,17 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// already associated with <paramref name="endpoint"/> and <paramref name="options"/>.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <param name="options">
-        /// The options to use for each channel created by the call invoker, possibly including the special
-        /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
-        /// control the <see cref="GcpCallInvoker"/> behavior itself.
-        /// </param>
+        /// <param name="options">The options to use for each channel created by the call invoker. May be null.</param>
+        /// <param name="apiConfig">The API configuration used to determine channel keys. Must not be null.</param>
+        /// <param name="adapter">The gRPC adapter to use to create call invokers. Must not be null.</param>
         /// <returns>A call invoker for the specified endpoint.</returns>
-        public GcpCallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options = null)
+        public CallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _credentialsCache.GetCredentials();
-            return GetCallInvoker(endpoint, options, credentials);
+            GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig));
+            GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
+            return GetCallInvoker(endpoint, credentials, options, apiConfig, adapter);
         }
 
         /// <summary>
@@ -88,30 +88,31 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// already associated with <paramref name="endpoint"/> and <paramref name="options"/>.
         /// </summary>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
-        /// <param name="options">
-        /// The options to use for each channel created by the call invoker, possibly including the special
-        /// <see cref="GcpCallInvoker.ApiConfigChannelArg">GcpCallInvoker.ApiConfigChannelArg</see> option to
-        /// control the <see cref="GcpCallInvoker"/> behavior itself.
-        /// </param>
+        /// <param name="options">The options to use for each channel created by the call invoker. May be null.</param>
+        /// <param name="apiConfig">The API configuration used to determine channel keys. Must not be null.</param>
+        /// <param name="adapter">The gRPC adapter to use to create call invokers. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be a call invoker for the specified endpoint.</returns>
-        public async Task<GcpCallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options = null)
+        public async Task<CallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
+            GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig));
+            GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
             var credentials = await _credentialsCache.GetCredentialsAsync().ConfigureAwait(false);
-            return GetCallInvoker(endpoint, options, credentials);
+            return GetCallInvoker(endpoint, credentials, options, apiConfig, adapter);
         }
 
-        private GcpCallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ChannelCredentials credentials)
+        private GcpCallInvoker GetCallInvoker(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             var effectiveOptions = s_defaultOptions.MergedWith(options ?? GrpcChannelOptions.Empty);
-            var key = new Key(endpoint, effectiveOptions);
+            apiConfig = apiConfig.Clone();
+            var key = new Key(endpoint, effectiveOptions, apiConfig, adapter);
 
             lock (_lock)
             {
                 if (!_callInvokers.TryGetValue(key, out GcpCallInvoker callInvoker))
                 {
-                    callInvoker = new GcpCallInvoker(endpoint, credentials, ConvertOptions(effectiveOptions));
+                    callInvoker = new GcpCallInvoker(endpoint, credentials, effectiveOptions, apiConfig, adapter);
                     _callInvokers[key] = callInvoker;
                 }
                 return callInvoker;
@@ -122,78 +123,31 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             public readonly string Endpoint;
             public readonly GrpcChannelOptions Options;
+            public readonly ApiConfig Config;
+            public readonly GrpcAdapter GrpcAdapter;
 
-            public Key(string endpoint, GrpcChannelOptions options)
+            public Key(string endpoint, GrpcChannelOptions options, ApiConfig config, GrpcAdapter adapter)
             {
                 Endpoint = endpoint;
                 Options = options;
+                Config = config;
+                GrpcAdapter = adapter;
             }
 
             public override int GetHashCode() =>
                 GaxEqualityHelpers.CombineHashCodes(
                     Endpoint.GetHashCode(),
-                    Options.GetHashCode());
+                    Options.GetHashCode(),
+                    Config.GetHashCode(),
+                    GrpcAdapter.GetHashCode());
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
-        }
-
-        // TODO: Remove all of this... it's a temporary hack. (We want to move GcpCallInvokerPool into Google.Api.Gax.Grpc.)
-        // Option names, copied from ChannelOptions
-        internal const string ServiceConfigDisableResolution = "grpc.service_config_disable_resolution";
-        internal const string KeepAliveTimeMs = "grpc.keepalive_time_ms";
-        internal const string KeepAliveTimeoutMs = "grpc.keepalive_timeout_ms";
-        internal const string MaxReceiveMessageLength = "grpc.max_receive_message_length";
-        internal const string MaxSendMessageLength = "grpc.max_send_message_length";
-        internal const string PrimaryUserAgentString = "grpc.primary_user_agent";
-
-        /// <summary>
-        /// Converts a <see cref="GrpcChannelOptions"/> (defined in Google.Api.Gax.Grpc) into a list
-        /// of ChannelOption (defined in Grpc.Core). This is generic to allow the simple use of delegates
-        /// for option factories. Internal for testing.
-        /// </summary>
-        /// <param name="options">The options to convert. Must not be null.</param>
-        private static IReadOnlyList<ChannelOption> ConvertOptions(GrpcChannelOptions options)
-        {
-            GaxPreconditions.CheckNotNull(options, nameof(options));
-            List<ChannelOption> ret = new List<ChannelOption>();
-            if (options.EnableServiceConfigResolution is bool enableServiceConfigResolution)
-            {
-                ret.Add(new ChannelOption(ServiceConfigDisableResolution, enableServiceConfigResolution ? 0 : 1));
-            }
-            if (options.KeepAliveTime is TimeSpan keepAlive)
-            {
-                ret.Add(new ChannelOption(KeepAliveTimeMs, (int) keepAlive.TotalMilliseconds));
-            }
-            if (options.KeepAliveTimeout is TimeSpan keepAliveout)
-            {
-                ret.Add(new ChannelOption(KeepAliveTimeoutMs, (int) keepAliveout.TotalMilliseconds));
-            }
-            if (options.MaxReceiveMessageSize is int maxReceiveMessageSize)
-            {
-                ret.Add(new ChannelOption(MaxReceiveMessageLength, maxReceiveMessageSize));
-            }
-            if (options.MaxSendMessageSize is int maxSendMessageSize)
-            {
-                ret.Add(new ChannelOption(MaxSendMessageLength, maxSendMessageSize));
-            }
-            if (options.PrimaryUserAgent is string primaryUserAgent)
-            {
-                ret.Add(new ChannelOption(PrimaryUserAgentString, primaryUserAgent));
-            }
-            foreach (var customOption in options.CustomOptions)
-            {
-                var channelOption = customOption.Type switch
-                {
-                    GrpcChannelOptions.CustomOption.OptionType.Integer => new ChannelOption(customOption.Name, customOption.IntegerValue),
-                    GrpcChannelOptions.CustomOption.OptionType.String => new ChannelOption(customOption.Name, customOption.StringValue),
-                    _ => throw new InvalidOperationException($"Unknown custom option type: {customOption.Type}")
-                };
-                ret.Add(channelOption);
-            }
-            return ret.AsReadOnly();
+                Endpoint.Equals(other.Endpoint) &&
+                Options.Equals(other.Options) &&
+                Config.Equals(other.Config) &&
+                GrpcAdapter.Equals(other.GrpcAdapter);
         }
     }
 }

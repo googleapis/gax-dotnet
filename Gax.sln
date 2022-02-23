@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29001.49
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax", "Google.Api.Gax\Google.Api.Gax.csproj", "{16E01144-C66A-4267-AE2C-40FECF562BBB}"
 EndProject
@@ -24,10 +24,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Testing", "Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj", "{700D6B90-4E1C-4019-9B6C-4CE30FD053F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.CommonProtos.Tests", "Google.Api.CommonProtos.Tests\Google.Api.CommonProtos.Tests.csproj", "{7839A366-B685-475E-AB76-E2DC8A7D8C44}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Gcp", "Google.Api.Gax.Grpc.Gcp\Google.Api.Gax.Grpc.Gcp.csproj", "{966C1852-164C-4162-B727-04782706D787}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Grpc.Gcp.IntegrationTests", "Google.Api.Gax.Grpc.Gcp.IntegrationTests\Google.Api.Gax.Grpc.Gcp.IntegrationTests.csproj", "{E4272960-930B-451C-975D-AE70C1FC463D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Api.Gax.Rest.IntegrationTests", "Google.Api.Gax.Rest.IntegrationTests\Google.Api.Gax.Rest.IntegrationTests.csproj", "{5445ADA0-34FD-4583-86B7-460D4D5B0E79}"
 EndProject
@@ -88,14 +84,6 @@ Global
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7839A366-B685-475E-AB76-E2DC8A7D8C44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{966C1852-164C-4162-B727-04782706D787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{966C1852-164C-4162-B727-04782706D787}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{966C1852-164C-4162-B727-04782706D787}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{966C1852-164C-4162-B727-04782706D787}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4272960-930B-451C-975D-AE70C1FC463D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4272960-930B-451C-975D-AE70C1FC463D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4272960-930B-451C-975D-AE70C1FC463D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4272960-930B-451C-975D-AE70C1FC463D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5445ADA0-34FD-4583-86B7-460D4D5B0E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5445ADA0-34FD-4583-86B7-460D4D5B0E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5445ADA0-34FD-4583-86B7-460D4D5B0E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
