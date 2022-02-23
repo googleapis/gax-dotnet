@@ -15,7 +15,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Grpc.Gcp
+namespace Google.Api.Gax.Grpc.Gcp
 {
     /// <summary>
     /// Invokes client RPCs using <see cref="Calls"/>.

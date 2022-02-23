@@ -10,7 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Grpc.Gcp
+namespace Google.Api.Gax.Grpc.Gcp
 {
     /// <summary>
     ///  A wrapper class for handling post process for server streaming responses.
