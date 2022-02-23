@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Grpc.Gcp {
+namespace Google.Api.Gax.Grpc.Gcp {
 
   /// <summary>Holder for reflection information generated from grpc_gcp.proto</summary>
   public static partial class GrpcGcpReflection {
@@ -33,38 +33,46 @@ namespace Grpc.Gcp {
             "CghhZmZpbml0eRjpByABKAsyGC5ncnBjLmdjcC5BZmZpbml0eUNvbmZpZyKF",
             "AQoOQWZmaW5pdHlDb25maWcSMQoHY29tbWFuZBgCIAEoDjIgLmdycGMuZ2Nw",
             "LkFmZmluaXR5Q29uZmlnLkNvbW1hbmQSFAoMYWZmaW5pdHlfa2V5GAMgASgJ",
-            "IioKB0NvbW1hbmQSCQoFQk9VTkQQABIICgRCSU5EEAESCgoGVU5CSU5EEAJi",
-            "BnByb3RvMw=="));
+            "IioKB0NvbW1hbmQSCQoFQk9VTkQQABIICgRCSU5EEAESCgoGVU5CSU5EEAJC",
+            "GqoCF0dvb2dsZS5BcGkuR2F4LkdycGMuR2NwYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Grpc.Gcp.ApiConfig), global::Grpc.Gcp.ApiConfig.Parser, new[]{ "ChannelPool", "Method" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Grpc.Gcp.ChannelPoolConfig), global::Grpc.Gcp.ChannelPoolConfig.Parser, new[]{ "MaxSize", "IdleTimeout", "MaxConcurrentStreamsLowWatermark" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Grpc.Gcp.MethodConfig), global::Grpc.Gcp.MethodConfig.Parser, new[]{ "Name", "Affinity" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Grpc.Gcp.AffinityConfig), global::Grpc.Gcp.AffinityConfig.Parser, new[]{ "Command", "AffinityKey" }, null, new[]{ typeof(global::Grpc.Gcp.AffinityConfig.Types.Command) }, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Gcp.ApiConfig), global::Google.Api.Gax.Grpc.Gcp.ApiConfig.Parser, new[]{ "ChannelPool", "Method" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig), global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig.Parser, new[]{ "MaxSize", "IdleTimeout", "MaxConcurrentStreamsLowWatermark" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Gcp.MethodConfig), global::Google.Api.Gax.Grpc.Gcp.MethodConfig.Parser, new[]{ "Name", "Affinity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Gcp.AffinityConfig), global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Parser, new[]{ "Command", "AffinityKey" }, null, new[]{ typeof(global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command) }, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class ApiConfig : pb::IMessage<ApiConfig> {
+  public sealed partial class ApiConfig : pb::IMessage<ApiConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ApiConfig> _parser = new pb::MessageParser<ApiConfig>(() => new ApiConfig());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<ApiConfig> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Google.Api.Gax.Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ApiConfig() {
       OnConstruction();
     }
@@ -72,25 +80,28 @@ namespace Grpc.Gcp {
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ApiConfig(ApiConfig other) : this() {
-      ChannelPool = other.channelPool_ != null ? other.ChannelPool.Clone() : null;
+      channelPool_ = other.channelPool_ != null ? other.channelPool_.Clone() : null;
       method_ = other.method_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ApiConfig Clone() {
       return new ApiConfig(this);
     }
 
     /// <summary>Field number for the "channel_pool" field.</summary>
     public const int ChannelPoolFieldNumber = 2;
-    private global::Grpc.Gcp.ChannelPoolConfig channelPool_;
+    private global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig channelPool_;
     /// <summary>
     /// The channel pool configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Grpc.Gcp.ChannelPoolConfig ChannelPool {
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig ChannelPool {
       get { return channelPool_; }
       set {
         channelPool_ = value;
@@ -99,23 +110,26 @@ namespace Grpc.Gcp {
 
     /// <summary>Field number for the "method" field.</summary>
     public const int MethodFieldNumber = 1001;
-    private static readonly pb::FieldCodec<global::Grpc.Gcp.MethodConfig> _repeated_method_codec
-        = pb::FieldCodec.ForMessage(8010, global::Grpc.Gcp.MethodConfig.Parser);
-    private readonly pbc::RepeatedField<global::Grpc.Gcp.MethodConfig> method_ = new pbc::RepeatedField<global::Grpc.Gcp.MethodConfig>();
+    private static readonly pb::FieldCodec<global::Google.Api.Gax.Grpc.Gcp.MethodConfig> _repeated_method_codec
+        = pb::FieldCodec.ForMessage(8010, global::Google.Api.Gax.Grpc.Gcp.MethodConfig.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.Gax.Grpc.Gcp.MethodConfig> method_ = new pbc::RepeatedField<global::Google.Api.Gax.Grpc.Gcp.MethodConfig>();
     /// <summary>
     /// The method configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Grpc.Gcp.MethodConfig> Method {
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.Gax.Grpc.Gcp.MethodConfig> Method {
       get { return method_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
       return Equals(other as ApiConfig);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Equals(ApiConfig other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -129,6 +143,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
       if (channelPool_ != null) hash ^= ChannelPool.GetHashCode();
@@ -140,12 +155,17 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (channelPool_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(ChannelPool);
@@ -154,9 +174,26 @@ namespace Grpc.Gcp {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
 
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (channelPool_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ChannelPool);
+      }
+      method_.WriteTo(ref output, _repeated_method_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
       if (channelPool_ != null) {
@@ -170,13 +207,14 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(ApiConfig other) {
       if (other == null) {
         return;
       }
       if (other.channelPool_ != null) {
         if (channelPool_ == null) {
-          channelPool_ = new global::Grpc.Gcp.ChannelPoolConfig();
+          ChannelPool = new global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig();
         }
         ChannelPool.MergeFrom(other.ChannelPool);
       }
@@ -185,7 +223,11 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -194,9 +236,9 @@ namespace Grpc.Gcp {
             break;
           case 18: {
             if (channelPool_ == null) {
-              channelPool_ = new global::Grpc.Gcp.ChannelPoolConfig();
+              ChannelPool = new global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig();
             }
-            input.ReadMessage(channelPool_);
+            input.ReadMessage(ChannelPool);
             break;
           }
           case 8010: {
@@ -205,27 +247,62 @@ namespace Grpc.Gcp {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 18: {
+            if (channelPool_ == null) {
+              ChannelPool = new global::Google.Api.Gax.Grpc.Gcp.ChannelPoolConfig();
+            }
+            input.ReadMessage(ChannelPool);
+            break;
+          }
+          case 8010: {
+            method_.AddEntriesFrom(ref input, _repeated_method_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
-  public sealed partial class ChannelPoolConfig : pb::IMessage<ChannelPoolConfig> {
+  public sealed partial class ChannelPoolConfig : pb::IMessage<ChannelPoolConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ChannelPoolConfig> _parser = new pb::MessageParser<ChannelPoolConfig>(() => new ChannelPoolConfig());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<ChannelPoolConfig> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Google.Api.Gax.Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ChannelPoolConfig() {
       OnConstruction();
     }
@@ -233,6 +310,7 @@ namespace Grpc.Gcp {
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ChannelPoolConfig(ChannelPoolConfig other) : this() {
       maxSize_ = other.maxSize_;
       idleTimeout_ = other.idleTimeout_;
@@ -241,6 +319,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ChannelPoolConfig Clone() {
       return new ChannelPoolConfig(this);
     }
@@ -252,6 +331,7 @@ namespace Grpc.Gcp {
     /// The max number of channels in the pool.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint MaxSize {
       get { return maxSize_; }
       set {
@@ -266,6 +346,7 @@ namespace Grpc.Gcp {
     /// The idle timeout (seconds) of channels without bound affinity sessions.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong IdleTimeout {
       get { return idleTimeout_; }
       set {
@@ -282,6 +363,7 @@ namespace Grpc.Gcp {
     /// of the channel pool.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint MaxConcurrentStreamsLowWatermark {
       get { return maxConcurrentStreamsLowWatermark_; }
       set {
@@ -290,11 +372,13 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
       return Equals(other as ChannelPoolConfig);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Equals(ChannelPoolConfig other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -309,6 +393,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
       if (MaxSize != 0) hash ^= MaxSize.GetHashCode();
@@ -321,12 +406,17 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (MaxSize != 0) {
         output.WriteRawTag(8);
         output.WriteUInt32(MaxSize);
@@ -342,9 +432,33 @@ namespace Grpc.Gcp {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
 
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (MaxSize != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(MaxSize);
+      }
+      if (IdleTimeout != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(IdleTimeout);
+      }
+      if (MaxConcurrentStreamsLowWatermark != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(MaxConcurrentStreamsLowWatermark);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
       if (MaxSize != 0) {
@@ -363,6 +477,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(ChannelPoolConfig other) {
       if (other == null) {
         return;
@@ -380,7 +495,11 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -401,27 +520,63 @@ namespace Grpc.Gcp {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MaxSize = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            IdleTimeout = input.ReadUInt64();
+            break;
+          }
+          case 24: {
+            MaxConcurrentStreamsLowWatermark = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
-  public sealed partial class MethodConfig : pb::IMessage<MethodConfig> {
+  public sealed partial class MethodConfig : pb::IMessage<MethodConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<MethodConfig> _parser = new pb::MessageParser<MethodConfig>(() => new MethodConfig());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<MethodConfig> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Google.Api.Gax.Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MethodConfig() {
       OnConstruction();
     }
@@ -429,13 +584,15 @@ namespace Grpc.Gcp {
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MethodConfig(MethodConfig other) : this() {
       name_ = other.name_.Clone();
-      Affinity = other.affinity_ != null ? other.Affinity.Clone() : null;
+      affinity_ = other.affinity_ != null ? other.affinity_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public MethodConfig Clone() {
       return new MethodConfig(this);
     }
@@ -451,18 +608,20 @@ namespace Grpc.Gcp {
     /// sequentially, and the first one takes precedence.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<string> Name {
       get { return name_; }
     }
 
     /// <summary>Field number for the "affinity" field.</summary>
     public const int AffinityFieldNumber = 1001;
-    private global::Grpc.Gcp.AffinityConfig affinity_;
+    private global::Google.Api.Gax.Grpc.Gcp.AffinityConfig affinity_;
     /// <summary>
     /// The channel affinity configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Grpc.Gcp.AffinityConfig Affinity {
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Gcp.AffinityConfig Affinity {
       get { return affinity_; }
       set {
         affinity_ = value;
@@ -470,11 +629,13 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
       return Equals(other as MethodConfig);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Equals(MethodConfig other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -488,6 +649,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
       hash ^= name_.GetHashCode();
@@ -499,12 +661,17 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       name_.WriteTo(output, _repeated_name_codec);
       if (affinity_ != null) {
         output.WriteRawTag(202, 62);
@@ -513,9 +680,26 @@ namespace Grpc.Gcp {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
 
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      name_.WriteTo(ref output, _repeated_name_codec);
+      if (affinity_ != null) {
+        output.WriteRawTag(202, 62);
+        output.WriteMessage(Affinity);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
       size += name_.CalculateSize(_repeated_name_codec);
@@ -529,6 +713,7 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(MethodConfig other) {
       if (other == null) {
         return;
@@ -536,7 +721,7 @@ namespace Grpc.Gcp {
       name_.Add(other.name_);
       if (other.affinity_ != null) {
         if (affinity_ == null) {
-          affinity_ = new global::Grpc.Gcp.AffinityConfig();
+          Affinity = new global::Google.Api.Gax.Grpc.Gcp.AffinityConfig();
         }
         Affinity.MergeFrom(other.Affinity);
       }
@@ -544,7 +729,11 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -557,34 +746,69 @@ namespace Grpc.Gcp {
           }
           case 8010: {
             if (affinity_ == null) {
-              affinity_ = new global::Grpc.Gcp.AffinityConfig();
+              Affinity = new global::Google.Api.Gax.Grpc.Gcp.AffinityConfig();
             }
-            input.ReadMessage(affinity_);
+            input.ReadMessage(Affinity);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            name_.AddEntriesFrom(ref input, _repeated_name_codec);
+            break;
+          }
+          case 8010: {
+            if (affinity_ == null) {
+              Affinity = new global::Google.Api.Gax.Grpc.Gcp.AffinityConfig();
+            }
+            input.ReadMessage(Affinity);
             break;
           }
         }
       }
     }
+    #endif
 
   }
 
-  public sealed partial class AffinityConfig : pb::IMessage<AffinityConfig> {
+  public sealed partial class AffinityConfig : pb::IMessage<AffinityConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AffinityConfig> _parser = new pb::MessageParser<AffinityConfig>(() => new AffinityConfig());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<AffinityConfig> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Google.Api.Gax.Grpc.Gcp.GrpcGcpReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AffinityConfig() {
       OnConstruction();
     }
@@ -592,6 +816,7 @@ namespace Grpc.Gcp {
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AffinityConfig(AffinityConfig other) : this() {
       command_ = other.command_;
       affinityKey_ = other.affinityKey_;
@@ -599,18 +824,20 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AffinityConfig Clone() {
       return new AffinityConfig(this);
     }
 
     /// <summary>Field number for the "command" field.</summary>
     public const int CommandFieldNumber = 2;
-    private global::Grpc.Gcp.AffinityConfig.Types.Command command_ = 0;
+    private global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command command_ = global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound;
     /// <summary>
     /// The affinity command applies on the selected gRPC methods.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Grpc.Gcp.AffinityConfig.Types.Command Command {
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command Command {
       get { return command_; }
       set {
         command_ = value;
@@ -625,6 +852,7 @@ namespace Grpc.Gcp {
     /// For example: "f.a", "f.b.d", etc.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string AffinityKey {
       get { return affinityKey_; }
       set {
@@ -633,11 +861,13 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
       return Equals(other as AffinityConfig);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Equals(AffinityConfig other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -651,9 +881,10 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Command != 0) hash ^= Command.GetHashCode();
+      if (Command != global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound) hash ^= Command.GetHashCode();
       if (AffinityKey.Length != 0) hash ^= AffinityKey.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -662,13 +893,18 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Command != 0) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Command != global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Command);
       }
@@ -679,12 +915,32 @@ namespace Grpc.Gcp {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
 
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Command != global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Command);
+      }
+      if (AffinityKey.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(AffinityKey);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Command != 0) {
+      if (Command != global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Command);
       }
       if (AffinityKey.Length != 0) {
@@ -697,11 +953,12 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(AffinityConfig other) {
       if (other == null) {
         return;
       }
-      if (other.Command != 0) {
+      if (other.Command != global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command.Bound) {
         Command = other.Command;
       }
       if (other.AffinityKey.Length != 0) {
@@ -711,7 +968,11 @@ namespace Grpc.Gcp {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -719,7 +980,30 @@ namespace Grpc.Gcp {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 16: {
-            command_ = (global::Grpc.Gcp.AffinityConfig.Types.Command) input.ReadEnum();
+            Command = (global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            AffinityKey = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 16: {
+            Command = (global::Google.Api.Gax.Grpc.Gcp.AffinityConfig.Types.Command) input.ReadEnum();
             break;
           }
           case 26: {
@@ -729,10 +1013,12 @@ namespace Grpc.Gcp {
         }
       }
     }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the AffinityConfig message type.</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
       public enum Command {
         /// <summary>
