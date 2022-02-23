@@ -9,6 +9,8 @@ syntax = "proto3";
 
 package grpc.gcp;
 
+option csharp_namespace = "Google.Api.Gax.Grpc.Gcp";
+
 message ApiConfig {
   // The channel pool configurations.
   ChannelPoolConfig channel_pool = 2;
