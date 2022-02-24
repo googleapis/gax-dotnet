@@ -60,52 +60,6 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void WithCallCredentials_NonNull()
-        {
-            AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
-            var credentials1 = CallCredentials.FromInterceptor(interceptor);
-            var credentials2 = CallCredentials.FromInterceptor(interceptor);
-            Assert.NotSame(credentials1, credentials2);
-
-            CancellationToken token = new CancellationTokenSource().Token;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            var original = new CallSettings(token, credentials1, null, null, null, null, null);
-            var result = original.WithCallCredentials(credentials2);
-            Assert.Same(credentials2, result.Credentials);
-#pragma warning restore CS0618 // Type or member is obsolete
-            Assert.Equal(token, result.CancellationToken);
-        }
-
-        [Fact]
-        public void WithCallCredentials_NullSettings()
-        {
-            CallSettings noSettings = null;
-#pragma warning disable CS0618 // Type or member is obsolete
-            Assert.Null(noSettings.WithCallCredentials(null));
-            AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
-            var credentials = CallCredentials.FromInterceptor(interceptor);
-            var result = noSettings.WithCallCredentials(credentials);
-            Assert.Same(credentials, result.Credentials);
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
-
-        [Fact]
-        public void WithCallCredentials_NullCredentials()
-        {
-            AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
-            var credentials = CallCredentials.FromInterceptor(interceptor);
-            CancellationToken token = new CancellationTokenSource().Token;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            var original = new CallSettings(token, credentials, null, null, null, null, null);
-            var result = original.WithCallCredentials(null);
-            Assert.Null(result.Credentials);
-#pragma warning restore CS0618 // Type or member is obsolete
-            Assert.Equal(token, result.CancellationToken);
-        }
-
-        [Fact]
         public void WithHeader_NullSettings()
         {
             CallSettings settings = null;
