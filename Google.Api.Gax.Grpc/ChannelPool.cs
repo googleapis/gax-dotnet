@@ -43,15 +43,6 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Creates a channel pool which will apply the specified scopes to the default application credentials
-        /// if they require any.
-        /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public ChannelPool(IEnumerable<string> scopes) : this(scopes, false)
-        {
-        }
-
-        /// <summary>
         /// Shuts down all the currently-allocated channels asynchronously. This does not prevent the channel
         /// pool from being used later on, but the currently-allocated channels will not be reused.
         /// </summary>
