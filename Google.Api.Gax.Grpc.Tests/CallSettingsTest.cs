@@ -161,18 +161,6 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void FromCredential()
-        {
-#pragma warning disable CS0618 // Type or member is obsolete
-            Assert.Null(CallSettings.FromCallCredentials(null));
-            AsyncAuthInterceptor interceptor = (context, metadata) => Task.Delay(0);
-            var credential = CallCredentials.FromInterceptor(interceptor);
-            var settings = CallSettings.FromCallCredentials(credential);
-            Assert.Same(credential, settings.Credentials);
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
-
-        [Fact]
         public void FromHeaderMutation()
         {
             Assert.Null(CallSettings.FromHeaderMutation(null));

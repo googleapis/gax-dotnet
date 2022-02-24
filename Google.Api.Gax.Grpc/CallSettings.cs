@@ -42,32 +42,6 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Obsolete.
-        /// This is obsolete as it allows per-call credentials to be specified.
-        /// Please use <see cref="CallSettings(System.Threading.CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken)"/>,
-        /// and see https://github.com/googleapis/gax-dotnet/blob/main/docs/PER_CALL_CREDENTIAL.md for more information.
-        /// Constructs an instance with the specified settings.
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
-        /// <param name="credentials">Credentials to use for the call.</param>
-        /// <param name="expiration"><see cref="Expiration"/> to use, or null for default expiration behavior.</param>
-        /// <param name="retry"><see cref="Retry"/> to use, or null for default retry behavior.</param>
-        /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
-        /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
-        /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
-        [Obsolete("This is obsolete as it allows per-call credentials to be specified. Please use an alternative overload and see https://github.com/googleapis/gax-dotnet/blob/main/docs/PER_CALL_CREDENTIAL.md for more information.")]
-        public CallSettings(
-            CancellationToken? cancellationToken,
-            CallCredentials credentials,
-            Expiration expiration,
-            RetrySettings retry,
-            Action<Metadata> headerMutation,
-            WriteOptions writeOptions,
-            ContextPropagationToken propagationToken) : this(cancellationToken, credentials, expiration, retry, headerMutation, writeOptions, propagationToken, null, null)
-        {
-        }
-
-        /// <summary>
         /// Constructs an instance with the specified settings.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
@@ -80,39 +54,6 @@ namespace Google.Api.Gax.Grpc
         /// <param name="trailingMetadataHandler">Action to invoke when trailing metadata is received.</param>
         public CallSettings(
             CancellationToken? cancellationToken,
-            Expiration expiration,
-            RetrySettings retry,
-            Action<Metadata> headerMutation,
-            WriteOptions writeOptions,
-            ContextPropagationToken propagationToken,
-            Action<Metadata> responseMetadataHandler,
-            Action<Metadata> trailingMetadataHandler)
-#pragma warning disable CS0618 // Type or member is obsolete
-            : this(cancellationToken, null, expiration, retry, headerMutation, writeOptions, propagationToken, responseMetadataHandler, trailingMetadataHandler)
-#pragma warning restore CS0618 // Type or member is obsolete
-        {
-        }
-
-        /// <summary>
-        /// Obsolete.
-        /// This is obsolete as it allows per-call credentials to be specified.
-        /// Please use <see cref="CallSettings(CancellationToken?, Expiration, RetrySettings, Action{Metadata}, WriteOptions, ContextPropagationToken, Action{Metadata}, Action{Metadata})"/>,
-        /// and see https://github.com/googleapis/gax-dotnet/blob/main/docs/PER_CALL_CREDENTIAL.md for more information.
-        /// Constructs an instance with the specified settings.
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token that can be used for cancelling the call.</param>
-        /// <param name="credentials">Credentials to use for the call.</param>
-        /// <param name="expiration"><see cref="Expiration"/> to use, or null for default expiration behavior.</param>
-        /// <param name="retry"><see cref="Retry"/> to use, or null for default retry behavior.</param>
-        /// <param name="headerMutation">Action to modify the headers to send at the beginning of the call.</param>
-        /// <param name="writeOptions"><see cref="global::Grpc.Core.WriteOptions"/> that will be used for the call.</param>
-        /// <param name="propagationToken"><see cref="ContextPropagationToken"/> for propagating settings from a parent call.</param>
-        /// <param name="responseMetadataHandler">Action to invoke when response metadata is received.</param>
-        /// <param name="trailingMetadataHandler">Action to invoke when trailing metadata is received.</param>
-        [Obsolete("This is obsolete as it allows per-call credentials to be specified. Please use an alternative overload and see https://github.com/googleapis/gax-dotnet/blob/main/docs/PER_CALL_CREDENTIAL.md for more information.")]
-        public CallSettings(
-            CancellationToken? cancellationToken,
-            CallCredentials credentials,
             Expiration expiration,
             RetrySettings retry,
             Action<Metadata> headerMutation,
@@ -122,7 +63,6 @@ namespace Google.Api.Gax.Grpc
             Action<Metadata> trailingMetadataHandler)
         {
             CancellationToken = cancellationToken;
-            Credentials = credentials;
             Expiration = expiration;
             Retry = retry;
             HeaderMutation = headerMutation;
@@ -130,6 +70,7 @@ namespace Google.Api.Gax.Grpc
             PropagationToken = propagationToken;
             ResponseMetadataHandler = responseMetadataHandler;
             TrailingMetadataHandler = trailingMetadataHandler;
+
         }
 
         /// <summary>
@@ -152,12 +93,6 @@ namespace Google.Api.Gax.Grpc
         /// <see cref="ContextPropagationToken"/> for propagating settings from a parent call.
         /// </summary>
         public ContextPropagationToken PropagationToken { get; }
-
-        /// <summary>
-        /// Credentials to use for the call.
-        /// </summary>
-        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/main/PER_CALL_CREDENTIAL.md")]
-        public CallCredentials Credentials { get; }
 
         /// <summary>
         /// The expiration for the call (either a timeout or a deadline), or null for the default expiration.
@@ -200,11 +135,8 @@ namespace Google.Api.Gax.Grpc
             {
                 return original;
             }
-#pragma warning disable CS0618 // Type or member is obsolete.
-            // But as long as user code can specify credentials we should continue to respect that.
             return new CallSettings(
                 overlaid.CancellationToken ?? original.CancellationToken,
-                overlaid.Credentials ?? original.Credentials,
                 overlaid.Expiration ?? original.Expiration,
                 overlaid.Retry ?? original.Retry,
                 // Combine mutations so that the overlaid mutation happens last; it can overwrite
@@ -214,7 +146,6 @@ namespace Google.Api.Gax.Grpc
                 overlaid.PropagationToken ?? original.PropagationToken,
                 original.ResponseMetadataHandler + overlaid.ResponseMetadataHandler,
                 original.TrailingMetadataHandler + overlaid.TrailingMetadataHandler);
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -224,17 +155,6 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A new instance.</returns>
         public static CallSettings FromCancellationToken(CancellationToken cancellationToken) =>
             cancellationToken.CanBeCanceled ? new CallSettings(cancellationToken, null, null, null, null, null) : CancellationTokenNone;
-
-        /// <summary>
-        /// Obsolete. See: https://github.com/googleapis/gax-dotnet/blob/main/PER_CALL_CREDENTIAL.md
-        /// Creates a <see cref="CallSettings"/> for the specified call credentials, or returns null
-        /// if <paramref name="credentials"/> is null.
-        /// </summary>
-        /// <param name="credentials">The call credentials for the new settings.</param>
-        /// <returns>A new instance, or null if <paramref name="credentials"/> is null.</returns>
-        [Obsolete("https://github.com/googleapis/gax-dotnet/blob/main/PER_CALL_CREDENTIAL.md")]
-        public static CallSettings FromCallCredentials(CallCredentials credentials) =>
-            credentials == null ? null : new CallSettings(null, credentials, null, null, null, null, null);
 
         /// <summary>
         /// Creates a <see cref="CallSettings"/> for the specified call expiration, or returns null
