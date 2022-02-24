@@ -7,8 +7,6 @@
 
 using Grpc.Core;
 using Grpc.Net.Client;
-using System;
-using System.Threading;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -17,7 +15,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public abstract class GrpcAdapter
     {
-        private static readonly Lazy<GrpcAdapter> s_defaultFactory = new Lazy<GrpcAdapter>(CreateDefaultAdapter, LazyThreadSafetyMode.PublicationOnly);
+        private static readonly object s_defaultAdapterLock = new object();
+        private static GrpcAdapter s_defaultAdapter;
 
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options.
@@ -47,7 +46,19 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Returns the default gRPC adapter based on the available gRPC implementations.
         /// </summary>
-        public static GrpcAdapter DefaultAdapter => s_defaultFactory.Value;
+        /// <remarks>
+        /// FIXME: Add details about the normal detection process here.
+        /// </remarks>
+        public static GrpcAdapter DefaultAdapter
+        {
+            get
+            {
+                lock (s_defaultAdapterLock)
+                {
+                    return s_defaultAdapter ??= CreateDefaultAdapter();
+                }
+            }
+        }
 
         // TODO: Is this really what we want? Definitely simple, but not great in other ways...
         // Perhaps have an environment variable that can be used to force one or the other?
@@ -63,6 +74,45 @@ namespace Google.Api.Gax.Grpc
             catch
             {
                 return GrpcCoreAdapter.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Clears the default adapter returned by <see cref="DefaultAdapter"/>. The next
+        /// time the property is accessed, the default detection process will occur
+        /// as documented on the property, unless <see cref="SetDefault(GrpcAdapter)"/> has
+        /// been called to set a specific default.
+        /// </summary>
+        /// <remarks>
+        /// This method is primarily present for testing purposes. It is rarely useful within
+        /// an application.
+        /// </remarks>
+        public static void ClearDefault()
+        {
+            lock (s_defaultAdapter)
+            {
+                s_defaultAdapter = null;
+            }
+        }
+
+        /// <summary>
+        /// Sets the default adapter returned by <see cref="DefaultAdapter"/> property.
+        /// This method must only be called once, before any calls to the property,
+        /// unless <see cref="ClearDefault"/>
+        /// </summary>
+        /// <remarks>
+        /// Within applications, this method should generally be called at the very start of the
+        /// application. It is rarely appropriate to call this method within a general purpose
+        /// library, due to the lack of knowledge of potentially-conflicting application requirements.
+        /// </remarks>
+        /// <param name="adapter">The gRPC adapter to use by default. Must not be null.</param>
+        public static void SetDefault(GrpcAdapter adapter)
+        {
+            GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
+            lock (s_defaultAdapter)
+            {
+                GaxPreconditions.CheckState(s_defaultAdapter is null, "The default adapter has already been set or accessed.");
+                s_defaultAdapter = adapter;
             }
         }
     }
