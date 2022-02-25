@@ -19,13 +19,13 @@ jobs:
 
     # We need just the .NET Core 3.1 runtime for testing    
     - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 3.1.x
 
     # We build with .NET Core 6.0 SDK
     - name: Setup .NET Core 6.0
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
 
