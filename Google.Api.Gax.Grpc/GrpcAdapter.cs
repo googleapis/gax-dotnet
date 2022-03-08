@@ -17,6 +17,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public abstract class GrpcAdapter
     {
+        private const string AdapterOverrideEnvironmentVariable = "GRPC_DEFAULT_ADAPTER_OVERRIDE";
+
         private static readonly Lazy<GrpcAdapter> s_defaultFactory = new Lazy<GrpcAdapter>(CreateDefaultAdapter, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
@@ -49,11 +51,24 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public static GrpcAdapter DefaultAdapter => s_defaultFactory.Value;
 
+        private static GrpcAdapter CreateDefaultAdapter() =>
+            GetDefaultFromEnvironmentVariable() ?? DetectDefaultPreferringGrpcNetClient();
+
+        private static GrpcAdapter GetDefaultFromEnvironmentVariable()
+        {
+            var env = Environment.GetEnvironmentVariable(AdapterOverrideEnvironmentVariable)?.Trim();
+            return env switch
+            {
+                "Grpc.Net.Client" => GrpcNetClientAdapter.Default,
+                "Grpc.Core" => GrpcCoreAdapter.Instance,
+                null => null,
+                "" => null,
+                _ => throw new InvalidOperationException($"Unknown value for environment variable '{AdapterOverrideEnvironmentVariable}': '{env}'")
+            };
+        }
+
         // TODO: Is this really what we want? Definitely simple, but not great in other ways...
-        // Perhaps have an environment variable that can be used to force one or the other?
-        // (In some situations it may be better to see "Grpc.Core fails immediately, but that's the one we want"
-        // rather than "Grpc.Net.Client looks like it will work, but then fails".)
-        private static GrpcAdapter CreateDefaultAdapter()
+        private static GrpcAdapter DetectDefaultPreferringGrpcNetClient()
         {
             try
             {
