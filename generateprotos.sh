@@ -102,3 +102,7 @@ rm -rf $OUTDIR
 
 (cd Google.Api.Gax.Grpc/Gcp;
  $PROTOC --csharp_opt=file_extension=.g.cs --csharp_out=. -I. *.proto)
+
+(cd Google.Api.Gax.Grpc/Rest;
+ $PROTOC --csharp_opt=file_extension=.g.cs,internal_access \
+   --csharp_out=. -I. -I $CORE_PROTOS_ROOT -I ../../googleapis *.proto)
