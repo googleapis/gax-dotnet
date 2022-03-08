@@ -5,7 +5,10 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf;
+using Google.Protobuf.Reflection;
 using Grpc.Core;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.ExceptionServices;
 
@@ -27,8 +30,11 @@ namespace Google.Api.Gax.Grpc.Rest
     /// </summary>
     internal class ReadHttpResponseMessage
     {
+        private static readonly JsonParser s_responseMetadataParser = new JsonParser(
+            JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(TypeRegistry.FromFiles(Rpc.ErrorDetailsReflection.Descriptor)));
         private HttpResponseMessage OriginalResponseMessage { get; }
 
+        private readonly Rpc.Status _rpcStatus;
         private readonly string _content;
         private readonly ExceptionDispatchInfo _readException;
 
@@ -42,9 +48,11 @@ namespace Google.Api.Gax.Grpc.Rest
         }
 
         internal ReadHttpResponseMessage(HttpResponseMessage response, string content) =>
-            (OriginalResponseMessage, _content) = (response, content);
+            (OriginalResponseMessage, _content, _rpcStatus) = (response, content, CreateRpcStatus(response.StatusCode, content));
 
         internal ReadHttpResponseMessage(HttpResponseMessage response, ExceptionDispatchInfo readException) =>
+            // If we didn't manage to read the response, we don't have any information to create a fake status code from.
+            // We'll bubble up the _readException instead.
             (OriginalResponseMessage, _readException) = (response, readException);
 
         internal Metadata GetHeaders()
@@ -60,15 +68,55 @@ namespace Google.Api.Gax.Grpc.Rest
 
         internal Status GetStatus()
         {
-            var grpcStatus = RestGrpcAdapter.ConvertHttpStatusCode((int) OriginalResponseMessage.StatusCode);
-            return new Status(grpcStatus,
-                // Notice that here, if there was an exception reading the content
-                // we'll bubble it up. This is similar to what's done if there's an
-                // exception while sending the request, and if there's an exception
-                // reading the content for TResponse.
-                grpcStatus == StatusCode.OK ? "" : Content);
+            // Notice that here, if there was an exception reading the content
+            // we'll bubble it up. This is similar to what's done if there's an
+            // exception while sending the request, and if there's an exception
+            // reading the content for TResponse.
+            _readException?.Throw();
+            return new Status((StatusCode) _rpcStatus.Code, _rpcStatus.Message);
         }
 
-        internal Metadata GetTrailers() => new Metadata(); // We never have any trailers.
+        internal Metadata GetTrailers()
+        {
+            if (_rpcStatus is null || _rpcStatus.Code == (int) Rpc.Code.Ok)
+            {
+                return new Metadata();
+            }
+            return new Metadata { { RpcExceptionExtensions.StatusDetailsTrailerName, _rpcStatus.ToByteArray() } };
+        }
+
+        /// <summary>
+        /// Create an RPC status from the HTTP status code, attempting to parse the
+        /// content as an Rpc.Status if the HTTP status indicates a failure.
+        /// </summary>
+        internal static Rpc.Status CreateRpcStatus(HttpStatusCode statusCode, string content)
+        {
+            var grpcStatusCode = RestGrpcAdapter.ConvertHttpStatusCode((int) statusCode);
+            if (grpcStatusCode == StatusCode.OK)
+            {
+                return new Rpc.Status { Code = (int) grpcStatusCode };
+            }
+            try
+            {
+                var errorFromMetadata = s_responseMetadataParser.Parse<Error>(content);
+                var error = errorFromMetadata.Error_;
+                if (error is null)
+                {
+                    return new Rpc.Status { Code = (int) grpcStatusCode };
+                }
+                var status = new Rpc.Status
+                {
+                    Code = (int) error.Status_,
+                    Message = error.Message,
+                    Details = { error.Details }
+                };
+                return status;
+            }
+            catch
+            {
+                // If we can't parse the result as JSON, just use the content as the error message.
+                return new Rpc.Status { Code = (int) grpcStatusCode, Message = content };
+            }
+        }
     }
 }

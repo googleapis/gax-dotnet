@@ -19,7 +19,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public static class RpcExceptionExtensions
     {
-        // Visible for testing.
+        // Visible for testing, and for synthesis in ReadHttpResponseMessage.
         internal const string StatusDetailsTrailerName = "grpc-status-details-bin";
 
         /// <summary>
