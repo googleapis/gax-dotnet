@@ -187,7 +187,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var status = httpResponse.GetStatus();
             if (status.StatusCode != StatusCode.OK)
             {
-                throw new RpcException(status, httpResponse.GetTrailers(), status.Detail);
+                throw new RpcException(status, httpResponse.GetTrailers());
             }
             return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
         }
