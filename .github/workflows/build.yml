@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Check out our repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # We need just the .NET Core 3.1 runtime for testing    
     - name: Setup .NET Core 3.1
