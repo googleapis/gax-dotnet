@@ -54,9 +54,13 @@ namespace Google.Api.Gax.Grpc
         private static GrpcAdapter CreateDefaultAdapter() =>
             GetDefaultFromEnvironmentVariable() ?? DetectDefaultPreferringGrpcNetClient();
 
-        private static GrpcAdapter GetDefaultFromEnvironmentVariable()
+        private static GrpcAdapter GetDefaultFromEnvironmentVariable() =>
+            GetDefaultFromEnvironmentVariable(Environment.GetEnvironmentVariable(AdapterOverrideEnvironmentVariable));
+
+        // Visible for testing, and accepting a string for simplicity (to avoid modifying the environment in tests).
+        internal static GrpcAdapter GetDefaultFromEnvironmentVariable(string environmentVariable)
         {
-            var env = Environment.GetEnvironmentVariable(AdapterOverrideEnvironmentVariable)?.Trim();
+            var env = environmentVariable?.Trim();
             return env switch
             {
                 "Grpc.Net.Client" => GrpcNetClientAdapter.Default,
