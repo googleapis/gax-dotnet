@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using System;
 using Xunit;
 using static Google.Api.Gax.Grpc.IntegrationTests.TestService;
 
@@ -30,5 +31,39 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);
         }
+
+#if NETCOREAPP3_1_OR_GREATER
+        [Theory]
+        [InlineData("Grpc.Net.Client")]
+        [InlineData("  Grpc.Net.Client  ")]
+        public void AdapterOverride_GrpcNetClient(string environmentVariable)
+        {
+            var adapter = GrpcAdapter.GetDefaultFromEnvironmentVariable(environmentVariable);
+            Assert.IsAssignableFrom<GrpcNetClientAdapter>(adapter);
+        }
+#endif
+
+        [Theory]
+        [InlineData("Grpc.Core")]
+        [InlineData("  Grpc.Core  ")]
+        public void AdapterOverride_GrpcCore(string environmentVariable)
+        {
+            var adapter = GrpcAdapter.GetDefaultFromEnvironmentVariable(environmentVariable);
+            Assert.IsAssignableFrom<GrpcCoreAdapter>(adapter);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void AdapterOverride_NullOrEmpty(string environmentVariable)
+        {
+            var adapter = GrpcAdapter.GetDefaultFromEnvironmentVariable(environmentVariable);
+            Assert.Null(adapter);
+        }
+
+        [Fact]
+        public void AdapterOverride_Invalid() =>
+            Assert.Throws<InvalidOperationException>(() => GrpcAdapter.GetDefaultFromEnvironmentVariable("garbage"));
     }
 }

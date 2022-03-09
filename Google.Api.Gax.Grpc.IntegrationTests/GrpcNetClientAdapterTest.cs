@@ -9,7 +9,7 @@ using Grpc.Core;
 using Xunit;
 using static Google.Api.Gax.Grpc.IntegrationTests.TestService;
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1_OR_GREATER
 namespace Google.Api.Gax.Grpc.IntegrationTests
 {
     [Collection(nameof(TestServiceFixture))]
