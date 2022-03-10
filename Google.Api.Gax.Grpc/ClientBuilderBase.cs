@@ -8,6 +8,7 @@
 using Google.Apis.Auth.OAuth2;
 using Grpc.Auth;
 using Grpc.Core;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Google.Api.Gax.Grpc
     /// Base class for API-specific builders.
     /// </summary>
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
-    public abstract class ClientBuilderBase<TClient>
+    public abstract class ClientBuilderBase<TClient> : IClientBuilder<TClient>
     {
         /// <summary>
         /// The default gRPC options.
@@ -480,6 +481,21 @@ namespace Google.Api.Gax.Grpc
         /// Builds the resulting client.
         /// </summary>
         public abstract TClient Build();
+
+        /// <summary>
+        /// Populates properties based on those set via dependency injection.
+        /// </summary>
+        /// <param name="provider">The service provider to request dependencies from.</param>
+        public virtual void PopulateFromServices(IServiceProvider provider)
+        {
+            GaxPreconditions.CheckNotNull(provider, nameof(provider));
+            GrpcAdapter = provider.GetService<GrpcAdapter>();
+            // TODO: potentially use this in the same way as a default GoogleCredential, with scopes, JWT access etc.
+            if (provider.GetService<GoogleCredential>() is ITokenAccess credential)
+            {
+                TokenAccessMethod = credential.GetAccessTokenForRequestAsync;
+            }
+        }
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.

@@ -8,6 +8,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Http;
 using Google.Apis.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace Google.Api.Gax.Rest
     /// Base class for API-specific builders.
     /// </summary>
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
-    public abstract class ClientBuilderBase<TClient>
+    public abstract class ClientBuilderBase<TClient> : IClientBuilder<TClient>
     {
         /// <summary>
         /// The path to the credentials file to use, or null if credentials are being provided in a different way.
@@ -229,6 +230,21 @@ namespace Google.Api.Gax.Rest
         /// Builds the resulting client asynchronously.
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Populates properties based on those set via dependency injection.
+        /// </summary>
+        /// <param name="provider">The service provider to request dependencies from.</param>
+        public void PopulateFromServices(IServiceProvider provider)
+        {
+            GaxPreconditions.CheckNotNull(provider, nameof(provider));
+            // TODO: What about GetService<ICredential>?
+            if (provider.GetService<GoogleCredential>() is GoogleCredential credential)
+            {
+                Credential = credential;
+            }
+            // TODO: Other things
+        }
 
         /// <summary>
         /// Class to be used to set the quota project on request headers when

@@ -7,6 +7,7 @@
 
 using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -16,22 +17,37 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class GrpcNetClientAdapter : GrpcAdapter
     {
+        private Action<global::Grpc.Net.Client.GrpcChannelOptions> _optionsConfigurer;
+
         // Note: this is "Default" rather than "Instance" as we expect to have other factory methods later, e.g. accepting
         // an HTTP client factory.
 
         /// <summary>
         /// Returns the default instance of this class.
         /// </summary>
-        public static GrpcNetClientAdapter Default { get; } = new GrpcNetClientAdapter();
+        public static GrpcNetClientAdapter Default { get; } = new GrpcNetClientAdapter(null);
 
-        private GrpcNetClientAdapter()
+        private GrpcNetClientAdapter(Action<global::Grpc.Net.Client.GrpcChannelOptions> optionsConfigurer)
         {
+            _optionsConfigurer = optionsConfigurer;
         }
+
+        /// <summary>
+        /// Returns a new instance based on this one, but with the additional options configurer specified.
+        /// The options configurer is called after creating the <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/> from
+        /// other settings, but before creating the <see cref="GrpcChannel"/>.
+        /// </summary>
+        /// <param name="optionsConfigurer"></param>
+        /// <returns></returns>
+        public GrpcNetClientAdapter WithAdditionalOptions(Action<global::Grpc.Net.Client.GrpcChannelOptions> optionsConfigurer) =>
+            new GrpcNetClientAdapter(_optionsConfigurer + optionsConfigurer);
 
         /// <inheritdoc />
         protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
             var grpcNetClientOptions = ConvertOptions(credentials, options);
+            _optionsConfigurer?.Invoke(grpcNetClientOptions);
+            grpcNetClientOptions.LoggerFactory?.CreateLogger("Grpc.Net.Client.Internal.GrpcCall").LogTrace("Awooga");
             var address = ConvertEndpoint(endpoint);
             return GrpcChannel.ForAddress(address, grpcNetClientOptions);
         }
