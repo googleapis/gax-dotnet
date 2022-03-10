@@ -9,6 +9,7 @@ using Google.Apis.Auth.OAuth2;
 using Grpc.Auth;
 using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,11 @@ namespace Google.Api.Gax.Grpc
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
         public string Endpoint { get; set; }
+
+        /// <summary>
+        /// The logger factory to use to create a logger for the client, if any.
+        /// </summary>
+        public ILoggerFactory LoggerFactory { get; set; }
 
         /// <summary>
         /// The scopes to use, or null to use the default scopes.
@@ -137,6 +143,7 @@ namespace Google.Api.Gax.Grpc
             GrpcAdapter = source.GrpcAdapter;
             QuotaProject = source.QuotaProject;
             UseJwtAccessWithScopes = source.UseJwtAccessWithScopes;
+            LoggerFactory = source.LoggerFactory;
 
             // Note that we may be copying from one type that supports emulators (e.g. FirestoreDbBuilder)
             // to another type that doesn't (e.g. FirestoreClientBuilder). That ends up in a slightly odd situation,
@@ -155,6 +162,7 @@ namespace Google.Api.Gax.Grpc
             GaxPreconditions.CheckNotNull(source, nameof(source));
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
+            LoggerFactory = source.LoggerFactory;
         }
 
         /// <summary>
@@ -490,6 +498,7 @@ namespace Google.Api.Gax.Grpc
         {
             GaxPreconditions.CheckNotNull(provider, nameof(provider));
             GrpcAdapter = provider.GetService<GrpcAdapter>();
+            LoggerFactory = provider.GetService<ILoggerFactory>();
             // TODO: potentially use this in the same way as a default GoogleCredential, with scopes, JWT access etc.
             if (provider.GetService<GoogleCredential>() is ITokenAccess credential)
             {

@@ -7,6 +7,7 @@
 
 using Google.Protobuf;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -151,11 +152,19 @@ namespace Google.Api.Gax.Grpc
         internal ApiCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
             new ApiCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
-        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
+        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler, ILogger logger) =>
             new ApiCall<TRequest, TResponse>(
-                _asyncCall.WithRetry(clock, scheduler),
-                _syncCall.WithRetry(clock, scheduler),
+                _asyncCall.WithRetry(clock, scheduler, logger),
+                _syncCall.WithRetry(clock, scheduler, logger),
                 BaseCallSettings);
+
+        internal ApiCall<TRequest, TResponse> WithLogging(ILogger logger) =>
+            logger is null
+                ? this
+                : new ApiCall<TRequest, TResponse>(
+                    _asyncCall.WithLogging(logger),
+                    _syncCall.WithLogging(logger),
+                    BaseCallSettings);
 
         /// <summary>
         /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to
