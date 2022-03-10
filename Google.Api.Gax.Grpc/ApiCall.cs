@@ -7,6 +7,7 @@
 
 using Google.Protobuf;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -151,11 +152,18 @@ namespace Google.Api.Gax.Grpc
         internal ApiCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
             new ApiCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
-        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
+        // Note: it seems unfortunate that we can't reuse whatever logger is already configured here, but we don't
+        // have access to it. This is the logger for logging "I'm about to back off / retry" rather than the actual calls.
+        internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler, ILogger retryLogger) =>
             new ApiCall<TRequest, TResponse>(
-                _asyncCall.WithRetry(clock, scheduler),
-                _syncCall.WithRetry(clock, scheduler),
+                _asyncCall.WithRetry(clock, scheduler, retryLogger),
+                _syncCall.WithRetry(clock, scheduler, retryLogger),
                 BaseCallSettings);
+
+        internal ApiCall<TRequest, TResponse> WithLogging(ILogger logger) =>
+            logger is null
+                ? this
+                : new ApiCall<TRequest, TResponse>(_asyncCall.WithLogging(logger), _syncCall.WithLogging(logger), BaseCallSettings);
 
         /// <summary>
         /// Constructs a new <see cref="ApiCall{TRequest, TResponse}"/> that applies an overlay to

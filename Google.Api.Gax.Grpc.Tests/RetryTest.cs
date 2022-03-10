@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Threading;
 using Google.Api.Gax.Grpc.Testing;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -43,7 +44,7 @@ namespace Google.Api.Gax.Grpc.Tests
         private Task<SimpleResponse> Call(
             bool async, FakeScheduler scheduler, Server server, SimpleRequest request, CallSettings callSettings)
         {
-            var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler);
+            var retryingCallable = server.Callable.WithRetry(scheduler.Clock, scheduler, NullLogger.Instance);
             return Call(async, retryingCallable, request, callSettings);
         }
 

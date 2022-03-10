@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -69,5 +70,10 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         internal ApiClientStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
             new ApiClientStreamingCall<TRequest, TResponse>(_call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
+
+        internal ApiClientStreamingCall<TRequest, TResponse> WithLogging(ILogger logger) =>
+            logger is null
+                ? this
+                : new ApiClientStreamingCall<TRequest, TResponse>(_call.WithLogging(logger), BaseCallSettings, StreamingSettings);
     }
 }

@@ -7,6 +7,7 @@
 
 using Google.Protobuf;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -18,15 +19,21 @@ namespace Google.Api.Gax.Grpc
     {
         private readonly CallSettings _clientCallSettings;
         private readonly CallSettings _versionCallSettings;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly string _baseCategoryName;
 
         /// <summary>
         /// Constructs a helper from the given settings.
         /// Behavior is undefined if settings are changed after construction.
         /// </summary>
         /// <param name="settings">The service settings.</param>
-        public ClientHelper(ServiceSettingsBase settings)
+        /// <param name="loggerFactory">The logger factory to use for API calls</param>
+        /// <param name="baseCategoryName">The base name of the category (typically the name of the client class)</param>
+        public ClientHelper(ServiceSettingsBase settings, ILoggerFactory loggerFactory, string baseCategoryName)
         {
             GaxPreconditions.CheckNotNull(settings, nameof(settings));
+            _loggerFactory = loggerFactory;
+            _baseCategoryName = baseCategoryName;
             Clock = settings.Clock ?? SystemClock.Instance;
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
@@ -55,19 +62,23 @@ namespace Google.Api.Gax.Grpc
         /// <param name="asyncGrpcCall">The underlying synchronous gRPC call.</param>
         /// <param name="syncGrpcCall">The underlying asynchronous gRPC call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
+        /// <param name="methodName">The method name, used to construct a logger category.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,
-            CallSettings perMethodCallSettings)
+            CallSettings perMethodCallSettings,
+            string methodName)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
+            var logger = _loggerFactory?.CreateLogger($"{_baseCategoryName}.{methodName}");
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
-                .WithRetry(Clock, Scheduler)
+                .WithLogging(logger)
+                .WithRetry(Clock, Scheduler, logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
@@ -78,17 +89,20 @@ namespace Google.Api.Gax.Grpc
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
         /// <param name="grpcCall">The underlying gRPC server streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
+        /// <param name="methodName">The method name, used to construct a logger category.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiServerStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
-            CallSettings perMethodCallSettings)
+            CallSettings perMethodCallSettings, string methodName)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
+            var logger = _loggerFactory?.CreateLogger($"{_baseCategoryName}.{methodName}");
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiServerStreamingCall.Create(grpcCall, baseCallSettings, Clock)
+                .WithLogging(logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
@@ -100,16 +114,20 @@ namespace Google.Api.Gax.Grpc
         /// <param name="grpcCall">The underlying gRPC duplex streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <param name="streamingSettings">The default streaming settings.</param>
+        /// <param name="methodName">The method name, used to construct a logger category.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiBidirectionalStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<CallOptions, AsyncDuplexStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings perMethodCallSettings,
-            BidirectionalStreamingSettings streamingSettings)
+            BidirectionalStreamingSettings streamingSettings,
+            string methodName)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
+            var logger = _loggerFactory?.CreateLogger($"{_baseCategoryName}.{methodName}");
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithLogging(logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
@@ -121,16 +139,20 @@ namespace Google.Api.Gax.Grpc
         /// <param name="grpcCall">The underlying gRPC client streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <param name="streamingSettings">The default streaming settings.</param>
+        /// <param name="methodName">The method name, used to construct a logger category.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiClientStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             Func<CallOptions, AsyncClientStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings perMethodCallSettings,
-            ClientStreamingSettings streamingSettings)
+            ClientStreamingSettings streamingSettings,
+            string methodName)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
         {
+            var logger = _loggerFactory?.CreateLogger($"{_baseCategoryName}.{methodName}");
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiClientStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithLogging(logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
     }
