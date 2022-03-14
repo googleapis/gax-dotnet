@@ -5,11 +5,10 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.Gax.Grpc.Rest;
 using System;
 using Xunit;
 
-namespace Google.Api.Gax.Grpc.GrpcRest.Tests
+namespace Google.Api.Gax.Grpc.Rest.Tests
 {
     public class HttpRulePathPatternTest
     {
