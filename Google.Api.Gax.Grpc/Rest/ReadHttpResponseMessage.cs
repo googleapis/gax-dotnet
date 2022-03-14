@@ -100,9 +100,11 @@ namespace Google.Api.Gax.Grpc.Rest
             {
                 var errorFromMetadata = s_responseMetadataParser.Parse<Error>(content);
                 var error = errorFromMetadata.Error_;
+                // If we got a JSON object that can be parsed as an Error, but doesn't include a nested "error" field,
+                // that's similar to a parsing failure.
                 if (error is null)
                 {
-                    return new Rpc.Status { Code = (int) grpcStatusCode };
+                    return new Rpc.Status { Code = (int) grpcStatusCode, Message = content };
                 }
                 var status = new Rpc.Status
                 {
