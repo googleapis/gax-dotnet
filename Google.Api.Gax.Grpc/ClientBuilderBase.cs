@@ -56,6 +56,15 @@ namespace Google.Api.Gax.Grpc
         public string JsonCredentials { get; set; }
 
         /// <summary>
+        /// The credentials to use as a <see cref="GoogleCredential"/>, or null if credentials are being provided in
+        /// a different way. Note that unlike <see cref="ChannelCredentials"/> and <see cref="TokenAccessMethod"/>,
+        /// settings for <see cref="Scopes"/>, <see cref="QuotaProject"/> and self-signed JWTs will be applied to this
+        /// credential (creating a new one), in the same way as for application default credentials and credentials
+        /// specified using <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>.
+        /// </summary>
+        public GoogleCredential GoogleCredential { get; set; }
+
+        /// <summary>
         /// The token access method to use, or null if credentials are being provided in a different way.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,7 @@ namespace Google.Api.Gax.Grpc
             ChannelCredentials = source.ChannelCredentials;
             CredentialsPath = source.CredentialsPath;
             JsonCredentials = source.JsonCredentials;
+            GoogleCredential = source.GoogleCredential;
             TokenAccessMethod = source.TokenAccessMethod;
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
@@ -165,10 +175,10 @@ namespace Google.Api.Gax.Grpc
         {
             // If there's a call invoker, we shouldn't have any credentials-related information or an endpoint.
             ValidateOptionExcludesOthers($"{nameof(CallInvoker)} cannot be specified with credentials settings or an endpoint", CallInvoker,
-                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod);
+                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod, GoogleCredential);
 
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
-                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod);
+                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential);
 
             ValidateOptionExcludesOthers("Scopes are not relevant when a token access method or channel credentials are supplied", Scopes,
                 TokenAccessMethod, ChannelCredentials);
@@ -238,6 +248,7 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(Scopes, nameof(Scopes));
                     CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
                     CheckNotSet(QuotaProject, nameof(QuotaProject));
+                    CheckNotSet(GoogleCredential, nameof(GoogleCredential));
 
                     void CheckNotSet(object obj, string name)
                     {
@@ -367,6 +378,7 @@ namespace Google.Api.Gax.Grpc
                 return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
             }
             GoogleCredential unscoped =
+                GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
@@ -396,6 +408,7 @@ namespace Google.Api.Gax.Grpc
                 return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
             }
             GoogleCredential unscoped =
+                GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -466,6 +479,7 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod == null &&
             Scopes == null &&
             QuotaProject == null &&
+            GoogleCredential == null &&
             UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
 
         /// <summary>

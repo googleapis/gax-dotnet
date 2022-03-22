@@ -52,6 +52,15 @@ namespace Google.Api.Gax.Rest
         public ICredential Credential { get; set; }
 
         /// <summary>
+        /// The credentials to use as a <see cref="GoogleCredential"/>, or null if credentials are being provided in
+        /// a different way. Note that unlike <see cref="Credential"/>, settings for <see cref="QuotaProject"/>, scopes
+        /// will be applied to this credential (creating a new one), in the same way as for
+        /// application default credentials and credentials specified using
+        /// <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>.
+        /// </summary>
+        public GoogleCredential GoogleCredential { get; set; }
+
+        /// <summary>
         /// An API key to use instead of a regular credential. If this is non-null and no other credentials are supplied,
         /// it will be used as the only credentials. If other credentials are supplied (such as through <see cref="CredentialsPath"/>)
         /// then the two values will both be used together.
@@ -104,9 +113,9 @@ namespace Google.Api.Gax.Rest
         protected virtual void Validate()
         {
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
-                CredentialsPath, JsonCredentials, Credential);
+                CredentialsPath, JsonCredentials, Credential, GoogleCredential);
 
-            ValidateAtMostOneNotNull($"If an alreayd built credential is specified, {nameof(QuotaProject)} must be null.",
+            ValidateAtMostOneNotNull($"If an already-built credential is specified via {nameof(Credential)}, {nameof(QuotaProject)} must be null.",
                 Credential, QuotaProject);
         }
 
@@ -164,6 +173,7 @@ namespace Google.Api.Gax.Rest
                 return Credential;
             }
             GoogleCredential unscoped =
+                GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 null; // Use default credentials (maybe - see below)
@@ -191,6 +201,7 @@ namespace Google.Api.Gax.Rest
                 return Credential;
             }
             GoogleCredential unscoped =
+                GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 null; // Use default credentials (maybe - see below)
