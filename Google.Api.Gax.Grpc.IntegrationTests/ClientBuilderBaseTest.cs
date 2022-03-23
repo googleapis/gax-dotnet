@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Apis.Auth.OAuth2;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -123,16 +124,21 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JsonCredentials()
         {
             var builder = new SampleClientBuilder { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
+        }
 
-            // We won't use the channel pool when custom credentials are specified.
-            // We can't easily check anything about the actual credentials though.
-            Action<CallInvoker> validator = invoker =>
-            {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-            };
-            await ValidateResultAsync(builder, validator);
+        [Fact]
+        public async Task GoogleCredentialProperty()
+        {
+            var builder = new SampleClientBuilder { GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) };
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
+        }
+
+        [Fact]
+        public async Task Credential()
+        {
+            var builder = new SampleClientBuilder { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) };
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Fact]
@@ -144,17 +150,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             try
             {
                 var builder = new SampleClientBuilder { CredentialsPath = file };
-
-                // We won't use the channel pool when custom credentials are specified.
-                // We can't easily check anything about the actual credentials though.
-                Action<CallInvoker> validator = invoker =>
-                {
-                    Assert.NotNull(builder.ChannelCreated);
-                    Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                    Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-                };
-
-                await ValidateResultAsync(builder, validator);
+                await ValidateResultAsync(builder, AssertNonChannelPool(builder));
             }
             finally
             {
@@ -166,32 +162,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task CustomScopes()
         {
             var builder = new SampleClientBuilder { Scopes = new[] { "a", "b" } };
-
-            // We won't use the channel pool when there are custom scopes.
-            // We can't easily check anything about the actual credentials though.
-            Action<CallInvoker> validator = invoker =>
-            {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-            };
-            await ValidateResultAsync(builder, validator);
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Fact]
         public async Task QuotaProject()
         {
             var builder = new SampleClientBuilder { QuotaProject = SampleQuotaProject };
-
-            // We won't use the channel pool when there is a quota project.
-            // We can't easily check anything about the actual credentials though.
-            Action<CallInvoker> validator = invoker =>
-            {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-            };
-            await ValidateResultAsync(builder, validator);
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Fact]
@@ -199,8 +177,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder { CallInvoker = CustomInvoker };
 
-            // We won't use the channel pool when there are custom scopes.
-            // We can't easily check anything about the actual credentials though.
             Action<CallInvoker> validator = invoker =>
             {
                 Assert.Same(invoker, CustomInvoker);
@@ -209,21 +185,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             await ValidateResultAsync(builder, validator);
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public async Task TokenAccessMethod()
         {
             var builder = new SampleClientBuilder { TokenAccessMethod = CustomTokenAccess };
-
-            // We won't use the channel pool when there are custom scopes.
-            // We can't easily check anything about the actual credentials though.
-            Action<CallInvoker> validator = invoker =>
-            {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
-            };
-            await ValidateResultAsync(builder, validator);
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         [Theory]
         [InlineData(true, false)]
@@ -233,15 +202,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = DummyServiceAccountCredentialFileContents };
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
-            // Jwt of client does not match pool
-            // We won't use channel pool
-            Action<CallInvoker> validator = invoker =>
-            {
-                var channelFromBuilder = GetChannel(invoker);
-                Assert.NotSame(channelFromPool, channelFromBuilder);
-                Assert.NotNull(builder.ChannelCreated);
-            };
-            await ValidateResultAsync(builder, validator);
+            // Jwt of client does not match pool, so we won't use channel pool
+            await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Theory]
@@ -262,6 +224,15 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             await ValidateResultAsync(builder, validator);
         }
 
+        // We won't use the channel pool when custom credentials are specified.
+        // We can't easily check anything about the actual credentials though.
+        private static Action<CallInvoker> AssertNonChannelPool(SampleClientBuilder builder) => invoker =>
+        {
+            Assert.NotNull(builder.ChannelCreated);
+            Assert.Same(builder.ChannelCreated, GetChannel(invoker));
+            Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
+        };
+
         private static Channel GetChannel(CallInvoker invoker)
         {
             if (!(invoker is DefaultCallInvoker dci))
@@ -281,6 +252,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             builder.ResetChannelCreation();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public static TheoryData<SampleClientBuilder> InvalidCombinationsTheoryData = new TheoryData<SampleClientBuilder>
         {
             // CallInvoker excludes everything else
@@ -292,6 +264,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("CallInvokerAndJsonCredentials") { CallInvoker = CustomInvoker, JsonCredentials = DummyServiceAccountCredentialFileContents },
             new SampleClientBuilder("CallInvokerAndTokenAccesMethod") { CallInvoker = CustomInvoker, TokenAccessMethod = CustomTokenAccess },
             new SampleClientBuilder("CallInvokerAndQuotaProject") { CallInvoker = CustomInvoker, QuotaProject = SampleQuotaProject },
+            new SampleClientBuilder("CallInvokerAndCredential") { CallInvoker = CustomInvoker, Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
+            new SampleClientBuilder("CallInvokerAndGoogleCredential") { CallInvoker = CustomInvoker, GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
 
             // ChannelCredentials also excludes quota project.
             new SampleClientBuilder("ChannelCredentialsAndQuotaProject") { ChannelCredentials = ChannelCredentials.Insecure, QuotaProject = SampleQuotaProject },
@@ -301,12 +275,15 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("ChannelCredentialsAndJsonCredentials") { ChannelCredentials = ChannelCredentials.Insecure, JsonCredentials = DummyServiceAccountCredentialFileContents },
             new SampleClientBuilder("ChannelCredentialsAndTokenAccessMethod") { ChannelCredentials = ChannelCredentials.Insecure, TokenAccessMethod = CustomTokenAccess },
             new SampleClientBuilder("JsonCredentialsAndTokenAccessMethod") { JsonCredentials = DummyServiceAccountCredentialFileContents, TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("CredentialAndTokenAccessMethod") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("GoogleCredentialAndTokenAccessMethod") { GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
 
             // Scopes only work with default credentials, a credentials file, or JSON
             new SampleClientBuilder("ScopesAndTokenAccess") { Scopes = new[] { "a" }, TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("ScopesAndCredential") { Scopes = new[] { "a" }, Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
             new SampleClientBuilder("ScopesAndChannelCredentials") { Scopes = new[] { "a" }, ChannelCredentials = ChannelCredentials.Insecure },
-
         };
+#pragma warning restore CS0618 // Type or member is obsolete
 
         [Theory, MemberData(nameof(InvalidCombinationsTheoryData))]
         public void InvalidCombination(SampleClientBuilder builder)
