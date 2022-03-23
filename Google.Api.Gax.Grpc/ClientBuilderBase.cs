@@ -454,12 +454,11 @@ namespace Google.Api.Gax.Grpc
         protected abstract ChannelPool GetChannelPool();
 
         /// <summary>
-        /// Returns the default <see cref="GrpcAdapter"/> to use if
-        /// <see cref="GrpcAdapter"/> is not set.
+        /// 
         /// </summary>
-        protected abstract GrpcAdapter DefaultGrpcAdapter { get; }
+        protected abstract GrpcApiDescriptor GrpcApiDescriptor { get; }
 
-        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? DefaultGrpcAdapter;
+        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? GrpcAdapter.GetFallbackAdapter(GrpcApiDescriptor);
 
         /// <summary>
         /// Returns the options to use when creating a channel, taking <see cref="GrpcChannelOptions"/>
@@ -524,7 +523,7 @@ namespace Google.Api.Gax.Grpc
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
-            EffectiveGrpcAdapter.CreateChannel(endpoint, credentials, GetChannelOptions());
+            EffectiveGrpcAdapter.CreateChannel(GrpcApiDescriptor, endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccessWithHeaders
         {

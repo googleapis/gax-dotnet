@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
 using Xunit;
@@ -15,6 +16,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
     [Collection(nameof(TestServiceFixture))]
     public class GrpcAdapterTest
     {
+        private static readonly GrpcApiDescriptor s_apiDescriptor = new("Test", new FileDescriptor[0], GrpcTransports.Grpc);
         private readonly TestServiceFixture _fixture;
 
         public GrpcAdapterTest(TestServiceFixture fixture) => _fixture = fixture;
@@ -26,7 +28,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             // This is unfortunate, but required for the test.
             // ("localhost:12345" is only valid in Grpc.Core; "http://localhost:12345" is only valid in Grpc.Net.Client.)
             var endpoint = adapter is GrpcNetClientAdapter ? _fixture.HttpEndpoint : _fixture.Endpoint;
-            var channel = adapter.CreateChannel(endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = adapter.CreateChannel(s_apiDescriptor, endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);

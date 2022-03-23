@@ -4,6 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,14 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
 {
     public class ChannelPoolTest
     {
+        private static readonly GrpcApiDescriptor s_descriptor = new("Test", new FileDescriptor[0], GrpcTransports.Grpc);
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
         private static readonly GrpcAdapter Grpc = GrpcCoreAdapter.Instance;
 
         [Fact]
         public void SameEndpoint_SameChannel()
         {
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
@@ -32,7 +34,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void DifferentEndpoint_DifferentChannel()
         {
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (TestServiceFixture fixture1 = new TestServiceFixture(), fixture2 = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(Grpc, fixture1.Endpoint, GrpcChannelOptions.Empty);
@@ -46,7 +48,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         {
             var options1 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
             var options2 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, options1);
@@ -60,7 +62,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         {
             var options1 = GrpcChannelOptions.Empty.WithCustomOption("x", 5);
             var options2 = GrpcChannelOptions.Empty.WithCustomOption("x", 6);
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, options1);
@@ -72,7 +74,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public async Task ShutdownAsync_ShutsDownChannel()
         {
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (var fixture = new TestServiceFixture())
             {
                 var channel = (Channel) pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);
@@ -85,7 +87,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void ShutdownAsync_EmptiesPool()
         {
-            var pool = new ChannelPool(EmptyScopes, false);
+            var pool = new ChannelPool(s_descriptor, EmptyScopes, false);
             using (var fixture = new TestServiceFixture())
             {
                 var channel1 = pool.GetChannel(Grpc, fixture.Endpoint, GrpcChannelOptions.Empty);

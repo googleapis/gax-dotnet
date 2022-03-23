@@ -47,12 +47,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public static GrpcCoreAdapter Instance { get; } = new GrpcCoreAdapter();
 
-        private GrpcCoreAdapter()
+        private GrpcCoreAdapter() : base(GrpcTransports.Grpc)
         {
         }
 
         /// <inheritdoc />
-        protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
+        protected override ChannelBase CreateChannelImpl(GrpcApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
             channelFactory.Value.Invoke(endpoint, credentials, options);
 
         /// <summary>
