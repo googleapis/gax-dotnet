@@ -16,5 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Grpc\Google.Api.Gax.Grpc.csproj" />
     <ProjectReference Include="..\Google.Api.Gax.Grpc.Testing\Google.Api.Gax.Grpc.Testing.csproj" />
+
+    <Compile Update="ClientBuilderBaseTest.*.cs">
+      <DependentUpon>ClientBuilderBaseTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
