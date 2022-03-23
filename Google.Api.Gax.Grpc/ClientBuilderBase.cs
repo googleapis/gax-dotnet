@@ -499,9 +499,13 @@ namespace Google.Api.Gax.Grpc
             UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
 
         /// <summary>
-        ///  Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.
+        /// Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.        
         /// </summary>
-        protected bool UseJwtAccessWithScopes { get; set; }
+        /// <remarks>
+        /// In the base implementation, this defaults to <c>true</c>. Subclasses may add code in their own constructors
+        /// to make the default effectively <c>false</c>, however.
+        /// </remarks>
+        public bool UseJwtAccessWithScopes { get; set; } = true;
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.
