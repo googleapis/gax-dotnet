@@ -53,7 +53,7 @@ namespace Google.Api.Gax.Rest
 
         /// <summary>
         /// The credentials to use as a <see cref="GoogleCredential"/>, or null if credentials are being provided in
-        /// a different way. Note that unlike <see cref="Credential"/>, settings for <see cref="QuotaProject"/>, scopes
+        /// a different way. Note that unlike <see cref="Credential"/>, settings for <see cref="QuotaProject"/>, and scopes
         /// will be applied to this credential (creating a new one), in the same way as for
         /// application default credentials and credentials specified using
         /// <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>.

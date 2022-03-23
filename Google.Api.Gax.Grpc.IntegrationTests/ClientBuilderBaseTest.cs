@@ -278,7 +278,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("CredentialAndTokenAccessMethod") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
             new SampleClientBuilder("GoogleCredentialAndTokenAccessMethod") { GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
 
-            // Scopes only work with default credentials, a credentials file, or JSON
+            // Scopes only work with default credentials, a GoogleCredential, a credentials file, or JSON
             new SampleClientBuilder("ScopesAndTokenAccess") { Scopes = new[] { "a" }, TokenAccessMethod = CustomTokenAccess },
             new SampleClientBuilder("ScopesAndCredential") { Scopes = new[] { "a" }, Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
             new SampleClientBuilder("ScopesAndChannelCredentials") { Scopes = new[] { "a" }, ChannelCredentials = ChannelCredentials.Insecure },
