@@ -65,14 +65,15 @@ namespace Google.Api.Gax.Grpc
         public GoogleCredential GoogleCredential { get; set; }
 
         /// <summary>
+        /// The credentials to use in "raw" form, for conversion into channel credentials. No other settings
+        /// (e.g. <see cref="QuotaProject"/> or <see cref="Scopes"/>) are applied to these credentials.
+        /// </summary>
+        public ICredential Credential { get; set; }
+
+        /// <summary>
         /// The token access method to use, or null if credentials are being provided in a different way.
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// To use a GoogleCredential for credentials, set this property using a method group conversion, e.g.
-        /// <c>TokenAccessMethod = credential.GetAccessTokenForRequestAsync</c>
-        /// </para>
-        /// </remarks>
+        [Obsolete("The Credential property is preferred for simplicity. This property may be removed in a future major version.")]
         public Func<string, CancellationToken, Task<string>> TokenAccessMethod { get; set; }
 
         /// <summary>
@@ -140,7 +141,10 @@ namespace Google.Api.Gax.Grpc
             CredentialsPath = source.CredentialsPath;
             JsonCredentials = source.JsonCredentials;
             GoogleCredential = source.GoogleCredential;
+            Credential = source.Credential;
+#pragma warning disable CS0618 // Type or member is obsolete
             TokenAccessMethod = source.TokenAccessMethod;
+#pragma warning restore CS0618 // Type or member is obsolete
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
@@ -173,18 +177,20 @@ namespace Google.Api.Gax.Grpc
         /// <exception cref="InvalidOperationException">The builder is in an invalid state.</exception>
         protected virtual void Validate()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             // If there's a call invoker, we shouldn't have any credentials-related information or an endpoint.
             ValidateOptionExcludesOthers($"{nameof(CallInvoker)} cannot be specified with credentials settings or an endpoint", CallInvoker,
-                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod, GoogleCredential);
+                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod, GoogleCredential, Credential);
 
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
-                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential);
+                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential, Credential);
 
-            ValidateOptionExcludesOthers("Scopes are not relevant when a token access method or channel credentials are supplied", Scopes,
-                TokenAccessMethod, ChannelCredentials);
+            ValidateOptionExcludesOthers("Scopes are not relevant when a token access method, channel credentials or ICredential are supplied", Scopes,
+                TokenAccessMethod, ChannelCredentials, Credential);
+#pragma warning restore CS0618 // Type or member is obsolete
 
-            ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)} or a {nameof(ChannelCredentials)} is specified", QuotaProject,
-                CallInvoker, ChannelCredentials);
+            ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)}, {nameof(ChannelCredentials)} or {nameof(Credential)} is specified", QuotaProject,
+                CallInvoker, ChannelCredentials, Credential);
         }
 
         /// <summary>
@@ -246,7 +252,9 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(CredentialsPath, nameof(CredentialsPath));
                     CheckNotSet(JsonCredentials, nameof(JsonCredentials));
                     CheckNotSet(Scopes, nameof(Scopes));
+#pragma warning disable CS0618 // Type or member is obsolete
                     CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
+#pragma warning restore CS0618 // Type or member is obsolete
                     CheckNotSet(QuotaProject, nameof(QuotaProject));
                     CheckNotSet(GoogleCredential, nameof(GoogleCredential));
 
@@ -367,16 +375,31 @@ namespace Google.Api.Gax.Grpc
         /// Obtains channel credentials synchronously. Override this method in a concrete builder type if more
         /// credential mechanisms are supported.
         /// </summary>
-        protected virtual ChannelCredentials GetChannelCredentials()
+        protected virtual ChannelCredentials GetChannelCredentials() =>
+            MaybeGetSimpleChannelCredentials() ?? GetGoogleCredential().ToChannelCredentials();
+
+        /// <summary>
+        /// Obtains channel credentials asynchronously. Override this method in a concrete builder type if more
+        /// credential mechanisms are supported.
+        /// </summary>
+        protected async virtual Task<ChannelCredentials> GetChannelCredentialsAsync(CancellationToken cancellationToken) =>
+            MaybeGetSimpleChannelCredentials()
+            ?? (await GetGoogleCredentialAsync(cancellationToken).ConfigureAwait(false)).ToChannelCredentials();
+
+        /// <summary>
+        /// Obtains channel credentials synchronously if they've been supplied in a ready-to-go fashion.
+        /// This avoids code duplication in the sync and async paths.
+        /// Returns null if the credentials aren't available.
+        /// </summary>
+        private ChannelCredentials MaybeGetSimpleChannelCredentials() =>
+            ChannelCredentials ?? Credential?.ToChannelCredentials() ??
+#pragma warning disable CS0618 // Type or member is obsolete
+            (TokenAccessMethod is not null ? new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials() : null);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+        // Visible for testing
+        internal GoogleCredential GetGoogleCredential()
         {
-            if (ChannelCredentials != null)
-            {
-                return ChannelCredentials;
-            }
-            if (TokenAccessMethod != null)
-            {
-                return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
-            }
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
@@ -390,23 +413,12 @@ namespace Google.Api.Gax.Grpc
                 maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
             }
 
-            return maybeWithProject.ToChannelCredentials();
+            return maybeWithProject;
         }
 
-        /// <summary>
-        /// Obtains channel credentials asynchronously. Override this method in a concrete builder type if more
-        /// credential mechanisms are supported.
-        /// </summary>
-        protected async virtual Task<ChannelCredentials> GetChannelCredentialsAsync(CancellationToken cancellationToken)
+        // Visible for testing
+        internal async Task<GoogleCredential> GetGoogleCredentialAsync(CancellationToken cancellationToken)
         {
-            if (ChannelCredentials != null)
-            {
-                return ChannelCredentials;
-            }
-            if (TokenAccessMethod != null)
-            {
-                return new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials();
-            }
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
@@ -420,7 +432,7 @@ namespace Google.Api.Gax.Grpc
                 maybeWithProject = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
             }
 
-            return maybeWithProject.ToChannelCredentials();
+            return maybeWithProject;
         }
 
         /// <summary>
@@ -476,10 +488,13 @@ namespace Google.Api.Gax.Grpc
             ChannelCredentials == null &&
             CredentialsPath == null &&
             JsonCredentials == null &&
+#pragma warning disable CS0618 // Type or member is obsolete
             TokenAccessMethod == null &&
+#pragma warning restore CS0618 // Type or member is obsolete
             Scopes == null &&
             QuotaProject == null &&
             GoogleCredential == null &&
+            Credential == null &&
             UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
 
         /// <summary>
