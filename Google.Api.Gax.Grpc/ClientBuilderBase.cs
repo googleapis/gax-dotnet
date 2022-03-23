@@ -256,6 +256,7 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
 #pragma warning restore CS0618 // Type or member is obsolete
                     CheckNotSet(QuotaProject, nameof(QuotaProject));
+                    CheckNotSet(Credential, nameof(Credential));
                     CheckNotSet(GoogleCredential, nameof(GoogleCredential));
 
                     void CheckNotSet(object obj, string name)
