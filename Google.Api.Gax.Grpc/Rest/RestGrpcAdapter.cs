@@ -75,14 +75,5 @@ namespace Google.Api.Gax.Grpc.Rest
                 // Anything else (including all 1xx and 3xx) maps to Unknown
                 _ => StatusCode.Unknown
             };
-
-        private class GrpcChannelFactory
-        {
-            private RestServiceCollection _serviceCollection;
-
-            internal GrpcChannelFactory(RestServiceCollection serviceCollection) =>
-                _serviceCollection = serviceCollection;
-
-        }
     }
 }

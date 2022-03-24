@@ -117,7 +117,7 @@ namespace Google.Api.Gax.Grpc
             if (grpcApiDescriptor.Transports.HasFlag(GrpcTransports.Grpc))
             {
                 // TODO: This is all a bit of a mess.
-                return CreateDefaultAdapter();
+                return DefaultAdapter;
             }
             else if (grpcApiDescriptor.Transports.HasFlag(GrpcTransports.Rest))
             {
