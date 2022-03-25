@@ -129,7 +129,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                private static readonly GrpcApiDescriptor s_descriptor = new GrpcApiDescriptor("Test", new FileDescriptor[0], GrpcTransports.Grpc);
                 public IReadOnlyList<string> DefaultScopes { get; }
 
                 internal FakeBuilder(string[] defaultScopes, bool useJwtAccessWithScopes)
@@ -139,7 +138,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 }
 
                 public new GrpcChannelOptions GetChannelOptions() => throw new NotImplementedException();
-                protected override GrpcApiDescriptor GrpcApiDescriptor => s_descriptor;
+                protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();

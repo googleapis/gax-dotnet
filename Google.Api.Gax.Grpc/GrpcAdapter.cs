@@ -14,38 +14,71 @@ using System.Threading;
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// Interoperability layer for the aspects of gRPC that aren't covered by Grpc.Core.Api.
+    /// Interoperability layer for different gRPC transports. Concrete subclasses are
+    /// <see cref="GrpcCoreAdapter"/>, <see cref="GrpcNetClientAdapter"/> and <see cref="RestGrpcAdapter"/>.
     /// </summary>
+    /// <remarks>
+    /// This is an abstract class with all concrete subclasses internal, and internal abstract methods
+    /// to prevent instantiation elsewhere. (The abstraction itself may change over time.)
+    /// </remarks>
     public abstract class GrpcAdapter
     {
         private const string AdapterOverrideEnvironmentVariable = "GRPC_DEFAULT_ADAPTER_OVERRIDE";
 
         private static readonly Lazy<GrpcAdapter> s_defaultFactory = new Lazy<GrpcAdapter>(CreateDefaultAdapter, LazyThreadSafetyMode.PublicationOnly);
 
-        private GrpcTransports _supportedTransports;
+        private readonly GrpcTransports _supportedTransports;
+
+        private protected GrpcAdapter(GrpcTransports supportedTransports)
+        {
+            _supportedTransports = supportedTransports;
+        }
 
         /// <summary>
-        /// 
+        /// Returns whether or not this adapter supports the specified API.
         /// </summary>
-        /// <param name="supportedTransports"></param>
-        protected GrpcAdapter(GrpcTransports supportedTransports)
+        /// <param name="apiDescriptor">The descriptor of the API. Must not be null.</param>
+        /// <returns><c>true</c> if this adapter supports the given API; <c>false</c> otherwise.</returns>
+        public bool SupportsApi(ApiDescriptor apiDescriptor)
         {
-            // TODO: Validation that all flags are valid, and that there's at least one flag?
-            _supportedTransports = supportedTransports;
+            GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
+            return (apiDescriptor.Transports & _supportedTransports) != 0;
+        }
+
+        /// <summary>
+        /// Returns a fallback provider suitable for the given API
+        /// </summary>
+        /// <param name="apiDescriptor">The descriptor of the API. Must not be null.</param>
+        /// <returns>A suitable GrpcAdapter for the given API, preferring the use of the binary gRPC transport where available.</returns>
+        public static GrpcAdapter GetFallbackAdapter(ApiDescriptor apiDescriptor)
+        {
+            // TODO: Some way of indicating a preference? Or just set the adapter in the client builder...?
+            if (apiDescriptor.Transports.HasFlag(GrpcTransports.Grpc))
+            {
+                // TODO: This is all a bit of a mess.
+                return DefaultAdapter;
+            }
+            else if (apiDescriptor.Transports.HasFlag(GrpcTransports.Rest))
+            {
+                return RestGrpcAdapter.Default;
+            }
+            else
+            {
+                throw new ArgumentException("No known adapters support the given API.");
+            }
         }
 
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options.
         /// </summary>
-        /// <param name="apiDescriptor"></param>
+        /// <param name="apiDescriptor">The descriptor for the API. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="credentials">The channel credentials to use. Must not be null.</param>
         /// <param name="options">The channel options to use. Must not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        public ChannelBase CreateChannel(GrpcApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        internal ChannelBase CreateChannel(ApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
-            if ((apiDescriptor.Transports & _supportedTransports) == 0)
+            if (!SupportsApi(apiDescriptor))
             {
                 throw new ArgumentException($"API {apiDescriptor.Name} does not have any transports in common with {GetType().Name}");
             }
@@ -64,7 +97,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="credentials">The channel credentials to use. Will not be null.</param>
         /// <param name="options">The channel options to use. Will not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        protected abstract ChannelBase CreateChannelImpl(GrpcApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
+        private protected abstract ChannelBase CreateChannelImpl(ApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
 
         /// <summary>
         /// Returns the default gRPC adapter based on the available gRPC implementations.
@@ -105,28 +138,5 @@ namespace Google.Api.Gax.Grpc
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="grpcApiDescriptor"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static GrpcAdapter GetFallbackAdapter(GrpcApiDescriptor grpcApiDescriptor)
-        {
-            // TODO: Some way of indicating a preference? Or just set the adapter in the client builder...?
-            if (grpcApiDescriptor.Transports.HasFlag(GrpcTransports.Grpc))
-            {
-                // TODO: This is all a bit of a mess.
-                return DefaultAdapter;
-            }
-            else if (grpcApiDescriptor.Transports.HasFlag(GrpcTransports.Rest))
-            {
-                return RestGrpcAdapter.Default;
-            }
-            else
-            {
-                throw new ArgumentException("No known transports");
-            }
-        }
     }
 }

@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Grpc.IntegrationTests;
 using Google.Protobuf.Reflection;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
     // Note: this is an integration test because it needs to access the Application Default Credentials.
     public class GcpCallInvokerPoolTest
     {
-        private static readonly GrpcApiDescriptor s_descriptor = new("Test", new FileDescriptor[0], GrpcTransports.Grpc);
         private static readonly GrpcAdapter FakeAdapter = new FakeGrpcAdapter();
         private static readonly ApiConfig Config1 = new ApiConfig { ChannelPool = new ChannelPoolConfig { MaxSize = 5 } };
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
@@ -23,7 +23,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         [Fact]
         public void SameEndpointAndOptions_SameCallInvoker()
         {
-            var pool = new GcpCallInvokerPool(s_descriptor, EmptyScopes);
+            var pool = new GcpCallInvokerPool(ApiDescriptors.TestGrpc, EmptyScopes);
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var callInvoker1 = pool.GetCallInvoker("endpoint", options, Config1, FakeAdapter);
             var callInvoker2 = pool.GetCallInvoker("endpoint", options, Config1, FakeAdapter);
@@ -33,7 +33,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         [Fact]
         public void SameEndpointAndEqualOptions_SameCallInvoker()
         {
-            var pool = new GcpCallInvokerPool(s_descriptor, EmptyScopes);
+            var pool = new GcpCallInvokerPool(ApiDescriptors.TestGrpc, EmptyScopes);
             var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var callInvoker1 = pool.GetCallInvoker("endpoint", options1, Config1, FakeAdapter);
@@ -44,7 +44,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         [Fact]
         public void DifferentEndpoint_DifferentCallInvoker()
         {
-            var pool = new GcpCallInvokerPool(s_descriptor, EmptyScopes);
+            var pool = new GcpCallInvokerPool(ApiDescriptors.TestGrpc, EmptyScopes);
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var callInvoker1 = pool.GetCallInvoker("endpoint1", options, Config1, FakeAdapter);
             var callInvoker2 = pool.GetCallInvoker("endpoint2", options, Config1, FakeAdapter);
@@ -54,7 +54,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         [Fact]
         public void DifferentOptions_DifferentCallInvoker()
         {
-            var pool = new GcpCallInvokerPool(s_descriptor, EmptyScopes);
+            var pool = new GcpCallInvokerPool(ApiDescriptors.TestGrpc, EmptyScopes);
             var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("def");
             var callInvoker1 = pool.GetCallInvoker("endpoint", options1, Config1, FakeAdapter);
@@ -69,7 +69,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         [Fact]
         public void ShutdownAsync_EmptiesPool()
         {
-            var pool = new GcpCallInvokerPool(s_descriptor, EmptyScopes);
+            var pool = new GcpCallInvokerPool(ApiDescriptors.TestGrpc, EmptyScopes);
             var callInvoker1 = pool.GetCallInvoker("endpoint", options: null, Config1, FakeAdapter);
             // Note: *not* waiting for this to complete.
             pool.ShutdownChannelsAsync();

@@ -26,7 +26,7 @@ namespace Google.Api.Gax.Grpc.Gcp
 
         private readonly DefaultChannelCredentialsCache _credentialsCache;
 
-        private readonly GrpcApiDescriptor _apiDescriptor;
+        private readonly ApiDescriptor _apiDescriptor;
         private readonly Dictionary<Key, GcpCallInvoker> _callInvokers = new Dictionary<Key, GcpCallInvoker>();
         private readonly object _lock = new object();
 
@@ -36,7 +36,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// </summary>
         /// <param name="apiDescriptor"></param>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public GcpCallInvokerPool(GrpcApiDescriptor apiDescriptor, IEnumerable<string> scopes) : this(apiDescriptor, scopes, false)
+        public GcpCallInvokerPool(ApiDescriptor apiDescriptor, IEnumerable<string> scopes) : this(apiDescriptor, scopes, false)
         {
         }
 
@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         /// <param name="useJwtAccessWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
         /// when OAuth scopes are explicitly set.</param>
-        public GcpCallInvokerPool(GrpcApiDescriptor apiDescriptor, IEnumerable<string> scopes, bool useJwtAccessWithScopes)
+        public GcpCallInvokerPool(ApiDescriptor apiDescriptor, IEnumerable<string> scopes, bool useJwtAccessWithScopes)
         {
             _apiDescriptor = GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
             _credentialsCache = new DefaultChannelCredentialsCache(scopes, useJwtAccessWithScopes);

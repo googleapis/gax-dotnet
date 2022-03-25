@@ -224,8 +224,6 @@ namespace Google.Api.Gax.Grpc.Tests
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                private static readonly GrpcApiDescriptor s_descriptor = new GrpcApiDescriptor("Test", new FileDescriptor[0], GrpcTransports.Grpc);
-
                 internal FakeBuilder(EmulatorDetection detection) =>
                     EmulatorDetection = detection;
 
@@ -237,7 +235,7 @@ namespace Google.Api.Gax.Grpc.Tests
                         key => environment.TryGetValue(key, out var value) ? value : null);
 
                 public new GrpcChannelOptions GetChannelOptions() => base.GetChannelOptions();
-                protected override GrpcApiDescriptor GrpcApiDescriptor => s_descriptor;
+                protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();

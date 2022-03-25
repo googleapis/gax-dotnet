@@ -38,7 +38,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly ChannelCredentials _credentials;
         private readonly GrpcChannelOptions _channelOptions;
         private readonly GrpcAdapter _adapter;
-        private readonly GrpcApiDescriptor _apiDescriptor;
+        private readonly ApiDescriptor _apiDescriptor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
@@ -49,7 +49,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="options">Channel options to be used by the underlying grpc channels. Must not be null.</param>
         /// <param name="apiConfig">The API config to apply. Must not be null.</param>
         /// <param name="adapter">The adapter to use to create channels. Must not be null.</param>
-        internal GcpCallInvoker(GrpcApiDescriptor apiDescriptor, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
+        internal GcpCallInvoker(ApiDescriptor apiDescriptor, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             _apiDescriptor = GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
             _target = GaxPreconditions.CheckNotNull(target, nameof(target));

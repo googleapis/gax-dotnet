@@ -16,7 +16,6 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
     [Collection(nameof(TestServiceFixture))]
     public class GrpcCoreAdapterTest
     {
-        private static readonly GrpcApiDescriptor s_apiDescriptor = new("Test", new FileDescriptor[0], GrpcTransports.Grpc);
         private readonly TestServiceFixture _fixture;
 
         public GrpcCoreAdapterTest(TestServiceFixture fixture) => _fixture = fixture;
@@ -24,7 +23,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var channel = GrpcCoreAdapter.Instance.CreateChannel(s_apiDescriptor, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = GrpcCoreAdapter.Instance.CreateChannel(ApiDescriptors.TestGrpc, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);
@@ -36,7 +35,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         public void PrimaryUserAgentOption()
         {
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("test-user-agent");
-            var channel = GrpcCoreAdapter.Instance.CreateChannel(s_apiDescriptor, _fixture.Endpoint, ChannelCredentials.Insecure, options);
+            var channel = GrpcCoreAdapter.Instance.CreateChannel(ApiDescriptors.TestGrpc, _fixture.Endpoint, ChannelCredentials.Insecure, options);
             var client = new TestServiceClient(channel);
             var response = client.EchoHeaders(new EchoHeadersRequest());
             var userAgent = response.Headers["user-agent"].StringValue;
@@ -44,10 +43,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         }
 
         [Fact]
-        public void FailsForRestOnlyDescriptor()
-        {
-            var descriptor = new GrpcApiDescriptor("REST-only", new FileDescriptor[0], GrpcTransports.Rest);
-            Assert.Throws<ArgumentException>(() => GrpcCoreAdapter.Instance.CreateChannel(descriptor, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
-        }
+        public void FailsForRestOnlyDescriptor() =>
+            Assert.Throws<ArgumentException>(() =>
+                GrpcCoreAdapter.Instance.CreateChannel(ApiDescriptors.TestRest, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
     }
 }

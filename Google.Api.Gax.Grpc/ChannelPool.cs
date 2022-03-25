@@ -21,7 +21,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private readonly GrpcApiDescriptor _apiDescriptor;
+        private readonly ApiDescriptor _apiDescriptor;
         private readonly DefaultChannelCredentialsCache _credentialCache;
 
         internal bool UseJwtAccessWithScopes => _credentialCache.UseJwtAccessWithScopes;
@@ -39,7 +39,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
         /// when OAuth scopes are explicitly set.</param>
-        public ChannelPool(GrpcApiDescriptor apiDescriptor, IEnumerable<string> scopes, bool useJwtWithScopes)
+        public ChannelPool(ApiDescriptor apiDescriptor, IEnumerable<string> scopes, bool useJwtWithScopes)
         {
             _apiDescriptor = apiDescriptor;
             _credentialCache = new DefaultChannelCredentialsCache(scopes, useJwtWithScopes);

@@ -294,8 +294,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         
         public class SampleClientBuilder : ClientBuilderBase<CallInvoker>
         {
-            private static readonly GrpcApiDescriptor s_descriptor = new("Test", new FileDescriptor[0], GrpcTransports.Grpc);
-
             public static string DefaultEndpoint { get; } = "default.nowhere.com";
             public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
             public ChannelPool ChannelPool { get; }
@@ -315,7 +313,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt)
             {
                 _name = name;
-                ChannelPool = new ChannelPool(s_descriptor, DefaultScopes, poolUsesJwt);
+                ChannelPool = new ChannelPool(ApiDescriptors.TestGrpc, DefaultScopes, poolUsesJwt);
                 UseJwtAccessWithScopes = clientUsesJwt;
                 GrpcAdapter = GrpcCoreAdapter.Instance;
             }
@@ -353,7 +351,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
 
-            protected override GrpcApiDescriptor GrpcApiDescriptor => s_descriptor;
+            protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
 
             public void ResetChannelCreation()
             {
