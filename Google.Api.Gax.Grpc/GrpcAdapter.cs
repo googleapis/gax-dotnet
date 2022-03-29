@@ -37,28 +37,28 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Returns whether or not this adapter supports the specified API.
         /// </summary>
-        /// <param name="apiMetadata">The descriptor of the API. Must not be null.</param>
+        /// <param name="serviceMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns><c>true</c> if this adapter supports the given API; <c>false</c> otherwise.</returns>
-        public bool SupportsApi(ApiMetadata apiMetadata)
+        public bool SupportsApi(ServiceMetadata serviceMetadata)
         {
-            GaxPreconditions.CheckNotNull(apiMetadata, nameof(apiMetadata));
-            return (apiMetadata.Transports & _supportedTransports) != 0;
+            GaxPreconditions.CheckNotNull(serviceMetadata, nameof(serviceMetadata));
+            return (serviceMetadata.ApiMetadata.Transports & _supportedTransports) != 0;
         }
 
         /// <summary>
         /// Returns a fallback provider suitable for the given API
         /// </summary>
-        /// <param name="apiMetadata">The descriptor of the API. Must not be null.</param>
+        /// <param name="serviceMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns>A suitable GrpcAdapter for the given API, preferring the use of the binary gRPC transport where available.</returns>
-        public static GrpcAdapter GetFallbackAdapter(ApiMetadata apiMetadata)
+        public static GrpcAdapter GetFallbackAdapter(ServiceMetadata serviceMetadata)
         {
             // TODO: Some way of indicating a preference? Or just set the adapter in the client builder...?
-            if (apiMetadata.Transports.HasFlag(GrpcTransports.Grpc))
+            if (serviceMetadata.ApiMetadata.Transports.HasFlag(GrpcTransports.Grpc))
             {
                 // TODO: This is all a bit of a mess.
                 return DefaultAdapter;
             }
-            else if (apiMetadata.Transports.HasFlag(GrpcTransports.Rest))
+            else if (serviceMetadata.ApiMetadata.Transports.HasFlag(GrpcTransports.Rest))
             {
                 return RestGrpcAdapter.Default;
             }
@@ -71,21 +71,21 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options.
         /// </summary>
-        /// <param name="apiMetadata">The descriptor for the API. Must not be null.</param>
+        /// <param name="serviceMetadata">The metadata for the service. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="credentials">The channel credentials to use. Must not be null.</param>
         /// <param name="options">The channel options to use. Must not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        internal ChannelBase CreateChannel(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        internal ChannelBase CreateChannel(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            if (!SupportsApi(apiMetadata))
+            if (!SupportsApi(serviceMetadata))
             {
-                throw new ArgumentException($"API {apiMetadata.Name} does not have any transports in common with {GetType().Name}");
+                throw new ArgumentException($"API {serviceMetadata.Name} does not have any transports in common with {GetType().Name}");
             }
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
             GaxPreconditions.CheckNotNull(options, nameof(options));
-            return CreateChannelImpl(apiMetadata, endpoint, credentials, options);
+            return CreateChannelImpl(serviceMetadata, endpoint, credentials, options);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="credentials">The channel credentials to use. Will not be null.</param>
         /// <param name="options">The channel options to use. Will not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        private protected abstract ChannelBase CreateChannelImpl(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
+        private protected abstract ChannelBase CreateChannelImpl(ServiceMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
 
         /// <summary>
         /// Returns the default gRPC adapter based on the available gRPC implementations.

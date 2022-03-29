@@ -20,7 +20,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         {
         }
 
-        private protected override ChannelBase CreateChannelImpl(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
-            new FakeChannel(apiMetadata, endpoint, credentials, options);
+        private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
+            new FakeChannel(serviceMetadata, endpoint, credentials, options);
     }
 }

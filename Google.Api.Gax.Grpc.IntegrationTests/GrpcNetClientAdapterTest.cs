@@ -24,7 +24,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var channel = GrpcNetClientAdapter.Default.CreateChannel(TestApiMetadata.TestGrpc, _fixture.HttpEndpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = GrpcNetClientAdapter.Default.CreateChannel(TestServiceMetadata.Service1, _fixture.HttpEndpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);
@@ -32,7 +32,9 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
 
         [Fact]
         public void FailsForRestOnlyDescriptor() =>
-            Assert.Throws<ArgumentException>(() => GrpcCoreAdapter.Instance.CreateChannel(TestApiMetadata.TestRest, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
+            Assert.Throws<ArgumentException>(() =>
+                GrpcCoreAdapter.Instance.CreateChannel(new ServiceMetadata("test", "test.googleapis.com", new string[0], false, TestApiMetadata.TestRest),
+                    _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
     }
 }
 #endif

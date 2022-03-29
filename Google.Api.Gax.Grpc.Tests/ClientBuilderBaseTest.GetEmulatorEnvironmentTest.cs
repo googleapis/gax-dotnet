@@ -224,7 +224,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                internal FakeBuilder(EmulatorDetection detection) =>
+                internal FakeBuilder(EmulatorDetection detection) : base(TestServiceMetadata.Service1) =>
                     EmulatorDetection = detection;
 
                 /// <summary>
@@ -235,12 +235,9 @@ namespace Google.Api.Gax.Grpc.Tests
                         key => environment.TryGetValue(key, out var value) ? value : null);
 
                 public new GrpcChannelOptions GetChannelOptions() => base.GetChannelOptions();
-                protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();
-                protected override string GetDefaultEndpoint() => throw new NotImplementedException();
-                protected override IReadOnlyList<string> GetDefaultScopes() => throw new NotImplementedException();
             }
         }
     }

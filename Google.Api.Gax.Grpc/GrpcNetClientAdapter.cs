@@ -29,7 +29,7 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <inheritdoc />
-        private protected override ChannelBase CreateChannelImpl(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
             var grpcNetClientOptions = ConvertOptions(credentials, options);
             var address = ConvertEndpoint(endpoint);

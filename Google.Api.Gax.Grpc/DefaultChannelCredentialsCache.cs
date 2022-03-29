@@ -33,6 +33,10 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
 
+        internal DefaultChannelCredentialsCache(ServiceMetadata serviceMetadata) : this(serviceMetadata.DefaultScopes, serviceMetadata.SupportsScopedJwts)
+        {
+        }
+
         /// <summary>
         /// Creates a cache which will apply the specified scopes to the default application credentials
         /// if they require any.

@@ -18,6 +18,7 @@ namespace Google.Api.Gax.Grpc.Rest
     /// Represents a set of methods all expected to be accessible via the same host.
     /// (The host itself is not part of the state of this class.)
     /// TODO: Do we need this class, or could we keep the dictionary directly in RestChannel?
+    /// TODO: Perhaps change this to be on a per-service basis? (Rename to RestMethodCollection...)
     /// </summary>
     internal sealed class RestServiceCollection
     {

@@ -23,7 +23,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var channel = GrpcCoreAdapter.Instance.CreateChannel(TestApiMetadata.TestGrpc, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = GrpcCoreAdapter.Instance.CreateChannel(CreateServiceMetadata(TestApiMetadata.TestGrpc), _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);
@@ -35,7 +35,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         public void PrimaryUserAgentOption()
         {
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("test-user-agent");
-            var channel = GrpcCoreAdapter.Instance.CreateChannel(TestApiMetadata.TestGrpc, _fixture.Endpoint, ChannelCredentials.Insecure, options);
+            var channel = GrpcCoreAdapter.Instance.CreateChannel(CreateServiceMetadata(TestApiMetadata.TestGrpc), _fixture.Endpoint, ChannelCredentials.Insecure, options);
             var client = new TestServiceClient(channel);
             var response = client.EchoHeaders(new EchoHeadersRequest());
             var userAgent = response.Headers["user-agent"].StringValue;
@@ -45,6 +45,9 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void FailsForRestOnlyDescriptor() =>
             Assert.Throws<ArgumentException>(() =>
-                GrpcCoreAdapter.Instance.CreateChannel(TestApiMetadata.TestRest, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
+                GrpcCoreAdapter.Instance.CreateChannel(CreateServiceMetadata(TestApiMetadata.TestRest), _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
+
+        private static ServiceMetadata CreateServiceMetadata(ApiMetadata apiMetadata) =>
+            new ServiceMetadata("Test", "test.googleapis.com", new string[0], false, apiMetadata);
     }
 }

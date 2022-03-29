@@ -310,13 +310,16 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             /// <summary>
             /// Constructor assigning a "name" to a builder and setting Jwt flags for the sake of theory tests.
             /// </summary>
-            public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt)
+            public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt) : base(CreateServiceMetadata(name, poolUsesJwt))
             {
                 _name = name;
-                ChannelPool = new ChannelPool(TestApiMetadata.TestGrpc, DefaultScopes, poolUsesJwt);
+                ChannelPool = new ChannelPool(ServiceMetadata);
                 UseJwtAccessWithScopes = clientUsesJwt;
                 GrpcAdapter = GrpcCoreAdapter.Instance;
             }
+
+            private static ServiceMetadata CreateServiceMetadata(string name, bool poolUsesJwt) =>
+                new ServiceMetadata(name, DefaultEndpoint, DefaultScopes, poolUsesJwt, TestApiMetadata.TestGrpc);
 
             public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
                 : this("Unnamed", clientUsesJwt, poolUsesJwt)
@@ -346,13 +349,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             }
 
             protected override ChannelPool GetChannelPool() => ChannelPool;
-
-            protected override string GetDefaultEndpoint() => DefaultEndpoint;
-
-            protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
-
-            protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
-
+            
             public void ResetChannelCreation()
             {
                 EndpointUsedToCreateChannel = null;

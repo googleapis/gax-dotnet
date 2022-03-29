@@ -33,6 +33,9 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public TypeRegistry TypeRegistry => _typeRegistryProvider.Value;
 
+        // TODO: Is this appropriate here, or should it be in ServiceMetadata? (Do we want to handle
+        // an API where some services are REST-compatible and others gRPC-compatible?)
+
         /// <summary>
         /// The transports supported by this API.
         /// </summary>

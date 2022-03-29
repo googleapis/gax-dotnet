@@ -129,21 +129,17 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                public IReadOnlyList<string> DefaultScopes { get; }
-
-                internal FakeBuilder(string[] defaultScopes, bool useJwtAccessWithScopes)
+                internal FakeBuilder(string[] defaultScopes, bool useJwtAccessWithScopes) : base(CreateServiceMetadata(defaultScopes, useJwtAccessWithScopes))
                 {
-                    UseJwtAccessWithScopes = useJwtAccessWithScopes;
-                    Scopes = defaultScopes;
                 }
 
+                private static ServiceMetadata CreateServiceMetadata(string[] defaultScopes, bool useJwtAccessWithScopes) =>
+                    new ServiceMetadata("Test", "test.googleapis.com", defaultScopes, useJwtAccessWithScopes, TestApiMetadata.TestGrpc);
+
                 public new GrpcChannelOptions GetChannelOptions() => throw new NotImplementedException();
-                protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();
-                protected override string GetDefaultEndpoint() => throw new NotImplementedException();
-                protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
             }
         }
     }

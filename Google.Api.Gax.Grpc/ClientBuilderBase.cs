@@ -31,6 +31,11 @@ namespace Google.Api.Gax.Grpc
             .WithMaxReceiveMessageSize(int.MaxValue);
 
         /// <summary>
+        /// The metadata associated with the service that this client will make requests to.
+        /// </summary>
+        protected ServiceMetadata ServiceMetadata { get; }
+
+        /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
         public string Endpoint { get; set; }
@@ -123,8 +128,10 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Creates a new instance with no settings.
         /// </summary>
-        protected ClientBuilderBase()
+        protected ClientBuilderBase(ServiceMetadata serviceMetadata)
         {
+            ServiceMetadata = serviceMetadata;
+            UseJwtAccessWithScopes = serviceMetadata.SupportsScopedJwts;
         }
 
         /// <summary>
@@ -330,7 +337,7 @@ namespace Google.Api.Gax.Grpc
             {
                 return CallInvoker;
             }
-            var endpoint = Endpoint ?? GetDefaultEndpoint();
+            var endpoint = Endpoint ?? ServiceMetadata.DefaultEndpoint;
             ChannelBase channel;
             if (CanUseChannelPool)
             {
@@ -356,7 +363,7 @@ namespace Google.Api.Gax.Grpc
             {
                 return CallInvoker;
             }
-            var endpoint = Endpoint ?? GetDefaultEndpoint();
+            var endpoint = Endpoint ?? ServiceMetadata.DefaultEndpoint;
             ChannelBase channel;
             if (CanUseChannelPool)
             {
@@ -406,7 +413,7 @@ namespace Google.Api.Gax.Grpc
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
-            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
+            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
             if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
                 && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
@@ -425,7 +432,7 @@ namespace Google.Api.Gax.Grpc
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
-            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? GetDefaultScopes());
+            GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
             if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
                 && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
@@ -437,28 +444,13 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
-        /// Returns the default scopes for this builder type, used if no scopes are otherwise specified.
-        /// </summary>
-        protected abstract IReadOnlyList<string> GetDefaultScopes();
-
-        /// <summary>
-        /// Returns the endpoint for this builder type, used if no endpoint is otherwise specified.
-        /// </summary>
-        protected abstract string GetDefaultEndpoint();
-
-        /// <summary>
         /// Returns the channel pool to use when no other options are specified. This method is not called unless
         /// <see cref="CanUseChannelPool"/> returns true, so if a channel pool is unavailable, override that property
         /// to return false and throw an exception from this method.
         /// </summary>
         protected abstract ChannelPool GetChannelPool();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected abstract ApiMetadata ApiMetadata { get; }
-
-        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? GrpcAdapter.GetFallbackAdapter(ApiMetadata);
+        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? GrpcAdapter.GetFallbackAdapter(ServiceMetadata);
 
         /// <summary>
         /// Returns the options to use when creating a channel, taking <see cref="GrpcChannelOptions"/>
@@ -504,7 +496,7 @@ namespace Google.Api.Gax.Grpc
         /// In the base implementation, this defaults to <c>true</c>. Subclasses may add code in their own constructors
         /// to make the default effectively <c>false</c>, however.
         /// </remarks>
-        public bool UseJwtAccessWithScopes { get; set; } = true;
+        public bool UseJwtAccessWithScopes { get; set; }
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.
@@ -523,7 +515,7 @@ namespace Google.Api.Gax.Grpc
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
 
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
-            EffectiveGrpcAdapter.CreateChannel(ApiMetadata, endpoint, credentials, GetChannelOptions());
+            EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccessWithHeaders
         {
