@@ -16,7 +16,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
     {
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
         private static readonly GrpcAdapter Grpc = GrpcCoreAdapter.Instance;
-        private static readonly ServiceMetadata ServiceMetadata = new ServiceMetadata("test", "test.googleapis.com", EmptyScopes, false, GrpcTransports.Grpc, TestApiMetadata.Test);
+        private static readonly ServiceMetadata ServiceMetadata = TestServiceMetadata.TestService;
 
         [Fact]
         public void SameEndpoint_SameChannel()

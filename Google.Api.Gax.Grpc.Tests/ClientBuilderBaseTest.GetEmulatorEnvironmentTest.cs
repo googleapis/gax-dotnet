@@ -224,7 +224,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                internal FakeBuilder(EmulatorDetection detection) : base(TestServiceMetadata.Service1) =>
+                internal FakeBuilder(EmulatorDetection detection) : base(TestServiceMetadata.TestService) =>
                     EmulatorDetection = detection;
 
                 /// <summary>

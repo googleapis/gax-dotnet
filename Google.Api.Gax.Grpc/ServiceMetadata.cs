@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,11 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ServiceMetadata
     {
+        /// <summary>
+        /// The protobuf service descriptor for this service.
+        /// </summary>
+        public ServiceDescriptor ServiceDescriptor { get; }
+
         /// <summary>
         /// The name of the service within the API. This is never null or empty.
         /// </summary>
@@ -51,15 +57,16 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="serviceDescriptor"></param>
         /// <param name="defaultEndpoint"></param>
         /// <param name="defaultScopes"></param>
         /// <param name="supportsScopedJwts"></param>
         /// <param name="transports"></param>
         /// <param name="apiMetadata"></param>
-        public ServiceMetadata(string name, string defaultEndpoint, IEnumerable<string> defaultScopes, bool supportsScopedJwts, GrpcTransports transports, ApiMetadata apiMetadata)
+        public ServiceMetadata(ServiceDescriptor serviceDescriptor, string defaultEndpoint, IEnumerable<string> defaultScopes, bool supportsScopedJwts, GrpcTransports transports, ApiMetadata apiMetadata)
         {
-            Name = GaxPreconditions.CheckNotNullOrEmpty(name, nameof(name));
+            ServiceDescriptor = GaxPreconditions.CheckNotNull(serviceDescriptor, nameof(serviceDescriptor));
+            Name = serviceDescriptor.Name;
             DefaultEndpoint = defaultEndpoint;
             DefaultScopes = GaxPreconditions.CheckNotNull(defaultScopes, nameof(defaultScopes)).ToList().AsReadOnly();
             SupportsScopedJwts = supportsScopedJwts;

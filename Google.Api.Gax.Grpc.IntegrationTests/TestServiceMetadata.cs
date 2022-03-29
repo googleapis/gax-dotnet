@@ -7,8 +7,15 @@
 
 namespace Google.Api.Gax.Grpc.IntegrationTests
 {
-    internal class TestServiceMetadata
+    internal static class TestServiceMetadata
     {
-        public static ServiceMetadata Service1 = new ServiceMetadata("Service1", "service1.googleapis.com", new[] { "scope1" }, true, GrpcTransports.Grpc, TestApiMetadata.Test);
+        internal static ApiMetadata ApiMetadata { get; } = new ApiMetadata("Google.Api.Gax.Grpc.IntegrationTests", new[] { TestServiceReflection.Descriptor });
+        internal static ServiceMetadata TestService = new ServiceMetadata(IntegrationTests.TestService.Descriptor, "service1.googleapis.com", new[] { "scope1" }, true, GrpcTransports.Grpc, ApiMetadata);
+
+        internal static ServiceMetadata WithTransports(this ServiceMetadata metadata, GrpcTransports transports) =>
+            new ServiceMetadata(metadata.ServiceDescriptor, metadata.DefaultEndpoint, metadata.DefaultScopes, metadata.SupportsScopedJwts, transports, metadata.ApiMetadata);
+
+        internal static ServiceMetadata WithSupportsScopedJwts(this ServiceMetadata metadata, bool supportsScopedJwts) =>
+            new ServiceMetadata(metadata.ServiceDescriptor, metadata.DefaultEndpoint, metadata.DefaultScopes, supportsScopedJwts, metadata.Transports, metadata.ApiMetadata);
     }
 }
