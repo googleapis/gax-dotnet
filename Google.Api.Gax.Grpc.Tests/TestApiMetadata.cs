@@ -11,7 +11,6 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     internal static class TestApiMetadata
     {
-        internal static ApiMetadata TestGrpc { get; } = new ApiMetadata(nameof(TestGrpc), GrpcTransports.Grpc, new FileDescriptor[0]);
-        internal static ApiMetadata TestRest { get; } = new ApiMetadata(nameof(TestRest), GrpcTransports.Rest, new FileDescriptor[0]);
+        internal static ApiMetadata Test { get; } = new ApiMetadata(nameof(Test), new FileDescriptor[0]);
     }
 }

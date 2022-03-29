@@ -9,6 +9,6 @@ namespace Google.Api.Gax.Grpc.Tests
 {
     internal class TestServiceMetadata
     {
-        public static ServiceMetadata Service1 = new ServiceMetadata("Service1", "service1.googleapis.com", new[] { "scope1" }, true, TestApiMetadata.TestGrpc);
+        public static ServiceMetadata Service1 = new ServiceMetadata("Service1", "service1.googleapis.com", new[] { "scope1" }, true, GrpcTransports.Grpc, TestApiMetadata.Test);
     }
 }

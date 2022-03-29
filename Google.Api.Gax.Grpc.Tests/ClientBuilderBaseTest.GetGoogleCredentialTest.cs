@@ -134,7 +134,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 }
 
                 private static ServiceMetadata CreateServiceMetadata(string[] defaultScopes, bool useJwtAccessWithScopes) =>
-                    new ServiceMetadata("Test", "test.googleapis.com", defaultScopes, useJwtAccessWithScopes, TestApiMetadata.TestGrpc);
+                    new ServiceMetadata("Test", "test.googleapis.com", defaultScopes, useJwtAccessWithScopes, GrpcTransports.Grpc, TestApiMetadata.Test);
 
                 public new GrpcChannelOptions GetChannelOptions() => throw new NotImplementedException();
                 public override string Build() => throw new NotImplementedException();

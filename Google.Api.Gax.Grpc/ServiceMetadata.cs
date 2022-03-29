@@ -44,19 +44,26 @@ namespace Google.Api.Gax.Grpc
         public ApiMetadata ApiMetadata { get; }
 
         /// <summary>
+        /// The transports supported by this service.
+        /// </summary>
+        public GrpcTransports Transports { get; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
         /// <param name="defaultEndpoint"></param>
         /// <param name="defaultScopes"></param>
         /// <param name="supportsScopedJwts"></param>
+        /// <param name="transports"></param>
         /// <param name="apiMetadata"></param>
-        public ServiceMetadata(string name, string defaultEndpoint, IEnumerable<string> defaultScopes, bool supportsScopedJwts, ApiMetadata apiMetadata)
+        public ServiceMetadata(string name, string defaultEndpoint, IEnumerable<string> defaultScopes, bool supportsScopedJwts, GrpcTransports transports, ApiMetadata apiMetadata)
         {
             Name = GaxPreconditions.CheckNotNullOrEmpty(name, nameof(name));
             DefaultEndpoint = defaultEndpoint;
             DefaultScopes = GaxPreconditions.CheckNotNull(defaultScopes, nameof(defaultScopes)).ToList().AsReadOnly();
             SupportsScopedJwts = supportsScopedJwts;
+            Transports = transports;
             ApiMetadata = apiMetadata;
         }
     }

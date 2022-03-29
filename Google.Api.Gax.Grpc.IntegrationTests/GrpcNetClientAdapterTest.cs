@@ -33,7 +33,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void FailsForRestOnlyDescriptor() =>
             Assert.Throws<ArgumentException>(() =>
-                GrpcCoreAdapter.Instance.CreateChannel(new ServiceMetadata("test", "test.googleapis.com", new string[0], false, TestApiMetadata.TestRest),
+                GrpcCoreAdapter.Instance.CreateChannel(new ServiceMetadata("test", "test.googleapis.com", new string[0], false, GrpcTransports.Rest, TestApiMetadata.Test),
                     _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
     }
 }

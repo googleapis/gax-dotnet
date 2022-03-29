@@ -19,7 +19,7 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         private static readonly GrpcAdapter FakeAdapter = new FakeGrpcAdapter();
         private static readonly ApiConfig Config1 = new ApiConfig { ChannelPool = new ChannelPoolConfig { MaxSize = 5 } };
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
-        private static readonly ServiceMetadata ServiceMetadata = new ServiceMetadata("test", "test.googleapis.com", EmptyScopes, false, TestApiMetadata.TestGrpc);
+        private static readonly ServiceMetadata ServiceMetadata = new ServiceMetadata("test", "test.googleapis.com", EmptyScopes, false, GrpcTransports.Grpc, TestApiMetadata.Test);
 
         [Fact]
         public void SameEndpointAndOptions_SameCallInvoker()

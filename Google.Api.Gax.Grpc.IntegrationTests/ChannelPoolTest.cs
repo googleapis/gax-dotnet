@@ -4,7 +4,6 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
-using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +14,9 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
 {
     public class ChannelPoolTest
     {
-        private static readonly ServiceMetadata ServiceMetadata = new ServiceMetadata("test", "test.googleapis.com", EmptyScopes, false, TestApiMetadata.TestGrpc);
         private static readonly IEnumerable<string> EmptyScopes = Enumerable.Empty<string>();
         private static readonly GrpcAdapter Grpc = GrpcCoreAdapter.Instance;
+        private static readonly ServiceMetadata ServiceMetadata = new ServiceMetadata("test", "test.googleapis.com", EmptyScopes, false, GrpcTransports.Grpc, TestApiMetadata.Test);
 
         [Fact]
         public void SameEndpoint_SameChannel()

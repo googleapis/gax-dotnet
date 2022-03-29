@@ -42,7 +42,7 @@ namespace Google.Api.Gax.Grpc
         public bool SupportsApi(ServiceMetadata serviceMetadata)
         {
             GaxPreconditions.CheckNotNull(serviceMetadata, nameof(serviceMetadata));
-            return (serviceMetadata.ApiMetadata.Transports & _supportedTransports) != 0;
+            return (serviceMetadata.Transports & _supportedTransports) != 0;
         }
 
         /// <summary>
@@ -53,12 +53,12 @@ namespace Google.Api.Gax.Grpc
         public static GrpcAdapter GetFallbackAdapter(ServiceMetadata serviceMetadata)
         {
             // TODO: Some way of indicating a preference? Or just set the adapter in the client builder...?
-            if (serviceMetadata.ApiMetadata.Transports.HasFlag(GrpcTransports.Grpc))
+            if (serviceMetadata.Transports.HasFlag(GrpcTransports.Grpc))
             {
                 // TODO: This is all a bit of a mess.
                 return DefaultAdapter;
             }
-            else if (serviceMetadata.ApiMetadata.Transports.HasFlag(GrpcTransports.Rest))
+            else if (serviceMetadata.Transports.HasFlag(GrpcTransports.Rest))
             {
                 return RestGrpcAdapter.Default;
             }

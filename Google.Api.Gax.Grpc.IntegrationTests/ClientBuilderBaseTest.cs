@@ -319,7 +319,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             }
 
             private static ServiceMetadata CreateServiceMetadata(string name, bool poolUsesJwt) =>
-                new ServiceMetadata(name, DefaultEndpoint, DefaultScopes, poolUsesJwt, TestApiMetadata.TestGrpc);
+                new ServiceMetadata(name, DefaultEndpoint, DefaultScopes, poolUsesJwt, GrpcTransports.Grpc, TestApiMetadata.Test);
 
             public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
                 : this("Unnamed", clientUsesJwt, poolUsesJwt)
