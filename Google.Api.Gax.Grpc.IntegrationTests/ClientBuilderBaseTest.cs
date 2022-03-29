@@ -313,7 +313,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt)
             {
                 _name = name;
-                ChannelPool = new ChannelPool(ApiDescriptors.TestGrpc, DefaultScopes, poolUsesJwt);
+                ChannelPool = new ChannelPool(TestApiMetadata.TestGrpc, DefaultScopes, poolUsesJwt);
                 UseJwtAccessWithScopes = clientUsesJwt;
                 GrpcAdapter = GrpcCoreAdapter.Instance;
             }
@@ -351,7 +351,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
 
-            protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
+            protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
 
             public void ResetChannelCreation()
             {

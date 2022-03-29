@@ -138,7 +138,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 }
 
                 public new GrpcChannelOptions GetChannelOptions() => throw new NotImplementedException();
-                protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
+                protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();

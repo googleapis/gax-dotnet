@@ -1,0 +1,17 @@
+﻿/*
+ * Copyright 2022 Google LLC
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using Google.Protobuf.Reflection;
+
+namespace Google.Api.Gax.Grpc.IntegrationTests
+{
+    internal static class TestApiMetadata
+    {
+        internal static ApiMetadata TestGrpc { get; } = new ApiMetadata(nameof(TestGrpc), GrpcTransports.Grpc, new FileDescriptor[0]);
+        internal static ApiMetadata TestRest { get; } = new ApiMetadata(nameof(TestRest), GrpcTransports.Rest, new FileDescriptor[0]);
+    }
+}

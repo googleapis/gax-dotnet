@@ -37,28 +37,28 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Returns whether or not this adapter supports the specified API.
         /// </summary>
-        /// <param name="apiDescriptor">The descriptor of the API. Must not be null.</param>
+        /// <param name="apiMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns><c>true</c> if this adapter supports the given API; <c>false</c> otherwise.</returns>
-        public bool SupportsApi(ApiDescriptor apiDescriptor)
+        public bool SupportsApi(ApiMetadata apiMetadata)
         {
-            GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
-            return (apiDescriptor.Transports & _supportedTransports) != 0;
+            GaxPreconditions.CheckNotNull(apiMetadata, nameof(apiMetadata));
+            return (apiMetadata.Transports & _supportedTransports) != 0;
         }
 
         /// <summary>
         /// Returns a fallback provider suitable for the given API
         /// </summary>
-        /// <param name="apiDescriptor">The descriptor of the API. Must not be null.</param>
+        /// <param name="apiMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns>A suitable GrpcAdapter for the given API, preferring the use of the binary gRPC transport where available.</returns>
-        public static GrpcAdapter GetFallbackAdapter(ApiDescriptor apiDescriptor)
+        public static GrpcAdapter GetFallbackAdapter(ApiMetadata apiMetadata)
         {
             // TODO: Some way of indicating a preference? Or just set the adapter in the client builder...?
-            if (apiDescriptor.Transports.HasFlag(GrpcTransports.Grpc))
+            if (apiMetadata.Transports.HasFlag(GrpcTransports.Grpc))
             {
                 // TODO: This is all a bit of a mess.
                 return DefaultAdapter;
             }
-            else if (apiDescriptor.Transports.HasFlag(GrpcTransports.Rest))
+            else if (apiMetadata.Transports.HasFlag(GrpcTransports.Rest))
             {
                 return RestGrpcAdapter.Default;
             }
@@ -71,33 +71,33 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options.
         /// </summary>
-        /// <param name="apiDescriptor">The descriptor for the API. Must not be null.</param>
+        /// <param name="apiMetadata">The descriptor for the API. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="credentials">The channel credentials to use. Must not be null.</param>
         /// <param name="options">The channel options to use. Must not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        internal ChannelBase CreateChannel(ApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        internal ChannelBase CreateChannel(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            if (!SupportsApi(apiDescriptor))
+            if (!SupportsApi(apiMetadata))
             {
-                throw new ArgumentException($"API {apiDescriptor.Name} does not have any transports in common with {GetType().Name}");
+                throw new ArgumentException($"API {apiMetadata.Name} does not have any transports in common with {GetType().Name}");
             }
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
             GaxPreconditions.CheckNotNull(options, nameof(options));
-            return CreateChannelImpl(apiDescriptor, endpoint, credentials, options);
+            return CreateChannelImpl(apiMetadata, endpoint, credentials, options);
         }
 
         /// <summary>
         /// Creates a channel for the given endpoint, using the given credentials and options. All parameters
         /// are pre-validated to be non-null.
         /// </summary>
-        /// <param name="apiDescriptor"></param>
+        /// <param name="apiMetadata"></param>
         /// <param name="endpoint">The endpoint to connect to. Will not be null.</param>
         /// <param name="credentials">The channel credentials to use. Will not be null.</param>
         /// <param name="options">The channel options to use. Will not be null.</param>
         /// <returns>A channel for the specified settings.</returns>
-        private protected abstract ChannelBase CreateChannelImpl(ApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
+        private protected abstract ChannelBase CreateChannelImpl(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
 
         /// <summary>
         /// Returns the default gRPC adapter based on the available gRPC implementations.

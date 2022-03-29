@@ -38,20 +38,20 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly ChannelCredentials _credentials;
         private readonly GrpcChannelOptions _channelOptions;
         private readonly GrpcAdapter _adapter;
-        private readonly ApiDescriptor _apiDescriptor;
+        private readonly ApiMetadata _apiMetadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
         /// </summary>
-        /// <param name="apiDescriptor"></param>
+        /// <param name="apiMetadata"></param>
         /// <param name="target">Target of the underlying grpc channels. Must not be null.</param>
         /// <param name="credentials">Credentials to secure the underlying grpc channels. Must not be null.</param>
         /// <param name="options">Channel options to be used by the underlying grpc channels. Must not be null.</param>
         /// <param name="apiConfig">The API config to apply. Must not be null.</param>
         /// <param name="adapter">The adapter to use to create channels. Must not be null.</param>
-        internal GcpCallInvoker(ApiDescriptor apiDescriptor, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
+        internal GcpCallInvoker(ApiMetadata apiMetadata, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
-            _apiDescriptor = GaxPreconditions.CheckNotNull(apiDescriptor, nameof(apiDescriptor));
+            _apiMetadata = GaxPreconditions.CheckNotNull(apiMetadata, nameof(apiMetadata));
             _target = GaxPreconditions.CheckNotNull(target, nameof(target));
             _credentials = GaxPreconditions.CheckNotNull(credentials, nameof(credentials));
             _channelOptions = GaxPreconditions.CheckNotNull(options, nameof(options));
@@ -113,7 +113,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                     // Creates a new gRPC channel.
                     // TODO: Logging?
                     // GrpcEnvironment.Logger.Info("Grpc.Gcp creating new channel");
-                    ChannelBase channel = _adapter.CreateChannel(_apiDescriptor, _target, _credentials, _channelOptions.WithCustomOption(ClientChannelId, Interlocked.Increment(ref s_clientChannelIdCounter)));
+                    ChannelBase channel = _adapter.CreateChannel(_apiMetadata, _target, _credentials, _channelOptions.WithCustomOption(ClientChannelId, Interlocked.Increment(ref s_clientChannelIdCounter)));
                     ChannelRef channelRef = new ChannelRef(channel, count);
                     _channelRefs.Add(channelRef);
                     return channelRef;

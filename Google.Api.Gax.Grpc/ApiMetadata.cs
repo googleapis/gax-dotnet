@@ -17,7 +17,7 @@ namespace Google.Api.Gax.Grpc
     /// Provides metadata about an API. This is expected to be constructed with a single instance
     /// per API; equality is by simple identity.
     /// </summary>
-    public sealed partial class ApiDescriptor
+    public sealed partial class ApiMetadata
     {
         private Lazy<IReadOnlyList<FileDescriptor>> _fileDescriptorsProvider;
 
@@ -25,6 +25,13 @@ namespace Google.Api.Gax.Grpc
         /// The protobuf descriptors used by this API.
         /// </summary>
         public IReadOnlyList<FileDescriptor> ProtobufDescriptors => _fileDescriptorsProvider.Value;
+
+        private Lazy<TypeRegistry> _typeRegistryProvider;
+
+        /// <summary>
+        /// A type registry containing all the types in <see cref="ProtobufDescriptors"/>.
+        /// </summary>
+        public TypeRegistry TypeRegistry => _typeRegistryProvider.Value;
 
         /// <summary>
         /// The transports supported by this API.
@@ -37,11 +44,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public string Name { get; }
 
-        private ApiDescriptor(string name, GrpcTransports transports)
+        private ApiMetadata(string name, GrpcTransports transports)
         {
             GaxPreconditions.CheckNotNullOrEmpty(name, nameof(name));
             Name = name;
             Transports = transports;
+            _typeRegistryProvider = new Lazy<TypeRegistry>(() => TypeRegistry.FromFiles(ProtobufDescriptors));
         }
 
         /// <summary>
@@ -53,7 +61,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="name">The name of the API. Must not be null or empty.</param>
         /// <param name="transports">The transports supported by this API.</param>
         /// <param name="descriptors">The protobuf descriptors of the API. Must not be null.</param>
-        public ApiDescriptor(string name, GrpcTransports transports, IEnumerable<FileDescriptor> descriptors) : this(name, transports)
+        public ApiMetadata(string name, GrpcTransports transports, IEnumerable<FileDescriptor> descriptors) : this(name, transports)
         {
             var actualDescriptors = descriptors.ToList().AsReadOnly();
             _fileDescriptorsProvider = new Lazy<IReadOnlyList<FileDescriptor>>(() => actualDescriptors);
@@ -66,7 +74,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="transports">The transports supported by this API.</param>
         /// <param name="descriptorsProvider">A provider function for the protobuf descriptors of the API. Must not be null, and must not
         /// return a null value. This will only be called once by this API descriptor, when first requested.</param>
-        public ApiDescriptor(string name, GrpcTransports transports, Func<IEnumerable<FileDescriptor>> descriptorsProvider) : this(name, transports)
+        public ApiMetadata(string name, GrpcTransports transports, Func<IEnumerable<FileDescriptor>> descriptorsProvider) : this(name, transports)
         {
             Func<IReadOnlyList<FileDescriptor>> function = () => descriptorsProvider().ToList().AsReadOnly();
             _fileDescriptorsProvider = new Lazy<IReadOnlyList<FileDescriptor>>(function, LazyThreadSafetyMode.ExecutionAndPublication);

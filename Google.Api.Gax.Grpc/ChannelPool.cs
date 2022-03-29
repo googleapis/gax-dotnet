@@ -21,7 +21,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
-        private readonly ApiDescriptor _apiDescriptor;
+        private readonly ApiMetadata _apiMetadata;
         private readonly DefaultChannelCredentialsCache _credentialCache;
 
         internal bool UseJwtAccessWithScopes => _credentialCache.UseJwtAccessWithScopes;
@@ -35,13 +35,13 @@ namespace Google.Api.Gax.Grpc
         /// Creates a channel pool which will apply the specified scopes to the default application credentials
         /// if they require any.
         /// </summary>
-        /// <param name="apiDescriptor"></param>
+        /// <param name="apiMetadata"></param>
         /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
         /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
         /// when OAuth scopes are explicitly set.</param>
-        public ChannelPool(ApiDescriptor apiDescriptor, IEnumerable<string> scopes, bool useJwtWithScopes)
+        public ChannelPool(ApiMetadata apiMetadata, IEnumerable<string> scopes, bool useJwtWithScopes)
         {
-            _apiDescriptor = apiDescriptor;
+            _apiMetadata = apiMetadata;
             _credentialCache = new DefaultChannelCredentialsCache(scopes, useJwtWithScopes);
         }
 
@@ -107,7 +107,7 @@ namespace Google.Api.Gax.Grpc
                 ChannelBase channel;
                 if (!_channels.TryGetValue(key, out channel))
                 {
-                    channel = grpcAdapter.CreateChannel(_apiDescriptor, endpoint, credentials, channelOptions);
+                    channel = grpcAdapter.CreateChannel(_apiMetadata, endpoint, credentials, channelOptions);
                     _channels[key] = channel;
                 }
                 return channel;

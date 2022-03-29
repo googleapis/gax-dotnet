@@ -235,7 +235,7 @@ namespace Google.Api.Gax.Grpc.Tests
                         key => environment.TryGetValue(key, out var value) ? value : null);
 
                 public new GrpcChannelOptions GetChannelOptions() => base.GetChannelOptions();
-                protected override ApiDescriptor ApiDescriptor => ApiDescriptors.TestGrpc;
+                protected override ApiMetadata ApiMetadata => TestApiMetadata.TestGrpc;
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();

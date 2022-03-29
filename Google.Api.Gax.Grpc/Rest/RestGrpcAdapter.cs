@@ -16,7 +16,7 @@ namespace Google.Api.Gax.Grpc.Rest
     public sealed class RestGrpcAdapter : GrpcAdapter
     {
         // TODO: Is it okay for this to be static? Probably...
-        private static readonly ConcurrentDictionary<ApiDescriptor, RestServiceCollection> s_apiDescriptorToServiceCollection = new();
+        private static readonly ConcurrentDictionary<ApiMetadata, RestServiceCollection> s_apiMetadataToServiceCollection = new();
 
         /// <summary>
         /// 
@@ -30,9 +30,9 @@ namespace Google.Api.Gax.Grpc.Rest
         }
 
         /// <inheritdoc />
-        private protected override ChannelBase CreateChannelImpl(ApiDescriptor apiDescriptor, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        private protected override ChannelBase CreateChannelImpl(ApiMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            var serviceCollection = s_apiDescriptorToServiceCollection.GetOrAdd(apiDescriptor, apiDescriptor => RestServiceCollection.Create(apiDescriptor.ProtobufDescriptors));
+            var serviceCollection = s_apiMetadataToServiceCollection.GetOrAdd(apiMetadata, apiMetadata => RestServiceCollection.Create(apiMetadata.ProtobufDescriptors));
             return new RestChannel(serviceCollection, endpoint, credentials, options);
         }
 

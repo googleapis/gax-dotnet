@@ -6,23 +6,20 @@
  */
 
 using Google.Protobuf.Reflection;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
-    public class ApiDescriptorTest
+    public class ApiMetadataTest
     {
         [Fact]
         public void ConstructorWithDescriptorsProvider_LazyEvaluation()
         {
             var sequence = new CountingSequence();
-            var descriptor = new ApiDescriptor("Test", GrpcTransports.Grpc, sequence);
+            var descriptor = new ApiMetadata("Test", GrpcTransports.Grpc, sequence);
             // By the time the constructor returns, it's already evaluated the sequence.
             Assert.Equal(1, sequence.EvaluationCount);
 
@@ -43,7 +40,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ConstructorWithDescriptors_SingleImmediateEvaluation()
         {
             var sequence = new CountingSequence();
-            var descriptor = new ApiDescriptor("Test", GrpcTransports.Grpc, () => sequence);
+            var descriptor = new ApiMetadata("Test", GrpcTransports.Grpc, () => sequence);
             Assert.Equal(0, sequence.EvaluationCount);
 
             // Fetching the first time immediately evaluates the sequence
