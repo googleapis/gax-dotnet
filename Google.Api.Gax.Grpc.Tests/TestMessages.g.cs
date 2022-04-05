@@ -31,7 +31,10 @@ namespace Google.Api.Gax.Grpc {
             "bXBsZVJlc3BvbnNlEgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWluZ1Jl",
             "cXVlc3QSEgoKcGFnZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUS",
             "DQoFY2hlY2sYAyABKAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0KBWl0",
-            "ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCWIGcHJvdG8z"));
+            "ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTJiCgtUZXN0U2Vy",
+            "dmljZRJTCghEb1NpbXBsZRIiLmdvb2dsZS5hcGkuZ2F4LmdycGMuU2ltcGxl",
+            "UmVxdWVzdBojLmdvb2dsZS5hcGkuZ2F4LmdycGMuU2ltcGxlUmVzcG9uc2Vi",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {

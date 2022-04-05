@@ -6,6 +6,7 @@
  */
 
 using Google.Apis.Auth.OAuth2;
+using Google.Protobuf.Reflection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -128,21 +129,15 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             private class FakeBuilder : ClientBuilderBase<string>
             {
-                public IReadOnlyList<string> DefaultScopes { get; }
-
                 internal FakeBuilder(string[] defaultScopes, bool useJwtAccessWithScopes)
+                    : base(TestServiceMetadata.TestService.WithSupportsScopedJwts(useJwtAccessWithScopes).WithDefaultScopes(defaultScopes))
                 {
-                    UseJwtAccessWithScopes = useJwtAccessWithScopes;
-                    Scopes = defaultScopes;
                 }
 
                 public new GrpcChannelOptions GetChannelOptions() => throw new NotImplementedException();
-                protected override GrpcAdapter DefaultGrpcAdapter => throw new NotImplementedException();
                 public override string Build() => throw new NotImplementedException();
                 public override Task<string> BuildAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
                 protected override ChannelPool GetChannelPool() => throw new NotImplementedException();
-                protected override string GetDefaultEndpoint() => throw new NotImplementedException();
-                protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
             }
         }
     }

@@ -15,12 +15,13 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
     /// </summary>
     internal class FakeChannel : ChannelBase
     {
+        public ServiceMetadata ServiceMetadata { get; }
         public ChannelCredentials Credentials { get; }
         public GrpcChannelOptions Options { get; }
 
-
-        public FakeChannel(string target, ChannelCredentials credentials, GrpcChannelOptions options) : base(target)
-        {
+        public FakeChannel(ServiceMetadata serviceMetadata, string target, ChannelCredentials credentials, GrpcChannelOptions options) : base(target)
+{
+            ServiceMetadata = serviceMetadata;
             Credentials = credentials;
             Options = options;
         }

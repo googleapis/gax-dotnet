@@ -6,6 +6,7 @@
  */
 
 using Google.Apis.Auth.OAuth2;
+using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -76,7 +77,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
             ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
@@ -98,7 +99,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             {
                 Assert.NotNull(builder.ChannelCreated);
                 Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-                Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
+                Assert.Equal(TestServiceMetadata.TestService.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
                 Assert.Same(builder.ChannelCredentials, builder.CredentialsUsedToCreateChannel);
             };
             await ValidateResultAsync(builder, validator);
@@ -200,7 +201,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientEnabledTest(bool clientUsesJwt, bool poolUsesJwt)
         {
             var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = DummyServiceAccountCredentialFileContents };
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt of client does not match pool, so we won't use channel pool
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
@@ -211,7 +212,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientAndPoolEnabledTest(bool enabledJwts)
         {
             var builder = new SampleClientBuilder(enabledJwts, enabledJwts);
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, SampleClientBuilder.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt is either enabled or disabled for both client and pool
             // We use channel pool
@@ -230,7 +231,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             Assert.NotNull(builder.ChannelCreated);
             Assert.Same(builder.ChannelCreated, GetChannel(invoker));
-            Assert.Equal(SampleClientBuilder.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
+            Assert.Equal(TestServiceMetadata.TestService.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
         };
 
         private static Channel GetChannel(CallInvoker invoker)
@@ -257,7 +258,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             // CallInvoker excludes everything else
             new SampleClientBuilder("CallInvokerAndTokenAccessMethod") { CallInvoker = CustomInvoker, TokenAccessMethod = CustomTokenAccess },
-            new SampleClientBuilder("CallInvokerAndEndpoint") { CallInvoker = CustomInvoker, Endpoint = SampleClientBuilder.DefaultEndpoint },
+            new SampleClientBuilder("CallInvokerAndEndpoint") { CallInvoker = CustomInvoker, Endpoint = "test.googleapis.com" },
             new SampleClientBuilder("CallInvokerAndScopes") { CallInvoker = CustomInvoker, Scopes = new[] { "a", "b" } },
             new SampleClientBuilder("CallInvokerAndCredentialsPath") { CallInvoker = CustomInvoker, CredentialsPath = "foo.json" },
             new SampleClientBuilder("CallInvokerAndChannelCredentials") { CallInvoker = CustomInvoker, ChannelCredentials = ChannelCredentials.Insecure },
@@ -293,8 +294,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         
         public class SampleClientBuilder : ClientBuilderBase<CallInvoker>
         {
-            public static string DefaultEndpoint { get; } = "default.nowhere.com";
-            public static string[] DefaultScopes { get; } = new[] { "scope1", "scope2" };
             public ChannelPool ChannelPool { get; }
 
             // The default options are protected in ClientBuilderBase, but we want to access them for testing.
@@ -309,11 +308,12 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             /// <summary>
             /// Constructor assigning a "name" to a builder and setting Jwt flags for the sake of theory tests.
             /// </summary>
-            public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt)
+            public SampleClientBuilder(string name, bool clientUsesJwt, bool poolUsesJwt) : base(TestServiceMetadata.TestService.WithSupportsScopedJwts(poolUsesJwt))
             {
                 _name = name;
-                ChannelPool = new ChannelPool(DefaultScopes, poolUsesJwt);
+                ChannelPool = new ChannelPool(ServiceMetadata);
                 UseJwtAccessWithScopes = clientUsesJwt;
+                GrpcAdapter = GrpcCoreAdapter.Instance;
             }
 
             public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
@@ -344,13 +344,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             }
 
             protected override ChannelPool GetChannelPool() => ChannelPool;
-
-            protected override string GetDefaultEndpoint() => DefaultEndpoint;
-
-            protected override IReadOnlyList<string> GetDefaultScopes() => DefaultScopes;
-
-            protected override GrpcAdapter DefaultGrpcAdapter => GrpcCoreAdapter.Instance;
-
+            
             public void ResetChannelCreation()
             {
                 EndpointUsedToCreateChannel = null;

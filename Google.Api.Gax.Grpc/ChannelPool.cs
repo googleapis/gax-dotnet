@@ -21,6 +21,7 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ChannelPool
     {
+        private readonly ServiceMetadata _serviceMetadata;
         private readonly DefaultChannelCredentialsCache _credentialCache;
 
         internal bool UseJwtAccessWithScopes => _credentialCache.UseJwtAccessWithScopes;
@@ -31,15 +32,13 @@ namespace Google.Api.Gax.Grpc
         private readonly object _lock = new object();
 
         /// <summary>
-        /// Creates a channel pool which will apply the specified scopes to the default application credentials
-        /// if they require any.
+        /// Creates a channel pool which will use the given service metadata to determine scopes and the use of self-signed JWTs.
         /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useJwtWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
-        /// when OAuth scopes are explicitly set.</param>
-        public ChannelPool(IEnumerable<string> scopes, bool useJwtWithScopes)
+        /// <param name="serviceMetadata">The metadata for the service that this pool will be used with. Must not be null.</param>
+        public ChannelPool(ServiceMetadata serviceMetadata)
         {
-            _credentialCache = new DefaultChannelCredentialsCache(scopes, useJwtWithScopes);
+            _serviceMetadata = GaxPreconditions.CheckNotNull(serviceMetadata, nameof(serviceMetadata));
+            _credentialCache = new DefaultChannelCredentialsCache(serviceMetadata);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Google.Api.Gax.Grpc
                 ChannelBase channel;
                 if (!_channels.TryGetValue(key, out channel))
                 {
-                    channel = grpcAdapter.CreateChannel(endpoint, credentials, channelOptions);
+                    channel = grpcAdapter.CreateChannel(_serviceMetadata, endpoint, credentials, channelOptions);
                     _channels[key] = channel;
                 }
                 return channel;

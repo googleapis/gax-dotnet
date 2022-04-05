@@ -16,7 +16,11 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
     /// </summary>
     internal class FakeGrpcAdapter : GrpcAdapter
     {
-        protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
-            new FakeChannel(endpoint, credentials, options);
+        internal FakeGrpcAdapter(ApiTransports transports = ApiTransports.Grpc) : base(transports)
+        {
+        }
+
+        private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
+            new FakeChannel(serviceMetadata, endpoint, credentials, options);
     }
 }

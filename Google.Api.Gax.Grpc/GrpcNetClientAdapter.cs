@@ -24,12 +24,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public static GrpcNetClientAdapter Default { get; } = new GrpcNetClientAdapter();
 
-        private GrpcNetClientAdapter()
+        private GrpcNetClientAdapter() : base(ApiTransports.Grpc)
         {
         }
 
         /// <inheritdoc />
-        protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
             var grpcNetClientOptions = ConvertOptions(credentials, options);
             var address = ConvertEndpoint(endpoint);

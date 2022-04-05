@@ -22,11 +22,11 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var adapter = GrpcAdapter.DefaultAdapter;
+            var adapter = GrpcAdapter.GetFallbackAdapter(TestServiceMetadata.TestService);
             // This is unfortunate, but required for the test.
             // ("localhost:12345" is only valid in Grpc.Core; "http://localhost:12345" is only valid in Grpc.Net.Client.)
             var endpoint = adapter is GrpcNetClientAdapter ? _fixture.HttpEndpoint : _fixture.Endpoint;
-            var channel = adapter.CreateChannel(endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = adapter.CreateChannel(TestServiceMetadata.TestService, endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);

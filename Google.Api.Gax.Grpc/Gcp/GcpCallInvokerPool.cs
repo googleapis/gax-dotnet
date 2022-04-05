@@ -26,27 +26,20 @@ namespace Google.Api.Gax.Grpc.Gcp
 
         private readonly DefaultChannelCredentialsCache _credentialsCache;
 
+        private readonly ServiceMetadata _serviceMetadata;
         private readonly Dictionary<Key, GcpCallInvoker> _callInvokers = new Dictionary<Key, GcpCallInvoker>();
         private readonly object _lock = new object();
 
         /// <summary>
-        /// Creates a call invoker pool which will apply the specified scopes to the default application credentials
-        /// if they require any.
+        /// Creates a call invoker pool which will use the given service metadata to determine scopes
+        /// and self-signed JWT support.
         /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        public GcpCallInvokerPool(IEnumerable<string> scopes) : this(scopes, false)
+        /// <param name="serviceMetadata">The metadata for the service that this pool will be used with. Must not be null.</param>
+        public GcpCallInvokerPool(ServiceMetadata serviceMetadata)
         {
+            _serviceMetadata = GaxPreconditions.CheckNotNull(serviceMetadata, nameof(serviceMetadata));
+            _credentialsCache = new DefaultChannelCredentialsCache(serviceMetadata);
         }
-
-        /// <summary>
-        /// Creates a call invoker pool which will apply the specified scopes to the default application credentials
-        /// if they require any.
-        /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useJwtAccessWithScopes">A flag preferring use of self-signed JWTs over OAuth tokens 
-        /// when OAuth scopes are explicitly set.</param>
-        public GcpCallInvokerPool(IEnumerable<string> scopes, bool useJwtAccessWithScopes) =>
-            _credentialsCache = new DefaultChannelCredentialsCache(scopes, useJwtAccessWithScopes);
 
         /// <summary>
         /// Shuts down all the open channels of all currently-allocated call invokers asynchronously. This does not prevent
@@ -112,7 +105,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             {
                 if (!_callInvokers.TryGetValue(key, out GcpCallInvoker callInvoker))
                 {
-                    callInvoker = new GcpCallInvoker(endpoint, credentials, effectiveOptions, apiConfig, adapter);
+                    callInvoker = new GcpCallInvoker(_serviceMetadata, endpoint, credentials, effectiveOptions, apiConfig, adapter);
                     _callInvokers[key] = callInvoker;
                 }
                 return callInvoker;

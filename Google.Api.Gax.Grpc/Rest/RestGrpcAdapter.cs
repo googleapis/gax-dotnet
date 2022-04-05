@@ -4,9 +4,8 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
-using Google.Protobuf.Reflection;
 using Grpc.Core;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Google.Api.Gax.Grpc.Rest
 {
@@ -16,24 +15,26 @@ namespace Google.Api.Gax.Grpc.Rest
     /// </summary>
     public sealed class RestGrpcAdapter : GrpcAdapter
     {
-        private readonly RestServiceCollection _serviceCollection;
-
-        private RestGrpcAdapter(RestServiceCollection serviceCollection) =>
-            _serviceCollection = serviceCollection;
-
-        /// <inheritdoc />
-        protected override ChannelBase CreateChannelImpl(string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) =>
-            new RestChannel(_serviceCollection, endpoint, credentials, options);
+        // TODO: Is it okay for this to be static? Probably...
+        private static readonly ConcurrentDictionary<ApiMetadata, RestServiceCollection> s_apiMetadataToServiceCollection = new();
 
         /// <summary>
-        /// Creates a gRPC adapter using HTTP/1.1 and JSON, based on the services within the
-        /// given file descriptors.
+        /// Returns the default gRPC adapter for the REST transport.
         /// </summary>
-        /// <param name="fileDescriptors">File descriptors for all protos that may be involved in RPCs for this adapter.
-        /// All services within the descriptors are expected to be accessible via the same host.</param>
-        /// <returns></returns>
-        public static RestGrpcAdapter Create(IEnumerable<FileDescriptor> fileDescriptors) =>
-            new RestGrpcAdapter(RestServiceCollection.Create(fileDescriptors));
+        public static RestGrpcAdapter Default { get; } = new RestGrpcAdapter();
+
+        // TODO: Other configuration? Logging?
+
+        private RestGrpcAdapter() : base(ApiTransports.Rest)
+        {
+        }
+
+        /// <inheritdoc />
+        private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
+        {
+            var serviceCollection = s_apiMetadataToServiceCollection.GetOrAdd(serviceMetadata.ApiMetadata, apiMetadata => RestServiceCollection.Create(apiMetadata.ProtobufDescriptors));
+            return new RestChannel(serviceCollection, endpoint, credentials, options);
+        }
 
         /// <summary>
         /// Converts an HTTP status code into the corresponding gRPC status code.
