@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using System;
 using Xunit;
 using static Google.Api.Gax.Grpc.IntegrationTests.TestService;
 
@@ -22,11 +23,17 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var channel = GrpcNetClientAdapter.Default.CreateChannel(_fixture.HttpEndpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = GrpcNetClientAdapter.Default.CreateChannel(TestServiceMetadata.TestService, _fixture.HttpEndpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);
         }
+
+        [Fact]
+        public void FailsForRestOnlyDescriptor() =>
+            Assert.Throws<ArgumentException>(() =>
+                GrpcCoreAdapter.Instance.CreateChannel(TestServiceMetadata.TestService.WithTransports(ApiTransports.Rest),
+                    _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty));
     }
 }
 #endif

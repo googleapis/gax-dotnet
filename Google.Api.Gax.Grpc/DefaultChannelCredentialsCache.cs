@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// Caches the application default channel credentials, applying a specified set of scopes if they require any.
+    /// Caches the application default channel credentials for an individual service, applying a specified set of scopes when required.
     /// </summary>
     internal sealed class DefaultChannelCredentialsCache
     {
@@ -37,18 +37,14 @@ namespace Google.Api.Gax.Grpc
         /// Creates a cache which will apply the specified scopes to the default application credentials
         /// if they require any.
         /// </summary>
-        /// <param name="scopes">The scopes to apply. Must not be null, and must not contain null references. May be empty.</param>
-        /// <param name="useJwtAccessWithScopes">The flag preferring use of self-signed JWTs over OAuth tokens when OAuth scopes are explicitly set.</param>
-        internal DefaultChannelCredentialsCache(IEnumerable<string> scopes, bool useJwtAccessWithScopes)
+        /// <param name="serviceMetadata">The metadata of the service the credentials will be used with. Must not be null.</param>
+        internal DefaultChannelCredentialsCache(ServiceMetadata serviceMetadata)
         {
-            UseJwtAccessWithScopes = useJwtAccessWithScopes;
-
-            // Always take a copy of the provided scopes, then check the copy doesn't contain any nulls.
-            _scopes = GaxPreconditions.CheckNotNull(scopes, nameof(scopes)).ToList();
-            GaxPreconditions.CheckArgument(!_scopes.Any(x => x == null), nameof(scopes), "Scopes must not contain any null references");
+            UseJwtAccessWithScopes = serviceMetadata.SupportsScopedJwts;
 
             // In theory, we don't actually need to store the scopes as field in this class. We could capture a local variable here.
             // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
+            _scopes = serviceMetadata.DefaultScopes;
             _lazyScopedDefaultChannelCredentials =
                 new Lazy<Task<ChannelCredentials>>(() => Task.Run(async () =>
                 {

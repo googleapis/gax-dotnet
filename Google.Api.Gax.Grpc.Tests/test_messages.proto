@@ -9,6 +9,10 @@ syntax = "proto3";
 
 package google.api.gax.grpc;
 
+service TestService {
+  rpc DoSimple(SimpleRequest) returns (SimpleResponse);
+}
+
 // Messages required for testing
 
 message BundlingRequest {
