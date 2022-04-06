@@ -58,7 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection to add the adapter to.</param>
         /// <returns>The same service collection reference, for method chaining.</returns>
-        public static IServiceCollection AddGrpcRestAdapter(this IServiceCollection services) =>
+        public static IServiceCollection AddRestGrpcAdapter(this IServiceCollection services) =>
             services.AddSingleton<GrpcAdapter>(RestGrpcAdapter.Default);
     }
 }
