@@ -24,9 +24,30 @@ namespace Google.Api.Gax.Grpc.Tests
         public class DependencyInjection
         {
             [Fact]
-            public void GrpcAdapter_NotSetBefore()
+            public void GrpcAdapter_NotSetBefore_SingleMatching()
             {
                 var serviceCollection = new ServiceCollection();
+                serviceCollection.AddGrpcNetClientAdapter();
+                var builder = new FakeBuilder();
+                builder.Configure(serviceCollection);
+                Assert.IsType<GrpcNetClientAdapter>(builder.GrpcAdapter);
+            }
+
+            [Fact]
+            public void GrpcAdapter_NotSetBefore_SingleNonMatching()
+            {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddRestGrpcAdapter();
+                var builder = new FakeBuilder();
+                builder.Configure(serviceCollection);
+                Assert.Null(builder.GrpcAdapter);
+            }
+
+            [Fact]
+            public void GrpcAdapter_NotSetBefore_MultipleFirstMatchUsed()
+            {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddRestGrpcAdapter();
                 serviceCollection.AddGrpcNetClientAdapter();
                 var builder = new FakeBuilder();
                 builder.Configure(serviceCollection);
