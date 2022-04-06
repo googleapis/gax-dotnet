@@ -514,6 +514,10 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <remarks>
         /// <para>
+        /// If gRPC adapters are configured in <paramref name="provider"/>, the first one that supports
+        /// the <see cref="ServiceMetadata"/> will be used.
+        /// </para>
+        /// <para>
         /// Credentials are only requested from dependency injection if they are not already set
         /// via any of <see cref="ChannelCredentials"/>, <see cref="CredentialsPath"/>,
         /// <see cref="JsonCredentials"/>, <see cref="Credential"/>, <see cref="GoogleCredential"/>
@@ -539,8 +543,7 @@ namespace Google.Api.Gax.Grpc
                 return;
             }
 
-            // TODO: Check for the concrete adapters as well, based on what is supported?
-            GrpcAdapter ??= provider.GetService<GrpcAdapter>();
+            GrpcAdapter ??= provider.GetServices<GrpcAdapter>().FirstOrDefault(adapter => adapter.SupportsApi(ServiceMetadata));
             GrpcChannelOptions ??= provider.GetService<GrpcChannelOptions>();
 
 #pragma warning disable CS0618 // Type or member is obsolete
