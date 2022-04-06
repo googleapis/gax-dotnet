@@ -8,6 +8,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Http;
 using Google.Apis.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -240,6 +241,43 @@ namespace Google.Api.Gax.Rest
         /// Builds the resulting client asynchronously.
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Populates properties based on those set via dependency injection.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Credentials are only requested from dependency injection if they are not already set
+        /// via any of <see cref="CredentialsPath"/>,
+        /// <see cref="JsonCredentials"/>, <see cref="Credential"/> or <see cref="GoogleCredential"/>.
+        /// </para>
+        /// <para>
+        /// If credentials are requested, they are tried in the following order:
+        /// </para>
+        /// <list type="bullet">
+        /// <item>ICredential</item>
+        /// <item>GoogleCredential</item>
+        /// </list>
+        /// </remarks>
+        /// <param name="provider">The service provider to request dependencies from.</param>
+        protected virtual void Configure(IServiceProvider provider)
+        {
+            GaxPreconditions.CheckNotNull(provider, nameof(provider));
+
+            HttpClientFactory ??= provider.GetService<IHttpClientFactory>();
+
+            if (CredentialsPath is null && JsonCredentials is null && GoogleCredential is null && Credential is null)
+            {
+                if (provider.GetService<ICredential>() is ICredential credential)
+                {
+                    Credential = credential;
+                }
+                else if (provider.GetService<GoogleCredential>() is GoogleCredential googleCredential)
+                {
+                    GoogleCredential = googleCredential;
+                }
+            }
+        }
 
         /// <summary>
         /// Class to be used to set the quota project on request headers when

@@ -8,6 +8,7 @@
 using Google.Apis.Auth.OAuth2;
 using Grpc.Auth;
 using Grpc.Core;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -507,6 +508,60 @@ namespace Google.Api.Gax.Grpc
         /// Builds the resulting client.
         /// </summary>
         public abstract TClient Build();
+
+        /// <summary>
+        /// Populates properties based on those set via dependency injection.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Credentials are only requested from dependency injection if they are not already set
+        /// via any of <see cref="ChannelCredentials"/>, <see cref="CredentialsPath"/>,
+        /// <see cref="JsonCredentials"/>, <see cref="Credential"/>, <see cref="GoogleCredential"/>
+        /// or <see cref="TokenAccessMethod"/>.
+        /// </para>
+        /// <para>
+        /// If credentials are requested, they are tried in the following order:
+        /// </para>
+        /// <list type="bullet">
+        /// <item>ChannelCredentials</item>
+        /// <item>ICredential</item>
+        /// <item>GoogleCredential</item>
+        /// </list>
+        /// </remarks>
+        /// <param name="provider">The service provider to request dependencies from.</param>
+        protected virtual void Configure(IServiceProvider provider)
+        {
+            GaxPreconditions.CheckNotNull(provider, nameof(provider));
+
+            CallInvoker ??= provider.GetService<CallInvoker>();
+            if (CallInvoker is object)
+            {
+                return;
+            }
+
+            // TODO: Check for the concrete adapters as well, based on what is supported?
+            GrpcAdapter ??= provider.GetService<GrpcAdapter>();
+            GrpcChannelOptions ??= provider.GetService<GrpcChannelOptions>();
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (ChannelCredentials is null && CredentialsPath is null && JsonCredentials is null && TokenAccessMethod is null &&
+#pragma warning restore CS0618 // Type or member is obsolete
+                GoogleCredential is null && Credential is null)
+            {
+                if (provider.GetService<ChannelCredentials>() is ChannelCredentials channelCredentials)
+                {
+                    ChannelCredentials = channelCredentials;
+                }
+                else if (provider.GetService<ICredential>() is ICredential credential)
+                {
+                    Credential = credential;
+                }
+                else if (provider.GetService<GoogleCredential>() is GoogleCredential googleCredential)
+                {
+                    GoogleCredential = googleCredential;
+                }
+            }
+        }
 
         // Note: The implementation is responsible for performing validation before constructing the client.
         // The Validate method can be used as-is for most builders.
