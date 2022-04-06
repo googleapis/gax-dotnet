@@ -10,10 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Rest\Google.Api.Gax.Rest.csproj" />
     <ProjectReference Include="..\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ClientBuilderBaseTest.DependencyInjection.cs">
+      <DependentUpon>ClientBuilderBaseTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

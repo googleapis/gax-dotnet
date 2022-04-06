@@ -7,6 +7,7 @@
 
 using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -16,22 +17,38 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class GrpcNetClientAdapter : GrpcAdapter
     {
+        private Action<global::Grpc.Net.Client.GrpcChannelOptions> _optionsConfigurationAction;
+
         // Note: this is "Default" rather than "Instance" as we expect to have other factory methods later, e.g. accepting
         // an HTTP client factory.
 
         /// <summary>
         /// Returns the default instance of this class.
         /// </summary>
-        public static GrpcNetClientAdapter Default { get; } = new GrpcNetClientAdapter();
+        public static GrpcNetClientAdapter Default { get; } = new GrpcNetClientAdapter(null);
 
-        private GrpcNetClientAdapter() : base(ApiTransports.Grpc)
+        private GrpcNetClientAdapter(Action<global::Grpc.Net.Client.GrpcChannelOptions> optionsConfigurationAction) : base(ApiTransports.Grpc)
         {
+            _optionsConfigurationAction = optionsConfigurationAction;
         }
+
+        /// <summary>
+        /// Returns a new instance based on this one, but with the additional options configurer specified.
+        /// The options configurer is called after creating the <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/> from
+        /// other settings, but before creating the <see cref="GrpcChannel"/>.
+        /// </summary>
+        /// <param name="configure">A configuration delegate to apply to instances of <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/>
+        /// before they are provided to a <see cref="GrpcChannel"/>, after any configuration applied by this adapter.
+        /// </param>
+        /// <returns>A new adapter based on this one, but with an additional channel options configuration action.</returns>
+        public GrpcNetClientAdapter WithAdditionalOptions(Action<global::Grpc.Net.Client.GrpcChannelOptions> configure) =>
+            new GrpcNetClientAdapter(_optionsConfigurationAction + configure);
 
         /// <inheritdoc />
         private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
             var grpcNetClientOptions = ConvertOptions(credentials, options);
+            _optionsConfigurationAction?.Invoke(grpcNetClientOptions);
             var address = ConvertEndpoint(endpoint);
             return GrpcChannel.ForAddress(address, grpcNetClientOptions);
         }
