@@ -9,6 +9,7 @@ using Google.Api.Gax.Grpc.Rest;
 using Google.Apis.Auth.OAuth2;
 using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -88,8 +89,34 @@ namespace Google.Api.Gax.Grpc.Tests
                 var builder = new FakeBuilder { CallInvoker = manual };
                 builder.Configure(serviceCollection);
                 Assert.Same(manual, builder.CallInvoker);
-                // Because the CallInvoker was set, nothing else was fetched.
+                // Because the CallInvoker was set, the gRPC adapter wasn't injected
                 Assert.Null(builder.GrpcAdapter);
+            }
+
+            [Fact]
+            public void Logger_NotSetBefore()
+            {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddSingleton<CallInvoker>(new FakeCallInvoker());
+                serviceCollection.AddLogging(builder => builder.AddProvider(new MemoryLoggerProvider()));
+                var builder = new FakeBuilder();
+                builder.Configure(serviceCollection);
+                // The logger factory and CallInvoker can be injected independently
+                Assert.NotNull(builder.Logger);
+                Assert.IsType<FakeCallInvoker>(builder.CallInvoker);
+            }
+
+            [Fact]
+            public void Logger_SetBefore()
+            {
+                var manual = new MemoryLogger<string>();
+                var injected = new MemoryLogger<string>();
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddSingleton<ILogger<string>>(injected);
+                serviceCollection.AddGrpcNetClientAdapter();
+                var builder = new FakeBuilder { Logger = manual };
+                builder.Configure(serviceCollection);
+                Assert.Same(manual, builder.Logger);
             }
 
             [Fact]
