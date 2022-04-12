@@ -182,7 +182,7 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// Validates that the builder is in a consistent state for building. For example, it's invalid to call
-        /// <see cref="Build"/> on an instance which has both JSON credentials and a credentials path specified.
+        /// <see cref="Build()"/> on an instance which has both JSON credentials and a credentials path specified.
         /// </summary>
         /// <exception cref="InvalidOperationException">The builder is in an invalid state.</exception>
         protected virtual void Validate()
@@ -573,6 +573,29 @@ namespace Google.Api.Gax.Grpc
         /// Builds the resulting client asynchronously.
         /// </summary>
         public abstract Task<TClient> BuildAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Populates properties supplied via dependency injection, then builds a client.
+        /// </summary>
+        /// <param name="provider">The service provider to request dependencies from. Must not be null.</param>
+        /// <returns>An API client configured from this builder.</returns>
+        public TClient Build(IServiceProvider provider)
+        {
+            Configure(provider);
+            return Build();
+        }
+
+        /// <summary>
+        /// Populates properties supplied via dependency injection, then builds a client asynchronously.
+        /// </summary>
+        /// <param name="provider">The service provider to request dependencies from. Must not be null.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>An API client configured from this builder.</returns>
+        public async Task<TClient> BuildAsync(IServiceProvider provider, CancellationToken cancellationToken = default)
+        {
+            Configure(provider);
+            return await BuildAsync(cancellationToken).ConfigureAwait(false);
+        }
 
         private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
             EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
