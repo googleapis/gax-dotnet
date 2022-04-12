@@ -5,7 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +18,7 @@ namespace Google.Api.Gax.Grpc
         // Async retry
         internal static Func<TRequest, CallSettings, Task<TResponse>> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, Task<TResponse>> fn,
-            IClock clock, IScheduler scheduler) =>
+            IClock clock, IScheduler scheduler, ILogger logger, string methodName) =>
             async (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Retry;
@@ -40,6 +40,7 @@ namespace Google.Api.Gax.Grpc
                     }
                     catch (Exception e) when (attempt.ShouldRetry(e))
                     {
+                        logger.LogDebug("Backing off before retry of method {method}", methodName);
                         await attempt.BackoffAsync(callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
                     }
                 }
@@ -49,7 +50,7 @@ namespace Google.Api.Gax.Grpc
         // Sync retry
         internal static Func<TRequest, CallSettings, TResponse> WithRetry<TRequest, TResponse>(
             this Func<TRequest, CallSettings, TResponse> fn,
-            IClock clock, IScheduler scheduler) =>
+            IClock clock, IScheduler scheduler, ILogger logger, string methodName) =>
             (request, callSettings) =>
             {
                 RetrySettings retrySettings = callSettings.Retry;
@@ -71,6 +72,7 @@ namespace Google.Api.Gax.Grpc
                     }
                     catch (Exception e) when (attempt.ShouldRetry(e))
                     {
+                        logger.LogDebug("Backing off before retry of method {method}", methodName);
                         attempt.Backoff(callSettings.CancellationToken.GetValueOrDefault());
                     }
                 }

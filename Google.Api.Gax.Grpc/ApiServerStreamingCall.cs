@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -134,5 +135,14 @@ namespace Google.Api.Gax.Grpc
                     : null; // CallSettings.Merge handles null correctly.
             });
         }
+
+        internal ApiServerStreamingCall<TRequest, TResponse> WithLogging(ILogger logger) =>
+            logger is null
+                ? this
+                : new ApiServerStreamingCall<TRequest, TResponse>(
+                    _methodName,
+                    _asyncCall.WithLogging(logger, _methodName),
+                    _syncCall.WithLogging(logger, _methodName),
+                    BaseCallSettings);
     }
 }

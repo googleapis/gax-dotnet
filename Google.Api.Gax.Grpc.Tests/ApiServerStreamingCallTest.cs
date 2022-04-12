@@ -6,6 +6,7 @@
  */
 
 using Google.Api.Gax.Testing;
+using Grpc.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -140,6 +141,36 @@ namespace Google.Api.Gax.Grpc.Tests
 
             CallSettingsTest.AssertRoutingHeader(syncCallSettings, expectedHeader);
             CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
+        }
+
+        [Fact]
+        public void WithLogging_Sync()
+        {
+            var logger = new MemoryLogger("category");
+            var call = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(AsyncServerStreamingCall<SimpleResponse>)),
+                (req, cs) => null,
+                null).WithLogging(logger);
+            call.Call(new SimpleRequest(), null);
+            var entries = logger.ListLogEntries();
+            Assert.Equal(2, entries.Count);
+            Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
+        }
+
+        [Fact]
+        public async Task WithLogging_Async()
+        {
+            var logger = new MemoryLogger("category");
+            var call = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(AsyncServerStreamingCall<SimpleResponse>)),
+                (req, cs) => null,
+                null).WithLogging(logger);
+            await call.CallAsync(new SimpleRequest(), null);
+            var entries = logger.ListLogEntries();
+            Assert.Equal(2, entries.Count);
+            Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
         }
     }
 }
