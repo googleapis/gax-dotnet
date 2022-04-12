@@ -18,7 +18,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
                 "Method", server.MethodAsync, server.MethodSync, null);
@@ -30,7 +30,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
             var server = new DummyServerServerStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
             apiCall.Call(null, null);
@@ -41,7 +41,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
             var server = new DummyServerBidiStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(null);
@@ -52,7 +52,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
             var server = new DummyServerClientStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(null);
@@ -63,7 +63,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
                 "Method", server.MethodAsync, server.MethodSync, perMethodSettings);
@@ -75,7 +75,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerServerStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, perMethodSettings);
             apiCall.Call(null, null);
@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerBidiStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
                 "Method", server.Call, perMethodSettings, null);
@@ -98,7 +98,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerClientStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
                 "Method", server.Call, perMethodSettings, null);
@@ -110,7 +110,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
                 "Method", server.MethodAsync, server.MethodSync, null);
@@ -122,7 +122,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerServerStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
             apiCall.Call(null, perCallSettings);
@@ -133,7 +133,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerBidiStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(perCallSettings);
@@ -144,7 +144,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings());
+            var helper = new ClientHelper(new SimpleSettings(), logger: null);
             var server = new DummyServerClientStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(perCallSettings);

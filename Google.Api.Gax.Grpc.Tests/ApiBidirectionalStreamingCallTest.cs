@@ -36,5 +36,21 @@ namespace Google.Api.Gax.Grpc.Tests
                 new FakeClock());
             Assert.Null(apiCall.Call(null));
         }
+
+        [Fact]
+        public void WithLogging()
+        {
+            var logger = new MemoryLogger("category");
+            var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
+                "BidiStreamingMethod",
+                callOptions => null,
+                null,
+                new BidirectionalStreamingSettings(100),
+                new FakeClock()).WithLogging(logger);
+            apiCall.Call(null);
+            var logs = logger.ListLogEntries();
+            var entry = Assert.Single(logger.ListLogEntries());
+            Assert.Contains("BidiStreamingMethod", entry.Message);
+        }
     }
 }

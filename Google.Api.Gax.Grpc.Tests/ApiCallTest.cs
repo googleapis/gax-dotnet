@@ -187,6 +187,36 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettingsTest.AssertRoutingHeader(asyncCallSettings, expectedHeader);
         }
 
+        [Fact]
+        public void WithLogging_Sync()
+        {
+            var logger = new MemoryLogger("category");
+            var call = new ApiCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(SimpleResponse)),
+                (req, cs) => null,
+                null).WithLogging(logger);
+            call.Sync(new SimpleRequest(), null);
+            var entries = logger.ListLogEntries();
+            Assert.Equal(2, entries.Count);
+            Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
+        }
+
+        [Fact]
+        public async Task WithLogging_Async()
+        {
+            var logger = new MemoryLogger("category");
+            var call = new ApiCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(SimpleResponse)),
+                (req, cs) => null,
+                null).WithLogging(logger);
+            await call.Async(new SimpleRequest(), null);
+            var entries = logger.ListLogEntries();
+            Assert.Equal(2, entries.Count);
+            Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
+        }
+
         internal class ExtractedRequestParamRequest : IMessage<ExtractedRequestParamRequest>
         {
             public string TableName { get; set; }
