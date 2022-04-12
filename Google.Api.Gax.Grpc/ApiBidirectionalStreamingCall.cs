@@ -13,12 +13,14 @@ namespace Google.Api.Gax.Grpc
     internal static class ApiBidirectionalStreamingCall
     {
         internal static ApiBidirectionalStreamingCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            string methodName,
             Func<CallOptions, AsyncDuplexStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings baseCallSettings,
             BidirectionalStreamingSettings streamingSettings,
             IClock clock)
         {
             return new ApiBidirectionalStreamingCall<TRequest, TResponse>(
+                methodName,
                 cs => grpcCall(cs.ValidateNoRetry().ToCallOptions(clock)),
                 baseCallSettings,
                 streamingSettings);
@@ -33,17 +35,20 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiBidirectionalStreamingCall<TRequest, TResponse>
     {
+        private readonly string _methodName;
+        private readonly Func<CallSettings, AsyncDuplexStreamingCall<TRequest, TResponse>> _call;
+
         internal ApiBidirectionalStreamingCall(
+            string methodName,
             Func<CallSettings, AsyncDuplexStreamingCall<TRequest, TResponse>> call,
             CallSettings baseCallSettings,
             BidirectionalStreamingSettings streamingSettings)
         {
+            _methodName = GaxPreconditions.CheckNotNull(methodName, nameof(methodName));
             _call = GaxPreconditions.CheckNotNull(call, nameof(call));
             BaseCallSettings = baseCallSettings;
             StreamingSettings = streamingSettings;
         }
-
-        private readonly Func<CallSettings, AsyncDuplexStreamingCall<TRequest, TResponse>> _call;
 
         /// <summary>
         /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
@@ -70,6 +75,6 @@ namespace Google.Api.Gax.Grpc
         /// Where there's a conflict, the original base call settings have priority.
         /// </summary>
         internal ApiBidirectionalStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
-            new ApiBidirectionalStreamingCall<TRequest, TResponse>(_call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
+            new ApiBidirectionalStreamingCall<TRequest, TResponse>(_methodName, _call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
     }
 }

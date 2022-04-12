@@ -17,6 +17,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void FailWithRetry()
         {
             var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
+                "Method", 
                 callOptions => null,
                 CallSettings.FromRetry(new RetrySettings(5, TimeSpan.Zero, TimeSpan.Zero, 1.0, e => false, RetrySettings.RandomJitter)),
                 new BidirectionalStreamingSettings(100),
@@ -28,6 +29,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void SucceedWithExpiration()
         {
             var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
+                "Method",
                 callOptions => null,
                 CallSettings.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100))),
                 new BidirectionalStreamingSettings(100),

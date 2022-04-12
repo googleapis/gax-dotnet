@@ -19,6 +19,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public async Task FailWithRetry()
         {
             var apiCall = ApiServerStreamingCall.Create<int, int>(
+                "Method",
                 (request, callOptions) => null,
                 CallSettings.FromRetry(new RetrySettings(5, TimeSpan.Zero, TimeSpan.Zero, 1.0, e => false, RetrySettings.RandomJitter)),
                 new FakeClock());
@@ -30,6 +31,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public async Task SucceedWithExpiration()
         {
             var apiCall = ApiServerStreamingCall.Create<int, int>(
+                "Method",
                 (request, callOptions) => null,
                 CallSettings.FromExpiration(Expiration.FromTimeout(TimeSpan.FromSeconds(100))),
                 new FakeClock());
@@ -47,6 +49,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 CallSettings.FromCancellationToken(ctBase));
@@ -79,6 +82,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 null);
@@ -107,6 +111,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiServerStreamingCall<ApiCallTest.ExtractedRequestParamRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 null);

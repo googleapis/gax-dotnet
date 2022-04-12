@@ -52,11 +52,13 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <param name="asyncGrpcCall">The underlying synchronous gRPC call.</param>
         /// <param name="syncGrpcCall">The underlying asynchronous gRPC call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            string methodName,
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,
             CallSettings perMethodCallSettings)
@@ -66,7 +68,7 @@ namespace Google.Api.Gax.Grpc
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
-            return ApiCall.Create(asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
+            return ApiCall.Create(methodName, asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
                 .WithRetry(Clock, Scheduler)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -76,11 +78,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <param name="grpcCall">The underlying gRPC server streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiServerStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
-            Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
+            string methodName, Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
             CallSettings perMethodCallSettings)
             where TRequest : class, IMessage<TRequest>
             where TResponse : class, IMessage<TResponse>
@@ -88,13 +91,14 @@ namespace Google.Api.Gax.Grpc
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
-            return ApiServerStreamingCall.Create(grpcCall, baseCallSettings, Clock)
+            return ApiServerStreamingCall.Create(methodName, grpcCall, baseCallSettings, Clock)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
         /// <summary>
         /// Builds an <see cref="ApiBidirectionalStreamingCall"/> given a suitable underlying duplex call.
         /// </summary>
+        /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
         /// <param name="grpcCall">The underlying gRPC duplex streaming call.</param>
@@ -102,6 +106,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="streamingSettings">The default streaming settings.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiBidirectionalStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            string methodName,
             Func<CallOptions, AsyncDuplexStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings perMethodCallSettings,
             BidirectionalStreamingSettings streamingSettings)
@@ -109,7 +114,7 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
-            return ApiBidirectionalStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
+            return ApiBidirectionalStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
@@ -118,11 +123,13 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
         /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <param name="grpcCall">The underlying gRPC client streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <param name="streamingSettings">The default streaming settings.</param>
         /// <returns>An API call to proxy to the RPC calls</returns>
         public ApiClientStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
+            string methodName,
             Func<CallOptions, AsyncClientStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings perMethodCallSettings,
             ClientStreamingSettings streamingSettings)
@@ -130,7 +137,7 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
-            return ApiClientStreamingCall.Create(grpcCall, baseCallSettings, streamingSettings, Clock)
+            return ApiClientStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
     }
