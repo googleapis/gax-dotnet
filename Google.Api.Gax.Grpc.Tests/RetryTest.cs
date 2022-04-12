@@ -301,7 +301,7 @@ namespace Google.Api.Gax.Grpc.Tests
             }
 
             public ApiCall<SimpleRequest, SimpleResponse> Callable =>
-                new ApiCall<SimpleRequest, SimpleResponse>(MethodAsync, MethodSync, null);
+                new ApiCall<SimpleRequest, SimpleResponse>("Method", MethodAsync, MethodSync, null);
             
             public Task<AsyncServerStreamingCall<SimpleResponse>> ServerStreamingMethodAsync(SimpleRequest request, CallSettings callSettings) =>
                 Task.FromResult(ServerStreamingMethodSync(request, callSettings));
@@ -327,7 +327,7 @@ namespace Google.Api.Gax.Grpc.Tests
             }
 
             public ApiServerStreamingCall<SimpleRequest, SimpleResponse> ServerStreamingCallable =>
-                new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(ServerStreamingMethodAsync, ServerStreamingMethodSync, null);
+                new ApiServerStreamingCall<SimpleRequest, SimpleResponse>("Method", ServerStreamingMethodAsync, ServerStreamingMethodSync, null);
 
             public void AssertCallTimes(params DateTime[] times)
             {

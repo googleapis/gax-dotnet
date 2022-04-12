@@ -18,13 +18,10 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = clientSettings
-            });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                server.MethodAsync, server.MethodSync, null);
+                "Method", server.MethodAsync, server.MethodSync, null);
             apiCall.Sync(null, null);
             Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -33,12 +30,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = clientSettings
-            });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
             var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
             apiCall.Call(null, null);
             Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -47,12 +41,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = clientSettings
-            });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
             var server = new DummyServerBidiStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(null);
             Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -61,12 +52,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings
-            {
-                CallSettings = clientSettings
-            });
+            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings });
             var server = new DummyServerClientStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(null);
             Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -75,10 +63,10 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                server.MethodAsync, server.MethodSync, perMethodSettings);
+                "Method", server.MethodAsync, server.MethodSync, perMethodSettings);
             apiCall.Sync(null, null);
             Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -87,9 +75,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, perMethodSettings);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, perMethodSettings);
             apiCall.Call(null, null);
             Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -98,10 +86,10 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerBidiStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                server.Call, perMethodSettings, null);
+                "Method", server.Call, perMethodSettings, null);
             apiCall.Call(null);
             Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -110,10 +98,10 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerClientStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                server.Call, perMethodSettings, null);
+                "Method", server.Call, perMethodSettings, null);
             apiCall.Call(null);
             Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -122,10 +110,10 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerNonStreaming();
             var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                server.MethodAsync, server.MethodSync, null);
+                "Method", server.MethodAsync, server.MethodSync, null);
             apiCall.Sync(null, perCallSettings);
             Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -134,9 +122,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildServerStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
             apiCall.Call(null, perCallSettings);
             Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -145,9 +133,9 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildBidiStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerBidiStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(perCallSettings);
             Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
@@ -156,20 +144,20 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildClientStreamingApiCall_PerCallSettings()
         {
             var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new DummySettings());
+            var helper = new ClientHelper(new SimpleSettings());
             var server = new DummyServerClientStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(server.Call, null, null);
+            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
             apiCall.Call(perCallSettings);
             Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
         }
 
-        private class DummySettings: ServiceSettingsBase
+        private class SimpleSettings: ServiceSettingsBase
         {
-            public DummySettings() { }
+            public SimpleSettings() { }
 
-            private DummySettings(DummySettings existing) : base(existing) { }
+            private SimpleSettings(SimpleSettings existing) : base(existing) { }
 
-            public DummySettings Clone() => new DummySettings(this);
+            public SimpleSettings Clone() => new SimpleSettings(this);
         }
 
         private class DummyServerNonStreaming

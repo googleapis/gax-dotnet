@@ -14,11 +14,13 @@ namespace Google.Api.Gax.Grpc
     internal static class ApiServerStreamingCall
     {
         internal static ApiServerStreamingCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            string methodName,
             Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
             CallSettings baseCallSettings,
             IClock clock)
         {
             return new ApiServerStreamingCall<TRequest, TResponse>(
+                methodName,
                 (req, cs) => Task.FromResult(grpcCall(req, cs.ValidateNoRetry().ToCallOptions(clock))),
                 (req, cs) => grpcCall(req, cs.ValidateNoRetry().ToCallOptions(clock)),
                 baseCallSettings);
@@ -33,18 +35,21 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiServerStreamingCall<TRequest, TResponse>
     {
+        private readonly string _methodName;
+        private readonly Func<TRequest, CallSettings, Task<AsyncServerStreamingCall<TResponse>>> _asyncCall;
+        private readonly Func<TRequest, CallSettings, AsyncServerStreamingCall<TResponse>> _syncCall;
+
         internal ApiServerStreamingCall(
+            string methodName,
             Func<TRequest, CallSettings, Task<AsyncServerStreamingCall<TResponse>>> asyncCall,
             Func<TRequest, CallSettings, AsyncServerStreamingCall<TResponse>> syncCall,
             CallSettings baseCallSettings)
         {
+            _methodName = GaxPreconditions.CheckNotNull(methodName, nameof(methodName));
             _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
             _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
             BaseCallSettings = baseCallSettings;
         }
-
-        private readonly Func<TRequest, CallSettings, Task<AsyncServerStreamingCall<TResponse>>> _asyncCall;
-        private readonly Func<TRequest, CallSettings, AsyncServerStreamingCall<TResponse>> _syncCall;
 
         /// <summary>
         /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
@@ -77,7 +82,7 @@ namespace Google.Api.Gax.Grpc
         /// Where there's a conflict, the original base call settings have priority.
         /// </summary>
         internal ApiServerStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
-            new ApiServerStreamingCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
+            new ApiServerStreamingCall<TRequest, TResponse>(_methodName, _asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
         /// <summary>
         /// Constructs a new <see cref="ApiServerStreamingCall{TRequest, TResponse}"/> that applies an overlay to
@@ -88,6 +93,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A new <see cref="ApiServerStreamingCall{TRequest, TResponse}"/> with the overlay applied.</returns>
         public ApiServerStreamingCall<TRequest, TResponse> WithCallSettingsOverlay(Func<TRequest, CallSettings> callSettingsOverlayFn) =>
             new ApiServerStreamingCall<TRequest, TResponse>(
+                _methodName,
                 (req, cs) => _asyncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 (req, cs) => _syncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 BaseCallSettings);

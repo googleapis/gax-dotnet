@@ -71,7 +71,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallSettings baseCallSettings, CallSettings perCallCallSettings, PageStreamingRequest request)
             {
                 var apiCall = new ApiCall<PageStreamingRequest, PageStreamingResponse>(
-                    MethodAsync, MethodSync, baseCallSettings);
+                    "Method", MethodAsync, MethodSync, baseCallSettings);
                 return new GrpcPagedAsyncEnumerable<PageStreamingRequest, PageStreamingResponse, int>(
                     apiCall, request, perCallCallSettings);
             }
@@ -80,7 +80,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 CallSettings baseCallSettings, CallSettings perCallCallSettings, PageStreamingRequest request)
             {
                 var apiCall = new ApiCall<PageStreamingRequest, PageStreamingResponse>(
-                    MethodAsync, MethodSync, baseCallSettings);
+                    "Method", MethodAsync, MethodSync, baseCallSettings);
                 return new GrpcPagedEnumerable<PageStreamingRequest, PageStreamingResponse, int>(
                     apiCall, request, perCallCallSettings);
             }

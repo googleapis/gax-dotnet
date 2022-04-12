@@ -4,14 +4,13 @@
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
-using Google.Api.Gax.Grpc.Testing;
 using Google.Api.Gax.Testing;
+using Google.Protobuf;
+using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Google.Protobuf;
-using Google.Protobuf.Reflection;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -28,6 +27,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiCall<SimpleRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 CallSettings.FromCancellationToken(ctBase));
@@ -93,6 +93,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 disposeAction: () => { });
 
             return ApiCall.Create<SimpleRequest, SimpleResponse>(
+                "Method",
                 (request, options) => call,
                 (request, options) => response,
                 baseCallSettings: null,
@@ -126,6 +127,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiCall<SimpleRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 null);
@@ -154,6 +156,7 @@ namespace Google.Api.Gax.Grpc.Tests
             CallSettings syncCallSettings = null;
             CallSettings asyncCallSettings = null;
             var call0 = new ApiCall<ExtractedRequestParamRequest, SimpleResponse>(
+                "Method",
                 (req, cs) => { asyncCallSettings = cs; return null; },
                 (req, cs) => { syncCallSettings = cs; return null; },
                 null);

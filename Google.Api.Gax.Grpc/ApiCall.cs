@@ -15,6 +15,7 @@ namespace Google.Api.Gax.Grpc
     internal static class ApiCall
     {
         internal static ApiCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            string methodName,
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,
             CallSettings baseCallSettings,
@@ -23,7 +24,7 @@ namespace Google.Api.Gax.Grpc
             where TResponse : class, IMessage<TResponse>
         {
             var adapter = new GrpcCallAdapter<TRequest, TResponse>(asyncGrpcCall, syncGrpcCall, clock);
-            return new ApiCall<TRequest, TResponse>(adapter.CallAsync, adapter.CallSync, baseCallSettings);
+            return new ApiCall<TRequest, TResponse>(methodName, adapter.CallAsync, adapter.CallSync, baseCallSettings);
         }
 
         /// <summary>
@@ -104,18 +105,21 @@ namespace Google.Api.Gax.Grpc
         where TRequest : class, IMessage<TRequest>
         where TResponse : class, IMessage<TResponse>
     {
+        private readonly string _methodName;
+        private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
+        private readonly Func<TRequest, CallSettings, TResponse> _syncCall;
+
         internal ApiCall(
+            string methodName,
             Func<TRequest, CallSettings, Task<TResponse>> asyncCall,
             Func<TRequest, CallSettings, TResponse> syncCall,
             CallSettings baseCallSettings)
         {
+            _methodName = GaxPreconditions.CheckNotNull(methodName, nameof(methodName));
             _asyncCall = GaxPreconditions.CheckNotNull(asyncCall, nameof(asyncCall));
             _syncCall = GaxPreconditions.CheckNotNull(syncCall, nameof(syncCall));
             BaseCallSettings = baseCallSettings;
         }
-
-        private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
-        private readonly Func<TRequest, CallSettings, TResponse> _syncCall;
 
         /// <summary>
         /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
@@ -149,10 +153,11 @@ namespace Google.Api.Gax.Grpc
         /// Where there's a conflict, the original base call settings have priority.
         /// </summary>
         internal ApiCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
-            new ApiCall<TRequest, TResponse>(_asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
+            new ApiCall<TRequest, TResponse>(_methodName, _asyncCall, _syncCall, callSettings.MergedWith(BaseCallSettings));
 
         internal ApiCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler) =>
             new ApiCall<TRequest, TResponse>(
+                _methodName,
                 _asyncCall.WithRetry(clock, scheduler),
                 _syncCall.WithRetry(clock, scheduler),
                 BaseCallSettings);
@@ -166,6 +171,7 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A new <see cref="ApiCall{TRequest, TResponse}"/> with the overlay applied.</returns>
         public ApiCall<TRequest, TResponse> WithCallSettingsOverlay(Func<TRequest, CallSettings> callSettingsOverlayFn) =>
             new ApiCall<TRequest, TResponse>(
+                _methodName,
                 (req, cs) => _asyncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 (req, cs) => _syncCall(req, cs.MergedWith(callSettingsOverlayFn(req))),
                 BaseCallSettings);

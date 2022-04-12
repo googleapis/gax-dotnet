@@ -13,11 +13,13 @@ namespace Google.Api.Gax.Grpc
     internal static class ApiClientStreamingCall
     {
         internal static ApiClientStreamingCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            string methodName,
             Func<CallOptions, AsyncClientStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings baseCallSettings,
             ClientStreamingSettings streamingSettings,
             IClock clock) =>
                 new ApiClientStreamingCall<TRequest, TResponse>(
+                    methodName,
                     cs => grpcCall(cs.ValidateNoRetry().ToCallOptions(clock)),
                     baseCallSettings,
                     streamingSettings);
@@ -31,17 +33,20 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiClientStreamingCall<TRequest, TResponse>
     {
+        private readonly string _methodName;
+        private readonly Func<CallSettings, AsyncClientStreamingCall<TRequest, TResponse>> _call;
+
         internal ApiClientStreamingCall(
+            string methodName,
             Func<CallSettings, AsyncClientStreamingCall<TRequest, TResponse>> call,
             CallSettings baseCallSettings,
             ClientStreamingSettings streamingSettings)
         {
+            _methodName = GaxPreconditions.CheckNotNull(methodName, nameof(methodName));
             _call = GaxPreconditions.CheckNotNull(call, nameof(call));
             BaseCallSettings = baseCallSettings;
             StreamingSettings = streamingSettings;
         }
-
-        private readonly Func<CallSettings, AsyncClientStreamingCall<TRequest, TResponse>> _call;
 
         /// <summary>
         /// The base <see cref="CallSettings"/> for this API call; these can be further overridden by providing
@@ -68,6 +73,6 @@ namespace Google.Api.Gax.Grpc
         /// Where there's a conflict, the original base call settings have priority.
         /// </summary>
         internal ApiClientStreamingCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings callSettings) =>
-            new ApiClientStreamingCall<TRequest, TResponse>(_call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
+            new ApiClientStreamingCall<TRequest, TResponse>(_methodName, _call, callSettings.MergedWith(BaseCallSettings), StreamingSettings);
     }
 }
