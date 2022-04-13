@@ -164,6 +164,7 @@ namespace Google.Api.Gax.Grpc
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
+            GrpcChannelOptions = source.GrpcChannelOptions;
             QuotaProject = source.QuotaProject;
             UseJwtAccessWithScopes = source.UseJwtAccessWithScopes;
             Logger = source.Logger;
