@@ -20,7 +20,7 @@ namespace Google.Api.Gax.Grpc.Gcp
     /// Call invoker which can fan calls out to multiple underlying channels
     /// based on request properties.
     /// </summary>
-    internal sealed class GcpCallInvoker : CallInvoker
+    public sealed class GcpCallInvoker : CallInvoker
     {
         private static int s_clientChannelIdCounter;
 
@@ -41,7 +41,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly ServiceMetadata _serviceMetadata;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Grpc.Gcp.GcpCallInvoker"/> class.
+        /// Initializes a new instance.
         /// </summary>
         /// <param name="serviceMetadata">The metadata for the service that this call invoker will be used with. Must not be null.</param>
         /// <param name="target">Target of the underlying grpc channels. Must not be null.</param>
@@ -49,7 +49,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="options">Channel options to be used by the underlying grpc channels. Must not be null.</param>
         /// <param name="apiConfig">The API config to apply. Must not be null.</param>
         /// <param name="adapter">The adapter to use to create channels. Must not be null.</param>
-        internal GcpCallInvoker(ServiceMetadata serviceMetadata, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
+        public GcpCallInvoker(ServiceMetadata serviceMetadata, string target, ChannelCredentials credentials, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             _serviceMetadata = GaxPreconditions.CheckNotNull(serviceMetadata, nameof(serviceMetadata));
             _target = GaxPreconditions.CheckNotNull(target, nameof(target));

@@ -38,9 +38,8 @@ namespace Google.Api.Gax.Grpc
             _supportedTransports = supportedTransports;
         }
 
-        // TODO: potentially expose either or both of the methods below if we want, or a
-        // "get the first adapter that supports this service, from the following list, or a fallback"
-        // method.
+        // TODO: potentially expose this if we want, or a "get the first adapter that supports
+        // this service, from the following list, or a fallback" method.
 
         /// <summary>
         /// Returns whether or not this adapter supports the specified service.
@@ -58,7 +57,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="serviceMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns>A suitable GrpcAdapter for the given API, preferring the use of the binary gRPC transport where available.</returns>
-        internal static GrpcAdapter GetFallbackAdapter(ServiceMetadata serviceMetadata) =>
+        public static GrpcAdapter GetFallbackAdapter(ServiceMetadata serviceMetadata) =>
             // TODO: Do we need some way of indicating a preference, if the service supports both Rest and Grpc?
             // Probably not: the user code can always specify the adapter in the builder
             serviceMetadata.Transports.HasFlag(ApiTransports.Grpc) ? s_defaultGrpcTransportFactory.Value
