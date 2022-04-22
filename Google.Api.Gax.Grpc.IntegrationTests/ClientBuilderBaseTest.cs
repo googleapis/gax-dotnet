@@ -352,7 +352,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 ChannelCreated = null;
             }
 
-            private protected override ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials)
+            protected override ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials)
             {
                 CredentialsUsedToCreateChannel = credentials;
                 EndpointUsedToCreateChannel = endpoint;
