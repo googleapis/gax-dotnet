@@ -612,7 +612,19 @@ namespace Google.Api.Gax.Grpc
             return await BuildAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        private protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
+        /// <summary>
+        /// Returns a <see cref="ChannelBase"/> as created by <see cref="EffectiveGrpcAdapter"/>
+        /// for the specified endpoint and credentials, using the gRPC channel options from
+        /// <see cref="GetChannelOptions"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is only useful in very specific situations where a known channel is required;
+        /// <see cref="CreateCallInvoker"/> and its async equivalent are more usually useful.
+        /// </remarks>
+        /// <param name="endpoint">The endpoint of the channel.</param>
+        /// <param name="credentials">The channel credentials.</param>
+        /// <returns>The channel created by the gRPC adapter.</returns>
+        protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
             EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccessWithHeaders
