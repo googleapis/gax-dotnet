@@ -462,7 +462,12 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected abstract ChannelPool GetChannelPool();
 
-        private GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? GrpcAdapter.GetFallbackAdapter(ServiceMetadata);
+        /// <summary>
+        /// Returns the effective <see cref="GrpcAdapter"/> for this builder,
+        /// using the <see cref="GrpcAdapter"/> property if that is set, or the appropriate fallback adapter
+        /// for <see cref="ServiceMetadata"/> otherwise.
+        /// </summary>
+        protected GrpcAdapter EffectiveGrpcAdapter => GrpcAdapter ?? GrpcAdapter.GetFallbackAdapter(ServiceMetadata);
 
         /// <summary>
         /// Returns the options to use when creating a channel, taking <see cref="GrpcChannelOptions"/>

@@ -67,7 +67,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="apiConfig">The API configuration used to determine channel keys. Must not be null.</param>
         /// <param name="adapter">The gRPC adapter to use to create call invokers. Must not be null.</param>
         /// <returns>A call invoker for the specified endpoint.</returns>
-        public CallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
+        public GcpCallInvoker GetCallInvoker(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             var credentials = _credentialsCache.GetCredentials();
@@ -86,7 +86,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         /// <param name="adapter">The gRPC adapter to use to create call invokers. Must not be null.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be a call invoker for the specified endpoint.</returns>
-        public async Task<CallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
+        public async Task<GcpCallInvoker> GetCallInvokerAsync(string endpoint, GrpcChannelOptions options, ApiConfig apiConfig, GrpcAdapter adapter)
         {
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig));
