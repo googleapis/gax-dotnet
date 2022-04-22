@@ -40,7 +40,7 @@ namespace Google.Api.Gax.Grpc
                     }
                     catch (Exception e) when (attempt.ShouldRetry(e))
                     {
-                        logger.LogDebug("Backing off before retry of method {method}", methodName);
+                        logger?.LogDebug("Backing off before retry of method {method}", methodName);
                         await attempt.BackoffAsync(callSettings.CancellationToken.GetValueOrDefault()).ConfigureAwait(false);
                     }
                 }
@@ -72,7 +72,7 @@ namespace Google.Api.Gax.Grpc
                     }
                     catch (Exception e) when (attempt.ShouldRetry(e))
                     {
-                        logger.LogDebug("Backing off before retry of method {method}", methodName);
+                        logger?.LogDebug("Backing off before retry of method {method}", methodName);
                         attempt.Backoff(callSettings.CancellationToken.GetValueOrDefault());
                     }
                 }
