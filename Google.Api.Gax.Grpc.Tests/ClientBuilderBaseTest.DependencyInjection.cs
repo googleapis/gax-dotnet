@@ -14,6 +14,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static Google.Api.Gax.Grpc.Tests.TestServiceCredentials;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -146,7 +147,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public void CredentialsNotUsedWhenAlreadySet()
             {
                 var serviceCollection = new ServiceCollection();
-                var dependencyCredential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var dependencyCredential = CreateTestServiceAccountCredential();
                 serviceCollection.AddSingleton(dependencyCredential);
 #pragma warning disable CS0618 // Type or member is obsolete
                 Action<FakeBuilder>[] actions = new Action<FakeBuilder>[]
@@ -154,8 +155,8 @@ namespace Google.Api.Gax.Grpc.Tests
                     builder => builder.ChannelCredentials = ChannelCredentials.Insecure,
                     builder => builder.JsonCredentials = "{}",
                     builder => builder.CredentialsPath = "abc",
-                    builder => builder.Credential = GoogleCredential.FromJson(s_serviceAccountJson),
-                    builder => builder.GoogleCredential = GoogleCredential.FromJson(s_serviceAccountJson),
+                    builder => builder.Credential = CreateTestServiceAccountCredential(),
+                    builder => builder.GoogleCredential = CreateTestServiceAccountCredential(),
                     builder => builder.TokenAccessMethod = (_, __) => null,
                 };
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -175,8 +176,8 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var serviceCollection = new ServiceCollection();
                 serviceCollection.AddSingleton(ChannelCredentials.Insecure);
-                serviceCollection.AddSingleton<ICredential>(GoogleCredential.FromJson(s_serviceAccountJson));
-                serviceCollection.AddSingleton(GoogleCredential.FromJson(s_serviceAccountJson));
+                serviceCollection.AddSingleton<ICredential>(CreateTestServiceAccountCredential());
+                serviceCollection.AddSingleton(CreateTestServiceAccountCredential());
                 var builder = new FakeBuilder();
                 builder.Configure(serviceCollection);
                 Assert.Same(ChannelCredentials.Insecure, builder.ChannelCredentials);
@@ -187,8 +188,8 @@ namespace Google.Api.Gax.Grpc.Tests
             [Fact]
             public void CredentialsPrecedence_ICredential()
             {
-                var credential1 = GoogleCredential.FromJson(s_serviceAccountJson);
-                var credential2 = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential1 = CreateTestServiceAccountCredential();
+                var credential2 = CreateTestServiceAccountCredential();
                 var serviceCollection = new ServiceCollection();
                 serviceCollection.AddSingleton<ICredential>(credential1);
                 serviceCollection.AddSingleton(credential2);
@@ -202,7 +203,7 @@ namespace Google.Api.Gax.Grpc.Tests
             [Fact]
             public void CredentialsPrecedence_GoogleCredential()
             {
-                var credential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential = CreateTestServiceAccountCredential();
                 var serviceCollection = new ServiceCollection();
                 serviceCollection.AddSingleton(credential);
                 var builder = new FakeBuilder();
