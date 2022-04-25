@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Grpc.Auth;
 using Grpc.Core;
 using System;
 using Xunit;
@@ -63,18 +64,36 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Theory]
-        [InlineData("10.20.30.40", "https://10.20.30.40")]
-        [InlineData("10.20.30.40:1234", "https://10.20.30.40:1234")]
-        [InlineData("http://10.20.30.40", "http://10.20.30.40")]
-        [InlineData("https://10.20.30.40", "https://10.20.30.40")]
-        [InlineData("https://10.20.30.40:1234", "https://10.20.30.40:1234")]
-        [InlineData("service.googleapis.com", "https://service.googleapis.com")]
-        [InlineData("https://service.googleapis.com", "https://service.googleapis.com")]
-        [InlineData("service.googleapis.com:1234", "https://service.googleapis.com:1234")]
-        [InlineData("https://service.googleapis.com:1234", "https://service.googleapis.com:1234")]
-        public void ConvertEndpoint(string input, string expectedOutput)
+        [InlineData("10.20.30.40", true, "https://10.20.30.40")]
+        [InlineData("10.20.30.40", false, "http://10.20.30.40")]
+        [InlineData("10.20.30.40:1234", true, "https://10.20.30.40:1234")]
+        [InlineData("10.20.30.40:1234", false, "http://10.20.30.40:1234")]
+        [InlineData("http://10.20.30.40", true, "http://10.20.30.40")]
+        [InlineData("http://10.20.30.40", false, "http://10.20.30.40")]
+        [InlineData("https://10.20.30.40", true, "https://10.20.30.40")]
+        [InlineData("https://10.20.30.40:1234", true, "https://10.20.30.40:1234")]
+        [InlineData("service.googleapis.com", true, "https://service.googleapis.com")]
+        [InlineData("https://service.googleapis.com", true, "https://service.googleapis.com")]
+        [InlineData("service.googleapis.com:1234", true, "https://service.googleapis.com:1234")]
+        [InlineData("https://service.googleapis.com:1234", true, "https://service.googleapis.com:1234")]
+        public void ConvertEndpoint(string input, bool secureCredentials, string expectedOutput)
         {
-            Assert.Equal(expectedOutput, GrpcNetClientAdapter.ConvertEndpoint(input));
+            Assert.Equal(expectedOutput, GrpcNetClientAdapter.ConvertEndpoint(input, secureCredentials));
+        }
+
+        public static TheoryData<ChannelCredentials, bool> SecureCredentialsDetectionData = new TheoryData<ChannelCredentials, bool>
+        {
+            { ChannelCredentials.SecureSsl, true },
+            { ChannelCredentials.Insecure, false },
+            { TestServiceCredentials.CreateTestServiceAccountCredential().ToChannelCredentials(), true }
+        };
+
+        [Theory]
+        [MemberData(nameof(SecureCredentialsDetectionData))]
+        public void SecureCredentialsDetection_Insecure(ChannelCredentials credentials, bool expectedResult)
+        {
+            var actualResult = GrpcNetClientAdapter.SecureChannelDetector.AreCredentialsSecure(credentials);
+            Assert.Equal(expectedResult, actualResult);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
-            var channel = GrpcNetClientAdapter.Default.CreateChannel(TestServiceMetadata.TestService, _fixture.HttpEndpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var channel = GrpcNetClientAdapter.Default.CreateChannel(TestServiceMetadata.TestService, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);
             var response = client.DoSimple(new SimpleRequest { Name = "test-call" });
             Assert.Equal("test-call", response.Name);

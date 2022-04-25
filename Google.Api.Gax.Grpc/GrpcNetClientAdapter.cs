@@ -49,7 +49,8 @@ namespace Google.Api.Gax.Grpc
         {
             var grpcNetClientOptions = ConvertOptions(credentials, options);
             _optionsConfigurationAction?.Invoke(grpcNetClientOptions);
-            var address = ConvertEndpoint(endpoint);
+            bool secureCredentials = SecureChannelDetector.AreCredentialsSecure(credentials);
+            var address = ConvertEndpoint(endpoint, secureCredentials);
             return GrpcChannel.ForAddress(address, grpcNetClientOptions);
         }
 
@@ -77,9 +78,36 @@ namespace Google.Api.Gax.Grpc
         }
 
         // Internal for testing
-        internal static string ConvertEndpoint(string endpoint) =>
-            // Note that we assume HTTPS for any bare address; this feels like a reasonable assumption for now.
-            endpoint.StartsWith("http:", StringComparison.Ordinal) || endpoint.StartsWith("https:", StringComparison.Ordinal)
-            ? endpoint : $"https://{endpoint}";
+        internal static string ConvertEndpoint(string endpoint, bool secureCredentials)
+        {
+            string defaultScheme = secureCredentials ? "https" : "http";
+            // We assume HTTPS for any bare address if the credentials are secure, or HTTP otherwise.
+            // This matches what GrpcChannel itself does in terms of validation.
+            return endpoint.StartsWith("http:", StringComparison.Ordinal) || endpoint.StartsWith("https:", StringComparison.Ordinal)
+                ? endpoint : $"{defaultScheme}://{endpoint}";
+        }
+
+        // Internal for testing
+        internal class SecureChannelDetector : ChannelCredentialsConfiguratorBase
+        {
+            private bool? IsSecure { get; set; }
+
+            internal static bool AreCredentialsSecure(ChannelCredentials credentials)
+            {
+                var instance = new SecureChannelDetector();
+                credentials.InternalPopulateConfiguration(instance, null);
+                // Default to detecting credentials as insecure.
+                return instance.IsSecure ?? false;
+            }
+
+            public override void SetCompositeCredentials(object state, ChannelCredentials channelCredentials, CallCredentials callCredentials) =>
+                channelCredentials.InternalPopulateConfiguration(this, state);
+
+            public override void SetInsecureCredentials(object state) =>
+                IsSecure = false;
+
+            public override void SetSslCredentials(object state, string rootCertificates, KeyCertificatePair keyCertificatePair, VerifyPeerCallback verifyPeerCallback) =>
+                IsSecure = true;
+        }
     }
 }

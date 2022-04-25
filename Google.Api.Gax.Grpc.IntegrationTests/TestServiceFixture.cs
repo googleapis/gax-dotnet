@@ -26,12 +26,6 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         public int Port => _server.Ports.First().BoundPort;
         public string Endpoint => $"localhost:{Port}";
 
-        // GrpcNetClientAdapter assumes https for any scheme-less URLs; it has to assume
-        // something as Grpc.Net.Client doesn't support them. We actually want HTTP here, so let's be explicit.
-        // This shouldn't be a problem for real services (where we'll use https anyway).
-        // (Grpc.Core doesn't like http as a scheme, so we can't just use that...)
-        public string HttpEndpoint => $"http://{Endpoint}";
-
         public TestServiceFixture()
         {
 #if NETCOREAPP3_1
