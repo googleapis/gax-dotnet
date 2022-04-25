@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Protobuf.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;

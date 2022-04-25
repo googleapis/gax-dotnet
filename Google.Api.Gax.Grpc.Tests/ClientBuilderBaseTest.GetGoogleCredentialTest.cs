@@ -6,13 +6,12 @@
  */
 
 using Google.Apis.Auth.OAuth2;
-using Google.Protobuf.Reflection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static Google.Api.Gax.Grpc.Tests.TestServiceCredentials;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -34,7 +33,7 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 var builder = new FakeBuilder(s_scopes, true)
                 {
-                    JsonCredentials = s_serviceAccountJson
+                    JsonCredentials = TestServiceAccountJson
                 };
                 await AssertCredentialAsync(builder, AssertBasicProperties);
             }
@@ -43,7 +42,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public async Task CredentialsPath_Valid()
             {
                 var path = Path.GetTempFileName();
-                File.WriteAllText(path, s_serviceAccountJson);
+                File.WriteAllText(path, TestServiceAccountJson);
 
                 var builder = new FakeBuilder(s_scopes, true)
                 {
@@ -56,7 +55,7 @@ namespace Google.Api.Gax.Grpc.Tests
             [Fact]
             public async Task GoogleCredential_Valid()
             {
-                var credential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential = CreateTestServiceAccountCredential();
                 var builder = new FakeBuilder(s_scopes, true)
                 {
                     GoogleCredential = credential
@@ -67,7 +66,7 @@ namespace Google.Api.Gax.Grpc.Tests
             [Fact]
             public async Task UseJwtAccessWithScopesFalse()
             {
-                var credential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential = CreateTestServiceAccountCredential();
                 var builder = new FakeBuilder(s_scopes, false)
                 {
                     GoogleCredential = credential
@@ -79,7 +78,7 @@ namespace Google.Api.Gax.Grpc.Tests
             [Fact]
             public async Task QuotaProject()
             {
-                var credential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential = CreateTestServiceAccountCredential();
                 var builder = new FakeBuilder(s_scopes, true)
                 {
                     GoogleCredential = credential,
