@@ -133,6 +133,15 @@ namespace Google.Api.Gax.Grpc
         // and potentially CopySettingsForEmulator.
 
         /// <summary>
+        /// Returns the channel created last time any of the <see cref="Build()"/>-related methods
+        /// were called, or <code>null</code> if the last-created client did not require channel creation.
+        /// If a channel is obtained from a channel pool, this does not count as channel creation.
+        /// This property is useful when multiple clients are created and the calling code wishes to clean up
+        /// resources associated with the channel.
+        /// </summary>
+        public ChannelBase LastCreatedChannel { get; protected set; }
+
+        /// <summary>
         /// Creates a new instance with no explicit settings.
         /// This takes the value of <see cref="UseJwtAccessWithScopes" /> from <paramref name="serviceMetadata"/>.
         /// </summary>
@@ -345,6 +354,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected virtual CallInvoker CreateCallInvoker()
         {
+            LastCreatedChannel = null;
             if (CallInvoker != null)
             {
                 return CallInvoker;
@@ -371,6 +381,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected virtual async Task<CallInvoker> CreateCallInvokerAsync(CancellationToken cancellationToken)
         {
+            LastCreatedChannel = null;
             if (CallInvoker != null)
             {
                 return CallInvoker;
@@ -620,12 +631,14 @@ namespace Google.Api.Gax.Grpc
         /// <remarks>
         /// This is only useful in very specific situations where a known channel is required;
         /// <see cref="CreateCallInvoker"/> and its async equivalent are more usually useful.
+        /// This implementation sets the <see cref="LastCreatedChannel"/> property, and so should
+        /// any overriding implementations.
         /// </remarks>
         /// <param name="endpoint">The endpoint of the channel.</param>
         /// <param name="credentials">The channel credentials.</param>
         /// <returns>The channel created by the gRPC adapter.</returns>
         protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
-            EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
+            LastCreatedChannel = EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
 
         private class DelegatedTokenAccess : ITokenAccessWithHeaders
         {

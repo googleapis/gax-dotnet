@@ -5,14 +5,11 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Grpc.Gcp.IntegrationTests;
 using Google.Apis.Auth.OAuth2;
-using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,15 +40,12 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 ""client_id"": ""CLIENT_ID"",
 ""type"": ""service_account""}";
 
-        // Horrible hack, but we can change it if it ever fails.
-        private static readonly FieldInfo s_defaultCallInvokerChannelField = typeof(DefaultCallInvoker).GetTypeInfo()
-            .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-            .Single(f => f.FieldType == typeof(Channel));
-
         // It doesn't matter what kind of CallInvoker we use. DefaultCallInvoker is just a handy one.
         private static readonly CallInvoker CustomInvoker = new DefaultCallInvoker(new Channel("other.nowhere.com", 443, ChannelCredentials.Insecure));
 
         private static readonly Func<string, CancellationToken, Task<string>> CustomTokenAccess = (authUri, cancellationToken) => Task.FromResult("token");
+
+        private static readonly FakeGrpcAdapter fakeGrpcAdapter = new FakeGrpcAdapter();
 
         private const string SampleQuotaProject = "SampleQuotaProject";
 
@@ -60,13 +54,13 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
                 Assert.Same(channelFromPool, channelFromBuilder);
-                Assert.Null(builder.ChannelCreated);
+                Assert.Null(builder.LastCreatedChannel);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -77,15 +71,15 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
-            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
                 Assert.Same(channelFromPoolWithCustomEndpoint, channelFromBuilder);
                 Assert.NotSame(channelFromPoolWithDefaultEndpoint, channelFromBuilder);
-                Assert.Null(builder.ChannelCreated);
+                Assert.Null(builder.LastCreatedChannel);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -97,8 +91,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             Action<CallInvoker> validator = invoker =>
             {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
+                Assert.NotNull(builder.LastCreatedChannel);
+                Assert.Same(builder.LastCreatedChannel, GetChannel(invoker));
                 Assert.Equal(TestServiceMetadata.TestService.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
                 Assert.Same(builder.ChannelCredentials, builder.CredentialsUsedToCreateChannel);
             };
@@ -113,8 +107,8 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             Action<CallInvoker> validator = invoker =>
             {
-                Assert.NotNull(builder.ChannelCreated);
-                Assert.Same(builder.ChannelCreated, GetChannel(invoker));
+                Assert.NotNull(builder.LastCreatedChannel);
+                Assert.Same(builder.LastCreatedChannel, GetChannel(invoker));
                 Assert.Equal(endpoint, builder.EndpointUsedToCreateChannel);
                 Assert.Same(builder.ChannelCredentials, builder.CredentialsUsedToCreateChannel);
             };
@@ -181,7 +175,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             Action<CallInvoker> validator = invoker =>
             {
                 Assert.Same(invoker, CustomInvoker);
-                Assert.Null(builder.ChannelCreated);
+                Assert.Null(builder.LastCreatedChannel);
             };
             await ValidateResultAsync(builder, validator);
         }
@@ -201,7 +195,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientEnabledTest(bool clientUsesJwt, bool poolUsesJwt)
         {
             var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = DummyServiceAccountCredentialFileContents };
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt of client does not match pool, so we won't use channel pool
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
@@ -212,14 +206,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientAndPoolEnabledTest(bool enabledJwts)
         {
             var builder = new SampleClientBuilder(enabledJwts, enabledJwts);
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(GrpcCoreAdapter.Instance, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt is either enabled or disabled for both client and pool
             // We use channel pool
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
-                Assert.Null(builder.ChannelCreated);
+                Assert.Null(builder.LastCreatedChannel);
                 Assert.Same(builder.ChannelCredentials, builder.CredentialsUsedToCreateChannel);
             };
             await ValidateResultAsync(builder, validator);
@@ -229,19 +223,13 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         // We can't easily check anything about the actual credentials though.
         private static Action<CallInvoker> AssertNonChannelPool(SampleClientBuilder builder) => invoker =>
         {
-            Assert.NotNull(builder.ChannelCreated);
-            Assert.Same(builder.ChannelCreated, GetChannel(invoker));
+            Assert.NotNull(builder.LastCreatedChannel);
+            Assert.Same(builder.LastCreatedChannel, GetChannel(invoker));
             Assert.Equal(TestServiceMetadata.TestService.DefaultEndpoint, builder.EndpointUsedToCreateChannel);
         };
 
-        private static Channel GetChannel(CallInvoker invoker)
-        {
-            if (!(invoker is DefaultCallInvoker dci))
-            {
-                throw new ArgumentException($"Call invoker is of type {invoker?.GetType()} instead of {nameof(DefaultCallInvoker)}");
-            }
-            return (Channel)s_defaultCallInvokerChannelField.GetValue(dci);
-        }
+        private static ChannelBase GetChannel(CallInvoker invoker) =>
+            invoker is FakeCallInvoker fake ? fake.Channel : throw new ArgumentException("Expected FakeCallInvoker");
 
         private async Task ValidateResultAsync(SampleClientBuilder builder, Action<CallInvoker> validator)
         {
@@ -301,7 +289,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
 
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
-            public ChannelBase ChannelCreated { get; private set; }
 
             private readonly string _name;
 
@@ -313,7 +300,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
                 _name = name;
                 ChannelPool = new ChannelPool(ServiceMetadata);
                 UseJwtAccessWithScopes = clientUsesJwt;
-                GrpcAdapter = GrpcCoreAdapter.Instance;
+                GrpcAdapter = fakeGrpcAdapter;
             }
 
             public SampleClientBuilder(bool clientUsesJwt, bool poolUsesJwt)
@@ -349,15 +336,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             {
                 EndpointUsedToCreateChannel = null;
                 CredentialsUsedToCreateChannel = null;
-                ChannelCreated = null;
+                LastCreatedChannel = null;
             }
 
             protected override ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials)
             {
                 CredentialsUsedToCreateChannel = credentials;
                 EndpointUsedToCreateChannel = endpoint;
-                ChannelCreated = base.CreateChannel(endpoint, credentials);
-                return ChannelCreated;
+                return base.CreateChannel(endpoint, credentials);
             }
 
             public override string ToString() => _name;
