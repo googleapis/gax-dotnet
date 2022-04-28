@@ -77,13 +77,41 @@ namespace Google.Api.Gax.Grpc.Tests.Rest
         }
 
         [Fact]
+        public void CreateRpcStatus_NoGrpcStatusCode()
+        {
+            // This is what some Compute responses look like. There's no gRPC status code,
+            // and no details - but the deprecated "errors" field is populated.
+            string json = @"
+{
+  'error': {
+    'code': 404,
+    'message': 'The resource xyz was not found',
+    'errors': [
+      {
+        'message': 'The resource xyz was not found',
+        'domain': 'global',
+        'reason': 'notFound'
+      }
+    ]
+  }
+}".Replace('\'', '"');
+            var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.NotFound, json);
+            var expectedStatus = new Status
+            {
+                Code = (int) gc::StatusCode.NotFound,
+                Message = "The resource xyz was not found"
+            };
+            Assert.Equal(expectedStatus, actualStatus);
+        }
+
+        [Fact]
         public void GetTrailers_WithStatus()
         {
             var response = CreateResponse(HttpStatusCode.NotFound, s_sampleJson);
             var trailer = Assert.Single(response.GetTrailers());
             Assert.Equal(RpcExceptionExtensions.StatusDetailsTrailerName, trailer.Key);
             var actualStatus = Status.Parser.ParseFrom(trailer.ValueBytes);
-            Assert.Equal(s_sampleStatus, actualStatus);            
+            Assert.Equal(s_sampleStatus, actualStatus);
         }
 
         private static ReadHttpResponseMessage CreateResponse(HttpStatusCode statusCode, string content) =>
