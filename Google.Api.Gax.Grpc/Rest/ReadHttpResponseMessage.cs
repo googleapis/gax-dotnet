@@ -108,7 +108,12 @@ namespace Google.Api.Gax.Grpc.Rest
                 }
                 var status = new Rpc.Status
                 {
-                    Code = (int) error.Status_,
+                    // Sometimes the status field in the JSON isn't populated; fall back to the
+                    // translation of the HTTP response code. (We could potentially use error.Code,
+                    // but that should always be the same as the status code of the HTTP response
+                    // anyway, and this way we don't have to do things conditionally on whether error.Code
+                    // is populated or not.)
+                    Code = error.Status_ == Rpc.Code.Ok ? (int) grpcStatusCode : (int) error.Status_,
                     Message = error.Message,
                     Details = { error.Details }
                 };
