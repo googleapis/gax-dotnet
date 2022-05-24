@@ -21,15 +21,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Adds a singleton <see cref="GrpcNetClientAdapter"/> to the given service collection
         /// as the preferred <see cref="GrpcAdapter"/> implementation,
         /// using the default instance with any additional options configured via <paramref name="optionsConfigurer"/>.
-        /// Note that unlike the <see cref="AddGrpcNetClientAdapter(IServiceCollection)"/> overload without an action,
-        /// this does not implicitly set the <see cref="Grpc.Net.Client.GrpcChannelOptions.ServiceProvider"/> to the provider.
+        /// Before executing the specified action, the <see cref="Grpc.Net.Client.GrpcChannelOptions.ServiceProvider"/>
+        /// is set to the provider. This enables logging, for example.
         /// </summary>
         /// <param name="services">The service collection to add the adapter to.</param>
         /// <param name="optionsConfigurer">The configuration action to perform on each <see cref="Grpc.Net.Client.GrpcChannelOptions"/>
-        /// when it is used by the adapter to construct a channel.</param>
+        /// when it is used by the adapter to construct a channel. May be null, in which case this method only sets the
+        /// service provider.</param>
         /// <returns>The same service collection reference, for method chaining.</returns>
         public static IServiceCollection AddGrpcNetClientAdapter(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.Client.GrpcChannelOptions> optionsConfigurer) =>
-            services.AddSingleton<GrpcAdapter>(provider => GrpcNetClientAdapter.Default.WithAdditionalOptions(options => optionsConfigurer(provider, options)));
+            services.AddSingleton<GrpcAdapter>(provider => GrpcNetClientAdapter.Default
+                .WithAdditionalOptions(options => options.ServiceProvider = provider)
+                .WithAdditionalOptions(options => optionsConfigurer?.Invoke(provider, options)));
 
         /// <summary>
         /// Adds a singleton <see cref="GrpcNetClientAdapter"/> to the given service collection
@@ -40,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection to add the adapter to.</param>
         /// <returns>The same service collection reference, for method chaining.</returns>
         public static IServiceCollection AddGrpcNetClientAdapter(this IServiceCollection services) =>
-            services.AddSingleton<GrpcAdapter>(provider => GrpcNetClientAdapter.Default.WithAdditionalOptions(options => options.ServiceProvider = provider));
+            services.AddGrpcNetClientAdapter(null);
 
         /// <summary>
         /// Adds a singleton <see cref="GrpcCoreAdapter"/> to the given service collection

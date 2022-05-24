@@ -7,7 +7,6 @@
 
 using Grpc.Core;
 using Grpc.Net.Client;
-using Microsoft.Extensions.Logging;
 using System;
 
 namespace Google.Api.Gax.Grpc
@@ -37,8 +36,9 @@ namespace Google.Api.Gax.Grpc
         /// The options configurer is called after creating the <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/> from
         /// other settings, but before creating the <see cref="GrpcChannel"/>.
         /// </summary>
-        /// <param name="configure">A configuration delegate to apply to instances of <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/>
-        /// before they are provided to a <see cref="GrpcChannel"/>, after any configuration applied by this adapter.
+        /// <param name="configure">An optional configuration delegate to apply to instances of <see cref="global::Grpc.Net.Client.GrpcChannelOptions"/>
+        /// before they are provided to a <see cref="GrpcChannel"/>, after any configuration applied by this adapter. May be null,
+        /// in which case a new instance is returned but with the same option configurer as this one.
         /// </param>
         /// <returns>A new adapter based on this one, but with an additional channel options configuration action.</returns>
         public GrpcNetClientAdapter WithAdditionalOptions(Action<global::Grpc.Net.Client.GrpcChannelOptions> configure) =>
