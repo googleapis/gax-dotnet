@@ -40,6 +40,6 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <inheritdoc />
         public override TResponse BlockingUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) =>
             // TODO: Try to make this more efficient?
-            Task.Run(async () => await AsyncUnaryCall(method, host, options, request)).ResultWithUnwrappedExceptions();
+            Task.Run(async () => await AsyncUnaryCall(method, host, options, request).ConfigureAwait(false)).ResultWithUnwrappedExceptions();
     }
 }
