@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="[3.20.0, 4.0.0)" />
+    <PackageReference Include="Google.Protobuf" Version="[3.21.0, 4.0.0)" />
     <None Remove="proto-header.txt" />
   </ItemGroup>
 </Project>
