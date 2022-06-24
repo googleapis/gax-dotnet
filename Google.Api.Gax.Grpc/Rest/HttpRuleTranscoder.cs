@@ -24,11 +24,22 @@ internal sealed partial class HttpRuleTranscoder
     private static readonly FieldType[] TypesIneligibleForQueryStringEncoding = { FieldType.Group, FieldType.Message, FieldType.Bytes };
     private static readonly HttpMethod s_patchMethod = new HttpMethod("PATCH");
 
-    private readonly Func<IMessage, TranscodingOutput> _contentFactory;
+    private readonly HttpMethod _httpMethod;
+    private readonly Func<IMessage, string> _bodyTranscoder;
+    private readonly HttpRulePathPattern _pathPattern;
+    private readonly List<FieldDescriptor> _queryParameterFields;
 
-    internal HttpRuleTranscoder(MethodDescriptor method, HttpRule rule)
+    /// <summary>
+    /// Creates a transcoder for the given method (name only for simplicity of testing) with the specified
+    /// request message descriptor and HttpRule. See AIP-127 (https://google.aip.dev/127) and the proto comments
+    /// for google.api.HttpRule (https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312)
+    /// </summary>
+    /// <param name="methodName">Name of the method, used only for diagnostic purposes.</param>
+    /// <param name="requestMessageDescriptor">The descriptor for the message request type</param>
+    /// <param name="rule">The HttpRule that the new transcoder should represent, excluding any additional bindings.</param>
+    internal HttpRuleTranscoder(string methodName, MessageDescriptor requestMessageDescriptor, HttpRule rule)
     {
-        (string pattern, var httpMethod) = rule.PatternCase switch
+        (string pattern, _httpMethod) = rule.PatternCase switch
         {
             HttpRule.PatternOneofCase.Get => (rule.Get, HttpMethod.Get),
             HttpRule.PatternOneofCase.Post => (rule.Post, HttpMethod.Post),
@@ -39,65 +50,31 @@ internal sealed partial class HttpRuleTranscoder
             _ => throw new ArgumentException("HTTP rule has no pattern")
         };
 
-        var pathPattern = HttpRulePathPattern.Parse(pattern, method.InputType);
+        _pathPattern = HttpRulePathPattern.Parse(pattern, requestMessageDescriptor);
 
-        // TODO: Refactor this to fit the new class structure.
-        _contentFactory = CreateTranscodingContentFactory(method, httpMethod, pathPattern, rule.Body);
-    }
-
-    /// <summary>
-    /// This function creates a GRPC Transcoding lambda with curried method descriptor
-    ///
-    /// GRPC Transcoding returns the parameters of the http request, namely
-    ///  - the path of the uri
-    ///  - the query string parameters
-    ///  - the body
-    /// based on the
-    ///  - method descriptor, specifically the list of input message fields, and the `google.api.http` annotation
-    ///  - the request message
-    /// It is described in the AIP-127 (https://google.aip.dev/127) and the proto comments for google.api.HttpRule
-    /// (https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312)
-    /// </summary>
-    /// <returns>A lambda that will provide the transcoding output when the request method is known</returns>
-    private static Func<IMessage, TranscodingOutput> CreateTranscodingContentFactory(MethodDescriptor protoMethod, HttpMethod httpMethod, HttpRulePathPattern pathPattern, string httpBodyPattern)
-    {
-        Func<IMessage, string> pathFactory = pathPattern.Format;
-
-        (bool allFieldsInBody, string bodyName, Func<IMessage, string> bodyFactory) = httpBodyPattern switch
+        (bool allFieldsInBody, string bodyName, _bodyTranscoder) = rule.Body switch
         {
+            // TODO: The body shouldn't contain any fields that are present in the URI.
             "*" => (true, null, new Func<IMessage, string>(protoRequest => protoRequest.ToString())),
             "" => (false, null, new Func<IMessage, string>(protoRequest => null)),
-            string name when protoMethod.InputType.FindFieldByName(name) is FieldDescriptor field => (false, name, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
-            _ => throw new ArgumentException($"Method {protoMethod.Name} in service {protoMethod.Service.Name} has a body parameter {httpBodyPattern} in the 'google.api.http' annotation which is not a field in {protoMethod.InputType.Name}")
+            string name when requestMessageDescriptor.FindFieldByName(name) is FieldDescriptor field => (false, name, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
+            _ => throw new ArgumentException($"Method {methodName} has a body parameter {rule.Body} in the 'google.api.http' annotation which is not a field in {requestMessageDescriptor.Name}")
         };
 
-        List<FieldDescriptor> unusedEligibleFields = new List<FieldDescriptor>();
+        _queryParameterFields = new List<FieldDescriptor>();
         if (!allFieldsInBody)
         {
-            var usedFieldNames = new HashSet<string>(pathPattern.TopLevelFieldNames);
+            var usedFieldNames = new HashSet<string>(_pathPattern.TopLevelFieldNames);
             if (bodyName != null)
             {
                 usedFieldNames.Add(bodyName);
             }
 
-            var queryStringParamsEligibleFields = protoMethod.InputType.Fields.InDeclarationOrder()
+            var queryStringParamsEligibleFields = requestMessageDescriptor.Fields.InDeclarationOrder()
                 .Where(f => !TypesIneligibleForQueryStringEncoding.Contains(f.FieldType));
 
-            unusedEligibleFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
+            _queryParameterFields = queryStringParamsEligibleFields.Where(field => !usedFieldNames.Contains(field.Name)).ToList();
         }
-
-        return message =>
-        {
-            var path = pathFactory(message);
-            var body = bodyFactory(message);
-
-            var fieldsToEncode = unusedEligibleFields.Where(field => !field.HasPresence || field.Accessor.HasValue(message));
-
-            var queryStringParams = fieldsToEncode.ToDictionary(field => field.JsonName,
-                field => field.Accessor.GetValue(message).ToString());
-
-            return new TranscodingOutput(httpMethod, path, queryStringParams, body);
-        };
     }
 
     /// <summary>
@@ -105,5 +82,16 @@ internal sealed partial class HttpRuleTranscoder
     /// </summary>
     /// <param name="request">The request to transcode. Must not be null.</param>
     /// <returns>The result of transcoding, or null if the rule did not match.</returns>
-    internal TranscodingOutput Transcode(IMessage request) => _contentFactory(request);
+    internal TranscodingOutput Transcode(IMessage request)
+    {
+        string body = _bodyTranscoder(request);
+        string path = _pathPattern.Format(request);
+        var queryParameters = _queryParameterFields
+            .Where(field => !field.HasPresence || field.Accessor.HasValue(request))
+            // TODO: Format the field value with the invariant culture.
+            // TODO: Handle repeated fields
+            // TODO: Handle message fields (currently prohibited via TypesIneligibleForQueryStringEncoding, but theoretically valid)
+            .ToDictionary(field => field.JsonName, field => field.Accessor.GetValue(request).ToString());
+        return new TranscodingOutput(_httpMethod, path, queryParameters, body);
+    }
 }

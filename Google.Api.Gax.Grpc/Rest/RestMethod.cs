@@ -45,7 +45,7 @@ internal class RestMethod
             throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
         }
         // TODO: create multiple rules with annotation bindings
-        var transcoder = new HttpRuleTranscoder(method, rule);
+        var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
         return new RestMethod(method, parser, transcoder);
     }
 
