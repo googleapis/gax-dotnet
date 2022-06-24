@@ -21,22 +21,17 @@ internal sealed class TranscodingOutput
 {
     private const string ApplicationJsonMediaType = "application/json";
 
-    internal string UriPath { get; }
-    internal Dictionary<string, string> QueryStringParameters { get; }
+    internal string RelativeUri { get; }
     internal string Body { get; }
     internal HttpMethod Method { get; }
 
     internal TranscodingOutput(HttpMethod method, string uriPath, Dictionary<string, string> queryStringParameters, string body) =>
-        (Method, UriPath, QueryStringParameters, Body) =
-        (method, uriPath, new Dictionary<string, string>(queryStringParameters), body);
+        (Method, RelativeUri, Body) =
+        (method, AppendQueryStringParameters(uriPath, queryStringParameters.OrderBy(kvp => kvp.Key, StringComparer.Ordinal)), body);
 
     internal HttpRequestMessage CreateRequest(string host)
     {
-        var uriPathWithParams = QueryStringParameters.Any()
-            ? AppendQueryStringParameters(UriPath, QueryStringParameters.OrderBy(kvp => kvp.Key))
-            : UriPath;
-
-        var uri = host is null ? new Uri(uriPathWithParams, UriKind.Relative) : new UriBuilder { Host = host, Path = uriPathWithParams }.Uri;
+        var uri = host is null ? new Uri(RelativeUri, UriKind.Relative) : new UriBuilder { Host = host, Path = RelativeUri }.Uri;
 
         var content = Body is null ? null : new StringContent(Body, Encoding.UTF8, ApplicationJsonMediaType);
 
