@@ -25,9 +25,9 @@ internal sealed class TranscodingOutput
     internal string Body { get; }
     internal HttpMethod Method { get; }
 
-    internal TranscodingOutput(HttpMethod method, string uriPath, Dictionary<string, string> queryStringParameters, string body) =>
+    internal TranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body) =>
         (Method, RelativeUri, Body) =
-        (method, AppendQueryStringParameters(uriPath, queryStringParameters.OrderBy(kvp => kvp.Key, StringComparer.Ordinal)), body);
+        (method, AppendQueryStringParameters(uriPath, queryStringParameters), body);
 
     internal HttpRequestMessage CreateRequest(string host)
     {
@@ -50,7 +50,7 @@ internal sealed class TranscodingOutput
     /// <param name="uriPath">The path component of the service URI</param>
     /// <param name="queryStringParameters">The parameters to encode in the query string</param>
     /// <returns>An uri path merged with the encoded query string parameters</returns>
-    private static string AppendQueryStringParameters(string uriPath, IOrderedEnumerable<KeyValuePair<string, string>> queryStringParameters)
+    private static string AppendQueryStringParameters(string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters)
     {
         var sb = new StringBuilder();
         sb.Append(uriPath);

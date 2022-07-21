@@ -9,6 +9,8 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -25,6 +27,9 @@ internal class RestMethod
     private readonly JsonParser _parser;
     private readonly HttpRuleTranscoder _transcoder;
 
+    /// <summary>
+    /// The service-qualified method name, as used by gRPC, e.g. "/google.somepackage.SomeService/SomeMethod"
+    /// </summary>
     internal string FullName { get; }
 
     private RestMethod(MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
@@ -44,16 +49,17 @@ internal class RestMethod
         {
             throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
         }
-        // TODO: create multiple rules with annotation bindings
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
         return new RestMethod(method, parser, transcoder);
     }
 
     internal HttpRequestMessage CreateRequest(IMessage request, string host)
     {
-        // TODO: Use multiple rules, iterating over them until a match is found.
-        var output = _transcoder.Transcode(request);
-        return output.CreateRequest(host);
+        var transcodingOutput = _transcoder.Transcode(request)
+            // TODO: Is this the right exception to use?
+            ?? throw new ArgumentException("Request could not be transcoded; it does not match any HTTP rule.");
+
+        return transcodingOutput.CreateRequest(host);
     }
 
     // TODO: Handle cancellation?
