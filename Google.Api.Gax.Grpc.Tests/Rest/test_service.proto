@@ -9,8 +9,14 @@ syntax = "proto3";
 
 package google.api.gax.grpc.rest;
 
+import "google/api/annotations.proto";
+
 service Sample {
-  
+  rpc SimpleMethod(SimpleRequest) returns (SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name}"
+    };
+  }
 }
 
 // Used in HttpRulePathPatternTest. 
