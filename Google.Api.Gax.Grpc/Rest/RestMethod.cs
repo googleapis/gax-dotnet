@@ -9,8 +9,6 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,6 +21,7 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// </summary>
 internal class RestMethod
 {
+    private readonly ApiMetadata _apiMetadata;
     private readonly MethodDescriptor _protoMethod;
     private readonly JsonParser _parser;
     private readonly HttpRuleTranscoder _transcoder;
@@ -32,17 +31,18 @@ internal class RestMethod
     /// </summary>
     internal string FullName { get; }
 
-    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
-        (_protoMethod,  _parser, FullName, _transcoder) =
-            (protoMethod, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}", transcoder);
+    private RestMethod(ApiMetadata apiMetadata, MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
+        (_apiMetadata, _protoMethod,  _parser, FullName, _transcoder) =
+        (apiMetadata, protoMethod, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}", transcoder);
 
     /// <summary>
     /// Creates a <see cref="RestMethod"/> representation from the given protobuf method representation.
     /// </summary>
+    /// <param name="apiMetadata">The metadata for the API that this method is part of.</param>
     /// <param name="method">The protobuf method to represent.</param>
     /// <param name="parser">The JSON parser to use when parsing requests.</param>
     /// <returns>A representation of the method that can be used to handle HTTP requests/responses.</returns>
-    internal static RestMethod Create(MethodDescriptor method, JsonParser parser)
+    internal static RestMethod Create(ApiMetadata apiMetadata, MethodDescriptor method, JsonParser parser)
     {
         var rule = method.GetOptions().GetExtension(AnnotationsExtensions.Http);
         if (rule is null)
@@ -50,7 +50,7 @@ internal class RestMethod
             throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
         }
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
-        return new RestMethod(method, parser, transcoder);
+        return new RestMethod(apiMetadata, method, parser, transcoder);
     }
 
     internal HttpRequestMessage CreateRequest(IMessage request, string host)
@@ -59,6 +59,10 @@ internal class RestMethod
             // TODO: Is this the right exception to use?
             ?? throw new ArgumentException("Request could not be transcoded; it does not match any HTTP rule.");
 
+        if (_apiMetadata.RequestNumericEnumJsonEncoding)
+        {
+            transcodingOutput = transcodingOutput.WithAdditionalQueryParameter("$alt", "json;enum-encoding=int");
+        }
         return transcodingOutput.CreateRequest(host);
     }
 

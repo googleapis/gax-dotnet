@@ -30,14 +30,15 @@ namespace Google.Api.Gax.Grpc.Rest
             _methodsByFullName = methodsByFullName;
         }
 
-        internal static RestServiceCollection Create(IEnumerable<FileDescriptor> fileDescriptors)
+        internal static RestServiceCollection Create(ApiMetadata metadata)
         {
+            var fileDescriptors = metadata.ProtobufDescriptors;
             var services = fileDescriptors.SelectMany(file => file.Services);
             var typeRegistry = TypeRegistry.FromFiles(fileDescriptors.ToArray());
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
                 .Where(x => true) // TODO: filter out streaming methods.
-                .Select(method => RestMethod.Create(method, parser))
+                .Select(method => RestMethod.Create(metadata, method, parser))
                 .ToDictionary(restMethod => restMethod.FullName);
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));
         }
