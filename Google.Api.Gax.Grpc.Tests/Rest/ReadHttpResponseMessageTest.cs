@@ -5,7 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.Gax.Grpc.Rest;
 using Google.Protobuf.WellKnownTypes;
 using Google.Rpc;
 using System.Net;
@@ -13,7 +12,7 @@ using System.Net.Http;
 using Xunit;
 using gc = Grpc.Core;
 
-namespace Google.Api.Gax.Grpc.Tests.Rest
+namespace Google.Api.Gax.Grpc.Rest.Tests
 {
     public class ReadHttpResponseMessageTest
     {
