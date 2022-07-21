@@ -56,6 +56,18 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(1, sequence.EvaluationCount);
         }
 
+        [Fact]
+        public void WithRequestNumericEnumJsonEncoding()
+        {
+            var original = TestApiMetadata.Test;
+            var withTrue = original.WithRequestNumericEnumJsonEncoding(true);
+            var withFalse = withTrue.WithRequestNumericEnumJsonEncoding(false);
+
+            Assert.False(original.RequestNumericEnumJsonEncoding);
+            Assert.True(withTrue.RequestNumericEnumJsonEncoding);
+            Assert.False(withFalse.RequestNumericEnumJsonEncoding);
+        }
+
         private class CountingSequence : IEnumerable<FileDescriptor>
         {
             public int EvaluationCount { get; private set; } = 0;
