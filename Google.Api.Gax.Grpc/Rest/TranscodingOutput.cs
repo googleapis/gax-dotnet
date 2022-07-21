@@ -29,6 +29,7 @@ internal sealed class TranscodingOutput
         (Method, RelativeUri, Body) =
         (method, AppendQueryStringParameters(uriPath, queryStringParameters), body);
 
+    // TODO: Rename to ToHttpRequestMessage?
     internal HttpRequestMessage CreateRequest(string host)
     {
         var uri = host is null ? new Uri(RelativeUri, UriKind.Relative) : new UriBuilder { Host = host, Path = RelativeUri }.Uri;

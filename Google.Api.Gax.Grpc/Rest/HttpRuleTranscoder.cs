@@ -76,9 +76,10 @@ internal sealed partial class HttpRuleTranscoder
 
             (bool allFieldsInBody, string bodyName, _bodyTranscoder) = rule.Body switch
             {
-                // TODO: The body shouldn't contain any fields that are present in the URI.
                 "*" => (true, null, new Func<IMessage, string>(protoRequest => protoRequest.ToString())),
                 "" => (false, null, new Func<IMessage, string>(protoRequest => null)),
+                // TODO: If a field is specified, but then isn't present in the request, should the request
+                // fail or should it just have no body?
                 string name when requestMessage.FindFieldByName(name) is FieldDescriptor field => (false, name, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
                 _ => throw new ArgumentException($"Method {methodName} has a body parameter {rule.Body} in the 'google.api.http' annotation which is not a field in {requestMessage.Name}")
             };
@@ -143,6 +144,4 @@ internal sealed partial class HttpRuleTranscoder
             }
         }
     }
-
-
 }
