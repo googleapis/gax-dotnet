@@ -1,0 +1,143 @@
+{
+  "namedRules": {
+    "single-field": {
+      "get": "/collections/{name}"
+    },
+    "single-field-with-wildcard-pattern": {
+      "get": "/abc/{name=collections/*}"
+    },
+    "multi-binding": {
+      "get": "/abc/{name=1*}",
+      "additionalBindings": [
+        {
+          "get": "/def/{name=2*}"
+        }
+      ]
+    }
+  },
+
+  "tests": [
+    {
+      "name": "SimpleSuccess",
+      "details": "A simple GET request with no body, and no matching to perform",
+      "inlineRule": {
+        "get": "/simple"
+      },
+      "requestMessageName": "EmptyRequest",
+      "request": {
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/simple"
+      }
+    },
+
+    {
+      "name": "InvalidRulePattern",
+      "details": "A rule with an invalid pattern - a field that isn't in the request message",
+      "inlineRule": {
+        "get": "/collections/{x}"
+      },
+      "requestMessageName": "SimpleFields",
+      "invalidRule": "Field x doesn't exist in SimpleFields"
+    },
+
+    {
+      "name": "InvalidRulePattern",
+      "details": "A rule with an invalid pattern - triple stars",
+      "inlineRule": {
+        "get": "/collections/{x=***}"
+      },
+      "requestMessageName": "SimpleFields",
+      "invalidRule": "*** is invalid in a pattern"
+    },
+
+    {
+      "name": "SimpleNonMatchingRequest",
+      "details": "A rule expecting a match for the name field",
+      "ruleName": "single-field",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "integer": 2
+      },
+      "nonmatchingRequest": "Name field has no value"
+    },
+
+    {
+      "name": "SimpleMatchingRequest",
+      "details": "A rule which matches the name field",
+      "ruleName": "single-field",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "xyz",
+        "integer": 5
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/collections/xyz?integer=5"
+      }
+    },
+
+    {
+      "name": "SimpleWildcardSuccess",
+      "details": "A rule which matches the name field against a pattern of collections/*",
+      "ruleName": "single-field-with-wildcard-pattern",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "collections/xyz"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/collections/xyz"
+      }
+    },
+
+    {
+      "name": "SimpleWildcardFailure",
+      "details": "A rule which fails to match the name field against a pattern of collections/*",
+      "ruleName": "single-field-with-wildcard-pattern",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "other/xyz"
+      },
+      "nonmatchingRequest": "Value doesn't match pattern"
+    },
+
+    {
+      "name": "MultiBindingTopLevelRuleMatch",
+      "details": "Match the top-level rule within a multi-binding rule",
+      "ruleName": "multi-binding",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "1xyz"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/1xyz"
+      }
+    },
+    {
+      "name": "MultiBindingAdditionalRuleMatch",
+      "details": "Match an additional rule within a multi-binding rule",
+      "ruleName": "multi-binding",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "2xyz"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/def/2xyz"
+      }
+    },
+    {
+      "name": "MultiBindingFailure",
+      "details": "A rule which fails to match against any of multiple patterns",
+      "ruleName": "multi-binding",
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "no-match"
+      },
+      "nonmatchingRequest": "Value doesn't match pattern"
+    }
+  ]
+}
