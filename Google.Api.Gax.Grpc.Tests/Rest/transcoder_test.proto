@@ -1,0 +1,82 @@
+﻿/*
+ * Copyright 2022 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+import "google/api/http.proto";
+
+// Protos to enable data-driven cross-platform conformance tests for gRPC transcoding.
+
+// TODO: Potentially change this when exporting to https://github.com/googleapis/conformance-tests
+package google.api.gax.grpc.rest.tests;
+
+// A collection of tests.
+message TestFile {
+  repeated Test tests = 1;
+  map<string, HttpRule> named_rules = 2;
+}
+
+// A single transcoding test. Most tests only exercise a single HttpRule,
+// without any additional bindings, but the same test structure works for both.
+message Test {
+  // Short description of the test, suitable for a list of tests. Must be unique.
+  string name = 1;
+  // Optional comment providing more details about what's being tested.
+  string details = 2;
+
+  oneof rule {
+  // The rule to test as an inline declaration.
+    HttpRule inline_rule = 3;
+    // The name of a rule within the enclosing TestFile.named_rules.
+    string rule_name = 4;
+  }
+
+  // The short name of the request message to test against, as one of the messages
+  // in this file.
+  string request_message_name = 5;
+
+  // The request, represented as a JSON struct which should then be parsed
+  // to the type specified by request_message.
+  // Required unless the result type is invalid_rule.
+  google.protobuf.Struct request = 6;
+
+  // The expected result.
+  oneof expected_result {
+    // The rule cannot be applied to the given message.
+    // The value specified for this field is just explanatory.
+    string invalid_rule = 7;
+
+    // The rule cannot be applied to the given request message.
+    // The value specified for this field is just explanatory.
+    string nonmatching_request = 8;
+
+    // The rule can be applied to the given message, with the specified result.
+    HttpRequest success = 9;
+  }
+}
+
+// The expected output of a successful transcoding operation.
+message HttpRequest {
+  // The HTTP method of the request.
+  string method = 1;
+  // The relative URI, including a leading slash and any query parameters
+  string uri = 2;
+  // The body of the request, if any. This is expressed as a Struct to
+  // allow for a simpler representation in JSON files, without worrying about
+  // string escaping, whitespace, or field ordering.
+  google.protobuf.Struct body = 3;
+}
+
+// Request messages
+message EmptyRequest {
+}
+
+message SimpleFields {
+  string name = 1;
+  int32 integer = 2;
+}
