@@ -16,7 +16,7 @@ namespace Google.Api.Gax.Grpc.Tests
     public class ApiMetadataTest
     {
         [Fact]
-        public void ConstructorWithDescriptorsProvider_LazyEvaluation()
+        public void ConstructorWithDescriptors_SingleImmediateEvaluation()
         {
             var sequence = new CountingSequence();
             var descriptor = new ApiMetadata("Test", sequence);
@@ -37,7 +37,7 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void ConstructorWithDescriptors_SingleImmediateEvaluation()
+        public void ConstructorWithDescriptorsProvider_LazyEvaluation()
         {
             var sequence = new CountingSequence();
             var descriptor = new ApiMetadata("Test", () => sequence);
