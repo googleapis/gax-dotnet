@@ -32,7 +32,7 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <inheritdoc />
         private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            var serviceCollection = s_apiMetadataToServiceCollection.GetOrAdd(serviceMetadata.ApiMetadata, apiMetadata => RestServiceCollection.Create(apiMetadata.ProtobufDescriptors));
+            var serviceCollection = s_apiMetadataToServiceCollection.GetOrAdd(serviceMetadata.ApiMetadata, apiMetadata => RestServiceCollection.Create(apiMetadata));
             return new RestChannel(serviceCollection, endpoint, credentials, options);
         }
 
