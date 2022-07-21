@@ -63,7 +63,7 @@ public class HttpRuleTranscoderTest
                 var actualResult = CreateTranscoder().Transcode(request);
                 var expectedResult = test.Success;
                 Assert.Equal(expectedResult.Method, actualResult.Method.Method);
-                Assert.Equal(expectedResult.Uri, actualResult.RelativeUri);
+                Assert.Equal(expectedResult.Uri, actualResult.GetRelativeUri());
                 var actualBody = actualResult.Body is null ? null : Struct.Parser.ParseJson(actualResult.Body);
                 Assert.Equal(expectedResult.Body, actualBody);
                 break;

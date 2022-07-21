@@ -21,18 +21,20 @@ internal sealed class TranscodingOutput
 {
     private const string ApplicationJsonMediaType = "application/json";
 
-    internal string RelativeUri { get; }
+    private IEnumerable<KeyValuePair<string, string>> _queryStringParameters;
+    private string _uriPath;
     internal string Body { get; }
     internal HttpMethod Method { get; }
 
     internal TranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body) =>
-        (Method, RelativeUri, Body) =
-        (method, AppendQueryStringParameters(uriPath, queryStringParameters), body);
+        (Method, _uriPath, _queryStringParameters, Body) =
+        (method, uriPath, queryStringParameters, body);
 
     // TODO: Rename to ToHttpRequestMessage?
     internal HttpRequestMessage CreateRequest(string host)
     {
-        var uri = host is null ? new Uri(RelativeUri, UriKind.Relative) : new UriBuilder { Host = host, Path = RelativeUri }.Uri;
+        var relativeUri = GetRelativeUri();
+        var uri = host is null ? new Uri(relativeUri, UriKind.Relative) : new UriBuilder { Host = host, Path = relativeUri }.Uri;
 
         var content = Body is null ? null : new StringContent(Body, Encoding.UTF8, ApplicationJsonMediaType);
 
@@ -44,20 +46,23 @@ internal sealed class TranscodingOutput
         };
     }
 
+    internal TranscodingOutput WithAdditionalQueryParameter(string name, string value) =>
+        new TranscodingOutput(Method, _uriPath, _queryStringParameters.Concat(new[] { new KeyValuePair<string, string>(name, value) }), Body);
+
     /// <summary>
     /// Merges the uri path and the query string parameters, escaping them.
-    /// Ignores the possibility that the path can already have parameters or contain an anchor (`#`)
+    /// Ignores the possibility that the path can already have parameters or contain an anchor (`#`).
+    /// This method is visible for testing; production code should generally call <see cref="CreateRequest(string)"/>
+    /// instead.
     /// </summary>
-    /// <param name="uriPath">The path component of the service URI</param>
-    /// <param name="queryStringParameters">The parameters to encode in the query string</param>
-    /// <returns>An uri path merged with the encoded query string parameters</returns>
-    private static string AppendQueryStringParameters(string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters)
+    /// <returns>The URI path merged with the encoded query string parameters</returns>
+    internal string GetRelativeUri()
     {
         var sb = new StringBuilder();
-        sb.Append(uriPath);
+        sb.Append(_uriPath);
         bool sbHasParameters = false;
 
-        foreach (var kvpNameValue in queryStringParameters)
+        foreach (var kvpNameValue in _queryStringParameters)
         {
             sb.Append(sbHasParameters ? "&" : "?");
             sbHasParameters = true;
