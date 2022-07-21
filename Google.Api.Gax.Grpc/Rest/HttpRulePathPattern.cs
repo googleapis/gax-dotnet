@@ -23,8 +23,6 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// </summary>
 internal sealed class HttpRulePathPattern
 {
-    private static readonly Regex s_braceRegex = new Regex(@"\{[^}]*\}");
-
     /// <summary>
     /// The path segments - these are *not* slash-separated segments, but instead they're based on fields. So
     /// /xyz/{a}/abc/{b} would contain four segments, "/xyz/", "{a}", "/abc/", "{b}".
@@ -78,7 +76,6 @@ internal sealed class HttpRulePathPattern
     internal string TryFormat(IMessage message)
     {
         StringBuilder builder = new StringBuilder();
-        var segments = string.Join("", _segments.Select(segment => segment.TryFormat(message)));
         foreach (var segment in _segments)
         {
             var formattedSegment = segment.TryFormat(message);
