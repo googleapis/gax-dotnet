@@ -138,6 +138,130 @@
         "name": "no-match"
       },
       "nonmatchingRequest": "Value doesn't match pattern"
+    },
+
+    {
+      "name": "PostWithEmptyBody",
+      "details": "A post request with no body specified should put all fields in the URL or query parameters.",
+      "inlineRule": {
+         "post": "/abc/{name}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "name",
+        "integer": 1
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/name?integer=1"
+      }
+    },
+
+    {
+      "name": "ComplexQuery_Required_Absent",
+      "details": "Required fields are present even if unspecified",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "in_path": "def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?requiredInteger=0"
+      }
+    },
+    {
+      "name": "ComplexQuery_Required_NonDefault",
+      "details": "Required fields are present even if unspecified",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "in_path": "def",
+        "required_integer": 5
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?requiredInteger=5"
+      }
+    },
+    {
+      "name": "ComplexQuery_Proto3Optional_SpecifiedDefault",
+      "details": "Proto3 optional fields are present if specified, even with a default value",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "in_path": "def",
+        "proto3_optional_integer": 0
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?proto3OptionalInteger=0&requiredInteger=0"
+      }
+    },
+    {
+      "name": "ComplexQuery_Proto3Optional_NonDefault",
+      "details": "Proto3 optional fields are present with non-default values",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "in_path": "def",
+        "proto3_optional_integer": 5
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?proto3OptionalInteger=5&requiredInteger=0"
+      }
+    },
+    {
+      "name": "ComplexQuery_RepeatedField",
+      "details": "Repeated fields are included in the query as repeated parameters, including default values.",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "repeated_string": [
+          "a", "", "b"
+        ],
+        "nested": {
+          "x": 10,
+          "y": 20,
+          "z": 30
+        },
+        "in_path": "def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?repeatedString=a&repeatedString=&repeatedString=b&requiredInteger=0"
+      }
+    },
+    {
+      "name": "ComplexQuery_Nested",
+      "details": "Message fields are presented as paths to leaf fields",
+      "inlineRule": {
+         "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "nested": {
+          "x": 10,
+          "y": 20,
+          "z": 30
+        },
+        "in_path": "def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?nested.x=10&nested.y=20&nested.z=30&requiredInteger=0"
+      }
     }
   ]
 }

@@ -8,6 +8,7 @@
 syntax = "proto3";
 
 import "google/protobuf/struct.proto";
+import "google/api/field_behavior.proto";
 import "google/api/http.proto";
 
 // Protos to enable data-driven cross-platform conformance tests for gRPC transcoding.
@@ -79,4 +80,20 @@ message EmptyRequest {
 message SimpleFields {
   string name = 1;
   int32 integer = 2;
+}
+
+message QueryTestMessage {
+  message Nested {
+    int32 x = 1;
+    int32 y = 2;
+    int32 z = 3;
+  }
+
+  // A required field should be present even if the value is the default.
+  int32 required_integer = 1 [(google.api.field_behavior) = REQUIRED];
+  // proto3 optional fields should be present if the value was explicitly specified.
+  optional int32 proto3_optional_integer = 2;
+  repeated string repeated_string = 3;
+  Nested nested = 4;
+  string in_path = 5;
 }

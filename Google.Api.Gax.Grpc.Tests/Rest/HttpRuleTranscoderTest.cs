@@ -21,6 +21,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests;
 
 public class HttpRuleTranscoderTest
 {
+    private static readonly List<string> SkippedTranscodingTests = new()
+    {
+        "ComplexQuery_Nested"
+    };
+
     private static TestFile s_testFile = LoadTestFile();
     public static IEnumerable<object[]> Tests => s_testFile.Tests
         .Select(t => new object[] { new SerializableTest(t) });
@@ -34,11 +39,13 @@ public class HttpRuleTranscoderTest
         return TestFile.Parser.ParseJson(json);
     }
 
-    [Theory]
+    [SkippableTheory]
     [MemberData(nameof(Tests))]
     public void Transcode(SerializableTest testWrapper)
     {
         var test = testWrapper.Test;
+        Skip.If(SkippedTranscodingTests.Contains(test.Name));
+
         var rule = test.RuleCase switch
         {
             RuleOneofCase.InlineRule => test.InlineRule,
