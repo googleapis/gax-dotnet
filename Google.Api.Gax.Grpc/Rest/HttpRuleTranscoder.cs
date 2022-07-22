@@ -8,6 +8,7 @@
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -131,16 +132,45 @@ internal sealed partial class HttpRuleTranscoder
                 }
 
                 object value = field.Accessor.GetValue(request);
-                if (!field.HasPresence && (value is "" || value is 0.0f || value is 0.0d || value is 0 || value is 0L || value is 0UL || value is UnsignedInt32Zero))
+                if (value is null)
                 {
                     yield break;
                 }
-                yield return value is IFormattable formattable
-                    ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
-                    : value?.ToString();
 
-                // TODO: Handle repeated fields
+                if (!IsRequired(field) && !field.HasPresence && IsDefaultValue(value))
+                {
+                    yield break;
+                }
+
+                if (field.IsRepeated && value is IList list)
+                {
+                    foreach (var item in list)
+                    {
+                        yield return FormatValue(item);
+                    }
+                }
+                else
+                {
+                    yield return FormatValue(value);
+                }
+
                 // TODO: Handle message fields (currently prohibited via TypesIneligibleForQueryStringEncoding, but theoretically valid)
+
+                static bool IsDefaultValue(object value)
+                {
+                    return value is "" || value is 0.0f || value is 0.0d || value is 0 || value is 0L || value is 0UL || value is UnsignedInt32Zero;
+                }
+
+                static string FormatValue(object value) => value is IFormattable formattable
+                    ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
+                    : value.ToString();
+
+                static bool IsRequired(FieldDescriptor descriptor)
+                {
+                    // TODO: Avoid doing this on every request.
+                    var behavior = descriptor.GetOptions()?.GetExtension(FieldBehaviorExtensions.FieldBehavior);
+                    return behavior is not null && behavior.Contains(FieldBehavior.Required);
+                }
             }
         }
     }
