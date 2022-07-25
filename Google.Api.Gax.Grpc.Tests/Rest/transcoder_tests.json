@@ -33,7 +33,7 @@
     },
 
     {
-      "name": "InvalidRulePattern",
+      "name": "InvalidRulePattern_UnknownField",
       "details": "A rule with an invalid pattern - a field that isn't in the request message",
       "inlineRule": {
         "get": "/collections/{x}"
@@ -43,7 +43,7 @@
     },
 
     {
-      "name": "InvalidRulePattern",
+      "name": "InvalidRulePattern_TripleStars",
       "details": "A rule with an invalid pattern - triple stars",
       "inlineRule": {
         "get": "/collections/{x=***}"
@@ -144,7 +144,7 @@
       "name": "PostWithEmptyBody",
       "details": "A post request with no body specified should put all fields in the URL or query parameters.",
       "inlineRule": {
-         "post": "/abc/{name}"
+        "post": "/abc/{name}"
       },
       "requestMessageName": "SimpleFields",
       "request": {
@@ -161,11 +161,11 @@
       "name": "ComplexQuery_Required_Absent",
       "details": "Required fields are present even if unspecified",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
-        "in_path": "def"
+        "inPath": "def"
       },
       "success": {
         "method": "GET",
@@ -176,11 +176,11 @@
       "name": "ComplexQuery_Required_NonDefault",
       "details": "Required fields are present even if unspecified",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
-        "in_path": "def",
+        "inPath": "def",
         "required_integer": 5
       },
       "success": {
@@ -192,11 +192,11 @@
       "name": "ComplexQuery_Proto3Optional_SpecifiedDefault",
       "details": "Proto3 optional fields are present if specified, even with a default value",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
-        "in_path": "def",
+        "inPath": "def",
         "proto3_optional_integer": 0
       },
       "success": {
@@ -208,12 +208,12 @@
       "name": "ComplexQuery_Proto3Optional_NonDefault",
       "details": "Proto3 optional fields are present with non-default values",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
-        "in_path": "def",
-        "proto3_optional_integer": 5
+        "inPath": "def",
+        "proto3OptionalInteger": 5
       },
       "success": {
         "method": "GET",
@@ -224,19 +224,16 @@
       "name": "ComplexQuery_RepeatedField",
       "details": "Repeated fields are included in the query as repeated parameters, including default values.",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
-        "repeated_string": [
-          "a", "", "b"
+        "repeatedString": [
+          "a",
+          "",
+          "b"
         ],
-        "nested": {
-          "x": 10,
-          "y": 20,
-          "z": 30
-        },
-        "in_path": "def"
+        "inPath": "def"
       },
       "success": {
         "method": "GET",
@@ -247,21 +244,176 @@
       "name": "ComplexQuery_Nested",
       "details": "Message fields are presented as paths to leaf fields",
       "inlineRule": {
-         "get": "/abc/{in_path}"
+        "get": "/abc/{in_path}"
       },
       "requestMessageName": "QueryTestMessage",
       "request": {
         "nested": {
           "x": 10,
-          "y": 20,
           "z": 30
         },
         "in_path": "def"
       },
       "success": {
         "method": "GET",
-        "uri": "/abc/def?nested.x=10&nested.y=20&nested.z=30&requiredInteger=0"
+        "uri": "/abc/def?nested.x=10&nested.z=30&requiredInteger=0"
       }
+    },
+    {
+      "name": "NamedBodyExcludedFromQuery",
+      "details": "When the body is a specific field, that field should not be included in the query",
+      "inlineRule": {
+        "post": "/abc/{in_path}",
+        "body": "nested"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "nested": {
+          "x": 10,
+          "z": 30
+        },
+        "inPath": "def"
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/def?requiredInteger=0",
+        "body": {
+          "x": 10,
+          "z": 30
+        }
+      }
+    },
+    {
+      "name": "AllFieldsBodyExcludesQuery",
+      "details": "When the body is *, there should be no query parameters",
+      "inlineRule": {
+        "post": "/abc/{in_path}",
+        "body": "*"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "nested": {
+          "x": 10,
+          "z": 30
+        },
+        "inPath": "def"
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/def",
+        "body": {
+          "nested": {
+            "x": 10,
+            "z": 30
+          },
+          "inPath": "def"
+        }
+      }
+    },
+    {
+      "name": "NestedPathFieldExcludedFromQuery",
+      "details": "When the path contains a nested field reference, it is excluded form query parameters",
+      "requestMessageName": "QueryTestMessage",
+      "inlineRule": {
+        "get": "/abc/{nested.x}/{nested.y}"
+      },
+
+      "request": {
+        "nested": {
+          "x": 10,
+          "y": 20,
+          "z": 30
+        }
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/10/20?nested.z=30&requiredInteger=0"
+      }
+    },
+    {
+      "name": "RecursiveField_SpecifiedBodyField",
+      "details": "When a recursive field is specified as the body parameter, the rule is valid",
+      "requestMessageName": "RequestWithRecursiveMessage",
+      "inlineRule": {
+        "post": "/abc",
+        "body": "z"
+      },
+      "request": {
+        "z": {
+          "x": {
+            "y": 1
+          },
+          "y": 2
+        },
+        "simple": {
+          "name": "xyz"
+        }
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc?simple.name=xyz",
+        "body": {
+          "x": {
+            "y": 1
+          },
+          "y": 2
+        }
+      }
+    },
+    {
+      "name": "RecursiveField_WildcardBodyField",
+      "details": "When * is specified as the body parameter, recursive messages are okay",
+      "inlineRule": {
+        "post": "/abc",
+        "body": "*"
+      },
+      "requestMessageName": "RequestWithRecursiveMessage",
+      "request": {
+        "z": {
+          "x": {
+            "y": 1
+          },
+          "y": 2
+        },
+        "simple": {
+          "name": "xyz"
+        }
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc",
+        "body": {
+          "z": {
+            "x": {
+              "y": 1
+            },
+            "y": 2
+          },
+          "simple": {
+            "name": "xyz"
+          }
+        }
+      }
+    },
+
+    {
+      "name": "RecursiveField_NoBodyField",
+      "details": "When there is no body parameter, recursive messages are invalid",
+      "inlineRule": {
+        "post": "/abc"
+      },
+      "requestMessageName": "RequestWithRecursiveMessage",
+      "invalid_rule": "Query parameters would recurse"
+    },
+    {
+      "name": "RecursiveField_NonRecursiveFieldForBody",
+      "details": "When there's a recursive field other than the body parameter, the rule is invalid",
+      "inlineRule": {
+        "post": "/abc",
+        "body": "simple"
+      },
+      "requestMessageName": "RequestWithRecursiveMessage",
+      "invalid_rule": "Query parameters would recurse"
     }
   ]
 }
