@@ -97,3 +97,13 @@ message QueryTestMessage {
   Nested nested = 4;
   string in_path = 5;
 }
+
+message RequestWithRecursiveMessage {
+  message Recursive {
+    Recursive x = 1;
+    int32 y = 2;
+  }
+
+  Recursive z = 1;
+  SimpleFields simple = 2;
+}
