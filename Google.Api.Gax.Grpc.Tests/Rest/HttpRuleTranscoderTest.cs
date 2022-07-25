@@ -23,7 +23,6 @@ public class HttpRuleTranscoderTest
 {
     private static readonly List<string> SkippedTranscodingTests = new()
     {
-        "ComplexQuery_Nested"
     };
 
     private static TestFile s_testFile = LoadTestFile();

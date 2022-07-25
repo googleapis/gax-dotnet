@@ -52,13 +52,12 @@ internal sealed partial class HttpRuleTranscoder
     /// </summary>
     private class SingleRuleTranscoder
     {
-        private static readonly FieldType[] TypesIneligibleForQueryStringEncoding = { FieldType.Group, FieldType.Message, FieldType.Bytes };
         private static readonly HttpMethod s_patchMethod = new HttpMethod("PATCH");
 
         private readonly HttpMethod _httpMethod;
         private readonly Func<IMessage, string> _bodyTranscoder;
         private readonly HttpRulePathPattern _pathPattern;
-        private readonly List<FieldDescriptor> _queryParameterFields;
+        private readonly List<QueryParameterField> _queryParameterFields;
 
         internal SingleRuleTranscoder(string methodName, MessageDescriptor requestMessage, HttpRule rule)
         {
@@ -81,30 +80,77 @@ internal sealed partial class HttpRuleTranscoder
                 "" => (false, null, new Func<IMessage, string>(protoRequest => null)),
                 // TODO: If a field is specified, but then isn't present in the request, should the request
                 // fail or should it just have no body?
-                string name when requestMessage.FindFieldByName(name) is FieldDescriptor field => (false, name, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
+                string name when requestMessage.FindFieldByName(name) is FieldDescriptor field => (false, field.JsonName, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
                 _ => throw new ArgumentException($"Method {methodName} has a body parameter {rule.Body} in the 'google.api.http' annotation which is not a field in {requestMessage.Name}")
             };
 
-            _queryParameterFields = new List<FieldDescriptor>();
+            _queryParameterFields = new List<QueryParameterField>();
             if (!allFieldsInBody)
             {
-                var usedFieldNames = new HashSet<string>(_pathPattern.TopLevelFieldNames);
+                var usedFieldPaths = new HashSet<string>(_pathPattern.FieldPaths);
                 if (bodyName != null)
                 {
-                    usedFieldNames.Add(bodyName);
+                    usedFieldPaths.Add(bodyName);
                 }
 
-                var queryStringParamsEligibleFields = requestMessage.Fields.InDeclarationOrder()
-                    .Where(f => !TypesIneligibleForQueryStringEncoding.Contains(f.FieldType));
-
-                _queryParameterFields = queryStringParamsEligibleFields
-                    .Where(field => !usedFieldNames.Contains(field.Name))
-                    .OrderBy(field => field.JsonName, StringComparer.Ordinal)
+                _queryParameterFields = GetQueryParameterFields(requestMessage, usedFieldPaths)
+                    .OrderBy(field => field.Name, StringComparer.Ordinal)
                     .ToList();
             }
         }
 
-        private const uint UnsignedInt32Zero = 0;
+        private static IEnumerable<QueryParameterField> GetQueryParameterFields(MessageDescriptor requestDescriptor, HashSet<string> excludedPaths)
+        {
+            // Avoid infinite recursion for recursive messages.
+            var descriptorStack = new Stack<MessageDescriptor>();
+            var result = new List<QueryParameterField>();
+
+            AccumulateMessages(message => message, currentPath: null, requestDescriptor);
+            return result;
+
+            void AccumulateMessages(Func<IMessage, IMessage> currentSelector, string currentPath, MessageDescriptor messageDescriptor)
+            {
+                if (descriptorStack.Contains(messageDescriptor))
+                {
+                    throw new ArgumentException($"Message descriptor {messageDescriptor.FullName} contains itself recursively.");
+                }
+                descriptorStack.Push(messageDescriptor);
+                foreach (var field in messageDescriptor.Fields.InDeclarationOrder())
+                {
+                    string path = currentPath is null ? field.JsonName : $"{currentPath}.{field.JsonName}";
+                    if (excludedPaths.Contains(path))
+                    {
+                        continue;
+                    }
+                    // Note: map fields are repeated fields, so we don't need to explicitly remove them.
+                    if (field.FieldType == FieldType.Message && !field.IsRepeated)
+                    {
+                        AccumulateMessages(
+                            message => currentSelector(message) is IMessage parent ? (IMessage) field.Accessor.GetValue(parent) : null,
+                            path,
+                            field.MessageType);
+                    }
+                    else if (IsEligibleQueryParameterLeafField(field))
+                    {
+                        result.Add(new QueryParameterField(currentSelector, path, field));
+                    }
+                }
+                descriptorStack.Pop();
+            }
+
+            static bool IsEligibleQueryParameterLeafField(FieldDescriptor field)
+            {
+                if (field.FieldType == FieldType.Message || field.FieldType == FieldType.Group || field.FieldType == FieldType.Bytes)
+                {
+                    return false;
+                }
+                if (field.IsExtension)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
 
         /// <summary>
         /// Attempts to use this rule to transcode the given request.
@@ -120,58 +166,90 @@ internal sealed partial class HttpRuleTranscoder
             }
             string body = _bodyTranscoder(request);
             var queryParameters = from field in _queryParameterFields
-                                  from value in GetValues(field, request)
-                                  select new KeyValuePair<string, string>(field.JsonName, value);
+                                  from value in field.GetValues(request)
+                                  select new KeyValuePair<string, string>(field.Name, value);
             return new TranscodingOutput(_httpMethod, path, queryParameters, body);
+        }
+    }
 
-            static IEnumerable<string> GetValues(FieldDescriptor field, IMessage request)
+    /// <summary>
+    /// A field that might be transcoded as a query parameter.
+    /// </summary>
+    private class QueryParameterField
+    {
+        private const uint UnsignedInt32Zero = 0;
+        private readonly bool _includeDefaultValues;
+        private readonly FieldDescriptor _field;
+
+        /// <summary>
+        /// A delegate which accepts the original request message, and returns the parent of _field,
+        /// or null if the field isn't present in the request.
+        /// </summary>
+        private readonly Func<IMessage, IMessage> _parentSelector;
+
+        // The name used for the query parameter
+        internal string Name { get; }
+
+        internal QueryParameterField()
+        {
+        }
+
+        public QueryParameterField(Func<IMessage, IMessage> parentSelector, string path, FieldDescriptor field)
+        {
+            _parentSelector = parentSelector;
+            Name = path;
+            _field = field;
+
+
+            var fieldBehavior = field.GetOptions()?.GetExtension(FieldBehaviorExtensions.FieldBehavior);
+            var hasFieldBehaviorRequiredAnnotation = fieldBehavior is not null && fieldBehavior.Contains(FieldBehavior.Required);
+            _includeDefaultValues = hasFieldBehaviorRequiredAnnotation || field.HasPresence;
+        }
+
+        internal IEnumerable<string> GetValues(IMessage request)
+        {
+            var parent = _parentSelector(request);
+            if (parent is null)
             {
-                if (field.HasPresence && !field.Accessor.HasValue(request))
-                {
-                    yield break;
-                }
+                yield break;
+            }
 
-                object value = field.Accessor.GetValue(request);
-                if (value is null)
-                {
-                    yield break;
-                }
+            if (_field.HasPresence && !_field.Accessor.HasValue(request))
+            {
+                yield break;
+            }
 
-                if (!IsRequired(field) && !field.HasPresence && IsDefaultValue(value))
-                {
-                    yield break;
-                }
+            object value = _field.Accessor.GetValue(parent);
+            if (value is null)
+            {
+                yield break;
+            }
 
-                if (field.IsRepeated && value is IList list)
-                {
-                    foreach (var item in list)
-                    {
-                        yield return FormatValue(item);
-                    }
-                }
-                else
-                {
-                    yield return FormatValue(value);
-                }
+            if (!_includeDefaultValues && IsDefaultValue(value))
+            {
+                yield break;
+            }
 
-                // TODO: Handle message fields (currently prohibited via TypesIneligibleForQueryStringEncoding, but theoretically valid)
-
-                static bool IsDefaultValue(object value)
+            if (_field.IsRepeated && value is IList list)
+            {
+                foreach (var item in list)
                 {
-                    return value is "" || value is 0.0f || value is 0.0d || value is 0 || value is 0L || value is 0UL || value is UnsignedInt32Zero;
-                }
-
-                static string FormatValue(object value) => value is IFormattable formattable
-                    ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
-                    : value.ToString();
-
-                static bool IsRequired(FieldDescriptor descriptor)
-                {
-                    // TODO: Avoid doing this on every request.
-                    var behavior = descriptor.GetOptions()?.GetExtension(FieldBehaviorExtensions.FieldBehavior);
-                    return behavior is not null && behavior.Contains(FieldBehavior.Required);
+                    yield return FormatValue(item);
                 }
             }
+            else
+            {
+                yield return FormatValue(value);
+            }
+
+            static bool IsDefaultValue(object value)
+            {
+                return value is "" || value is 0.0f || value is 0.0d || value is 0 || value is 0L || value is 0UL || value is UnsignedInt32Zero;
+            }
+
+            static string FormatValue(object value) => value is IFormattable formattable
+                ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
+                : value.ToString();
         }
     }
 }

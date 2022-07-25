@@ -91,10 +91,9 @@ internal sealed class HttpRulePathPattern
     /// <summary>
     /// Names of the fields of the top-level message that are bound by this pattern.
     /// </summary>
-    internal List<string> TopLevelFieldNames => _segments
+    internal IEnumerable<string> FieldPaths => _segments
         .OfType<FieldSegment>()
-        .Select(s => s.TopLevelFieldName)
-        .ToList();
+        .Select(s => s.JsonFieldPath);
 
     private interface IPathSegment
     {
@@ -120,9 +119,11 @@ internal sealed class HttpRulePathPattern
         private static readonly char[] s_fieldPathSeparator = { '.' };
 
         /// <summary>
-        /// The top-level field name, used to determine which fields should be populated as query parameters.
+        /// The field path, used to determine which fields should be populated as query parameters.
+        /// Each element of the field path is the JSON name of the field, as it would be used
+        /// in a query parameter.
         /// </summary>
-        internal string TopLevelFieldName { get; }
+        internal string JsonFieldPath { get; }
 
         private readonly Regex _validationRegex;
         private readonly Func<IMessage, string> _propertyAccessor;
@@ -141,14 +142,14 @@ internal sealed class HttpRulePathPattern
 
             // Split out the field path from the pattern it has to match (if any)
             string[] bits = fieldText.Split(s_fieldPathPatternSeparator, 2);
-            string path = bits[0];
+            string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
             _multiSegmentEscaping = pattern.Contains("/") || pattern.Contains("**");
             _validationRegex = ParsePattern(pattern);
 
-            string[] fieldNames = path.Split(s_fieldPathSeparator);
-            TopLevelFieldName = fieldNames[0];
+            string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
+            StringBuilder jsonFieldPathBuilder = new StringBuilder();
             Func<IMessage, IMessage> messageSelector = message => message;
             // Create a delegate to navigate down all the fields except the last. These must be singular message fields.
             // TODO: Refactor the lambda expressions that all invoke the previous selector. They're somewhat repetitive.
@@ -159,6 +160,8 @@ internal sealed class HttpRulePathPattern
                 {
                     throw new ArgumentException($"Field {fieldNames[i]} in message {descriptor.FullName} cannot be used as non-final field in a resource pattern");
                 }
+                AppendFieldNameToJsonFieldPath(field);
+
                 var previousSelector = messageSelector;
                 messageSelector = message =>
                 {
@@ -167,9 +170,11 @@ internal sealed class HttpRulePathPattern
                 };
                 descriptor = field.MessageType;
             }
+
             // Now handle the last field, which must be a singular integer or string field.
             var lastFieldName = fieldNames.Last();
             var lastField = GetField(descriptor, lastFieldName);
+            AppendFieldNameToJsonFieldPath(lastField);
             _propertyAccessor = lastField.FieldType switch
             {
                 FieldType.String =>
@@ -188,6 +193,16 @@ internal sealed class HttpRulePathPattern
                     },
                 _ => throw new ArgumentException($"Field {lastFieldName} in message {descriptor.FullName} cannot be used as a final field in a resource pattern")
             };
+            JsonFieldPath = jsonFieldPathBuilder.ToString();
+
+            void AppendFieldNameToJsonFieldPath(FieldDescriptor field)
+            {
+                if (jsonFieldPathBuilder.Length > 0)
+                {
+                    jsonFieldPathBuilder.Append(".");
+                }
+                jsonFieldPathBuilder.Append(field.JsonName);
+            }
 
             static FieldDescriptor GetField(MessageDescriptor descriptor, string name)
             {
