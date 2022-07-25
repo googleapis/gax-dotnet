@@ -48,7 +48,13 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "RwoGbmVzdGVkGAQgASgLMjcuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRl",
             "c3RzLlF1ZXJ5VGVzdE1lc3NhZ2UuTmVzdGVkEg8KB2luX3BhdGgYBSABKAka",
             "KQoGTmVzdGVkEgkKAXgYASABKAUSCQoBeRgCIAEoBRIJCgF6GAMgASgFQhoK",
-            "GF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlcmIGcHJvdG8z"));
+            "GF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlciKXAgobUmVxdWVzdFdpdGhSZWN1",
+            "cnNpdmVNZXNzYWdlElAKAXoYASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBj",
+            "LnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJlY3Vy",
+            "c2l2ZRI8CgZzaW1wbGUYAiABKAsyLC5nb29nbGUuYXBpLmdheC5ncnBjLnJl",
+            "c3QudGVzdHMuU2ltcGxlRmllbGRzGmgKCVJlY3Vyc2l2ZRJQCgF4GAEgASgL",
+            "MkUuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3RzLlJlcXVlc3RXaXRo",
+            "UmVjdXJzaXZlTWVzc2FnZS5SZWN1cnNpdmUSCQoBeRgCIAEoBWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -57,7 +63,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest), global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest.Parser, new[]{ "Method", "Uri", "Body" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath" }, new[]{ "Proto3OptionalInteger" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath" }, new[]{ "Proto3OptionalInteger" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Parser, new[]{ "Z", "Simple" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive.Parser, new[]{ "X", "Y" }, null, null, null, null)})
           }));
     }
     #endregion
@@ -2176,6 +2183,493 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
               }
               case 24: {
                 Z = input.ReadInt32();
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
+
+  }
+
+  public sealed partial class RequestWithRecursiveMessage : pb::IMessage<RequestWithRecursiveMessage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RequestWithRecursiveMessage> _parser = new pb::MessageParser<RequestWithRecursiveMessage>(() => new RequestWithRecursiveMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RequestWithRecursiveMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestWithRecursiveMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestWithRecursiveMessage(RequestWithRecursiveMessage other) : this() {
+      z_ = other.z_ != null ? other.z_.Clone() : null;
+      simple_ = other.simple_ != null ? other.simple_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestWithRecursiveMessage Clone() {
+      return new RequestWithRecursiveMessage(this);
+    }
+
+    /// <summary>Field number for the "z" field.</summary>
+    public const int ZFieldNumber = 1;
+    private global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive z_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive Z {
+      get { return z_; }
+      set {
+        z_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "simple" field.</summary>
+    public const int SimpleFieldNumber = 2;
+    private global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields simple_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields Simple {
+      get { return simple_; }
+      set {
+        simple_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as RequestWithRecursiveMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RequestWithRecursiveMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Z, other.Z)) return false;
+      if (!object.Equals(Simple, other.Simple)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (z_ != null) hash ^= Z.GetHashCode();
+      if (simple_ != null) hash ^= Simple.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (z_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Z);
+      }
+      if (simple_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Simple);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (z_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Z);
+      }
+      if (simple_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Simple);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (z_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Z);
+      }
+      if (simple_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Simple);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RequestWithRecursiveMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.z_ != null) {
+        if (z_ == null) {
+          Z = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+        }
+        Z.MergeFrom(other.Z);
+      }
+      if (other.simple_ != null) {
+        if (simple_ == null) {
+          Simple = new global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields();
+        }
+        Simple.MergeFrom(other.Simple);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (z_ == null) {
+              Z = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+            }
+            input.ReadMessage(Z);
+            break;
+          }
+          case 18: {
+            if (simple_ == null) {
+              Simple = new global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields();
+            }
+            input.ReadMessage(Simple);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (z_ == null) {
+              Z = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+            }
+            input.ReadMessage(Z);
+            break;
+          }
+          case 18: {
+            if (simple_ == null) {
+              Simple = new global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields();
+            }
+            input.ReadMessage(Simple);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the RequestWithRecursiveMessage message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      public sealed partial class Recursive : pb::IMessage<Recursive>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<Recursive> _parser = new pb::MessageParser<Recursive>(() => new Recursive());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<Recursive> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Recursive() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Recursive(Recursive other) : this() {
+          x_ = other.x_ != null ? other.x_.Clone() : null;
+          y_ = other.y_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Recursive Clone() {
+          return new Recursive(this);
+        }
+
+        /// <summary>Field number for the "x" field.</summary>
+        public const int XFieldNumber = 1;
+        private global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive x_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive X {
+          get { return x_; }
+          set {
+            x_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "y" field.</summary>
+        public const int YFieldNumber = 2;
+        private int y_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int Y {
+          get { return y_; }
+          set {
+            y_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as Recursive);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(Recursive other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(X, other.X)) return false;
+          if (Y != other.Y) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (x_ != null) hash ^= X.GetHashCode();
+          if (Y != 0) hash ^= Y.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (x_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(X);
+          }
+          if (Y != 0) {
+            output.WriteRawTag(16);
+            output.WriteInt32(Y);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (x_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(X);
+          }
+          if (Y != 0) {
+            output.WriteRawTag(16);
+            output.WriteInt32(Y);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (x_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(X);
+          }
+          if (Y != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(Recursive other) {
+          if (other == null) {
+            return;
+          }
+          if (other.x_ != null) {
+            if (x_ == null) {
+              X = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+            }
+            X.MergeFrom(other.X);
+          }
+          if (other.Y != 0) {
+            Y = other.Y;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (x_ == null) {
+                  X = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+                }
+                input.ReadMessage(X);
+                break;
+              }
+              case 16: {
+                Y = input.ReadInt32();
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                if (x_ == null) {
+                  X = new global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive();
+                }
+                input.ReadMessage(X);
+                break;
+              }
+              case 16: {
+                Y = input.ReadInt32();
                 break;
               }
             }
