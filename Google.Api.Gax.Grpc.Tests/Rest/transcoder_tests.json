@@ -64,6 +64,48 @@
     },
 
     {
+      "name": "SimpleNonMatchingRequest_SlashInSingleStarPatternField",
+      "details": "A rule expecting a match for the name field",
+      "inlineRule": {
+        "get": "/collections/{name=*}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "abc/def"
+      },
+      "nonmatchingRequest": "Name field contains a slash, for pattern of {name=*}"
+    },
+
+    {
+      "name": "SimpleNonMatchingRequest_SlashInImplicitSingleStarPatternField",
+      "details": "A rule which matches the name field, which contains a slash",
+      "inlineRule": {
+        "get": "/collections/{name}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "abc/def"
+      },
+      "nonmatchingRequest": "Name field contains a slash, for pattern of {name}"
+    },
+
+    {
+      "name": "SimpleMatchingRequest_SlashInExplicitDoubleStarPatternField",
+      "details": "A rule which matches the name field, which contains a slash",
+      "inlineRule": {
+        "get": "/collections/{name=**}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "abc/def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/collections/abc/def"
+      }
+    },
+
+    {
       "name": "SimpleMatchingRequest",
       "details": "A rule which matches the name field",
       "ruleName": "single-field",
@@ -414,6 +456,156 @@
       },
       "requestMessageName": "RequestWithRecursiveMessage",
       "invalid_rule": "Query parameters would recurse"
+    },
+
+    {
+      "name": "MissingBody",
+      "details": "When the field specified by the body is absent, there's no HTTP request body",
+      "inlineRule": {
+        "post": "/abc/{name}",
+        "body": "body"
+      },
+      "requestMessageName": "SeparateBodyRequest",
+      "request": {
+        "name": "xyz"
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/xyz"
+      }
+    },
+    {
+      "name": "EmptyBody",
+      "details": "When the field specified by the body is present but empty, the HTTP request body is just {}",
+      "inlineRule": {
+        "post": "/abc/{name}",
+        "body": "body"
+      },
+      "requestMessageName": "SeparateBodyRequest",
+      "request": {
+        "name": "xyz",
+        "body": {}
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/xyz",
+        "body": {}
+      }
+    },
+    {
+      "name": "ContentfulBody",
+      "details": "When the field specified by the body has content, that content is in the HTTP body",
+      "inlineRule": {
+        "post": "/abc/{name}",
+        "body": "body"
+      },
+      "requestMessageName": "SeparateBodyRequest",
+      "request": {
+        "name": "xyz",
+        "body": {
+          "x": 1
+        }
+      },
+      "success": {
+        "method": "POST",
+        "uri": "/abc/xyz",
+        "body": {
+          "x": 1
+        }
+      }
+    },
+
+    {
+      "name": "UriEncoding_ExcludedCharacters",
+      "details": "Characters that don't need escaping in a URI",
+      "inlineRule": {
+        "get": "/abc/{name}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "-_.~0123456789abcxyzABCXYZ"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/-_.~0123456789abcxyzABCXYZ"
+      }
+    },
+    {
+      "name": "UriEncoding_EncodedPunctuation",
+      "details": "Punctuation that needs escaping in a URI",
+      "inlineRule": {
+        "get": "/abc/{name}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "#!\"$%^&*()"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/-_.~0123456789abcxyzABCXYZ"
+      }
+    },
+    {
+      "name": "UriEncoding_EncodedLetters",
+      "details": "Non-ASCII letters need escaping in a URI",
+      "inlineRule": {
+        "get": "/abc/{name}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "café"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/caf%C3%A9"
+      }
+    },
+    {
+      "name": "UriEncoding_SlashInDoubleStarPattern",
+      "details": "A forward-slash in a pattern such as {field=**} is not escaped",
+      "inlineRule": {
+        "get": "/abc/{name=**}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "x/y"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/x/y"
+      }
+    },
+    {
+      "name": "UriEncoding_SlashInMixedStarPattern",
+      "details": "Forward slashes in a pattern of {field=*/**} is not escaped",
+      "inlineRule": {
+        "get": "/abc/{name=*/**}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "name": "x/y/z"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/x/y/z"
+      }
+    },    
+
+    {
+      "name": "ComplexMatchingMultipleFieldsAndWildcards",
+      "details": "Complex matching rule, mirroring an example in Firestore",
+      "inlineRule": {
+        "get": "/v1/{first=projects/*/databases/*/documents/*/**}/{second}"
+      },
+      "requestMessageName": "MultiNameRequest",
+      "request": {
+        "first": "projects/abc/databases/xyz/documents/123/456/789",
+        "second": "ghi"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/projects/abc/databases/xyz/documents/123/456/789/ghi"
+      }
     }
   ]
 }
