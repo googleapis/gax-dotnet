@@ -220,7 +220,7 @@ internal sealed class HttpRulePathPattern
 
             static Regex ParsePattern(string pattern)
             {
-                var builder = new StringBuilder();
+                var builder = new StringBuilder("^"); // We want to match the whole string
                 int currentIndex = 0;
                 while (currentIndex < pattern.Length)
                 {
@@ -231,7 +231,7 @@ internal sealed class HttpRulePathPattern
                     }
                     builder.Append(Regex.Escape(pattern.Substring(currentIndex, starStart - currentIndex)));
                     int starEnd = starStart + 1;
-                    while (starEnd < pattern.Length && pattern[starStart] == '*')
+                    while (starEnd < pattern.Length && pattern[starEnd] == '*')
                     {
                         starEnd++;
                     }
@@ -249,6 +249,7 @@ internal sealed class HttpRulePathPattern
                     }
                     currentIndex = starEnd;
                 }
+                builder.Append("$"); // We want to match the whole string
                 return new Regex(builder.ToString(), RegexOptions.Compiled);
             }
         }

@@ -78,9 +78,8 @@ internal sealed partial class HttpRuleTranscoder
             {
                 "*" => (true, null, new Func<IMessage, string>(protoRequest => protoRequest.ToString())),
                 "" => (false, null, new Func<IMessage, string>(protoRequest => null)),
-                // TODO: If a field is specified, but then isn't present in the request, should the request
-                // fail or should it just have no body?
-                string name when requestMessage.FindFieldByName(name) is FieldDescriptor field => (false, field.JsonName, new Func<IMessage, string>(protoRequest => field.Accessor.GetValue(protoRequest).ToString())),
+                // TODO: If a field is specified, but it's not a message field, should we fail at this point?
+                string name when requestMessage.FindFieldByName(name) is FieldDescriptor field => (false, field.JsonName, CreateMessageFormatter(field.Accessor)),
                 _ => throw new ArgumentException($"Method {methodName} has a body parameter {rule.Body} in the 'google.api.http' annotation which is not a field in {requestMessage.Name}")
             };
 
@@ -97,6 +96,20 @@ internal sealed partial class HttpRuleTranscoder
                     .OrderBy(field => field.Name, StringComparer.Ordinal)
                     .ToList();
             }
+
+            Func<IMessage, string> CreateMessageFormatter(IFieldAccessor accessor) => protoRequest =>
+            {
+                if (protoRequest is null)
+                {
+                    return null;
+                }
+                var value = accessor.GetValue(protoRequest);
+                if (value is not IMessage messageToFormat)
+                {
+                    return null;
+                }
+                return JsonFormatter.Default.Format(messageToFormat);
+            };
         }
 
         private static IEnumerable<QueryParameterField> GetQueryParameterFields(MessageDescriptor requestDescriptor, HashSet<string> excludedPaths)

@@ -107,3 +107,17 @@ message RequestWithRecursiveMessage {
   Recursive z = 1;
   SimpleFields simple = 2;
 }
+
+message SeparateBodyRequest {
+    message Body {
+        int32 x = 1;
+    }
+
+    Body body = 1;
+    string name = 2;
+}
+
+message MultiNameRequest {
+    string first = 1;
+    string second = 2;
+}

@@ -23,6 +23,7 @@ public class HttpRuleTranscoderTest
 {
     private static readonly List<string> SkippedTranscodingTests = new()
     {
+        "UriEncoding_EncodedPunctuation", // We percent-encode more than is strictly necessary.
     };
 
     private static TestFile s_testFile = LoadTestFile();
@@ -68,6 +69,7 @@ public class HttpRuleTranscoderTest
                 Assert.NotNull(request);
                 var actualResult = CreateTranscoder().Transcode(request);
                 var expectedResult = test.Success;
+                Assert.NotNull(actualResult);
                 Assert.Equal(expectedResult.Method, actualResult.Method.Method);
                 Assert.Equal(expectedResult.Uri, actualResult.GetRelativeUri());
                 var actualBody = actualResult.Body is null ? null : Struct.Parser.ParseJson(actualResult.Body);
