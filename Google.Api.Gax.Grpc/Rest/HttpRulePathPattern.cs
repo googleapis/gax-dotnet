@@ -126,8 +126,8 @@ internal sealed class HttpRulePathPattern
         internal string JsonFieldPath { get; }
 
         private readonly Regex _validationRegex;
+        private readonly Func<Match, string> _formatter;
         private readonly Func<IMessage, string> _propertyAccessor;
-        private readonly bool _multiSegmentEscaping;
 
         /// <summary>
         /// Creates a segment representing the given field text, with respect to
@@ -144,8 +144,7 @@ internal sealed class HttpRulePathPattern
             string[] bits = fieldText.Split(s_fieldPathPatternSeparator, 2);
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
-            _multiSegmentEscaping = pattern.Contains("/") || pattern.Contains("**");
-            _validationRegex = ParsePattern(pattern);
+            (_validationRegex, _formatter) = ParsePattern(pattern);
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
@@ -218,31 +217,48 @@ internal sealed class HttpRulePathPattern
                 return field;
             }
 
-            static Regex ParsePattern(string pattern)
+            static (Regex, Func<Match, string>) ParsePattern(string pattern)
             {
                 var builder = new StringBuilder("^"); // We want to match the whole string
+                Action<Match, StringBuilder> formatBuilder = null;
                 int currentIndex = 0;
+                int groupIndex = 1;
                 while (currentIndex < pattern.Length)
                 {
                     int starStart = pattern.IndexOf('*', currentIndex);
+                    // Handle the literal between the previous star (if any) and the start of the next one.
+                    // If starStart==-1, this is any trailing literal at the end of the pattern.
+                    string literal = pattern.Substring(currentIndex, (starStart == -1 ? pattern.Length : starStart) - currentIndex);
+                    if (literal != "")
+                    {
+                        builder.Append(Regex.Escape(literal));
+                        formatBuilder += (match, sb) => sb.Append(literal);
+                    }
                     if (starStart < 0)
                     {
                         break;
                     }
-                    builder.Append(Regex.Escape(pattern.Substring(currentIndex, starStart - currentIndex)));
+
                     int starEnd = starStart + 1;
                     while (starEnd < pattern.Length && pattern[starEnd] == '*')
                     {
                         starEnd++;
                     }
                     int starCount = starEnd - starStart;
+                    // Deliberately local to have a different variable per iteration, as it's captured in the lambda expression.
+                    int matchGroupIndex = groupIndex;
+                    groupIndex++;
+                    // We match any characters within the regex, regardless of number of stars. It just affects
+                    // how the value is escaped. This uses a reluctant matcher, which means x/*/** (which is more likely
+                    // than x/**/*) will match x/a/b/c as "*=a" and then "**=b/c" which is probably the best result.
+                    builder.Append("(.+?)");
                     switch (starCount)
                     {
                         case 1:
-                            builder.Append("[^/]+");
+                            formatBuilder += (match, sb) => sb.Append(Uri.EscapeDataString(match.Groups[matchGroupIndex].Value));
                             break;
                         case 2:
-                            builder.Append(".+");
+                            formatBuilder += (match, sb) => sb.Append(string.Join("/", match.Groups[matchGroupIndex].Value.Split('/').Select(segment => Uri.EscapeDataString(segment))));
                             break;
                         default:
                             throw new ArgumentException($"Resource pattern '{pattern}' is invalid");
@@ -250,21 +266,29 @@ internal sealed class HttpRulePathPattern
                     currentIndex = starEnd;
                 }
                 builder.Append("$"); // We want to match the whole string
-                return new Regex(builder.ToString(), RegexOptions.Compiled);
+                Func<Match, string> formatter = match =>
+                {
+                    var sb = new StringBuilder("");
+                    formatBuilder(match, sb);
+                    return sb.ToString();
+                };
+                return (new Regex(builder.ToString(), RegexOptions.Compiled), formatter);
             }
         }
 
         public string TryFormat(IMessage request)
         {
             string result = _propertyAccessor(request);
-            if (result is null || _validationRegex?.IsMatch(result) == false)
+            if (result is null)
             {
                 return null;
             }
-            string escaped = _multiSegmentEscaping
-                ? string.Join("/", result.Split('/').Select(segment => Uri.EscapeDataString(segment)))
-                : Uri.EscapeDataString(result);
-            return escaped;
+            Match match = _validationRegex.Match(result);
+            if (!match.Success)
+            {
+                return null;
+            }
+            return _formatter(match);
         }
     }
 
