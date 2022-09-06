@@ -182,7 +182,7 @@ internal sealed class HttpRulePathPattern
             _propertyAccessor = message =>
             {
                 var parent = messageSelector(message);
-                return parent is null ? null : HttpRuleTranscoder.FormatPathOrQueryValue(lastField.Accessor.GetValue(parent));
+                return parent is null ? null : ProtobufUtilities.FormatValueAsJsonPrimitive(lastField.Accessor.GetValue(parent));
             };
             JsonFieldPath = jsonFieldPathBuilder.ToString();
 

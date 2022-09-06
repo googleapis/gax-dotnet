@@ -9,12 +9,9 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 
 namespace Google.Api.Gax.Grpc.Rest;
 
@@ -192,7 +189,6 @@ internal sealed partial class HttpRuleTranscoder
     /// </summary>
     private class QueryParameterField
     {
-        private const uint UnsignedInt32Zero = 0;
         private readonly bool _includeDefaultValues;
         private readonly FieldDescriptor _field;
 
@@ -240,7 +236,7 @@ internal sealed partial class HttpRuleTranscoder
                 yield break;
             }
 
-            if (!_includeDefaultValues && IsDefaultValue(value))
+            if (!_includeDefaultValues && ProtobufUtilities.IsDefaultValue(value))
             {
                 yield break;
             }
@@ -249,65 +245,13 @@ internal sealed partial class HttpRuleTranscoder
             {
                 foreach (var item in list)
                 {
-                    yield return FormatPathOrQueryValue(item);
+                    yield return ProtobufUtilities.FormatValueAsJsonPrimitive(item);
                 }
             }
             else
             {
-                yield return FormatPathOrQueryValue(value);
+                yield return ProtobufUtilities.FormatValueAsJsonPrimitive(value);
             }
-
-            static bool IsDefaultValue(object value) =>
-                // (Comments are the protobuf language keywords)
-                // string
-                value is "" ||
-                // bool
-                value is false ||
-                // double, float
-                value is 0.0f || value is 0.0d ||
-                // int32, sint32, sfixed32, int64, sint64, sfixed64
-                value is 0 || value is 0L ||
-                // uint32, fixed32, uint64, fixed64
-                value is UnsignedInt32Zero || value is 0UL ||
-                // bytes
-                (value is ByteString bs && bs.IsEmpty) ||
-                // Any enum (all protobuf enums have an underlying type of Int32)
-                (value is Enum enumValue && Convert.ToInt32(enumValue) == 0);
         }
-    }
-
-    internal static string FormatPathOrQueryValue(object value) =>
-        value is bool b ? (b ? "true" : "false")
-        : value is Enum enumValue ? OriginalEnumValueHelper.GetOriginalName(enumValue)
-        : value is IFormattable formattable ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
-        : value.ToString();
-
-    // Effectively a cache of mapping from enum values to the original name as specified in the proto file,
-    // fetched by reflection. This code is taken from the protobuf JsonFormatter.
-    private static class OriginalEnumValueHelper
-    {
-        private static readonly ConcurrentDictionary<System.Type, Dictionary<object, string>> _dictionaries
-            = new ConcurrentDictionary<System.Type, Dictionary<object, string>>();
-
-        internal static string GetOriginalName(object value)
-        {
-            var enumType = value.GetType();
-            Dictionary<object, string> nameMapping = _dictionaries.GetOrAdd(enumType, type => GetNameMapping(type));
-
-            // If this returns false, originalName will be null, which is what we want.
-            nameMapping.TryGetValue(value, out string originalName);
-            return originalName;
-        }
-
-        private static Dictionary<object, string> GetNameMapping(System.Type enumType) =>
-            enumType.GetTypeInfo().DeclaredFields
-                .Where(f => f.IsStatic)
-                .Where(f => f.GetCustomAttributes<OriginalNameAttribute>()
-                             .FirstOrDefault()?.PreferredAlias ?? true)
-                .ToDictionary(f => f.GetValue(null),
-                              f => f.GetCustomAttributes<OriginalNameAttribute>()
-                                    .FirstOrDefault()
-                                    // If the attribute hasn't been applied, fall back to the name of the field.
-                                    ?.Name ?? f.Name);
     }
 }
