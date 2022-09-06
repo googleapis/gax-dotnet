@@ -95,6 +95,12 @@ message QueryTestMessage {
     optional int32 opt = 4;
   }
 
+  enum SampleEnum {
+    SAMPLE_ENUM_UNSPECIFIED = 0;
+    FIRST_VALUE = 1;
+    SECOND_VALUE = 2;
+  }
+
   // A required field should be present even if the value is the default.
   int32 required_integer = 1 [(google.api.field_behavior) = REQUIRED];
   // proto3 optional fields should be present if the value was explicitly specified.
@@ -102,6 +108,7 @@ message QueryTestMessage {
   repeated string repeated_string = 3;
   Nested nested = 4;
   string in_path = 5;
+  SampleEnum enum_field = 6;
 }
 
 message RequestWithRecursiveMessage {

@@ -300,11 +300,27 @@
           "x": 10,
           "z": 30
         },
-        "in_path": "def"
+        "inPath": "def"
       },
       "success": {
         "method": "GET",
         "uri": "/abc/def?nested.x=10&nested.z=30&requiredInteger=0"
+      }
+    },
+    {
+      "name": "ComplexQuery_Enum",
+      "details": "Enum values are represented with their original names",
+      "inlineRule": {
+        "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "enumField": "FIRST_VALUE",
+        "inPath": "def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?enumField=FIRST_VALUE&requiredInteger=0"
       }
     },
     {
