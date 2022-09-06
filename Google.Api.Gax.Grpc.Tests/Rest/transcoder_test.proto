@@ -92,6 +92,7 @@ message QueryTestMessage {
     int32 x = 1;
     int32 y = 2;
     int32 z = 3;
+    optional int32 opt = 4;
   }
 
   // A required field should be present even if the value is the default.

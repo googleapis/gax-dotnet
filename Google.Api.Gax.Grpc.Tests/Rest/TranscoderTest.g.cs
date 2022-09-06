@@ -43,23 +43,24 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "aRgCIAEoCRIlCgRib2R5GAMgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVj",
             "dCIOCgxFbXB0eVJlcXVlc3QiLQoMU2ltcGxlRmllbGRzEgwKBG5hbWUYASAB",
             "KAkSDwoHaW50ZWdlchgCIAEoBSIsChRSZXF1aXJlZEJvb2xlYW5GaWVsZBIU",
-            "Cgdib29sZWFuGAEgASgIQgPgQQIikQIKEFF1ZXJ5VGVzdE1lc3NhZ2USHQoQ",
+            "Cgdib29sZWFuGAEgASgIQgPgQQIiqwIKEFF1ZXJ5VGVzdE1lc3NhZ2USHQoQ",
             "cmVxdWlyZWRfaW50ZWdlchgBIAEoBUID4EECEiQKF3Byb3RvM19vcHRpb25h",
             "bF9pbnRlZ2VyGAIgASgFSACIAQESFwoPcmVwZWF0ZWRfc3RyaW5nGAMgAygJ",
             "EkcKBm5lc3RlZBgEIAEoCzI3Lmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50",
             "ZXN0cy5RdWVyeVRlc3RNZXNzYWdlLk5lc3RlZBIPCgdpbl9wYXRoGAUgASgJ",
-            "GikKBk5lc3RlZBIJCgF4GAEgASgFEgkKAXkYAiABKAUSCQoBehgDIAEoBUIa",
-            "ChhfcHJvdG8zX29wdGlvbmFsX2ludGVnZXIilwIKG1JlcXVlc3RXaXRoUmVj",
-            "dXJzaXZlTWVzc2FnZRJQCgF6GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXguZ3Jw",
-            "Yy5yZXN0LnRlc3RzLlJlcXVlc3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5SZWN1",
-            "cnNpdmUSPAoGc2ltcGxlGAIgASgLMiwuZ29vZ2xlLmFwaS5nYXguZ3JwYy5y",
-            "ZXN0LnRlc3RzLlNpbXBsZUZpZWxkcxpoCglSZWN1cnNpdmUSUAoBeBgBIAEo",
-            "CzJFLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5SZXF1ZXN0V2l0",
-            "aFJlY3Vyc2l2ZU1lc3NhZ2UuUmVjdXJzaXZlEgkKAXkYAiABKAUifgoTU2Vw",
-            "YXJhdGVCb2R5UmVxdWVzdBJGCgRib2R5GAEgASgLMjguZ29vZ2xlLmFwaS5n",
-            "YXguZ3JwYy5yZXN0LnRlc3RzLlNlcGFyYXRlQm9keVJlcXVlc3QuQm9keRIM",
-            "CgRuYW1lGAIgASgJGhEKBEJvZHkSCQoBeBgBIAEoBSIxChBNdWx0aU5hbWVS",
-            "ZXF1ZXN0Eg0KBWZpcnN0GAEgASgJEg4KBnNlY29uZBgCIAEoCWIGcHJvdG8z"));
+            "GkMKBk5lc3RlZBIJCgF4GAEgASgFEgkKAXkYAiABKAUSCQoBehgDIAEoBRIQ",
+            "CgNvcHQYBCABKAVIAIgBAUIGCgRfb3B0QhoKGF9wcm90bzNfb3B0aW9uYWxf",
+            "aW50ZWdlciKXAgobUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlElAKAXoY",
+            "ASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuUmVxdWVz",
+            "dFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJlY3Vyc2l2ZRI8CgZzaW1wbGUYAiAB",
+            "KAsyLC5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuU2ltcGxlRmll",
+            "bGRzGmgKCVJlY3Vyc2l2ZRJQCgF4GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXgu",
+            "Z3JwYy5yZXN0LnRlc3RzLlJlcXVlc3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5S",
+            "ZWN1cnNpdmUSCQoBeRgCIAEoBSJ+ChNTZXBhcmF0ZUJvZHlSZXF1ZXN0EkYK",
+            "BGJvZHkYASABKAsyOC5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMu",
+            "U2VwYXJhdGVCb2R5UmVxdWVzdC5Cb2R5EgwKBG5hbWUYAiABKAkaEQoEQm9k",
+            "eRIJCgF4GAEgASgFIjEKEE11bHRpTmFtZVJlcXVlc3QSDQoFZmlyc3QYASAB",
+            "KAkSDgoGc2Vjb25kGAIgASgJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -69,7 +70,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField), global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField.Parser, new[]{ "Boolean" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath" }, new[]{ "Proto3OptionalInteger" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath" }, new[]{ "Proto3OptionalInteger" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z", "Opt" }, new[]{ "Opt" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Parser, new[]{ "Z", "Simple" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive.Parser, new[]{ "X", "Y" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Parser, new[]{ "Body", "Name" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body.Parser, new[]{ "X" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.MultiNameRequest), global::Google.Api.Gax.Grpc.Rest.Tests.MultiNameRequest.Parser, new[]{ "First", "Second" }, null, null, null, null)
@@ -2136,6 +2137,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       {
         private static readonly pb::MessageParser<Nested> _parser = new pb::MessageParser<Nested>(() => new Nested());
         private pb::UnknownFieldSet _unknownFields;
+        private int _hasBits0;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public static pb::MessageParser<Nested> Parser { get { return _parser; } }
@@ -2163,9 +2165,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public Nested(Nested other) : this() {
+          _hasBits0 = other._hasBits0;
           x_ = other.x_;
           y_ = other.y_;
           z_ = other.z_;
+          opt_ = other.opt_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -2211,6 +2215,31 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           }
         }
 
+        /// <summary>Field number for the "opt" field.</summary>
+        public const int OptFieldNumber = 4;
+        private int opt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int Opt {
+          get { if ((_hasBits0 & 1) != 0) { return opt_; } else { return 0; } }
+          set {
+            _hasBits0 |= 1;
+            opt_ = value;
+          }
+        }
+        /// <summary>Gets whether the "opt" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool HasOpt {
+          get { return (_hasBits0 & 1) != 0; }
+        }
+        /// <summary>Clears the value of the "opt" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void ClearOpt() {
+          _hasBits0 &= ~1;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
@@ -2229,6 +2258,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           if (X != other.X) return false;
           if (Y != other.Y) return false;
           if (Z != other.Z) return false;
+          if (Opt != other.Opt) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -2239,6 +2269,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           if (X != 0) hash ^= X.GetHashCode();
           if (Y != 0) hash ^= Y.GetHashCode();
           if (Z != 0) hash ^= Z.GetHashCode();
+          if (HasOpt) hash ^= Opt.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -2269,6 +2300,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             output.WriteRawTag(24);
             output.WriteInt32(Z);
           }
+          if (HasOpt) {
+            output.WriteRawTag(32);
+            output.WriteInt32(Opt);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2291,6 +2326,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             output.WriteRawTag(24);
             output.WriteInt32(Z);
           }
+          if (HasOpt) {
+            output.WriteRawTag(32);
+            output.WriteInt32(Opt);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -2309,6 +2348,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           }
           if (Z != 0) {
             size += 1 + pb::CodedOutputStream.ComputeInt32Size(Z);
+          }
+          if (HasOpt) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(Opt);
           }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -2330,6 +2372,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           }
           if (other.Z != 0) {
             Z = other.Z;
+          }
+          if (other.HasOpt) {
+            Opt = other.Opt;
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -2358,6 +2403,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
                 Z = input.ReadInt32();
                 break;
               }
+              case 32: {
+                Opt = input.ReadInt32();
+                break;
+              }
             }
           }
         #endif
@@ -2383,6 +2432,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
               }
               case 24: {
                 Z = input.ReadInt32();
+                break;
+              }
+              case 32: {
+                Opt = input.ReadInt32();
                 break;
               }
             }
