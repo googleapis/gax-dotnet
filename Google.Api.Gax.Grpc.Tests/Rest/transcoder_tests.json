@@ -696,6 +696,36 @@
         "method": "GET",
         "uri": "/v1/3"
       }
+    },
+
+    {
+      "name": "BooleanFieldInTemplate_TrueValue",
+      "details": "A Boolean field should match in a template and produce 'true'",
+      "inlineRule": {
+        "get": "/v1/{boolean}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "boolean": true
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/true"
+      }
+    },
+    {
+      "name": "BooleanFieldInTemplate_FalseValue",
+      "details": "A Boolean field should match in a template and produce 'false'",
+      "inlineRule": {
+        "get": "/v1/{boolean}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/false"
+      }
     }
   ]
 }

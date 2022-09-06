@@ -80,6 +80,7 @@ message EmptyRequest {
 message SimpleFields {
   string name = 1;
   int32 integer = 2;
+  bool boolean = 3;
 }
 
 message RequiredBooleanField {
