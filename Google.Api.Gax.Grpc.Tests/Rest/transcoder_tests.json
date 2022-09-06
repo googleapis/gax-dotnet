@@ -92,7 +92,7 @@
       "success": {
         "method": "GET",
         "uri": "/collections/abc%2Fdef"
-      }      
+      }
     },
 
     {
@@ -611,7 +611,7 @@
         "method": "GET",
         "uri": "/abc/x/y/z"
       }
-    },    
+    },
 
     {
       "name": "ComplexMatchingMultipleFieldsAndWildcards",
@@ -657,6 +657,44 @@
       "success": {
         "method": "GET",
         "uri": "/v1/bool?boolean=true"
+      }
+    },
+    {
+      "name": "DoubleNestingInQueryParameters",
+      "details": "Request with a doubly-nested query parameter",
+      "inlineRule": {
+        "get": "/v1/nested"
+      },
+      "requestMessageName": "DoubleNestingTestMessage",
+      "request": {
+        "x": {
+          "y": {
+            "z": 3
+          }
+        }
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/nested?x.y.z=3"
+      }
+    },
+    {
+      "name": "DoubleNestingInUriSegment",
+      "details": "Request with a doubly-nested field name in a URI",
+      "inlineRule": {
+        "get": "/v1/{x.y.z}"
+      },
+      "requestMessageName": "DoubleNestingTestMessage",
+      "request": {
+        "x": {
+          "y": {
+            "z": 3
+          }
+        }
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/3"
       }
     }
   ]

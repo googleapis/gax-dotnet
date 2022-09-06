@@ -53,18 +53,23 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "ZBIJCgF4GAEgASgFEgkKAXkYAiABKAUSCQoBehgDIAEoBRIQCgNvcHQYBCAB",
             "KAVIAIgBAUIGCgRfb3B0IkwKClNhbXBsZUVudW0SGwoXU0FNUExFX0VOVU1f",
             "VU5TUEVDSUZJRUQQABIPCgtGSVJTVF9WQUxVRRABEhAKDFNFQ09ORF9WQUxV",
-            "RRACQhoKGF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlciKXAgobUmVxdWVzdFdp",
-            "dGhSZWN1cnNpdmVNZXNzYWdlElAKAXoYASABKAsyRS5nb29nbGUuYXBpLmdh",
-            "eC5ncnBjLnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdl",
-            "LlJlY3Vyc2l2ZRI8CgZzaW1wbGUYAiABKAsyLC5nb29nbGUuYXBpLmdheC5n",
-            "cnBjLnJlc3QudGVzdHMuU2ltcGxlRmllbGRzGmgKCVJlY3Vyc2l2ZRJQCgF4",
-            "GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3RzLlJlcXVl",
-            "c3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5SZWN1cnNpdmUSCQoBeRgCIAEoBSJ+",
-            "ChNTZXBhcmF0ZUJvZHlSZXF1ZXN0EkYKBGJvZHkYASABKAsyOC5nb29nbGUu",
-            "YXBpLmdheC5ncnBjLnJlc3QudGVzdHMuU2VwYXJhdGVCb2R5UmVxdWVzdC5C",
-            "b2R5EgwKBG5hbWUYAiABKAkaEQoEQm9keRIJCgF4GAEgASgFIjEKEE11bHRp",
-            "TmFtZVJlcXVlc3QSDQoFZmlyc3QYASABKAkSDgoGc2Vjb25kGAIgASgJYgZw",
-            "cm90bzM="));
+            "RRACQhoKGF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlciLdAQoYRG91YmxlTmVz",
+            "dGluZ1Rlc3RNZXNzYWdlEkoKAXgYASABKAsyPy5nb29nbGUuYXBpLmdheC5n",
+            "cnBjLnJlc3QudGVzdHMuRG91YmxlTmVzdGluZ1Rlc3RNZXNzYWdlLk5lc3Rl",
+            "ZBoZCgxEb3VibGVOZXN0ZWQSCQoBehgBIAEoBRpaCgZOZXN0ZWQSUAoBeRgB",
+            "IAEoCzJFLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5Eb3VibGVO",
+            "ZXN0aW5nVGVzdE1lc3NhZ2UuRG91YmxlTmVzdGVkIpcCChtSZXF1ZXN0V2l0",
+            "aFJlY3Vyc2l2ZU1lc3NhZ2USUAoBehgBIAEoCzJFLmdvb2dsZS5hcGkuZ2F4",
+            "LmdycGMucmVzdC50ZXN0cy5SZXF1ZXN0V2l0aFJlY3Vyc2l2ZU1lc3NhZ2Uu",
+            "UmVjdXJzaXZlEjwKBnNpbXBsZRgCIAEoCzIsLmdvb2dsZS5hcGkuZ2F4Lmdy",
+            "cGMucmVzdC50ZXN0cy5TaW1wbGVGaWVsZHMaaAoJUmVjdXJzaXZlElAKAXgY",
+            "ASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuUmVxdWVz",
+            "dFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJlY3Vyc2l2ZRIJCgF5GAIgASgFIn4K",
+            "E1NlcGFyYXRlQm9keVJlcXVlc3QSRgoEYm9keRgBIAEoCzI4Lmdvb2dsZS5h",
+            "cGkuZ2F4LmdycGMucmVzdC50ZXN0cy5TZXBhcmF0ZUJvZHlSZXF1ZXN0LkJv",
+            "ZHkSDAoEbmFtZRgCIAEoCRoRCgRCb2R5EgkKAXgYASABKAUiMQoQTXVsdGlO",
+            "YW1lUmVxdWVzdBINCgVmaXJzdBgBIAEoCRIOCgZzZWNvbmQYAiABKAliBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -75,6 +80,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField), global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField.Parser, new[]{ "Boolean" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath", "EnumField" }, new[]{ "Proto3OptionalInteger" }, new[]{ typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.SampleEnum) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z", "Opt" }, new[]{ "Opt" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Parser, new[]{ "X" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested), global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested.Parser, new[]{ "Z" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested.Parser, new[]{ "Y" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Parser, new[]{ "Z", "Simple" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive.Parser, new[]{ "X", "Y" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Parser, new[]{ "Body", "Name" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body.Parser, new[]{ "X" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.MultiNameRequest), global::Google.Api.Gax.Grpc.Rest.Tests.MultiNameRequest.Parser, new[]{ "First", "Second" }, null, null, null, null)
@@ -2497,6 +2504,599 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  public sealed partial class DoubleNestingTestMessage : pb::IMessage<DoubleNestingTestMessage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DoubleNestingTestMessage> _parser = new pb::MessageParser<DoubleNestingTestMessage>(() => new DoubleNestingTestMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DoubleNestingTestMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DoubleNestingTestMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DoubleNestingTestMessage(DoubleNestingTestMessage other) : this() {
+      x_ = other.x_ != null ? other.x_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DoubleNestingTestMessage Clone() {
+      return new DoubleNestingTestMessage(this);
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 1;
+    private global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DoubleNestingTestMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DoubleNestingTestMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(X, other.X)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (x_ != null) hash ^= X.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (x_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(X);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (x_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(X);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (x_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(X);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DoubleNestingTestMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.x_ != null) {
+        if (x_ == null) {
+          X = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested();
+        }
+        X.MergeFrom(other.X);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (x_ == null) {
+              X = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested();
+            }
+            input.ReadMessage(X);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (x_ == null) {
+              X = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.Nested();
+            }
+            input.ReadMessage(X);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the DoubleNestingTestMessage message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      public sealed partial class DoubleNested : pb::IMessage<DoubleNested>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<DoubleNested> _parser = new pb::MessageParser<DoubleNested>(() => new DoubleNested());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<DoubleNested> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public DoubleNested() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public DoubleNested(DoubleNested other) : this() {
+          z_ = other.z_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public DoubleNested Clone() {
+          return new DoubleNested(this);
+        }
+
+        /// <summary>Field number for the "z" field.</summary>
+        public const int ZFieldNumber = 1;
+        private int z_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int Z {
+          get { return z_; }
+          set {
+            z_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as DoubleNested);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(DoubleNested other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Z != other.Z) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (Z != 0) hash ^= Z.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (Z != 0) {
+            output.WriteRawTag(8);
+            output.WriteInt32(Z);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Z != 0) {
+            output.WriteRawTag(8);
+            output.WriteInt32(Z);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (Z != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(Z);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(DoubleNested other) {
+          if (other == null) {
+            return;
+          }
+          if (other.Z != 0) {
+            Z = other.Z;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                Z = input.ReadInt32();
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                Z = input.ReadInt32();
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+      public sealed partial class Nested : pb::IMessage<Nested>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<Nested> _parser = new pb::MessageParser<Nested>(() => new Nested());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<Nested> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Descriptor.NestedTypes[1]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Nested() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Nested(Nested other) : this() {
+          y_ = other.y_ != null ? other.y_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public Nested Clone() {
+          return new Nested(this);
+        }
+
+        /// <summary>Field number for the "y" field.</summary>
+        public const int YFieldNumber = 1;
+        private global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested y_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested Y {
+          get { return y_; }
+          set {
+            y_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as Nested);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(Nested other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(Y, other.Y)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (y_ != null) hash ^= Y.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (y_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(Y);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (y_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(Y);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (y_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Y);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(Nested other) {
+          if (other == null) {
+            return;
+          }
+          if (other.y_ != null) {
+            if (y_ == null) {
+              Y = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested();
+            }
+            Y.MergeFrom(other.Y);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (y_ == null) {
+                  Y = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested();
+                }
+                input.ReadMessage(Y);
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                if (y_ == null) {
+                  Y = new global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested();
+                }
+                input.ReadMessage(Y);
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
+
+  }
+
   public sealed partial class RequestWithRecursiveMessage : pb::IMessage<RequestWithRecursiveMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2511,7 +3111,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2998,7 +3598,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3430,7 +4030,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[9]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
