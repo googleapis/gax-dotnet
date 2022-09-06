@@ -44,7 +44,7 @@ internal class RestMethod
     /// <returns>A representation of the method that can be used to handle HTTP requests/responses.</returns>
     internal static RestMethod Create(ApiMetadata apiMetadata, MethodDescriptor method, JsonParser parser)
     {
-        var rule = method.GetOptions().GetExtension(AnnotationsExtensions.Http);
+        var rule = method.GetOptions()?.GetExtension(AnnotationsExtensions.Http);
         if (rule is null)
         {
             throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
