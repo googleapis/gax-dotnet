@@ -170,27 +170,19 @@ internal sealed class HttpRulePathPattern
                 descriptor = field.MessageType;
             }
 
-            // Now handle the last field, which must be a singular integer or string field.
+            // Now handle the last field, which must be a singular scalar field.
+            // (It's extremely unusual for it to be anything other than a string field, but it's easy enough to handle.)
             var lastFieldName = fieldNames.Last();
             var lastField = GetField(descriptor, lastFieldName);
-            AppendFieldNameToJsonFieldPath(lastField);
-            _propertyAccessor = lastField.FieldType switch
+            if (lastField.IsRepeated || lastField.FieldType == FieldType.Message)
             {
-                FieldType.String =>
-                    message =>
-                    {
-                        var parent = messageSelector(message);
-                        return parent is null ? null : (string) lastField.Accessor.GetValue(parent);
-                    },
-                FieldType.Int32 or FieldType.SInt32 or FieldType.UInt32 or FieldType.Fixed32 or
-                FieldType.Int64 or FieldType.SInt64 or FieldType.UInt64 or FieldType.Fixed64 =>
-                    message =>
-                    {
-                        var parent = messageSelector(message);
-                        var value = parent is null ? null : ((IFormattable) lastField.Accessor.GetValue(parent));
-                        return value?.ToString(format: null, CultureInfo.InvariantCulture);
-                    },
-                _ => throw new ArgumentException($"Field {lastFieldName} in message {descriptor.FullName} cannot be used as a final field in a resource pattern")
+                throw new ArgumentException($"Field {lastFieldName} in message {descriptor.FullName} cannot be used as a final field in a resource pattern");
+            }
+            AppendFieldNameToJsonFieldPath(lastField);
+            _propertyAccessor = message =>
+            {
+                var parent = messageSelector(message);
+                return parent is null ? null : HttpRuleTranscoder.FormatPathOrQueryValue(lastField.Accessor.GetValue(parent));
             };
             JsonFieldPath = jsonFieldPathBuilder.ToString();
 
