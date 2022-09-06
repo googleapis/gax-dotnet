@@ -227,7 +227,7 @@ internal sealed partial class HttpRuleTranscoder
                 yield break;
             }
 
-            if (_field.HasPresence && !_field.Accessor.HasValue(request))
+            if (_field.HasPresence && !_field.Accessor.HasValue(parent))
             {
                 yield break;
             }
