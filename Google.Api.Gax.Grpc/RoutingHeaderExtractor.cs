@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Google.Api.Gax.Grpc
@@ -58,6 +57,16 @@ namespace Google.Api.Gax.Grpc
                 .Select(group => new SingleParameterExtractor(group))
                 .ToList();
         }
+
+        /// <summary>
+        /// Returns a string representation of the given value, suitable for including in a routing header.
+        /// (This method does not perform URI encoding; it is expected that the result of this method will either be
+        /// used in <see cref="WithExtractedParameter(string, string, Func{TRequest, string})"/>, or as an argument to
+        /// <see cref="ApiCall{TRequest, TResponse}.WithGoogleRequestParam(string, Func{TRequest, string})" />.)
+        /// </summary>
+        /// <param name="value">The value to format. May be null.</param>
+        /// <returns>The formatted value, or null if <paramref name="value"/> is null.</returns>
+        public static string FormatRoutingHeaderValue(object value) => ProtobufUtilities.FormatValueAsJsonPrimitive(value);
 
         /// <summary>
         /// Returns a new instance with the same parameter extractors as this one, with an additional one specified as arguments.
