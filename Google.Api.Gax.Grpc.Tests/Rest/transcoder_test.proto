@@ -82,6 +82,11 @@ message SimpleFields {
   int32 integer = 2;
 }
 
+message RequiredBooleanField {
+  // Used to validate query parameter formats for Boolean
+  bool boolean = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
 message QueryTestMessage {
   message Nested {
     int32 x = 1;

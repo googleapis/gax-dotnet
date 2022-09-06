@@ -612,6 +612,36 @@
         "method": "GET",
         "uri": "/v1/projects/abc/databases/xyz/documents/123/456/789/ghi"
       }
+    },
+
+    {
+      "name": "BooleanQueryParameter_False",
+      "details": "Request with a Boolean query parameter, which should be false",
+      "inlineRule": {
+        "get": "/v1/bool"
+      },
+      "requestMessageName": "RequiredBooleanField",
+      "request": {
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bool?boolean=false"
+      }
+    },
+    {
+      "name": "BooleanQueryParameter_True",
+      "details": "Request with a Boolean query parameter, which should be true",
+      "inlineRule": {
+        "get": "/v1/bool"
+      },
+      "requestMessageName": "RequiredBooleanField",
+      "request": {
+        "boolean": true
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bool?boolean=true"
+      }
     }
   ]
 }
