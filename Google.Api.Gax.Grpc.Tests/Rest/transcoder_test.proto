@@ -111,6 +111,18 @@ message QueryTestMessage {
   SampleEnum enum_field = 6;
 }
 
+message DoubleNestingTestMessage {
+  message DoubleNested {
+    int32 z = 1;
+  }
+
+  message Nested {
+    DoubleNested y = 1;
+  }
+
+  Nested x = 1;
+}
+
 message RequestWithRecursiveMessage {
   message Recursive {
     Recursive x = 1;

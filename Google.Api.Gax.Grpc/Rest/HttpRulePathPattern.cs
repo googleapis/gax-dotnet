@@ -165,7 +165,7 @@ internal sealed class HttpRulePathPattern
                 messageSelector = message =>
                 {
                     var parent = previousSelector(message);
-                    return parent is null ? null : (IMessage) field.Accessor.GetValue(previousSelector(parent));
+                    return parent is null ? null : (IMessage) field.Accessor.GetValue(parent);
                 };
                 descriptor = field.MessageType;
             }
