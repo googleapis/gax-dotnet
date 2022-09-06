@@ -126,6 +126,11 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod restMethod, CancellationToken combinedCancellationToken)
         {
+            if (_channelAuthInterceptor is null)
+            {
+                return;
+            }
+
             Uri hostUri = request.RequestUri.IsAbsoluteUri ? request.RequestUri : _httpClient.BaseAddress;
             string schemeAndAuthority = hostUri.GetLeftPart(UriPartial.Authority);
 
