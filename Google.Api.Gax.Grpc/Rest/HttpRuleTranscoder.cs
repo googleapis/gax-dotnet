@@ -255,13 +255,24 @@ internal sealed partial class HttpRuleTranscoder
                 yield return FormatValue(value);
             }
 
-            static bool IsDefaultValue(object value)
-            {
-                return value is "" || value is 0.0f || value is 0.0d || value is 0 || value is 0L || value is 0UL || value is UnsignedInt32Zero;
-            }
+            static bool IsDefaultValue(object value) =>
+                // (Comments are the protobuf language keywords)
+                // string
+                value is "" ||
+                // bool
+                value is false ||
+                // double, float
+                value is 0.0f || value is 0.0d ||
+                // int32, sint32, sfixed32, int64, sint64, sfixed64
+                value is 0 || value is 0L ||
+                // uint32, fixed32, uint64, fixed64
+                value is UnsignedInt32Zero || value is 0UL || 
+                // bytes
+                (value is ByteString bs && bs.IsEmpty);
 
-            static string FormatValue(object value) => value is IFormattable formattable
-                ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
+            static string FormatValue(object value) => 
+                value is bool b ? (b ? "true" : "false")
+                : value is IFormattable formattable ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
                 : value.ToString();
         }
     }

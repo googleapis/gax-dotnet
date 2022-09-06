@@ -42,23 +42,24 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "ZF9yZXN1bHQiUQoLSHR0cFJlcXVlc3QSDgoGbWV0aG9kGAEgASgJEgsKA3Vy",
             "aRgCIAEoCRIlCgRib2R5GAMgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVj",
             "dCIOCgxFbXB0eVJlcXVlc3QiLQoMU2ltcGxlRmllbGRzEgwKBG5hbWUYASAB",
-            "KAkSDwoHaW50ZWdlchgCIAEoBSKRAgoQUXVlcnlUZXN0TWVzc2FnZRIdChBy",
-            "ZXF1aXJlZF9pbnRlZ2VyGAEgASgFQgPgQQISJAoXcHJvdG8zX29wdGlvbmFs",
-            "X2ludGVnZXIYAiABKAVIAIgBARIXCg9yZXBlYXRlZF9zdHJpbmcYAyADKAkS",
-            "RwoGbmVzdGVkGAQgASgLMjcuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRl",
-            "c3RzLlF1ZXJ5VGVzdE1lc3NhZ2UuTmVzdGVkEg8KB2luX3BhdGgYBSABKAka",
-            "KQoGTmVzdGVkEgkKAXgYASABKAUSCQoBeRgCIAEoBRIJCgF6GAMgASgFQhoK",
-            "GF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlciKXAgobUmVxdWVzdFdpdGhSZWN1",
-            "cnNpdmVNZXNzYWdlElAKAXoYASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBj",
-            "LnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJlY3Vy",
-            "c2l2ZRI8CgZzaW1wbGUYAiABKAsyLC5nb29nbGUuYXBpLmdheC5ncnBjLnJl",
-            "c3QudGVzdHMuU2ltcGxlRmllbGRzGmgKCVJlY3Vyc2l2ZRJQCgF4GAEgASgL",
-            "MkUuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3RzLlJlcXVlc3RXaXRo",
-            "UmVjdXJzaXZlTWVzc2FnZS5SZWN1cnNpdmUSCQoBeRgCIAEoBSJ+ChNTZXBh",
-            "cmF0ZUJvZHlSZXF1ZXN0EkYKBGJvZHkYASABKAsyOC5nb29nbGUuYXBpLmdh",
-            "eC5ncnBjLnJlc3QudGVzdHMuU2VwYXJhdGVCb2R5UmVxdWVzdC5Cb2R5EgwK",
-            "BG5hbWUYAiABKAkaEQoEQm9keRIJCgF4GAEgASgFIjEKEE11bHRpTmFtZVJl",
-            "cXVlc3QSDQoFZmlyc3QYASABKAkSDgoGc2Vjb25kGAIgASgJYgZwcm90bzM="));
+            "KAkSDwoHaW50ZWdlchgCIAEoBSIsChRSZXF1aXJlZEJvb2xlYW5GaWVsZBIU",
+            "Cgdib29sZWFuGAEgASgIQgPgQQIikQIKEFF1ZXJ5VGVzdE1lc3NhZ2USHQoQ",
+            "cmVxdWlyZWRfaW50ZWdlchgBIAEoBUID4EECEiQKF3Byb3RvM19vcHRpb25h",
+            "bF9pbnRlZ2VyGAIgASgFSACIAQESFwoPcmVwZWF0ZWRfc3RyaW5nGAMgAygJ",
+            "EkcKBm5lc3RlZBgEIAEoCzI3Lmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50",
+            "ZXN0cy5RdWVyeVRlc3RNZXNzYWdlLk5lc3RlZBIPCgdpbl9wYXRoGAUgASgJ",
+            "GikKBk5lc3RlZBIJCgF4GAEgASgFEgkKAXkYAiABKAUSCQoBehgDIAEoBUIa",
+            "ChhfcHJvdG8zX29wdGlvbmFsX2ludGVnZXIilwIKG1JlcXVlc3RXaXRoUmVj",
+            "dXJzaXZlTWVzc2FnZRJQCgF6GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXguZ3Jw",
+            "Yy5yZXN0LnRlc3RzLlJlcXVlc3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5SZWN1",
+            "cnNpdmUSPAoGc2ltcGxlGAIgASgLMiwuZ29vZ2xlLmFwaS5nYXguZ3JwYy5y",
+            "ZXN0LnRlc3RzLlNpbXBsZUZpZWxkcxpoCglSZWN1cnNpdmUSUAoBeBgBIAEo",
+            "CzJFLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5SZXF1ZXN0V2l0",
+            "aFJlY3Vyc2l2ZU1lc3NhZ2UuUmVjdXJzaXZlEgkKAXkYAiABKAUifgoTU2Vw",
+            "YXJhdGVCb2R5UmVxdWVzdBJGCgRib2R5GAEgASgLMjguZ29vZ2xlLmFwaS5n",
+            "YXguZ3JwYy5yZXN0LnRlc3RzLlNlcGFyYXRlQm9keVJlcXVlc3QuQm9keRIM",
+            "CgRuYW1lGAIgASgJGhEKBEJvZHkSCQoBeBgBIAEoBSIxChBNdWx0aU5hbWVS",
+            "ZXF1ZXN0Eg0KBWZpcnN0GAEgASgJEg4KBnNlY29uZBgCIAEoCWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -67,6 +68,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest), global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest.Parser, new[]{ "Method", "Uri", "Body" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField), global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField.Parser, new[]{ "Boolean" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath" }, new[]{ "Proto3OptionalInteger" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Parser, new[]{ "Z", "Simple" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive), global::Google.Api.Gax.Grpc.Rest.Tests.RequestWithRecursiveMessage.Types.Recursive.Parser, new[]{ "X", "Y" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Parser, new[]{ "Body", "Name" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body), global::Google.Api.Gax.Grpc.Rest.Tests.SeparateBodyRequest.Types.Body.Parser, new[]{ "X" }, null, null, null, null)}),
@@ -1576,6 +1578,198 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  public sealed partial class RequiredBooleanField : pb::IMessage<RequiredBooleanField>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RequiredBooleanField> _parser = new pb::MessageParser<RequiredBooleanField>(() => new RequiredBooleanField());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RequiredBooleanField> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequiredBooleanField() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequiredBooleanField(RequiredBooleanField other) : this() {
+      boolean_ = other.boolean_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequiredBooleanField Clone() {
+      return new RequiredBooleanField(this);
+    }
+
+    /// <summary>Field number for the "boolean" field.</summary>
+    public const int BooleanFieldNumber = 1;
+    private bool boolean_;
+    /// <summary>
+    /// Used to validate query parameter formats for Boolean
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Boolean {
+      get { return boolean_; }
+      set {
+        boolean_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as RequiredBooleanField);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RequiredBooleanField other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Boolean != other.Boolean) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Boolean != false) hash ^= Boolean.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Boolean != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Boolean);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Boolean != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Boolean);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Boolean != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RequiredBooleanField other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Boolean != false) {
+        Boolean = other.Boolean;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Boolean = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Boolean = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class QueryTestMessage : pb::IMessage<QueryTestMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1591,7 +1785,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2217,7 +2411,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2704,7 +2898,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3136,7 +3330,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TranscoderTestReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
