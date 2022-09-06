@@ -37,7 +37,8 @@ namespace Google.Api.Gax.Grpc.Rest
             var typeRegistry = TypeRegistry.FromFiles(fileDescriptors.ToArray());
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
-                .Where(x => true) // TODO: filter out streaming methods.
+                // We don't yet support streaming methods.
+                .Where(x => !x.IsClientStreaming && !x.IsServerStreaming)
                 .Select(method => RestMethod.Create(metadata, method, parser))
                 .ToDictionary(restMethod => restMethod.FullName);
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));
