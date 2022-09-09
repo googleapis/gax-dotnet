@@ -8,7 +8,7 @@ syntax = "proto3";
 
 package google.api.gax.grpc.rest;
 
-import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
 import "google/rpc/code.proto";
 
 // Taken from https://cloud.google.com/apis/design/errors#error_mapping.
@@ -16,6 +16,9 @@ import "google/rpc/code.proto";
 // and converted into an appropriate google.rpc.Status. The message names
 // aren't ideal, but it's better to just take the proto definition directly
 // from the page than to modify it. This is only generated as internal classes.
+// Note: there is one modification, which is to change the details field to use
+// Struct rather than Any. This avoids parse failures if the packed Any is
+// a type we don't know about.
 
 // This message defines the error schema for Google's JSON HTTP APIs.
 message Error {
@@ -34,8 +37,12 @@ message Error {
     repeated ErrorProto errors = 3;
     // This is the enum version for `google.rpc.Status.code`.
     google.rpc.Code status = 4;
-    // This corresponds to `google.rpc.Status.details`.
-    repeated google.protobuf.Any details = 5;
+    // This corresponds to `google.rpc.Status.details`, but
+    // we represent each element as a Struct instead of an Any so that
+    // we can definitely parse the outer JSON. We then convert each struct back into
+    // JSON and attempt to parse it as an Any, ignoring values that have type URLs
+    // corresponding to messages we're not aware of.
+    repeated google.protobuf.Struct details = 5;
   }
   // The actual error payload. The nested message structure is for backward
   // compatibility with [Google API Client

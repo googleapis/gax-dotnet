@@ -104,6 +104,46 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         }
 
         [Fact]
+        public void CreateRpcStatus_UnknownAny()
+        {
+            string json = @"
+{
+  'error': {
+    'message': 'Some message',
+    'status': 'ALREADY_EXISTS',
+    'details': [{
+      '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+      'domain': 'googleapis.com',
+      'reason': 'It failed',
+      'metadata': {
+        'x': 'y'
+      }
+    }, {
+      '@type': 'type.googleapis.com/google.rpc.SnazzyNewMessage',
+      'step3': 'profit'
+    }, {
+      '@type': 'type.googleapis.com/google.rpc.LocalizedMessage',
+      'locale': 'en-US',
+      'message': 'It failed badly'
+    }]
+  }
+}".Replace('\'', '"');
+            var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.PreconditionFailed, json);
+            var expectedStatus = new Status
+            {
+                Code = (int) gc::StatusCode.AlreadyExists,
+                Message = "Some message",
+                Details =
+                {
+                    Any.Pack(new ErrorInfo { Domain = "googleapis.com", Reason = "It failed", Metadata = { { "x", "y" } } }),
+                    // The middle details are omitted because we can't parse them.
+                    Any.Pack(new LocalizedMessage { Locale = "en-US", Message = "It failed badly" })
+                }
+            };
+            Assert.Equal(expectedStatus, actualStatus);
+        }
+
+        [Fact]
         public void GetTrailers_WithStatus()
         {
             var response = CreateResponse(HttpStatusCode.NotFound, s_sampleJson);
