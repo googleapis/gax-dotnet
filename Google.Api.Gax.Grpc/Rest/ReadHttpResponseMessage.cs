@@ -7,7 +7,10 @@
 
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.ExceptionServices;
@@ -31,7 +34,12 @@ namespace Google.Api.Gax.Grpc.Rest
     internal class ReadHttpResponseMessage
     {
         private static readonly JsonParser s_responseMetadataParser = new JsonParser(
-            JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(TypeRegistry.FromFiles(Rpc.ErrorDetailsReflection.Descriptor)));
+            JsonParser.Settings.Default.WithIgnoreUnknownFields(true));
+        private static readonly JsonParser s_anyParser = new JsonParser(
+            JsonParser.Settings.Default
+                .WithIgnoreUnknownFields(true).
+                WithTypeRegistry(TypeRegistry.FromFiles(Rpc.ErrorDetailsReflection.Descriptor)));
+
         private HttpResponseMessage OriginalResponseMessage { get; }
 
         private readonly Rpc.Status _rpcStatus;
@@ -115,7 +123,7 @@ namespace Google.Api.Gax.Grpc.Rest
                     // is populated or not.)
                     Code = error.Status_ == Rpc.Code.Ok ? (int) grpcStatusCode : (int) error.Status_,
                     Message = error.Message,
-                    Details = { error.Details }
+                    Details = { error.Details.Select(TryParseAny).Where(a => a is not null) }
                 };
                 return status;
             }
@@ -123,6 +131,19 @@ namespace Google.Api.Gax.Grpc.Rest
             {
                 // If we can't parse the result as JSON, just use the content as the error message.
                 return new Rpc.Status { Code = (int) grpcStatusCode, Message = content };
+            }
+
+            // Attempts to parse the given Struct as an Any, returning null on failure.
+            Any TryParseAny(Struct json)
+            {
+                try
+                {
+                    return s_anyParser.Parse<Any>(json.ToString());
+                }
+                catch (InvalidOperationException)
+                {
+                    return null;
+                }
             }
         }
     }

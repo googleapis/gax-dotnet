@@ -25,16 +25,16 @@ namespace Google.Api.Gax.Grpc.Rest {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChdyZXNwb25zZV9tZXRhZGF0YS5wcm90bxIYZ29vZ2xlLmFwaS5nYXguZ3Jw",
-            "Yy5yZXN0Ghlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvGhVnb29nbGUvcnBj",
-            "L2NvZGUucHJvdG8i+wEKBUVycm9yEjUKBWVycm9yGAEgASgLMiYuZ29vZ2xl",
-            "LmFwaS5nYXguZ3JwYy5yZXN0LkVycm9yLlN0YXR1cxoMCgpFcnJvclByb3Rv",
-            "GqwBCgZTdGF0dXMSDAoEY29kZRgBIAEoBRIPCgdtZXNzYWdlGAIgASgJEjoK",
-            "BmVycm9ycxgDIAMoCzIqLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5FcnJv",
-            "ci5FcnJvclByb3RvEiAKBnN0YXR1cxgEIAEoDjIQLmdvb2dsZS5ycGMuQ29k",
-            "ZRIlCgdkZXRhaWxzGAUgAygLMhQuZ29vZ2xlLnByb3RvYnVmLkFueWIGcHJv",
-            "dG8z"));
+            "Yy5yZXN0Ghxnb29nbGUvcHJvdG9idWYvc3RydWN0LnByb3RvGhVnb29nbGUv",
+            "cnBjL2NvZGUucHJvdG8i/gEKBUVycm9yEjUKBWVycm9yGAEgASgLMiYuZ29v",
+            "Z2xlLmFwaS5nYXguZ3JwYy5yZXN0LkVycm9yLlN0YXR1cxoMCgpFcnJvclBy",
+            "b3RvGq8BCgZTdGF0dXMSDAoEY29kZRgBIAEoBRIPCgdtZXNzYWdlGAIgASgJ",
+            "EjoKBmVycm9ycxgDIAMoCzIqLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5F",
+            "cnJvci5FcnJvclByb3RvEiAKBnN0YXR1cxgEIAEoDjIQLmdvb2dsZS5ycGMu",
+            "Q29kZRIoCgdkZXRhaWxzGAUgAygLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVj",
+            "dGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, global::Google.Rpc.CodeReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Rpc.CodeReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Error), global::Google.Api.Gax.Grpc.Rest.Error.Parser, new[]{ "Error_" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Error.Types.ErrorProto), global::Google.Api.Gax.Grpc.Rest.Error.Types.ErrorProto.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Error.Types.Status), global::Google.Api.Gax.Grpc.Rest.Error.Types.Status.Parser, new[]{ "Code", "Message", "Errors", "Status_", "Details" }, null, null, null, null)})
@@ -524,15 +524,19 @@ namespace Google.Api.Gax.Grpc.Rest {
 
         /// <summary>Field number for the "details" field.</summary>
         public const int DetailsFieldNumber = 5;
-        private static readonly pb::FieldCodec<global::Google.Protobuf.WellKnownTypes.Any> _repeated_details_codec
-            = pb::FieldCodec.ForMessage(42, global::Google.Protobuf.WellKnownTypes.Any.Parser);
-        private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> details_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any>();
+        private static readonly pb::FieldCodec<global::Google.Protobuf.WellKnownTypes.Struct> _repeated_details_codec
+            = pb::FieldCodec.ForMessage(42, global::Google.Protobuf.WellKnownTypes.Struct.Parser);
+        private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Struct> details_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Struct>();
         /// <summary>
-        /// This corresponds to `google.rpc.Status.details`.
+        /// This corresponds to `google.rpc.Status.details`, but
+        /// we represent each element as a Struct instead of an Any so that
+        /// we can definitely parse the outer JSON. We then convert each struct back into
+        /// JSON and attempt to parse it as an Any, ignoring values that have type URLs
+        /// corresponding to messages we're not aware of.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Any> Details {
+        public pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Struct> Details {
           get { return details_; }
         }
 
