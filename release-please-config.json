@@ -3,6 +3,7 @@
   "release-type": "simple",
   "include-component-in-tag": true,
   "include-v-in-tag": false,
+  "pull-request-header": "Auto-generated release PR: merge to trigger a release",
   "packages": {
     ".": {
       "component": "Google.Api.Gax",
