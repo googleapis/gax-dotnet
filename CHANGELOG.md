@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.2.0-alpha02](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha01...Google.Api.Gax-4.2.0-alpha02) (2022-09-14)
+
+
+### Bug Fixes
+
+* Parse error details more robustly ([67b3438](https://github.com/googleapis/gax-dotnet/commit/67b34387f4e06fd9dc11b46cde95aaa9b636d330))
+
+
+### Miscellaneous Chores
+
+* Use hashes with pip install ([04c3e3d](https://github.com/googleapis/gax-dotnet/commit/04c3e3d46c5b9c7a337794934593e1fbf2a425a1))
+
 ## [4.2.0-alpha01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.1.1...Google.Api.Gax-4.2.0-alpha01) (2022-09-06)
 
 
