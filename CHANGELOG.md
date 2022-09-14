@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0-alpha03](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha02...Google.Api.Gax-4.2.0-alpha03) (2022-09-14)
+
+
+### Miscellaneous Chores
+
+* Fix requirements file for Linux ([d717ad4](https://github.com/googleapis/gax-dotnet/commit/d717ad4fddbc15c2cb592b3a045d216667912f68))
+
 ## [4.2.0-alpha02](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha01...Google.Api.Gax-4.2.0-alpha02) (2022-09-14)
 
 

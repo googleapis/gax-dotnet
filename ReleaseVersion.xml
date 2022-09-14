@@ -5,6 +5,6 @@
     - divergent versions, but for the moment this keeps things simpler.
     -->
   <PropertyGroup>
-    <Version>4.2.0-alpha02</Version>
+    <Version>4.2.0-alpha03</Version>
   </PropertyGroup>
 </Project>
