@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0-alpha04](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha03...Google.Api.Gax-4.2.0-alpha04) (2022-09-14)
+
+
+### Miscellaneous Chores
+
+* Fix pip packages again ([96f565a](https://github.com/googleapis/gax-dotnet/commit/96f565aa708d526ca720392305a2b0777e6931ad))
+
 ## [4.2.0-alpha03](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha02...Google.Api.Gax-4.2.0-alpha03) (2022-09-14)
 
 
