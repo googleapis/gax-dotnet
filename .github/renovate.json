@@ -7,8 +7,6 @@
     "Google.Api.CommonProtos/**",
     "Google.Api.Gax/**",
     "Google.Api.Gax.Grpc/**",
-    "Google.Api.Gax.Grpc.GrpcCore/**",
-    "Google.Api.Gax.Grpc.GrpcNetClient/**",
     "Google.Api.Gax.Grpc.Testing/**",
     "Google.Api.Gax.Grpc.Rest/**",
     ".kokoro/**"
