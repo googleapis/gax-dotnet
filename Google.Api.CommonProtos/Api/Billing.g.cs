@@ -31,16 +31,15 @@ namespace Google.Api {
     static BillingReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chhnb29nbGUvYXBpL2JpbGxpbmcucHJvdG8SCmdvb2dsZS5hcGkaF2dvb2ds",
-            "ZS9hcGkvbWV0cmljLnByb3RvIpMBCgdCaWxsaW5nEkUKFWNvbnN1bWVyX2Rl",
-            "c3RpbmF0aW9ucxgIIAMoCzImLmdvb2dsZS5hcGkuQmlsbGluZy5CaWxsaW5n",
-            "RGVzdGluYXRpb24aQQoSQmlsbGluZ0Rlc3RpbmF0aW9uEhoKEm1vbml0b3Jl",
-            "ZF9yZXNvdXJjZRgBIAEoCRIPCgdtZXRyaWNzGAIgAygJQm4KDmNvbS5nb29n",
-            "bGUuYXBpQgxCaWxsaW5nUHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
-            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
-            "ZmlnogIER0FQSWIGcHJvdG8z"));
+            "Chhnb29nbGUvYXBpL2JpbGxpbmcucHJvdG8SCmdvb2dsZS5hcGkikwEKB0Jp",
+            "bGxpbmcSRQoVY29uc3VtZXJfZGVzdGluYXRpb25zGAggAygLMiYuZ29vZ2xl",
+            "LmFwaS5CaWxsaW5nLkJpbGxpbmdEZXN0aW5hdGlvbhpBChJCaWxsaW5nRGVz",
+            "dGluYXRpb24SGgoSbW9uaXRvcmVkX3Jlc291cmNlGAEgASgJEg8KB21ldHJp",
+            "Y3MYAiADKAlCbgoOY29tLmdvb2dsZS5hcGlCDEJpbGxpbmdQcm90b1ABWkVn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9zZXJ2",
+            "aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.MetricReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Billing), global::Google.Api.Billing.Parser, new[]{ "ConsumerDestinations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Billing.Types.BillingDestination), global::Google.Api.Billing.Types.BillingDestination.Parser, new[]{ "MonitoredResource", "Metrics" }, null, null, null, null)})
           }));
