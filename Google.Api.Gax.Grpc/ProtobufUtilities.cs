@@ -6,6 +6,7 @@
  */
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ internal static class ProtobufUtilities
         // bytes
         (value is ByteString bs && bs.IsEmpty) ||
         // Any enum (all protobuf enums have an underlying type of Int32)
-        (value is Enum enumValue && Convert.ToInt32(enumValue) == 0);
+        (value is System.Enum enumValue && Convert.ToInt32(enumValue) == 0);
 
     /// <summary>
     /// Formats a value in a way that is suitable for a header, URL path segment (after URL-encoding), or query parameter. The value
@@ -53,12 +54,30 @@ internal static class ProtobufUtilities
     /// </summary>
     /// <returns>A string representation of the given value, or null if the value is null</returns>
     internal static string FormatValueAsJsonPrimitive(object value) =>
-        value is null ? null
-        : value is bool b ? (b ? "true" : "false")
-        : value is Enum enumValue ? OriginalEnumValueHelper.GetOriginalName(enumValue)
-        : value is IFormattable formattable ? formattable.ToString(format: null, CultureInfo.InvariantCulture)
-        : value is ByteString bs ? bs.ToBase64()
-        : value.ToString();
+        value switch
+        {
+            null => null,
+            bool b => b ? "true" : "false",
+            System.Enum enumValue => OriginalEnumValueHelper.GetOriginalName(enumValue),
+            StringValue stringValue => stringValue.Value,
+            Timestamp or Duration or FieldMask or Int64Value or UInt64Value or DoubleValue or FloatValue or BytesValue =>
+                RemoveWellKnownTypeQuotes(value),
+            IFormattable formattable => formattable.ToString(format: null, CultureInfo.InvariantCulture),
+            ByteString bs => bs.ToBase64(),
+            _ => value.ToString()
+        };
+
+    /// <summary>
+    /// Format a well-known type value, and if it has quotes around it, remove them. (For some well-known types, e.g. FloatValue,
+    /// it will sometimes be formatted as a JSON string and sometimes not.)
+    /// </summary>
+    private static string RemoveWellKnownTypeQuotes(object value)
+    {
+        string json = value.ToString();
+        return json.Length >= 2 && json[0] == '"' && json[json.Length - 1] == '"'
+            ? json.Substring(1, json.Length - 2)
+            : json;
+    }
 
     // Effectively a cache of mapping from enum values to the original name as specified in the proto file,
     // fetched by reflection. This code is taken from the protobuf JsonFormatter.
