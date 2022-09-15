@@ -23,6 +23,20 @@ namespace Google.Api.Gax.Grpc;
 /// </summary>
 internal static class ProtobufUtilities
 {
+    private static readonly HashSet<string> s_wellKnownTypeNames = new HashSet<string>
+    {
+        "google/protobuf/any.proto",
+        "google/protobuf/api.proto",
+        "google/protobuf/duration.proto",
+        "google/protobuf/empty.proto",
+        "google/protobuf/wrappers.proto",
+        "google/protobuf/timestamp.proto",
+        "google/protobuf/field_mask.proto",
+        "google/protobuf/source_context.proto",
+        "google/protobuf/struct.proto",
+        "google/protobuf/type.proto",
+    };
+
     private const uint UnsignedInt32Zero = 0;
 
     /// <summary>
@@ -78,6 +92,13 @@ internal static class ProtobufUtilities
             ? json.Substring(1, json.Length - 2)
             : json;
     }
+
+    /// <summary>
+    /// Determines whether the given message descriptor represents a well-known type.
+    /// This is an internal method in Google.Protobuf; we might consider exposing it at some point.
+    /// </summary>
+    internal static bool IsWellKnownType(this MessageDescriptor messageDescriptor) =>
+        messageDescriptor.File.Package == "google.protobuf" && s_wellKnownTypeNames.Contains(messageDescriptor.File.Name);
 
     // Effectively a cache of mapping from enum values to the original name as specified in the proto file,
     // fetched by reflection. This code is taken from the protobuf JsonFormatter.
