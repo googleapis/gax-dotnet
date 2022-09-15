@@ -135,7 +135,7 @@ internal sealed partial class HttpRuleTranscoder
                         continue;
                     }
                     // Note: map fields are repeated fields, so we don't need to explicitly remove them.
-                    if (field.FieldType == FieldType.Message && !field.IsRepeated)
+                    if (field.FieldType == FieldType.Message && !field.MessageType.IsWellKnownType() && !field.IsRepeated)
                     {
                         AccumulateMessages(
                             message => currentSelector(message) is IMessage parent ? (IMessage) field.Accessor.GetValue(parent) : null,
@@ -152,7 +152,7 @@ internal sealed partial class HttpRuleTranscoder
 
             static bool IsEligibleQueryParameterLeafField(FieldDescriptor field)
             {
-                if (field.FieldType == FieldType.Message || field.FieldType == FieldType.Group || field.FieldType == FieldType.Bytes)
+                if ((field.FieldType == FieldType.Message && !field.MessageType.IsWellKnownType()) || field.FieldType == FieldType.Group || field.FieldType == FieldType.Bytes)
                 {
                     return false;
                 }
