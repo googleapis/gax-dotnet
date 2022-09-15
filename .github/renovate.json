@@ -10,7 +10,8 @@
     "Google.Api.Gax.Grpc.GrpcCore/**",
     "Google.Api.Gax.Grpc.GrpcNetClient/**",
     "Google.Api.Gax.Grpc.Testing/**",
-    "Google.Api.Gax.Grpc.Rest/**"    
+    "Google.Api.Gax.Grpc.Rest/**",
+    ".kokoro/**"
   ],
   "schedule": ["before 8am"],
   "timezone": "Europe/London"
