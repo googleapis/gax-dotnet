@@ -660,6 +660,22 @@
       }
     },
     {
+      "name": "TimestampQueryParameter",
+      "details": "Request with a Timestamp query parameter, which should not include quotes",
+      "inlineRule": {
+        "get": "/v1/timestamp"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "timestamp": "2022-09-14T15:52:00Z"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/timestamp?timestamp=2022-09-14T15%3A52%3A00Z"
+      }
+    },
+
+    {
       "name": "DoubleNestingInQueryParameters",
       "details": "Request with a doubly-nested query parameter",
       "inlineRule": {
