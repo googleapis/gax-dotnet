@@ -18,8 +18,6 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             { "x/y:custom", new RuleTestRequest(), "x/y:custom" },
             { "firstPart/{x}/secondPart/{y}", new RuleTestRequest { X = "x1", Y = "y2" }, "firstPart/x1/secondPart/y2" },
             { "combined/{x}-{y}/end", new RuleTestRequest { X = "xx", Y = "yy" }, "combined/xx-yy/end" },
-            { "pattern/{x}", new RuleTestRequest { X = "abc/def" }, "pattern/abc%2Fdef" },
-            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/def/ghi" }, "pattern/abc/def%2Fghi" },
             { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/def" }, "pattern/abc/def" },
             { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/New York" }, "pattern/abc/New%20York" },
             { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/caf\u00e9" }, "pattern/abc/caf%C3%A9" },
@@ -30,6 +28,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             { "before/{int}/end", new RuleTestRequest { Int = 5 }, "before/5/end" },
             // The nested field isn't present, so this doesn't match.
             { "nested/{nested.a}/end", new RuleTestRequest(), null },
+            // Single star fields don't match slashes
+            { "pattern/{x}", new RuleTestRequest { X = "abc/def" }, null },
+            { "pattern/{x=abc/*}", new RuleTestRequest { X = "abc/def/ghi" }, null },
         });
 
         private static TheoryData<string, string, string> ConvertTheoryData(TheoryData<string, RuleTestRequest, string> theoryData)

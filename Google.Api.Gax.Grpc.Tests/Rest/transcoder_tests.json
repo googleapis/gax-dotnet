@@ -64,7 +64,7 @@
     },
 
     {
-      "name": "SimpleMatchingRequest_SlashInSingleStarPatternField",
+      "name": "SimpleNonMatchingRequest_SlashInSingleStarPatternField",
       "details": "A rule expecting a match for the name field",
       "inlineRule": {
         "get": "/collections/{name=*}"
@@ -73,14 +73,11 @@
       "request": {
         "name": "abc/def"
       },
-      "success": {
-        "method": "GET",
-        "uri": "/collections/abc%2Fdef"
-      }
+      "nonmatchingRequest": "Name field contains a slash, for pattern of {name=*}"
     },
 
     {
-      "name": "SimpleMatchingRequest_SlashInImplicitSingleStarPatternField",
+      "name": "SimpleNonMatchingRequest_SlashInImplicitSingleStarPatternField",
       "details": "A rule which matches the name field, which contains a slash",
       "inlineRule": {
         "get": "/collections/{name}"
@@ -89,10 +86,7 @@
       "request": {
         "name": "abc/def"
       },
-      "success": {
-        "method": "GET",
-        "uri": "/collections/abc%2Fdef"
-      }
+      "nonmatchingRequest": "Name field contains a slash, for pattern of {name=*}"
     },
 
     {
