@@ -126,7 +126,6 @@ internal sealed class HttpRulePathPattern
         internal string JsonFieldPath { get; }
 
         private readonly Regex _validationRegex;
-        private readonly Func<Match, string> _formatter;
         private readonly Func<IMessage, string> _propertyAccessor;
 
         /// <summary>
@@ -144,7 +143,7 @@ internal sealed class HttpRulePathPattern
             string[] bits = fieldText.Split(s_fieldPathPatternSeparator, 2);
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
-            (_validationRegex, _formatter) = ParsePattern(pattern);
+            _validationRegex = ConvertPatternForValidation(pattern);
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
@@ -209,12 +208,10 @@ internal sealed class HttpRulePathPattern
                 return field;
             }
 
-            static (Regex, Func<Match, string>) ParsePattern(string pattern)
+            static Regex ConvertPatternForValidation(string pattern)
             {
                 var builder = new StringBuilder("^"); // We want to match the whole string
-                Action<Match, StringBuilder> formatBuilder = null;
                 int currentIndex = 0;
-                int groupIndex = 1;
                 while (currentIndex < pattern.Length)
                 {
                     int starStart = pattern.IndexOf('*', currentIndex);
@@ -224,7 +221,6 @@ internal sealed class HttpRulePathPattern
                     if (literal != "")
                     {
                         builder.Append(Regex.Escape(literal));
-                        formatBuilder += (match, sb) => sb.Append(literal);
                     }
                     if (starStart < 0)
                     {
@@ -237,49 +233,31 @@ internal sealed class HttpRulePathPattern
                         starEnd++;
                     }
                     int starCount = starEnd - starStart;
-                    // Deliberately local to have a different variable per iteration, as it's captured in the lambda expression.
-                    int matchGroupIndex = groupIndex;
-                    groupIndex++;
-                    switch (starCount)
+                    builder.Append(starCount switch
                     {
-                        case 1:
-                            builder.Append("([^/]+)");
-                            // We won't have any slashes in the value, so we don't need to split then join.
-                            formatBuilder += (match, sb) => sb.Append(Uri.EscapeDataString(match.Groups[matchGroupIndex].Value));
-                            break;
-                        case 2:
-                            builder.Append("(.+)");
-                            formatBuilder += (match, sb) => sb.Append(string.Join("/", match.Groups[matchGroupIndex].Value.Split('/').Select(segment => Uri.EscapeDataString(segment))));
-                            break;
-                        default:
-                            throw new ArgumentException($"Resource pattern '{pattern}' is invalid");
-                    }
+                        // Single star: anything other than a slash
+                        1 => "[^/]+",
+                        // Double star: anything 
+                        2 => ".+",
+                        // Anything else is an error
+                        _ => throw new ArgumentException($"Resource pattern '{pattern}' is invalid")
+                    });
                     currentIndex = starEnd;
                 }
                 builder.Append("$"); // We want to match the whole string
-                Func<Match, string> formatter = match =>
-                {
-                    var sb = new StringBuilder("");
-                    formatBuilder(match, sb);
-                    return sb.ToString();
-                };
-                return (new Regex(builder.ToString(), RegexOptions.Compiled), formatter);
+                return new Regex(builder.ToString());
             }
         }
 
         public string TryFormat(IMessage request)
         {
             string result = _propertyAccessor(request);
-            if (result is null)
+            if (result is null || !_validationRegex.IsMatch(result))
             {
                 return null;
             }
-            Match match = _validationRegex.Match(result);
-            if (!match.Success)
-            {
-                return null;
-            }
-            return _formatter(match);
+            // Escape everything except slashes
+            return string.Join("/", result.Split('/').Select(segment => Uri.EscapeDataString(segment)));
         }
     }
 
