@@ -240,16 +240,15 @@ internal sealed class HttpRulePathPattern
                     // Deliberately local to have a different variable per iteration, as it's captured in the lambda expression.
                     int matchGroupIndex = groupIndex;
                     groupIndex++;
-                    // We match any characters within the regex, regardless of number of stars. It just affects
-                    // how the value is escaped. This uses a reluctant matcher, which means x/*/** (which is more likely
-                    // than x/**/*) will match x/a/b/c as "*=a" and then "**=b/c" which is probably the best result.
-                    builder.Append("(.+?)");
                     switch (starCount)
                     {
                         case 1:
+                            builder.Append("([^/]+)");
+                            // We won't have any slashes in the value, so we don't need to split then join.
                             formatBuilder += (match, sb) => sb.Append(Uri.EscapeDataString(match.Groups[matchGroupIndex].Value));
                             break;
                         case 2:
+                            builder.Append("(.+)");
                             formatBuilder += (match, sb) => sb.Append(string.Join("/", match.Groups[matchGroupIndex].Value.Split('/').Select(segment => Uri.EscapeDataString(segment))));
                             break;
                         default:
