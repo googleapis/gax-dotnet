@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,6 +67,24 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.False(original.RequestNumericEnumJsonEncoding);
             Assert.True(withTrue.RequestNumericEnumJsonEncoding);
             Assert.False(withFalse.RequestNumericEnumJsonEncoding);
+        }
+
+        [Fact]
+        public void WithHttpRuleOverrides()
+        {
+            var original = TestApiMetadata.Test;
+            var rule = new HttpRule { Get = "/v1/xyz" };
+            var overrides = new Dictionary<string, ByteString> { { "x.y.z", rule.ToByteString() } };
+            var withOverrides = original.WithHttpRuleOverrides(overrides);
+
+            // Original metadata has not changed
+            Assert.Empty(original.HttpRuleOverrides);
+            Assert.Equal(1, withOverrides.HttpRuleOverrides.Count);
+            Assert.True(withOverrides.HttpRuleOverrides.TryGetValue("x.y.z", out var ruleBytes));
+
+            // We could just keep hold of the ByteString, but this demonstrates the expected usage more clearly.
+            var decoded = HttpRule.Parser.ParseFrom(ruleBytes);
+            Assert.Equal(rule, decoded);
         }
 
         private class CountingSequence : IEnumerable<FileDescriptor>

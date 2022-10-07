@@ -49,6 +49,11 @@ internal class RestMethod
         {
             throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
         }
+        // If we have an override, it completely replaces the original rule.
+        if (apiMetadata.HttpRuleOverrides.TryGetValue(method.FullName, out var overrideByteString))
+        {
+            rule = HttpRule.Parser.ParseFrom(overrideByteString);
+        }
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
         return new RestMethod(apiMetadata, method, parser, transcoder);
     }

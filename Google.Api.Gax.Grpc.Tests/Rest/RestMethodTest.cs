@@ -7,6 +7,7 @@
 
 using Google.Api.Gax.Grpc.Tests;
 using Google.Protobuf;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -28,5 +29,21 @@ public class RestMethodTest
         var request = new SimpleRequest { Name = "abc" };
         var httpRequest = restMethod.CreateRequest(request, null);
         Assert.Equal(httpRequest.RequestUri.ToString(), expectedUri);
+    }
+
+    [Fact]
+    public void CreateRequest_WithHttpOverrides()
+    {
+        var rule = new HttpRule { Get = "/v2/def/{name}" };
+        var methodDescriptor = TestServiceReflection.Descriptor.Services
+            .Single(svc => svc.Name == "Sample")
+            .FindMethodByName("SimpleMethod");
+        var overrides = new Dictionary<string, ByteString> { { methodDescriptor.FullName, rule.ToByteString() } };
+        var apiMetadata = TestApiMetadata.Test.WithHttpRuleOverrides(overrides);
+        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+
+        var request = new SimpleRequest { Name = "ghi" };
+        var httpRequest = restMethod.CreateRequest(request, null);
+        Assert.Equal("/v2/def/ghi", httpRequest.RequestUri.ToString());
     }
 }
