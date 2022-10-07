@@ -6,9 +6,11 @@
  */
 
 using Google.Api.Gax.Grpc.Rest;
+using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 
@@ -20,14 +22,16 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed partial class ApiMetadata
     {
-        private Lazy<IReadOnlyList<FileDescriptor>> _fileDescriptorsProvider;
+        private static readonly IReadOnlyDictionary<string, ByteString> s_emptyHttpRuleOverrides = new ReadOnlyDictionary<string, ByteString>(new Dictionary<string, ByteString>());
+
+        private readonly Lazy<IReadOnlyList<FileDescriptor>> _fileDescriptorsProvider;
 
         /// <summary>
         /// The protobuf descriptors used by this API.
         /// </summary>
         public IReadOnlyList<FileDescriptor> ProtobufDescriptors => _fileDescriptorsProvider.Value;
 
-        private Lazy<TypeRegistry> _typeRegistryProvider;
+        private readonly Lazy<TypeRegistry> _typeRegistryProvider;
 
         /// <summary>
         /// A type registry containing all the types in <see cref="ProtobufDescriptors"/>.
@@ -46,12 +50,21 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public bool RequestNumericEnumJsonEncoding { get; }
 
-        private ApiMetadata(string name, Lazy<IReadOnlyList<FileDescriptor>> fileDescriptorsProvider, bool requestNumericEnumJsonEncoding)
+        /// <summary>
+        /// A dictionary (based on ordinal string comparisons) from fully-qualified RPC names
+        /// to byte strings representing overrides for the HTTP rule. This is designed to support
+        /// mixins which are hosted at individual APIs, but which are exposed via different URLs
+        /// to the original mixin definition. This is never null, but may be empty.
+        /// </summary>
+        public IReadOnlyDictionary<string, ByteString> HttpRuleOverrides { get; }
+
+        private ApiMetadata(string name, Lazy<IReadOnlyList<FileDescriptor>> fileDescriptorsProvider, bool requestNumericEnumJsonEncoding, IReadOnlyDictionary<string, ByteString> httpRuleOverrides)
         {
             Name = GaxPreconditions.CheckNotNullOrEmpty(name, nameof(name));
             RequestNumericEnumJsonEncoding = requestNumericEnumJsonEncoding;
             _fileDescriptorsProvider = fileDescriptorsProvider;
             _typeRegistryProvider = new Lazy<TypeRegistry>(() => TypeRegistry.FromFiles(ProtobufDescriptors));
+            HttpRuleOverrides = httpRuleOverrides;
         }
 
         /// <summary>
@@ -62,7 +75,7 @@ namespace Google.Api.Gax.Grpc
         /// </remarks>
         /// <param name="name">The name of the API. Must not be null or empty.</param>
         /// <param name="descriptors">The protobuf descriptors of the API. Must not be null.</param>
-        public ApiMetadata(string name, IEnumerable<FileDescriptor> descriptors) : this(name, BuildDescriptorsProviderFromDescriptors(descriptors), false)
+        public ApiMetadata(string name, IEnumerable<FileDescriptor> descriptors) : this(name, BuildDescriptorsProviderFromDescriptors(descriptors), false, s_emptyHttpRuleOverrides)
         {
         }
 
@@ -82,7 +95,7 @@ namespace Google.Api.Gax.Grpc
         /// <param name="name">The name of the API. Must not be null or empty.</param>
         /// <param name="descriptorsProvider">A provider function for the protobuf descriptors of the API. Must not be null, and must not
         /// return a null value. This will only be called once by this API descriptor, when first requested.</param>
-        public ApiMetadata(string name, Func<IEnumerable<FileDescriptor>> descriptorsProvider) : this(name, BuildDescriptorsProviderFromOtherProvider(descriptorsProvider), false)
+        public ApiMetadata(string name, Func<IEnumerable<FileDescriptor>> descriptorsProvider) : this(name, BuildDescriptorsProviderFromOtherProvider(descriptorsProvider), false, s_emptyHttpRuleOverrides)
         {
         }
 
@@ -102,6 +115,21 @@ namespace Google.Api.Gax.Grpc
         /// <param name="value">The desired value of <see cref="RequestNumericEnumJsonEncoding"/> in the new instance.</param>
         /// <returns>The new instance.</returns>
         public ApiMetadata WithRequestNumericEnumJsonEncoding(bool value) =>
-            new ApiMetadata(Name, _fileDescriptorsProvider, value);
+            new ApiMetadata(Name, _fileDescriptorsProvider, value, HttpRuleOverrides);
+
+        /// <summary>
+        /// Creates a new instance with the same values as this one, other than the given set of HttpRule overrides.
+        /// </summary>
+        /// <param name="overrides">The HttpRule overrides for services in this package; typically used to override
+        /// URLs for the REST transport. Must not be null. Will be cloned in the form of an immutable dictionary,
+        /// after which the original sequence is discarded.</param>
+        /// <returns>The new instance.</returns>
+        public ApiMetadata WithHttpRuleOverrides(IEnumerable<KeyValuePair<string, ByteString>> overrides)
+        {
+            GaxPreconditions.CheckNotNull(overrides, nameof(overrides));
+            var dict = overrides.ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+            var readOnlyDict = new ReadOnlyDictionary<string, ByteString>(dict);
+            return new ApiMetadata(Name, _fileDescriptorsProvider, RequestNumericEnumJsonEncoding, readOnlyDict);
+        }
     }
 }

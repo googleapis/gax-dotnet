@@ -39,6 +39,9 @@ namespace Google.Api.Gax.Grpc.Rest
             var methodsByName = services.SelectMany(service => service.Methods)
                 // We don't yet support streaming methods.
                 .Where(x => !x.IsClientStreaming && !x.IsServerStreaming)
+                // Ignore methods without HTTP annotations. Ideally there wouldn't be any, but
+                // operations.proto doesn't specify an HTTP rule for WaitOperation.
+                .Where(x => x.GetOptions()?.GetExtension(AnnotationsExtensions.Http) is not null)
                 .Select(method => RestMethod.Create(metadata, method, parser))
                 .ToDictionary(restMethod => restMethod.FullName);
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));
