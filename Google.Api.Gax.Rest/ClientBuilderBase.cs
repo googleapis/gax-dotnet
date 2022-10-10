@@ -24,6 +24,13 @@ namespace Google.Api.Gax.Rest
     public abstract class ClientBuilderBase<TClient>
     {
         /// <summary>
+        /// Name of the environment variable that will be checked for an ambient quota project ID.
+        /// If <see cref="QuotaProject"/> is not set, the non-empty value of this variable, if any
+        /// will be used in the same circumstances as <see cref="QuotaProject"/> would.
+        /// </summary>
+        public const string QuotaProjectEnvironmentVariable = "GOOGLE_CLOUD_QUOTA_PROJECT";
+
+        /// <summary>
         /// The path to the credentials file to use, or null if credentials are being provided in a different way.
         /// The resulting credential is automatically scoped with the default scopes for the API.
         /// </summary>
@@ -54,7 +61,7 @@ namespace Google.Api.Gax.Rest
 
         /// <summary>
         /// The credentials to use as a <see cref="GoogleCredential"/>, or null if credentials are being provided in
-        /// a different way. Note that unlike <see cref="Credential"/>, settings for <see cref="QuotaProject"/>, and scopes
+        /// a different way. Note that unlike <see cref="Credential"/>, settings for <see cref="EffectiveQuotaProject"/>, and scopes
         /// will be applied to this credential (creating a new one), in the same way as for
         /// application default credentials and credentials specified using
         /// <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>.
@@ -73,6 +80,23 @@ namespace Google.Api.Gax.Rest
         /// May be null.
         /// </summary>
         public string QuotaProject { get; set; }
+
+        /// <summary>
+        /// The non empty value set on <see cref="QuotaProjectEnvironmentVariable"/>, if any;
+        /// null otherwise.
+        /// </summary>
+        internal static string EnvironmentQuotaProject =>
+            Environment.GetEnvironmentVariable(QuotaProjectEnvironmentVariable) is string environmentQuotaProject && environmentQuotaProject != ""
+            ? environmentQuotaProject
+            : null;
+
+        /// <summary>
+        /// The effective quota project for this builder.
+        /// Returns <see cref="QuotaProject"/> if it is non null.
+        /// Otherwise returns the non empty value set in <see cref="QuotaProjectEnvironmentVariable"/> if any.
+        /// Otherwise returns null.
+        /// </summary>
+        protected string EffectiveQuotaProject => QuotaProject ?? EnvironmentQuotaProject;
 
         /// <summary>
         /// An <see cref="IHttpClientFactory"/> that will be used to obtain
@@ -183,12 +207,12 @@ namespace Google.Api.Gax.Rest
             // we don't try to load default credentials.
             if (ApiKey != null && unscoped is null)
             {
-                return QuotaProject is null ? null :
+                return EffectiveQuotaProject is null ? null :
                     new ExtraHeadersInitializer(
-                        new AccessTokenWithHeaders.Builder { QuotaProject = QuotaProject }.Build(null));
+                        new AccessTokenWithHeaders.Builder { QuotaProject = EffectiveQuotaProject }.Build(null));
             }
             GoogleCredential scoped = GetScopedCredentialProvider().GetCredentials(unscoped);
-            return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            return EffectiveQuotaProject is null ? scoped : scoped.CreateWithQuotaProject(EffectiveQuotaProject);
         }
 
         /// <summary>
@@ -211,12 +235,12 @@ namespace Google.Api.Gax.Rest
             // we don't try to load default credentials.
             if (ApiKey != null && unscoped is null)
             {
-                return QuotaProject is null ? null :
+                return EffectiveQuotaProject is null ? null :
                     new ExtraHeadersInitializer( 
-                        new AccessTokenWithHeaders.Builder {  QuotaProject = QuotaProject }.Build(null));
+                        new AccessTokenWithHeaders.Builder {  QuotaProject = EffectiveQuotaProject }.Build(null));
             }
             GoogleCredential scoped = await GetScopedCredentialProvider().GetCredentialsAsync(unscoped, cancellationToken).ConfigureAwait(false);
-            return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            return EffectiveQuotaProject is null ? scoped : scoped.CreateWithQuotaProject(EffectiveQuotaProject);
         }
 
         /// <summary>

@@ -25,6 +25,13 @@ namespace Google.Api.Gax.Grpc
     public abstract class ClientBuilderBase<TClient>
     {
         /// <summary>
+        /// Name of the environment variable that will be checked for an ambient quota project ID.
+        /// If <see cref="QuotaProject"/> is not set, the non-empty value of this variable, if any
+        /// will be used in the same circumstances as <see cref="QuotaProject"/> would.
+        /// </summary>
+        public const string QuotaProjectEnvironmentVariable = "GOOGLE_CLOUD_QUOTA_PROJECT";
+
+        /// <summary>
         /// The default gRPC options.
         /// </summary>
         protected static GrpcChannelOptions DefaultOptions { get; } = GrpcChannelOptions.Empty
@@ -70,7 +77,7 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// The credentials to use as a <see cref="GoogleCredential"/>, or null if credentials are being provided in
         /// a different way. Note that unlike <see cref="ChannelCredentials"/> and <see cref="TokenAccessMethod"/>,
-        /// settings for <see cref="Scopes"/>, <see cref="QuotaProject"/> and self-signed JWTs will be applied to this
+        /// settings for <see cref="Scopes"/>, <see cref="EffectiveQuotaProject"/> and self-signed JWTs will be applied to this
         /// credential (creating a new one), in the same way as for application default credentials and credentials
         /// specified using <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>.
         /// </summary>
@@ -78,7 +85,7 @@ namespace Google.Api.Gax.Grpc
 
         /// <summary>
         /// The credentials to use in "raw" form, for conversion into channel credentials. No other settings
-        /// (e.g. <see cref="QuotaProject"/> or <see cref="Scopes"/>) are applied to these credentials.
+        /// (e.g. <see cref="EffectiveQuotaProject"/> or <see cref="Scopes"/>) are applied to these credentials.
         /// </summary>
         public ICredential Credential { get; set; }
 
@@ -120,6 +127,23 @@ namespace Google.Api.Gax.Grpc
         /// May be null.
         /// </summary>
         public string QuotaProject { get; set; }
+
+        /// <summary>
+        /// The non empty value set on <see cref="QuotaProjectEnvironmentVariable"/>, if any;
+        /// null otherwise.
+        /// </summary>
+        internal static string EnvironmentQuotaProject =>
+            Environment.GetEnvironmentVariable(QuotaProjectEnvironmentVariable) is string environmentQuotaProject && environmentQuotaProject != ""
+            ? environmentQuotaProject
+            : null;
+
+        /// <summary>
+        /// The effective quota project for this builder.
+        /// Returns <see cref="QuotaProject"/> if it is non null.
+        /// Otherwise returns the non empty value set in <see cref="QuotaProjectEnvironmentVariable"/> if any.
+        /// Otherwise returns null.
+        /// </summary>
+        protected string EffectiveQuotaProject => QuotaProject ?? EnvironmentQuotaProject;
 
         /// <summary>
         /// Any custom channel options to merge with the default options.
@@ -425,7 +449,7 @@ namespace Google.Api.Gax.Grpc
         private ChannelCredentials MaybeGetSimpleChannelCredentials() =>
             ChannelCredentials ?? Credential?.ToChannelCredentials() ??
 #pragma warning disable CS0618 // Type or member is obsolete
-            (TokenAccessMethod is not null ? new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials() : null);
+            (TokenAccessMethod is not null ? new DelegatedTokenAccess(TokenAccessMethod, EffectiveQuotaProject).ToChannelCredentials() : null);
 #pragma warning restore CS0618 // Type or member is obsolete
 
         // Visible for testing
@@ -437,7 +461,7 @@ namespace Google.Api.Gax.Grpc
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
-            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            GoogleCredential maybeWithProject = EffectiveQuotaProject is null ? scoped : scoped.CreateWithQuotaProject(EffectiveQuotaProject);
             if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
                 && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
             {
@@ -456,7 +480,7 @@ namespace Google.Api.Gax.Grpc
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
-            GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
+            GoogleCredential maybeWithProject = EffectiveQuotaProject is null ? scoped : scoped.CreateWithQuotaProject(EffectiveQuotaProject);
             if (maybeWithProject.UnderlyingCredential is ServiceAccountCredential serviceCredential
                 && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
             {
@@ -512,7 +536,7 @@ namespace Google.Api.Gax.Grpc
             TokenAccessMethod == null &&
 #pragma warning restore CS0618 // Type or member is obsolete
             Scopes == null &&
-            QuotaProject == null &&
+            EffectiveQuotaProject == null &&
             GoogleCredential == null &&
             Credential == null &&
             UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
