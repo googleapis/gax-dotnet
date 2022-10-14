@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.2.0-alpha05](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha04...Google.Api.Gax-4.2.0-alpha05) (2022-10-14)
+
+
+### Features
+
+* Support HTTP rule overrides, primarily for mix-ins ([cbfdfe0](https://github.com/googleapis/gax-dotnet/commit/cbfdfe0fce202b990f9e9aed94cdb56d94541ea9))
+
+
+### Bug Fixes
+
+* Add correct formatting for well-known types ([75bcdd8](https://github.com/googleapis/gax-dotnet/commit/75bcdd86a539ffa9cace9f08f7b483acb4451818))
+* Revert to "slash isn't allowed in single-star wildcard in path templates" ([2a8ec9f](https://github.com/googleapis/gax-dotnet/commit/2a8ec9f18288cb622196645d03c43f3cdf816dcc))
+* Transcode well-known types (Timestamp etc) for query parameters ([33b3a95](https://github.com/googleapis/gax-dotnet/commit/33b3a9520ab01c8200677f534b87dd13c27bd66f))
+
+
+### Miscellaneous Chores
+
+* Specify release version ([#622](https://github.com/googleapis/gax-dotnet/issues/622)) ([e3e9346](https://github.com/googleapis/gax-dotnet/commit/e3e9346757493cf152aa62189f88ac7d0c09511b))
+
 ## [4.2.0-alpha04](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha03...Google.Api.Gax-4.2.0-alpha04) (2022-09-14)
 
 
