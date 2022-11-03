@@ -1,56 +1,18 @@
 # Changelog
 
-## [4.2.0-alpha05](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha04...Google.Api.Gax-4.2.0-alpha05) (2022-10-14)
-
+## [4.2.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.1.1...Google.Api.Gax-4.2.0) (2022-11-03)
 
 ### Features
 
 * Support HTTP rule overrides, primarily for mix-ins ([cbfdfe0](https://github.com/googleapis/gax-dotnet/commit/cbfdfe0fce202b990f9e9aed94cdb56d94541ea9))
-
+* Add formatting method for routing header values ([f4064f9](https://github.com/googleapis/gax-dotnet/commit/f4064f9e5d2cb94d157445751b20acef5b5f7472))
 
 ### Bug Fixes
 
 * Add correct formatting for well-known types ([75bcdd8](https://github.com/googleapis/gax-dotnet/commit/75bcdd86a539ffa9cace9f08f7b483acb4451818))
 * Revert to "slash isn't allowed in single-star wildcard in path templates" ([2a8ec9f](https://github.com/googleapis/gax-dotnet/commit/2a8ec9f18288cb622196645d03c43f3cdf816dcc))
 * Transcode well-known types (Timestamp etc) for query parameters ([33b3a95](https://github.com/googleapis/gax-dotnet/commit/33b3a9520ab01c8200677f534b87dd13c27bd66f))
-
-
-### Miscellaneous Chores
-
-* Specify release version ([#622](https://github.com/googleapis/gax-dotnet/issues/622)) ([e3e9346](https://github.com/googleapis/gax-dotnet/commit/e3e9346757493cf152aa62189f88ac7d0c09511b))
-
-## [4.2.0-alpha04](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha03...Google.Api.Gax-4.2.0-alpha04) (2022-09-14)
-
-
-### Miscellaneous Chores
-
-* Fix pip packages again ([96f565a](https://github.com/googleapis/gax-dotnet/commit/96f565aa708d526ca720392305a2b0777e6931ad))
-
-## [4.2.0-alpha03](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha02...Google.Api.Gax-4.2.0-alpha03) (2022-09-14)
-
-
-### Miscellaneous Chores
-
-* Fix requirements file for Linux ([d717ad4](https://github.com/googleapis/gax-dotnet/commit/d717ad4fddbc15c2cb592b3a045d216667912f68))
-
-## [4.2.0-alpha02](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0-alpha01...Google.Api.Gax-4.2.0-alpha02) (2022-09-14)
-
-
-### Bug Fixes
-
 * Parse error details more robustly ([67b3438](https://github.com/googleapis/gax-dotnet/commit/67b34387f4e06fd9dc11b46cde95aaa9b636d330))
-
-
-### Miscellaneous Chores
-
-* Use hashes with pip install ([04c3e3d](https://github.com/googleapis/gax-dotnet/commit/04c3e3d46c5b9c7a337794934593e1fbf2a425a1))
-
-## [4.2.0-alpha01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.1.1...Google.Api.Gax-4.2.0-alpha01) (2022-09-06)
-
-
-### Features
-
-* Add formatting method for routing header values ([f4064f9](https://github.com/googleapis/gax-dotnet/commit/f4064f9e5d2cb94d157445751b20acef5b5f7472))
 
 ## [4.1.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.1.0...Google.Api.Gax-4.1.1) (2022-09-06)
 
