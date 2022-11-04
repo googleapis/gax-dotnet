@@ -85,4 +85,9 @@ internal class RestMethod
         }
         return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
     }
+
+    internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
+    {
+        return new PartialDecodingStreamReader<TResponse>(httpResponseTask, (string s) =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType) );
+    }
 }
