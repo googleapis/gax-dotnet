@@ -37,8 +37,8 @@ namespace Google.Api.Gax.Grpc.Rest
             var typeRegistry = TypeRegistry.FromFiles(fileDescriptors.ToArray());
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
-                // We don't yet support streaming methods.
-                .Where(x => !x.IsClientStreaming && !x.IsServerStreaming)
+                // We don't support client streaming (and bidi) methods with REST.
+                .Where(x => !x.IsClientStreaming)
                 // Ignore methods without HTTP annotations. Ideally there wouldn't be any, but
                 // operations.proto doesn't specify an HTTP rule for WaitOperation.
                 .Where(x => x.GetOptions()?.GetExtension(AnnotationsExtensions.Http) is not null)

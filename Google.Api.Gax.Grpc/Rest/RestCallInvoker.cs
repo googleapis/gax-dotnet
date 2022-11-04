@@ -31,7 +31,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
         /// <inheritdoc />
         public override AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) =>
-            throw new NotSupportedException("Streaming methods are not supported by the hybrid REST/gRPC mode");
+            _channel.AsyncServerStreamingCall(method, host, options, request);
 
         /// <inheritdoc />
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) =>

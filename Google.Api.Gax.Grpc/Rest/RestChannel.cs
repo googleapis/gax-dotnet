@@ -75,25 +75,29 @@ namespace Google.Api.Gax.Grpc.Rest
                 }
                 cancellationTokenSource = new CancellationTokenSource(delayInterval);
             }
-            var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token);
 
-            var responseTask = restMethod.ReadResponseAsync<TResponse>(httpResponseTask);
-            var responseHeadersTask = ReadHeadersAsync(httpResponseTask);
-            Func<Status> statusFunc = () => GetStatus(httpResponseTask);
-            Func<Metadata> trailersFunc = () => GetTrailers(httpResponseTask);
+            var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseContentRead);
+            var readResponseTask = ReadResponseAsync(httpResponseTask);
+
+            var responseTask = restMethod.ReadResponseAsync<TResponse>(readResponseTask);
+            var responseHeadersTask = ReadHeadersAsync(readResponseTask);
+            Func<Status> statusFunc = () => GetStatus(readResponseTask);
+            Func<Metadata> trailersFunc = () => GetTrailers(readResponseTask);
             return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
         }
 
-        private async Task<ReadHttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request, CancellationToken deadlineToken)
+        private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request,
+            CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
-            var httpRequest = restMethod.CreateRequest((IMessage) request, host);
+            var httpRequest = restMethod.CreateRequest((IMessage)request, host);
             foreach (var headerKeyValue in options.Headers
                 .Where(mh => !mh.IsBinary)
-                .Where(mh=> mh.Key != VersionHeaderBuilder.HeaderName))
+                .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
             {
                 httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
             }
+
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
             HttpResponseMessage httpResponseMessage;
@@ -102,13 +106,50 @@ namespace Google.Api.Gax.Grpc.Rest
                 try
                 {
                     await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
-                    httpResponseMessage = await _httpClient.SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, linkedCts.Token).ConfigureAwait(false);
+                    httpResponseMessage = await _httpClient.SendAsync(httpRequest, httpCompletionOption, linkedCts.Token).ConfigureAwait(false);
                 }
                 catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
                 {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`",  ex));
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
                 }
             }
+
+            return httpResponseMessage;
+        }
+
+        /// <summary>
+        /// Equivalent to <see cref="CallInvoker.AsyncServerStreamingCall{TRequest, TResponse}(Method{TRequest, TResponse}, string, CallOptions, TRequest)"/>.
+        /// </summary>
+        public AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TResponse, TRequest>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
+        {
+            // TODO[virost, 11/2022] Refactor this and the Unary call to remove duplication
+            var restMethod = _serviceCollection.GetRestMethod(method);
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            if (options.Deadline.HasValue)
+            {
+                // TODO: [virost, 2021-12] Use IClock.
+                var delayInterval = options.Deadline.Value - DateTime.UtcNow;
+                if (delayInterval.TotalMilliseconds <= 0)
+                {
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`"));
+                }
+                cancellationTokenSource = new CancellationTokenSource(delayInterval);
+            }
+
+            Task<HttpResponseMessage> httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseHeadersRead);
+
+            Task<Metadata> responseHeadersTask = ReadHeadersAsync(httpResponseTask);
+            Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
+            Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
+
+            IAsyncStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask);
+            return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
+        }
+
+        private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)
+        {
+            HttpResponseMessage httpResponseMessage = await msgTask.ConfigureAwait(false);
 
             try
             {
@@ -155,6 +196,9 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task<Metadata> ReadHeadersAsync(Task<ReadHttpResponseMessage> httpResponseTask) =>
             (await httpResponseTask.ConfigureAwait(false)).GetHeaders();
+
+        private async Task<Metadata> ReadHeadersAsync(Task<HttpResponseMessage> httpResponseTask) =>
+            ReadHttpResponseMessage.ReadHeaders((await httpResponseTask.ConfigureAwait(false)).Headers);
 
         private static Status GetStatus(Task<ReadHttpResponseMessage> httpResponseTask) => httpResponseTask.Status switch
         {

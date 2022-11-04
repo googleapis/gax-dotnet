@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -84,5 +85,21 @@ internal class RestMethod
             throw new RpcException(status, httpResponse.GetTrailers());
         }
         return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
+    }
+
+    internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
+    {
+        var streamReaderTask = GetStreamReader(httpResponseTask);
+        Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
+
+        return new PartialDecodingStreamReader<TResponse>(streamReaderTask, responseConverter);
+    }
+
+    private static async Task<StreamReader> GetStreamReader(Task<HttpResponseMessage> httpResponseTask)
+    {
+        var httpResponse = await httpResponseTask.ConfigureAwait(false);
+        httpResponse.EnsureSuccessStatusCode();
+        var stream = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        return new StreamReader(stream);
     }
 }
