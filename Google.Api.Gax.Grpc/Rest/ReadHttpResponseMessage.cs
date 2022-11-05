@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.ExceptionServices;
 
 namespace Google.Api.Gax.Grpc.Rest
@@ -65,9 +66,14 @@ namespace Google.Api.Gax.Grpc.Rest
 
         internal Metadata GetHeaders()
         {
+            return ReadHeaders(OriginalResponseMessage.Headers);
+        }
+
+        internal static Metadata ReadHeaders(HttpResponseHeaders headers)
+        {
             // TODO: This could be very wrong. I don't know what headers we should really return, and I don't know about semi-colon joining.
             var metadata = new Metadata();
-            foreach (var header in OriginalResponseMessage.Headers)
+            foreach (var header in headers)
             {
                 metadata.Add(header.Key, string.Join(";", header.Value));
             }

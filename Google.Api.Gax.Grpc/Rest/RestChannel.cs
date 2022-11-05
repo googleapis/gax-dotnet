@@ -103,7 +103,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
             Task<HttpResponseMessage> httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseHeadersRead);
 
-            Task<Metadata> responseHeadersTask = ReadHeadersAsync(ReadResponseAsync(httpResponseTask));
+            Task<Metadata> responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
             Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
 
@@ -195,6 +195,9 @@ namespace Google.Api.Gax.Grpc.Rest
 
         private async Task<Metadata> ReadHeadersAsync(Task<ReadHttpResponseMessage> httpResponseTask) =>
             (await httpResponseTask.ConfigureAwait(false)).GetHeaders();
+
+        private async Task<Metadata> ReadHeadersAsync(Task<HttpResponseMessage> httpResponseTask) =>
+            ReadHttpResponseMessage.ReadHeaders((await httpResponseTask.ConfigureAwait(false)).Headers);
 
         private static Status GetStatus(Task<ReadHttpResponseMessage> httpResponseTask) => httpResponseTask.Status switch
         {
