@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Google.Protobuf;
 using Grpc.Core;
+using Newtonsoft.Json.Linq;
 
 namespace Google.Api.Gax.Grpc.Rest;
 
@@ -21,9 +21,9 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
 
     private readonly Queue<TResponse> _readyResults;
     private readonly StringBuilder _currentBuffer;
-
+    
+    private readonly StreamReader _streamReader;
     private bool _arrayClosed;
-    private readonly Stream _stream;
 
     /// <summary>
     /// 
@@ -37,7 +37,8 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
         var httpResponse = httpResponseTask.ConfigureAwait(false).GetAwaiter().GetResult();
         // TODO [virost, 11/5]: should I wrap this exception?
         httpResponse.EnsureSuccessStatusCode();
-        _stream = httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        var stream = httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        _streamReader = new StreamReader(stream);
         
         _readyResults = new Queue<TResponse>();
         _currentBuffer = new StringBuilder();
@@ -59,18 +60,23 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
 
         while (_readyResults.Count == 0)
         {
-            // StreamReader.ReadAsync does not have an overload with CancellationToken in 4.6.2, but Stream.ReadAsync does.
-            // TODO [virost, 11/5]: 1000 is completely arbitrary, is there a better number?
-            var buffer = new byte[1000];
+            var buffer = new char[1000];
+            var taskRead = _streamReader.ReadAsync(buffer, 0, buffer.Length);
+            var cancellationTask = Task.Delay(-1, cancellationToken);
+            var resultTask = await Task.WhenAny(taskRead, cancellationTask).ConfigureAwait(false);
 
-            // TODO [virost, 11/5]: should I wrap whatever this throws?
-            var readLen = await _stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
+            if (resultTask == cancellationTask)
+            {
+                // If the cancellationTask "wins" `Task.WhenAny` by being cancelled, the following await will throw TaskCancelledException.
+                await cancellationTask.ConfigureAwait(false);
+            }
 
+            var readLen = await taskRead.ConfigureAwait(false);
             if (readLen == 0)
             {
                 if (!_arrayClosed)
                 {
-                    var errorText = "Closing bracket not received after iterating through the stream. " +
+                    var errorText = "Closing `]` bracket not received after iterating through the stream. " +
                                     "This means that streaming ended without all objects transmitted. " +
                                     "It is likely a result of server or network error.";
                     throw new InvalidOperationException(errorText);
@@ -79,10 +85,7 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
                 break;
             }
 
-            var memStream = new MemoryStream(buffer, 0, readLen);
-            var streamReader = new StreamReader(memStream);
-            var readChars = streamReader.ReadToEnd();
-
+            var readChars = buffer.Take(readLen);
             foreach (var c in readChars)
             {
                 // Closing bracket for the top-level array
@@ -107,13 +110,23 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
 
                 try
                 {
-                    TResponse obj = _parsing(_currentBuffer.ToString());
-                    _readyResults.Enqueue(obj);
-                    _currentBuffer.Clear();
+                    // This will throw unless the characters in the _currentBuffer
+                    // add up to a correct JSON and since the _currentBuffer always
+                    // starts with an opening `{` bracket from one of the
+                    // top-level array's element's,
+                    // this will throw unless _currentBuffer contains one message.
+                    JObject.Parse(_currentBuffer.ToString());
                 }
-                catch (InvalidJsonException)
+                catch (Newtonsoft.Json.JsonReaderException)
                 {
+                    // Tried to parse a partial json because the `}` was a part of
+                    // a string or a child inner object.
+                    continue;
                 }
+
+                TResponse obj = _parsing(_currentBuffer.ToString());
+                _readyResults.Enqueue(obj);
+                _currentBuffer.Clear();
             }
         }
 
