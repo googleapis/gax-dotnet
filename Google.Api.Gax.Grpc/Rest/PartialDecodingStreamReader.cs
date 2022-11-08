@@ -12,9 +12,10 @@ using Newtonsoft.Json.Linq;
 namespace Google.Api.Gax.Grpc.Rest;
 
 /// <summary>
-/// 
+/// An IAsyncStreamReader implementation that reads an array of messages
+/// from HTTP stream as they arrive in (partial) JSON chunks. 
 /// </summary>
-/// <typeparam name="TResponse"></typeparam>
+/// <typeparam name="TResponse">Type of proto messages in the stream</typeparam>
 public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>
 {
     private readonly Func<string, TResponse> _parsing;
@@ -26,30 +27,21 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
     private bool _arrayClosed;
 
     /// <summary>
-    /// 
+    /// Creates the StreamReader
     /// </summary>
-    /// <param name="httpResponseTask"></param>
-    /// <param name="parsing"></param>
-    public PartialDecodingStreamReader(Task<HttpResponseMessage> httpResponseTask, Func<string, TResponse> parsing)
+    /// <param name="stream">A stream with partial JSON</param>
+    /// <param name="parsing">A function to transform a well-formed JSON object into the proto message.</param>
+    public PartialDecodingStreamReader(Stream stream, Func<string, TResponse> parsing)
     {
-        _parsing = parsing;
-
-        var httpResponse = httpResponseTask.ConfigureAwait(false).GetAwaiter().GetResult();
-        // TODO [virost, 11/5]: should I wrap this exception?
-        httpResponse.EnsureSuccessStatusCode();
-        var stream = httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         _streamReader = new StreamReader(stream);
+        _parsing = parsing;
         
         _readyResults = new Queue<TResponse>();
         _currentBuffer = new StringBuilder();
         _arrayClosed = false;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> MoveNext(CancellationToken cancellationToken)
     {
         if (_readyResults.Count > 0)
@@ -139,8 +131,6 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
         return true;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <inheritdoc />
     public TResponse Current { get; private set; }
 }
