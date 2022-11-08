@@ -86,8 +86,15 @@ internal class RestMethod
         return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
     }
 
+    // TODO: Handle cancellation?
+    /// <summary>
+    /// Converts the http response into a IAsyncStreamReader.
+    /// </summary>
     internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
     {
-        return new PartialDecodingStreamReader<TResponse>(httpResponseTask, (string s) =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType) );
+        var httpResponse = httpResponseTask.ConfigureAwait(false).GetAwaiter().GetResult();
+        httpResponse.EnsureSuccessStatusCode();
+        var stream = httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        return new PartialDecodingStreamReader<TResponse>(stream, (string s) =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType) );
     }
 }

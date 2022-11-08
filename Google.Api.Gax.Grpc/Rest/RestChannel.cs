@@ -49,7 +49,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
             // TODO: Avoid creating an HTTP Client for every channel?
             _httpClient = new HttpClient { BaseAddress = baseAddress };
-
+            
             _channelAuthInterceptor = credentials.ToAsyncAuthInterceptor();
 
             // TODO: Use options where appropriate.
@@ -85,6 +85,9 @@ namespace Google.Api.Gax.Grpc.Rest
         }
 
 
+        /// <summary>
+        /// Equivalent to <see cref="CallInvoker.AsyncServerStreamingCall{TRequest, TResponse}(Method{TRequest, TResponse}, string, CallOptions, TRequest)"/>.
+        /// </summary>
         public AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TResponse, TRequest>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
@@ -186,7 +189,7 @@ namespace Google.Api.Gax.Grpc.Rest
             // Finally, if the channelTask completes, the await does nothing.
             await resultTask.ConfigureAwait(false);
             // If we're here, the channelTask has completed successfully.
-               
+            
             foreach (var entry in metadata)
             {
                 request.Headers.Add(entry.Key, entry.Value);
