@@ -64,10 +64,7 @@ namespace Google.Api.Gax.Grpc.Rest
             // We'll bubble up the _readException instead.
             (OriginalResponseMessage, _readException) = (response, readException);
 
-        internal Metadata GetHeaders()
-        {
-            return ReadHeaders(OriginalResponseMessage.Headers);
-        }
+        internal Metadata GetHeaders() => ReadHeaders(OriginalResponseMessage.Headers);
 
         internal static Metadata ReadHeaders(HttpResponseHeaders headers)
         {
