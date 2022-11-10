@@ -100,6 +100,15 @@ namespace Google.Api.Gax.Rest
         public IHttpClientFactory HttpClientFactory { get; set; }
 
         /// <summary>
+        /// Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.        
+        /// </summary>
+        /// <remarks>
+        /// In the base implementation, this defaults to <c>true</c>. Subclasses may add code in their own constructors
+        /// to make the default effectively <c>false</c>, however.
+        /// </remarks>
+        public bool UseJwtAccessWithScopes { get; set; } = true;
+
+        /// <summary>
         /// Creates a new instance with no settings.
         /// </summary>
         protected ClientBuilderBase()
@@ -188,6 +197,11 @@ namespace Google.Api.Gax.Rest
                         new AccessTokenWithHeaders.Builder { QuotaProject = QuotaProject }.Build(null));
             }
             GoogleCredential scoped = GetScopedCredentialProvider().GetCredentials(unscoped);
+            if (scoped.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                scoped = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
+            }
             return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
         }
 
@@ -216,6 +230,11 @@ namespace Google.Api.Gax.Rest
                         new AccessTokenWithHeaders.Builder {  QuotaProject = QuotaProject }.Build(null));
             }
             GoogleCredential scoped = await GetScopedCredentialProvider().GetCredentialsAsync(unscoped, cancellationToken).ConfigureAwait(false);
+            if (scoped.UnderlyingCredential is ServiceAccountCredential serviceCredential
+                && serviceCredential.UseJwtAccessWithScopes != UseJwtAccessWithScopes)
+            {
+                scoped = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
+            }
             return QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
         }
 
