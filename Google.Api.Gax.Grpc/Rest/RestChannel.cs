@@ -75,15 +75,51 @@ namespace Google.Api.Gax.Grpc.Rest
                 }
                 cancellationTokenSource = new CancellationTokenSource(delayInterval);
             }
-            var httpResponseTask = ReadResponseAsync(SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseContentRead));
 
-            var responseTask = restMethod.ReadResponseAsync<TResponse>(httpResponseTask);
-            var responseHeadersTask = ReadHeadersAsync(httpResponseTask);
-            Func<Status> statusFunc = () => GetStatus(httpResponseTask);
-            Func<Metadata> trailersFunc = () => GetTrailers(httpResponseTask);
+            var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseContentRead);
+            var readResponseTask = ReadResponseAsync(httpResponseTask);
+
+            var responseTask = restMethod.ReadResponseAsync<TResponse>(readResponseTask);
+            var responseHeadersTask = ReadHeadersAsync(readResponseTask);
+            Func<Status> statusFunc = () => GetStatus(readResponseTask);
+            Func<Metadata> trailersFunc = () => GetTrailers(readResponseTask);
             return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
         }
 
+        private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request,
+            CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
+        {
+            // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
+            var httpRequest = restMethod.CreateRequest((IMessage)request, host);
+            foreach (var headerKeyValue in options.Headers
+                         .Where(mh => !mh.IsBinary)
+                         .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
+            {
+                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
+            }
+
+            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
+
+            HttpResponseMessage httpResponseMessage;
+            using (CancellationTokenSource linkedCts =
+                   CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
+            {
+                try
+                {
+                    await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
+                    httpResponseMessage = await _httpClient
+                        .SendAsync(httpRequest, httpCompletionOption, linkedCts.Token)
+                        .ConfigureAwait(false);
+                }
+                catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
+                {
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded,
+                        $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
+                }
+            }
+
+            return httpResponseMessage;
+        }
 
         /// <summary>
         /// Equivalent to <see cref="CallInvoker.AsyncServerStreamingCall{TRequest, TResponse}(Method{TRequest, TResponse}, string, CallOptions, TRequest)"/>.
@@ -132,41 +168,6 @@ namespace Google.Api.Gax.Grpc.Rest
             }
         }
 
-        private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request,
-            CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
-        {
-            // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
-            var httpRequest = restMethod.CreateRequest((IMessage)request, host);
-            foreach (var headerKeyValue in options.Headers
-                         .Where(mh => !mh.IsBinary)
-                         .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
-            {
-                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
-            }
-
-            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
-
-            HttpResponseMessage httpResponseMessage;
-            using (CancellationTokenSource linkedCts =
-                   CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
-            {
-                try
-                {
-                    await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
-                    httpResponseMessage = await _httpClient
-                        .SendAsync(httpRequest, httpCompletionOption, linkedCts.Token)
-                        .ConfigureAwait(false);
-                }
-                catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
-                {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded,
-                        $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
-                }
-            }
-
-            return httpResponseMessage;
-        }
-
         private async Task AddAuthHeadersAsync(HttpRequestMessage request, RestMethod restMethod, CancellationToken combinedCancellationToken)
         {
             if (_channelAuthInterceptor is null)
@@ -189,7 +190,7 @@ namespace Google.Api.Gax.Grpc.Rest
             // Finally, if the channelTask completes, the await does nothing.
             await resultTask.ConfigureAwait(false);
             // If we're here, the channelTask has completed successfully.
-            
+           
             foreach (var entry in metadata)
             {
                 request.Headers.Add(entry.Key, entry.Value);
