@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Copyright 2022 Google LLC
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,43 +23,53 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// from HTTP stream as they arrive in (partial) JSON chunks. 
 /// </summary>
 /// <typeparam name="TResponse">Type of proto messages in the stream</typeparam>
-public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>
+internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>
 {
-    private readonly Func<string, TResponse> _parsing;
+    private readonly Task<StreamReader> _streamReaderTask;
+    private readonly Func<string, TResponse> _responseConverter;
 
     private readonly Queue<TResponse> _readyResults;
     private readonly StringBuilder _currentBuffer;
     
-    private readonly StreamReader _streamReader;
+    private StreamReader _streamReader;
     private bool _arrayClosed;
 
     /// <summary>
     /// Creates the StreamReader
     /// </summary>
-    /// <param name="stream">A stream with partial JSON</param>
-    /// <param name="parsing">A function to transform a well-formed JSON object into the proto message.</param>
-    public PartialDecodingStreamReader(Stream stream, Func<string, TResponse> parsing)
+    /// <param name="streamReaderTask">A stream reader returning partial JSON chunks</param>
+    /// <param name="responseConverter">A function to transform a well-formed JSON object into the proto message.</param>
+    public PartialDecodingStreamReader(Task<StreamReader> streamReaderTask, Func<string, TResponse> responseConverter)
     {
-        _streamReader = new StreamReader(stream);
-        _parsing = parsing;
-        
+        _streamReaderTask = streamReaderTask;
+        _responseConverter = responseConverter;
+
         _readyResults = new Queue<TResponse>();
         _currentBuffer = new StringBuilder();
+
+        _streamReader = null;
         _arrayClosed = false;
     }
 
     /// <inheritdoc />
     public async Task<bool> MoveNext(CancellationToken cancellationToken)
     {
+        _streamReader ??= await _streamReaderTask.ConfigureAwait(false);
+
         if (_readyResults.Count > 0)
         {
             Current = _readyResults.Dequeue();
             return true;
         }
 
+        if (_streamReader.EndOfStream)
+        {
+            return false;
+        }
+
+        var buffer = new char[8000];
         while (_readyResults.Count == 0)
         {
-            var buffer = new char[1000];
             var taskRead = _streamReader.ReadAsync(buffer, 0, buffer.Length);
             var cancellationTask = Task.Delay(-1, cancellationToken);
             var resultTask = await Task.WhenAny(taskRead, cancellationTask).ConfigureAwait(false);
@@ -74,7 +91,7 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
                     throw new InvalidOperationException(errorText);
                 }
 
-                break;
+                return false;
             }
 
             var readChars = buffer.Take(readLen);
@@ -100,6 +117,7 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
                     continue;
                 }
 
+                var currentStr = _currentBuffer.ToString();
                 try
                 {
                     // This will throw unless the characters in the _currentBuffer
@@ -107,7 +125,8 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
                     // starts with an opening `{` bracket from one of the
                     // top-level array's element's,
                     // this will throw unless _currentBuffer contains one message.
-                    JObject.Parse(_currentBuffer.ToString());
+                    // TODO[virost, jskeet, 11/2022] Use a JSON tokenizer instead
+                    JObject.Parse(currentStr);
                 }
                 catch (Newtonsoft.Json.JsonReaderException)
                 {
@@ -116,15 +135,10 @@ public class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TRespon
                     continue;
                 }
 
-                TResponse obj = _parsing(_currentBuffer.ToString());
-                _readyResults.Enqueue(obj);
+                TResponse responseElement = _responseConverter(currentStr);
+                _readyResults.Enqueue(responseElement);
                 _currentBuffer.Clear();
             }
-        }
-
-        if (!_readyResults.Any())
-        {
-            return false;
         }
 
         Current = _readyResults.Dequeue();

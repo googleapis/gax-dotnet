@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -86,15 +87,19 @@ internal class RestMethod
         return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
     }
 
-    // TODO: Handle cancellation?
-    /// <summary>
-    /// Converts the http response into a IAsyncStreamReader.
-    /// </summary>
     internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
     {
-        var httpResponse = httpResponseTask.ConfigureAwait(false).GetAwaiter().GetResult();
+        var streamReaderTask = GetStreamReader(httpResponseTask);
+        Func<string, TResponse> responseConverter = s =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType);
+
+        return new PartialDecodingStreamReader<TResponse>(streamReaderTask, responseConverter);
+    }
+
+    private static async Task<StreamReader> GetStreamReader(Task<HttpResponseMessage> httpResponseTask)
+    {
+        var httpResponse = await httpResponseTask.ConfigureAwait(false);
         httpResponse.EnsureSuccessStatusCode();
-        var stream = httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        return new PartialDecodingStreamReader<TResponse>(stream, (string s) =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType) );
+        var stream = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        return new StreamReader(stream);
     }
 }
