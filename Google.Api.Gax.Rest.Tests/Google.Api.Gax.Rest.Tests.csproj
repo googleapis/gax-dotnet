@@ -6,6 +6,7 @@
     <TargetFrameworks>net6.0;netcoreapp3.1;net462</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;netcoreapp3.1</TargetFrameworks>
     <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3277</MSBuildWarningsAsMessages>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ClientBuilderBaseTest.DependencyInjection.cs">
+    <Compile Update="ClientBuilderBaseTest.*.cs">
       <DependentUpon>ClientBuilderBaseTest.cs</DependentUpon>
     </Compile>
   </ItemGroup>
