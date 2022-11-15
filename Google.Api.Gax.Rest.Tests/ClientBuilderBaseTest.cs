@@ -5,16 +5,6 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Apis.Auth.OAuth2;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Google.Api.Gax.Rest.Tests
 {
     /// <summary>

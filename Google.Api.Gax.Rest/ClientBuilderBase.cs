@@ -103,10 +103,12 @@ namespace Google.Api.Gax.Rest
         /// Returns whether or not self-signed JWTs will be used over OAuth tokens when OAuth scopes are explicitly set.        
         /// </summary>
         /// <remarks>
-        /// In the base implementation, this defaults to <c>true</c>. Subclasses may add code in their own constructors
-        /// to make the default effectively <c>false</c>, however.
+        /// In the base implementation, this defaults to <c>false</c> for maximum compatibility.
+        /// Subclasses which provide clients for services which support self-signed JWTs with scopes
+        /// may change this property value on construction, effectively changing the default to <c>true</c>
+        /// from the perspective of user code.
         /// </remarks>
-        public bool UseJwtAccessWithScopes { get; set; } = true;
+        public bool UseJwtAccessWithScopes { get; set; } = false;
 
         /// <summary>
         /// Creates a new instance with no settings.
