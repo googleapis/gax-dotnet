@@ -102,7 +102,7 @@ namespace Google.Api.Gax
             var info = assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault()?.InformationalVersion;
             if (info != null && IsHeaderNameValueValid(info)) // Skip informational version if it's not a valid header value
             {
-                return info;
+                return FormatInformationalVersion(info);
             }
             var file = assembly.GetCustomAttributes<AssemblyFileVersionAttribute>().FirstOrDefault()?.Version;
             if (file != null)
@@ -110,6 +110,35 @@ namespace Google.Api.Gax
                 return string.Join(".", file.Split('.').Take(3));
             }
             return FormatVersion(assembly.GetName().Version);
+        }
+
+        // Visible for testing
+
+        /// <summary>
+        /// Formats an AssemblyInformationalVersionAttribute value to avoid losing useful information,
+        /// but also avoid including unnecessary hex that is appended automatically.
+        /// </summary>
+        internal static string FormatInformationalVersion(string info)
+        {
+            // In some cases, the runtime includes 40 hex digits after a + or period in InformationalVersion.
+            // In precisely those cases, we strip this.
+            int signIndex = Math.Max(info.LastIndexOf('.'), info.LastIndexOf('+'));
+            if (signIndex == -1 || signIndex != info.Length - 41)
+            {
+                return info;
+            }
+            for (int i = signIndex + 1; i < info.Length; i++)
+            {
+                char c = info[i];
+                bool isHex = (c >= '0' && c <= '9')
+                    || (c >= 'a' && c <= 'f')
+                    || (c >= 'A' && c <= 'F');
+                if (!isHex)
+                {
+                    return info;
+                }
+            }
+            return info.Substring(0, signIndex);
         }
 
         private static string FormatVersion(Version version) =>
