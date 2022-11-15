@@ -59,8 +59,33 @@ namespace Google.Api.Gax.Tests
         [Fact]
         public void AppendAssemblyVersion()
         {
-            Assert.StartsWith("foo/1.0.0",
+            Assert.Equal("foo/1.0.0",
                 new VersionHeaderBuilder().AppendAssemblyVersion("foo", GetType()).ToString());
+        }
+
+        private const string SampleHex = "0123456789abcdef0123456789ABCDEF01234567";
+        private const string SampleNonHex = "0123456789GHIJKL0123456789ABCDEF01234567";
+
+        [Theory]
+        [InlineData("1.2.3+" + SampleHex, "1.2.3")]
+        [InlineData("1.2.3-preview+" + SampleHex, "1.2.3-preview")]
+        [InlineData("1.2.3-preview+build." + SampleHex, "1.2.3-preview+build")]
+        public void FormatInformationalVersion(string info, string expected)
+        {
+            var actual = VersionHeaderBuilder.FormatInformationalVersion(info);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("1.2.3")]
+        [InlineData("1.2.3-" + SampleHex)] // We require + or . before the hex
+        [InlineData("1.2.3+" + SampleNonHex)] // We check that it's hex
+        [InlineData("1.2.3+ABCDEF")] // We check that it's 40 characters (this is too short)
+        [InlineData("1.2.3+A" + SampleHex)] // We check that it's 40 characters (this is too long)
+        public void FormatInformationalVersion_NoTrimming(string info)
+        {
+            var actual = VersionHeaderBuilder.FormatInformationalVersion(info);
+            Assert.Equal(info, actual);
         }
 
         [Fact]
