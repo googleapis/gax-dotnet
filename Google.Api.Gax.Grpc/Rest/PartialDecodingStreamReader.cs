@@ -100,6 +100,8 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
                 // Closing bracket for the top-level array
                 if (_currentBuffer.Length == 0 && c == ']')
                 {
+                    // TODO[virost, jskeet, 11/2022] Fix with tokenizer:
+                    // it's possible to receive more data after the closing `]`
                     _arrayClosed = true;
                     continue;
                 }
