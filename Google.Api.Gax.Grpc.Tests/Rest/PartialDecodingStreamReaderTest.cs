@@ -19,21 +19,22 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 {
     public class PartialDecodingStreamReaderTest
     {
-        private static readonly string DataStr;
-        static PartialDecodingStreamReaderTest()
-        {
-            var foo = new JObject
-            {
-                ["foo"] = 1
-            };
+        private static readonly string ArrayOfObjectsJson = @"
+[
+  {
+    ""foo"": 1
+  },
+  {
+    ""bar"": 2
+  }
+]
+";
 
-            var bar = new JObject
-            {
-                ["bar"] = 2
-            };
-
-            DataStr = JsonConvert.SerializeObject( new [] { foo, bar }, Formatting.Indented);
-        }
+        private static readonly string IncompleteArrayOfObjectsJson = @"
+[
+  {
+    ""foo"": 1
+  },";
 
         /// <summary>
         /// Test coarse split data.
@@ -41,24 +42,23 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByLine()
         {
-            
-            StreamReader reader = new MyStreamReader(DataStr.Split('\n'));
+            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-            var result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            var result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.True(result);
             Assert.NotNull(decodingReader.Current);
             Assert.Equal(decodingReader.Current["foo"], 1);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.True(result);
             Assert.NotNull(decodingReader.Current);
             Assert.Equal(decodingReader.Current["bar"], 2);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
         }
 
@@ -68,24 +68,23 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByChar()
         {
-            
-            StreamReader reader = new MyStreamReader(DataStr.Select(c =>  c.ToString()));
+            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c =>  c.ToString()));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-            var result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            var result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.True(result);
             Assert.NotNull(decodingReader.Current);
             Assert.Equal(decodingReader.Current["foo"], 1);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.True(result);
             Assert.NotNull(decodingReader.Current);
             Assert.Equal(decodingReader.Current["bar"], 2);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
         }
 
@@ -95,17 +94,16 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestIncomplete()
         {
-            var s = DataStr.Split(',')[0]; // right after the first element ends
-            StreamReader reader = new MyStreamReader(s.Split('\n'));
+            StreamReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-            var result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            var result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.True(result);
             Assert.NotNull(decodingReader.Current);
             Assert.Equal(decodingReader.Current["foo"], 1);
 
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-                await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false));
+                await decodingReader.MoveNext(CancellationToken.None));
             Assert.Contains("Closing `]` bracket not received after iterating through the stream.", ex.Message);
         }
 
@@ -115,13 +113,13 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestEmpty()
         {
-            StreamReader reader = new MyStreamReader(new[] {"[]"});
+            StreamReader reader = new ReplayingStreamReader(new[] {"[]"});
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-            var result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            var result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
 
-            result = await decodingReader.MoveNext(CancellationToken.None).ConfigureAwait(false);
+            result = await decodingReader.MoveNext(CancellationToken.None);
             Assert.False(result);
         }
     }
@@ -129,7 +127,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
     /// <summary>
     /// A fake of a StreamReader emitting given strings
     /// </summary>
-    internal class MyStreamReader : StreamReader
+    internal class ReplayingStreamReader : StreamReader
     {
         private readonly Queue<string> _queue;
 
@@ -140,7 +138,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         /// that one to end.
         /// </summary>
         /// <param name="strings"></param>
-        public MyStreamReader(IEnumerable<string> strings) : base(new MemoryStream(new byte[1]))
+        public ReplayingStreamReader(IEnumerable<string> strings) : base(new MemoryStream(new byte[1]))
         {
             _queue = new Queue<string>(strings);
         }
@@ -154,7 +152,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             }
 
             var nextString = _queue.Dequeue();
-            for (int i = 0; i < nextString.Length; i++)
+
+            Assert.True(count > nextString.Length);
+
+            for (int i = index; i < nextString.Length; i++)
             {
                 buffer[i] = nextString[i];
             }

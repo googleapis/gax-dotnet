@@ -92,8 +92,8 @@ namespace Google.Api.Gax.Grpc.Rest
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             var httpRequest = restMethod.CreateRequest((IMessage)request, host);
             foreach (var headerKeyValue in options.Headers
-                         .Where(mh => !mh.IsBinary)
-                         .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
+                .Where(mh => !mh.IsBinary)
+                .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
             {
                 httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
             }
@@ -101,20 +101,16 @@ namespace Google.Api.Gax.Grpc.Rest
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
             HttpResponseMessage httpResponseMessage;
-            using (CancellationTokenSource linkedCts =
-                   CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
+            using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
             {
                 try
                 {
                     await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
-                    httpResponseMessage = await _httpClient
-                        .SendAsync(httpRequest, httpCompletionOption, linkedCts.Token)
-                        .ConfigureAwait(false);
+                    httpResponseMessage = await _httpClient.SendAsync(httpRequest, httpCompletionOption, linkedCts.Token).ConfigureAwait(false);
                 }
                 catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
                 {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded,
-                        $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
+                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
                 }
             }
 
@@ -126,6 +122,7 @@ namespace Google.Api.Gax.Grpc.Rest
         /// </summary>
         public AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TResponse, TRequest>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
+            // TODO[virost, 11/2022] Refactor this and the Unary call to remove duplication
             var restMethod = _serviceCollection.GetRestMethod(method);
 
             var cancellationTokenSource = new CancellationTokenSource();

@@ -90,7 +90,7 @@ internal class RestMethod
     internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
     {
         var streamReaderTask = GetStreamReader(httpResponseTask);
-        Func<string, TResponse> responseConverter = s =>  (TResponse) _parser.Parse(s, _protoMethod.OutputType);
+        Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
 
         return new PartialDecodingStreamReader<TResponse>(streamReaderTask, responseConverter);
     }
