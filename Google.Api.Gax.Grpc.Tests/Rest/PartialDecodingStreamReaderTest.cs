@@ -42,7 +42,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByLine()
         {
-            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split('\n'));
+            TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -68,7 +68,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByChar()
         {
-            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c =>  c.ToString()));
+            TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c =>  c.ToString()));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -94,7 +94,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestIncomplete()
         {
-            StreamReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split('\n'));
+            TextReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -113,7 +113,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestEmpty()
         {
-            StreamReader reader = new ReplayingStreamReader(new[] {"[]"});
+            TextReader reader = new ReplayingStreamReader(new[] {"[]"});
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -127,7 +127,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
     /// <summary>
     /// A fake of a StreamReader emitting given strings
     /// </summary>
-    internal class ReplayingStreamReader : StreamReader
+    internal class ReplayingStreamReader : TextReader
     {
         private readonly Queue<string> _queue;
 
@@ -138,7 +138,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         /// that one to end.
         /// </summary>
         /// <param name="strings"></param>
-        public ReplayingStreamReader(IEnumerable<string> strings) : base(new MemoryStream(new byte[1]))
+        public ReplayingStreamReader(IEnumerable<string> strings)
         {
             _queue = new Queue<string>(strings);
         }
@@ -147,7 +147,6 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         {
             if (_queue.Count <= 0)
             {
-                base.ReadToEnd(); // EndOfStream starts to return true
                 return Task.FromResult(0);
             }
 

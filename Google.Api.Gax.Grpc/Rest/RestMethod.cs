@@ -95,7 +95,7 @@ internal class RestMethod
         return new PartialDecodingStreamReader<TResponse>(streamReaderTask, responseConverter);
     }
 
-    private static async Task<StreamReader> GetStreamReader(Task<HttpResponseMessage> httpResponseTask)
+    private static async Task<TextReader> GetStreamReader(Task<HttpResponseMessage> httpResponseTask)
     {
         var httpResponse = await httpResponseTask.ConfigureAwait(false);
         httpResponse.EnsureSuccessStatusCode();
