@@ -42,7 +42,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByLine()
         {
-            TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split('\n'));
+            var enumerable = ArrayOfObjectsJson.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            TextReader reader = new ReplayingStreamReader(enumerable);
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -94,7 +95,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestIncomplete()
         {
-            TextReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split('\n'));
+            TextReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -154,9 +155,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 
             Assert.True(count > nextString.Length);
 
-            for (int i = index; i < nextString.Length; i++)
+            for (int i = 0; i < nextString.Length; i++)
             {
-                buffer[i] = nextString[i];
+                buffer[i+index] = nextString[i];
             }
 
             return Task.FromResult(nextString.Length);
