@@ -19,22 +19,21 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 {
     public class PartialDecodingStreamReaderTest
     {
-        private static readonly string ArrayOfObjectsJson = @"
-[
-  {
-    ""foo"": 1
-  },
-  {
-    ""bar"": 2
-  }
-]
-";
+        private static readonly string DataStr;
+        static PartialDecodingStreamReaderTest()
+        {
+            var foo = new JObject
+            {
+                ["foo"] = 1
+            };
 
-        private static readonly string IncompleteArrayOfObjectsJson = @"
-[
-  {
-    ""foo"": 1
-  },";
+            var bar = new JObject
+            {
+                ["bar"] = 2
+            };
+
+            DataStr = JsonConvert.SerializeObject( new [] { foo, bar }, Formatting.Indented);
+        }
 
         /// <summary>
         /// Test coarse split data.
@@ -42,7 +41,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByLine()
         {
-            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split('\n'));
+            StreamReader reader = new ReplayingStreamReader(DataStr.Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -68,7 +67,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestByChar()
         {
-            StreamReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c =>  c.ToString()));
+            StreamReader reader = new ReplayingStreamReader(DataStr.Select(c =>  c.ToString()));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
@@ -94,7 +93,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [Fact]
         public async void DecodingStreamReaderTestIncomplete()
         {
-            StreamReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split('\n'));
+            StreamReader reader = new ReplayingStreamReader(DataStr.Split(',')[0].Split('\n'));
             var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
             var result = await decodingReader.MoveNext(CancellationToken.None);
