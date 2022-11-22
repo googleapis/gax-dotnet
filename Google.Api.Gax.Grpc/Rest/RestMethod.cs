@@ -89,13 +89,13 @@ internal class RestMethod
 
     internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
     {
-        var streamReaderTask = GetStreamReader(httpResponseTask);
+        var textReaderTask = GetTextReader(httpResponseTask);
         Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
 
-        return new PartialDecodingStreamReader<TResponse>(streamReaderTask, responseConverter);
+        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter);
     }
 
-    private static async Task<StreamReader> GetStreamReader(Task<HttpResponseMessage> httpResponseTask)
+    private static async Task<TextReader> GetTextReader(Task<HttpResponseMessage> httpResponseTask)
     {
         var httpResponse = await httpResponseTask.ConfigureAwait(false);
         httpResponse.EnsureSuccessStatusCode();
