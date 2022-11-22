@@ -25,36 +25,36 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// <typeparam name="TResponse">Type of proto messages in the stream</typeparam>
 internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>
 {
-    private readonly Task<StreamReader> _streamReaderTask;
+    private readonly Task<TextReader> _textReaderTask;
     private readonly Func<string, TResponse> _responseConverter;
 
     private readonly Queue<TResponse> _readyResults;
     private readonly StringBuilder _currentBuffer;
     
-    private StreamReader _streamReader;
+    private TextReader _textReader;
     private bool _arrayClosed;
 
     /// <summary>
     /// Creates the StreamReader
     /// </summary>
-    /// <param name="streamReaderTask">A stream reader returning partial JSON chunks</param>
+    /// <param name="textReaderTask">A stream reader returning partial JSON chunks</param>
     /// <param name="responseConverter">A function to transform a well-formed JSON object into the proto message.</param>
-    public PartialDecodingStreamReader(Task<StreamReader> streamReaderTask, Func<string, TResponse> responseConverter)
+    public PartialDecodingStreamReader(Task<TextReader> textReaderTask, Func<string, TResponse> responseConverter)
     {
-        _streamReaderTask = streamReaderTask;
+        _textReaderTask = textReaderTask;
         _responseConverter = responseConverter;
 
         _readyResults = new Queue<TResponse>();
         _currentBuffer = new StringBuilder();
 
-        _streamReader = null;
+        _textReader = null;
         _arrayClosed = false;
     }
 
     /// <inheritdoc />
     public async Task<bool> MoveNext(CancellationToken cancellationToken)
     {
-        _streamReader ??= await _streamReaderTask.ConfigureAwait(false);
+        _textReader ??= await _textReaderTask.ConfigureAwait(false);
 
         if (_readyResults.Count > 0)
         {
@@ -62,7 +62,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             return true;
         }
 
-        if (_streamReader.EndOfStream)
+        if (_arrayClosed)
         {
             return false;
         }
@@ -70,7 +70,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
         var buffer = new char[8000];
         while (_readyResults.Count == 0)
         {
-            var taskRead = _streamReader.ReadAsync(buffer, 0, buffer.Length);
+            var taskRead = _textReader.ReadAsync(buffer, 0, buffer.Length);
             var cancellationTask = Task.Delay(-1, cancellationToken);
             var resultTask = await Task.WhenAny(taskRead, cancellationTask).ConfigureAwait(false);
 
