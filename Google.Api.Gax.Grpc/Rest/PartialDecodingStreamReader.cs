@@ -5,16 +5,15 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Grpc.Core;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
-using Newtonsoft.Json.Linq;
 
 namespace Google.Api.Gax.Grpc.Rest;
 
@@ -68,7 +67,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
         }
 
         var buffer = new char[8000];
-        while (_readyResults.Count == 0)
+        while (_readyResults.Count == 0 && !_arrayClosed)
         {
             var taskRead = _textReader.ReadAsync(buffer, 0, buffer.Length);
             var cancellationTask = Task.Delay(-1, cancellationToken);
@@ -83,15 +82,10 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             var readLen = await taskRead.ConfigureAwait(false);
             if (readLen == 0)
             {
-                if (!_arrayClosed)
-                {
-                    var errorText = "Closing `]` bracket not received after iterating through the stream. " +
-                                    "This means that streaming ended without all objects transmitted. " +
-                                    "It is likely a result of server or network error.";
-                    throw new InvalidOperationException(errorText);
-                }
-
-                return false;
+                var errorText = "Closing `]` bracket not received after iterating through the stream. " +
+                                "This means that streaming ended without all objects transmitted. " +
+                                "It is likely a result of server or network error.";
+                throw new InvalidOperationException(errorText);
             }
 
             var readChars = buffer.Take(readLen);
@@ -102,8 +96,13 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
                 {
                     // TODO[virost, jskeet, 11/2022] Fix with tokenizer:
                     // it's possible to receive more data after the closing `]`
+                    // We currently just close the reader, which means we won't detect a response which
+                    // is bad due to trailing non-whitespace after the ]... it's unclear whether it's
+                    // worth continuing to read just to catch that though.
                     _arrayClosed = true;
-                    continue;
+                    _textReader.Close();
+                    // We can't just return false here, as we might have queued responses.
+                    break;
                 }
 
                 // Between-objects commas and spaces, as well as an opening bracket
@@ -143,8 +142,16 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             }
         }
 
-        Current = _readyResults.Dequeue();
-        return true;
+        if (_readyResults.Count > 0)
+        {
+            Current = _readyResults.Dequeue();
+            return true;
+        }
+        else
+        {
+            // Basically if we've reached the end of the data.
+            return false;
+        }
     }
 
     /// <inheritdoc />
