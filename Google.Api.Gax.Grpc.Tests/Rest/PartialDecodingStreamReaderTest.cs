@@ -5,21 +5,20 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Google.Api.Gax.Grpc.Rest.Tests
+namespace Google.Api.Gax.Grpc.Rest.Tests;
+
+public class PartialDecodingStreamReaderTest
 {
-    public class PartialDecodingStreamReaderTest
-    {
-        private static readonly string ArrayOfObjectsJson = @"
+    private static readonly string ArrayOfObjectsJson = @"
 [
   {
     ""foo"": 1
@@ -30,114 +29,122 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 ]
 ";
 
-        private static readonly string IncompleteArrayOfObjectsJson = @"
-[
-  {
-    ""foo"": 1
-  },";
+    /// <summary>
+    /// Test coarse split data.
+    /// </summary>
+    [Fact]
+    public async Task ValidData_LineByLine()
+    {
+        TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-        /// <summary>
-        /// Test coarse split data.
-        /// </summary>
-        [Fact]
-        public async void DecodingStreamReaderTestByLine()
-        {
-            TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries));
-            var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["foo"], 1);
 
-            var result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.True(result);
-            Assert.NotNull(decodingReader.Current);
-            Assert.Equal(decodingReader.Current["foo"], 1);
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["bar"], 2);
 
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.True(result);
-            Assert.NotNull(decodingReader.Current);
-            Assert.Equal(decodingReader.Current["bar"], 2);
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
 
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-        }
-
-        /// <summary>
-        /// Test data split by characters.
-        /// </summary>
-        [Fact]
-        public async void DecodingStreamReaderTestByChar()
-        {
-            TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c =>  c.ToString()));
-            var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
-
-            var result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.True(result);
-            Assert.NotNull(decodingReader.Current);
-            Assert.Equal(decodingReader.Current["foo"], 1);
-
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.True(result);
-            Assert.NotNull(decodingReader.Current);
-            Assert.Equal(decodingReader.Current["bar"], 2);
-
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-        }
-
-        /// <summary>
-        /// Test when data breaks off unexpectedly.
-        /// </summary>
-        [Fact]
-        public async void DecodingStreamReaderTestIncomplete()
-        {
-            TextReader reader = new ReplayingStreamReader(IncompleteArrayOfObjectsJson.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries));
-            var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
-
-            var result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.True(result);
-            Assert.NotNull(decodingReader.Current);
-            Assert.Equal(decodingReader.Current["foo"], 1);
-
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-                await decodingReader.MoveNext(CancellationToken.None));
-            Assert.Contains("Closing `]` bracket not received after iterating through the stream.", ex.Message);
-        }
-
-        /// <summary>
-        /// Test when data is empty array.
-        /// </summary>
-        [Fact]
-        public async void DecodingStreamReaderTestEmpty()
-        {
-            TextReader reader = new ReplayingStreamReader(new[] {"[]"});
-            var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
-
-            var result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-
-            result = await decodingReader.MoveNext(CancellationToken.None);
-            Assert.False(result);
-        }
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
     }
 
     /// <summary>
-    /// A fake of a StreamReader emitting given strings
+    /// Test data split by characters.
     /// </summary>
-    internal class ReplayingStreamReader : TextReader
+    [Fact]
+    public async Task ValidData_CharByChar()
+    {
+        TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c => c.ToString()));
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+
+        var result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["foo"], 1);
+
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["bar"], 2);
+
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
+
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
+    }
+
+    /// <summary>
+    /// Test when data breaks off unexpectedly.
+    /// </summary>
+    [Fact]
+    public async Task IncompleteData()
+    {
+        string[] data = { "[", "{ \"foo\": 1 }", "," /* end of stream - we want more results... */};
+        TextReader reader = new ReplayingStreamReader(data);
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+
+        var result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["foo"], 1);
+
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(CancellationToken.None));
+        Assert.Contains("array", ex.Message);
+    }
+
+    /// <summary>
+    /// Test when data is empty array.
+    /// </summary>
+    [Fact]
+    public async Task EmptyValidData()
+    {
+        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+
+        var result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
+
+        result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task NonWhitespaceAfterClosingArray()
+    {
+        TextReader reader = new ReplayingStreamReader(new[] { "[] ," });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(CancellationToken.None));
+    }
+
+    /// <summary>
+    /// This doesn't test aspects like "cancellation during a read" but that's harder to do.
+    /// </summary>
+    /// <returns></returns>
+    [Fact]
+    public async Task CancellationObserved()
+    {
+        TextReader reader = new ReplayingStreamReader(new[] { "[] ," });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var token = new CancellationToken(canceled: true);
+        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
+    }
+
+    /// <summary>
+    /// A TextReader which response to Read requests by copying data from the given strings.
+    /// </summary>
+    private class ReplayingStreamReader : TextReader
     {
         private readonly Queue<string> _queue;
 
-        /// <summary>
-        /// Cannot override EndOfStream, so have to nudge
-        /// the base class to do this.
-        /// Initialize it with a non-empty stream and later read
-        /// that one to end.
-        /// </summary>
-        /// <param name="strings"></param>
         public ReplayingStreamReader(IEnumerable<string> strings)
         {
             _queue = new Queue<string>(strings);
@@ -145,9 +152,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 
         public override Task<int> ReadAsync(char[] buffer, int index, int count)
         {
-            if (_queue.Count <= 0)
+            if (_queue.Count == 0)
             {
-                base.ReadToEnd(); // EndOfStream starts to return true
                 return Task.FromResult(0);
             }
 
