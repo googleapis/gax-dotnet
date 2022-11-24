@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Grpc.Core;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -96,8 +97,38 @@ public class PartialDecodingStreamReaderTest
         Assert.NotNull(decodingReader.Current);
         Assert.Equal(decodingReader.Current["foo"], 1);
 
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(CancellationToken.None));
-        Assert.Contains("array", ex.Message);
+        var ex = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(CancellationToken.None));
+        Assert.Equal(StatusCode.DataLoss, ex.StatusCode);
+    }
+
+    /// <summary>
+    /// Validates how we detect and throw errors. Each call to the TextReader
+    /// is processed completely - resulting in an immediate exception if broken JSON
+    /// is detected. This means we can fail with an exception even if we've queued up
+    /// some valid responses. Arguably this isn't ideal, but it makes the code significantly
+    /// simpler - and we're in the context of "the server has returned garbage" anyway.
+    /// </summary>
+    [Fact]
+    public async Task ExceptionThrownOnErrorDetection()
+    {
+        string[] data =
+        {
+            // The first read call will yield the first result
+            "[{ \"foo\": 1 }",
+            // The second read call will result in an exception, even though a second result is available
+            // before the broken JSON.
+            ", { \"foo\": 2 }, BADJSON ]"
+        };
+        TextReader reader = new ReplayingStreamReader(data);
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+
+        var result = await decodingReader.MoveNext(CancellationToken.None);
+        Assert.True(result);
+        Assert.NotNull(decodingReader.Current);
+        Assert.Equal(decodingReader.Current["foo"], 1);
+
+        var ex = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(CancellationToken.None));
+        Assert.Equal(StatusCode.DataLoss, ex.StatusCode);
     }
 
     /// <summary>
@@ -122,7 +153,8 @@ public class PartialDecodingStreamReaderTest
         TextReader reader = new ReplayingStreamReader(new[] { "[] ," });
         var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(CancellationToken.None));
+        var ex = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(CancellationToken.None));
+        Assert.Equal(StatusCode.DataLoss, ex.StatusCode);
     }
 
     /// <summary>
@@ -132,10 +164,26 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task CancellationObserved()
     {
-        TextReader reader = new ReplayingStreamReader(new[] { "[] ," });
+        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
         var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
         var token = new CancellationToken(canceled: true);
         await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
+    }
+
+    /// <summary>
+    /// A second call to MoveNext fails if the first one did, even if the first failure
+    /// was only due to a cancellation token which was cancelled.
+    /// </summary>
+    [Fact]
+    public async Task FailureIsSticky()
+    {
+        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var token1 = new CancellationToken(canceled: true);
+        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token1));
+
+        var token2 = new CancellationToken(canceled: false);
+        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token2));
     }
 
     [Fact]
@@ -163,14 +211,14 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task DisposedAfterError()
     {
-        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}, broken]" });
+        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}", ", broken]" });
         var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
         var token = new CancellationToken(canceled: true);
 
         Assert.True(await decodingReader.MoveNext(default));
         Assert.False(reader.Disposed);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(default));
+        await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(default));
         await AssertDisposedSoon(reader);
     }
 

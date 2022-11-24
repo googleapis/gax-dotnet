@@ -9,6 +9,7 @@ using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,15 +17,6 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Grpc.Rest;
 
 using static Google.Api.Gax.Grpc.Rest.JsonStateTracker.NextAction;
-
-// TODO: Disposal of the TextReader
-// TODO: Evaluate what exception should be thrown, in different cases:
-//       - Errors encountered that haven't naturally caused an exception
-//       - Regular exceptions (e.g. IOException, InvalidProtobufException)
-//       - Cancellation
-//       We should retain an ExceptionDispatchInfo so we can throw the
-//       right exception consistently (on follow-up calls) rather than
-//       just a message.
 
 /// <summary>
 /// An IAsyncStreamReader implementation that reads an array of messages
@@ -89,7 +81,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     /// <summary>
     /// Set to non-null on any failure.
     /// </summary>
-    private string _errorMessage;
+    private ExceptionDispatchInfo _exceptionInfo;
 
     private bool _disposed;
 
@@ -117,37 +109,24 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     /// <inheritdoc />
     public async Task<bool> MoveNext(CancellationToken cancellationToken)
     {
+        // This "outer" method handles disposal and exception replay, so that the main
+        // implementation in MoveNextImpl doesn't need to worry about that at all.
+
+        // If we've ever thrown, throw the same exception again.
+        _exceptionInfo?.Throw();
+
         bool disposeOnExit = true;
         try
         {
-            while (true)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (_queuedResponses.Count > 0)
-                {
-                    Current = _queuedResponses.Dequeue();
-                    disposeOnExit = false;
-                    return true;
-                }
-
-                // Throwing an exception takes priority over marking the sequence as completed.
-                // But if there were valid responses *before* we detected an error, we'll return those first.
-                if (_errorMessage is string)
-                {
-                    // TODO: Should this actually be an RpcException?
-                    throw new InvalidOperationException(_errorMessage);
-                }
-
-                if (_endOfData)
-                {
-                    return false;
-                }
-
-                // We don't currently know what to do, so read more data and see whether that
-                // satisfies one of the above conditions. (We may need to loop multiple times.)
-                await ReadAndProcessData(cancellationToken).ConfigureAwait(false);
-            }
+            var result = await MoveNextImpl(cancellationToken).ConfigureAwait(false);
+            disposeOnExit = !result; // Dispose if we're returning false
+            return result;
+        }
+        catch (Exception e)
+        {
+            // Remember the exception on its way out, to replay it on any future calls.
+            _exceptionInfo = ExceptionDispatchInfo.Capture(e);
+            throw;
         }
         finally
         {
@@ -158,71 +137,81 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
         }
     }
 
+    private async Task<bool> MoveNextImpl(CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (_queuedResponses.Count > 0)
+            {
+                Current = _queuedResponses.Dequeue();
+                return true;
+            }
+
+            if (_endOfData)
+            {
+                return false;
+            }
+
+            // We don't currently know what to do, so read more data and see whether that
+            // satisfies one of the above conditions. (We may need to loop multiple times.)
+            await ReadAndProcessData(cancellationToken).ConfigureAwait(false);
+        }
+    }
+
     /// <summary>
     /// Called when we don't have a queued response and haven't reached a terminal state (error or completed).
     /// </summary>
     /// <returns></returns>
     private async Task ReadAndProcessData(CancellationToken cancellationToken)
     {
-        try
+        var textReader = await AwaitWithCancellation(_textReaderTask, cancellationToken).ConfigureAwait(false);
+
+        var readTask = textReader.ReadAsync(_readBuffer, 0, _readBuffer.Length);
+        int charsRead = await AwaitWithCancellation(readTask, cancellationToken).ConfigureAwait(false);
+
+        if (charsRead == 0)
         {
-            var textReader = await AwaitWithCancellation(_textReaderTask, cancellationToken).ConfigureAwait(false);
-
-            var readTask = textReader.ReadAsync(_readBuffer, 0, _readBuffer.Length);
-            int charsRead = await AwaitWithCancellation(readTask, cancellationToken).ConfigureAwait(false);
-
-            if (charsRead == 0)
+            _endOfData = true;
+            if (!_completed)
             {
-                _endOfData = true;
-                Dispose();
-                if (!_completed)
-                {
-                    _errorMessage = "Response stream completed without a closing array";
-                }
-                return;
+                throw new RpcException(new Status(StatusCode.DataLoss, "Response stream ended abruptly."));
             }
-
-            // Note: we process the whole of the buffer, even if we see end-of-response or end-of-stream.
-            for (int i = 0; i < charsRead; i++)
-            {
-                char c = _readBuffer[i];
-                var nextAction = _jsonState.Push(c);
-                switch (nextAction)
-                {
-                    case ParseResponse:
-                        _currentResponseBuffer.Append(c);
-                        _queuedResponses.Enqueue(_responseConverter(_currentResponseBuffer.ToString()));
-                        _currentResponseBuffer.Clear();
-                        break;
-                    case SignalEndOfResponses:
-                        // We remember that we've seen the "end of responses" but continue to read
-                        // until the end of the data, to spot badly-behaved responses that include
-                        // data after the closing array. The state tracker will just return
-                        // IgnoreAndContinue or SignalError from here onwards.
-                        _completed = true;
-                        break;
-                    case SignalError:
-                        // Note: we don't have any more information about the way in which the JSON
-                        // was invalid, but we really don't expect to see this anyway.
-                        _errorMessage = "Invalid JSON response.";
-                        // No need to read any more: we're in a failure mode now, other than
-                        // returning any already-parsed responses.
-                        return;
-                    case IgnoreAndContinue:
-                        break;
-                    case BufferAndContinue:
-                        _currentResponseBuffer.Append(c);
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Bug in GAX support library: unhandled state: {nextAction}");
-                }
-            }
+            return;
         }
-        // If *anything* fails, this signals an overall failure.
-        // Let the calling code effectively rethrow. (We lose the stack trace, which isn't ideal, admittedly.)
-        catch (Exception e) when (e is not OperationCanceledException)
+
+        // Note: we process the whole of the buffer, even if we see end-of-response or end-of-stream.
+        for (int i = 0; i < charsRead; i++)
         {
-            _errorMessage = e.Message;
+            char c = _readBuffer[i];
+            var nextAction = _jsonState.Push(c);
+            switch (nextAction)
+            {
+                case ParseResponse:
+                    _currentResponseBuffer.Append(c);
+                    _queuedResponses.Enqueue(_responseConverter(_currentResponseBuffer.ToString()));
+                    _currentResponseBuffer.Clear();
+                    break;
+                case SignalEndOfResponses:
+                    // We remember that we've seen the "end of responses" but continue to read
+                    // until the end of the data, to spot badly-behaved responses that include
+                    // data after the closing array. The state tracker will just return
+                    // IgnoreAndContinue or SignalError from here onwards.
+                    _completed = true;
+                    break;
+                case SignalError:
+                    // Note: we don't have any more information about the way in which the JSON
+                    // was invalid, but we really don't expect to see this anyway.
+                    throw new RpcException(new Status(StatusCode.DataLoss, "Invalid JSON returned."));
+                case IgnoreAndContinue:
+                    break;
+                case BufferAndContinue:
+                    _currentResponseBuffer.Append(c);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Bug in GAX support library: unhandled state: {nextAction}");
+            }
         }
     }
 
