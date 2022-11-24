@@ -87,7 +87,8 @@ internal class RestMethod
         return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
     }
 
-    internal IAsyncStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
+    // Note: this doesn't just return IAsyncStreamReader<TResponse> as we need know it implements IDisposable too.
+    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
     {
         var textReaderTask = GetTextReader(httpResponseTask);
         Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);

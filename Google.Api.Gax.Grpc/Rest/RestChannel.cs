@@ -143,8 +143,13 @@ namespace Google.Api.Gax.Grpc.Rest
             Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
             Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
 
-            IAsyncStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask);
-            return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
+            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask);
+            Action disposalAction = () =>
+            {
+                responseStream.Dispose();
+                cancellationTokenSource.Cancel();
+            };
+            return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, disposalAction);
         }
 
         private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)

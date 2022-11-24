@@ -31,7 +31,7 @@ using static Google.Api.Gax.Grpc.Rest.JsonStateTracker.NextAction;
 /// from HTTP stream as they arrive in (partial) JSON chunks. 
 /// </summary>
 /// <typeparam name="TResponse">Type of proto messages in the stream</typeparam>
-internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>
+internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResponse>, IAsyncDisposable, IDisposable
 {
     /// <summary>
     /// Task which will return a reader containing the data.
@@ -91,6 +91,8 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     /// </summary>
     private string _errorMessage;
 
+    private bool _disposed;
+
     /// <inheritdoc />
     public TResponse Current { get; private set; }
 
@@ -115,32 +117,44 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     /// <inheritdoc />
     public async Task<bool> MoveNext(CancellationToken cancellationToken)
     {
-        while (true)
+        bool disposeOnExit = true;
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (_queuedResponses.Count > 0)
+            while (true)
             {
-                Current = _queuedResponses.Dequeue();
-                return true;
-            }
+                cancellationToken.ThrowIfCancellationRequested();
 
-            // Throwing an exception takes priority over marking the sequence as completed.
-            // But if there were valid responses *before* we detected an error, we'll return those first.
-            if (_errorMessage is string)
+                if (_queuedResponses.Count > 0)
+                {
+                    Current = _queuedResponses.Dequeue();
+                    disposeOnExit = false;
+                    return true;
+                }
+
+                // Throwing an exception takes priority over marking the sequence as completed.
+                // But if there were valid responses *before* we detected an error, we'll return those first.
+                if (_errorMessage is string)
+                {
+                    // TODO: Should this actually be an RpcException?
+                    throw new InvalidOperationException(_errorMessage);
+                }
+
+                if (_endOfData)
+                {
+                    return false;
+                }
+
+                // We don't currently know what to do, so read more data and see whether that
+                // satisfies one of the above conditions. (We may need to loop multiple times.)
+                await ReadAndProcessData(cancellationToken).ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            if (disposeOnExit)
             {
-                // TODO: Should this actually be an RpcException?
-                throw new InvalidOperationException(_errorMessage);
+                Dispose();
             }
-
-            if (_endOfData)
-            {
-                return false;
-            }
-
-            // We don't currently know what to do, so read more data and see whether that
-            // satisfies one of the above conditions. (We may need to loop multiple times.)
-            await ReadAndProcessData(cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -160,6 +174,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             if (charsRead == 0)
             {
                 _endOfData = true;
+                Dispose();
                 if (!_completed)
                 {
                     _errorMessage = "Response stream completed without a closing array";
@@ -222,7 +237,51 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
         cancellationToken.ThrowIfCancellationRequested();
         // If we've got this far, then our real task must have completed:
         // the only way for cancellationTask to complete is if cancellationToken
-        // has been cancelled.
-        return task.Result;
+        // has been cancelled. However, we still need to await it instead
+        // of using .Result so that exceptions are propagated appropriately.
+        return await task.ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Disposes of the underlying reader, in a fire-and-forget manner.
+    /// The reader may not yet be available, so a task is attached to the reader-providing
+    /// task to dispose of the reader when it becomes available.
+    /// The <see cref="ValueTask"/> returned by this implementation will already be completed.
+    /// </summary>
+    public ValueTask DisposeAsync()
+    {
+        Dispose();
+        return default;
+    }
+
+    /// <summary>
+    /// Disposes of the underlying reader, in a fire-and-forget manner.
+    /// The reader may not yet be available, so a task is attached to the reader-providing
+    /// task to dispose of the reader when it becomes available.
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+        _disposed = true;
+
+        // Note: the returned task is deliberately ignored. It's fire-and-forget.
+        _textReaderTask.ContinueWith(DisposeReader, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.DenyChildAttach | TaskContinuationOptions.HideScheduler);
+
+        void DisposeReader(Task<TextReader> task)
+        {
+            try
+            {
+                // We're only scheduling this to execute if the task completed normally,
+                // so it's fine to access .Result.
+                task.Result?.Dispose();
+            }
+            catch
+            {
+                // Just swallow; this is best effort.
+            }
+        }
     }
 }

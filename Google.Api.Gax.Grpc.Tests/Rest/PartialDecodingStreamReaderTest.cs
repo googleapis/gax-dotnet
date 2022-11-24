@@ -138,16 +138,72 @@ public class PartialDecodingStreamReaderTest
         await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
     }
 
+    [Fact]
+    public async Task DisposedAfterCompletion()
+    {
+        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}]" });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        Assert.True(await decodingReader.MoveNext(default));
+        Assert.False(reader.Disposed);
+
+        Assert.False(await decodingReader.MoveNext(default));
+        await AssertDisposedSoon(reader);
+    }
+
+    [Fact]
+    public async Task DisposedAfterCancellation()
+    {
+        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}]" });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        var token = new CancellationToken(canceled: true);
+        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
+        await AssertDisposedSoon(reader);
+    }
+
+    [Fact]
+    public async Task DisposedAfterError()
+    {
+        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}, broken]" });
+        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        var token = new CancellationToken(canceled: true);
+
+        Assert.True(await decodingReader.MoveNext(default));
+        Assert.False(reader.Disposed);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => decodingReader.MoveNext(default));
+        await AssertDisposedSoon(reader);
+    }
+
+    private async Task AssertDisposedSoon(ReplayingStreamReader reader)
+    {
+        for (int check = 0; check < 5; check++)
+        {
+            if (reader.Disposed)
+            {
+                return;
+            }
+            await Task.Delay(500);
+        }
+        Assert.Fail("Reader was not disposed, even after a short delay.");
+    }
+
     /// <summary>
     /// A TextReader which response to Read requests by copying data from the given strings.
     /// </summary>
     private class ReplayingStreamReader : TextReader
     {
         private readonly Queue<string> _queue;
+        public bool Disposed { get; private set; }
 
         public ReplayingStreamReader(IEnumerable<string> strings)
         {
             _queue = new Queue<string>(strings);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            Disposed = true;
         }
 
         public override Task<int> ReadAsync(char[] buffer, int index, int count)
