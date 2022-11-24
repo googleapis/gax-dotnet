@@ -39,10 +39,10 @@ namespace Google.Api.Gax.Grpc
         /// <inheritdoc />
         public TResponse Current => _reader.Current;
 
-        // The gRPC response stream doesn't support disposal. The gRPC call (AsyncDuplexStreamingCall or AsyncServerStreamingCall) does,
-        // but users should dispose that themselves if they want to rather than us doing it here.
+        // Pass on the request to dispose to the reader *if* it supports asynchronous disposal. (The gRPC default implementation
+        // doesn't; the REGAPIC implementation does.)
         /// <inheritdoc />
-        public ValueTask DisposeAsync() => default;
+        public ValueTask DisposeAsync() => _reader is IAsyncDisposable disposable ? disposable.DisposeAsync() : default;
 
         /// <summary>
         /// Begins iterating over the response stream, using the specified cancellation token. This method can only be called
