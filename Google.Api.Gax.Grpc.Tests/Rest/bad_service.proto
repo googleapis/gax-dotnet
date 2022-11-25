@@ -1,0 +1,30 @@
+﻿/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+syntax = "proto3";
+
+package google.api.gax.grpc.rest;
+
+import "google/api/annotations.proto";
+
+// This service can't be used at all, because it contains a method with a bad resource path.
+// Attempting to construct the RestMethod will throw an exception (rather than being skipped).
+service BadSample {
+  rpc BadResourcePath(BadSimpleRequest) returns (BadSimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/{missing}"
+    };
+  }
+}
+
+message BadSimpleRequest {
+  string name = 1;
+}
+
+message BadSimpleResponse {
+  string name = 2;
+}
