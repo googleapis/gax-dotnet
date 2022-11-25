@@ -38,10 +38,19 @@ namespace Google.Api.Gax.Grpc.Rest {
             "EgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWluZ1JlcXVlc3QSEgoKcGFn",
             "ZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSDQoFY2hlY2sYAyAB",
             "KAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0KBWl0ZW1zGAEgAygFEhcK",
-            "D25leHRfcGFnZV90b2tlbhgCIAEoCTJ/CgZTYW1wbGUSdQoMU2ltcGxlTWV0",
-            "aG9kEicuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LlNpbXBsZVJlcXVlc3Qa",
-            "KC5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QuU2ltcGxlUmVzcG9uc2UiEoLT",
-            "5JMCDBIKL3YxL3tuYW1lfWIGcHJvdG8z"));
+            "D25leHRfcGFnZV90b2tlbhgCIAEoCTKOBAoGU2FtcGxlEnUKDFNpbXBsZU1l",
+            "dGhvZBInLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5TaW1wbGVSZXF1ZXN0",
+            "GiguZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LlNpbXBsZVJlc3BvbnNlIhKC",
+            "0+STAgwSCi92MS97bmFtZX0SbgoXTWV0aG9kV2l0aE5vSHR0cE9wdGlvbnMS",
+            "Jy5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QuU2ltcGxlUmVxdWVzdBooLmdv",
+            "b2dsZS5hcGkuZ2F4LmdycGMucmVzdC5TaW1wbGVSZXNwb25zZSIAEpABChxC",
+            "aWRpcmVjdGlvbmFsU3RyZWFtaW5nTWV0aG9kEicuZ29vZ2xlLmFwaS5nYXgu",
+            "Z3JwYy5yZXN0LlNpbXBsZVJlcXVlc3QaKC5nb29nbGUuYXBpLmdheC5ncnBj",
+            "LnJlc3QuU2ltcGxlUmVzcG9uc2UiGYLT5JMCExIRL3YxL2JpZGlzdHJlYW1p",
+            "bmcoATABEokBChVDbGllbnRTdHJlYW1pbmdNZXRob2QSJy5nb29nbGUuYXBp",
+            "LmdheC5ncnBjLnJlc3QuU2ltcGxlUmVxdWVzdBooLmdvb2dsZS5hcGkuZ2F4",
+            "LmdycGMucmVzdC5TaW1wbGVSZXNwb25zZSIbgtPkkwIVEhMvdjEvY2xpZW50",
+            "c3RyZWFtaW5nKAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
