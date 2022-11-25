@@ -7,6 +7,8 @@
 
 using Google.Api.Gax.Grpc.Tests;
 using Google.Protobuf;
+using Google.Protobuf.Reflection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -21,9 +23,7 @@ public class RestMethodTest
     public void CreateRequest_WithRequestNumericEnumJson(bool value, string expectedUri)
     {
         var apiMetadata = TestApiMetadata.Test.WithRequestNumericEnumJsonEncoding(value);
-        var methodDescriptor = TestServiceReflection.Descriptor.Services
-            .Single(svc => svc.Name == "Sample")
-            .FindMethodByName("SimpleMethod");
+        var methodDescriptor = GetMethod("Sample", "SimpleMethod");
         var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
 
         var request = new SimpleRequest { Name = "abc" };
@@ -35,9 +35,7 @@ public class RestMethodTest
     public void CreateRequest_WithHttpOverrides()
     {
         var rule = new HttpRule { Get = "/v2/def/{name}" };
-        var methodDescriptor = TestServiceReflection.Descriptor.Services
-            .Single(svc => svc.Name == "Sample")
-            .FindMethodByName("SimpleMethod");
+        var methodDescriptor = GetMethod("Sample", "SimpleMethod");
         var overrides = new Dictionary<string, ByteString> { { methodDescriptor.FullName, rule.ToByteString() } };
         var apiMetadata = TestApiMetadata.Test.WithHttpRuleOverrides(overrides);
         var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
@@ -46,4 +44,41 @@ public class RestMethodTest
         var httpRequest = restMethod.CreateRequest(request, null);
         Assert.Equal("/v2/def/ghi", httpRequest.RequestUri.ToString());
     }
+
+    [Fact]
+    public void Create_HttpRuleOverridesCanApplyToMethodsWithNoOptions()
+    {
+        var rule = new HttpRule { Get = "/v2/def/{name}" };
+        var methodDescriptor = GetMethod("Sample", "MethodWithNoHttpOptions");
+        var overrides = new Dictionary<string, ByteString> { { methodDescriptor.FullName, rule.ToByteString() } };
+        var apiMetadata = TestApiMetadata.Test.WithHttpRuleOverrides(overrides);
+        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        Assert.NotNull(restMethod);
+    }
+
+    [Theory]
+    [InlineData("MethodWithNoHttpOptions")]
+    [InlineData("BidirectionalStreamingMethod")]
+    [InlineData("ClientStreamingMethod")]
+    public void UnsupportedMethods(string method)
+    {
+        var methodDescriptor = GetMethod("Sample", method);
+        var apiMetadata = TestApiMetadata.Test;
+        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        Assert.Null(restMethod);
+    }
+
+    [Fact]
+    public void InvalidMethod()
+    {
+        var methodDescriptor = BadServiceReflection.Descriptor.Services.Single()
+            .FindMethodByName("BadResourcePath");
+        var apiMetadata = TestApiMetadata.Test;
+        Assert.Throws<ArgumentException>(() => RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default));
+    }
+
+    private static MethodDescriptor GetMethod(string service, string method) =>
+        TestServiceReflection.Descriptor.Services
+            .Single(svc => svc.Name == service)
+            .FindMethodByName(method);
 }

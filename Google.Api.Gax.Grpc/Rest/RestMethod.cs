@@ -42,18 +42,26 @@ internal class RestMethod
     /// <param name="apiMetadata">The metadata for the API that this method is part of.</param>
     /// <param name="method">The protobuf method to represent.</param>
     /// <param name="parser">The JSON parser to use when parsing requests.</param>
-    /// <returns>A representation of the method that can be used to handle HTTP requests/responses.</returns>
+    /// <returns>A representation of the method that can be used to handle HTTP requests/responses,
+    /// or null if the method is currently not supported in REGAPIC.</returns>
     internal static RestMethod Create(ApiMetadata apiMetadata, MethodDescriptor method, JsonParser parser)
     {
-        var rule = method.GetOptions()?.GetExtension(AnnotationsExtensions.Http);
-        if (rule is null)
+        // We don't support client streaming (and bidi) methods with REST.
+        if (method.IsClientStreaming)
         {
-            throw new ArgumentException($"Method {method.Name} in service {method.Service.Name} has no HTTP rule");
+            return null;
         }
-        // If we have an override, it completely replaces the original rule.
+        var rule = method.GetOptions()?.GetExtension(AnnotationsExtensions.Http);
+        // If we have an override, it completely replaces the original rule,
+        // and can even provide a rule when none was previously present.
         if (apiMetadata.HttpRuleOverrides.TryGetValue(method.FullName, out var overrideByteString))
         {
             rule = HttpRule.Parser.ParseFrom(overrideByteString);
+        }
+        // If we still haven't got a rule, this method isn't supported in REGAPIC.
+        if (rule is null)
+        {
+            return null;
         }
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
         return new RestMethod(apiMetadata, method, parser, transcoder);

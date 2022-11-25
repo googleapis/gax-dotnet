@@ -8,6 +8,7 @@
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,9 +22,18 @@ namespace Google.Api.Gax.Grpc.Rest
     /// </summary>
     internal sealed class RestServiceCollection
     {
+        // Note: this dictionary can contain null values, indicating that the method exists but
+        // is not supported by REGAPIC.
         private readonly IReadOnlyDictionary<string, RestMethod> _methodsByFullName;
 
-        internal RestMethod GetRestMethod(IMethod method) => _methodsByFullName[method.FullName];
+        /// <summary>
+        /// Returns the <see cref="RestMethod"/> corresponding to <paramref name="method"/>.
+        /// </summary>
+        /// <exception cref="RpcException">The method is not supported by REGAPIC, or is not in the service at all.</exception>
+        internal RestMethod GetRestMethod(IMethod method) =>
+            _methodsByFullName.TryGetValue(method.FullName, out var restMethod)
+            ? restMethod ?? throw new RpcException(new Status(StatusCode.Unimplemented, "This RPC is not supported by the REST transport"))
+            : throw new RpcException(new Status(StatusCode.InvalidArgument, "Unknown method"));
 
         private RestServiceCollection(IReadOnlyDictionary<string, RestMethod> methodsByFullName)
         {
@@ -37,13 +47,10 @@ namespace Google.Api.Gax.Grpc.Rest
             var typeRegistry = TypeRegistry.FromFiles(fileDescriptors.ToArray());
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
-                // We don't support client streaming (and bidi) methods with REST.
-                .Where(x => !x.IsClientStreaming)
-                // Ignore methods without HTTP annotations. Ideally there wouldn't be any, but
-                // operations.proto doesn't specify an HTTP rule for WaitOperation.
-                .Where(x => x.GetOptions()?.GetExtension(AnnotationsExtensions.Http) is not null)
-                .Select(method => RestMethod.Create(metadata, method, parser))
-                .ToDictionary(restMethod => restMethod.FullName);
+                .ToDictionary(
+                    method => method.FullName,
+                    method => RestMethod.Create(metadata, method, parser),
+                    StringComparer.Ordinal);
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));
         }
     }
