@@ -17,6 +17,21 @@ service Sample {
       get: "/v1/{name}"
     };
   }
+
+  rpc MethodWithNoHttpOptions(SimpleRequest) returns (SimpleResponse) {
+  }
+
+  rpc BidirectionalStreamingMethod(stream SimpleRequest) returns (stream SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/bidistreaming"
+    };
+  }
+
+  rpc ClientStreamingMethod(stream SimpleRequest) returns (SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/clientstreaming"
+    };
+  }
 }
 
 // Used in HttpRulePathPatternTest. 
