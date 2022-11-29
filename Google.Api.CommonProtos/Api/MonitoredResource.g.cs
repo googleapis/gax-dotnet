@@ -147,6 +147,10 @@ namespace Google.Api {
     /// <summary>
     /// Required. The monitored resource type. For example, the type
     /// `"cloudsql_database"` represents databases in Google Cloud SQL.
+    ///  For a list of types, see [Monitoring resource
+    ///  types](https://cloud.google.com/monitoring/api/resources)
+    /// and [Logging resource
+    /// types](https://cloud.google.com/logging/docs/api/v2/resource-list).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -474,10 +478,11 @@ namespace Google.Api {
   /// its attributes according to the schema. For example, a particular Compute
   /// Engine VM instance could be represented by the following object, because the
   /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
-  /// `"instance_id"` and `"zone"`:
+  /// `"project_id"`, `"instance_id"` and `"zone"`:
   ///
   ///     { "type": "gce_instance",
-  ///       "labels": { "instance_id": "12345678901234",
+  ///       "labels": { "project_id": "my-project",
+  ///                   "instance_id": "12345678901234",
   ///                   "zone": "us-central1-a" }}
   /// </summary>
   public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource>
@@ -532,6 +537,8 @@ namespace Google.Api {
     /// Required. The monitored resource type. This field must match
     /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
     /// example, the type of a Compute Engine VM instance is `gce_instance`.
+    /// Some descriptors include the service name in the type; for example,
+    /// the type of a Datastream stream is `datastream.googleapis.com/Stream`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

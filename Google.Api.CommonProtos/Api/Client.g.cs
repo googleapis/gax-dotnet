@@ -31,17 +31,81 @@ namespace Google.Api {
     static ClientReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chdnb29nbGUvYXBpL2NsaWVudC5wcm90bxIKZ29vZ2xlLmFwaRogZ29vZ2xl",
-            "L3Byb3RvYnVmL2Rlc2NyaXB0b3IucHJvdG86OQoQbWV0aG9kX3NpZ25hdHVy",
-            "ZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRob2RPcHRpb25zGJsIIAMoCTo2Cgxk",
-            "ZWZhdWx0X2hvc3QSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMY",
-            "mQggASgJOjYKDG9hdXRoX3Njb3BlcxIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2",
-            "aWNlT3B0aW9ucxiaCCABKAlCaQoOY29tLmdvb2dsZS5hcGlCC0NsaWVudFBy",
-            "b3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMv",
-            "YXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIER0FQSWIGcHJvdG8z"));
+            "Chdnb29nbGUvYXBpL2NsaWVudC5wcm90bxIKZ29vZ2xlLmFwaRodZ29vZ2xl",
+            "L2FwaS9sYXVuY2hfc3RhZ2UucHJvdG8aIGdvb2dsZS9wcm90b2J1Zi9kZXNj",
+            "cmlwdG9yLnByb3RvGh5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8i",
+            "cAoWQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncxIaChJyZWZlcmVuY2VfZG9jc191",
+            "cmkYASABKAkSOgoMZGVzdGluYXRpb25zGAIgAygOMiQuZ29vZ2xlLmFwaS5D",
+            "bGllbnRMaWJyYXJ5RGVzdGluYXRpb24i+wMKFUNsaWVudExpYnJhcnlTZXR0",
+            "aW5ncxIPCgd2ZXJzaW9uGAEgASgJEi0KDGxhdW5jaF9zdGFnZRgCIAEoDjIX",
+            "Lmdvb2dsZS5hcGkuTGF1bmNoU3RhZ2USGgoScmVzdF9udW1lcmljX2VudW1z",
+            "GAMgASgIEi8KDWphdmFfc2V0dGluZ3MYFSABKAsyGC5nb29nbGUuYXBpLkph",
+            "dmFTZXR0aW5ncxItCgxjcHBfc2V0dGluZ3MYFiABKAsyFy5nb29nbGUuYXBp",
+            "LkNwcFNldHRpbmdzEi0KDHBocF9zZXR0aW5ncxgXIAEoCzIXLmdvb2dsZS5h",
+            "cGkuUGhwU2V0dGluZ3MSMwoPcHl0aG9uX3NldHRpbmdzGBggASgLMhouZ29v",
+            "Z2xlLmFwaS5QeXRob25TZXR0aW5ncxIvCg1ub2RlX3NldHRpbmdzGBkgASgL",
+            "MhguZ29vZ2xlLmFwaS5Ob2RlU2V0dGluZ3MSMwoPZG90bmV0X3NldHRpbmdz",
+            "GBogASgLMhouZ29vZ2xlLmFwaS5Eb3RuZXRTZXR0aW5ncxIvCg1ydWJ5X3Nl",
+            "dHRpbmdzGBsgASgLMhguZ29vZ2xlLmFwaS5SdWJ5U2V0dGluZ3MSKwoLZ29f",
+            "c2V0dGluZ3MYHCABKAsyFi5nb29nbGUuYXBpLkdvU2V0dGluZ3Mi0wIKClB1",
+            "Ymxpc2hpbmcSMwoPbWV0aG9kX3NldHRpbmdzGAIgAygLMhouZ29vZ2xlLmFw",
+            "aS5NZXRob2RTZXR0aW5ncxIVCg1uZXdfaXNzdWVfdXJpGGUgASgJEhkKEWRv",
+            "Y3VtZW50YXRpb25fdXJpGGYgASgJEhYKDmFwaV9zaG9ydF9uYW1lGGcgASgJ",
+            "EhQKDGdpdGh1Yl9sYWJlbBhoIAEoCRIeChZjb2Rlb3duZXJfZ2l0aHViX3Rl",
+            "YW1zGGkgAygJEhYKDmRvY190YWdfcHJlZml4GGogASgJEjsKDG9yZ2FuaXph",
+            "dGlvbhhrIAEoDjIlLmdvb2dsZS5hcGkuQ2xpZW50TGlicmFyeU9yZ2FuaXph",
+            "dGlvbhI7ChBsaWJyYXJ5X3NldHRpbmdzGG0gAygLMiEuZ29vZ2xlLmFwaS5D",
+            "bGllbnRMaWJyYXJ5U2V0dGluZ3Mi4wEKDEphdmFTZXR0aW5ncxIXCg9saWJy",
+            "YXJ5X3BhY2thZ2UYASABKAkSTAoTc2VydmljZV9jbGFzc19uYW1lcxgCIAMo",
+            "CzIvLmdvb2dsZS5hcGkuSmF2YVNldHRpbmdzLlNlcnZpY2VDbGFzc05hbWVz",
+            "RW50cnkSMgoGY29tbW9uGAMgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5n",
+            "dWFnZVNldHRpbmdzGjgKFlNlcnZpY2VDbGFzc05hbWVzRW50cnkSCwoDa2V5",
+            "GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJBCgtDcHBTZXR0aW5ncxIyCgZj",
+            "b21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGlu",
+            "Z3MiQQoLUGhwU2V0dGluZ3MSMgoGY29tbW9uGAEgASgLMiIuZ29vZ2xlLmFw",
+            "aS5Db21tb25MYW5ndWFnZVNldHRpbmdzIkQKDlB5dGhvblNldHRpbmdzEjIK",
+            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
+            "aW5ncyJCCgxOb2RlU2V0dGluZ3MSMgoGY29tbW9uGAEgASgLMiIuZ29vZ2xl",
+            "LmFwaS5Db21tb25MYW5ndWFnZVNldHRpbmdzIkQKDkRvdG5ldFNldHRpbmdz",
+            "EjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VT",
+            "ZXR0aW5ncyJCCgxSdWJ5U2V0dGluZ3MSMgoGY29tbW9uGAEgASgLMiIuZ29v",
+            "Z2xlLmFwaS5Db21tb25MYW5ndWFnZVNldHRpbmdzIkAKCkdvU2V0dGluZ3MS",
+            "MgoGY29tbW9uGAEgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5ndWFnZVNl",
+            "dHRpbmdzIrACCg5NZXRob2RTZXR0aW5ncxIQCghzZWxlY3RvchgBIAEoCRI8",
+            "Cgxsb25nX3J1bm5pbmcYAiABKAsyJi5nb29nbGUuYXBpLk1ldGhvZFNldHRp",
+            "bmdzLkxvbmdSdW5uaW5nGs0BCgtMb25nUnVubmluZxI1ChJpbml0aWFsX3Bv",
+            "bGxfZGVsYXkYASABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SHQoV",
+            "cG9sbF9kZWxheV9tdWx0aXBsaWVyGAIgASgCEjEKDm1heF9wb2xsX2RlbGF5",
+            "GAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjUKEnRvdGFsX3Bv",
+            "bGxfdGltZW91dBgEIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbip5",
+            "ChlDbGllbnRMaWJyYXJ5T3JnYW5pemF0aW9uEisKJ0NMSUVOVF9MSUJSQVJZ",
+            "X09SR0FOSVpBVElPTl9VTlNQRUNJRklFRBAAEgkKBUNMT1VEEAESBwoDQURT",
+            "EAISCgoGUEhPVE9TEAMSDwoLU1RSRUVUX1ZJRVcQBCpnChhDbGllbnRMaWJy",
+            "YXJ5RGVzdGluYXRpb24SKgomQ0xJRU5UX0xJQlJBUllfREVTVElOQVRJT05f",
+            "VU5TUEVDSUZJRUQQABIKCgZHSVRIVUIQChITCg9QQUNLQUdFX01BTkFHRVIQ",
+            "FDo5ChBtZXRob2Rfc2lnbmF0dXJlEh4uZ29vZ2xlLnByb3RvYnVmLk1ldGhv",
+            "ZE9wdGlvbnMYmwggAygJOjYKDGRlZmF1bHRfaG9zdBIfLmdvb2dsZS5wcm90",
+            "b2J1Zi5TZXJ2aWNlT3B0aW9ucxiZCCABKAk6NgoMb2F1dGhfc2NvcGVzEh8u",
+            "Z29vZ2xlLnByb3RvYnVmLlNlcnZpY2VPcHRpb25zGJoIIAEoCUJpCg5jb20u",
+            "Z29vZ2xlLmFwaUILQ2xpZW50UHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcv",
+            "Z2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlv",
+            "bnOiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(null, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, null));
+          new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CommonLanguageSettings), global::Google.Api.CommonLanguageSettings.Parser, new[]{ "ReferenceDocsUri", "Destinations" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ClientLibrarySettings), global::Google.Api.ClientLibrarySettings.Parser, new[]{ "Version", "LaunchStage", "RestNumericEnums", "JavaSettings", "CppSettings", "PhpSettings", "PythonSettings", "NodeSettings", "DotnetSettings", "RubySettings", "GoSettings" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JavaSettings), global::Google.Api.JavaSettings.Parser, new[]{ "LibraryPackage", "ServiceClassNames", "Common" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CppSettings), global::Google.Api.CppSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PhpSettings), global::Google.Api.PhpSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.NodeSettings), global::Google.Api.NodeSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.RubySettings), global::Google.Api.RubySettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.GoSettings), global::Google.Api.GoSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)})
+          }));
     }
     #endregion
 
@@ -125,6 +189,3791 @@ namespace Google.Api {
     public static readonly pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string> OauthScopes =
       new pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string>(1050, pb::FieldCodec.ForString(8402, ""));
   }
+
+  #region Enums
+  /// <summary>
+  /// The organization for which the client libraries are being published.
+  /// Affects the url where generated docs are published, etc.
+  /// </summary>
+  public enum ClientLibraryOrganization {
+    /// <summary>
+    /// Not useful.
+    /// </summary>
+    [pbr::OriginalName("CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED")] Unspecified = 0,
+    /// <summary>
+    /// Google Cloud Platform Org.
+    /// </summary>
+    [pbr::OriginalName("CLOUD")] Cloud = 1,
+    /// <summary>
+    /// Ads (Advertising) Org.
+    /// </summary>
+    [pbr::OriginalName("ADS")] Ads = 2,
+    /// <summary>
+    /// Photos Org.
+    /// </summary>
+    [pbr::OriginalName("PHOTOS")] Photos = 3,
+    /// <summary>
+    /// Street View Org.
+    /// </summary>
+    [pbr::OriginalName("STREET_VIEW")] StreetView = 4,
+  }
+
+  /// <summary>
+  /// To where should client libraries be published?
+  /// </summary>
+  public enum ClientLibraryDestination {
+    /// <summary>
+    /// Client libraries will neither be generated nor published to package
+    /// managers.
+    /// </summary>
+    [pbr::OriginalName("CLIENT_LIBRARY_DESTINATION_UNSPECIFIED")] Unspecified = 0,
+    /// <summary>
+    /// Generate the client library in a repo under github.com/googleapis,
+    /// but don't publish it to package managers.
+    /// </summary>
+    [pbr::OriginalName("GITHUB")] Github = 10,
+    /// <summary>
+    /// Publish the library to package managers like nuget.org and npmjs.com.
+    /// </summary>
+    [pbr::OriginalName("PACKAGE_MANAGER")] PackageManager = 20,
+  }
+
+  #endregion
+
+  #region Messages
+  /// <summary>
+  /// Required information for every language.
+  /// </summary>
+  public sealed partial class CommonLanguageSettings : pb::IMessage<CommonLanguageSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CommonLanguageSettings> _parser = new pb::MessageParser<CommonLanguageSettings>(() => new CommonLanguageSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CommonLanguageSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CommonLanguageSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CommonLanguageSettings(CommonLanguageSettings other) : this() {
+      referenceDocsUri_ = other.referenceDocsUri_;
+      destinations_ = other.destinations_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CommonLanguageSettings Clone() {
+      return new CommonLanguageSettings(this);
+    }
+
+    /// <summary>Field number for the "reference_docs_uri" field.</summary>
+    public const int ReferenceDocsUriFieldNumber = 1;
+    private string referenceDocsUri_ = "";
+    /// <summary>
+    /// Link to automatically generated reference documentation.  Example:
+    /// https://cloud.google.com/nodejs/docs/reference/asset/latest
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ReferenceDocsUri {
+      get { return referenceDocsUri_; }
+      set {
+        referenceDocsUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "destinations" field.</summary>
+    public const int DestinationsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Google.Api.ClientLibraryDestination> _repeated_destinations_codec
+        = pb::FieldCodec.ForEnum(18, x => (int) x, x => (global::Google.Api.ClientLibraryDestination) x);
+    private readonly pbc::RepeatedField<global::Google.Api.ClientLibraryDestination> destinations_ = new pbc::RepeatedField<global::Google.Api.ClientLibraryDestination>();
+    /// <summary>
+    /// The destination where API teams want this client library to be published.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.ClientLibraryDestination> Destinations {
+      get { return destinations_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CommonLanguageSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CommonLanguageSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ReferenceDocsUri != other.ReferenceDocsUri) return false;
+      if(!destinations_.Equals(other.destinations_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ReferenceDocsUri.Length != 0) hash ^= ReferenceDocsUri.GetHashCode();
+      hash ^= destinations_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ReferenceDocsUri.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ReferenceDocsUri);
+      }
+      destinations_.WriteTo(output, _repeated_destinations_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ReferenceDocsUri.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ReferenceDocsUri);
+      }
+      destinations_.WriteTo(ref output, _repeated_destinations_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ReferenceDocsUri.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ReferenceDocsUri);
+      }
+      size += destinations_.CalculateSize(_repeated_destinations_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CommonLanguageSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ReferenceDocsUri.Length != 0) {
+        ReferenceDocsUri = other.ReferenceDocsUri;
+      }
+      destinations_.Add(other.destinations_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            ReferenceDocsUri = input.ReadString();
+            break;
+          }
+          case 18:
+          case 16: {
+            destinations_.AddEntriesFrom(input, _repeated_destinations_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            ReferenceDocsUri = input.ReadString();
+            break;
+          }
+          case 18:
+          case 16: {
+            destinations_.AddEntriesFrom(ref input, _repeated_destinations_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Details about how and where to publish client libraries.
+  /// </summary>
+  public sealed partial class ClientLibrarySettings : pb::IMessage<ClientLibrarySettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ClientLibrarySettings> _parser = new pb::MessageParser<ClientLibrarySettings>(() => new ClientLibrarySettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ClientLibrarySettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClientLibrarySettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClientLibrarySettings(ClientLibrarySettings other) : this() {
+      version_ = other.version_;
+      launchStage_ = other.launchStage_;
+      restNumericEnums_ = other.restNumericEnums_;
+      javaSettings_ = other.javaSettings_ != null ? other.javaSettings_.Clone() : null;
+      cppSettings_ = other.cppSettings_ != null ? other.cppSettings_.Clone() : null;
+      phpSettings_ = other.phpSettings_ != null ? other.phpSettings_.Clone() : null;
+      pythonSettings_ = other.pythonSettings_ != null ? other.pythonSettings_.Clone() : null;
+      nodeSettings_ = other.nodeSettings_ != null ? other.nodeSettings_.Clone() : null;
+      dotnetSettings_ = other.dotnetSettings_ != null ? other.dotnetSettings_.Clone() : null;
+      rubySettings_ = other.rubySettings_ != null ? other.rubySettings_.Clone() : null;
+      goSettings_ = other.goSettings_ != null ? other.goSettings_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClientLibrarySettings Clone() {
+      return new ClientLibrarySettings(this);
+    }
+
+    /// <summary>Field number for the "version" field.</summary>
+    public const int VersionFieldNumber = 1;
+    private string version_ = "";
+    /// <summary>
+    /// Version of the API to apply these settings to.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Version {
+      get { return version_; }
+      set {
+        version_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "launch_stage" field.</summary>
+    public const int LaunchStageFieldNumber = 2;
+    private global::Google.Api.LaunchStage launchStage_ = global::Google.Api.LaunchStage.Unspecified;
+    /// <summary>
+    /// Launch stage of this version of the API.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.LaunchStage LaunchStage {
+      get { return launchStage_; }
+      set {
+        launchStage_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "rest_numeric_enums" field.</summary>
+    public const int RestNumericEnumsFieldNumber = 3;
+    private bool restNumericEnums_;
+    /// <summary>
+    /// When using transport=rest, the client request will encode enums as
+    /// numbers rather than strings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool RestNumericEnums {
+      get { return restNumericEnums_; }
+      set {
+        restNumericEnums_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "java_settings" field.</summary>
+    public const int JavaSettingsFieldNumber = 21;
+    private global::Google.Api.JavaSettings javaSettings_;
+    /// <summary>
+    /// Settings for legacy Java features, supported in the Service YAML.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.JavaSettings JavaSettings {
+      get { return javaSettings_; }
+      set {
+        javaSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "cpp_settings" field.</summary>
+    public const int CppSettingsFieldNumber = 22;
+    private global::Google.Api.CppSettings cppSettings_;
+    /// <summary>
+    /// Settings for C++ client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CppSettings CppSettings {
+      get { return cppSettings_; }
+      set {
+        cppSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "php_settings" field.</summary>
+    public const int PhpSettingsFieldNumber = 23;
+    private global::Google.Api.PhpSettings phpSettings_;
+    /// <summary>
+    /// Settings for PHP client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.PhpSettings PhpSettings {
+      get { return phpSettings_; }
+      set {
+        phpSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "python_settings" field.</summary>
+    public const int PythonSettingsFieldNumber = 24;
+    private global::Google.Api.PythonSettings pythonSettings_;
+    /// <summary>
+    /// Settings for Python client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.PythonSettings PythonSettings {
+      get { return pythonSettings_; }
+      set {
+        pythonSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "node_settings" field.</summary>
+    public const int NodeSettingsFieldNumber = 25;
+    private global::Google.Api.NodeSettings nodeSettings_;
+    /// <summary>
+    /// Settings for Node client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.NodeSettings NodeSettings {
+      get { return nodeSettings_; }
+      set {
+        nodeSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "dotnet_settings" field.</summary>
+    public const int DotnetSettingsFieldNumber = 26;
+    private global::Google.Api.DotnetSettings dotnetSettings_;
+    /// <summary>
+    /// Settings for .NET client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.DotnetSettings DotnetSettings {
+      get { return dotnetSettings_; }
+      set {
+        dotnetSettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "ruby_settings" field.</summary>
+    public const int RubySettingsFieldNumber = 27;
+    private global::Google.Api.RubySettings rubySettings_;
+    /// <summary>
+    /// Settings for Ruby client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.RubySettings RubySettings {
+      get { return rubySettings_; }
+      set {
+        rubySettings_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "go_settings" field.</summary>
+    public const int GoSettingsFieldNumber = 28;
+    private global::Google.Api.GoSettings goSettings_;
+    /// <summary>
+    /// Settings for Go client libraries.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.GoSettings GoSettings {
+      get { return goSettings_; }
+      set {
+        goSettings_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ClientLibrarySettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ClientLibrarySettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Version != other.Version) return false;
+      if (LaunchStage != other.LaunchStage) return false;
+      if (RestNumericEnums != other.RestNumericEnums) return false;
+      if (!object.Equals(JavaSettings, other.JavaSettings)) return false;
+      if (!object.Equals(CppSettings, other.CppSettings)) return false;
+      if (!object.Equals(PhpSettings, other.PhpSettings)) return false;
+      if (!object.Equals(PythonSettings, other.PythonSettings)) return false;
+      if (!object.Equals(NodeSettings, other.NodeSettings)) return false;
+      if (!object.Equals(DotnetSettings, other.DotnetSettings)) return false;
+      if (!object.Equals(RubySettings, other.RubySettings)) return false;
+      if (!object.Equals(GoSettings, other.GoSettings)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Version.Length != 0) hash ^= Version.GetHashCode();
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) hash ^= LaunchStage.GetHashCode();
+      if (RestNumericEnums != false) hash ^= RestNumericEnums.GetHashCode();
+      if (javaSettings_ != null) hash ^= JavaSettings.GetHashCode();
+      if (cppSettings_ != null) hash ^= CppSettings.GetHashCode();
+      if (phpSettings_ != null) hash ^= PhpSettings.GetHashCode();
+      if (pythonSettings_ != null) hash ^= PythonSettings.GetHashCode();
+      if (nodeSettings_ != null) hash ^= NodeSettings.GetHashCode();
+      if (dotnetSettings_ != null) hash ^= DotnetSettings.GetHashCode();
+      if (rubySettings_ != null) hash ^= RubySettings.GetHashCode();
+      if (goSettings_ != null) hash ^= GoSettings.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Version.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Version);
+      }
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) LaunchStage);
+      }
+      if (RestNumericEnums != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(RestNumericEnums);
+      }
+      if (javaSettings_ != null) {
+        output.WriteRawTag(170, 1);
+        output.WriteMessage(JavaSettings);
+      }
+      if (cppSettings_ != null) {
+        output.WriteRawTag(178, 1);
+        output.WriteMessage(CppSettings);
+      }
+      if (phpSettings_ != null) {
+        output.WriteRawTag(186, 1);
+        output.WriteMessage(PhpSettings);
+      }
+      if (pythonSettings_ != null) {
+        output.WriteRawTag(194, 1);
+        output.WriteMessage(PythonSettings);
+      }
+      if (nodeSettings_ != null) {
+        output.WriteRawTag(202, 1);
+        output.WriteMessage(NodeSettings);
+      }
+      if (dotnetSettings_ != null) {
+        output.WriteRawTag(210, 1);
+        output.WriteMessage(DotnetSettings);
+      }
+      if (rubySettings_ != null) {
+        output.WriteRawTag(218, 1);
+        output.WriteMessage(RubySettings);
+      }
+      if (goSettings_ != null) {
+        output.WriteRawTag(226, 1);
+        output.WriteMessage(GoSettings);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Version.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Version);
+      }
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) LaunchStage);
+      }
+      if (RestNumericEnums != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(RestNumericEnums);
+      }
+      if (javaSettings_ != null) {
+        output.WriteRawTag(170, 1);
+        output.WriteMessage(JavaSettings);
+      }
+      if (cppSettings_ != null) {
+        output.WriteRawTag(178, 1);
+        output.WriteMessage(CppSettings);
+      }
+      if (phpSettings_ != null) {
+        output.WriteRawTag(186, 1);
+        output.WriteMessage(PhpSettings);
+      }
+      if (pythonSettings_ != null) {
+        output.WriteRawTag(194, 1);
+        output.WriteMessage(PythonSettings);
+      }
+      if (nodeSettings_ != null) {
+        output.WriteRawTag(202, 1);
+        output.WriteMessage(NodeSettings);
+      }
+      if (dotnetSettings_ != null) {
+        output.WriteRawTag(210, 1);
+        output.WriteMessage(DotnetSettings);
+      }
+      if (rubySettings_ != null) {
+        output.WriteRawTag(218, 1);
+        output.WriteMessage(RubySettings);
+      }
+      if (goSettings_ != null) {
+        output.WriteRawTag(226, 1);
+        output.WriteMessage(GoSettings);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Version.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Version);
+      }
+      if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LaunchStage);
+      }
+      if (RestNumericEnums != false) {
+        size += 1 + 1;
+      }
+      if (javaSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(JavaSettings);
+      }
+      if (cppSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(CppSettings);
+      }
+      if (phpSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(PhpSettings);
+      }
+      if (pythonSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(PythonSettings);
+      }
+      if (nodeSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(NodeSettings);
+      }
+      if (dotnetSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(DotnetSettings);
+      }
+      if (rubySettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RubySettings);
+      }
+      if (goSettings_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(GoSettings);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ClientLibrarySettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Version.Length != 0) {
+        Version = other.Version;
+      }
+      if (other.LaunchStage != global::Google.Api.LaunchStage.Unspecified) {
+        LaunchStage = other.LaunchStage;
+      }
+      if (other.RestNumericEnums != false) {
+        RestNumericEnums = other.RestNumericEnums;
+      }
+      if (other.javaSettings_ != null) {
+        if (javaSettings_ == null) {
+          JavaSettings = new global::Google.Api.JavaSettings();
+        }
+        JavaSettings.MergeFrom(other.JavaSettings);
+      }
+      if (other.cppSettings_ != null) {
+        if (cppSettings_ == null) {
+          CppSettings = new global::Google.Api.CppSettings();
+        }
+        CppSettings.MergeFrom(other.CppSettings);
+      }
+      if (other.phpSettings_ != null) {
+        if (phpSettings_ == null) {
+          PhpSettings = new global::Google.Api.PhpSettings();
+        }
+        PhpSettings.MergeFrom(other.PhpSettings);
+      }
+      if (other.pythonSettings_ != null) {
+        if (pythonSettings_ == null) {
+          PythonSettings = new global::Google.Api.PythonSettings();
+        }
+        PythonSettings.MergeFrom(other.PythonSettings);
+      }
+      if (other.nodeSettings_ != null) {
+        if (nodeSettings_ == null) {
+          NodeSettings = new global::Google.Api.NodeSettings();
+        }
+        NodeSettings.MergeFrom(other.NodeSettings);
+      }
+      if (other.dotnetSettings_ != null) {
+        if (dotnetSettings_ == null) {
+          DotnetSettings = new global::Google.Api.DotnetSettings();
+        }
+        DotnetSettings.MergeFrom(other.DotnetSettings);
+      }
+      if (other.rubySettings_ != null) {
+        if (rubySettings_ == null) {
+          RubySettings = new global::Google.Api.RubySettings();
+        }
+        RubySettings.MergeFrom(other.RubySettings);
+      }
+      if (other.goSettings_ != null) {
+        if (goSettings_ == null) {
+          GoSettings = new global::Google.Api.GoSettings();
+        }
+        GoSettings.MergeFrom(other.GoSettings);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Version = input.ReadString();
+            break;
+          }
+          case 16: {
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
+          case 24: {
+            RestNumericEnums = input.ReadBool();
+            break;
+          }
+          case 170: {
+            if (javaSettings_ == null) {
+              JavaSettings = new global::Google.Api.JavaSettings();
+            }
+            input.ReadMessage(JavaSettings);
+            break;
+          }
+          case 178: {
+            if (cppSettings_ == null) {
+              CppSettings = new global::Google.Api.CppSettings();
+            }
+            input.ReadMessage(CppSettings);
+            break;
+          }
+          case 186: {
+            if (phpSettings_ == null) {
+              PhpSettings = new global::Google.Api.PhpSettings();
+            }
+            input.ReadMessage(PhpSettings);
+            break;
+          }
+          case 194: {
+            if (pythonSettings_ == null) {
+              PythonSettings = new global::Google.Api.PythonSettings();
+            }
+            input.ReadMessage(PythonSettings);
+            break;
+          }
+          case 202: {
+            if (nodeSettings_ == null) {
+              NodeSettings = new global::Google.Api.NodeSettings();
+            }
+            input.ReadMessage(NodeSettings);
+            break;
+          }
+          case 210: {
+            if (dotnetSettings_ == null) {
+              DotnetSettings = new global::Google.Api.DotnetSettings();
+            }
+            input.ReadMessage(DotnetSettings);
+            break;
+          }
+          case 218: {
+            if (rubySettings_ == null) {
+              RubySettings = new global::Google.Api.RubySettings();
+            }
+            input.ReadMessage(RubySettings);
+            break;
+          }
+          case 226: {
+            if (goSettings_ == null) {
+              GoSettings = new global::Google.Api.GoSettings();
+            }
+            input.ReadMessage(GoSettings);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Version = input.ReadString();
+            break;
+          }
+          case 16: {
+            LaunchStage = (global::Google.Api.LaunchStage) input.ReadEnum();
+            break;
+          }
+          case 24: {
+            RestNumericEnums = input.ReadBool();
+            break;
+          }
+          case 170: {
+            if (javaSettings_ == null) {
+              JavaSettings = new global::Google.Api.JavaSettings();
+            }
+            input.ReadMessage(JavaSettings);
+            break;
+          }
+          case 178: {
+            if (cppSettings_ == null) {
+              CppSettings = new global::Google.Api.CppSettings();
+            }
+            input.ReadMessage(CppSettings);
+            break;
+          }
+          case 186: {
+            if (phpSettings_ == null) {
+              PhpSettings = new global::Google.Api.PhpSettings();
+            }
+            input.ReadMessage(PhpSettings);
+            break;
+          }
+          case 194: {
+            if (pythonSettings_ == null) {
+              PythonSettings = new global::Google.Api.PythonSettings();
+            }
+            input.ReadMessage(PythonSettings);
+            break;
+          }
+          case 202: {
+            if (nodeSettings_ == null) {
+              NodeSettings = new global::Google.Api.NodeSettings();
+            }
+            input.ReadMessage(NodeSettings);
+            break;
+          }
+          case 210: {
+            if (dotnetSettings_ == null) {
+              DotnetSettings = new global::Google.Api.DotnetSettings();
+            }
+            input.ReadMessage(DotnetSettings);
+            break;
+          }
+          case 218: {
+            if (rubySettings_ == null) {
+              RubySettings = new global::Google.Api.RubySettings();
+            }
+            input.ReadMessage(RubySettings);
+            break;
+          }
+          case 226: {
+            if (goSettings_ == null) {
+              GoSettings = new global::Google.Api.GoSettings();
+            }
+            input.ReadMessage(GoSettings);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// This message configures the settings for publishing [Google Cloud Client
+  /// libraries](https://cloud.google.com/apis/docs/cloud-client-libraries)
+  /// generated from the service config.
+  /// </summary>
+  public sealed partial class Publishing : pb::IMessage<Publishing>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<Publishing> _parser = new pb::MessageParser<Publishing>(() => new Publishing());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<Publishing> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Publishing() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Publishing(Publishing other) : this() {
+      methodSettings_ = other.methodSettings_.Clone();
+      newIssueUri_ = other.newIssueUri_;
+      documentationUri_ = other.documentationUri_;
+      apiShortName_ = other.apiShortName_;
+      githubLabel_ = other.githubLabel_;
+      codeownerGithubTeams_ = other.codeownerGithubTeams_.Clone();
+      docTagPrefix_ = other.docTagPrefix_;
+      organization_ = other.organization_;
+      librarySettings_ = other.librarySettings_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Publishing Clone() {
+      return new Publishing(this);
+    }
+
+    /// <summary>Field number for the "method_settings" field.</summary>
+    public const int MethodSettingsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Google.Api.MethodSettings> _repeated_methodSettings_codec
+        = pb::FieldCodec.ForMessage(18, global::Google.Api.MethodSettings.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.MethodSettings> methodSettings_ = new pbc::RepeatedField<global::Google.Api.MethodSettings>();
+    /// <summary>
+    /// A list of API method settings, e.g. the behavior for methods that use the
+    /// long-running operation pattern.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.MethodSettings> MethodSettings {
+      get { return methodSettings_; }
+    }
+
+    /// <summary>Field number for the "new_issue_uri" field.</summary>
+    public const int NewIssueUriFieldNumber = 101;
+    private string newIssueUri_ = "";
+    /// <summary>
+    /// Link to a place that API users can report issues.  Example:
+    /// https://issuetracker.google.com/issues/new?component=190865&amp;template=1161103
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string NewIssueUri {
+      get { return newIssueUri_; }
+      set {
+        newIssueUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "documentation_uri" field.</summary>
+    public const int DocumentationUriFieldNumber = 102;
+    private string documentationUri_ = "";
+    /// <summary>
+    /// Link to product home page.  Example:
+    /// https://cloud.google.com/asset-inventory/docs/overview
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string DocumentationUri {
+      get { return documentationUri_; }
+      set {
+        documentationUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "api_short_name" field.</summary>
+    public const int ApiShortNameFieldNumber = 103;
+    private string apiShortName_ = "";
+    /// <summary>
+    /// Used as a tracking tag when collecting data about the APIs developer
+    /// relations artifacts like docs, packages delivered to package managers,
+    /// etc.  Example: "speech".
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ApiShortName {
+      get { return apiShortName_; }
+      set {
+        apiShortName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "github_label" field.</summary>
+    public const int GithubLabelFieldNumber = 104;
+    private string githubLabel_ = "";
+    /// <summary>
+    /// GitHub label to apply to issues and pull requests opened for this API.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string GithubLabel {
+      get { return githubLabel_; }
+      set {
+        githubLabel_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "codeowner_github_teams" field.</summary>
+    public const int CodeownerGithubTeamsFieldNumber = 105;
+    private static readonly pb::FieldCodec<string> _repeated_codeownerGithubTeams_codec
+        = pb::FieldCodec.ForString(842);
+    private readonly pbc::RepeatedField<string> codeownerGithubTeams_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// GitHub teams to be added to CODEOWNERS in the directory in GitHub
+    /// containing source code for the client libraries for this API.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> CodeownerGithubTeams {
+      get { return codeownerGithubTeams_; }
+    }
+
+    /// <summary>Field number for the "doc_tag_prefix" field.</summary>
+    public const int DocTagPrefixFieldNumber = 106;
+    private string docTagPrefix_ = "";
+    /// <summary>
+    /// A prefix used in sample code when demarking regions to be included in
+    /// documentation.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string DocTagPrefix {
+      get { return docTagPrefix_; }
+      set {
+        docTagPrefix_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "organization" field.</summary>
+    public const int OrganizationFieldNumber = 107;
+    private global::Google.Api.ClientLibraryOrganization organization_ = global::Google.Api.ClientLibraryOrganization.Unspecified;
+    /// <summary>
+    /// For whom the client library is being published.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.ClientLibraryOrganization Organization {
+      get { return organization_; }
+      set {
+        organization_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "library_settings" field.</summary>
+    public const int LibrarySettingsFieldNumber = 109;
+    private static readonly pb::FieldCodec<global::Google.Api.ClientLibrarySettings> _repeated_librarySettings_codec
+        = pb::FieldCodec.ForMessage(874, global::Google.Api.ClientLibrarySettings.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.ClientLibrarySettings> librarySettings_ = new pbc::RepeatedField<global::Google.Api.ClientLibrarySettings>();
+    /// <summary>
+    /// Client library settings.  If the same version string appears multiple
+    /// times in this list, then the last one wins.  Settings from earlier
+    /// settings with the same version string are discarded.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.ClientLibrarySettings> LibrarySettings {
+      get { return librarySettings_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as Publishing);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(Publishing other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!methodSettings_.Equals(other.methodSettings_)) return false;
+      if (NewIssueUri != other.NewIssueUri) return false;
+      if (DocumentationUri != other.DocumentationUri) return false;
+      if (ApiShortName != other.ApiShortName) return false;
+      if (GithubLabel != other.GithubLabel) return false;
+      if(!codeownerGithubTeams_.Equals(other.codeownerGithubTeams_)) return false;
+      if (DocTagPrefix != other.DocTagPrefix) return false;
+      if (Organization != other.Organization) return false;
+      if(!librarySettings_.Equals(other.librarySettings_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= methodSettings_.GetHashCode();
+      if (NewIssueUri.Length != 0) hash ^= NewIssueUri.GetHashCode();
+      if (DocumentationUri.Length != 0) hash ^= DocumentationUri.GetHashCode();
+      if (ApiShortName.Length != 0) hash ^= ApiShortName.GetHashCode();
+      if (GithubLabel.Length != 0) hash ^= GithubLabel.GetHashCode();
+      hash ^= codeownerGithubTeams_.GetHashCode();
+      if (DocTagPrefix.Length != 0) hash ^= DocTagPrefix.GetHashCode();
+      if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) hash ^= Organization.GetHashCode();
+      hash ^= librarySettings_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      methodSettings_.WriteTo(output, _repeated_methodSettings_codec);
+      if (NewIssueUri.Length != 0) {
+        output.WriteRawTag(170, 6);
+        output.WriteString(NewIssueUri);
+      }
+      if (DocumentationUri.Length != 0) {
+        output.WriteRawTag(178, 6);
+        output.WriteString(DocumentationUri);
+      }
+      if (ApiShortName.Length != 0) {
+        output.WriteRawTag(186, 6);
+        output.WriteString(ApiShortName);
+      }
+      if (GithubLabel.Length != 0) {
+        output.WriteRawTag(194, 6);
+        output.WriteString(GithubLabel);
+      }
+      codeownerGithubTeams_.WriteTo(output, _repeated_codeownerGithubTeams_codec);
+      if (DocTagPrefix.Length != 0) {
+        output.WriteRawTag(210, 6);
+        output.WriteString(DocTagPrefix);
+      }
+      if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) {
+        output.WriteRawTag(216, 6);
+        output.WriteEnum((int) Organization);
+      }
+      librarySettings_.WriteTo(output, _repeated_librarySettings_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      methodSettings_.WriteTo(ref output, _repeated_methodSettings_codec);
+      if (NewIssueUri.Length != 0) {
+        output.WriteRawTag(170, 6);
+        output.WriteString(NewIssueUri);
+      }
+      if (DocumentationUri.Length != 0) {
+        output.WriteRawTag(178, 6);
+        output.WriteString(DocumentationUri);
+      }
+      if (ApiShortName.Length != 0) {
+        output.WriteRawTag(186, 6);
+        output.WriteString(ApiShortName);
+      }
+      if (GithubLabel.Length != 0) {
+        output.WriteRawTag(194, 6);
+        output.WriteString(GithubLabel);
+      }
+      codeownerGithubTeams_.WriteTo(ref output, _repeated_codeownerGithubTeams_codec);
+      if (DocTagPrefix.Length != 0) {
+        output.WriteRawTag(210, 6);
+        output.WriteString(DocTagPrefix);
+      }
+      if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) {
+        output.WriteRawTag(216, 6);
+        output.WriteEnum((int) Organization);
+      }
+      librarySettings_.WriteTo(ref output, _repeated_librarySettings_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += methodSettings_.CalculateSize(_repeated_methodSettings_codec);
+      if (NewIssueUri.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(NewIssueUri);
+      }
+      if (DocumentationUri.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(DocumentationUri);
+      }
+      if (ApiShortName.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(ApiShortName);
+      }
+      if (GithubLabel.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(GithubLabel);
+      }
+      size += codeownerGithubTeams_.CalculateSize(_repeated_codeownerGithubTeams_codec);
+      if (DocTagPrefix.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(DocTagPrefix);
+      }
+      if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) {
+        size += 2 + pb::CodedOutputStream.ComputeEnumSize((int) Organization);
+      }
+      size += librarySettings_.CalculateSize(_repeated_librarySettings_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(Publishing other) {
+      if (other == null) {
+        return;
+      }
+      methodSettings_.Add(other.methodSettings_);
+      if (other.NewIssueUri.Length != 0) {
+        NewIssueUri = other.NewIssueUri;
+      }
+      if (other.DocumentationUri.Length != 0) {
+        DocumentationUri = other.DocumentationUri;
+      }
+      if (other.ApiShortName.Length != 0) {
+        ApiShortName = other.ApiShortName;
+      }
+      if (other.GithubLabel.Length != 0) {
+        GithubLabel = other.GithubLabel;
+      }
+      codeownerGithubTeams_.Add(other.codeownerGithubTeams_);
+      if (other.DocTagPrefix.Length != 0) {
+        DocTagPrefix = other.DocTagPrefix;
+      }
+      if (other.Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) {
+        Organization = other.Organization;
+      }
+      librarySettings_.Add(other.librarySettings_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 18: {
+            methodSettings_.AddEntriesFrom(input, _repeated_methodSettings_codec);
+            break;
+          }
+          case 810: {
+            NewIssueUri = input.ReadString();
+            break;
+          }
+          case 818: {
+            DocumentationUri = input.ReadString();
+            break;
+          }
+          case 826: {
+            ApiShortName = input.ReadString();
+            break;
+          }
+          case 834: {
+            GithubLabel = input.ReadString();
+            break;
+          }
+          case 842: {
+            codeownerGithubTeams_.AddEntriesFrom(input, _repeated_codeownerGithubTeams_codec);
+            break;
+          }
+          case 850: {
+            DocTagPrefix = input.ReadString();
+            break;
+          }
+          case 856: {
+            Organization = (global::Google.Api.ClientLibraryOrganization) input.ReadEnum();
+            break;
+          }
+          case 874: {
+            librarySettings_.AddEntriesFrom(input, _repeated_librarySettings_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 18: {
+            methodSettings_.AddEntriesFrom(ref input, _repeated_methodSettings_codec);
+            break;
+          }
+          case 810: {
+            NewIssueUri = input.ReadString();
+            break;
+          }
+          case 818: {
+            DocumentationUri = input.ReadString();
+            break;
+          }
+          case 826: {
+            ApiShortName = input.ReadString();
+            break;
+          }
+          case 834: {
+            GithubLabel = input.ReadString();
+            break;
+          }
+          case 842: {
+            codeownerGithubTeams_.AddEntriesFrom(ref input, _repeated_codeownerGithubTeams_codec);
+            break;
+          }
+          case 850: {
+            DocTagPrefix = input.ReadString();
+            break;
+          }
+          case 856: {
+            Organization = (global::Google.Api.ClientLibraryOrganization) input.ReadEnum();
+            break;
+          }
+          case 874: {
+            librarySettings_.AddEntriesFrom(ref input, _repeated_librarySettings_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Java client libraries.
+  /// </summary>
+  public sealed partial class JavaSettings : pb::IMessage<JavaSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<JavaSettings> _parser = new pb::MessageParser<JavaSettings>(() => new JavaSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<JavaSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public JavaSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public JavaSettings(JavaSettings other) : this() {
+      libraryPackage_ = other.libraryPackage_;
+      serviceClassNames_ = other.serviceClassNames_.Clone();
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public JavaSettings Clone() {
+      return new JavaSettings(this);
+    }
+
+    /// <summary>Field number for the "library_package" field.</summary>
+    public const int LibraryPackageFieldNumber = 1;
+    private string libraryPackage_ = "";
+    /// <summary>
+    /// The package name to use in Java. Clobbers the java_package option
+    /// set in the protobuf. This should be used **only** by APIs
+    /// who have already set the language_settings.java.package_name" field
+    /// in gapic.yaml. API teams should use the protobuf java_package option
+    /// where possible.
+    ///
+    /// Example of a YAML configuration::
+    ///
+    ///  publishing:
+    ///    java_settings:
+    ///      library_package: com.google.cloud.pubsub.v1
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string LibraryPackage {
+      get { return libraryPackage_; }
+      set {
+        libraryPackage_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "service_class_names" field.</summary>
+    public const int ServiceClassNamesFieldNumber = 2;
+    private static readonly pbc::MapField<string, string>.Codec _map_serviceClassNames_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 18);
+    private readonly pbc::MapField<string, string> serviceClassNames_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Configure the Java class name to use instead of the service's for its
+    /// corresponding generated GAPIC client. Keys are fully-qualified
+    /// service names as they appear in the protobuf (including the full
+    /// the language_settings.java.interface_names" field in gapic.yaml. API
+    /// teams should otherwise use the service name as it appears in the
+    /// protobuf.
+    ///
+    /// Example of a YAML configuration::
+    ///
+    ///  publishing:
+    ///    java_settings:
+    ///      service_class_names:
+    ///        - google.pubsub.v1.Publisher: TopicAdmin
+    ///        - google.pubsub.v1.Subscriber: SubscriptionAdmin
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> ServiceClassNames {
+      get { return serviceClassNames_; }
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 3;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as JavaSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(JavaSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (LibraryPackage != other.LibraryPackage) return false;
+      if (!ServiceClassNames.Equals(other.ServiceClassNames)) return false;
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (LibraryPackage.Length != 0) hash ^= LibraryPackage.GetHashCode();
+      hash ^= ServiceClassNames.GetHashCode();
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (LibraryPackage.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(LibraryPackage);
+      }
+      serviceClassNames_.WriteTo(output, _map_serviceClassNames_codec);
+      if (common_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (LibraryPackage.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(LibraryPackage);
+      }
+      serviceClassNames_.WriteTo(ref output, _map_serviceClassNames_codec);
+      if (common_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (LibraryPackage.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(LibraryPackage);
+      }
+      size += serviceClassNames_.CalculateSize(_map_serviceClassNames_codec);
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(JavaSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.LibraryPackage.Length != 0) {
+        LibraryPackage = other.LibraryPackage;
+      }
+      serviceClassNames_.Add(other.serviceClassNames_);
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            LibraryPackage = input.ReadString();
+            break;
+          }
+          case 18: {
+            serviceClassNames_.AddEntriesFrom(input, _map_serviceClassNames_codec);
+            break;
+          }
+          case 26: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            LibraryPackage = input.ReadString();
+            break;
+          }
+          case 18: {
+            serviceClassNames_.AddEntriesFrom(ref input, _map_serviceClassNames_codec);
+            break;
+          }
+          case 26: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for C++ client libraries.
+  /// </summary>
+  public sealed partial class CppSettings : pb::IMessage<CppSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CppSettings> _parser = new pb::MessageParser<CppSettings>(() => new CppSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CppSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CppSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CppSettings(CppSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CppSettings Clone() {
+      return new CppSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CppSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CppSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CppSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Php client libraries.
+  /// </summary>
+  public sealed partial class PhpSettings : pb::IMessage<PhpSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PhpSettings> _parser = new pb::MessageParser<PhpSettings>(() => new PhpSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<PhpSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PhpSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PhpSettings(PhpSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PhpSettings Clone() {
+      return new PhpSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as PhpSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(PhpSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(PhpSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Python client libraries.
+  /// </summary>
+  public sealed partial class PythonSettings : pb::IMessage<PythonSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PythonSettings> _parser = new pb::MessageParser<PythonSettings>(() => new PythonSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<PythonSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PythonSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PythonSettings(PythonSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PythonSettings Clone() {
+      return new PythonSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as PythonSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(PythonSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(PythonSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Node client libraries.
+  /// </summary>
+  public sealed partial class NodeSettings : pb::IMessage<NodeSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<NodeSettings> _parser = new pb::MessageParser<NodeSettings>(() => new NodeSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<NodeSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NodeSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NodeSettings(NodeSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NodeSettings Clone() {
+      return new NodeSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as NodeSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(NodeSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(NodeSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Dotnet client libraries.
+  /// </summary>
+  public sealed partial class DotnetSettings : pb::IMessage<DotnetSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DotnetSettings> _parser = new pb::MessageParser<DotnetSettings>(() => new DotnetSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DotnetSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DotnetSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DotnetSettings(DotnetSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DotnetSettings Clone() {
+      return new DotnetSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DotnetSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DotnetSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DotnetSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Ruby client libraries.
+  /// </summary>
+  public sealed partial class RubySettings : pb::IMessage<RubySettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RubySettings> _parser = new pb::MessageParser<RubySettings>(() => new RubySettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RubySettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RubySettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RubySettings(RubySettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RubySettings Clone() {
+      return new RubySettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as RubySettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RubySettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RubySettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Settings for Go client libraries.
+  /// </summary>
+  public sealed partial class GoSettings : pb::IMessage<GoSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GoSettings> _parser = new pb::MessageParser<GoSettings>(() => new GoSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GoSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GoSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GoSettings(GoSettings other) : this() {
+      common_ = other.common_ != null ? other.common_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GoSettings Clone() {
+      return new GoSettings(this);
+    }
+
+    /// <summary>Field number for the "common" field.</summary>
+    public const int CommonFieldNumber = 1;
+    private global::Google.Api.CommonLanguageSettings common_;
+    /// <summary>
+    /// Some settings.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.CommonLanguageSettings Common {
+      get { return common_; }
+      set {
+        common_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GoSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GoSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Common, other.Common)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (common_ != null) hash ^= Common.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (common_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Common);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (common_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GoSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.common_ != null) {
+        if (common_ == null) {
+          Common = new global::Google.Api.CommonLanguageSettings();
+        }
+        Common.MergeFrom(other.Common);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (common_ == null) {
+              Common = new global::Google.Api.CommonLanguageSettings();
+            }
+            input.ReadMessage(Common);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Describes the generator configuration for a method.
+  /// </summary>
+  public sealed partial class MethodSettings : pb::IMessage<MethodSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<MethodSettings> _parser = new pb::MessageParser<MethodSettings>(() => new MethodSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<MethodSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MethodSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MethodSettings(MethodSettings other) : this() {
+      selector_ = other.selector_;
+      longRunning_ = other.longRunning_ != null ? other.longRunning_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MethodSettings Clone() {
+      return new MethodSettings(this);
+    }
+
+    /// <summary>Field number for the "selector" field.</summary>
+    public const int SelectorFieldNumber = 1;
+    private string selector_ = "";
+    /// <summary>
+    /// The fully qualified name of the method, for which the options below apply.
+    /// This is used to find the method to apply the options.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Selector {
+      get { return selector_; }
+      set {
+        selector_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "long_running" field.</summary>
+    public const int LongRunningFieldNumber = 2;
+    private global::Google.Api.MethodSettings.Types.LongRunning longRunning_;
+    /// <summary>
+    /// Describes settings to use for long-running operations when generating
+    /// API methods for RPCs. Complements RPCs that use the annotations in
+    /// google/longrunning/operations.proto.
+    ///
+    /// Example of a YAML configuration::
+    ///
+    ///  publishing:
+    ///    method_behavior:
+    ///      - selector: CreateAdDomain
+    ///        long_running:
+    ///          initial_poll_delay:
+    ///            seconds: 60 # 1 minute
+    ///          poll_delay_multiplier: 1.5
+    ///          max_poll_delay:
+    ///            seconds: 360 # 6 minutes
+    ///          total_poll_timeout:
+    ///             seconds: 54000 # 90 minutes
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.MethodSettings.Types.LongRunning LongRunning {
+      get { return longRunning_; }
+      set {
+        longRunning_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as MethodSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(MethodSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Selector != other.Selector) return false;
+      if (!object.Equals(LongRunning, other.LongRunning)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Selector.Length != 0) hash ^= Selector.GetHashCode();
+      if (longRunning_ != null) hash ^= LongRunning.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
+      if (longRunning_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(LongRunning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Selector.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Selector);
+      }
+      if (longRunning_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(LongRunning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Selector.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Selector);
+      }
+      if (longRunning_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(LongRunning);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(MethodSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Selector.Length != 0) {
+        Selector = other.Selector;
+      }
+      if (other.longRunning_ != null) {
+        if (longRunning_ == null) {
+          LongRunning = new global::Google.Api.MethodSettings.Types.LongRunning();
+        }
+        LongRunning.MergeFrom(other.LongRunning);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (longRunning_ == null) {
+              LongRunning = new global::Google.Api.MethodSettings.Types.LongRunning();
+            }
+            input.ReadMessage(LongRunning);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Selector = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (longRunning_ == null) {
+              LongRunning = new global::Google.Api.MethodSettings.Types.LongRunning();
+            }
+            input.ReadMessage(LongRunning);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the MethodSettings message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      /// <summary>
+      /// Describes settings to use when generating API methods that use the
+      /// long-running operation pattern.
+      /// All default values below are from those used in the client library
+      /// generators (e.g.
+      /// [Java](https://github.com/googleapis/gapic-generator-java/blob/04c2faa191a9b5a10b92392fe8482279c4404803/src/main/java/com/google/api/generator/gapic/composer/common/RetrySettingsComposer.java)).
+      /// </summary>
+      public sealed partial class LongRunning : pb::IMessage<LongRunning>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<LongRunning> _parser = new pb::MessageParser<LongRunning>(() => new LongRunning());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<LongRunning> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.MethodSettings.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public LongRunning() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public LongRunning(LongRunning other) : this() {
+          initialPollDelay_ = other.initialPollDelay_ != null ? other.initialPollDelay_.Clone() : null;
+          pollDelayMultiplier_ = other.pollDelayMultiplier_;
+          maxPollDelay_ = other.maxPollDelay_ != null ? other.maxPollDelay_.Clone() : null;
+          totalPollTimeout_ = other.totalPollTimeout_ != null ? other.totalPollTimeout_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public LongRunning Clone() {
+          return new LongRunning(this);
+        }
+
+        /// <summary>Field number for the "initial_poll_delay" field.</summary>
+        public const int InitialPollDelayFieldNumber = 1;
+        private global::Google.Protobuf.WellKnownTypes.Duration initialPollDelay_;
+        /// <summary>
+        /// Initial delay after which the first poll request will be made.
+        /// Default value: 5 seconds.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Protobuf.WellKnownTypes.Duration InitialPollDelay {
+          get { return initialPollDelay_; }
+          set {
+            initialPollDelay_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "poll_delay_multiplier" field.</summary>
+        public const int PollDelayMultiplierFieldNumber = 2;
+        private float pollDelayMultiplier_;
+        /// <summary>
+        /// Multiplier to gradually increase delay between subsequent polls until it
+        /// reaches max_poll_delay.
+        /// Default value: 1.5.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public float PollDelayMultiplier {
+          get { return pollDelayMultiplier_; }
+          set {
+            pollDelayMultiplier_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "max_poll_delay" field.</summary>
+        public const int MaxPollDelayFieldNumber = 3;
+        private global::Google.Protobuf.WellKnownTypes.Duration maxPollDelay_;
+        /// <summary>
+        /// Maximum time between two subsequent poll requests.
+        /// Default value: 45 seconds.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Protobuf.WellKnownTypes.Duration MaxPollDelay {
+          get { return maxPollDelay_; }
+          set {
+            maxPollDelay_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "total_poll_timeout" field.</summary>
+        public const int TotalPollTimeoutFieldNumber = 4;
+        private global::Google.Protobuf.WellKnownTypes.Duration totalPollTimeout_;
+        /// <summary>
+        /// Total polling timeout.
+        /// Default value: 5 minutes.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Protobuf.WellKnownTypes.Duration TotalPollTimeout {
+          get { return totalPollTimeout_; }
+          set {
+            totalPollTimeout_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as LongRunning);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(LongRunning other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(InitialPollDelay, other.InitialPollDelay)) return false;
+          if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PollDelayMultiplier, other.PollDelayMultiplier)) return false;
+          if (!object.Equals(MaxPollDelay, other.MaxPollDelay)) return false;
+          if (!object.Equals(TotalPollTimeout, other.TotalPollTimeout)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (initialPollDelay_ != null) hash ^= InitialPollDelay.GetHashCode();
+          if (PollDelayMultiplier != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PollDelayMultiplier);
+          if (maxPollDelay_ != null) hash ^= MaxPollDelay.GetHashCode();
+          if (totalPollTimeout_ != null) hash ^= TotalPollTimeout.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (initialPollDelay_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(InitialPollDelay);
+          }
+          if (PollDelayMultiplier != 0F) {
+            output.WriteRawTag(21);
+            output.WriteFloat(PollDelayMultiplier);
+          }
+          if (maxPollDelay_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(MaxPollDelay);
+          }
+          if (totalPollTimeout_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(TotalPollTimeout);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (initialPollDelay_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(InitialPollDelay);
+          }
+          if (PollDelayMultiplier != 0F) {
+            output.WriteRawTag(21);
+            output.WriteFloat(PollDelayMultiplier);
+          }
+          if (maxPollDelay_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(MaxPollDelay);
+          }
+          if (totalPollTimeout_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(TotalPollTimeout);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (initialPollDelay_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(InitialPollDelay);
+          }
+          if (PollDelayMultiplier != 0F) {
+            size += 1 + 4;
+          }
+          if (maxPollDelay_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(MaxPollDelay);
+          }
+          if (totalPollTimeout_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(TotalPollTimeout);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(LongRunning other) {
+          if (other == null) {
+            return;
+          }
+          if (other.initialPollDelay_ != null) {
+            if (initialPollDelay_ == null) {
+              InitialPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+            }
+            InitialPollDelay.MergeFrom(other.InitialPollDelay);
+          }
+          if (other.PollDelayMultiplier != 0F) {
+            PollDelayMultiplier = other.PollDelayMultiplier;
+          }
+          if (other.maxPollDelay_ != null) {
+            if (maxPollDelay_ == null) {
+              MaxPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+            }
+            MaxPollDelay.MergeFrom(other.MaxPollDelay);
+          }
+          if (other.totalPollTimeout_ != null) {
+            if (totalPollTimeout_ == null) {
+              TotalPollTimeout = new global::Google.Protobuf.WellKnownTypes.Duration();
+            }
+            TotalPollTimeout.MergeFrom(other.TotalPollTimeout);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (initialPollDelay_ == null) {
+                  InitialPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(InitialPollDelay);
+                break;
+              }
+              case 21: {
+                PollDelayMultiplier = input.ReadFloat();
+                break;
+              }
+              case 26: {
+                if (maxPollDelay_ == null) {
+                  MaxPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(MaxPollDelay);
+                break;
+              }
+              case 34: {
+                if (totalPollTimeout_ == null) {
+                  TotalPollTimeout = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(TotalPollTimeout);
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 10: {
+                if (initialPollDelay_ == null) {
+                  InitialPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(InitialPollDelay);
+                break;
+              }
+              case 21: {
+                PollDelayMultiplier = input.ReadFloat();
+                break;
+              }
+              case 26: {
+                if (maxPollDelay_ == null) {
+                  MaxPollDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(MaxPollDelay);
+                break;
+              }
+              case 34: {
+                if (totalPollTimeout_ == null) {
+                  TotalPollTimeout = new global::Google.Protobuf.WellKnownTypes.Duration();
+                }
+                input.ReadMessage(TotalPollTimeout);
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
+
+  }
+
+  #endregion
 
 }
 

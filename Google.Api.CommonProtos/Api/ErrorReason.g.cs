@@ -31,8 +31,8 @@ namespace Google.Api {
     static ErrorReasonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSrE",
-            "BAoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
+            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSrA",
+            "BgoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
             "FAoQU0VSVklDRV9ESVNBQkxFRBABEhQKEEJJTExJTkdfRElTQUJMRUQQAhIT",
             "Cg9BUElfS0VZX0lOVkFMSUQQAxIbChdBUElfS0VZX1NFUlZJQ0VfQkxPQ0tF",
             "RBAEEiEKHUFQSV9LRVlfSFRUUF9SRUZFUlJFUl9CTE9DS0VEEAcSHgoaQVBJ",
@@ -44,10 +44,16 @@ namespace Google.Api {
             "FAoQQ09OU1VNRVJfSU5WQUxJRBAOEhwKGFNFQ1VSSVRZX1BPTElDWV9WSU9M",
             "QVRFRBAPEhgKFEFDQ0VTU19UT0tFTl9FWFBJUkVEEBASIwofQUNDRVNTX1RP",
             "S0VOX1NDT1BFX0lOU1VGRklDSUVOVBAREhkKFUFDQ09VTlRfU1RBVEVfSU5W",
-            "QUxJRBASEiEKHUFDQ0VTU19UT0tFTl9UWVBFX1VOU1VQUE9SVEVEEBNCcAoO",
-            "Y29tLmdvb2dsZS5hcGlCEEVycm9yUmVhc29uUHJvdG9QAVpDZ29vZ2xlLmdv",
-            "bGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvZXJyb3JfcmVhc29u",
-            "O2Vycm9yX3JlYXNvbqICBEdBUEliBnByb3RvMw=="));
+            "QUxJRBASEiEKHUFDQ0VTU19UT0tFTl9UWVBFX1VOU1VQUE9SVEVEEBMSFwoT",
+            "Q1JFREVOVElBTFNfTUlTU0lORxAUEhwKGFJFU09VUkNFX1BST0pFQ1RfSU5W",
+            "QUxJRBAVEhoKFlNFU1NJT05fQ09PS0lFX0lOVkFMSUQQFxIZChVVU0VSX0JM",
+            "T0NLRURfQllfQURNSU4QGBInCiNSRVNPVVJDRV9VU0FHRV9SRVNUUklDVElP",
+            "Tl9WSU9MQVRFRBAZEiAKHFNZU1RFTV9QQVJBTUVURVJfVU5TVVBQT1JURUQQ",
+            "GhIdChlPUkdfUkVTVFJJQ1RJT05fVklPTEFUSU9OEBsSIgoeT1JHX1JFU1RS",
+            "SUNUSU9OX0hFQURFUl9JTlZBTElEEBxCcAoOY29tLmdvb2dsZS5hcGlCEEVy",
+            "cm9yUmVhc29uUHJvdG9QAVpDZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8v",
+            "Z29vZ2xlYXBpcy9hcGkvZXJyb3JfcmVhc29uO2Vycm9yX3JlYXNvbqICBEdB",
+            "UEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ErrorReason), }, null, null));
@@ -451,6 +457,152 @@ namespace Google.Api {
     ///     }
     /// </summary>
     [pbr::OriginalName("ACCESS_TOKEN_TYPE_UNSUPPORTED")] AccessTokenTypeUnsupported = 19,
+    /// <summary>
+    /// The request is denied because the request doesn't have any authentication
+    /// credentials. For more information regarding the supported authentication
+    /// strategies for Google Cloud APIs, see
+    /// https://cloud.google.com/docs/authentication.
+    ///
+    /// Example of an ErrorInfo when the request is to the Cloud Storage API
+    /// without any authentication credentials.
+    ///
+    ///     { "reason": "CREDENTIALS_MISSING",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject"
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("CREDENTIALS_MISSING")] CredentialsMissing = 20,
+    /// <summary>
+    /// The request is denied because the provided project owning the resource
+    /// which acts as the [API
+    /// consumer](https://cloud.google.com/apis/design/glossary#api_consumer) is
+    /// invalid. It may be in a bad format or empty.
+    ///
+    /// Example of an ErrorInfo when the request is to the Cloud Functions API,
+    /// but the offered resource project in the request in a bad format which can't
+    /// perform the ListFunctions method.
+    ///
+    ///     { "reason": "RESOURCE_PROJECT_INVALID",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "cloudfunctions.googleapis.com",
+    ///         "method":
+    ///         "google.cloud.functions.v1.CloudFunctionsService.ListFunctions"
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("RESOURCE_PROJECT_INVALID")] ResourceProjectInvalid = 21,
+    /// <summary>
+    /// The request is denied because the provided session cookie is missing,
+    /// invalid or failed to decode.
+    ///
+    /// Example of an ErrorInfo when the request is calling Cloud Storage service
+    /// with a SID cookie which can't be decoded.
+    ///
+    ///     { "reason": "SESSION_COOKIE_INVALID",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject",
+    ///         "cookie": "SID"
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("SESSION_COOKIE_INVALID")] SessionCookieInvalid = 23,
+    /// <summary>
+    /// The request is denied because the user is from a Google Workspace customer
+    /// that blocks their users from accessing a particular service.
+    ///
+    /// Example scenario: https://support.google.com/a/answer/9197205?hl=en
+    ///
+    /// Example of an ErrorInfo when access to Google Cloud Storage service is
+    /// blocked by the Google Workspace administrator:
+    ///
+    ///     { "reason": "USER_BLOCKED_BY_ADMIN",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject",
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("USER_BLOCKED_BY_ADMIN")] UserBlockedByAdmin = 24,
+    /// <summary>
+    /// The request is denied because the resource service usage is restricted
+    /// by administrators according to the organization policy constraint.
+    /// For more information see
+    /// https://cloud.google.com/resource-manager/docs/organization-policy/restricting-services.
+    ///
+    /// Example of an ErrorInfo when access to Google Cloud Storage service is
+    /// restricted by Resource Usage Restriction policy:
+    ///
+    ///     { "reason": "RESOURCE_USAGE_RESTRICTION_VIOLATED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "consumer": "projects/project-123",
+    ///         "service": "storage.googleapis.com"
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("RESOURCE_USAGE_RESTRICTION_VIOLATED")] ResourceUsageRestrictionViolated = 25,
+    /// <summary>
+    /// Unimplemented. Do not use.
+    ///
+    /// The request is denied because it contains unsupported system parameters in
+    /// URL query parameters or HTTP headers. For more information,
+    /// see https://cloud.google.com/apis/docs/system-parameters
+    ///
+    /// Example of an ErrorInfo when access "pubsub.googleapis.com" service with
+    /// a request header of "x-goog-user-ip":
+    ///
+    ///     { "reason": "SYSTEM_PARAMETER_UNSUPPORTED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "pubsub.googleapis.com"
+    ///         "parameter": "x-goog-user-ip"
+    ///       }
+    ///     }
+    /// </summary>
+    [pbr::OriginalName("SYSTEM_PARAMETER_UNSUPPORTED")] SystemParameterUnsupported = 26,
+    /// <summary>
+    /// The request is denied because it violates Org Restriction: the requested
+    /// resource does not belong to allowed organizations specified in
+    /// "X-Goog-Allowed-Resources" header.
+    ///
+    /// Example of an ErrorInfo when accessing a GCP resource that is restricted by
+    /// Org Restriction for "pubsub.googleapis.com" service.
+    ///
+    /// {
+    ///   reason: "ORG_RESTRICTION_VIOLATION"
+    ///   domain: "googleapis.com"
+    ///   metadata {
+    ///     "consumer":"projects/123456"
+    ///     "service": "pubsub.googleapis.com"
+    ///   }
+    /// }
+    /// </summary>
+    [pbr::OriginalName("ORG_RESTRICTION_VIOLATION")] OrgRestrictionViolation = 27,
+    /// <summary>
+    /// The request is denied because "X-Goog-Allowed-Resources" header is in a bad
+    /// format.
+    ///
+    /// Example of an ErrorInfo when
+    /// accessing "pubsub.googleapis.com" service with an invalid
+    /// "X-Goog-Allowed-Resources" request header.
+    ///
+    /// {
+    ///   reason: "ORG_RESTRICTION_HEADER_INVALID"
+    ///   domain: "googleapis.com"
+    ///   metadata {
+    ///     "consumer":"projects/123456"
+    ///     "service": "pubsub.googleapis.com"
+    ///   }
+    /// }
+    /// </summary>
+    [pbr::OriginalName("ORG_RESTRICTION_HEADER_INVALID")] OrgRestrictionHeaderInvalid = 28,
   }
 
   #endregion
