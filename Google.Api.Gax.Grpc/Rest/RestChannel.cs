@@ -64,30 +64,36 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            if (options.Deadline.HasValue)
-            {
-                // TODO: [virost, 2021-12] Use IClock.
-                var delayInterval = options.Deadline.Value - DateTime.UtcNow;
-                if (delayInterval.TotalMilliseconds <= 0)
-                {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`"));
-                }
-                cancellationTokenSource = new CancellationTokenSource(delayInterval);
-            }
+            var deadlineToken = CreateDeadlineCancellationToken(options, method.FullName);
+            var callCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken);
 
-            var httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseContentRead);
+            var httpResponseTask = SendAsync(restMethod, host, options, request, callCancellationTokenSource.Token, deadlineToken, HttpCompletionOption.ResponseContentRead);
             var readResponseTask = ReadResponseAsync(httpResponseTask);
 
             var responseTask = restMethod.ReadResponseAsync<TResponse>(readResponseTask);
             var responseHeadersTask = ReadHeadersAsync(readResponseTask);
             Func<Status> statusFunc = () => GetStatus(readResponseTask);
             Func<Metadata> trailersFunc = () => GetTrailers(readResponseTask);
-            return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationTokenSource.Cancel);
+            return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, callCancellationTokenSource.Cancel);
         }
 
+        /// <summary>
+        /// Creates an HTTP request, adds headers from CallOptions, and sends the request.
+        /// </summary>
+        /// <typeparam name="TRequest">The type of request</typeparam>
+        /// <param name="restMethod">The RPC being called; used to convert the request</param>
+        /// <param name="host">Override for the endpoint, if any</param>
+        /// <param name="options">The gRPC call options, used for headers and cancellation</param>
+        /// <param name="request">The RPC request</param>
+        /// <param name="overallCancellationToken">The overall cancellation token to use for asynchronous calls.
+        /// This should include <paramref name="deadlineToken"/>.
+        /// </param>
+        /// <param name="deadlineToken">The cancellation token to use for deadline expiry; this is present to ensure
+        /// that the right StatusCode can be used.</param>
+        /// <param name="httpCompletionOption">The option indicating at what point the method should complete,
+        /// within HTTP response processing</param>
         private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request,
-            CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
+            CancellationToken overallCancellationToken, CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             var httpRequest = restMethod.CreateRequest((IMessage)request, host);
@@ -101,17 +107,18 @@ namespace Google.Api.Gax.Grpc.Rest
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
             HttpResponseMessage httpResponseMessage;
-            using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken))
+            try
             {
-                try
-                {
-                    await AddAuthHeadersAsync(httpRequest, restMethod, linkedCts.Token).ConfigureAwait(false);
-                    httpResponseMessage = await _httpClient.SendAsync(httpRequest, httpCompletionOption, linkedCts.Token).ConfigureAwait(false);
-                }
-                catch (TaskCanceledException ex) when (deadlineToken.IsCancellationRequested)
-                {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`", ex));
-                }
+                await AddAuthHeadersAsync(httpRequest, restMethod, overallCancellationToken).ConfigureAwait(false);
+                httpResponseMessage = await _httpClient.SendAsync(httpRequest, httpCompletionOption, overallCancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException ex) when (deadlineToken.IsCancellationRequested)
+            {
+                throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"RPC '{restMethod.FullName}' timed out", ex));
+            }
+            catch (OperationCanceledException ex)
+            {
+                throw new RpcException(new Status(StatusCode.Cancelled, $"RPC '{restMethod.FullName}' was cancelled", ex));
             }
 
             return httpResponseMessage;
@@ -125,31 +132,39 @@ namespace Google.Api.Gax.Grpc.Rest
             // TODO[virost, 11/2022] Refactor this and the Unary call to remove duplication
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            if (options.Deadline.HasValue)
-            {
-                // TODO: [virost, 2021-12] Use IClock.
-                var delayInterval = options.Deadline.Value - DateTime.UtcNow;
-                if (delayInterval.TotalMilliseconds <= 0)
-                {
-                    throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"The timeout was reached when calling a method `{restMethod.FullName}`"));
-                }
-                cancellationTokenSource = new CancellationTokenSource(delayInterval);
-            }
+            var deadlineCancellationToken = CreateDeadlineCancellationToken(options, method.FullName);
+            CancellationTokenSource callCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineCancellationToken);
 
-            Task<HttpResponseMessage> httpResponseTask = SendAsync(restMethod, host, options, request, cancellationTokenSource.Token, HttpCompletionOption.ResponseHeadersRead);
+            Task<HttpResponseMessage> httpResponseTask = SendAsync(restMethod, host, options, request, callCancellationTokenSource.Token, deadlineCancellationToken, HttpCompletionOption.ResponseHeadersRead);
 
             Task<Metadata> responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
             Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
 
-            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask);
+            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask, callCancellationTokenSource.Token, deadlineCancellationToken);
             Action disposalAction = () =>
             {
                 responseStream.Dispose();
-                cancellationTokenSource.Cancel();
+                callCancellationTokenSource.Cancel();
             };
             return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, disposalAction);
+        }
+
+        // TODO: Make sure we dispose of CancellationTokenSources appropriately.
+        // See https://github.com/googleapis/gax-dotnet/issues/652
+        private static CancellationToken CreateDeadlineCancellationToken(CallOptions options, string methodName)
+        {
+            if (options.Deadline is not DateTime deadline)
+            {
+                return default;
+            }
+            // TODO: [virost, 2021-12] Use IClock.
+            var delayInterval = deadline - DateTime.UtcNow;
+            if (delayInterval.TotalMilliseconds <= 0)
+            {
+                throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"RPC '{methodName}' timed out"));
+            }
+            return new CancellationTokenSource(delayInterval).Token;
         }
 
         private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)
