@@ -11,6 +11,7 @@ using Grpc.Core;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc.Rest;
@@ -102,12 +103,12 @@ internal class RestMethod
     }
 
     // Note: this doesn't just return IAsyncStreamReader<TResponse> as we need know it implements IDisposable too.
-    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask)
+    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask, CancellationToken callCancellationToken, CancellationToken deadlineCancellationToken)
     {
         var textReaderTask = GetTextReader(httpResponseTask);
         Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
 
-        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter);
+        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter, callCancellationToken, deadlineCancellationToken, FullName);
     }
 
     private static async Task<TextReader> GetTextReader(Task<HttpResponseMessage> httpResponseTask)

@@ -36,8 +36,8 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task ValidData_LineByLine()
     {
-        TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(ArrayOfObjectsJson.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+        var decodingReader = reader.CreateResponseReader();
 
         var result = await decodingReader.MoveNext(CancellationToken.None);
         Assert.True(result);
@@ -62,8 +62,8 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task ValidData_CharByChar()
     {
-        TextReader reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c => c.ToString()));
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(ArrayOfObjectsJson.Select(c => c.ToString()));
+        var decodingReader = reader.CreateResponseReader();
 
         var result = await decodingReader.MoveNext(CancellationToken.None);
         Assert.True(result);
@@ -89,8 +89,8 @@ public class PartialDecodingStreamReaderTest
     public async Task IncompleteData()
     {
         string[] data = { "[", "{ \"foo\": 1 }", "," /* end of stream - we want more results... */};
-        TextReader reader = new ReplayingStreamReader(data);
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(data);
+        var decodingReader = reader.CreateResponseReader();
 
         var result = await decodingReader.MoveNext(CancellationToken.None);
         Assert.True(result);
@@ -119,8 +119,8 @@ public class PartialDecodingStreamReaderTest
             // before the broken JSON.
             ", { \"foo\": 2 }, BADJSON ]"
         };
-        TextReader reader = new ReplayingStreamReader(data);
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(data);
+        var decodingReader = reader.CreateResponseReader();
 
         var result = await decodingReader.MoveNext(CancellationToken.None);
         Assert.True(result);
@@ -137,8 +137,8 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task EmptyValidData()
     {
-        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[]" });
+        var decodingReader = reader.CreateResponseReader();
 
         var result = await decodingReader.MoveNext(CancellationToken.None);
         Assert.False(result);
@@ -150,8 +150,8 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task NonWhitespaceAfterClosingArray()
     {
-        TextReader reader = new ReplayingStreamReader(new[] { "[] ," });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[] ," });
+        var decodingReader = reader.CreateResponseReader();
 
         var ex = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(CancellationToken.None));
         Assert.Equal(StatusCode.DataLoss, ex.StatusCode);
@@ -160,14 +160,35 @@ public class PartialDecodingStreamReaderTest
     /// <summary>
     /// This doesn't test aspects like "cancellation during a read" but that's harder to do.
     /// </summary>
-    /// <returns></returns>
     [Fact]
-    public async Task CancellationObserved()
+    public async Task PerCallCancellationObserved()
     {
-        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[]" });
+        var decodingReader = reader.CreateResponseReader();
         var token = new CancellationToken(canceled: true);
-        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
+        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
+        Assert.Equal(StatusCode.Cancelled, exception.StatusCode);
+    }
+
+    [Fact]
+    public async Task OverallCallCancellationObserved()
+    {
+        var reader = new ReplayingStreamReader(new[] { "[]" });
+        var token = new CancellationToken(canceled: true);
+        var decodingReader = reader.CreateResponseReader(callCancellationToken: token, deadlineCancellationToken: default);
+        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
+        Assert.Equal(StatusCode.Cancelled, exception.StatusCode);
+    }
+
+    [Fact]
+    public async Task DeadlineCancellationObserved()
+    {
+        var reader = new ReplayingStreamReader(new[] { "[]" });
+        var token = new CancellationToken(canceled: true);
+        // Note: the deadline cancellation token is expected to be part of the call cancellation token.
+        var decodingReader = reader.CreateResponseReader(callCancellationToken: token, deadlineCancellationToken: token);
+        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
+        Assert.Equal(StatusCode.DeadlineExceeded, exception.StatusCode);
     }
 
     /// <summary>
@@ -177,20 +198,20 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task FailureIsSticky()
     {
-        TextReader reader = new ReplayingStreamReader(new[] { "[]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[]" });
+        var decodingReader = reader.CreateResponseReader();
         var token1 = new CancellationToken(canceled: true);
-        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token1));
+        await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token1));
 
         var token2 = new CancellationToken(canceled: false);
-        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token2));
+        await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token2));
     }
 
     [Fact]
     public async Task DisposedAfterCompletion()
     {
-        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[{}]" });
+        var decodingReader = reader.CreateResponseReader();
         Assert.True(await decodingReader.MoveNext(default));
         Assert.False(reader.Disposed);
 
@@ -201,18 +222,18 @@ public class PartialDecodingStreamReaderTest
     [Fact]
     public async Task DisposedAfterCancellation()
     {
-        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[{}]" });
+        var decodingReader = reader.CreateResponseReader();
         var token = new CancellationToken(canceled: true);
-        await Assert.ThrowsAsync<OperationCanceledException>(() => decodingReader.MoveNext(token));
+        await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
         await AssertDisposedSoon(reader);
     }
 
     [Fact]
     public async Task DisposedAfterError()
     {
-        ReplayingStreamReader reader = new ReplayingStreamReader(new[] { "[{}", ", broken]" });
-        var decodingReader = new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(reader), JObject.Parse);
+        var reader = new ReplayingStreamReader(new[] { "[{}", ", broken]" });
+        var decodingReader = reader.CreateResponseReader();
         var token = new CancellationToken(canceled: true);
 
         Assert.True(await decodingReader.MoveNext(default));
@@ -247,6 +268,13 @@ public class PartialDecodingStreamReaderTest
         {
             _queue = new Queue<string>(strings);
         }
+
+        internal PartialDecodingStreamReader<JObject> CreateResponseReader() =>
+            CreateResponseReader(default, default);
+
+        internal PartialDecodingStreamReader<JObject> CreateResponseReader(
+            CancellationToken callCancellationToken, CancellationToken deadlineCancellationToken) =>
+            new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(this), JObject.Parse, callCancellationToken, deadlineCancellationToken, "rpc");
 
         protected override void Dispose(bool disposing)
         {
