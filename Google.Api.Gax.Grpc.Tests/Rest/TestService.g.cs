@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Google.Api.Gax.Grpc.Rest {
+namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   /// <summary>Holder for reflection information generated from test_service.proto</summary>
   public static partial class TestServiceReflection {
@@ -24,43 +24,44 @@ namespace Google.Api.Gax.Grpc.Rest {
     static TestServiceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChJ0ZXN0X3NlcnZpY2UucHJvdG8SGGdvb2dsZS5hcGkuZ2F4LmdycGMucmVz",
-            "dBocZ29vZ2xlL2FwaS9hbm5vdGF0aW9ucy5wcm90byKKAgoPUnVsZVRlc3RS",
-            "ZXF1ZXN0EgkKAXgYASABKAkSCQoBeRgCIAEoCRILCgNpbnQYAyABKAUSEAoI",
-            "cmVwZWF0ZWQYBCADKAkSPwoDbWFwGAUgAygLMjIuZ29vZ2xlLmFwaS5nYXgu",
-            "Z3JwYy5yZXN0LlJ1bGVUZXN0UmVxdWVzdC5NYXBFbnRyeRJACgZuZXN0ZWQY",
-            "BiABKAsyMC5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QuUnVsZVRlc3RSZXF1",
-            "ZXN0Lk5lc3RlZBoqCghNYXBFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUY",
-            "AiABKAk6AjgBGhMKBk5lc3RlZBIJCgFhGAEgASgJIjAKD0J1bmRsaW5nUmVx",
-            "dWVzdBIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMYAiADKAkiMQoQQnVuZGxp",
-            "bmdSZXNwb25zZRIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMYAiADKAkiHQoN",
-            "U2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJIh4KDlNpbXBsZVJlc3BvbnNl",
-            "EgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWluZ1JlcXVlc3QSEgoKcGFn",
-            "ZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSDQoFY2hlY2sYAyAB",
-            "KAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0KBWl0ZW1zGAEgAygFEhcK",
-            "D25leHRfcGFnZV90b2tlbhgCIAEoCTKOBAoGU2FtcGxlEnUKDFNpbXBsZU1l",
-            "dGhvZBInLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5TaW1wbGVSZXF1ZXN0",
-            "GiguZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LlNpbXBsZVJlc3BvbnNlIhKC",
-            "0+STAgwSCi92MS97bmFtZX0SbgoXTWV0aG9kV2l0aE5vSHR0cE9wdGlvbnMS",
-            "Jy5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QuU2ltcGxlUmVxdWVzdBooLmdv",
-            "b2dsZS5hcGkuZ2F4LmdycGMucmVzdC5TaW1wbGVSZXNwb25zZSIAEpABChxC",
-            "aWRpcmVjdGlvbmFsU3RyZWFtaW5nTWV0aG9kEicuZ29vZ2xlLmFwaS5nYXgu",
-            "Z3JwYy5yZXN0LlNpbXBsZVJlcXVlc3QaKC5nb29nbGUuYXBpLmdheC5ncnBj",
-            "LnJlc3QuU2ltcGxlUmVzcG9uc2UiGYLT5JMCExIRL3YxL2JpZGlzdHJlYW1p",
-            "bmcoATABEokBChVDbGllbnRTdHJlYW1pbmdNZXRob2QSJy5nb29nbGUuYXBp",
-            "LmdheC5ncnBjLnJlc3QuU2ltcGxlUmVxdWVzdBooLmdvb2dsZS5hcGkuZ2F4",
-            "LmdycGMucmVzdC5TaW1wbGVSZXNwb25zZSIbgtPkkwIVEhMvdjEvY2xpZW50",
-            "c3RyZWFtaW5nKAFiBnByb3RvMw=="));
+            "ChJ0ZXN0X3NlcnZpY2UucHJvdG8SHmdvb2dsZS5hcGkuZ2F4LmdycGMucmVz",
+            "dC50ZXN0cxocZ29vZ2xlL2FwaS9hbm5vdGF0aW9ucy5wcm90byKWAgoPUnVs",
+            "ZVRlc3RSZXF1ZXN0EgkKAXgYASABKAkSCQoBeRgCIAEoCRILCgNpbnQYAyAB",
+            "KAUSEAoIcmVwZWF0ZWQYBCADKAkSRQoDbWFwGAUgAygLMjguZ29vZ2xlLmFw",
+            "aS5nYXguZ3JwYy5yZXN0LnRlc3RzLlJ1bGVUZXN0UmVxdWVzdC5NYXBFbnRy",
+            "eRJGCgZuZXN0ZWQYBiABKAsyNi5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3Qu",
+            "dGVzdHMuUnVsZVRlc3RSZXF1ZXN0Lk5lc3RlZBoqCghNYXBFbnRyeRILCgNr",
+            "ZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGhMKBk5lc3RlZBIJCgFhGAEg",
+            "ASgJIjAKD0J1bmRsaW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJEg8KB2VudHJp",
+            "ZXMYAiADKAkiMQoQQnVuZGxpbmdSZXNwb25zZRIMCgRuYW1lGAEgASgJEg8K",
+            "B2VudHJpZXMYAiADKAkiHQoNU2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJ",
+            "Ih4KDlNpbXBsZVJlc3BvbnNlEgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVh",
+            "bWluZ1JlcXVlc3QSEgoKcGFnZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUY",
+            "AiABKAUSDQoFY2hlY2sYAyABKAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNl",
+            "Eg0KBWl0ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTK/BAoG",
+            "U2FtcGxlEoEBCgxTaW1wbGVNZXRob2QSLS5nb29nbGUuYXBpLmdheC5ncnBj",
+            "LnJlc3QudGVzdHMuU2ltcGxlUmVxdWVzdBouLmdvb2dsZS5hcGkuZ2F4Lmdy",
+            "cGMucmVzdC50ZXN0cy5TaW1wbGVSZXNwb25zZSISgtPkkwIMEgovdjEve25h",
+            "bWV9EnoKF01ldGhvZFdpdGhOb0h0dHBPcHRpb25zEi0uZ29vZ2xlLmFwaS5n",
+            "YXguZ3JwYy5yZXN0LnRlc3RzLlNpbXBsZVJlcXVlc3QaLi5nb29nbGUuYXBp",
+            "LmdheC5ncnBjLnJlc3QudGVzdHMuU2ltcGxlUmVzcG9uc2UiABKcAQocQmlk",
+            "aXJlY3Rpb25hbFN0cmVhbWluZ01ldGhvZBItLmdvb2dsZS5hcGkuZ2F4Lmdy",
+            "cGMucmVzdC50ZXN0cy5TaW1wbGVSZXF1ZXN0Gi4uZ29vZ2xlLmFwaS5nYXgu",
+            "Z3JwYy5yZXN0LnRlc3RzLlNpbXBsZVJlc3BvbnNlIhmC0+STAhMSES92MS9i",
+            "aWRpc3RyZWFtaW5nKAEwARKVAQoVQ2xpZW50U3RyZWFtaW5nTWV0aG9kEi0u",
+            "Z29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3RzLlNpbXBsZVJlcXVlc3Qa",
+            "Li5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuU2ltcGxlUmVzcG9u",
+            "c2UiG4LT5JMCFRITL3YxL2NsaWVudHN0cmVhbWluZygBYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Parser, new[]{ "X", "Y", "Int", "Repeated", "Map", "Nested" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested), global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested.Parser, new[]{ "A" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BundlingRequest), global::Google.Api.Gax.Grpc.Rest.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BundlingResponse), global::Google.Api.Gax.Grpc.Rest.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.SimpleRequest), global::Google.Api.Gax.Grpc.Rest.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.SimpleResponse), global::Google.Api.Gax.Grpc.Rest.SimpleResponse.Parser, new[]{ "Name" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.PageStreamingRequest), global::Google.Api.Gax.Grpc.Rest.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.PageStreamingResponse), global::Google.Api.Gax.Grpc.Rest.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest), global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Parser, new[]{ "X", "Y", "Int", "Repeated", "Map", "Nested" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested.Parser, new[]{ "A" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.BundlingRequest), global::Google.Api.Gax.Grpc.Rest.Tests.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.BundlingResponse), global::Google.Api.Gax.Grpc.Rest.Tests.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleRequest), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleResponse), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleResponse.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.PageStreamingRequest), global::Google.Api.Gax.Grpc.Rest.Tests.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.PageStreamingResponse), global::Google.Api.Gax.Grpc.Rest.Tests.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null, null)
           }));
     }
     #endregion
@@ -84,7 +85,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -179,10 +180,10 @@ namespace Google.Api.Gax.Grpc.Rest {
 
     /// <summary>Field number for the "nested" field.</summary>
     public const int NestedFieldNumber = 6;
-    private global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested nested_;
+    private global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested nested_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested Nested {
+    public global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested Nested {
       get { return nested_; }
       set {
         nested_ = value;
@@ -336,7 +337,7 @@ namespace Google.Api.Gax.Grpc.Rest {
       map_.Add(other.map_);
       if (other.nested_ != null) {
         if (nested_ == null) {
-          Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
+          Nested = new global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested();
         }
         Nested.MergeFrom(other.Nested);
       }
@@ -377,7 +378,7 @@ namespace Google.Api.Gax.Grpc.Rest {
           }
           case 50: {
             if (nested_ == null) {
-              Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
+              Nested = new global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested();
             }
             input.ReadMessage(Nested);
             break;
@@ -419,7 +420,7 @@ namespace Google.Api.Gax.Grpc.Rest {
           }
           case 50: {
             if (nested_ == null) {
-              Nested = new global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Types.Nested();
+              Nested = new global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested();
             }
             input.ReadMessage(Nested);
             break;
@@ -448,7 +449,7 @@ namespace Google.Api.Gax.Grpc.Rest {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public static pbr::MessageDescriptor Descriptor {
-          get { return global::Google.Api.Gax.Grpc.Rest.RuleTestRequest.Descriptor.NestedTypes[1]; }
+          get { return global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Descriptor.NestedTypes[1]; }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -642,7 +643,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -857,7 +858,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1072,7 +1073,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1261,7 +1262,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1450,7 +1451,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1713,7 +1714,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.TestServiceReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.TestServiceReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
