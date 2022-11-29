@@ -47,9 +47,12 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// Selects and configures the service controller used by the service.  The
-  /// service controller handles features like abuse, quota, billing, logging,
-  /// monitoring, etc.
+  /// Selects and configures the service controller used by the service.
+  ///
+  /// Example:
+  ///
+  ///     control:
+  ///       environment: servicecontrol.googleapis.com
   /// </summary>
   public sealed partial class Control : pb::IMessage<Control>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -99,8 +102,9 @@ namespace Google.Api {
     public const int EnvironmentFieldNumber = 1;
     private string environment_ = "";
     /// <summary>
-    /// The service control environment to use. If empty, no control plane
-    /// feature (like quota and billing) will be enabled.
+    /// The service controller environment to use. If empty, no control plane
+    /// feature (like quota and billing) will be enabled. The recommended value for
+    /// most services is servicecontrol.googleapis.com
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

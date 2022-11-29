@@ -33,46 +33,48 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL3NlcnZpY2UucHJvdG8SCmdvb2dsZS5hcGkaFWdvb2ds",
             "ZS9hcGkvYXV0aC5wcm90bxoYZ29vZ2xlL2FwaS9iYWNrZW5kLnByb3RvGhhn",
-            "b29nbGUvYXBpL2JpbGxpbmcucHJvdG8aGGdvb2dsZS9hcGkvY29udGV4dC5w",
-            "cm90bxoYZ29vZ2xlL2FwaS9jb250cm9sLnByb3RvGh5nb29nbGUvYXBpL2Rv",
-            "Y3VtZW50YXRpb24ucHJvdG8aGWdvb2dsZS9hcGkvZW5kcG9pbnQucHJvdG8a",
-            "FWdvb2dsZS9hcGkvaHR0cC5wcm90bxoUZ29vZ2xlL2FwaS9sb2cucHJvdG8a",
-            "GGdvb2dsZS9hcGkvbG9nZ2luZy5wcm90bxoXZ29vZ2xlL2FwaS9tZXRyaWMu",
-            "cHJvdG8aI2dvb2dsZS9hcGkvbW9uaXRvcmVkX3Jlc291cmNlLnByb3RvGhtn",
-            "b29nbGUvYXBpL21vbml0b3JpbmcucHJvdG8aFmdvb2dsZS9hcGkvcXVvdGEu",
-            "cHJvdG8aHGdvb2dsZS9hcGkvc291cmNlX2luZm8ucHJvdG8aIWdvb2dsZS9h",
-            "cGkvc3lzdGVtX3BhcmFtZXRlci5wcm90bxoWZ29vZ2xlL2FwaS91c2FnZS5w",
-            "cm90bxoZZ29vZ2xlL3Byb3RvYnVmL2FwaS5wcm90bxoaZ29vZ2xlL3Byb3Rv",
-            "YnVmL3R5cGUucHJvdG8aHmdvb2dsZS9wcm90b2J1Zi93cmFwcGVycy5wcm90",
-            "byLaBwoHU2VydmljZRIMCgRuYW1lGAEgASgJEg0KBXRpdGxlGAIgASgJEhsK",
-            "E3Byb2R1Y2VyX3Byb2plY3RfaWQYFiABKAkSCgoCaWQYISABKAkSIgoEYXBp",
-            "cxgDIAMoCzIULmdvb2dsZS5wcm90b2J1Zi5BcGkSJAoFdHlwZXMYBCADKAsy",
-            "FS5nb29nbGUucHJvdG9idWYuVHlwZRIkCgVlbnVtcxgFIAMoCzIVLmdvb2ds",
-            "ZS5wcm90b2J1Zi5FbnVtEjAKDWRvY3VtZW50YXRpb24YBiABKAsyGS5nb29n",
-            "bGUuYXBpLkRvY3VtZW50YXRpb24SJAoHYmFja2VuZBgIIAEoCzITLmdvb2ds",
-            "ZS5hcGkuQmFja2VuZBIeCgRodHRwGAkgASgLMhAuZ29vZ2xlLmFwaS5IdHRw",
-            "EiAKBXF1b3RhGAogASgLMhEuZ29vZ2xlLmFwaS5RdW90YRIyCg5hdXRoZW50",
-            "aWNhdGlvbhgLIAEoCzIaLmdvb2dsZS5hcGkuQXV0aGVudGljYXRpb24SJAoH",
-            "Y29udGV4dBgMIAEoCzITLmdvb2dsZS5hcGkuQ29udGV4dBIgCgV1c2FnZRgP",
-            "IAEoCzIRLmdvb2dsZS5hcGkuVXNhZ2USJwoJZW5kcG9pbnRzGBIgAygLMhQu",
-            "Z29vZ2xlLmFwaS5FbmRwb2ludBIkCgdjb250cm9sGBUgASgLMhMuZ29vZ2xl",
-            "LmFwaS5Db250cm9sEicKBGxvZ3MYFyADKAsyGS5nb29nbGUuYXBpLkxvZ0Rl",
-            "c2NyaXB0b3ISLQoHbWV0cmljcxgYIAMoCzIcLmdvb2dsZS5hcGkuTWV0cmlj",
-            "RGVzY3JpcHRvchJEChNtb25pdG9yZWRfcmVzb3VyY2VzGBkgAygLMicuZ29v",
-            "Z2xlLmFwaS5Nb25pdG9yZWRSZXNvdXJjZURlc2NyaXB0b3ISJAoHYmlsbGlu",
-            "ZxgaIAEoCzITLmdvb2dsZS5hcGkuQmlsbGluZxIkCgdsb2dnaW5nGBsgASgL",
-            "MhMuZ29vZ2xlLmFwaS5Mb2dnaW5nEioKCm1vbml0b3JpbmcYHCABKAsyFi5n",
-            "b29nbGUuYXBpLk1vbml0b3JpbmcSNwoRc3lzdGVtX3BhcmFtZXRlcnMYHSAB",
-            "KAsyHC5nb29nbGUuYXBpLlN5c3RlbVBhcmFtZXRlcnMSKwoLc291cmNlX2lu",
-            "Zm8YJSABKAsyFi5nb29nbGUuYXBpLlNvdXJjZUluZm8SOAoOY29uZmlnX3Zl",
-            "cnNpb24YFCABKAsyHC5nb29nbGUucHJvdG9idWYuVUludDMyVmFsdWVCAhgB",
-            "Qm4KDmNvbS5nb29nbGUuYXBpQgxTZXJ2aWNlUHJvdG9QAVpFZ29vZ2xlLmdv",
-            "bGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZp",
-            "ZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "b29nbGUvYXBpL2JpbGxpbmcucHJvdG8aF2dvb2dsZS9hcGkvY2xpZW50LnBy",
+            "b3RvGhhnb29nbGUvYXBpL2NvbnRleHQucHJvdG8aGGdvb2dsZS9hcGkvY29u",
+            "dHJvbC5wcm90bxoeZ29vZ2xlL2FwaS9kb2N1bWVudGF0aW9uLnByb3RvGhln",
+            "b29nbGUvYXBpL2VuZHBvaW50LnByb3RvGhVnb29nbGUvYXBpL2h0dHAucHJv",
+            "dG8aFGdvb2dsZS9hcGkvbG9nLnByb3RvGhhnb29nbGUvYXBpL2xvZ2dpbmcu",
+            "cHJvdG8aF2dvb2dsZS9hcGkvbWV0cmljLnByb3RvGiNnb29nbGUvYXBpL21v",
+            "bml0b3JlZF9yZXNvdXJjZS5wcm90bxobZ29vZ2xlL2FwaS9tb25pdG9yaW5n",
+            "LnByb3RvGhZnb29nbGUvYXBpL3F1b3RhLnByb3RvGhxnb29nbGUvYXBpL3Nv",
+            "dXJjZV9pbmZvLnByb3RvGiFnb29nbGUvYXBpL3N5c3RlbV9wYXJhbWV0ZXIu",
+            "cHJvdG8aFmdvb2dsZS9hcGkvdXNhZ2UucHJvdG8aGWdvb2dsZS9wcm90b2J1",
+            "Zi9hcGkucHJvdG8aGmdvb2dsZS9wcm90b2J1Zi90eXBlLnByb3RvGh5nb29n",
+            "bGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8igggKB1NlcnZpY2USDAoEbmFt",
+            "ZRgBIAEoCRINCgV0aXRsZRgCIAEoCRIbChNwcm9kdWNlcl9wcm9qZWN0X2lk",
+            "GBYgASgJEgoKAmlkGCEgASgJEiIKBGFwaXMYAyADKAsyFC5nb29nbGUucHJv",
+            "dG9idWYuQXBpEiQKBXR5cGVzGAQgAygLMhUuZ29vZ2xlLnByb3RvYnVmLlR5",
+            "cGUSJAoFZW51bXMYBSADKAsyFS5nb29nbGUucHJvdG9idWYuRW51bRIwCg1k",
+            "b2N1bWVudGF0aW9uGAYgASgLMhkuZ29vZ2xlLmFwaS5Eb2N1bWVudGF0aW9u",
+            "EiQKB2JhY2tlbmQYCCABKAsyEy5nb29nbGUuYXBpLkJhY2tlbmQSHgoEaHR0",
+            "cBgJIAEoCzIQLmdvb2dsZS5hcGkuSHR0cBIgCgVxdW90YRgKIAEoCzIRLmdv",
+            "b2dsZS5hcGkuUXVvdGESMgoOYXV0aGVudGljYXRpb24YCyABKAsyGi5nb29n",
+            "bGUuYXBpLkF1dGhlbnRpY2F0aW9uEiQKB2NvbnRleHQYDCABKAsyEy5nb29n",
+            "bGUuYXBpLkNvbnRleHQSIAoFdXNhZ2UYDyABKAsyES5nb29nbGUuYXBpLlVz",
+            "YWdlEicKCWVuZHBvaW50cxgSIAMoCzIULmdvb2dsZS5hcGkuRW5kcG9pbnQS",
+            "JAoHY29udHJvbBgVIAEoCzITLmdvb2dsZS5hcGkuQ29udHJvbBInCgRsb2dz",
+            "GBcgAygLMhkuZ29vZ2xlLmFwaS5Mb2dEZXNjcmlwdG9yEi0KB21ldHJpY3MY",
+            "GCADKAsyHC5nb29nbGUuYXBpLk1ldHJpY0Rlc2NyaXB0b3ISRAoTbW9uaXRv",
+            "cmVkX3Jlc291cmNlcxgZIAMoCzInLmdvb2dsZS5hcGkuTW9uaXRvcmVkUmVz",
+            "b3VyY2VEZXNjcmlwdG9yEiQKB2JpbGxpbmcYGiABKAsyEy5nb29nbGUuYXBp",
+            "LkJpbGxpbmcSJAoHbG9nZ2luZxgbIAEoCzITLmdvb2dsZS5hcGkuTG9nZ2lu",
+            "ZxIqCgptb25pdG9yaW5nGBwgASgLMhYuZ29vZ2xlLmFwaS5Nb25pdG9yaW5n",
+            "EjcKEXN5c3RlbV9wYXJhbWV0ZXJzGB0gASgLMhwuZ29vZ2xlLmFwaS5TeXN0",
+            "ZW1QYXJhbWV0ZXJzEisKC3NvdXJjZV9pbmZvGCUgASgLMhYuZ29vZ2xlLmFw",
+            "aS5Tb3VyY2VJbmZvEioKCnB1Ymxpc2hpbmcYLSABKAsyFi5nb29nbGUuYXBp",
+            "LlB1Ymxpc2hpbmcSNAoOY29uZmlnX3ZlcnNpb24YFCABKAsyHC5nb29nbGUu",
+            "cHJvdG9idWYuVUludDMyVmFsdWVCbgoOY29tLmdvb2dsZS5hcGlCDFNlcnZp",
+            "Y2VQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVh",
+            "cGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Api.AuthReflection.Descriptor, global::Google.Api.BackendReflection.Descriptor, global::Google.Api.BillingReflection.Descriptor, global::Google.Api.ClientReflection.Descriptor, global::Google.Api.ContextReflection.Descriptor, global::Google.Api.ControlReflection.Descriptor, global::Google.Api.DocumentationReflection.Descriptor, global::Google.Api.EndpointReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, global::Google.Api.LogReflection.Descriptor, global::Google.Api.LoggingReflection.Descriptor, global::Google.Api.MetricReflection.Descriptor, global::Google.Api.MonitoredResourceReflection.Descriptor, global::Google.Api.MonitoringReflection.Descriptor, global::Google.Api.QuotaReflection.Descriptor, global::Google.Api.SourceInfoReflection.Descriptor, global::Google.Api.SystemParameterReflection.Descriptor, global::Google.Api.UsageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.ApiReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TypeReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "Name", "Title", "ProducerProjectId", "Id", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo", "ConfigVersion" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Service), global::Google.Api.Service.Parser, new[]{ "Name", "Title", "ProducerProjectId", "Id", "Apis", "Types_", "Enums", "Documentation", "Backend", "Http", "Quota", "Authentication", "Context", "Usage", "Endpoints", "Control", "Logs", "Metrics", "MonitoredResources", "Billing", "Logging", "Monitoring", "SystemParameters", "SourceInfo", "Publishing", "ConfigVersion" }, null, null, null, null)
           }));
     }
     #endregion
@@ -80,11 +82,12 @@ namespace Google.Api {
   }
   #region Messages
   /// <summary>
-  /// `Service` is the root object of Google service configuration schema. It
-  /// describes basic information about a service, such as the name and the
-  /// title, and delegates other aspects to sub-sections. Each sub-section is
-  /// either a proto message or a repeated proto message that configures a
-  /// specific aspect, such as auth. See each proto message definition for details.
+  /// `Service` is the root object of Google API service configuration (service
+  /// config). It describes the basic information about a logical service,
+  /// such as the service name and the user-facing title, and delegates other
+  /// aspects to sub-sections. Each sub-section is either a proto message or a
+  /// repeated proto message that configures a specific aspect, such as auth.
+  /// For more information, see each proto message definition.
   ///
   /// Example:
   ///
@@ -93,6 +96,16 @@ namespace Google.Api {
   ///     title: Google Calendar API
   ///     apis:
   ///     - name: google.calendar.v3.Calendar
+  ///
+  ///     visibility:
+  ///       rules:
+  ///       - selector: "google.calendar.v3.*"
+  ///         restriction: PREVIEW
+  ///     backend:
+  ///       rules:
+  ///       - selector: "google.calendar.v3.*"
+  ///         address: calendar.example.com
+  ///
   ///     authentication:
   ///       providers:
   ///       - id: google_calendar_auth
@@ -161,6 +174,7 @@ namespace Google.Api {
       monitoring_ = other.monitoring_ != null ? other.monitoring_.Clone() : null;
       systemParameters_ = other.systemParameters_ != null ? other.systemParameters_.Clone() : null;
       sourceInfo_ = other.sourceInfo_ != null ? other.sourceInfo_.Clone() : null;
+      publishing_ = other.publishing_ != null ? other.publishing_.Clone() : null;
       ConfigVersion = other.ConfigVersion;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -193,7 +207,8 @@ namespace Google.Api {
     public const int TitleFieldNumber = 2;
     private string title_ = "";
     /// <summary>
-    /// The product title for this service.
+    /// The product title for this service, it is the name displayed in Google
+    /// Cloud Console.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -262,10 +277,10 @@ namespace Google.Api {
     private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Type> types_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Type>();
     /// <summary>
     /// A list of all proto message types included in this API service.
-    /// Types referenced directly or indirectly by the `apis` are
-    /// automatically included.  Messages which are not referenced but
-    /// shall be included, such as types used by the `google.protobuf.Any` type,
-    /// should be listed here by name. Example:
+    /// Types referenced directly or indirectly by the `apis` are automatically
+    /// included.  Messages which are not referenced but shall be included, such as
+    /// types used by the `google.protobuf.Any` type, should be listed here by
+    /// name by the configuration author. Example:
     ///
     ///     types:
     ///     - name: google.protobuf.Int32
@@ -282,10 +297,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(42, global::Google.Protobuf.WellKnownTypes.Enum.Parser);
     private readonly pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Enum> enums_ = new pbc::RepeatedField<global::Google.Protobuf.WellKnownTypes.Enum>();
     /// <summary>
-    /// A list of all enum types included in this API service.  Enums
-    /// referenced directly or indirectly by the `apis` are automatically
-    /// included.  Enums which are not referenced but shall be included
-    /// should be listed here by name. Example:
+    /// A list of all enum types included in this API service.  Enums referenced
+    /// directly or indirectly by the `apis` are automatically included.  Enums
+    /// which are not referenced but shall be included should be listed here by
+    /// name by the configuration author. Example:
     ///
     ///     enums:
     ///     - name: google.someapi.v1.SomeEnum
@@ -550,6 +565,23 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "publishing" field.</summary>
+    public const int PublishingFieldNumber = 45;
+    private global::Google.Api.Publishing publishing_;
+    /// <summary>
+    /// Settings for [Google Cloud Client
+    /// libraries](https://cloud.google.com/apis/docs/cloud-client-libraries)
+    /// generated from APIs defined as protocol buffers.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.Publishing Publishing {
+      get { return publishing_; }
+      set {
+        publishing_ = value;
+      }
+    }
+
     /// <summary>Field number for the "config_version" field.</summary>
     public const int ConfigVersionFieldNumber = 20;
     private static readonly pb::FieldCodec<uint?> _single_configVersion_codec = pb::FieldCodec.ForStructWrapper<uint>(162);
@@ -560,7 +592,6 @@ namespace Google.Api {
     /// This field has no semantic meaning. The service config compiler always
     /// sets this field to `3`.
     /// </summary>
-    [global::System.ObsoleteAttribute]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint? ConfigVersion {
@@ -610,6 +641,7 @@ namespace Google.Api {
       if (!object.Equals(Monitoring, other.Monitoring)) return false;
       if (!object.Equals(SystemParameters, other.SystemParameters)) return false;
       if (!object.Equals(SourceInfo, other.SourceInfo)) return false;
+      if (!object.Equals(Publishing, other.Publishing)) return false;
       if (ConfigVersion != other.ConfigVersion) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -642,6 +674,7 @@ namespace Google.Api {
       if (monitoring_ != null) hash ^= Monitoring.GetHashCode();
       if (systemParameters_ != null) hash ^= SystemParameters.GetHashCode();
       if (sourceInfo_ != null) hash ^= SourceInfo.GetHashCode();
+      if (publishing_ != null) hash ^= Publishing.GetHashCode();
       if (configVersion_ != null) hash ^= ConfigVersion.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -739,6 +772,10 @@ namespace Google.Api {
         output.WriteRawTag(170, 2);
         output.WriteMessage(SourceInfo);
       }
+      if (publishing_ != null) {
+        output.WriteRawTag(234, 2);
+        output.WriteMessage(Publishing);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -827,6 +864,10 @@ namespace Google.Api {
         output.WriteRawTag(170, 2);
         output.WriteMessage(SourceInfo);
       }
+      if (publishing_ != null) {
+        output.WriteRawTag(234, 2);
+        output.WriteMessage(Publishing);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -894,6 +935,9 @@ namespace Google.Api {
       }
       if (sourceInfo_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SourceInfo);
+      }
+      if (publishing_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(Publishing);
       }
       if (configVersion_ != null) {
         size += _single_configVersion_codec.CalculateSizeWithTag(ConfigVersion);
@@ -1006,6 +1050,12 @@ namespace Google.Api {
           SourceInfo = new global::Google.Api.SourceInfo();
         }
         SourceInfo.MergeFrom(other.SourceInfo);
+      }
+      if (other.publishing_ != null) {
+        if (publishing_ == null) {
+          Publishing = new global::Google.Api.Publishing();
+        }
+        Publishing.MergeFrom(other.Publishing);
       }
       if (other.configVersion_ != null) {
         if (configVersion_ == null || other.ConfigVersion != 0) {
@@ -1169,6 +1219,13 @@ namespace Google.Api {
             input.ReadMessage(SourceInfo);
             break;
           }
+          case 362: {
+            if (publishing_ == null) {
+              Publishing = new global::Google.Api.Publishing();
+            }
+            input.ReadMessage(Publishing);
+            break;
+          }
         }
       }
     #endif
@@ -1324,6 +1381,13 @@ namespace Google.Api {
               SourceInfo = new global::Google.Api.SourceInfo();
             }
             input.ReadMessage(SourceInfo);
+            break;
+          }
+          case 362: {
+            if (publishing_ == null) {
+              Publishing = new global::Google.Api.Publishing();
+            }
+            input.ReadMessage(Publishing);
             break;
           }
         }

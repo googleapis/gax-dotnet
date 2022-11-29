@@ -33,17 +33,18 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
-            "8gIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
-            "AiABKAkSEAoIZGVhZGxpbmUYAyABKAESFAoMbWluX2RlYWRsaW5lGAQgASgB",
-            "EhoKEm9wZXJhdGlvbl9kZWFkbGluZRgFIAEoARJBChBwYXRoX3RyYW5zbGF0",
-            "aW9uGAYgASgOMicuZ29vZ2xlLmFwaS5CYWNrZW5kUnVsZS5QYXRoVHJhbnNs",
-            "YXRpb24SFgoMand0X2F1ZGllbmNlGAcgASgJSAASFgoMZGlzYWJsZV9hdXRo",
-            "GAggASgISAASEAoIcHJvdG9jb2wYCSABKAkiZQoPUGF0aFRyYW5zbGF0aW9u",
-            "EiAKHFBBVEhfVFJBTlNMQVRJT05fVU5TUEVDSUZJRUQQABIUChBDT05TVEFO",
-            "VF9BRERSRVNTEAESGgoWQVBQRU5EX1BBVEhfVE9fQUREUkVTUxACQhAKDmF1",
-            "dGhlbnRpY2F0aW9uQm4KDmNvbS5nb29nbGUuYXBpQgxCYWNrZW5kUHJvdG9Q",
-            "AVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkv",
-            "c2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQSWIGcHJvdG8z"));
+            "9gIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
+            "AiABKAkSEAoIZGVhZGxpbmUYAyABKAESGAoMbWluX2RlYWRsaW5lGAQgASgB",
+            "QgIYARIaChJvcGVyYXRpb25fZGVhZGxpbmUYBSABKAESQQoQcGF0aF90cmFu",
+            "c2xhdGlvbhgGIAEoDjInLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUuUGF0aFRy",
+            "YW5zbGF0aW9uEhYKDGp3dF9hdWRpZW5jZRgHIAEoCUgAEhYKDGRpc2FibGVf",
+            "YXV0aBgIIAEoCEgAEhAKCHByb3RvY29sGAkgASgJImUKD1BhdGhUcmFuc2xh",
+            "dGlvbhIgChxQQVRIX1RSQU5TTEFUSU9OX1VOU1BFQ0lGSUVEEAASFAoQQ09O",
+            "U1RBTlRfQUREUkVTUxABEhoKFkFQUEVORF9QQVRIX1RPX0FERFJFU1MQAkIQ",
+            "Cg5hdXRoZW50aWNhdGlvbkJuCg5jb20uZ29vZ2xlLmFwaUIMQmFja2VuZFBy",
+            "b3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMv",
+            "YXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -374,9 +375,9 @@ namespace Google.Api {
     public const int MinDeadlineFieldNumber = 4;
     private double minDeadline_;
     /// <summary>
-    /// Minimum deadline in seconds needed for this method. Calls having deadline
-    /// value lower than this will be rejected.
+    /// Deprecated, do not use.
     /// </summary>
+    [global::System.ObsoleteAttribute]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double MinDeadline {

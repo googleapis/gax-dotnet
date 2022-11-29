@@ -81,10 +81,10 @@ namespace Google.Api {
   ///        values:
   ///          STANDARD: 10000
   ///
-  ///      # The metric rules bind all methods to the read_calls metric,
-  ///      # except for the UpdateBook and DeleteBook methods. These two methods
-  ///      # are mapped to the write_calls metric, with the UpdateBook method
-  ///      # consuming at twice rate as the DeleteBook method.
+  ///      (The metric rules bind all methods to the read_calls metric,
+  ///       except for the UpdateBook and DeleteBook methods. These two methods
+  ///       are mapped to the write_calls metric, with the UpdateBook method
+  ///       consuming at twice rate as the DeleteBook method.)
   ///      metric_rules:
   ///      - selector: "*"
   ///        metric_costs:
@@ -160,7 +160,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(26, global::Google.Api.QuotaLimit.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.QuotaLimit> limits_ = new pbc::RepeatedField<global::Google.Api.QuotaLimit>();
     /// <summary>
-    /// List of `QuotaLimit` definitions for the service.
+    /// List of QuotaLimit definitions for the service.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -174,7 +174,7 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(34, global::Google.Api.MetricRule.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.MetricRule> metricRules_ = new pbc::RepeatedField<global::Google.Api.MetricRule>();
     /// <summary>
-    /// List of `MetricRule` definitions, each one mapping a selected method to one
+    /// List of MetricRule definitions, each one mapping a selected method to one
     /// or more metrics.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

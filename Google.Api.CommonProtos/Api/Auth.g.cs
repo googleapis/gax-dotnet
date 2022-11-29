@@ -38,23 +38,23 @@ namespace Google.Api {
             "GAEgASgJEiwKBW9hdXRoGAIgASgLMh0uZ29vZ2xlLmFwaS5PQXV0aFJlcXVp",
             "cmVtZW50cxIgChhhbGxvd193aXRob3V0X2NyZWRlbnRpYWwYBSABKAgSMQoM",
             "cmVxdWlyZW1lbnRzGAcgAygLMhsuZ29vZ2xlLmFwaS5BdXRoUmVxdWlyZW1l",
-            "bnQiTAoLSnd0TG9jYXRpb24SEAoGaGVhZGVyGAEgASgJSAASDwoFcXVlcnkY",
-            "AiABKAlIABIUCgx2YWx1ZV9wcmVmaXgYAyABKAlCBAoCaW4imgEKDEF1dGhQ",
-            "cm92aWRlchIKCgJpZBgBIAEoCRIOCgZpc3N1ZXIYAiABKAkSEAoIandrc191",
-            "cmkYAyABKAkSEQoJYXVkaWVuY2VzGAQgASgJEhkKEWF1dGhvcml6YXRpb25f",
-            "dXJsGAUgASgJEi4KDWp3dF9sb2NhdGlvbnMYBiADKAsyFy5nb29nbGUuYXBp",
-            "Lkp3dExvY2F0aW9uIi0KEU9BdXRoUmVxdWlyZW1lbnRzEhgKEGNhbm9uaWNh",
-            "bF9zY29wZXMYASABKAkiOQoPQXV0aFJlcXVpcmVtZW50EhMKC3Byb3ZpZGVy",
-            "X2lkGAEgASgJEhEKCWF1ZGllbmNlcxgCIAEoCUJrCg5jb20uZ29vZ2xlLmFw",
-            "aUIJQXV0aFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dv",
-            "b2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdB",
-            "UEliBnByb3RvMw=="));
+            "bnQiXgoLSnd0TG9jYXRpb24SEAoGaGVhZGVyGAEgASgJSAASDwoFcXVlcnkY",
+            "AiABKAlIABIQCgZjb29raWUYBCABKAlIABIUCgx2YWx1ZV9wcmVmaXgYAyAB",
+            "KAlCBAoCaW4imgEKDEF1dGhQcm92aWRlchIKCgJpZBgBIAEoCRIOCgZpc3N1",
+            "ZXIYAiABKAkSEAoIandrc191cmkYAyABKAkSEQoJYXVkaWVuY2VzGAQgASgJ",
+            "EhkKEWF1dGhvcml6YXRpb25fdXJsGAUgASgJEi4KDWp3dF9sb2NhdGlvbnMY",
+            "BiADKAsyFy5nb29nbGUuYXBpLkp3dExvY2F0aW9uIi0KEU9BdXRoUmVxdWly",
+            "ZW1lbnRzEhgKEGNhbm9uaWNhbF9zY29wZXMYASABKAkiOQoPQXV0aFJlcXVp",
+            "cmVtZW50EhMKC3Byb3ZpZGVyX2lkGAEgASgJEhEKCWF1ZGllbmNlcxgCIAEo",
+            "CUJrCg5jb20uZ29vZ2xlLmFwaUIJQXV0aFByb3RvUAFaRWdvb2dsZS5nb2xh",
+            "bmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7",
+            "c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Authentication), global::Google.Api.Authentication.Parser, new[]{ "Rules", "Providers" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthenticationRule), global::Google.Api.AuthenticationRule.Parser, new[]{ "Selector", "Oauth", "AllowWithoutCredential", "Requirements" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JwtLocation), global::Google.Api.JwtLocation.Parser, new[]{ "Header", "Query", "ValuePrefix" }, new[]{ "In" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JwtLocation), global::Google.Api.JwtLocation.Parser, new[]{ "Header", "Query", "Cookie", "ValuePrefix" }, new[]{ "In" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthProvider), global::Google.Api.AuthProvider.Parser, new[]{ "Id", "Issuer", "JwksUri", "Audiences", "AuthorizationUrl", "JwtLocations" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.OAuthRequirements), global::Google.Api.OAuthRequirements.Parser, new[]{ "CanonicalScopes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.AuthRequirement), global::Google.Api.AuthRequirement.Parser, new[]{ "ProviderId", "Audiences" }, null, null, null, null)
@@ -665,6 +665,9 @@ namespace Google.Api {
         case InOneofCase.Query:
           Query = other.Query;
           break;
+        case InOneofCase.Cookie:
+          Cookie = other.Cookie;
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -706,6 +709,21 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "cookie" field.</summary>
+    public const int CookieFieldNumber = 4;
+    /// <summary>
+    /// Specifies cookie name to extract JWT token.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Cookie {
+      get { return inCase_ == InOneofCase.Cookie ? (string) in_ : ""; }
+      set {
+        in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        inCase_ = InOneofCase.Cookie;
+      }
+    }
+
     /// <summary>Field number for the "value_prefix" field.</summary>
     public const int ValuePrefixFieldNumber = 3;
     private string valuePrefix_ = "";
@@ -734,6 +752,7 @@ namespace Google.Api {
       None = 0,
       Header = 1,
       Query = 2,
+      Cookie = 4,
     }
     private InOneofCase inCase_ = InOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -766,6 +785,7 @@ namespace Google.Api {
       }
       if (Header != other.Header) return false;
       if (Query != other.Query) return false;
+      if (Cookie != other.Cookie) return false;
       if (ValuePrefix != other.ValuePrefix) return false;
       if (InCase != other.InCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -777,6 +797,7 @@ namespace Google.Api {
       int hash = 1;
       if (inCase_ == InOneofCase.Header) hash ^= Header.GetHashCode();
       if (inCase_ == InOneofCase.Query) hash ^= Query.GetHashCode();
+      if (inCase_ == InOneofCase.Cookie) hash ^= Cookie.GetHashCode();
       if (ValuePrefix.Length != 0) hash ^= ValuePrefix.GetHashCode();
       hash ^= (int) inCase_;
       if (_unknownFields != null) {
@@ -809,6 +830,10 @@ namespace Google.Api {
         output.WriteRawTag(26);
         output.WriteString(ValuePrefix);
       }
+      if (inCase_ == InOneofCase.Cookie) {
+        output.WriteRawTag(34);
+        output.WriteString(Cookie);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -831,6 +856,10 @@ namespace Google.Api {
         output.WriteRawTag(26);
         output.WriteString(ValuePrefix);
       }
+      if (inCase_ == InOneofCase.Cookie) {
+        output.WriteRawTag(34);
+        output.WriteString(Cookie);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -846,6 +875,9 @@ namespace Google.Api {
       }
       if (inCase_ == InOneofCase.Query) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Query);
+      }
+      if (inCase_ == InOneofCase.Cookie) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Cookie);
       }
       if (ValuePrefix.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ValuePrefix);
@@ -871,6 +903,9 @@ namespace Google.Api {
           break;
         case InOneofCase.Query:
           Query = other.Query;
+          break;
+        case InOneofCase.Cookie:
+          Cookie = other.Cookie;
           break;
       }
 
@@ -901,6 +936,10 @@ namespace Google.Api {
             ValuePrefix = input.ReadString();
             break;
           }
+          case 34: {
+            Cookie = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -926,6 +965,10 @@ namespace Google.Api {
           }
           case 26: {
             ValuePrefix = input.ReadString();
+            break;
+          }
+          case 34: {
+            Cookie = input.ReadString();
             break;
           }
         }
@@ -1106,11 +1149,12 @@ namespace Google.Api {
         = pb::FieldCodec.ForMessage(50, global::Google.Api.JwtLocation.Parser);
     private readonly pbc::RepeatedField<global::Google.Api.JwtLocation> jwtLocations_ = new pbc::RepeatedField<global::Google.Api.JwtLocation>();
     /// <summary>
-    /// Defines the locations to extract the JWT.
+    /// Defines the locations to extract the JWT.  For now it is only used by the
+    /// Cloud Endpoints to store the OpenAPI extension [x-google-jwt-locations]
+    /// (https://cloud.google.com/endpoints/docs/openapi/openapi-extensions#x-google-jwt-locations)
     ///
-    /// JWT locations can be either from HTTP headers or URL query parameters.
-    /// The rule is that the first match wins. The checking order is: checking
-    /// all headers first, then URL query parameters.
+    /// JWT locations can be one of HTTP headers, URL query parameters or
+    /// cookies. The rule is that the first match wins.
     ///
     /// If not specified,  default to use following 3 locations:
     ///    1) Authorization: Bearer
