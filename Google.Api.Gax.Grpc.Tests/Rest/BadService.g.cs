@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Google.Api.Gax.Grpc.Rest {
+namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   /// <summary>Holder for reflection information generated from bad_service.proto</summary>
   public static partial class BadServiceReflection {
@@ -24,18 +24,19 @@ namespace Google.Api.Gax.Grpc.Rest {
     static BadServiceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChFiYWRfc2VydmljZS5wcm90bxIYZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0",
-            "Ghxnb29nbGUvYXBpL2Fubm90YXRpb25zLnByb3RvIiAKEEJhZFNpbXBsZVJl",
-            "cXVlc3QSDAoEbmFtZRgBIAEoCSIhChFCYWRTaW1wbGVSZXNwb25zZRIMCgRu",
-            "YW1lGAIgASgJMo8BCglCYWRTYW1wbGUSgQEKD0JhZFJlc291cmNlUGF0aBIq",
-            "Lmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC5CYWRTaW1wbGVSZXF1ZXN0Gisu",
-            "Z29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LkJhZFNpbXBsZVJlc3BvbnNlIhWC",
-            "0+STAg8SDS92MS97bWlzc2luZ31iBnByb3RvMw=="));
+            "ChFiYWRfc2VydmljZS5wcm90bxIeZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0",
+            "LnRlc3RzGhxnb29nbGUvYXBpL2Fubm90YXRpb25zLnByb3RvIiAKEEJhZFNp",
+            "bXBsZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSIhChFCYWRTaW1wbGVSZXNwb25z",
+            "ZRIMCgRuYW1lGAIgASgJMpsBCglCYWRTYW1wbGUSjQEKD0JhZFJlc291cmNl",
+            "UGF0aBIwLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5CYWRTaW1w",
+            "bGVSZXF1ZXN0GjEuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3RzLkJh",
+            "ZFNpbXBsZVJlc3BvbnNlIhWC0+STAg8SDS92MS97bWlzc2luZ31iBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BadSimpleRequest), global::Google.Api.Gax.Grpc.Rest.BadSimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.BadSimpleResponse), global::Google.Api.Gax.Grpc.Rest.BadSimpleResponse.Parser, new[]{ "Name" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.BadSimpleRequest), global::Google.Api.Gax.Grpc.Rest.Tests.BadSimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.BadSimpleResponse), global::Google.Api.Gax.Grpc.Rest.Tests.BadSimpleResponse.Parser, new[]{ "Name" }, null, null, null, null)
           }));
     }
     #endregion
@@ -56,7 +57,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.BadServiceReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.BadServiceReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -245,7 +246,7 @@ namespace Google.Api.Gax.Grpc.Rest {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Api.Gax.Grpc.Rest.BadServiceReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Google.Api.Gax.Grpc.Rest.Tests.BadServiceReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

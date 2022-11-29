@@ -7,7 +7,7 @@
 
 syntax = "proto3";
 
-package google.api.gax.grpc.rest;
+package google.api.gax.grpc.rest.tests;
 
 import "google/api/annotations.proto";
 
