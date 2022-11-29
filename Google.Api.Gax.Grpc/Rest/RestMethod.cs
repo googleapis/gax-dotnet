@@ -34,7 +34,13 @@ internal class RestMethod
 
     private RestMethod(ApiMetadata apiMetadata, MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
         (_apiMetadata, _protoMethod,  _parser, FullName, _transcoder) =
-        (apiMetadata, protoMethod, parser, $"/{protoMethod.Service.FullName}/{protoMethod.Name}", transcoder);
+        (apiMetadata, protoMethod, parser, GetGrpcFullName(protoMethod), transcoder);
+
+    /// <summary>
+    /// Returns the name by which gRPC will refer to the given proto method,
+    /// e.g. "/google.somepackage.SomeService/SomeMethod".
+    /// </summary>
+    internal static string GetGrpcFullName(MethodDescriptor method) => $"/{method.Service.FullName}/{method.Name}";
 
     /// <summary>
     /// Creates a <see cref="RestMethod"/> representation from the given protobuf method representation.

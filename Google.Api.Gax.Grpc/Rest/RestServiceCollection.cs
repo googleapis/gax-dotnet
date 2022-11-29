@@ -48,7 +48,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
                 .ToDictionary(
-                    method => method.FullName,
+                    RestMethod.GetGrpcFullName,
                     method => RestMethod.Create(metadata, method, parser),
                     StringComparer.Ordinal);
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));

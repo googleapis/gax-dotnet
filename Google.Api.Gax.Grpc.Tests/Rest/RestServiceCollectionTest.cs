@@ -5,38 +5,47 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Api.Gax.Grpc.Rest;
 using Grpc.Core;
 using System;
 using Xunit;
 
-namespace Google.Api.Gax.Grpc.Tests.Rest;
+namespace Google.Api.Gax.Grpc.Rest.Tests;
+
+// Partial class for the Sample service to allow access to gRPC Method objects.
+public partial class Sample
+{
+    public static IMethod MethodWithNoHttpOptions => __Method_MethodWithNoHttpOptions;
+    public static IMethod SimpleMethod => __Method_SimpleMethod;
+    public static IMethod NonExistentMethod => new Method<SimpleRequest, SimpleResponse>(
+        MethodType.Unary,
+        __ServiceName,
+        "WrongName",
+        __Marshaller_google_api_gax_grpc_rest_tests_SimpleRequest,
+        __Marshaller_google_api_gax_grpc_rest_tests_SimpleResponse);
+}
 
 public class RestServiceCollectionTest
 {
     [Fact]
     public void SupportedMethod()
     {
-        var method = new FakeGrpcMethod("google.api.gax.grpc.rest.Sample.SimpleMethod");
         var collection = CreateRestServiceCollectionForTestService();
-        Assert.NotNull(collection.GetRestMethod(method));
+        Assert.NotNull(collection.GetRestMethod(Sample.SimpleMethod));
     }
 
     [Fact]
     public void UnsupportedMethod()
     {
-        var method = new FakeGrpcMethod("google.api.gax.grpc.rest.Sample.MethodWithNoHttpOptions");
         var collection = CreateRestServiceCollectionForTestService();
-        var exception = Assert.Throws<RpcException>(() => collection.GetRestMethod(method));
+        var exception = Assert.Throws<RpcException>(() => collection.GetRestMethod(Sample.MethodWithNoHttpOptions));
         Assert.Equal(StatusCode.Unimplemented, exception.StatusCode);
     }
 
     [Fact]
     public void UnknownMethod()
     {
-        var method = new FakeGrpcMethod("google.api.gax.grpc.rest.Sample.ThisDoesntExist");
         var collection = CreateRestServiceCollectionForTestService();
-        var exception = Assert.Throws<RpcException>(() => collection.GetRestMethod(method));
+        var exception = Assert.Throws<RpcException>(() => collection.GetRestMethod(Sample.NonExistentMethod));
         Assert.Equal(StatusCode.InvalidArgument, exception.StatusCode);
     }
 
@@ -48,17 +57,5 @@ public class RestServiceCollectionTest
     {
         var metadata = new ApiMetadata("test", new[] { BadServiceReflection.Descriptor });
         Assert.Throws<ArgumentException>(() => RestServiceCollection.Create(metadata));
-    }
-
-    // Just enough of IMethod to meet RestServiceCollection's needs.
-    private sealed class FakeGrpcMethod : IMethod
-    {
-        public string FullName { get; }
-
-        public FakeGrpcMethod(string fullName) => FullName = fullName;
-
-        public MethodType Type => throw new NotImplementedException();
-        public string ServiceName => throw new NotImplementedException();
-        public string Name => throw new NotImplementedException();
     }
 }
