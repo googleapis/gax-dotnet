@@ -81,36 +81,6 @@ namespace Google.Api.Gax.Grpc.Rest
         }
 
         /// <summary>
-        /// Creates an HTTP request, adds headers from CallOptions, and sends the request.
-        /// </summary>
-        /// <typeparam name="TRequest">The type of request</typeparam>
-        /// <param name="restMethod">The RPC being called; used to convert the request</param>
-        /// <param name="host">Override for the endpoint, if any</param>
-        /// <param name="options">The gRPC call options, used for headers and cancellation</param>
-        /// <param name="request">The RPC request</param>
-        /// <param name="httpCompletionOption">The option indicating at what point the method should complete,
-        /// <param name="cancellationToken">The cancellation token for the RPC.</param>
-        /// within HTTP response processing</param>
-        private async Task<HttpResponseMessage> SendAsync<TRequest>(
-            RestMethod restMethod, string host, CallOptions options, TRequest request,
-            HttpCompletionOption httpCompletionOption, CancellationToken cancellationToken)
-        {
-            // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
-            var httpRequest = restMethod.CreateRequest((IMessage)request, host);
-            foreach (var headerKeyValue in (options.Headers ?? Enumerable.Empty<Metadata.Entry>())
-                .Where(mh => !mh.IsBinary)
-                .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
-            {
-                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
-            }
-
-            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
-
-            await AddAuthHeadersAsync(httpRequest, restMethod, cancellationToken).ConfigureAwait(false);
-            return await _httpClient.SendAsync(httpRequest, httpCompletionOption, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Equivalent to <see cref="CallInvoker.AsyncServerStreamingCall{TRequest, TResponse}(Method{TRequest, TResponse}, string, CallOptions, TRequest)"/>.
         /// </summary>
         public AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TResponse, TRequest>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
@@ -159,6 +129,36 @@ namespace Google.Api.Gax.Grpc.Rest
                 statusResponseSource.SetResult(errorResponse);
                 throw new RpcException(errorResponse.GetStatus(), errorResponse.GetTrailers());
             }
+        }
+
+        /// <summary>
+        /// Creates an HTTP request, adds headers from CallOptions, and sends the request.
+        /// </summary>
+        /// <typeparam name="TRequest">The type of request</typeparam>
+        /// <param name="restMethod">The RPC being called; used to convert the request</param>
+        /// <param name="host">Override for the endpoint, if any</param>
+        /// <param name="options">The gRPC call options, used for headers and cancellation</param>
+        /// <param name="request">The RPC request</param>
+        /// <param name="httpCompletionOption">The option indicating at what point the method should complete,
+        /// <param name="cancellationToken">The cancellation token for the RPC.</param>
+        /// within HTTP response processing</param>
+        private async Task<HttpResponseMessage> SendAsync<TRequest>(
+            RestMethod restMethod, string host, CallOptions options, TRequest request,
+            HttpCompletionOption httpCompletionOption, CancellationToken cancellationToken)
+        {
+            // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
+            var httpRequest = restMethod.CreateRequest((IMessage)request, host);
+            foreach (var headerKeyValue in (options.Headers ?? Enumerable.Empty<Metadata.Entry>())
+                .Where(mh => !mh.IsBinary)
+                .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
+            {
+                httpRequest.Headers.Add(headerKeyValue.Key, headerKeyValue.Value);
+            }
+
+            httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
+
+            await AddAuthHeadersAsync(httpRequest, restMethod, cancellationToken).ConfigureAwait(false);
+            return await _httpClient.SendAsync(httpRequest, httpCompletionOption, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)
