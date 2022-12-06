@@ -76,6 +76,14 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         }
 
         [Fact]
+        public void CreateRpcStatus_ArrayStatus()
+        {
+            // Note: the NotFound is ignored here, because the Code in the status is used instead.
+            var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.NotFound, $"[ {s_sampleJson} ]");
+            Assert.Equal(s_sampleStatus, actualStatus);
+        }
+
+        [Fact]
         public void CreateRpcStatus_NoGrpcStatusCode()
         {
             // This is what some Compute responses look like. There's no gRPC status code,

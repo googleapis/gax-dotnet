@@ -109,6 +109,14 @@ namespace Google.Api.Gax.Grpc.Rest
             }
             try
             {
+                // Error response messages for streaming APIs are embedded within arrays.
+                // If we detect that the content looks like a JSON array, extract it and parse
+                // expecting a single object.
+                if (content.StartsWith("[") && content.EndsWith("]"))
+                {
+                    content = content.Substring(1, content.Length - 2);
+                }
+
                 var errorFromMetadata = s_responseMetadataParser.Parse<Error>(content);
                 var error = errorFromMetadata.Error_;
                 // If we got a JSON object that can be parsed as an Error, but doesn't include a nested "error" field,
