@@ -8,6 +8,7 @@
 using Google.Protobuf;
 using Grpc.Core;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.ExceptionServices;
@@ -122,16 +123,42 @@ namespace Google.Api.Gax.Grpc.Rest
                 cancellationToken => SendAsync(restMethod, host, options, request, HttpCompletionOption.ResponseHeadersRead, cancellationToken));
 
             Task<Metadata> responseHeadersTask = ReadHeadersAsync(httpResponseTask);
-            Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
-            Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
+            // The response will either contain the response (which is streaming, so we don't
+            // want to wait for it to finish) or error details (in which case we *do* want it
+            // to finish). The simplest way of providing status/trailer functionality is
+            // to create a separate ReadHttpResponseMessage with either empty content or
+            // the full original content. That's only used for status/trailers, and both
+            // GetStatus and GetTrailers only succeed when the response task has completed.
+            var statusResponseSource = new TaskCompletionSource<ReadHttpResponseMessage>();
+            var readerTask = CreateReaderTask();
+            Func<Status> statusFunc = () => GetStatus(statusResponseSource.Task);
+            Func<Metadata> trailersFunc = () => GetTrailers(statusResponseSource.Task);
 
-            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask, cancellationContext);
+            PartialDecodingStreamReader<TResponse> responseStream = new PartialDecodingStreamReader<TResponse>(readerTask, restMethod.ParseJson<TResponse>, cancellationContext);
             Action disposalAction = () =>
             {
                 responseStream.Dispose();
                 cancellationContext.Cancel();
             };
             return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, disposalAction);
+
+            async Task<TextReader> CreateReaderTask()
+            {
+                var httpResponse = await httpResponseTask.ConfigureAwait(false);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    // The status for a successful response is empty, in terms of an error response.
+                    statusResponseSource.SetResult(new ReadHttpResponseMessage(httpResponse, ""));
+                    var stream = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return new StreamReader(stream);
+                }
+
+                // Read the content from the HttpResponseMessage, and populate a new ReadHttpResponseMessage.
+                // We use this for status/trailer reporting.
+                var errorResponse = await ReadResponseAsync(httpResponseTask).ConfigureAwait(false);
+                statusResponseSource.SetResult(errorResponse);
+                throw new RpcException(errorResponse.GetStatus(), errorResponse.GetTrailers());
+            }
         }
 
         private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)

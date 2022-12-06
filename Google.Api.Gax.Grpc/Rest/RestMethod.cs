@@ -9,9 +9,7 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc.Rest;
@@ -87,7 +85,6 @@ internal class RestMethod
         return transcodingOutput.CreateRequest(host);
     }
 
-    // TODO: Handle cancellation?
     /// <summary>
     /// Parses the response and converts it into the protobuf response type.
     /// </summary>
@@ -99,23 +96,13 @@ internal class RestMethod
         {
             throw new RpcException(status, httpResponse.GetTrailers());
         }
-        return (TResponse) _parser.Parse(httpResponse.Content, _protoMethod.OutputType);
+        return ParseJson<TResponse>(httpResponse.Content);
     }
 
-    // Note: this doesn't just return IAsyncStreamReader<TResponse> as we need know it implements IDisposable too.
-    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask, RpcCancellationContext cancellationContext)
-    {
-        var textReaderTask = GetTextReader(httpResponseTask);
-        Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
-
-        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter, cancellationContext);
-    }
-
-    private static async Task<TextReader> GetTextReader(Task<HttpResponseMessage> httpResponseTask)
-    {
-        var httpResponse = await httpResponseTask.ConfigureAwait(false);
-        httpResponse.EnsureSuccessStatusCode();
-        var stream = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
-        return new StreamReader(stream);
-    }
+    /// <summary>
+    /// Parses a single JSON object as a <typeparamref name="TResponse"/>.
+    /// </summary>
+    /// <typeparam name="TResponse">The response type to parse; this is expected to match the method output type.</typeparam>
+    internal TResponse ParseJson<TResponse>(string json) =>
+        (TResponse) _parser.Parse(json, _protoMethod.OutputType);
 }
