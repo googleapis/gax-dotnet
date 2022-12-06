@@ -70,6 +70,14 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
         __Marshaller_google_api_gax_grpc_integration_tests_SimpleResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> __Method_ServerStreaming = new grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(
+        grpc::MethodType.ServerStreaming,
+        __ServiceName,
+        "ServerStreaming",
+        __Marshaller_google_api_gax_grpc_integration_tests_SimpleRequest,
+        __Marshaller_google_api_gax_grpc_integration_tests_SimpleResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest, global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse> __Method_EchoHeaders = new grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest, global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
@@ -89,6 +97,12 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     {
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::System.Threading.Tasks.Task<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> DoSimple(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task ServerStreaming(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::IServerStreamWriter<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -149,6 +163,16 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
         return CallInvoker.AsyncUnaryCall(__Method_DoSimple, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> ServerStreaming(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return ServerStreaming(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncServerStreamingCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> ServerStreaming(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncServerStreamingCall(__Method_ServerStreaming, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse EchoHeaders(global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return EchoHeaders(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -183,6 +207,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_DoSimple, serviceImpl.DoSimple)
+          .AddMethod(__Method_ServerStreaming, serviceImpl.ServerStreaming)
           .AddMethod(__Method_EchoHeaders, serviceImpl.EchoHeaders).Build();
     }
 
@@ -194,6 +219,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     public static void BindService(grpc::ServiceBinderBase serviceBinder, TestServiceBase serviceImpl)
     {
       serviceBinder.AddMethod(__Method_DoSimple, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(serviceImpl.DoSimple));
+      serviceBinder.AddMethod(__Method_ServerStreaming, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(serviceImpl.ServerStreaming));
       serviceBinder.AddMethod(__Method_EchoHeaders, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest, global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse>(serviceImpl.EchoHeaders));
     }
 

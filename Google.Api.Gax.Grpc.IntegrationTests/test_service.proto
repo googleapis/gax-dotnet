@@ -9,9 +9,26 @@ syntax = "proto3";
 
 package google.api.gax.grpc.integration_tests;
 
+import "google/api/annotations.proto";
+
 service TestService {
-  rpc DoSimple(SimpleRequest) returns (SimpleResponse);
-  rpc EchoHeaders(EchoHeadersRequest) returns (EchoHeadersResponse);
+  rpc DoSimple(SimpleRequest) returns (SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/simple/{name}"
+    };
+  }
+
+  rpc ServerStreaming(SimpleRequest) returns (stream SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/serverStreaming/{name}"
+    };
+  }
+
+  rpc EchoHeaders(EchoHeadersRequest) returns (EchoHeadersResponse) {
+    option (google.api.http) = {
+      post: "/v1/custom:echoHeaders"
+    };
+  }
 }
 
 message SimpleRequest {
