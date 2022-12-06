@@ -103,12 +103,12 @@ internal class RestMethod
     }
 
     // Note: this doesn't just return IAsyncStreamReader<TResponse> as we need know it implements IDisposable too.
-    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask, CancellationToken callCancellationToken, CancellationToken deadlineCancellationToken)
+    internal PartialDecodingStreamReader<TResponse> ResponseStreamAsync<TResponse>(Task<HttpResponseMessage> httpResponseTask, RpcCancellationContext cancellationContext)
     {
         var textReaderTask = GetTextReader(httpResponseTask);
         Func<string, TResponse> responseConverter = json =>  (TResponse) _parser.Parse(json, _protoMethod.OutputType);
 
-        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter, callCancellationToken, deadlineCancellationToken, FullName);
+        return new PartialDecodingStreamReader<TResponse>(textReaderTask, responseConverter, cancellationContext);
     }
 
     private static async Task<TextReader> GetTextReader(Task<HttpResponseMessage> httpResponseTask)

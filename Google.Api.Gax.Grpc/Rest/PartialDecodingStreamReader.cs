@@ -36,19 +36,10 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     private readonly Func<string, TResponse> _responseConverter;
 
     /// <summary>
-    /// The cancellation token for "the call was cancelled" either via CallOptions or the call being disposed.
+    /// Cancellation context used to observe deadlines, original cancellation tokens from call options,
+    /// and gRPC-method-based cancellation.
     /// </summary>
-    private readonly CancellationToken _callCancellationToken;
-
-    /// <summary>
-    /// A cancellation token representing the deadline specified in the call options (if any).
-    /// </summary>
-    private readonly CancellationToken _deadlineCancellationToken;
-
-    /// <summary>
-    /// The name of the RPC, for failure reporting.
-    /// </summary>
-    private readonly string _rpcName;
+    private readonly RpcCancellationContext _cancellationContext;
 
     /// <summary>
     /// Responses which have already been parsed, and are ready to return to the caller.
@@ -110,18 +101,13 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     /// </summary>
     /// <param name="textReaderTask">A task to provide text reader returning partial JSON chunks</param>
     /// <param name="responseConverter">A function to transform a well-formed JSON object into the proto message.</param>
-    /// <param name="callCancellationToken">A cancellation token representing any cause for cancellation. Should include
-    /// <paramref name="deadlineCancellationToken"/>.</param>
-    /// <param name="deadlineCancellationToken">A cancellation token representing the deadline specified in the call options (if any).</param>
-    /// <param name="rpcName">The name of the RPC, for failure reporting.</param>
+    /// <param name="cancellationContext">The cancellation context for the RPC.</param>
     public PartialDecodingStreamReader(Task<TextReader> textReaderTask, Func<string, TResponse> responseConverter,
-        CancellationToken callCancellationToken, CancellationToken deadlineCancellationToken, string rpcName)
+        RpcCancellationContext cancellationContext)
     {
         _textReaderTask = textReaderTask;
         _responseConverter = responseConverter;
-        _callCancellationToken = callCancellationToken;
-        _deadlineCancellationToken = deadlineCancellationToken;
-        _rpcName = rpcName;
+        _cancellationContext = cancellationContext;
 
         _queuedResponses = new Queue<TResponse>();
         _currentResponseBuffer = new StringBuilder();
@@ -134,8 +120,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     {
         // There are three layers, effectively:
         // - This "outer" method handles disposal and exception replay
-        // - A "middle" method handles cancellation: combining cancellation tokens and
-        //   translating exceptions
+        // - The RpcCancellationContext provides a "middle" method which handles cancellation
         // - The "inner" implementation which can just work in a way that doesn't
         //   really need to worry about this being part of an RPC.
 
@@ -145,7 +130,7 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
         bool disposeOnExit = true;
         try
         {
-            var result = await MoveNextWithCancellation(cancellationToken).ConfigureAwait(false);
+            var result = await _cancellationContext.RunAsync(MoveNextImpl, cancellationToken).ConfigureAwait(false);
             disposeOnExit = !result; // Dispose if we're returning false
             return result;
         }
@@ -161,30 +146,6 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             {
                 Dispose();
             }
-        }
-    }
-
-    /// <summary>
-    /// Middle level of MoveNext implementation: only concerns itself with handling cancellation appropriately.
-    /// </summary>
-    private async Task<bool> MoveNextWithCancellation(CancellationToken cancellationToken)
-    {
-        try
-        {
-            // Note that we don't use _deadlineCancellationToken here, as it's expected to already be
-            // linked within _callCancellationToken.
-            using (var cts = CancellationTokenSource.CreateLinkedTokenSource(_callCancellationToken, cancellationToken))
-            {
-                return await MoveNextImpl(cts.Token).ConfigureAwait(false);
-            }
-        }
-        catch (OperationCanceledException ex) when (_deadlineCancellationToken.IsCancellationRequested)
-        {
-            throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"RPC '{_rpcName}' timed out", ex));
-        }
-        catch (OperationCanceledException ex)
-        {
-            throw new RpcException(new Status(StatusCode.Cancelled, $"RPC '{_rpcName}' was cancelled", ex));
         }
     }
 

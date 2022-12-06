@@ -174,9 +174,10 @@ public class PartialDecodingStreamReaderTest
     public async Task OverallCallCancellationObserved()
     {
         var reader = new ReplayingStreamReader(new[] { "[]" });
-        var token = new CancellationToken(canceled: true);
-        var decodingReader = reader.CreateResponseReader(callCancellationToken: token, deadlineCancellationToken: default);
-        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
+        var cancellationContext = RpcCancellationContext.FromOptions("rpc", new CallOptions());
+        var decodingReader = reader.CreateResponseReader(cancellationContext);
+        cancellationContext.Cancel();
+        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(default));
         Assert.Equal(StatusCode.Cancelled, exception.StatusCode);
     }
 
@@ -184,10 +185,11 @@ public class PartialDecodingStreamReaderTest
     public async Task DeadlineCancellationObserved()
     {
         var reader = new ReplayingStreamReader(new[] { "[]" });
-        var token = new CancellationToken(canceled: true);
-        // Note: the deadline cancellation token is expected to be part of the call cancellation token.
-        var decodingReader = reader.CreateResponseReader(callCancellationToken: token, deadlineCancellationToken: token);
-        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(token));
+        var deadlineCts = new CancellationTokenSource();
+        var cancellationContext = RpcCancellationContext.ForTesting("rpc", deadlineCts, default);
+        var decodingReader = reader.CreateResponseReader(cancellationContext);
+        deadlineCts.Cancel();
+        var exception = await Assert.ThrowsAsync<RpcException>(() => decodingReader.MoveNext(default));
         Assert.Equal(StatusCode.DeadlineExceeded, exception.StatusCode);
     }
 
@@ -270,11 +272,11 @@ public class PartialDecodingStreamReaderTest
         }
 
         internal PartialDecodingStreamReader<JObject> CreateResponseReader() =>
-            CreateResponseReader(default, default);
+            CreateResponseReader(RpcCancellationContext.FromOptions("rpc", new CallOptions()));
 
         internal PartialDecodingStreamReader<JObject> CreateResponseReader(
-            CancellationToken callCancellationToken, CancellationToken deadlineCancellationToken) =>
-            new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(this), JObject.Parse, callCancellationToken, deadlineCancellationToken, "rpc");
+            RpcCancellationContext cancellationContext) =>
+            new PartialDecodingStreamReader<JObject>(Task.FromResult<TextReader>(this), JObject.Parse, cancellationContext);
 
         protected override void Dispose(bool disposing)
         {

@@ -64,17 +64,17 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            var deadlineToken = CreateDeadlineCancellationToken(options, method.FullName);
-            var callCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineToken);
+            var cancellationContext = RpcCancellationContext.FromOptions(method.FullName, options);
 
-            var httpResponseTask = SendAsync(restMethod, host, options, request, callCancellationTokenSource.Token, deadlineToken, HttpCompletionOption.ResponseContentRead);
+            var httpResponseTask = cancellationContext.RunAsync(
+                cancellationToken => SendAsync(restMethod, host, options, request, HttpCompletionOption.ResponseContentRead, cancellationToken));
             var readResponseTask = ReadResponseAsync(httpResponseTask);
 
             var responseTask = restMethod.ReadResponseAsync<TResponse>(readResponseTask);
             var responseHeadersTask = ReadHeadersAsync(readResponseTask);
             Func<Status> statusFunc = () => GetStatus(readResponseTask);
             Func<Metadata> trailersFunc = () => GetTrailers(readResponseTask);
-            return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, callCancellationTokenSource.Cancel);
+            return new AsyncUnaryCall<TResponse>(responseTask, responseHeadersTask, statusFunc, trailersFunc, cancellationContext.Cancel);
         }
 
         /// <summary>
@@ -85,15 +85,12 @@ namespace Google.Api.Gax.Grpc.Rest
         /// <param name="host">Override for the endpoint, if any</param>
         /// <param name="options">The gRPC call options, used for headers and cancellation</param>
         /// <param name="request">The RPC request</param>
-        /// <param name="overallCancellationToken">The overall cancellation token to use for asynchronous calls.
-        /// This should include <paramref name="deadlineToken"/>.
-        /// </param>
-        /// <param name="deadlineToken">The cancellation token to use for deadline expiry; this is present to ensure
-        /// that the right StatusCode can be used.</param>
         /// <param name="httpCompletionOption">The option indicating at what point the method should complete,
+        /// <param name="cancellationToken">The cancellation token for the RPC.</param>
         /// within HTTP response processing</param>
-        private async Task<HttpResponseMessage> SendAsync<TRequest>(RestMethod restMethod, string host, CallOptions options, TRequest request,
-            CancellationToken overallCancellationToken, CancellationToken deadlineToken, HttpCompletionOption httpCompletionOption)
+        private async Task<HttpResponseMessage> SendAsync<TRequest>(
+            RestMethod restMethod, string host, CallOptions options, TRequest request,
+            HttpCompletionOption httpCompletionOption, CancellationToken cancellationToken)
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             var httpRequest = restMethod.CreateRequest((IMessage)request, host);
@@ -106,22 +103,8 @@ namespace Google.Api.Gax.Grpc.Rest
 
             httpRequest.Headers.Add(VersionHeaderBuilder.HeaderName, RestVersion);
 
-            HttpResponseMessage httpResponseMessage;
-            try
-            {
-                await AddAuthHeadersAsync(httpRequest, restMethod, overallCancellationToken).ConfigureAwait(false);
-                httpResponseMessage = await _httpClient.SendAsync(httpRequest, httpCompletionOption, overallCancellationToken).ConfigureAwait(false);
-            }
-            catch (OperationCanceledException ex) when (deadlineToken.IsCancellationRequested)
-            {
-                throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"RPC '{restMethod.FullName}' timed out", ex));
-            }
-            catch (OperationCanceledException ex)
-            {
-                throw new RpcException(new Status(StatusCode.Cancelled, $"RPC '{restMethod.FullName}' was cancelled", ex));
-            }
-
-            return httpResponseMessage;
+            await AddAuthHeadersAsync(httpRequest, restMethod, cancellationToken).ConfigureAwait(false);
+            return await _httpClient.SendAsync(httpRequest, httpCompletionOption, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -129,42 +112,24 @@ namespace Google.Api.Gax.Grpc.Rest
         /// </summary>
         public AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TResponse, TRequest>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            // TODO[virost, 11/2022] Refactor this and the Unary call to remove duplication
             var restMethod = _serviceCollection.GetRestMethod(method);
 
-            var deadlineCancellationToken = CreateDeadlineCancellationToken(options, method.FullName);
-            CancellationTokenSource callCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(options.CancellationToken, deadlineCancellationToken);
+            var cancellationContext = RpcCancellationContext.FromOptions(method.FullName, options);
 
-            Task<HttpResponseMessage> httpResponseTask = SendAsync(restMethod, host, options, request, callCancellationTokenSource.Token, deadlineCancellationToken, HttpCompletionOption.ResponseHeadersRead);
+            Task<HttpResponseMessage> httpResponseTask = cancellationContext.RunAsync(
+                cancellationToken => SendAsync(restMethod, host, options, request, HttpCompletionOption.ResponseHeadersRead, cancellationToken));
 
             Task<Metadata> responseHeadersTask = ReadHeadersAsync(httpResponseTask);
             Func<Status> statusFunc = () => GetStatus(ReadResponseAsync(httpResponseTask));
             Func<Metadata> trailersFunc = () => GetTrailers(ReadResponseAsync(httpResponseTask));
 
-            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask, callCancellationTokenSource.Token, deadlineCancellationToken);
+            PartialDecodingStreamReader<TResponse> responseStream = restMethod.ResponseStreamAsync<TResponse>(httpResponseTask, cancellationContext);
             Action disposalAction = () =>
             {
                 responseStream.Dispose();
-                callCancellationTokenSource.Cancel();
+                cancellationContext.Cancel();
             };
             return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, disposalAction);
-        }
-
-        // TODO: Make sure we dispose of CancellationTokenSources appropriately.
-        // See https://github.com/googleapis/gax-dotnet/issues/652
-        private static CancellationToken CreateDeadlineCancellationToken(CallOptions options, string methodName)
-        {
-            if (options.Deadline is not DateTime deadline)
-            {
-                return default;
-            }
-            // TODO: [virost, 2021-12] Use IClock.
-            var delayInterval = deadline - DateTime.UtcNow;
-            if (delayInterval.TotalMilliseconds <= 0)
-            {
-                throw new RpcException(new Status(StatusCode.DeadlineExceeded, $"RPC '{methodName}' timed out"));
-            }
-            return new CancellationTokenSource(delayInterval).Token;
         }
 
         private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)
