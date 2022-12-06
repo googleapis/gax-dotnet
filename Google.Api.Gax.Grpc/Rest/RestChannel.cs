@@ -35,7 +35,9 @@ namespace Google.Api.Gax.Grpc.Rest
         private readonly RestServiceCollection _serviceCollection;
         private readonly CallInvoker _callInvoker;
 
-        public RestChannel(RestServiceCollection serviceCollection, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options) : base(endpoint)
+        internal RestChannel(
+            RestServiceCollection serviceCollection, string endpoint, ChannelCredentials credentials,
+            GrpcChannelOptions options, HttpClient httpClient = null) : base(endpoint)
         {
             _serviceCollection = serviceCollection;
 
@@ -48,7 +50,7 @@ namespace Google.Api.Gax.Grpc.Rest
             var baseAddress = new Uri(endpointWithScheme);
 
             // TODO: Avoid creating an HTTP Client for every channel?
-            _httpClient = new HttpClient { BaseAddress = baseAddress };
+            _httpClient = httpClient ?? new HttpClient { BaseAddress = baseAddress };
             
             _channelAuthInterceptor = credentials.ToAsyncAuthInterceptor();
 
@@ -94,7 +96,7 @@ namespace Google.Api.Gax.Grpc.Rest
         {
             // Ideally, add the header in the client builder instead of in the ServiceSettingsBase...
             var httpRequest = restMethod.CreateRequest((IMessage)request, host);
-            foreach (var headerKeyValue in options.Headers
+            foreach (var headerKeyValue in (options.Headers ?? Enumerable.Empty<Metadata.Entry>())
                 .Where(mh => !mh.IsBinary)
                 .Where(mh => mh.Key != VersionHeaderBuilder.HeaderName))
             {
