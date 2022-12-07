@@ -142,13 +142,23 @@ public class RpcCancellationContextTest
     }
 
     [Fact]
-    public void Dispose_DisposesOfOverallCts()
+    public void Cancel_AfterDisposeSucceeds()
     {
         var callOptionsCts = new CancellationTokenSource();
         var deadlineCts = new CancellationTokenSource();
         var context = RpcCancellationContext.ForTesting("rpc", deadlineCts, callOptionsCts.Token);
         context.Dispose();
-        Assert.Throws<ObjectDisposedException>(context.Cancel);
+        context.Cancel();
+    }
+
+    [Fact]
+    public void Cancel_AfterCancelSucceeds()
+    {
+        var callOptionsCts = new CancellationTokenSource();
+        var deadlineCts = new CancellationTokenSource();
+        var context = RpcCancellationContext.ForTesting("rpc", deadlineCts, callOptionsCts.Token);
+        context.Cancel();
+        context.Cancel();
     }
 
     [Fact]
@@ -167,6 +177,18 @@ public class RpcCancellationContextTest
         var callOptionsCts = new CancellationTokenSource();
         CancellationTokenSource deadlineCts = null;
         var context = RpcCancellationContext.ForTesting("rpc", deadlineCts, callOptionsCts.Token);
+        context.Dispose();
+    }
+
+    [Fact]
+    public void Dispose_AfterDisposeSucceeds()
+    {
+        var callOptionsCts = new CancellationTokenSource();
+        var deadlineCts = new CancellationTokenSource();
+        var context = RpcCancellationContext.ForTesting("rpc", deadlineCts, callOptionsCts.Token);
+        context.Dispose();
+        context.Dispose();
+        context.Dispose();
         context.Dispose();
     }
 

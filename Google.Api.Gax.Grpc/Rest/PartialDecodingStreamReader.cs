@@ -126,6 +126,12 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
 
         // If we've ever thrown, throw the same exception again.
         _exceptionInfo?.Throw();
+        // If we've previously reached the end of the data, indicate that again.
+        // (This avoids trying to use a disposed RpcCancellationContext to run a task.)
+        if (_endOfData)
+        {
+            return false;
+        }
 
         bool disposeOnExit = true;
         try
@@ -256,7 +262,8 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
     }
 
     /// <summary>
-    /// Disposes of the underlying reader, in a fire-and-forget manner.
+    /// Disposes of the underlying reader, in a fire-and-forget manner, as well as the
+    /// cancellation context.
     /// The reader may not yet be available, so a task is attached to the reader-providing
     /// task to dispose of the reader when it becomes available.
     /// </summary>
@@ -267,6 +274,8 @@ internal class PartialDecodingStreamReader<TResponse> : IAsyncStreamReader<TResp
             return;
         }
         _disposed = true;
+
+        _cancellationContext.Dispose();
 
         // Note: the returned task is deliberately ignored. It's fire-and-forget.
         _textReaderTask.ContinueWith(DisposeReader, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.DenyChildAttach | TaskContinuationOptions.HideScheduler);
