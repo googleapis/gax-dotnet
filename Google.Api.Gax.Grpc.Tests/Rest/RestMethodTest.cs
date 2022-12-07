@@ -8,6 +8,7 @@
 using Google.Api.Gax.Grpc.Tests;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,18 @@ public class RestMethodTest
             .FindMethodByName("BadResourcePath");
         var apiMetadata = TestApiMetadata.Test;
         Assert.Throws<ArgumentException>(() => RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default));
+    }
+
+    [Fact]
+    public void TranscodeFailure()
+    {
+        var apiMetadata = TestApiMetadata.Test;
+        var methodDescriptor = GetMethod("Sample", "SimpleMethod");
+        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+
+        var request = new SimpleRequest();
+        var exception = Assert.Throws<RpcException>(() => restMethod.CreateRequest(request, null));
+        Assert.Equal(StatusCode.InvalidArgument, exception.StatusCode);
     }
 
     private static MethodDescriptor GetMethod(string service, string method) =>
