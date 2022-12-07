@@ -75,8 +75,8 @@ internal class RestMethod
     internal HttpRequestMessage CreateRequest(IMessage request, string host)
     {
         var transcodingOutput = _transcoder.Transcode(request)
-            // TODO: Is this the right exception to use?
-            ?? throw new ArgumentException("Request could not be transcoded; it does not match any HTTP rule.");
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument,
+                "Request could not be transcoded; it does not match any HTTP rule. Please check that all required fields are set with appropriate values."));
 
         if (_apiMetadata.RequestNumericEnumJsonEncoding)
         {
