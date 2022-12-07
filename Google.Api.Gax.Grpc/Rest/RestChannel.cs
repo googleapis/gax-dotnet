@@ -71,7 +71,7 @@ namespace Google.Api.Gax.Grpc.Rest
 
             var httpResponseTask = cancellationContext.RunAsync(
                 cancellationToken => SendAsync(restMethod, host, options, request, HttpCompletionOption.ResponseContentRead, cancellationToken));
-            var readResponseTask = ReadResponseAsync(httpResponseTask);
+            var readResponseTask = ReadResponseAsync(httpResponseTask, cancellationContext);
 
             var responseTask = restMethod.ReadResponseAsync<TResponse>(readResponseTask);
             var responseHeadersTask = ReadHeadersAsync(readResponseTask);
@@ -104,11 +104,16 @@ namespace Google.Api.Gax.Grpc.Rest
             Func<Status> statusFunc = () => GetStatus(statusResponseSource.Task);
             Func<Metadata> trailersFunc = () => GetTrailers(statusResponseSource.Task);
 
+            // The response stream will dispose of the cancellation context if:
+            // - The user disposes of the PartialDecodingStreamReader directly
+            // - The user disposes of the AsyncServerStreamingCall
+            // - Any exception is thrown while reading an element
+            // - We reach the last element
             PartialDecodingStreamReader<TResponse> responseStream = new PartialDecodingStreamReader<TResponse>(readerTask, restMethod.ParseJson<TResponse>, cancellationContext);
             Action disposalAction = () =>
             {
-                responseStream.Dispose();
                 cancellationContext.Cancel();
+                responseStream.Dispose();
             };
             return new AsyncServerStreamingCall<TResponse>(responseStream, responseHeadersTask, statusFunc, trailersFunc, disposalAction);
 
@@ -118,14 +123,18 @@ namespace Google.Api.Gax.Grpc.Rest
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     // The status for a successful response is empty, in terms of an error response.
+                    // We set the result of the task to allow the status and trailers to be read.
                     statusResponseSource.SetResult(new ReadHttpResponseMessage(httpResponse, ""));
                     var stream = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return new StreamReader(stream);
                 }
 
                 // Read the content from the HttpResponseMessage, and populate a new ReadHttpResponseMessage.
-                // We use this for status/trailer reporting.
-                var errorResponse = await ReadResponseAsync(httpResponseTask).ConfigureAwait(false);
+                // We use this for status/trailer reporting. The parent PartialDecodingStreamReader is still responsible
+                // for disposing of the cancellation context: while we could dispose it now, that would make
+                // a call to MoveNext fail because we couldn't obtain a cancellation token.
+                // This should be fine, so long as the returned PartialDecodingStreamReader is used or disposed.
+                var errorResponse = await ReadResponseAsync(httpResponseTask, cancellationContext: null).ConfigureAwait(false);
                 statusResponseSource.SetResult(errorResponse);
                 throw new RpcException(errorResponse.GetStatus(), errorResponse.GetTrailers());
             }
@@ -161,21 +170,30 @@ namespace Google.Api.Gax.Grpc.Rest
             return await _httpClient.SendAsync(httpRequest, httpCompletionOption, cancellationToken).ConfigureAwait(false);
         }
 
-        private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask)
+        private async Task<ReadHttpResponseMessage> ReadResponseAsync(Task<HttpResponseMessage> msgTask, RpcCancellationContext cancellationContext)
         {
-            HttpResponseMessage httpResponseMessage = await msgTask.ConfigureAwait(false);
-
             try
             {
-                string content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return new ReadHttpResponseMessage(httpResponseMessage, content);
+                HttpResponseMessage httpResponseMessage = await msgTask.ConfigureAwait(false);
+
+                try
+                {
+                    string content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return new ReadHttpResponseMessage(httpResponseMessage, content);
+                }
+                catch (Exception ex)
+                {
+                    // Let's defer the throwing of this exception to when it's actually needed,
+                    // so that we can at least read headers and other metadata.
+                    var exInfo = ExceptionDispatchInfo.Capture(ex);
+                    return new ReadHttpResponseMessage(httpResponseMessage, exInfo);
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                // Let's defer the throwing of this exception to when it's actually needed,
-                // so that we can at least read headers and other metadata.
-                var exInfo = ExceptionDispatchInfo.Capture(ex);
-                return new ReadHttpResponseMessage(httpResponseMessage, exInfo);
+                // Once we've read the response, whether successfully or not, there's nothing to cancel, so we can
+                // clean up any resources associated with it.
+                cancellationContext?.Dispose();
             }
         }
 

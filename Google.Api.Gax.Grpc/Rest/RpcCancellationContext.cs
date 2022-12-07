@@ -133,12 +133,20 @@ internal sealed class RpcCancellationContext : IDisposable
     }
 
     /// <summary>
-    /// Cancels the overall RPC.
+    /// Cancels the overall RPC. This call is ignored if the context has already been disposed.
     /// </summary>
     public void Cancel()
     {
-        // TODO: Handle exceptions from this being disposed?
-        _overallCancellationTokenSource.Cancel();
+        // While we could try to keep track of whether or not it's already been disposed,
+        // that's likely to lead to race conditions (or locks). It's simpler just to attempt
+        // it and swallow the exception. This could avoid some unnecessary hard-to-diagnose
+        // issues, at the slight cost of performance in the rare case where we actually
+        // need to catch the exception.
+        try
+        {
+            _overallCancellationTokenSource.Cancel();
+        }
+        catch (ObjectDisposedException) { }
     }
 
     /// <summary>
