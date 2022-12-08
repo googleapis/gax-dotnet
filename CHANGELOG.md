@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.3.0-beta01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0...Google.Api.Gax-2.3.0-beta01) (2022-12-08)
+## [4.3.0-beta01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0...Google.Api.Gax-4.3.0-beta01) (2022-12-08)
 
 
 ### Features
