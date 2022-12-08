@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.3.0-beta01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.2.0...Google.Api.Gax-2.3.0-beta01) (2022-12-08)
+
+
+### Features
+
+* Add scoped self-signed JWT support for REST ([8f62655](https://github.com/googleapis/gax-dotnet/commit/8f6265559d516cf09b7265e6d3c0a56621ad0419))
+* Improve handling of bad/missing/unsupported methods in REGAPIC ([703f386](https://github.com/googleapis/gax-dotnet/commit/703f386c67b39b9bf128e6aa3e901b422effb908)), closes [#623](https://github.com/googleapis/gax-dotnet/issues/623)
+* Improve server streaming exception behavior ([28f759a](https://github.com/googleapis/gax-dotnet/commit/28f759afd8fb247a95a1cce157162d64fcc16de2))
+* Regenerate common protos ([4e6ec67](https://github.com/googleapis/gax-dotnet/commit/4e6ec674c091fbda6c11bb3d73db2c2d5f3cc7a8))
+* rest server streaming support ([a7f122a](https://github.com/googleapis/gax-dotnet/commit/a7f122a4108ad940ef460dbb15c0ab7b2edfb46d))
+
+
+### Bug Fixes
+
+* Change default for UseSelfSignedJwtsWithScopes in REST to false ([20663c1](https://github.com/googleapis/gax-dotnet/commit/20663c158c8675c008237196c8b3faa53c1f2437))
+* Close TextReader when we've found the end of responses ([302e8b6](https://github.com/googleapis/gax-dotnet/commit/302e8b6493340214f5f78d174385cd15d0ff7bd9))
+* Dispose of CancellationTokenSources when a method is "done" ([c6e3502](https://github.com/googleapis/gax-dotnet/commit/c6e35020ff72b74ac2c6eb4321137cfac6229d64)), closes [#592](https://github.com/googleapis/gax-dotnet/issues/592)
+* Drop trailing hex characters from version header values ([b3e2cf9](https://github.com/googleapis/gax-dotnet/commit/b3e2cf9e91dd3ce3b626a4f002a68a5f666caf9f)), closes [#636](https://github.com/googleapis/gax-dotnet/issues/636)
+* Fix cancellation (including deadlines) for REGAPIC streaming ([3df4f82](https://github.com/googleapis/gax-dotnet/commit/3df4f82712f3ed308432cc28d11636703495e946)), closes [#648](https://github.com/googleapis/gax-dotnet/issues/648)
+* Fix error handling for server-streaming REGAPIC ([9b0336f](https://github.com/googleapis/gax-dotnet/commit/9b0336f7745539766134d95bb7ec4021ae04ec09)), closes [#655](https://github.com/googleapis/gax-dotnet/issues/655)
+* Keep the gRPC full method name in RestServiceCollection ([fcb1173](https://github.com/googleapis/gax-dotnet/commit/fcb1173bbc867a223e6d6a32e5a9f3bdd2b8a29f)), closes [#650](https://github.com/googleapis/gax-dotnet/issues/650)
+* Throw RpcException if transcoding fails ([49c7349](https://github.com/googleapis/gax-dotnet/commit/49c7349049384670d50748a7c806e273542c22a7)), closes [#659](https://github.com/googleapis/gax-dotnet/issues/659)
+
 ## [4.2.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.1.1...Google.Api.Gax-4.2.0) (2022-11-03)
 
 ### Features
