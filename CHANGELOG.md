@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0-beta01...Google.Api.Gax-4.3.0) (2023-01-11)
+
+
+### Miscellaneous Chores
+
+* Prompt release-please to create a 4.3.0 release ([#669](https://github.com/googleapis/gax-dotnet/issues/669)) ([89dcb70](https://github.com/googleapis/gax-dotnet/commit/89dcb700703b3908f7a50f75c4074103416e796a))
+
 ## [4.3.0-beta01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0...Google.Api.Gax-4.3.0-beta01) (2022-12-08)
 
 
