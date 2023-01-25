@@ -6,6 +6,7 @@
  */
 using Grpc.Core;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc
@@ -22,6 +23,8 @@ namespace Google.Api.Gax.Grpc
         /// never explicitly as a header.
         /// </summary>
         private const string QuotaProjectHeaderName = "x-goog-user-project";
+
+        private const string RequestParamsHeaderSeparator = "&";
 
         /// <summary>
         /// This method merges the settings in <paramref name="overlaid"/> with those in
@@ -46,9 +49,7 @@ namespace Google.Api.Gax.Grpc
         /// will only contain the cancellation token.</param>
         /// <param name="cancellationToken">Cancellation token for the new call settings.</param>
         /// <returns>A new set of call settings.</returns>
-        public static CallSettings WithCancellationToken(
-            this CallSettings settings,
-            CancellationToken cancellationToken) =>
+        public static CallSettings WithCancellationToken(this CallSettings settings, CancellationToken cancellationToken) =>
             settings.MergedWith(CallSettings.FromCancellationToken(cancellationToken));
 
         /// <summary>
@@ -61,15 +62,8 @@ namespace Google.Api.Gax.Grpc
         /// in which case any expiration in <paramref name="settings"/> is not present in the new call settings. If
         /// both this and <paramref name="settings"/> are null, the return value is null.</param>
         /// <returns>A new set of call settings with the specified expiration, or null of both parameters are null.</returns>
-        public static CallSettings WithExpiration(
-            this CallSettings settings,
-            Expiration expiration) =>
-            settings == null
-                ? CallSettings.FromExpiration(expiration)
-                : new CallSettings(settings.CancellationToken,
-                    expiration, settings.Retry, settings.HeaderMutation,
-                    settings.WriteOptions, settings.PropagationToken,
-                    settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
+        public static CallSettings WithExpiration(this CallSettings settings, Expiration expiration) =>
+            settings.MergedWith(CallSettings.FromExpiration(expiration));
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified retry settings,
@@ -82,16 +76,8 @@ namespace Google.Api.Gax.Grpc
         /// not present in the new call settings. If both this and <paramref name="settings"/> are null,
         /// the return value is null.</param>
         /// <returns>A new set of call settings, or null if both parameters are null.</returns>
-        public static CallSettings WithRetry(
-            this CallSettings settings,
-            RetrySettings retry) =>
-            settings == null
-                ? CallSettings.FromRetry(retry)
-                // But as long as user code can specify credentials we should continue to respect that.
-                : new CallSettings(settings.CancellationToken,
-                    settings.Expiration, retry, settings.HeaderMutation,
-                    settings.WriteOptions, settings.PropagationToken,
-                    settings.ResponseMetadataHandler, settings.TrailingMetadataHandler);
+        public static CallSettings WithRetry(this CallSettings settings, RetrySettings retry) =>
+            settings.MergedWith(CallSettings.FromRetry(retry));
 
         /// <summary>
         /// Returns a new <see cref="CallSettings"/> with the specified header,
@@ -202,6 +188,7 @@ namespace Google.Api.Gax.Grpc
             var metadata = new Metadata();
             callSettings.HeaderMutation?.Invoke(metadata);
             CheckMetadata(metadata);
+            ConcatenateRoutingParams(metadata);
             return new CallOptions(
                 headers: metadata,
                 // Note: extension method which handles a null expiration.
@@ -236,6 +223,21 @@ namespace Google.Api.Gax.Grpc
             if (header == QuotaProjectHeaderName)
             {
                 throw new InvalidOperationException($"Can't set {QuotaProjectHeaderName} header directly. You can set it through the <Product>ClientBuilder.QuotaProject property instead.");
+            }
+        }
+
+        internal static void ConcatenateRoutingParams(Metadata metadata)
+        {
+            // Workaround for https://github.com/googleapis/google-cloud-dotnet/issues/9396
+            var currentEntries = metadata.GetAll(CallSettings.RequestParamsHeader);
+            if (currentEntries.Count() > 1)
+            {
+                string concatenated = string.Join(RequestParamsHeaderSeparator, currentEntries.Select(entry => entry.Value));
+                foreach (var entry in currentEntries)
+                {
+                    metadata.Remove(entry);
+                }
+                metadata.Add(CallSettings.RequestParamsHeader, concatenated);
             }
         }
     }
