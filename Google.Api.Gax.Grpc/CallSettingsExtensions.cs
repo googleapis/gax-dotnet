@@ -97,6 +97,12 @@ namespace Google.Api.Gax.Grpc
         /// Returns a new <see cref="CallSettings"/> with the specified header,
         /// merged with the (optional) original settings specified by <paramref name="settings"/>.
         /// </summary>
+        /// <remarks>
+        /// Existing headers in settings will not be overritten, that is, if settings
+        /// already contains a header for <paramref name="name"/> the new value
+        /// will be included in that header's set of values, even if it was already present
+        /// in settings for the header with the given name.
+        /// </remarks>
         /// <param name="settings">Original settings. May be null, in which case the returned settings
         /// will only contain the header.</param>
         /// <param name="name">Header name. Must not be null.</param>
