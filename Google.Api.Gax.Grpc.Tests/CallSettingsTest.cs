@@ -9,8 +9,8 @@ using Google.Api.Gax.Testing;
 using Grpc.Core;
 using Moq;
 using System;
+using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -124,6 +124,26 @@ namespace Google.Api.Gax.Grpc.Tests
                 () => CallSettings
                 .FromHeaderMutation(metadata => metadata.Add(new Metadata.Entry(header, value)))
                 .ToCallOptions(new Mock<IClock>().Object));
+
+        [Fact]
+        public void ToCallOptions_ConcatenatesRoutingParams()
+        {
+            var locations = CallSettings.FromGoogleRequestParamsHeader("locations", "global");
+            var projects = CallSettings.FromGoogleRequestParamsHeader("projects", "my-project");
+            var resources = CallSettings.FromGoogleRequestParamsHeader("resources", "my-resource");
+            var callSettings = CallSettings.FromHeader("non-request-header", "non-request-value")
+                .MergedWith(locations)
+                .WithHeader("non-request-header", "another-non-request-value")
+                .MergedWith(projects)
+                .MergedWith(resources);
+
+            var options = callSettings.ToCallOptions(new Mock<IClock>().Object);
+
+            var entry = Assert.Single(options.Headers, entry => entry.Key == CallSettings.RequestParamsHeader);
+            Assert.Equal("locations=global&projects=my-project&resources=my-resource", entry.Value);
+
+            Assert.Equal(2, options.Headers.Where(entry => entry.Key == "non-request-header").Count());
+        }
 
         [Fact]
         public void CancellationTokenNone()

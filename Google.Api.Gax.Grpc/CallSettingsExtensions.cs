@@ -23,6 +23,8 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         private const string QuotaProjectHeaderName = "x-goog-user-project";
 
+        private const string RequestParamsSeparator = "&";
+
         /// <summary>
         /// This method merges the settings in <paramref name="overlaid"/> with those in
         /// <paramref name="original"/>, with <paramref name="overlaid"/> taking priority.
@@ -205,6 +207,12 @@ namespace Google.Api.Gax.Grpc
             {
                 return default(CallOptions);
             }
+
+            // Workaround for https://github.com/googleapis/google-cloud-dotnet/issues/9396
+            var concatenateRequestParams = CallSettings.FromHeaderMutation(metadata =>
+                CallSettings.MetadataMutations.Concatenate(metadata, CallSettings.RequestParamsHeader, RequestParamsSeparator));
+            callSettings = callSettings.MergedWith(concatenateRequestParams);
+
             var metadata = new Metadata();
             callSettings.HeaderMutation?.Invoke(metadata);
             CheckMetadata(metadata);
