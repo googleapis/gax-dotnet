@@ -5,8 +5,12 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc
@@ -262,5 +266,117 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A CallSettings which applies the appropriate header.</returns>
         internal static CallSettings FromRequestReasonHeader(string reason) =>
             FromHeader(RequestReasonHeader, GaxPreconditions.CheckNotNull(reason, nameof(reason)));
+
+        // TODO: Consider moving some of these methods to Grcp.Core.Metadata, as this code is very
+        // aware of Metadata implementation details for optimization purposes.
+        /// <summary>
+        /// Helper class defining some common metadata mutation actions.
+        /// </summary>
+        internal static class MetadataMutations
+        {
+            /// <summary>
+            /// Removes from <paramref name="entries"/> all entries with <paramref name="name"/> if any.
+            /// </summary>
+            /// <param name="entries">The metadata set to modify. Must no be null.</param>
+            /// <param name="name">The name of entries to override. Must no be null.</param>
+            internal static void RemoveAll(Metadata entries, string name)
+            {
+                GaxPreconditions.CheckNotNull(entries, nameof(entries));
+                GaxPreconditions.CheckNotNull(name, nameof(name));
+
+                // This is the most efficient way to remove all entries with a given name.
+                // It's O(n) where n is the total number of entries.
+
+                // First we find the first element that we need to remove, and use its index as
+                // the first target index to copy other elements over.
+                int target;
+                for (target = 0; target < entries.Count && entries[target].Key != name; target++) ;
+
+                // Now, we examine the rest of the elements one by one, skipping the ones we want
+                // to remove. When we find one that we want to keep we copy it over to target,
+                // and increase target by one.
+                int source;
+                for (source = target + 1; source < entries.Count; source++)
+                {
+                    if (entries[source].Key != name)
+                    {
+                        entries[target++] = entries[source];
+                    }
+                }
+
+                // Now we remove all remaining elements from target till the end of the collection.
+                // The ones that we want to keep have already been copied over before target and the
+                // rest are the ones that we wanted to remove in the first place.
+                // Remove back to front for efficiency.
+                for (int j = entries.Count - 1; j >= target; j--)
+                {
+                    entries.RemoveAt(j);
+                }
+            }
+
+            /// <summary>
+            /// Removes from <paramref name="entries"/> all entries with <paramref name="name"/> if any
+            /// and adds a single entry with the given name and value.
+            /// </summary>
+            /// <param name="entries">The metadata set to modify. Must no be null.</param>
+            /// <param name="name">The name of entries to override. Must no be null.</param>
+            /// <param name="value">The value to associate to a new entry with the given name. Must not be null.</param>
+            internal static void Override(Metadata entries, string name, string value)
+            {
+                GaxPreconditions.CheckNotNull(entries, nameof(entries));
+                GaxPreconditions.CheckNotNull(name, nameof(name));
+                CallSettingsExtensions.CheckHeader(name);
+                GaxPreconditions.CheckNotNull(value, nameof(value));
+
+                // Remove all entries associated to the given name.
+                RemoveAll(entries, name);
+                // Add the new value associated to the given name.
+                entries.Add(name, value);
+            }
+
+            /// <summary>
+            /// If two or more entries with <paramref name="name"/> exist in <paramref name="entries"/>
+            /// they are removed and their values concatenated using <paramref name="separator"/> and a new entry
+            /// is added for the given name, with the resulting concatenated value.
+            /// </summary>
+            /// <param name="entries">The metadata set to modify. Must not be null.</param>
+            /// <param name="name">The name of entries whose values are to be concatenated. Must not be null.</param>
+            /// <param name="separator">The separator to use for concatenation. Must not be null.</param>
+            internal static void Concatenate(Metadata entries, string name, string separator)
+            {
+                GaxPreconditions.CheckNotNull(entries, nameof(entries));
+                GaxPreconditions.CheckNotNull(name, nameof(name));
+                GaxPreconditions.CheckNotNull(separator, nameof(separator));
+
+                // Find the first and sencond entry to concatenate.
+                int firstIndex, secondIndex;
+                for (firstIndex = 0; firstIndex < entries.Count && entries[firstIndex].Key != name; firstIndex++);
+                for (secondIndex = firstIndex + 1; secondIndex < entries.Count && entries[secondIndex].Key != name; secondIndex++) ;
+                // If there are less than two values associated to name, there's nothing we need to do.
+                if (firstIndex == entries.Count || secondIndex == entries.Count)
+                {
+                    return;
+                }
+
+                StringBuilder builder = new StringBuilder(entries[firstIndex].Value)
+                    .Append(separator)
+                    .Append(entries[secondIndex].Value);
+                // Concatenate the rest of the entries if any.
+                for (int i = secondIndex + 1; i < entries.Count; i++)
+                {
+                    if (entries[i].Key == name)
+                    {
+                        builder.Append(separator).Append(entries[i].Value);
+                    }
+                }
+
+                // Note that we could have removed the concatenated entries while iterating over them
+                // for concatenation, but if there's an error within the iteration, for instance, because
+                // an entry has a bytes values instead of a string value, then the entry set will remain
+                // in an inconsistent state, where some of the existing entries have been removed
+                // but not all, and the concatenated value has not been added.
+                Override(entries, name, builder.ToString());
+            }
+        }
     }
 }
