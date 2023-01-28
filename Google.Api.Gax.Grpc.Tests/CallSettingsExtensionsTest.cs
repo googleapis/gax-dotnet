@@ -9,7 +9,6 @@ using Google.Api.Gax.Testing;
 using Grpc.Core;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -177,12 +176,60 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
-        public void WithExpiration_NullExpiration()
+        public void WithRetry_NullInSettings_NullRetry()
+        {
+            var token = new CancellationTokenSource().Token;
+            CallSettings settings = CallSettings.FromCancellationToken(token);
+            var result = settings.WithRetry(null);
+            Assert.Equal(token, result.CancellationToken);
+            Assert.Null(result.Retry);
+        }
+
+        [Fact]
+        public void WithRetry_NotNullInSettings_NullRetry()
+        {
+            RetrySettings retry = RetrySettings.FromExponentialBackoff(
+                10, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(10), 1.5, ex => true);
+            CallSettings settings = CallSettings.FromRetry(retry);
+            var result = settings.WithRetry(null);
+            Assert.Null(result.Retry);
+        }
+
+        [Fact]
+        public void WithRetry_NullSettings()
+        {
+            CallSettings settings = null;
+            RetrySettings retry = RetrySettings.FromExponentialBackoff(
+                10, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(10), 1.5, ex => true);
+            var result = settings.WithRetry(retry);
+            Assert.Equal(retry, result.Retry);
+        }
+
+        [Fact]
+        public void WithRetry_BothNull()
+        {
+            CallSettings settings = null;
+            RetrySettings retry = null;
+            var result = settings.WithRetry(retry);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void WithExpiration_NullInSettings_NullExpiration()
         {
             var token = new CancellationTokenSource().Token;
             CallSettings settings = CallSettings.FromCancellationToken(token);
             var result = settings.WithExpiration(null);
             Assert.Equal(token, result.CancellationToken);
+            Assert.Null(result.Expiration);
+        }
+
+        [Fact]
+        public void WithExpiration_NotNullInSettings_NullExpiration()
+        {
+            Expiration expiration = Expiration.FromTimeout(TimeSpan.FromSeconds(1));
+            CallSettings settings = CallSettings.FromExpiration(expiration);
+            var result = settings.WithExpiration(null);
             Assert.Null(result.Expiration);
         }
 
