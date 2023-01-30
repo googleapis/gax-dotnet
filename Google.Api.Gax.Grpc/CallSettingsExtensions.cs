@@ -23,7 +23,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         private const string QuotaProjectHeaderName = "x-goog-user-project";
 
-        private const string RequestParamsSeparator = "&";
+        internal const string RequestParamsSeparator = "&";
 
         /// <summary>
         /// This method merges the settings in <paramref name="overlaid"/> with those in
@@ -208,14 +208,13 @@ namespace Google.Api.Gax.Grpc
                 return default(CallOptions);
             }
 
-            // Workaround for https://github.com/googleapis/google-cloud-dotnet/issues/9396
-            var concatenateRequestParams = CallSettings.FromHeaderMutation(metadata =>
-                CallSettings.MetadataMutations.Concatenate(metadata, CallSettings.RequestParamsHeader, RequestParamsSeparator));
-            callSettings = callSettings.MergedWith(concatenateRequestParams);
-
             var metadata = new Metadata();
             callSettings.HeaderMutation?.Invoke(metadata);
             CheckMetadata(metadata);
+
+            // Workaround for https://github.com/googleapis/google-cloud-dotnet/issues/9396
+            CallSettings.MetadataMutations.Concatenate(metadata, CallSettings.RequestParamsHeader, RequestParamsSeparator);
+
             return new CallOptions(
                 headers: metadata,
                 // Note: extension method which handles a null expiration.
