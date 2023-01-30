@@ -320,5 +320,19 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Same(metadata, setByHandler1);
             Assert.Same(metadata, setByHandler2);
         }
+
+        [Fact]
+        public void ToCallOptions_RequestParamsConcatenated()
+        {
+            var header1 = CallSettings.FromGoogleRequestParamsHeader("x");
+            var header2 = CallSettings.FromGoogleRequestParamsHeader("y");
+            var merged = header1.MergedWith(header2);
+            var options = merged.ToCallOptions(new FakeClock());
+            var metadata = options.Headers;
+            Assert.NotNull(metadata);
+            var entry = Assert.Single(metadata);
+            Assert.Equal(CallSettings.RequestParamsHeader, entry.Key);
+            Assert.Equal($"x{CallSettingsExtensions.RequestParamsSeparator}y", entry.Value);
+        }
     }
 }
