@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0...Google.Api.Gax-4.3.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* Concatenate request header parameters. ([5f45144](https://github.com/googleapis/gax-dotnet/commit/5f45144254a77b3ca436e3d86f4e964543ca9d9a))
+
 ## [4.3.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0-beta01...Google.Api.Gax-4.3.0) (2023-01-11)
 
 
