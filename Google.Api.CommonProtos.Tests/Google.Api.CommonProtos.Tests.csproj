@@ -3,8 +3,8 @@
   <Import Project="..\CommonProperties.Test.xml" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netcoreapp3.1;net462</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;net462</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
