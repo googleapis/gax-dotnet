@@ -758,7 +758,7 @@ namespace Google.Rpc.Context {
         /// <summary>
         /// The identity of this peer. Similar to `Request.auth.principal`, but
         /// relative to the peer instead of the request. For example, the
-        /// idenity associated with a load balancer that forwared the request.
+        /// identity associated with a load balancer that forwarded the request.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -921,7 +921,7 @@ namespace Google.Rpc.Context {
           if (other.Port != 0L) {
             Port = other.Port;
           }
-          labels_.Add(other.labels_);
+          labels_.MergeFrom(other.labels_);
           if (other.Principal.Length != 0) {
             Principal = other.Principal;
           }
@@ -1824,7 +1824,7 @@ namespace Google.Rpc.Context {
         public const int PathFieldNumber = 4;
         private string path_ = "";
         /// <summary>
-        /// The HTTP URL path.
+        /// The HTTP URL path, excluding the query parameters.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2188,7 +2188,7 @@ namespace Google.Rpc.Context {
           if (other.Method.Length != 0) {
             Method = other.Method;
           }
-          headers_.Add(other.headers_);
+          headers_.MergeFrom(other.headers_);
           if (other.Path.Length != 0) {
             Path = other.Path;
           }
@@ -2485,7 +2485,7 @@ namespace Google.Rpc.Context {
         public const int BackendLatencyFieldNumber = 5;
         private global::Google.Protobuf.WellKnownTypes.Duration backendLatency_;
         /// <summary>
-        /// The length of time it takes the backend service to fully respond to a
+        /// The amount of time it takes the backend service to fully respond to a
         /// request. Measured from when the destination service starts to send the
         /// request to the backend until when the destination service receives the
         /// complete response from the backend.
@@ -2634,7 +2634,7 @@ namespace Google.Rpc.Context {
           if (other.Size != 0L) {
             Size = other.Size;
           }
-          headers_.Add(other.headers_);
+          headers_.MergeFrom(other.headers_);
           if (other.time_ != null) {
             if (time_ == null) {
               Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
@@ -2846,7 +2846,8 @@ namespace Google.Rpc.Context {
         /// The type of the resource. The syntax is platform-specific because
         /// different platforms define their resources differently.
         ///
-        /// For Google APIs, the type format must be "{service}/{kind}".
+        /// For Google APIs, the type format must be "{service}/{kind}", such as
+        /// "pubsub.googleapis.com/Topic".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3233,11 +3234,11 @@ namespace Google.Rpc.Context {
           if (other.Type.Length != 0) {
             Type = other.Type;
           }
-          labels_.Add(other.labels_);
+          labels_.MergeFrom(other.labels_);
           if (other.Uid.Length != 0) {
             Uid = other.Uid;
           }
-          annotations_.Add(other.annotations_);
+          annotations_.MergeFrom(other.annotations_);
           if (other.DisplayName.Length != 0) {
             DisplayName = other.DisplayName;
           }

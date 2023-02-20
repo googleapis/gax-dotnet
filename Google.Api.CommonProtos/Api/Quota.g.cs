@@ -498,7 +498,7 @@ namespace Google.Api {
       if (other.Selector.Length != 0) {
         Selector = other.Selector;
       }
-      metricCosts_.Add(other.metricCosts_);
+      metricCosts_.MergeFrom(other.metricCosts_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1025,7 +1025,7 @@ namespace Google.Api {
       if (other.Unit.Length != 0) {
         Unit = other.Unit;
       }
-      values_.Add(other.values_);
+      values_.MergeFrom(other.values_);
       if (other.DisplayName.Length != 0) {
         DisplayName = other.DisplayName;
       }
