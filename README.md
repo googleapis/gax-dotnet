@@ -1,4 +1,4 @@
-[![GitHub Actions status](https://img.shields.io/github/actions/workflow/status/googleapis/gax-dotnet/build.yaml?branch=main)](https://github.com/googleapis/gax-dotnet/actions/workflows/build.yaml)
+[![GitHub Actions status](https://img.shields.io/github/actions/workflow/status/googleapis/gax-dotnet/build.yml?branch=main)](https://github.com/googleapis/gax-dotnet/actions/workflows/build.yml)
 
 # Google API Extensions for .NET
 
