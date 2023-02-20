@@ -32,16 +32,16 @@ namespace Google.Rpc {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch5nb29nbGUvcnBjL2Vycm9yX2RldGFpbHMucHJvdG8SCmdvb2dsZS5ycGMa",
-            "Hmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byI7CglSZXRyeUluZm8S",
-            "LgoLcmV0cnlfZGVsYXkYASABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRp",
-            "b24iMgoJRGVidWdJbmZvEhUKDXN0YWNrX2VudHJpZXMYASADKAkSDgoGZGV0",
-            "YWlsGAIgASgJInkKDFF1b3RhRmFpbHVyZRI2Cgp2aW9sYXRpb25zGAEgAygL",
-            "MiIuZ29vZ2xlLnJwYy5RdW90YUZhaWx1cmUuVmlvbGF0aW9uGjEKCVZpb2xh",
-            "dGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJIpMB",
-            "CglFcnJvckluZm8SDgoGcmVhc29uGAEgASgJEg4KBmRvbWFpbhgCIAEoCRI1",
-            "CghtZXRhZGF0YRgDIAMoCzIjLmdvb2dsZS5ycGMuRXJyb3JJbmZvLk1ldGFk",
-            "YXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFs",
-            "dWUYAiABKAk6AjgBIpUBChNQcmVjb25kaXRpb25GYWlsdXJlEj0KCnZpb2xh",
+            "Hmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byKTAQoJRXJyb3JJbmZv",
+            "Eg4KBnJlYXNvbhgBIAEoCRIOCgZkb21haW4YAiABKAkSNQoIbWV0YWRhdGEY",
+            "AyADKAsyIy5nb29nbGUucnBjLkVycm9ySW5mby5NZXRhZGF0YUVudHJ5Gi8K",
+            "DU1ldGFkYXRhRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4",
+            "ASI7CglSZXRyeUluZm8SLgoLcmV0cnlfZGVsYXkYASABKAsyGS5nb29nbGUu",
+            "cHJvdG9idWYuRHVyYXRpb24iMgoJRGVidWdJbmZvEhUKDXN0YWNrX2VudHJp",
+            "ZXMYASADKAkSDgoGZGV0YWlsGAIgASgJInkKDFF1b3RhRmFpbHVyZRI2Cgp2",
+            "aW9sYXRpb25zGAEgAygLMiIuZ29vZ2xlLnJwYy5RdW90YUZhaWx1cmUuVmlv",
+            "bGF0aW9uGjEKCVZpb2xhdGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2Ny",
+            "aXB0aW9uGAIgASgJIpUBChNQcmVjb25kaXRpb25GYWlsdXJlEj0KCnZpb2xh",
             "dGlvbnMYASADKAsyKS5nb29nbGUucnBjLlByZWNvbmRpdGlvbkZhaWx1cmUu",
             "VmlvbGF0aW9uGj8KCVZpb2xhdGlvbhIMCgR0eXBlGAEgASgJEg8KB3N1Ympl",
             "Y3QYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkigwEKCkJhZFJlcXVlc3QS",
@@ -60,10 +60,10 @@ namespace Google.Rpc {
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Reason", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Reason", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure), global::Google.Rpc.PreconditionFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure.Types.Violation), global::Google.Rpc.PreconditionFailure.Types.Violation.Parser, new[]{ "Type", "Subject", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null, null),
@@ -76,6 +76,309 @@ namespace Google.Rpc {
 
   }
   #region Messages
+  /// <summary>
+  /// Describes the cause of the error with structured details.
+  ///
+  /// Example of an error when contacting the "pubsub.googleapis.com" API when it
+  /// is not enabled:
+  ///
+  ///     { "reason": "API_DISABLED"
+  ///       "domain": "googleapis.com"
+  ///       "metadata": {
+  ///         "resource": "projects/123",
+  ///         "service": "pubsub.googleapis.com"
+  ///       }
+  ///     }
+  ///
+  /// This response indicates that the pubsub.googleapis.com API is not enabled.
+  ///
+  /// Example of an error that is returned when attempting to create a Spanner
+  /// instance in a region that is out of stock:
+  ///
+  ///     { "reason": "STOCKOUT"
+  ///       "domain": "spanner.googleapis.com",
+  ///       "metadata": {
+  ///         "availableRegions": "us-central1,us-east2"
+  ///       }
+  ///     }
+  /// </summary>
+  public sealed partial class ErrorInfo : pb::IMessage<ErrorInfo>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ErrorInfo> _parser = new pb::MessageParser<ErrorInfo>(() => new ErrorInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ErrorInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ErrorInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ErrorInfo(ErrorInfo other) : this() {
+      reason_ = other.reason_;
+      domain_ = other.domain_;
+      metadata_ = other.metadata_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ErrorInfo Clone() {
+      return new ErrorInfo(this);
+    }
+
+    /// <summary>Field number for the "reason" field.</summary>
+    public const int ReasonFieldNumber = 1;
+    private string reason_ = "";
+    /// <summary>
+    /// The reason of the error. This is a constant value that identifies the
+    /// proximate cause of the error. Error reasons are unique within a particular
+    /// domain of errors. This should be at most 63 characters and match a
+    /// regular expression of `[A-Z][A-Z0-9_]+[A-Z0-9]`, which represents
+    /// UPPER_SNAKE_CASE.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Reason {
+      get { return reason_; }
+      set {
+        reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "domain" field.</summary>
+    public const int DomainFieldNumber = 2;
+    private string domain_ = "";
+    /// <summary>
+    /// The logical grouping to which the "reason" belongs. The error domain
+    /// is typically the registered service name of the tool or product that
+    /// generates the error. Example: "pubsub.googleapis.com". If the error is
+    /// generated by some common infrastructure, the error domain must be a
+    /// globally unique value that identifies the infrastructure. For Google API
+    /// infrastructure, the error domain is "googleapis.com".
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Domain {
+      get { return domain_; }
+      set {
+        domain_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "metadata" field.</summary>
+    public const int MetadataFieldNumber = 3;
+    private static readonly pbc::MapField<string, string>.Codec _map_metadata_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 26);
+    private readonly pbc::MapField<string, string> metadata_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Additional structured details about this error.
+    ///
+    /// Keys should match /[a-zA-Z0-9-_]/ and be limited to 64 characters in
+    /// length. When identifying the current value of an exceeded limit, the units
+    /// should be contained in the key, not the value.  For example, rather than
+    /// {"instanceLimit": "100/request"}, should be returned as,
+    /// {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
+    /// instances that can be created in a single (batch) request.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> Metadata {
+      get { return metadata_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ErrorInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ErrorInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Reason != other.Reason) return false;
+      if (Domain != other.Domain) return false;
+      if (!Metadata.Equals(other.Metadata)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Reason.Length != 0) hash ^= Reason.GetHashCode();
+      if (Domain.Length != 0) hash ^= Domain.GetHashCode();
+      hash ^= Metadata.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Reason.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Reason);
+      }
+      if (Domain.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Domain);
+      }
+      metadata_.WriteTo(output, _map_metadata_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Reason.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Reason);
+      }
+      if (Domain.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Domain);
+      }
+      metadata_.WriteTo(ref output, _map_metadata_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Reason.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
+      }
+      if (Domain.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Domain);
+      }
+      size += metadata_.CalculateSize(_map_metadata_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ErrorInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Reason.Length != 0) {
+        Reason = other.Reason;
+      }
+      if (other.Domain.Length != 0) {
+        Domain = other.Domain;
+      }
+      metadata_.MergeFrom(other.metadata_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Reason = input.ReadString();
+            break;
+          }
+          case 18: {
+            Domain = input.ReadString();
+            break;
+          }
+          case 26: {
+            metadata_.AddEntriesFrom(input, _map_metadata_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Reason = input.ReadString();
+            break;
+          }
+          case 18: {
+            Domain = input.ReadString();
+            break;
+          }
+          case 26: {
+            metadata_.AddEntriesFrom(ref input, _map_metadata_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
   /// Describes when the clients can retry a failed request. Clients could ignore
   /// the recommendation here or retry when this information is missing from error
@@ -105,7 +408,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -309,7 +612,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -543,7 +846,7 @@ namespace Google.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -959,308 +1262,6 @@ namespace Google.Rpc {
 
     }
     #endregion
-
-  }
-
-  /// <summary>
-  /// Describes the cause of the error with structured details.
-  ///
-  /// Example of an error when contacting the "pubsub.googleapis.com" API when it
-  /// is not enabled:
-  ///
-  ///     { "reason": "API_DISABLED"
-  ///       "domain": "googleapis.com"
-  ///       "metadata": {
-  ///         "resource": "projects/123",
-  ///         "service": "pubsub.googleapis.com"
-  ///       }
-  ///     }
-  ///
-  /// This response indicates that the pubsub.googleapis.com API is not enabled.
-  ///
-  /// Example of an error that is returned when attempting to create a Spanner
-  /// instance in a region that is out of stock:
-  ///
-  ///     { "reason": "STOCKOUT"
-  ///       "domain": "spanner.googleapis.com",
-  ///       "metadata": {
-  ///         "availableRegions": "us-central1,us-east2"
-  ///       }
-  ///     }
-  /// </summary>
-  public sealed partial class ErrorInfo : pb::IMessage<ErrorInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<ErrorInfo> _parser = new pb::MessageParser<ErrorInfo>(() => new ErrorInfo());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ErrorInfo> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Rpc.ErrorDetailsReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ErrorInfo() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ErrorInfo(ErrorInfo other) : this() {
-      reason_ = other.reason_;
-      domain_ = other.domain_;
-      metadata_ = other.metadata_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ErrorInfo Clone() {
-      return new ErrorInfo(this);
-    }
-
-    /// <summary>Field number for the "reason" field.</summary>
-    public const int ReasonFieldNumber = 1;
-    private string reason_ = "";
-    /// <summary>
-    /// The reason of the error. This is a constant value that identifies the
-    /// proximate cause of the error. Error reasons are unique within a particular
-    /// domain of errors. This should be at most 63 characters and match
-    /// /[A-Z0-9_]+/.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Reason {
-      get { return reason_; }
-      set {
-        reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "domain" field.</summary>
-    public const int DomainFieldNumber = 2;
-    private string domain_ = "";
-    /// <summary>
-    /// The logical grouping to which the "reason" belongs. The error domain
-    /// is typically the registered service name of the tool or product that
-    /// generates the error. Example: "pubsub.googleapis.com". If the error is
-    /// generated by some common infrastructure, the error domain must be a
-    /// globally unique value that identifies the infrastructure. For Google API
-    /// infrastructure, the error domain is "googleapis.com".
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Domain {
-      get { return domain_; }
-      set {
-        domain_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "metadata" field.</summary>
-    public const int MetadataFieldNumber = 3;
-    private static readonly pbc::MapField<string, string>.Codec _map_metadata_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 26);
-    private readonly pbc::MapField<string, string> metadata_ = new pbc::MapField<string, string>();
-    /// <summary>
-    /// Additional structured details about this error.
-    ///
-    /// Keys should match /[a-zA-Z0-9-_]/ and be limited to 64 characters in
-    /// length. When identifying the current value of an exceeded limit, the units
-    /// should be contained in the key, not the value.  For example, rather than
-    /// {"instanceLimit": "100/request"}, should be returned as,
-    /// {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
-    /// instances that can be created in a single (batch) request.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<string, string> Metadata {
-      get { return metadata_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as ErrorInfo);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ErrorInfo other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Reason != other.Reason) return false;
-      if (Domain != other.Domain) return false;
-      if (!Metadata.Equals(other.Metadata)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Reason.Length != 0) hash ^= Reason.GetHashCode();
-      if (Domain.Length != 0) hash ^= Domain.GetHashCode();
-      hash ^= Metadata.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Reason.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Reason);
-      }
-      if (Domain.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Domain);
-      }
-      metadata_.WriteTo(output, _map_metadata_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Reason.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Reason);
-      }
-      if (Domain.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Domain);
-      }
-      metadata_.WriteTo(ref output, _map_metadata_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (Reason.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
-      }
-      if (Domain.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Domain);
-      }
-      size += metadata_.CalculateSize(_map_metadata_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ErrorInfo other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Reason.Length != 0) {
-        Reason = other.Reason;
-      }
-      if (other.Domain.Length != 0) {
-        Domain = other.Domain;
-      }
-      metadata_.Add(other.metadata_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            Reason = input.ReadString();
-            break;
-          }
-          case 18: {
-            Domain = input.ReadString();
-            break;
-          }
-          case 26: {
-            metadata_.AddEntriesFrom(input, _map_metadata_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            Reason = input.ReadString();
-            break;
-          }
-          case 18: {
-            Domain = input.ReadString();
-            break;
-          }
-          case 26: {
-            metadata_.AddEntriesFrom(ref input, _map_metadata_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
@@ -1982,9 +1983,43 @@ namespace Google.Rpc {
         public const int FieldFieldNumber = 1;
         private string field_ = "";
         /// <summary>
-        /// A path leading to a field in the request body. The value will be a
+        /// A path that leads to a field in the request body. The value will be a
         /// sequence of dot-separated identifiers that identify a protocol buffer
-        /// field. E.g., "field_violations.field" would identify this field.
+        /// field.
+        ///
+        /// Consider the following:
+        ///
+        ///     message CreateContactRequest {
+        ///       message EmailAddress {
+        ///         enum Type {
+        ///           TYPE_UNSPECIFIED = 0;
+        ///           HOME = 1;
+        ///           WORK = 2;
+        ///         }
+        ///
+        ///         optional string email = 1;
+        ///         repeated EmailType type = 2;
+        ///       }
+        ///
+        ///       string full_name = 1;
+        ///       repeated EmailAddress email_addresses = 2;
+        ///     }
+        ///
+        /// In this example, in proto `field` could take one of the following values:
+        ///
+        /// * `full_name` for a violation in the `full_name` value
+        /// * `email_addresses[1].email` for a violation in the `email` field of the
+        ///   first `email_addresses` message
+        /// * `email_addresses[3].type[2]` for a violation in the second `type`
+        ///   value in the third `email_addresses` message.
+        ///
+        /// In JSON, the same values are represented as:
+        ///
+        /// * `fullName` for a violation in the `fullName` value
+        /// * `emailAddresses[1].email` for a violation in the `email` field of the
+        ///   first `emailAddresses` message
+        /// * `emailAddresses[3].type[2]` for a violation in the second `type`
+        ///   value in the third `emailAddresses` message.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2483,7 +2518,8 @@ namespace Google.Rpc {
     /// <summary>
     /// The name of the resource being accessed.  For example, a shared calendar
     /// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
-    /// error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+    /// error is
+    /// [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3218,7 +3254,7 @@ namespace Google.Rpc {
     private string locale_ = "";
     /// <summary>
     /// The locale used following the specification defined at
-    /// http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
+    /// https://www.rfc-editor.org/rfc/bcp/bcp47.txt.
     /// Examples are: "en-US", "fr-CH", "es-MX"
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

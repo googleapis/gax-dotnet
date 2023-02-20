@@ -658,7 +658,7 @@ namespace Google.Api {
       if (other.Type.Length != 0) {
         Type = other.Type;
       }
-      labels_.Add(other.labels_);
+      labels_.MergeFrom(other.labels_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -899,7 +899,7 @@ namespace Google.Api {
         }
         SystemLabels.MergeFrom(other.SystemLabels);
       }
-      userLabels_.Add(other.userLabels_);
+      userLabels_.MergeFrom(other.userLabels_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
