@@ -334,7 +334,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         Int = other.Int;
       }
       repeated_.Add(other.repeated_);
-      map_.Add(other.map_);
+      map_.MergeFrom(other.map_);
       if (other.nested_ != null) {
         if (nested_ == null) {
           Nested = new global::Google.Api.Gax.Grpc.Rest.Tests.RuleTestRequest.Types.Nested();
