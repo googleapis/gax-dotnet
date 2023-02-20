@@ -246,7 +246,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         return;
       }
       tests_.Add(other.tests_);
-      namedRules_.Add(other.namedRules_);
+      namedRules_.MergeFrom(other.namedRules_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 

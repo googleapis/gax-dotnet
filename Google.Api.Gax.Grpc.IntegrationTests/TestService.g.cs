@@ -722,7 +722,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       if (other == null) {
         return;
       }
-      headers_.Add(other.headers_);
+      headers_.MergeFrom(other.headers_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
