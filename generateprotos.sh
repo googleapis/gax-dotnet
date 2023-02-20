@@ -10,7 +10,7 @@ OS=windows
 declare -r ROOT=$(realpath $(dirname $0))
 cd $ROOT
 
-PROTOBUF_VERSION=3.21.0
+PROTOBUF_VERSION=3.22.0
 GRPC_VERSION=2.48.1
 PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
 CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
