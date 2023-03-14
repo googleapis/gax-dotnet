@@ -16,7 +16,7 @@
     <!-- Packaging information -->
     <Copyright>Copyright 2020 Google LLC</Copyright>
     <Authors>Google LLC</Authors>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/googleapis/gax-dotnet</PackageProjectUrl>
     <PackageTags>Google</PackageTags>
     <RepositoryType>git</RepositoryType>
