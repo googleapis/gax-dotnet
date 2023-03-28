@@ -33,23 +33,27 @@ namespace Google.Api {
           string.Concat(
             "Chhnb29nbGUvYXBpL2JhY2tlbmQucHJvdG8SCmdvb2dsZS5hcGkiMQoHQmFj",
             "a2VuZBImCgVydWxlcxgBIAMoCzIXLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUi",
-            "9gIKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
+            "sgQKC0JhY2tlbmRSdWxlEhAKCHNlbGVjdG9yGAEgASgJEg8KB2FkZHJlc3MY",
             "AiABKAkSEAoIZGVhZGxpbmUYAyABKAESGAoMbWluX2RlYWRsaW5lGAQgASgB",
             "QgIYARIaChJvcGVyYXRpb25fZGVhZGxpbmUYBSABKAESQQoQcGF0aF90cmFu",
             "c2xhdGlvbhgGIAEoDjInLmdvb2dsZS5hcGkuQmFja2VuZFJ1bGUuUGF0aFRy",
             "YW5zbGF0aW9uEhYKDGp3dF9hdWRpZW5jZRgHIAEoCUgAEhYKDGRpc2FibGVf",
-            "YXV0aBgIIAEoCEgAEhAKCHByb3RvY29sGAkgASgJImUKD1BhdGhUcmFuc2xh",
-            "dGlvbhIgChxQQVRIX1RSQU5TTEFUSU9OX1VOU1BFQ0lGSUVEEAASFAoQQ09O",
-            "U1RBTlRfQUREUkVTUxABEhoKFkFQUEVORF9QQVRIX1RPX0FERFJFU1MQAkIQ",
-            "Cg5hdXRoZW50aWNhdGlvbkJuCg5jb20uZ29vZ2xlLmFwaUIMQmFja2VuZFBy",
-            "b3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dvb2dsZWFwaXMv",
-            "YXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdBUEliBnByb3Rv",
-            "Mw=="));
+            "YXV0aBgIIAEoCEgAEhAKCHByb3RvY29sGAkgASgJEl4KHW92ZXJyaWRlc19i",
+            "eV9yZXF1ZXN0X3Byb3RvY29sGAogAygLMjcuZ29vZ2xlLmFwaS5CYWNrZW5k",
+            "UnVsZS5PdmVycmlkZXNCeVJlcXVlc3RQcm90b2NvbEVudHJ5GloKH092ZXJy",
+            "aWRlc0J5UmVxdWVzdFByb3RvY29sRW50cnkSCwoDa2V5GAEgASgJEiYKBXZh",
+            "bHVlGAIgASgLMhcuZ29vZ2xlLmFwaS5CYWNrZW5kUnVsZToCOAEiZQoPUGF0",
+            "aFRyYW5zbGF0aW9uEiAKHFBBVEhfVFJBTlNMQVRJT05fVU5TUEVDSUZJRUQQ",
+            "ABIUChBDT05TVEFOVF9BRERSRVNTEAESGgoWQVBQRU5EX1BBVEhfVE9fQURE",
+            "UkVTUxACQhAKDmF1dGhlbnRpY2F0aW9uQm4KDmNvbS5nb29nbGUuYXBpQgxC",
+            "YWNrZW5kUHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29v",
+            "Z2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29uZmlnogIER0FQ",
+            "SWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Backend), global::Google.Api.Backend.Parser, new[]{ "Rules" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline", "OperationDeadline", "PathTranslation", "JwtAudience", "DisableAuth", "Protocol" }, new[]{ "Authentication" }, new[]{ typeof(global::Google.Api.BackendRule.Types.PathTranslation) }, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.BackendRule), global::Google.Api.BackendRule.Parser, new[]{ "Selector", "Address", "Deadline", "MinDeadline", "OperationDeadline", "PathTranslation", "JwtAudience", "DisableAuth", "Protocol", "OverridesByRequestProtocol" }, new[]{ "Authentication" }, new[]{ typeof(global::Google.Api.BackendRule.Types.PathTranslation) }, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
     #endregion
@@ -286,6 +290,7 @@ namespace Google.Api {
       operationDeadline_ = other.operationDeadline_;
       pathTranslation_ = other.pathTranslation_;
       protocol_ = other.protocol_;
+      overridesByRequestProtocol_ = other.overridesByRequestProtocol_.Clone();
       switch (other.AuthenticationCase) {
         case AuthenticationOneofCase.JwtAudience:
           JwtAudience = other.JwtAudience;
@@ -310,7 +315,8 @@ namespace Google.Api {
     /// <summary>
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax
+    /// details.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -485,6 +491,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "overrides_by_request_protocol" field.</summary>
+    public const int OverridesByRequestProtocolFieldNumber = 10;
+    private static readonly pbc::MapField<string, global::Google.Api.BackendRule>.Codec _map_overridesByRequestProtocol_codec
+        = new pbc::MapField<string, global::Google.Api.BackendRule>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForMessage(18, global::Google.Api.BackendRule.Parser), 82);
+    private readonly pbc::MapField<string, global::Google.Api.BackendRule> overridesByRequestProtocol_ = new pbc::MapField<string, global::Google.Api.BackendRule>();
+    /// <summary>
+    /// The map between request protocol and the backend address.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, global::Google.Api.BackendRule> OverridesByRequestProtocol {
+      get { return overridesByRequestProtocol_; }
+    }
+
     private object authentication_;
     /// <summary>Enum of possible cases for the "authentication" oneof.</summary>
     public enum AuthenticationOneofCase {
@@ -530,6 +550,7 @@ namespace Google.Api {
       if (JwtAudience != other.JwtAudience) return false;
       if (DisableAuth != other.DisableAuth) return false;
       if (Protocol != other.Protocol) return false;
+      if (!OverridesByRequestProtocol.Equals(other.OverridesByRequestProtocol)) return false;
       if (AuthenticationCase != other.AuthenticationCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -547,6 +568,7 @@ namespace Google.Api {
       if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) hash ^= JwtAudience.GetHashCode();
       if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) hash ^= DisableAuth.GetHashCode();
       if (Protocol.Length != 0) hash ^= Protocol.GetHashCode();
+      hash ^= OverridesByRequestProtocol.GetHashCode();
       hash ^= (int) authenticationCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -602,6 +624,7 @@ namespace Google.Api {
         output.WriteRawTag(74);
         output.WriteString(Protocol);
       }
+      overridesByRequestProtocol_.WriteTo(output, _map_overridesByRequestProtocol_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -648,6 +671,7 @@ namespace Google.Api {
         output.WriteRawTag(74);
         output.WriteString(Protocol);
       }
+      overridesByRequestProtocol_.WriteTo(ref output, _map_overridesByRequestProtocol_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -685,6 +709,7 @@ namespace Google.Api {
       if (Protocol.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Protocol);
       }
+      size += overridesByRequestProtocol_.CalculateSize(_map_overridesByRequestProtocol_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -718,6 +743,7 @@ namespace Google.Api {
       if (other.Protocol.Length != 0) {
         Protocol = other.Protocol;
       }
+      overridesByRequestProtocol_.MergeFrom(other.overridesByRequestProtocol_);
       switch (other.AuthenticationCase) {
         case AuthenticationOneofCase.JwtAudience:
           JwtAudience = other.JwtAudience;
@@ -778,6 +804,10 @@ namespace Google.Api {
             Protocol = input.ReadString();
             break;
           }
+          case 82: {
+            overridesByRequestProtocol_.AddEntriesFrom(input, _map_overridesByRequestProtocol_codec);
+            break;
+          }
         }
       }
     #endif
@@ -827,6 +857,10 @@ namespace Google.Api {
           }
           case 74: {
             Protocol = input.ReadString();
+            break;
+          }
+          case 82: {
+            overridesByRequestProtocol_.AddEntriesFrom(ref input, _map_overridesByRequestProtocol_codec);
             break;
           }
         }

@@ -354,7 +354,8 @@ namespace Google.Api {
         private string monitoredResource_ = "";
         /// <summary>
         /// The monitored resource type. The type must be defined in the
-        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// [Service.monitored_resources][google.api.Service.monitored_resources]
+        /// section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -372,9 +373,9 @@ namespace Google.Api {
         private readonly pbc::RepeatedField<string> logs_ = new pbc::RepeatedField<string>();
         /// <summary>
         /// Names of the logs to be sent to this destination. Each name must
-        /// be defined in the [Service.logs][google.api.Service.logs] section. If the log name is
-        /// not a domain scoped name, it will be automatically prefixed with
-        /// the service name followed by "/".
+        /// be defined in the [Service.logs][google.api.Service.logs] section. If the
+        /// log name is not a domain scoped name, it will be automatically prefixed
+        /// with the service name followed by "/".
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
