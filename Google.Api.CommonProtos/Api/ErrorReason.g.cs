@@ -31,7 +31,7 @@ namespace Google.Api {
     static ErrorReasonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSrA",
+            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSrs",
             "BgoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
             "FAoQU0VSVklDRV9ESVNBQkxFRBABEhQKEEJJTExJTkdfRElTQUJMRUQQAhIT",
             "Cg9BUElfS0VZX0lOVkFMSUQQAxIbChdBUElfS0VZX1NFUlZJQ0VfQkxPQ0tF",
@@ -50,10 +50,11 @@ namespace Google.Api {
             "T0NLRURfQllfQURNSU4QGBInCiNSRVNPVVJDRV9VU0FHRV9SRVNUUklDVElP",
             "Tl9WSU9MQVRFRBAZEiAKHFNZU1RFTV9QQVJBTUVURVJfVU5TVVBQT1JURUQQ",
             "GhIdChlPUkdfUkVTVFJJQ1RJT05fVklPTEFUSU9OEBsSIgoeT1JHX1JFU1RS",
-            "SUNUSU9OX0hFQURFUl9JTlZBTElEEBxCcAoOY29tLmdvb2dsZS5hcGlCEEVy",
-            "cm9yUmVhc29uUHJvdG9QAVpDZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8v",
-            "Z29vZ2xlYXBpcy9hcGkvZXJyb3JfcmVhc29uO2Vycm9yX3JlYXNvbqICBEdB",
-            "UEliBnByb3RvMw=="));
+            "SUNUSU9OX0hFQURFUl9JTlZBTElEEBwSFwoTU0VSVklDRV9OT1RfVklTSUJM",
+            "RRAdEhEKDUdDUF9TVVNQRU5ERUQQHkJwCg5jb20uZ29vZ2xlLmFwaUIQRXJy",
+            "b3JSZWFzb25Qcm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9n",
+            "b29nbGVhcGlzL2FwaS9lcnJvcl9yZWFzb247ZXJyb3JfcmVhc29uogIER0FQ",
+            "SWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ErrorReason), }, null, null));
@@ -603,6 +604,43 @@ namespace Google.Api {
     /// }
     /// </summary>
     [pbr::OriginalName("ORG_RESTRICTION_HEADER_INVALID")] OrgRestrictionHeaderInvalid = 28,
+    /// <summary>
+    /// Unimplemented. Do not use.
+    ///
+    /// The request is calling a service that is not visible to the consumer.
+    ///
+    /// Example of an ErrorInfo when the consumer "projects/123" contacting
+    ///  "pubsub.googleapis.com" service which is not visible to the consumer.
+    ///
+    ///     { "reason": "SERVICE_NOT_VISIBLE",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "consumer": "projects/123",
+    ///         "service": "pubsub.googleapis.com"
+    ///       }
+    ///     }
+    ///
+    /// This response indicates the "pubsub.googleapis.com" is not visible to
+    /// "projects/123" (or it may not exist).
+    /// </summary>
+    [pbr::OriginalName("SERVICE_NOT_VISIBLE")] ServiceNotVisible = 29,
+    /// <summary>
+    /// The request is related to a project for which GCP access is suspended.
+    ///
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to contact
+    /// "pubsub.googleapis.com" service because GCP access is suspended:
+    ///
+    ///     { "reason": "GCP_SUSPENDED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "consumer": "projects/123",
+    ///         "service": "pubsub.googleapis.com"
+    ///       }
+    ///     }
+    ///
+    /// This response indicates the associated GCP account has been suspended.
+    /// </summary>
+    [pbr::OriginalName("GCP_SUSPENDED")] GcpSuspended = 30,
   }
 
   #endregion

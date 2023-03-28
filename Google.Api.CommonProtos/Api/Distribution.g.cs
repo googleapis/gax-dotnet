@@ -1157,6 +1157,7 @@ namespace Google.Api {
           /// following boundaries:
           ///
           ///    Upper bound (0 &lt;= i &lt; N-1):     offset + (width * i).
+          ///
           ///    Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
           /// </summary>
           public sealed partial class Linear : pb::IMessage<Linear>
@@ -1440,6 +1441,7 @@ namespace Google.Api {
           /// following boundaries:
           ///
           ///    Upper bound (0 &lt;= i &lt; N-1):     scale * (growth_factor ^ i).
+          ///
           ///    Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
           /// </summary>
           public sealed partial class Exponential : pb::IMessage<Exponential>

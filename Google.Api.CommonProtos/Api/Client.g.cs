@@ -47,7 +47,7 @@ namespace Google.Api {
             "IAEoCzIYLmdvb2dsZS5hcGkuTm9kZVNldHRpbmdzEjMKD2RvdG5ldF9zZXR0",
             "aW5ncxgaIAEoCzIaLmdvb2dsZS5hcGkuRG90bmV0U2V0dGluZ3MSLwoNcnVi",
             "eV9zZXR0aW5ncxgbIAEoCzIYLmdvb2dsZS5hcGkuUnVieVNldHRpbmdzEisK",
-            "C2dvX3NldHRpbmdzGBwgASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzItMC",
+            "C2dvX3NldHRpbmdzGBwgASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzIv4C",
             "CgpQdWJsaXNoaW5nEjMKD21ldGhvZF9zZXR0aW5ncxgCIAMoCzIaLmdvb2ds",
             "ZS5hcGkuTWV0aG9kU2V0dGluZ3MSFQoNbmV3X2lzc3VlX3VyaRhlIAEoCRIZ",
             "ChFkb2N1bWVudGF0aW9uX3VyaRhmIAEoCRIWCg5hcGlfc2hvcnRfbmFtZRhn",
@@ -55,53 +55,62 @@ namespace Google.Api {
             "Yl90ZWFtcxhpIAMoCRIWCg5kb2NfdGFnX3ByZWZpeBhqIAEoCRI7Cgxvcmdh",
             "bml6YXRpb24YayABKA4yJS5nb29nbGUuYXBpLkNsaWVudExpYnJhcnlPcmdh",
             "bml6YXRpb24SOwoQbGlicmFyeV9zZXR0aW5ncxhtIAMoCzIhLmdvb2dsZS5h",
-            "cGkuQ2xpZW50TGlicmFyeVNldHRpbmdzIuMBCgxKYXZhU2V0dGluZ3MSFwoP",
-            "bGlicmFyeV9wYWNrYWdlGAEgASgJEkwKE3NlcnZpY2VfY2xhc3NfbmFtZXMY",
-            "AiADKAsyLy5nb29nbGUuYXBpLkphdmFTZXR0aW5ncy5TZXJ2aWNlQ2xhc3NO",
-            "YW1lc0VudHJ5EjIKBmNvbW1vbhgDIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9u",
-            "TGFuZ3VhZ2VTZXR0aW5ncxo4ChZTZXJ2aWNlQ2xhc3NOYW1lc0VudHJ5EgsK",
-            "A2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiQQoLQ3BwU2V0dGluZ3MS",
+            "cGkuQ2xpZW50TGlicmFyeVNldHRpbmdzEikKIXByb3RvX3JlZmVyZW5jZV9k",
+            "b2N1bWVudGF0aW9uX3VyaRhuIAEoCSLjAQoMSmF2YVNldHRpbmdzEhcKD2xp",
+            "YnJhcnlfcGFja2FnZRgBIAEoCRJMChNzZXJ2aWNlX2NsYXNzX25hbWVzGAIg",
+            "AygLMi8uZ29vZ2xlLmFwaS5KYXZhU2V0dGluZ3MuU2VydmljZUNsYXNzTmFt",
+            "ZXNFbnRyeRIyCgZjb21tb24YAyABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxh",
+            "bmd1YWdlU2V0dGluZ3MaOAoWU2VydmljZUNsYXNzTmFtZXNFbnRyeRILCgNr",
+            "ZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIK",
+            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
+            "aW5ncyJBCgtQaHBTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUu",
+            "YXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiRAoOUHl0aG9uU2V0dGluZ3MS",
             "MgoGY29tbW9uGAEgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5ndWFnZVNl",
-            "dHRpbmdzIkEKC1BocFNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2ds",
-            "ZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJECg5QeXRob25TZXR0aW5n",
-            "cxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdl",
-            "U2V0dGluZ3MiQgoMTm9kZVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdv",
-            "b2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJECg5Eb3RuZXRTZXR0",
-            "aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1",
-            "YWdlU2V0dGluZ3MiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIi",
-            "Lmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRp",
+            "dHRpbmdzIkIKDE5vZGVTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29n",
+            "bGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiqgMKDkRvdG5ldFNldHRp",
             "bmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3Vh",
-            "Z2VTZXR0aW5ncyKwAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASAB",
-            "KAkSPAoMbG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RT",
-            "ZXR0aW5ncy5Mb25nUnVubmluZxrNAQoLTG9uZ1J1bm5pbmcSNQoSaW5pdGlh",
-            "bF9wb2xsX2RlbGF5GAEgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9u",
-            "Eh0KFXBvbGxfZGVsYXlfbXVsdGlwbGllchgCIAEoAhIxCg5tYXhfcG9sbF9k",
-            "ZWxheRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI1ChJ0b3Rh",
-            "bF9wb2xsX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRp",
-            "b24qeQoZQ2xpZW50TGlicmFyeU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElC",
-            "UkFSWV9PUkdBTklaQVRJT05fVU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcK",
-            "A0FEUxACEgoKBlBIT1RPUxADEg8KC1NUUkVFVF9WSUVXEAQqZwoYQ2xpZW50",
-            "TGlicmFyeURlc3RpbmF0aW9uEioKJkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFU",
-            "SU9OX1VOU1BFQ0lGSUVEEAASCgoGR0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5B",
-            "R0VSEBQ6OQoQbWV0aG9kX3NpZ25hdHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5N",
-            "ZXRob2RPcHRpb25zGJsIIAMoCTo2CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUu",
-            "cHJvdG9idWYuU2VydmljZU9wdGlvbnMYmQggASgJOjYKDG9hdXRoX3Njb3Bl",
-            "cxIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0aW9ucxiaCCABKAlCaQoO",
-            "Y29tLmdvb2dsZS5hcGlCC0NsaWVudFByb3RvUAFaQWdvb2dsZS5nb2xhbmcu",
-            "b3JnL2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90",
-            "YXRpb25zogIER0FQSWIGcHJvdG8z"));
+            "Z2VTZXR0aW5ncxJJChByZW5hbWVkX3NlcnZpY2VzGAIgAygLMi8uZ29vZ2xl",
+            "LmFwaS5Eb3RuZXRTZXR0aW5ncy5SZW5hbWVkU2VydmljZXNFbnRyeRJLChFy",
+            "ZW5hbWVkX3Jlc291cmNlcxgDIAMoCzIwLmdvb2dsZS5hcGkuRG90bmV0U2V0",
+            "dGluZ3MuUmVuYW1lZFJlc291cmNlc0VudHJ5EhkKEWlnbm9yZWRfcmVzb3Vy",
+            "Y2VzGAQgAygJEiAKGGZvcmNlZF9uYW1lc3BhY2VfYWxpYXNlcxgFIAMoCRIe",
+            "ChZoYW5kd3JpdHRlbl9zaWduYXR1cmVzGAYgAygJGjYKFFJlbmFtZWRTZXJ2",
+            "aWNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaNwoV",
+            "UmVuYW1lZFJlc291cmNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgC",
+            "IAEoCToCOAEiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdv",
+            "b2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRpbmdz",
+            "EjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VT",
+            "ZXR0aW5ncyKwAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkS",
+            "PAoMbG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RTZXR0",
+            "aW5ncy5Mb25nUnVubmluZxrNAQoLTG9uZ1J1bm5pbmcSNQoSaW5pdGlhbF9w",
+            "b2xsX2RlbGF5GAEgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEh0K",
+            "FXBvbGxfZGVsYXlfbXVsdGlwbGllchgCIAEoAhIxCg5tYXhfcG9sbF9kZWxh",
+            "eRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI1ChJ0b3RhbF9w",
+            "b2xsX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24q",
+            "eQoZQ2xpZW50TGlicmFyeU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElCUkFS",
+            "WV9PUkdBTklaQVRJT05fVU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcKA0FE",
+            "UxACEgoKBlBIT1RPUxADEg8KC1NUUkVFVF9WSUVXEAQqZwoYQ2xpZW50TGli",
+            "cmFyeURlc3RpbmF0aW9uEioKJkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFUSU9O",
+            "X1VOU1BFQ0lGSUVEEAASCgoGR0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5BR0VS",
+            "EBQ6OQoQbWV0aG9kX3NpZ25hdHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRo",
+            "b2RPcHRpb25zGJsIIAMoCTo2CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUucHJv",
+            "dG9idWYuU2VydmljZU9wdGlvbnMYmQggASgJOjYKDG9hdXRoX3Njb3BlcxIf",
+            "Lmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0aW9ucxiaCCABKAlCaQoOY29t",
+            "Lmdvb2dsZS5hcGlCC0NsaWVudFByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3Jn",
+            "L2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRp",
+            "b25zogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CommonLanguageSettings), global::Google.Api.CommonLanguageSettings.Parser, new[]{ "ReferenceDocsUri", "Destinations" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ClientLibrarySettings), global::Google.Api.ClientLibrarySettings.Parser, new[]{ "Version", "LaunchStage", "RestNumericEnums", "JavaSettings", "CppSettings", "PhpSettings", "PythonSettings", "NodeSettings", "DotnetSettings", "RubySettings", "GoSettings" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings", "ProtoReferenceDocumentationUri" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JavaSettings), global::Google.Api.JavaSettings.Parser, new[]{ "LibraryPackage", "ServiceClassNames", "Common" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CppSettings), global::Google.Api.CppSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PhpSettings), global::Google.Api.PhpSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.NodeSettings), global::Google.Api.NodeSettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common", "RenamedServices", "RenamedResources", "IgnoredResources", "ForcedNamespaceAliases", "HandwrittenSignatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.RubySettings), global::Google.Api.RubySettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.GoSettings), global::Google.Api.GoSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)})
@@ -530,7 +539,9 @@ namespace Google.Api {
     public const int VersionFieldNumber = 1;
     private string version_ = "";
     /// <summary>
-    /// Version of the API to apply these settings to.
+    /// Version of the API to apply these settings to. This is the full protobuf
+    /// package for the API, ending in the version element.
+    /// Examples: "google.cloud.speech.v1" and "google.spanner.admin.database.v1".
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1185,6 +1196,7 @@ namespace Google.Api {
       docTagPrefix_ = other.docTagPrefix_;
       organization_ = other.organization_;
       librarySettings_ = other.librarySettings_.Clone();
+      protoReferenceDocumentationUri_ = other.protoReferenceDocumentationUri_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1335,6 +1347,22 @@ namespace Google.Api {
       get { return librarySettings_; }
     }
 
+    /// <summary>Field number for the "proto_reference_documentation_uri" field.</summary>
+    public const int ProtoReferenceDocumentationUriFieldNumber = 110;
+    private string protoReferenceDocumentationUri_ = "";
+    /// <summary>
+    /// Optional link to proto reference documentation.  Example:
+    /// https://cloud.google.com/pubsub/lite/docs/reference/rpc
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ProtoReferenceDocumentationUri {
+      get { return protoReferenceDocumentationUri_; }
+      set {
+        protoReferenceDocumentationUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1359,6 +1387,7 @@ namespace Google.Api {
       if (DocTagPrefix != other.DocTagPrefix) return false;
       if (Organization != other.Organization) return false;
       if(!librarySettings_.Equals(other.librarySettings_)) return false;
+      if (ProtoReferenceDocumentationUri != other.ProtoReferenceDocumentationUri) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1375,6 +1404,7 @@ namespace Google.Api {
       if (DocTagPrefix.Length != 0) hash ^= DocTagPrefix.GetHashCode();
       if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) hash ^= Organization.GetHashCode();
       hash ^= librarySettings_.GetHashCode();
+      if (ProtoReferenceDocumentationUri.Length != 0) hash ^= ProtoReferenceDocumentationUri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1420,6 +1450,10 @@ namespace Google.Api {
         output.WriteEnum((int) Organization);
       }
       librarySettings_.WriteTo(output, _repeated_librarySettings_codec);
+      if (ProtoReferenceDocumentationUri.Length != 0) {
+        output.WriteRawTag(242, 6);
+        output.WriteString(ProtoReferenceDocumentationUri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1457,6 +1491,10 @@ namespace Google.Api {
         output.WriteEnum((int) Organization);
       }
       librarySettings_.WriteTo(ref output, _repeated_librarySettings_codec);
+      if (ProtoReferenceDocumentationUri.Length != 0) {
+        output.WriteRawTag(242, 6);
+        output.WriteString(ProtoReferenceDocumentationUri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1488,6 +1526,9 @@ namespace Google.Api {
         size += 2 + pb::CodedOutputStream.ComputeEnumSize((int) Organization);
       }
       size += librarySettings_.CalculateSize(_repeated_librarySettings_codec);
+      if (ProtoReferenceDocumentationUri.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(ProtoReferenceDocumentationUri);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1521,6 +1562,9 @@ namespace Google.Api {
         Organization = other.Organization;
       }
       librarySettings_.Add(other.librarySettings_);
+      if (other.ProtoReferenceDocumentationUri.Length != 0) {
+        ProtoReferenceDocumentationUri = other.ProtoReferenceDocumentationUri;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1572,6 +1616,10 @@ namespace Google.Api {
             librarySettings_.AddEntriesFrom(input, _repeated_librarySettings_codec);
             break;
           }
+          case 882: {
+            ProtoReferenceDocumentationUri = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -1621,6 +1669,10 @@ namespace Google.Api {
           }
           case 874: {
             librarySettings_.AddEntriesFrom(ref input, _repeated_librarySettings_codec);
+            break;
+          }
+          case 882: {
+            ProtoReferenceDocumentationUri = input.ReadString();
             break;
           }
         }
@@ -2780,6 +2832,11 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DotnetSettings(DotnetSettings other) : this() {
       common_ = other.common_ != null ? other.common_.Clone() : null;
+      renamedServices_ = other.renamedServices_.Clone();
+      renamedResources_ = other.renamedResources_.Clone();
+      ignoredResources_ = other.ignoredResources_.Clone();
+      forcedNamespaceAliases_ = other.forcedNamespaceAliases_.Clone();
+      handwrittenSignatures_ = other.handwrittenSignatures_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2804,6 +2861,91 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "renamed_services" field.</summary>
+    public const int RenamedServicesFieldNumber = 2;
+    private static readonly pbc::MapField<string, string>.Codec _map_renamedServices_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 18);
+    private readonly pbc::MapField<string, string> renamedServices_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Map from original service names to renamed versions.
+    /// This is used when the default generated types
+    /// would cause a naming conflict. (Neither name is
+    /// fully-qualified.)
+    /// Example: Subscriber to SubscriberServiceApi.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> RenamedServices {
+      get { return renamedServices_; }
+    }
+
+    /// <summary>Field number for the "renamed_resources" field.</summary>
+    public const int RenamedResourcesFieldNumber = 3;
+    private static readonly pbc::MapField<string, string>.Codec _map_renamedResources_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 26);
+    private readonly pbc::MapField<string, string> renamedResources_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Map from full resource types to the effective short name
+    /// for the resource. This is used when otherwise resource
+    /// named from different services would cause naming collisions.
+    /// Example entry:
+    /// "datalabeling.googleapis.com/Dataset": "DataLabelingDataset"
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> RenamedResources {
+      get { return renamedResources_; }
+    }
+
+    /// <summary>Field number for the "ignored_resources" field.</summary>
+    public const int IgnoredResourcesFieldNumber = 4;
+    private static readonly pb::FieldCodec<string> _repeated_ignoredResources_codec
+        = pb::FieldCodec.ForString(34);
+    private readonly pbc::RepeatedField<string> ignoredResources_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// List of full resource types to ignore during generation.
+    /// This is typically used for API-specific Location resources,
+    /// which should be handled by the generator as if they were actually
+    /// the common Location resources.
+    /// Example entry: "documentai.googleapis.com/Location"
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> IgnoredResources {
+      get { return ignoredResources_; }
+    }
+
+    /// <summary>Field number for the "forced_namespace_aliases" field.</summary>
+    public const int ForcedNamespaceAliasesFieldNumber = 5;
+    private static readonly pb::FieldCodec<string> _repeated_forcedNamespaceAliases_codec
+        = pb::FieldCodec.ForString(42);
+    private readonly pbc::RepeatedField<string> forcedNamespaceAliases_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// Namespaces which must be aliased in snippets due to
+    /// a known (but non-generator-predictable) naming collision
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> ForcedNamespaceAliases {
+      get { return forcedNamespaceAliases_; }
+    }
+
+    /// <summary>Field number for the "handwritten_signatures" field.</summary>
+    public const int HandwrittenSignaturesFieldNumber = 6;
+    private static readonly pb::FieldCodec<string> _repeated_handwrittenSignatures_codec
+        = pb::FieldCodec.ForString(50);
+    private readonly pbc::RepeatedField<string> handwrittenSignatures_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// Method signatures (in the form "service.method(signature)")
+    /// which are provided separately, so shouldn't be generated.
+    /// Snippets *calling* these methods are still generated, however.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> HandwrittenSignatures {
+      get { return handwrittenSignatures_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2820,6 +2962,11 @@ namespace Google.Api {
         return true;
       }
       if (!object.Equals(Common, other.Common)) return false;
+      if (!RenamedServices.Equals(other.RenamedServices)) return false;
+      if (!RenamedResources.Equals(other.RenamedResources)) return false;
+      if(!ignoredResources_.Equals(other.ignoredResources_)) return false;
+      if(!forcedNamespaceAliases_.Equals(other.forcedNamespaceAliases_)) return false;
+      if(!handwrittenSignatures_.Equals(other.handwrittenSignatures_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2828,6 +2975,11 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (common_ != null) hash ^= Common.GetHashCode();
+      hash ^= RenamedServices.GetHashCode();
+      hash ^= RenamedResources.GetHashCode();
+      hash ^= ignoredResources_.GetHashCode();
+      hash ^= forcedNamespaceAliases_.GetHashCode();
+      hash ^= handwrittenSignatures_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2850,6 +3002,11 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      renamedServices_.WriteTo(output, _map_renamedServices_codec);
+      renamedResources_.WriteTo(output, _map_renamedResources_codec);
+      ignoredResources_.WriteTo(output, _repeated_ignoredResources_codec);
+      forcedNamespaceAliases_.WriteTo(output, _repeated_forcedNamespaceAliases_codec);
+      handwrittenSignatures_.WriteTo(output, _repeated_handwrittenSignatures_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2864,6 +3021,11 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      renamedServices_.WriteTo(ref output, _map_renamedServices_codec);
+      renamedResources_.WriteTo(ref output, _map_renamedResources_codec);
+      ignoredResources_.WriteTo(ref output, _repeated_ignoredResources_codec);
+      forcedNamespaceAliases_.WriteTo(ref output, _repeated_forcedNamespaceAliases_codec);
+      handwrittenSignatures_.WriteTo(ref output, _repeated_handwrittenSignatures_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2877,6 +3039,11 @@ namespace Google.Api {
       if (common_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
       }
+      size += renamedServices_.CalculateSize(_map_renamedServices_codec);
+      size += renamedResources_.CalculateSize(_map_renamedResources_codec);
+      size += ignoredResources_.CalculateSize(_repeated_ignoredResources_codec);
+      size += forcedNamespaceAliases_.CalculateSize(_repeated_forcedNamespaceAliases_codec);
+      size += handwrittenSignatures_.CalculateSize(_repeated_handwrittenSignatures_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2895,6 +3062,11 @@ namespace Google.Api {
         }
         Common.MergeFrom(other.Common);
       }
+      renamedServices_.MergeFrom(other.renamedServices_);
+      renamedResources_.MergeFrom(other.renamedResources_);
+      ignoredResources_.Add(other.ignoredResources_);
+      forcedNamespaceAliases_.Add(other.forcedNamespaceAliases_);
+      handwrittenSignatures_.Add(other.handwrittenSignatures_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2917,6 +3089,26 @@ namespace Google.Api {
             input.ReadMessage(Common);
             break;
           }
+          case 18: {
+            renamedServices_.AddEntriesFrom(input, _map_renamedServices_codec);
+            break;
+          }
+          case 26: {
+            renamedResources_.AddEntriesFrom(input, _map_renamedResources_codec);
+            break;
+          }
+          case 34: {
+            ignoredResources_.AddEntriesFrom(input, _repeated_ignoredResources_codec);
+            break;
+          }
+          case 42: {
+            forcedNamespaceAliases_.AddEntriesFrom(input, _repeated_forcedNamespaceAliases_codec);
+            break;
+          }
+          case 50: {
+            handwrittenSignatures_.AddEntriesFrom(input, _repeated_handwrittenSignatures_codec);
+            break;
+          }
         }
       }
     #endif
@@ -2937,6 +3129,26 @@ namespace Google.Api {
               Common = new global::Google.Api.CommonLanguageSettings();
             }
             input.ReadMessage(Common);
+            break;
+          }
+          case 18: {
+            renamedServices_.AddEntriesFrom(ref input, _map_renamedServices_codec);
+            break;
+          }
+          case 26: {
+            renamedResources_.AddEntriesFrom(ref input, _map_renamedResources_codec);
+            break;
+          }
+          case 34: {
+            ignoredResources_.AddEntriesFrom(ref input, _repeated_ignoredResources_codec);
+            break;
+          }
+          case 42: {
+            forcedNamespaceAliases_.AddEntriesFrom(ref input, _repeated_forcedNamespaceAliases_codec);
+            break;
+          }
+          case 50: {
+            handwrittenSignatures_.AddEntriesFrom(ref input, _repeated_handwrittenSignatures_codec);
             break;
           }
         }
@@ -3429,8 +3641,8 @@ namespace Google.Api {
     /// Example of a YAML configuration::
     ///
     ///  publishing:
-    ///    method_behavior:
-    ///      - selector: CreateAdDomain
+    ///    method_settings:
+    ///      - selector: google.cloud.speech.v2.Speech.BatchRecognize
     ///        long_running:
     ///          initial_poll_delay:
     ///            seconds: 60 # 1 minute

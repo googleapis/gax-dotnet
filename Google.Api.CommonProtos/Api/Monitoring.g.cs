@@ -381,7 +381,8 @@ namespace Google.Api {
         private string monitoredResource_ = "";
         /// <summary>
         /// The monitored resource type. The type must be defined in
-        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// [Service.monitored_resources][google.api.Service.monitored_resources]
+        /// section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -399,7 +400,8 @@ namespace Google.Api {
         private readonly pbc::RepeatedField<string> metrics_ = new pbc::RepeatedField<string>();
         /// <summary>
         /// Types of the metrics to report to this monitoring destination.
-        /// Each type must be defined in [Service.metrics][google.api.Service.metrics] section.
+        /// Each type must be defined in
+        /// [Service.metrics][google.api.Service.metrics] section.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

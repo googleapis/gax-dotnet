@@ -402,9 +402,10 @@ namespace Google.Api {
     /// <summary>
     /// Read-only. If present, then a [time
     /// series][google.monitoring.v3.TimeSeries], which is identified partially by
-    /// a metric type and a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that is associated
-    /// with this metric type can only be associated with one of the monitored
-    /// resource types listed here.
+    /// a metric type and a
+    /// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that
+    /// is associated with this metric type can only be associated with one of the
+    /// monitored resource types listed here.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -894,7 +895,9 @@ namespace Google.Api {
         public const int LaunchStageFieldNumber = 1;
         private global::Google.Api.LaunchStage launchStage_ = global::Google.Api.LaunchStage.Unspecified;
         /// <summary>
-        /// Deprecated. Must use the [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage] instead.
+        /// Deprecated. Must use the
+        /// [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage]
+        /// instead.
         /// </summary>
         [global::System.ObsoleteAttribute]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1198,8 +1201,9 @@ namespace Google.Api {
     public const int TypeFieldNumber = 3;
     private string type_ = "";
     /// <summary>
-    /// An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].
-    /// For example, `custom.googleapis.com/invoice/paid/amount`.
+    /// An existing metric type, see
+    /// [google.api.MetricDescriptor][google.api.MetricDescriptor]. For example,
+    /// `custom.googleapis.com/invoice/paid/amount`.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
