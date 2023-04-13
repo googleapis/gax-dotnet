@@ -12,11 +12,16 @@ using System.Threading.Tasks;
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// Base class for the client-side streaming RPC methods.
+    /// Base class for the client-side streaming RPC methods. This wraps the
+    /// request stream in a buffer, allowing multiple requests to be written without waiting for them
+    /// to be transmitted.
     /// </summary>
+    /// <remarks>
+    /// To avoid memory leaks, users must dispose of gRPC streams.
+    /// </remarks>
     /// <typeparam name="TRequest">RPC request type</typeparam>
     /// <typeparam name="TResponse">RPC response type</typeparam>
-    public abstract class ClientStreamingBase<TRequest, TResponse>
+    public abstract class ClientStreamingBase<TRequest, TResponse> : IDisposable
     {
         /// <summary>
         /// The underlying gRPC client streaming call.
@@ -91,6 +96,14 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A <see cref="Task"/> which will complete when the stream has finished being completed.</returns>
         public virtual Task WriteCompleteAsync() =>
             throw new NotImplementedException();
+
+        /// <summary>
+        /// Disposes of the underlying gRPC call. There is no need to dispose of both the wrapper
+        /// and the underlying call; it's typically simpler to dispose of the wrapper with a
+        /// <code>using</code> statement as the wrapper is returned by client libraries.
+        /// </summary>
+        /// <remarks>The default implementation just calls Dispose on the result of <see cref="GrpcCall"/>.</remarks>
+        public virtual void Dispose() => GrpcCall.Dispose();
 
         /// <summary>
         /// Asynchronous call result. This task will only complete after
