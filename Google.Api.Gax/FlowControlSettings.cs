@@ -10,6 +10,13 @@ namespace Google.Api.Gax
     /// <summary>
     /// Settings used to control data flow.
     /// </summary>
+    /// <remarks>
+    /// The precise meaning of the settings in this class
+    /// is context-sensitive. For example, when used by a library which creates multiple
+    /// streams of data, the flow control settings may restrict flow on a per-stream basis,
+    /// or on an aggregate basis. Please consult the documentation of the library that consumes
+    /// these settings for more details on how they're used in that context.
+    /// </remarks>
     public sealed class FlowControlSettings
     {
         /// <summary>
