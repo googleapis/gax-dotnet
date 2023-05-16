@@ -425,10 +425,24 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RuleName {
-      get { return ruleCase_ == RuleOneofCase.RuleName ? (string) rule_ : ""; }
+      get { return HasRuleName ? (string) rule_ : ""; }
       set {
         rule_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         ruleCase_ = RuleOneofCase.RuleName;
+      }
+    }
+    /// <summary>Gets whether the "rule_name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRuleName {
+      get { return ruleCase_ == RuleOneofCase.RuleName; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "rule_name" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRuleName() {
+      if (HasRuleName) {
+        ClearRule();
       }
     }
 
@@ -474,10 +488,24 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string InvalidRule {
-      get { return expectedResultCase_ == ExpectedResultOneofCase.InvalidRule ? (string) expectedResult_ : ""; }
+      get { return HasInvalidRule ? (string) expectedResult_ : ""; }
       set {
         expectedResult_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         expectedResultCase_ = ExpectedResultOneofCase.InvalidRule;
+      }
+    }
+    /// <summary>Gets whether the "invalid_rule" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasInvalidRule {
+      get { return expectedResultCase_ == ExpectedResultOneofCase.InvalidRule; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "invalid_rule" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearInvalidRule() {
+      if (HasInvalidRule) {
+        ClearExpectedResult();
       }
     }
 
@@ -490,10 +518,24 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string NonmatchingRequest {
-      get { return expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest ? (string) expectedResult_ : ""; }
+      get { return HasNonmatchingRequest ? (string) expectedResult_ : ""; }
       set {
         expectedResult_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         expectedResultCase_ = ExpectedResultOneofCase.NonmatchingRequest;
+      }
+    }
+    /// <summary>Gets whether the "nonmatching_request" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNonmatchingRequest {
+      get { return expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "nonmatching_request" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNonmatchingRequest() {
+      if (HasNonmatchingRequest) {
+        ClearExpectedResult();
       }
     }
 
@@ -591,11 +633,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Details.Length != 0) hash ^= Details.GetHashCode();
       if (ruleCase_ == RuleOneofCase.InlineRule) hash ^= InlineRule.GetHashCode();
-      if (ruleCase_ == RuleOneofCase.RuleName) hash ^= RuleName.GetHashCode();
+      if (HasRuleName) hash ^= RuleName.GetHashCode();
       if (RequestMessageName.Length != 0) hash ^= RequestMessageName.GetHashCode();
       if (request_ != null) hash ^= Request.GetHashCode();
-      if (expectedResultCase_ == ExpectedResultOneofCase.InvalidRule) hash ^= InvalidRule.GetHashCode();
-      if (expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest) hash ^= NonmatchingRequest.GetHashCode();
+      if (HasInvalidRule) hash ^= InvalidRule.GetHashCode();
+      if (HasNonmatchingRequest) hash ^= NonmatchingRequest.GetHashCode();
       if (expectedResultCase_ == ExpectedResultOneofCase.Success) hash ^= Success.GetHashCode();
       hash ^= (int) ruleCase_;
       hash ^= (int) expectedResultCase_;
@@ -629,7 +671,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(26);
         output.WriteMessage(InlineRule);
       }
-      if (ruleCase_ == RuleOneofCase.RuleName) {
+      if (HasRuleName) {
         output.WriteRawTag(34);
         output.WriteString(RuleName);
       }
@@ -641,11 +683,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(50);
         output.WriteMessage(Request);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.InvalidRule) {
+      if (HasInvalidRule) {
         output.WriteRawTag(58);
         output.WriteString(InvalidRule);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest) {
+      if (HasNonmatchingRequest) {
         output.WriteRawTag(66);
         output.WriteString(NonmatchingRequest);
       }
@@ -675,7 +717,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(26);
         output.WriteMessage(InlineRule);
       }
-      if (ruleCase_ == RuleOneofCase.RuleName) {
+      if (HasRuleName) {
         output.WriteRawTag(34);
         output.WriteString(RuleName);
       }
@@ -687,11 +729,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(50);
         output.WriteMessage(Request);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.InvalidRule) {
+      if (HasInvalidRule) {
         output.WriteRawTag(58);
         output.WriteString(InvalidRule);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest) {
+      if (HasNonmatchingRequest) {
         output.WriteRawTag(66);
         output.WriteString(NonmatchingRequest);
       }
@@ -718,7 +760,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       if (ruleCase_ == RuleOneofCase.InlineRule) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(InlineRule);
       }
-      if (ruleCase_ == RuleOneofCase.RuleName) {
+      if (HasRuleName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RuleName);
       }
       if (RequestMessageName.Length != 0) {
@@ -727,10 +769,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       if (request_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Request);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.InvalidRule) {
+      if (HasInvalidRule) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(InvalidRule);
       }
-      if (expectedResultCase_ == ExpectedResultOneofCase.NonmatchingRequest) {
+      if (HasNonmatchingRequest) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(NonmatchingRequest);
       }
       if (expectedResultCase_ == ExpectedResultOneofCase.Success) {
@@ -1935,6 +1977,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
     /// <summary>Field number for the "proto3_optional_integer" field.</summary>
     public const int Proto3OptionalIntegerFieldNumber = 2;
+    private readonly static int Proto3OptionalIntegerDefaultValue = 0;
+
     private int proto3OptionalInteger_;
     /// <summary>
     /// proto3 optional fields should be present if the value was explicitly specified.
@@ -1942,7 +1986,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int Proto3OptionalInteger {
-      get { if ((_hasBits0 & 1) != 0) { return proto3OptionalInteger_; } else { return 0; } }
+      get { if ((_hasBits0 & 1) != 0) { return proto3OptionalInteger_; } else { return Proto3OptionalIntegerDefaultValue; } }
       set {
         _hasBits0 |= 1;
         proto3OptionalInteger_ = value;
@@ -2356,11 +2400,13 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
         /// <summary>Field number for the "opt" field.</summary>
         public const int OptFieldNumber = 4;
+        private readonly static int OptDefaultValue = 0;
+
         private int opt_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public int Opt {
-          get { if ((_hasBits0 & 1) != 0) { return opt_; } else { return 0; } }
+          get { if ((_hasBits0 & 1) != 0) { return opt_; } else { return OptDefaultValue; } }
           set {
             _hasBits0 |= 1;
             opt_ = value;

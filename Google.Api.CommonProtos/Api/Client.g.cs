@@ -87,18 +87,19 @@ namespace Google.Api {
             "FXBvbGxfZGVsYXlfbXVsdGlwbGllchgCIAEoAhIxCg5tYXhfcG9sbF9kZWxh",
             "eRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI1ChJ0b3RhbF9w",
             "b2xsX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24q",
-            "eQoZQ2xpZW50TGlicmFyeU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElCUkFS",
-            "WV9PUkdBTklaQVRJT05fVU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcKA0FE",
-            "UxACEgoKBlBIT1RPUxADEg8KC1NUUkVFVF9WSUVXEAQqZwoYQ2xpZW50TGli",
-            "cmFyeURlc3RpbmF0aW9uEioKJkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFUSU9O",
-            "X1VOU1BFQ0lGSUVEEAASCgoGR0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5BR0VS",
-            "EBQ6OQoQbWV0aG9kX3NpZ25hdHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRo",
-            "b2RPcHRpb25zGJsIIAMoCTo2CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUucHJv",
-            "dG9idWYuU2VydmljZU9wdGlvbnMYmQggASgJOjYKDG9hdXRoX3Njb3BlcxIf",
-            "Lmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0aW9ucxiaCCABKAlCaQoOY29t",
-            "Lmdvb2dsZS5hcGlCC0NsaWVudFByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3Jn",
-            "L2dlbnByb3RvL2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRp",
-            "b25zogIER0FQSWIGcHJvdG8z"));
+            "owEKGUNsaWVudExpYnJhcnlPcmdhbml6YXRpb24SKwonQ0xJRU5UX0xJQlJB",
+            "UllfT1JHQU5JWkFUSU9OX1VOU1BFQ0lGSUVEEAASCQoFQ0xPVUQQARIHCgNB",
+            "RFMQAhIKCgZQSE9UT1MQAxIPCgtTVFJFRVRfVklFVxAEEgwKCFNIT1BQSU5H",
+            "EAUSBwoDR0VPEAYSEQoNR0VORVJBVElWRV9BSRAHKmcKGENsaWVudExpYnJh",
+            "cnlEZXN0aW5hdGlvbhIqCiZDTElFTlRfTElCUkFSWV9ERVNUSU5BVElPTl9V",
+            "TlNQRUNJRklFRBAAEgoKBkdJVEhVQhAKEhMKD1BBQ0tBR0VfTUFOQUdFUhAU",
+            "OjkKEG1ldGhvZF9zaWduYXR1cmUSHi5nb29nbGUucHJvdG9idWYuTWV0aG9k",
+            "T3B0aW9ucxibCCADKAk6NgoMZGVmYXVsdF9ob3N0Eh8uZ29vZ2xlLnByb3Rv",
+            "YnVmLlNlcnZpY2VPcHRpb25zGJkIIAEoCTo2CgxvYXV0aF9zY29wZXMSHy5n",
+            "b29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMYmgggASgJQmkKDmNvbS5n",
+            "b29nbGUuYXBpQgtDbGllbnRQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9n",
+            "ZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9u",
+            "c6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, new pbr::GeneratedClrTypeInfo[] {
@@ -225,6 +226,18 @@ namespace Google.Api {
     /// Street View Org.
     /// </summary>
     [pbr::OriginalName("STREET_VIEW")] StreetView = 4,
+    /// <summary>
+    /// Shopping Org.
+    /// </summary>
+    [pbr::OriginalName("SHOPPING")] Shopping = 5,
+    /// <summary>
+    /// Geo Org.
+    /// </summary>
+    [pbr::OriginalName("GEO")] Geo = 6,
+    /// <summary>
+    /// Generative AI - https://developers.generativeai.google
+    /// </summary>
+    [pbr::OriginalName("GENERATIVE_AI")] GenerativeAi = 7,
   }
 
   /// <summary>
@@ -1225,7 +1238,7 @@ namespace Google.Api {
     public const int NewIssueUriFieldNumber = 101;
     private string newIssueUri_ = "";
     /// <summary>
-    /// Link to a place that API users can report issues.  Example:
+    /// Link to a *public* URI where users can report issues.  Example:
     /// https://issuetracker.google.com/issues/new?component=190865&amp;template=1161103
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

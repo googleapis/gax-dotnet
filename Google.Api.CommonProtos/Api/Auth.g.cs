@@ -688,10 +688,24 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Header {
-      get { return inCase_ == InOneofCase.Header ? (string) in_ : ""; }
+      get { return HasHeader ? (string) in_ : ""; }
       set {
         in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         inCase_ = InOneofCase.Header;
+      }
+    }
+    /// <summary>Gets whether the "header" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeader {
+      get { return inCase_ == InOneofCase.Header; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "header" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeader() {
+      if (HasHeader) {
+        ClearIn();
       }
     }
 
@@ -703,10 +717,24 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Query {
-      get { return inCase_ == InOneofCase.Query ? (string) in_ : ""; }
+      get { return HasQuery ? (string) in_ : ""; }
       set {
         in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         inCase_ = InOneofCase.Query;
+      }
+    }
+    /// <summary>Gets whether the "query" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQuery {
+      get { return inCase_ == InOneofCase.Query; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "query" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQuery() {
+      if (HasQuery) {
+        ClearIn();
       }
     }
 
@@ -718,10 +746,24 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Cookie {
-      get { return inCase_ == InOneofCase.Cookie ? (string) in_ : ""; }
+      get { return HasCookie ? (string) in_ : ""; }
       set {
         in_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         inCase_ = InOneofCase.Cookie;
+      }
+    }
+    /// <summary>Gets whether the "cookie" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCookie {
+      get { return inCase_ == InOneofCase.Cookie; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "cookie" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCookie() {
+      if (HasCookie) {
+        ClearIn();
       }
     }
 
@@ -796,9 +838,9 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (inCase_ == InOneofCase.Header) hash ^= Header.GetHashCode();
-      if (inCase_ == InOneofCase.Query) hash ^= Query.GetHashCode();
-      if (inCase_ == InOneofCase.Cookie) hash ^= Cookie.GetHashCode();
+      if (HasHeader) hash ^= Header.GetHashCode();
+      if (HasQuery) hash ^= Query.GetHashCode();
+      if (HasCookie) hash ^= Cookie.GetHashCode();
       if (ValuePrefix.Length != 0) hash ^= ValuePrefix.GetHashCode();
       hash ^= (int) inCase_;
       if (_unknownFields != null) {
@@ -819,11 +861,11 @@ namespace Google.Api {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (inCase_ == InOneofCase.Header) {
+      if (HasHeader) {
         output.WriteRawTag(10);
         output.WriteString(Header);
       }
-      if (inCase_ == InOneofCase.Query) {
+      if (HasQuery) {
         output.WriteRawTag(18);
         output.WriteString(Query);
       }
@@ -831,7 +873,7 @@ namespace Google.Api {
         output.WriteRawTag(26);
         output.WriteString(ValuePrefix);
       }
-      if (inCase_ == InOneofCase.Cookie) {
+      if (HasCookie) {
         output.WriteRawTag(34);
         output.WriteString(Cookie);
       }
@@ -845,11 +887,11 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (inCase_ == InOneofCase.Header) {
+      if (HasHeader) {
         output.WriteRawTag(10);
         output.WriteString(Header);
       }
-      if (inCase_ == InOneofCase.Query) {
+      if (HasQuery) {
         output.WriteRawTag(18);
         output.WriteString(Query);
       }
@@ -857,7 +899,7 @@ namespace Google.Api {
         output.WriteRawTag(26);
         output.WriteString(ValuePrefix);
       }
-      if (inCase_ == InOneofCase.Cookie) {
+      if (HasCookie) {
         output.WriteRawTag(34);
         output.WriteString(Cookie);
       }
@@ -871,13 +913,13 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (inCase_ == InOneofCase.Header) {
+      if (HasHeader) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Header);
       }
-      if (inCase_ == InOneofCase.Query) {
+      if (HasQuery) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Query);
       }
-      if (inCase_ == InOneofCase.Cookie) {
+      if (HasCookie) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Cookie);
       }
       if (ValuePrefix.Length != 0) {

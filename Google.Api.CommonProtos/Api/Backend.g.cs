@@ -431,10 +431,24 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string JwtAudience {
-      get { return authenticationCase_ == AuthenticationOneofCase.JwtAudience ? (string) authentication_ : ""; }
+      get { return HasJwtAudience ? (string) authentication_ : ""; }
       set {
         authentication_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         authenticationCase_ = AuthenticationOneofCase.JwtAudience;
+      }
+    }
+    /// <summary>Gets whether the "jwt_audience" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJwtAudience {
+      get { return authenticationCase_ == AuthenticationOneofCase.JwtAudience; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "jwt_audience" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJwtAudience() {
+      if (HasJwtAudience) {
+        ClearAuthentication();
       }
     }
 
@@ -449,10 +463,24 @@ namespace Google.Api {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool DisableAuth {
-      get { return authenticationCase_ == AuthenticationOneofCase.DisableAuth ? (bool) authentication_ : false; }
+      get { return HasDisableAuth ? (bool) authentication_ : false; }
       set {
         authentication_ = value;
         authenticationCase_ = AuthenticationOneofCase.DisableAuth;
+      }
+    }
+    /// <summary>Gets whether the "disable_auth" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDisableAuth {
+      get { return authenticationCase_ == AuthenticationOneofCase.DisableAuth; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "disable_auth" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDisableAuth() {
+      if (HasDisableAuth) {
+        ClearAuthentication();
       }
     }
 
@@ -565,8 +593,8 @@ namespace Google.Api {
       if (MinDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(MinDeadline);
       if (OperationDeadline != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(OperationDeadline);
       if (PathTranslation != global::Google.Api.BackendRule.Types.PathTranslation.Unspecified) hash ^= PathTranslation.GetHashCode();
-      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) hash ^= JwtAudience.GetHashCode();
-      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) hash ^= DisableAuth.GetHashCode();
+      if (HasJwtAudience) hash ^= JwtAudience.GetHashCode();
+      if (HasDisableAuth) hash ^= DisableAuth.GetHashCode();
       if (Protocol.Length != 0) hash ^= Protocol.GetHashCode();
       hash ^= OverridesByRequestProtocol.GetHashCode();
       hash ^= (int) authenticationCase_;
@@ -612,11 +640,11 @@ namespace Google.Api {
         output.WriteRawTag(48);
         output.WriteEnum((int) PathTranslation);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+      if (HasJwtAudience) {
         output.WriteRawTag(58);
         output.WriteString(JwtAudience);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+      if (HasDisableAuth) {
         output.WriteRawTag(64);
         output.WriteBool(DisableAuth);
       }
@@ -659,11 +687,11 @@ namespace Google.Api {
         output.WriteRawTag(48);
         output.WriteEnum((int) PathTranslation);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+      if (HasJwtAudience) {
         output.WriteRawTag(58);
         output.WriteString(JwtAudience);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+      if (HasDisableAuth) {
         output.WriteRawTag(64);
         output.WriteBool(DisableAuth);
       }
@@ -700,10 +728,10 @@ namespace Google.Api {
       if (PathTranslation != global::Google.Api.BackendRule.Types.PathTranslation.Unspecified) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) PathTranslation);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.JwtAudience) {
+      if (HasJwtAudience) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(JwtAudience);
       }
-      if (authenticationCase_ == AuthenticationOneofCase.DisableAuth) {
+      if (HasDisableAuth) {
         size += 1 + 1;
       }
       if (Protocol.Length != 0) {
