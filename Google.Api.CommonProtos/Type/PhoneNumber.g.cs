@@ -152,10 +152,24 @@ namespace Google.Type {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string E164Number {
-      get { return kindCase_ == KindOneofCase.E164Number ? (string) kind_ : ""; }
+      get { return HasE164Number ? (string) kind_ : ""; }
       set {
         kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         kindCase_ = KindOneofCase.E164Number;
+      }
+    }
+    /// <summary>Gets whether the "e164_number" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasE164Number {
+      get { return kindCase_ == KindOneofCase.E164Number; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "e164_number" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearE164Number() {
+      if (HasE164Number) {
+        ClearKind();
       }
     }
 
@@ -247,7 +261,7 @@ namespace Google.Type {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (kindCase_ == KindOneofCase.E164Number) hash ^= E164Number.GetHashCode();
+      if (HasE164Number) hash ^= E164Number.GetHashCode();
       if (kindCase_ == KindOneofCase.ShortCode) hash ^= ShortCode.GetHashCode();
       if (Extension.Length != 0) hash ^= Extension.GetHashCode();
       hash ^= (int) kindCase_;
@@ -269,7 +283,7 @@ namespace Google.Type {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (kindCase_ == KindOneofCase.E164Number) {
+      if (HasE164Number) {
         output.WriteRawTag(10);
         output.WriteString(E164Number);
       }
@@ -291,7 +305,7 @@ namespace Google.Type {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (kindCase_ == KindOneofCase.E164Number) {
+      if (HasE164Number) {
         output.WriteRawTag(10);
         output.WriteString(E164Number);
       }
@@ -313,7 +327,7 @@ namespace Google.Type {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (kindCase_ == KindOneofCase.E164Number) {
+      if (HasE164Number) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(E164Number);
       }
       if (kindCase_ == KindOneofCase.ShortCode) {
