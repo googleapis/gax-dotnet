@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.4.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.1...Google.Api.Gax-4.4.0) (2023-05-17)
+
+
+### Features
+
+* Make all gRPC streams implement IDisposable ([e51f919](https://github.com/googleapis/gax-dotnet/commit/e51f919665873bb66b00483a1e9ac94d47707131))
+
+
+### Documentation
+
+* Clarify FlowControlSettings documentation
+
+
 ## [4.3.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.3.0...Google.Api.Gax-4.3.1) (2023-01-30)
 
 
