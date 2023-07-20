@@ -6,6 +6,7 @@
  */
 
 using Grpc.Core;
+using System;
 using System.Threading;
 
 namespace Google.Api.Gax.Grpc.Gcp
@@ -18,15 +19,29 @@ namespace Google.Api.Gax.Grpc.Gcp
     {
         private int _affinityCount;
         private int _activeStreamCount;
-        private int _id;
+        internal int _id;
+        internal Guid _channelId;
+        public  DateTime ChannelStartTime { get; set; }
+        public Action<CallInvoker> ChannelPrimer { get; set; }
+        public bool Grace { get; set; }
 
-        internal ChannelRef(ChannelBase channel, int id, int affinityCount = 0, int activeStreamCount = 0)
+        internal ChannelRef(ChannelBase channel, int id, int affinityCount = 0, int activeStreamCount = 0, Action<CallInvoker> channelPrimer = null, Guid channelId = default)
         {
             Channel = channel;
             CallInvoker = channel.CreateCallInvoker();
+            ChannelStartTime = DateTime.UtcNow;
             this._id = id;
             this._affinityCount = affinityCount;
             this._activeStreamCount = activeStreamCount;
+            ChannelPrimer = channelPrimer;
+            Grace = false;
+            
+            // prime the channel if the primer is set.
+            if (ChannelPrimer != null)
+            {
+                ChannelPrimer(CallInvoker);
+            }
+            _channelId = channelId;
         }
 
         internal ChannelBase Channel { get; }
@@ -39,6 +54,6 @@ namespace Google.Api.Gax.Grpc.Gcp
         internal int ActiveStreamCountIncr() => Interlocked.Increment(ref _activeStreamCount);
         internal int ActiveStreamCountDecr() => Interlocked.Decrement(ref _activeStreamCount);
 
-        internal ChannelRef Clone() => new ChannelRef(Channel, _id, AffinityCount, ActiveStreamCount);
+        internal ChannelRef Clone() => new ChannelRef(Channel, _id, AffinityCount, ActiveStreamCount, ChannelPrimer);
     }
 }
