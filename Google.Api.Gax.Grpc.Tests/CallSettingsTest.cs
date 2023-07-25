@@ -285,6 +285,7 @@ namespace Google.Api.Gax.Grpc.Tests
         [InlineData("x\\y", "x%5Cy")]
         [InlineData("x\U0001F600y", "x%F0%9F%98%80y")]
         [InlineData("x\u20acy", "x%E2%82%ACy")]
+        [InlineData("x,y", "x%2Cy")]
         public void FromGoogleRequestParamsHeader_CrossLanguageDocumentationForValue(string parameterValue, string expectedHeaderValue)
         {
             var callSettings = CallSettings.FromGoogleRequestParamsHeader("key", parameterValue);
