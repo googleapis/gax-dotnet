@@ -264,6 +264,33 @@ namespace Google.Api.Gax.Grpc.Tests
             AssertSingleHeader(callSettings, CallSettings.RequestParamsHeader, expectedHeaderValue);
         }
 
+        // This is a set of values that all languages are testing, to document current behavior.
+        [Theory]
+        [InlineData("xy", "xy")]
+        [InlineData("x/y", "x%2Fy")]
+        [InlineData("x;y", "x%3By")]
+        [InlineData("(xy)", "%28xy%29")]
+        [InlineData("x-y", "x-y")]
+        [InlineData("x_y", "x_y")]
+        [InlineData("x+y", "x%2By")]
+        [InlineData("x%y", "x%25y")]
+        [InlineData("x.y", "x.y")]
+        [InlineData("x~y", "x~y")]
+        [InlineData("x?y", "x%3Fy")]
+        [InlineData("x&y", "x%26y")]
+        [InlineData("x#y", "x%23y")]
+        [InlineData("[xy]", "%5Bxy%5D")]
+        [InlineData("x$y", "x%24y")]
+        [InlineData("x y", "x%20y")]
+        [InlineData("x\\y", "x%5Cy")]
+        [InlineData("x\U0001F600y", "x%F0%9F%98%80y")]
+        [InlineData("x\u20acy", "x%E2%82%ACy")]
+        public void FromGoogleRequestParamsHeader_CrossLanguageDocumentationForValue(string parameterValue, string expectedHeaderValue)
+        {
+            var callSettings = CallSettings.FromGoogleRequestParamsHeader("key", parameterValue);
+            AssertSingleHeader(callSettings, CallSettings.RequestParamsHeader, $"key={expectedHeaderValue}");
+        }
+
         [Fact]
         public void FromRequestReasonHeader()
         {
