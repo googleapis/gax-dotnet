@@ -14,6 +14,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
+// xUnit2014: "Do not use throws check to check for asynchronously thrown exception"
+// This is suppressed in the tests below as we're often testing that the exception
+// is thrown immediately, synchronously.
+#pragma warning disable xUnit2014
+
 namespace Google.Api.Gax.Grpc.Tests
 {
     public class BufferedClientStreamWriterTest

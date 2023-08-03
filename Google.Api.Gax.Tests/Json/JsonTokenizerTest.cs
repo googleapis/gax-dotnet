@@ -340,14 +340,14 @@ namespace Google.Api.Gax.Tests.Json
                 var actualToken = tokenizer.Next();
                 if (actualToken == JsonToken.EndDocument)
                 {
-                    Assert.False(true, $"Expected {expectedTokens[i]} but reached end of token stream");
+                    Assert.Fail($"Expected {expectedTokens[i]} but reached end of token stream");
                 }
                 Assert.Equal(expectedTokens[i], actualToken);
             }
             var finalToken = tokenizer.Next();
             if (finalToken != JsonToken.EndDocument)
             {
-                Assert.False(true, "Expected token stream to be exhausted; received ${finalToken}");
+                Assert.Fail("Expected token stream to be exhausted; received ${finalToken}");
             }
         }
 
@@ -360,7 +360,7 @@ namespace Google.Api.Gax.Tests.Json
                 var actualToken = tokenizer.Next();
                 if (actualToken == JsonToken.EndDocument)
                 {
-                    Assert.False(true, $"Expected {expectedTokens[i]} but reached end of document");
+                    Assert.Fail($"Expected {expectedTokens[i]} but reached end of document");
                 }
                 Assert.Equal(expectedTokens[i], actualToken);
             }
