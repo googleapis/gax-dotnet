@@ -26,10 +26,18 @@ namespace Google.Api.Gax.Grpc
         private const string AdapterOverrideEnvironmentVariable = "GRPC_DEFAULT_ADAPTER_OVERRIDE";
 
         /// <summary>
-        /// The lazily-evaluated adapter to use for services with ApiTransports.Grpc.
+        /// The lazily-evaluated adapter to use for services with ApiTransports.Grpc
+        /// which need client/bidi-streaming support.
         /// </summary>
-        private static readonly Lazy<GrpcAdapter> s_defaultGrpcTransportFactory =
-            new Lazy<GrpcAdapter>(CreateDefaultGrpcTransportAdapter, LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Lazy<GrpcAdapter> s_defaultClientStreamingGrpcTransportFactory =
+            new Lazy<GrpcAdapter>(CreateClientStreamingDefaultGrpcTransportAdapter, LazyThreadSafetyMode.PublicationOnly);
+
+        /// <summary>
+        /// The lazily-evaluated adapter to use for services with ApiTransports.Grpc
+        /// which only need unary and server-streaming support.
+        /// </summary>
+        private static readonly Lazy<GrpcAdapter> s_defaultNonClientStreamingGrpcTransportFactory =
+            new Lazy<GrpcAdapter>(CreateNonClientStreamingDefaultGrpcTransportAdapter, LazyThreadSafetyMode.PublicationOnly);
 
         private readonly ApiTransports _supportedTransports;
 
@@ -58,9 +66,8 @@ namespace Google.Api.Gax.Grpc
         /// <param name="serviceMetadata">The descriptor of the API. Must not be null.</param>
         /// <returns>A suitable GrpcAdapter for the given API, preferring the use of the binary gRPC transport where available.</returns>
         public static GrpcAdapter GetFallbackAdapter(ServiceMetadata serviceMetadata) =>
-            // TODO: Do we need some way of indicating a preference, if the service supports both Rest and Grpc?
-            // Probably not: the user code can always specify the adapter in the builder
-            serviceMetadata.Transports.HasFlag(ApiTransports.Grpc) ? s_defaultGrpcTransportFactory.Value
+            serviceMetadata.Transports.HasFlag(ApiTransports.Grpc) ?
+                (serviceMetadata.RequiresClientStreaming ? s_defaultClientStreamingGrpcTransportFactory : s_defaultNonClientStreamingGrpcTransportFactory).Value
             : serviceMetadata.Transports.HasFlag(ApiTransports.Rest) ? RestGrpcAdapter.Default
             : throw new ArgumentException("No known adapters support the given service.");
 
@@ -95,8 +102,11 @@ namespace Google.Api.Gax.Grpc
         /// <returns>A channel for the specified settings.</returns>
         private protected abstract ChannelBase CreateChannelImpl(ServiceMetadata apiMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options);
 
-        private static GrpcAdapter CreateDefaultGrpcTransportAdapter() =>
-            GetDefaultFromEnvironmentVariable() ?? DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient();
+        private static GrpcAdapter CreateClientStreamingDefaultGrpcTransportAdapter() =>
+            GetDefaultFromEnvironmentVariable() ?? DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient(true);
+
+        private static GrpcAdapter CreateNonClientStreamingDefaultGrpcTransportAdapter() =>
+            GetDefaultFromEnvironmentVariable() ?? DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient(false);
 
         private static GrpcAdapter GetDefaultFromEnvironmentVariable() =>
             GetDefaultFromEnvironmentVariable(Environment.GetEnvironmentVariable(AdapterOverrideEnvironmentVariable));
@@ -116,11 +126,19 @@ namespace Google.Api.Gax.Grpc
         }
 
         // TODO: Is this really what we want? Definitely simple, but not great in other ways...
-        private static GrpcAdapter DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient()
+        private static GrpcAdapter DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient(bool requireClientStreaming)
         {
             try
             {
                 GrpcChannel.ForAddress("https://ignored.com");
+#if NET462_OR_GREATER
+                if (requireClientStreaming)
+                {
+                    // On .NET Framework, fall back to Grpc.Core when we need client streaming,
+                    // just in case. We could potentially check for the Windows build here.
+                    return GrpcCoreAdapter.Instance;
+                }
+#endif
                 return GrpcNetClientAdapter.Default;
             }
             catch

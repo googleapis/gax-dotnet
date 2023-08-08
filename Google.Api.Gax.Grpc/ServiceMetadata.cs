@@ -58,6 +58,10 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         public ApiTransports Transports { get; }
 
+        // TODO: Make this lazy?
+        internal bool RequiresClientStreaming =>
+            ServiceDescriptor.Methods.Any(svc => svc.IsClientStreaming);
+
         /// <summary>
         /// Constructs a new instance for a given service.
         /// </summary>
