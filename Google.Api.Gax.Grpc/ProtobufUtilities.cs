@@ -72,7 +72,7 @@ internal static class ProtobufUtilities
         {
             null => null,
             bool b => b ? "true" : "false",
-            System.Enum enumValue => OriginalEnumValueHelper.GetOriginalName(enumValue),
+            System.Enum enumValue => OriginalEnumValueHelper.GetOriginalName(enumValue) ?? ((int) value).ToString(CultureInfo.InvariantCulture),
             StringValue stringValue => stringValue.Value,
             Timestamp or Duration or FieldMask or Int64Value or UInt64Value or DoubleValue or FloatValue or BytesValue =>
                 RemoveWellKnownTypeQuotes(value),
@@ -107,7 +107,10 @@ internal static class ProtobufUtilities
         private static readonly ConcurrentDictionary<System.Type, Dictionary<object, string>> _dictionaries
             = new ConcurrentDictionary<System.Type, Dictionary<object, string>>();
 
-        internal static string GetOriginalName(object value)
+        /// <summary>
+        /// Returns the original name of the given enum value, or null if the value is unknown.
+        /// </summary>
+        internal static string GetOriginalName(System.Enum value)
         {
             var enumType = value.GetType();
             Dictionary<object, string> nameMapping = _dictionaries.GetOrAdd(enumType, type => GetNameMapping(type));

@@ -318,6 +318,22 @@
       }
     },
     {
+      "name": "ComplexQuery_UnknownEnumValues",
+      "details": "Unknown enum values are represented numerically",
+      "inlineRule": {
+        "get": "/abc/{in_path}"
+      },
+      "requestMessageName": "QueryTestMessage",
+      "request": {
+        "enumField": 123,
+        "inPath": "def"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/abc/def?enumField=123&requiredInteger=0"
+      }
+    },
+    {
       "name": "NamedBodyExcludedFromQuery",
       "details": "When the body is a specific field, that field should not be included in the query",
       "inlineRule": {

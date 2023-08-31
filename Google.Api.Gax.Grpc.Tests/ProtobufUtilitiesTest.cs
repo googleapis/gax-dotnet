@@ -85,6 +85,7 @@ public class ProtobufUtilitiesTest
     [InlineData(123.45d, "123.45")]
     [InlineData(SampleEnum.Unspecified, "SAMPLE_ENUM_UNSPECIFIED")]
     [InlineData(SampleEnum.FirstValue, "FIRST_VALUE")]
+    [InlineData((SampleEnum) 123, "123")]
     [MemberData(nameof(ComplexFormatTestData))]
     public void FormatValueAsJson(object value, string expectedText)
     {
