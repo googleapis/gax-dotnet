@@ -325,17 +325,17 @@ namespace Google.Api.Gax
         public string MetadataJson { get; }
 
         /// <summary>
-        /// The Project ID associated with your application, which is visible in the Google Cloud Platform Console.
+        /// The Project ID associated with your application, which is visible in the Google Cloud Console.
         /// </summary>
         public string ProjectId { get; }
 
         /// <summary>
-        /// The cluster name, which is visible in the Google Cloud Platform Console.
+        /// The cluster name, which is visible in the Google Cloud Console.
         /// </summary>
         public string ClusterName { get; }
 
         /// <summary>
-        /// The cluster location, which is visible in the Google Cloud Platform Console.
+        /// The cluster location, which is visible in the Google Cloud Console.
         /// This is equivalent to the value of the <code>&lt;zone-name&gt;</code> part in
         /// <see cref="Zone"/>
         /// </summary>
