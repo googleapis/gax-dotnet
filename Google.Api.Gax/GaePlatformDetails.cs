@@ -16,7 +16,7 @@ namespace Google.Api.Gax
         /// Construct details of Google App Engine
         /// </summary>
         /// <param name="gcloudProject">The Project ID associated with your application,
-        /// which is visible in the Google Cloud Platform Console. Must not be <c>null</c>.</param>
+        /// which is visible in the Google Cloud Console. Must not be <c>null</c>.</param>
         /// <param name="gaeInstance">The name of the current instance. Must not be <c>null</c>.</param>
         /// <param name="gaeService">The service name specified in your application's app.yaml file,
         /// or if no service name is specified, it is set to default. Must not be <c>null</c>.</param>
@@ -30,7 +30,7 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// The Project ID associated with your application, which is visible in the Google Cloud Platform Console.
+        /// The Project ID associated with your application, which is visible in the Google Cloud Console.
         /// </summary>
         public string ProjectId { get; }
 

@@ -11,7 +11,7 @@ using sys = System;
 namespace Google.Api.Gax.ResourceNames
 {
     /// <summary>
-    /// Resource name for the 'billing account' resource which is widespread across Google Cloud Platform.
+    /// Resource name for the 'billing account' resource which is widespread across Google Cloud.
     /// While most resource names are generated on a per-API basis, many APIs use a billing account resource, and it's
     /// useful to be able to pass values from one API to another.
     /// </summary>
