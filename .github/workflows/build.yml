@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Check out our repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup .NET Core 6.0
       uses: actions/setup-dotnet@v3
