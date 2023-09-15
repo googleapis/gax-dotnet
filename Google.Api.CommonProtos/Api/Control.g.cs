@@ -31,15 +31,16 @@ namespace Google.Api {
     static ControlReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chhnb29nbGUvYXBpL2NvbnRyb2wucHJvdG8SCmdvb2dsZS5hcGkiHgoHQ29u",
-            "dHJvbBITCgtlbnZpcm9ubWVudBgBIAEoCUJuCg5jb20uZ29vZ2xlLmFwaUIM",
-            "Q29udHJvbFByb3RvUAFaRWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3RvL2dv",
-            "b2dsZWFwaXMvYXBpL3NlcnZpY2Vjb25maWc7c2VydmljZWNvbmZpZ6ICBEdB",
-            "UEliBnByb3RvMw=="));
+            "Chhnb29nbGUvYXBpL2NvbnRyb2wucHJvdG8SCmdvb2dsZS5hcGkaF2dvb2ds",
+            "ZS9hcGkvcG9saWN5LnByb3RvIlEKB0NvbnRyb2wSEwoLZW52aXJvbm1lbnQY",
+            "ASABKAkSMQoPbWV0aG9kX3BvbGljaWVzGAQgAygLMhguZ29vZ2xlLmFwaS5N",
+            "ZXRob2RQb2xpY3lCbgoOY29tLmdvb2dsZS5hcGlCDENvbnRyb2xQcm90b1AB",
+            "WkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9z",
+            "ZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWeiAgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
+          new pbr::FileDescriptor[] { global::Google.Api.PolicyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Control), global::Google.Api.Control.Parser, new[]{ "Environment" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Control), global::Google.Api.Control.Parser, new[]{ "Environment", "MethodPolicies" }, null, null, null, null)
           }));
     }
     #endregion
@@ -89,6 +90,7 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Control(Control other) : this() {
       environment_ = other.environment_;
+      methodPolicies_ = other.methodPolicies_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -115,6 +117,20 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "method_policies" field.</summary>
+    public const int MethodPoliciesFieldNumber = 4;
+    private static readonly pb::FieldCodec<global::Google.Api.MethodPolicy> _repeated_methodPolicies_codec
+        = pb::FieldCodec.ForMessage(34, global::Google.Api.MethodPolicy.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.MethodPolicy> methodPolicies_ = new pbc::RepeatedField<global::Google.Api.MethodPolicy>();
+    /// <summary>
+    /// Defines policies applying to the API methods of the service.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.MethodPolicy> MethodPolicies {
+      get { return methodPolicies_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -131,6 +147,7 @@ namespace Google.Api {
         return true;
       }
       if (Environment != other.Environment) return false;
+      if(!methodPolicies_.Equals(other.methodPolicies_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -139,6 +156,7 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (Environment.Length != 0) hash ^= Environment.GetHashCode();
+      hash ^= methodPolicies_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -161,6 +179,7 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteString(Environment);
       }
+      methodPolicies_.WriteTo(output, _repeated_methodPolicies_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -175,6 +194,7 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteString(Environment);
       }
+      methodPolicies_.WriteTo(ref output, _repeated_methodPolicies_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -188,6 +208,7 @@ namespace Google.Api {
       if (Environment.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Environment);
       }
+      size += methodPolicies_.CalculateSize(_repeated_methodPolicies_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -203,6 +224,7 @@ namespace Google.Api {
       if (other.Environment.Length != 0) {
         Environment = other.Environment;
       }
+      methodPolicies_.Add(other.methodPolicies_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -222,6 +244,10 @@ namespace Google.Api {
             Environment = input.ReadString();
             break;
           }
+          case 34: {
+            methodPolicies_.AddEntriesFrom(input, _repeated_methodPolicies_codec);
+            break;
+          }
         }
       }
     #endif
@@ -239,6 +265,10 @@ namespace Google.Api {
             break;
           case 10: {
             Environment = input.ReadString();
+            break;
+          }
+          case 34: {
+            methodPolicies_.AddEntriesFrom(ref input, _repeated_methodPolicies_codec);
             break;
           }
         }
