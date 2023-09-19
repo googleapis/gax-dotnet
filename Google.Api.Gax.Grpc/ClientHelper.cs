@@ -17,7 +17,15 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public class ClientHelper
     {
+        // Visible for testing
+        internal const string ApiVersionHeaderName = "x-goog-api-version";
+
         private readonly CallSettings _clientCallSettings;
+
+        /// <summary>
+        /// Call settings specifying headers for the client version (x-goog-api-client) and
+        /// optionally the API version (x-goog-api-version).
+        /// </summary>
         private readonly CallSettings _versionCallSettings;
 
         /// <summary>
@@ -49,6 +57,10 @@ namespace Google.Api.Gax.Grpc
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
             _versionCallSettings = CallSettings.FromHeader(VersionHeaderBuilder.HeaderName, settings.VersionHeader);
+            if (options.ApiVersion is not null)
+            {
+                _versionCallSettings = _versionCallSettings.WithHeader(ApiVersionHeaderName, options.ApiVersion);
+            }
         }
 
         /// <summary>
@@ -187,6 +199,11 @@ namespace Google.Api.Gax.Grpc
             /// The logger to use, if any. This may be null.
             /// </summary>
             public ILogger Logger { get; set; }
+
+            /// <summary>
+            /// The API version to send in the x-goog-api-version header, if any. This may be null.
+            /// </summary>
+            public string ApiVersion { get; set; }
         }
     }
 }
