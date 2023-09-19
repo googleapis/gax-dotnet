@@ -66,6 +66,68 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(perMethodSettings.CancellationToken, server.ClientStreamingCallOptions.CancellationToken);
         }
 
+        [Fact]
+        public void WithApiVersionHeader()
+        {
+            string apiVersion = "abc";
+            var options = new ClientHelper.Options { Settings = new SimpleSettings(), ApiVersion = apiVersion };
+            var helper = new ClientHelper(options);
+
+            var server = new TestServer();
+
+            var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
+                "Method", server.UnaryAsync, server.UnarySync, null);
+            unaryCall.Sync(null, null);
+            AssertVersionHeader(server.UnaryCallOptions);
+
+            var serverStreamingCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.ServerStreaming, null);
+            serverStreamingCall.Call(null, null);
+            AssertVersionHeader(server.ServerStreamingCallOptions);
+
+            var bidiStreamingCall = helper.BuildApiCall("Method", server.BidiStreaming, null, null);
+            bidiStreamingCall.Call(null);
+            AssertVersionHeader(server.BidiStreamingCallOptions);
+
+            var clientStreamingCall = helper.BuildApiCall("Method", server.ClientStreaming, null, null);
+            clientStreamingCall.Call(null);
+            AssertVersionHeader(server.ClientStreamingCallOptions);
+
+            void AssertVersionHeader(CallOptions callOptions)
+            {
+                var entry = Assert.Single(callOptions.Headers, entry => entry.Key == ClientHelper.ApiVersionHeaderName);
+                Assert.Equal(apiVersion, entry.Value);
+            }
+        }
+
+        [Fact]
+        public void NoApiVersionHeader()
+        {
+            var options = new ClientHelper.Options { Settings = new SimpleSettings() };
+            var helper = new ClientHelper(options);
+
+            var server = new TestServer();
+
+            var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
+                "Method", server.UnaryAsync, server.UnarySync, null);
+            unaryCall.Sync(null, null);
+            AssertNoVersionHeader(server.UnaryCallOptions);
+
+            var serverStreamingCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.ServerStreaming, null);
+            serverStreamingCall.Call(null, null);
+            AssertNoVersionHeader(server.ServerStreamingCallOptions);
+
+            var bidiStreamingCall = helper.BuildApiCall("Method", server.BidiStreaming, null, null);
+            bidiStreamingCall.Call(null);
+            AssertNoVersionHeader(server.BidiStreamingCallOptions);
+
+            var clientStreamingCall = helper.BuildApiCall("Method", server.ClientStreaming, null, null);
+            clientStreamingCall.Call(null);
+            AssertNoVersionHeader(server.ClientStreamingCallOptions);
+
+            void AssertNoVersionHeader(CallOptions callOptions) =>
+                Assert.DoesNotContain(callOptions.Headers, entry => entry.Key == ClientHelper.ApiVersionHeaderName);
+        }
+
         private class SimpleSettings: ServiceSettingsBase
         {
             public SimpleSettings() { }
