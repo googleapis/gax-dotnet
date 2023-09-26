@@ -45,7 +45,8 @@ namespace Google.Api.Gax.Grpc.Rest
             // Reuse a single CallInvoker however many times CreateCallInvoker is called.
             _callInvoker = new RestCallInvoker(this);
             // TODO: Handle endpoints better...
-            var endpointWithScheme = endpoint.StartsWith("https://") || endpoint.StartsWith("http://")
+            var endpointWithScheme =
+                endpoint.StartsWith("https://", StringComparison.Ordinal) || endpoint.StartsWith("http://", StringComparison.Ordinal)
                 ? endpoint
                 : $"https://{endpoint}";
             var baseAddress = new Uri(endpointWithScheme);
