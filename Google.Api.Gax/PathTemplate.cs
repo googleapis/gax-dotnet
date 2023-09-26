@@ -235,7 +235,7 @@ namespace Google.Api.Gax
         {
             GaxPreconditions.CheckNotNull(name, nameof(name));
             string serviceName = null;
-            if (name.StartsWith("//"))
+            if (name.StartsWith("//", StringComparison.Ordinal))
             {
                 int nameEnd = name.IndexOf('/', 2);
                 // Can't call ValidateServiceName as we don't want to throw...
@@ -371,7 +371,7 @@ namespace Google.Api.Gax
                     case SegmentKind.Literal:
                         throw new InvalidOperationException("Values cannot be specified for literal segments");
                     case SegmentKind.PathWildcard:
-                        if (value.StartsWith("/") || value.EndsWith("/"))
+                        if (value.StartsWith("/", StringComparison.Ordinal) || value.EndsWith("/", StringComparison.Ordinal))
                         {
                             throw new ArgumentException("Path wildcard values must not start or end with /", nameof(value));
                         }
@@ -403,8 +403,8 @@ namespace Google.Api.Gax
                 {
                     return s_unnamedPathWildcard;
                 }
-                bool startsWithBrace = segment.StartsWith("{");
-                bool endsWithBrace = segment.EndsWith("}");
+                bool startsWithBrace = segment.StartsWith("{", StringComparison.Ordinal);
+                bool endsWithBrace = segment.EndsWith("}", StringComparison.Ordinal);
                 if (startsWithBrace != endsWithBrace)
                 {
                     throw new ArgumentException($"Invalid template segment: {segment}", nameof(segment));

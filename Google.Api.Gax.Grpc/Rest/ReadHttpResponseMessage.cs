@@ -112,7 +112,7 @@ namespace Google.Api.Gax.Grpc.Rest
                 // Error response messages for streaming APIs are embedded within arrays.
                 // If we detect that the content looks like a JSON array, extract it and parse
                 // expecting a single object.
-                if (content.StartsWith("[") && content.EndsWith("]"))
+                if (content.StartsWith("[", StringComparison.Ordinal) && content.EndsWith("]", StringComparison.Ordinal))
                 {
                     content = content.Substring(1, content.Length - 2);
                 }
