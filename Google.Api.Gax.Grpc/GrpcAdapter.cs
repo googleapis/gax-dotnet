@@ -115,19 +115,42 @@ namespace Google.Api.Gax.Grpc
             };
         }
 
-        // TODO: Is this really what we want? Definitely simple, but not great in other ways...
         private static GrpcAdapter DetectDefaultGrpcTransportAdapterPreferringGrpcNetClient()
         {
+            // Test 1: does Grpc.Net.Client work at all? If not, use Grpc.Core.
             try
             {
                 GrpcChannel.ForAddress("https://ignored.com");
-                return GrpcNetClientAdapter.Default;
             }
             catch
             {
                 return GrpcCoreAdapter.Instance;
             }
-        }
+            // Test 2, only for .NET Framework: check what version of Windows we're using.
+#if NET462_OR_GREATER
+            if (!PlatformFullySupportsGrpc())
+            {
+                return GrpcCoreAdapter.Instance;
+            }
+#endif
+            return GrpcNetClientAdapter.Default;
 
+
+#if NET462_OR_GREATER
+            // gRPC support on .NET Framework is complex.
+            // - Some Windows platforms don't support it at all, in which case an exception is thrown
+            //   in GrpcChannel.ForAddress, which is handled above.
+            // - Other platforms support it partially - unary and server-streaming, but not
+            //   bidi- or client-streaming.
+            // - Other platforms support it fully.
+            //
+            // While in theory we could tailor the default instance for a given service to whether
+            // streaming is required or not, that would lead to a very inconsistent experience.
+            // At some point, we wish to check the Windows version details and use that to determine
+            // which adapter to use, but for now we'll always use Grpc.Core.
+            // Once https://github.com/grpc/grpc-dotnet/issues/2242 is fixed, we can use that code.
+            static bool PlatformFullySupportsGrpc() => false;
+#endif
+        }
     }
 }
