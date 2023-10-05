@@ -39,15 +39,6 @@ install_dependencies() {
   # Prerequisite: Java already installed so that gradlew will work
   nuget_install Google.Protobuf.Tools $PROTOBUF_VERSION
   nuget_install Grpc.Tools $GRPC_VERSION
-
-  if [ -d "googleapis" ]
-  then
-    pushd googleapis > /dev/null
-    git pull
-    popd > /dev/null
-  else
-    git clone --recursive  https://github.com/googleapis/googleapis
-  fi
 }
 
 # Entry point
@@ -59,17 +50,12 @@ declare -r TARGETDIR=Google.Api.CommonProtos
 rm -rf $OUTDIR
 mkdir $OUTDIR
 
-# Note: not using find for google/api, as it contains
-# services, and we don't want those (yet, at least)
-
 $PROTOC \
-  -I googleapis \
+  -I Google.Api.CommonProtos/protos \
   -I $CORE_PROTOS_ROOT \
   --csharp_out=$OUTDIR \
   --csharp_opt=base_namespace=Google,file_extension=.g.cs \
-  googleapis/google/api/*.proto \
-  $(find googleapis/google/rpc -name '*.proto') \
-  $(find googleapis/google/type -name '*.proto')
+  $(find Google.Api.CommonProtos/protos -name '*.proto')
   
 for src in $(find tmp -name '*.cs' | sed 's/tmp\///g')
 do
