@@ -24,6 +24,8 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TClient">The type of client created by this builder.</typeparam>
     public abstract class ClientBuilderBase<TClient>
     {
+        internal const string ApiKeyHeader = "x-goog-api-key";
+
         /// <summary>
         /// The default gRPC options.
         /// </summary>
@@ -116,6 +118,17 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// An API key to use as an alternative to a full credential.
+        /// </summary>
+        /// <remarks>
+        /// This is protected as not all APIs support API keys. APIs which support API keys
+        /// should declare a new public property (also called ApiKey) in the concrete client builder class,
+        /// and ensure they call <see cref="GetEffectiveSettings{T}(T)"/> to potentially specify the API key header
+        /// via CallSettings.
+        /// </remarks>
+        protected string ApiKey { get; set; }
+
+        /// <summary>
         /// The GCP project ID that should be used for quota and billing purposes.
         /// May be null.
         /// </summary>
@@ -177,6 +190,7 @@ namespace Google.Api.Gax.Grpc
             QuotaProject = source.QuotaProject;
             UseJwtAccessWithScopes = source.UseJwtAccessWithScopes;
             Logger = source.Logger;
+            ApiKey = source.ApiKey;
 
             // Note that we may be copying from one type that supports emulators (e.g. FirestoreDbBuilder)
             // to another type that doesn't (e.g. FirestoreClientBuilder). That ends up in a slightly odd situation,
@@ -199,6 +213,30 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// Returns the effective settings for this builder, taking into account API keys and any other properties
+        /// which may require additional settings (typically via <see cref="ServiceSettingsBase.CallSettings"/>).
+        /// </summary>
+        /// <remarks>This method only needs to be called if the concrete builder type knows that the settings may
+        /// need to be modified (e.g. if the API supports API keys). It should typically be called as
+        /// <c>GetEffectiveSettings(Settings?.Clone())</c>.</remarks>
+        /// <typeparam name="T">The concrete settings type, derived from <see cref="ServiceSettingsBase"/>, with a
+        /// parameterless constructor that can be used to construct a new default instance.</typeparam>
+        /// <param name="settings">A clone of the existing settings specified in the concrete builder type. May be null.</param>
+        /// <returns>The appropriate effective settings for this builder, or null if no settings have been
+        /// provided and no other properties require additional settings. Note that clone operations are provided
+        /// on a per-concrete-type basis, so this method must accept already-cloned settings.</returns>
+        protected T GetEffectiveSettings<T>(T settings) where T : ServiceSettingsBase, new()
+        {
+            if (ApiKey is null)
+            {
+                return settings;
+            }
+            settings ??= new T();
+            settings.CallSettings = settings.CallSettings.WithHeader(ApiKeyHeader, ApiKey);
+            return settings;
+        }
+
+        /// <summary>
         /// Validates that the builder is in a consistent state for building. For example, it's invalid to call
         /// <see cref="Build()"/> on an instance which has both JSON credentials and a credentials path specified.
         /// </summary>
@@ -211,14 +249,14 @@ namespace Google.Api.Gax.Grpc
                 ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod, GoogleCredential, Credential);
 
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
-                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential, Credential);
+                ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential, Credential, ApiKey);
 
-            ValidateOptionExcludesOthers("Scopes are not relevant when a token access method, channel credentials or ICredential are supplied", Scopes,
-                TokenAccessMethod, ChannelCredentials, Credential);
+            ValidateOptionExcludesOthers("Scopes are not relevant when a token access method, channel credentials, ICredential or ApiKey are supplied", Scopes,
+                TokenAccessMethod, ChannelCredentials, Credential, ApiKey);
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)}, {nameof(ChannelCredentials)} or {nameof(Credential)} is specified", QuotaProject,
-                CallInvoker, ChannelCredentials, Credential);
+            ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)}, {nameof(ChannelCredentials)}, {nameof(Credential)} or {nameof(ApiKey)} is specified", QuotaProject,
+                CallInvoker, ChannelCredentials, Credential, ApiKey);
         }
 
         /// <summary>
@@ -286,6 +324,7 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(QuotaProject, nameof(QuotaProject));
                     CheckNotSet(Credential, nameof(Credential));
                     CheckNotSet(GoogleCredential, nameof(GoogleCredential));
+                    CheckNotSet(ApiKey, nameof(ApiKey));
 
                     void CheckNotSet(object obj, string name)
                     {
@@ -424,6 +463,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         private ChannelCredentials MaybeGetSimpleChannelCredentials() =>
             ChannelCredentials ?? Credential?.ToChannelCredentials() ??
+            (ApiKey is not null ? ChannelCredentials.SecureSsl : null) ??
 #pragma warning disable CS0618 // Type or member is obsolete
             (TokenAccessMethod is not null ? new DelegatedTokenAccess(TokenAccessMethod, QuotaProject).ToChannelCredentials() : null);
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -515,6 +555,7 @@ namespace Google.Api.Gax.Grpc
             QuotaProject == null &&
             GoogleCredential == null &&
             Credential == null &&
+            ApiKey == null &&
             UseJwtAccessWithScopes == GetChannelPool().UseJwtAccessWithScopes;
 
         /// <summary>
