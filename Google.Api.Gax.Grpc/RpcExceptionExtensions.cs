@@ -6,7 +6,6 @@
  */
 
 using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 using Google.Rpc;
 using Grpc.Core;
 using System.Linq;
@@ -60,19 +59,9 @@ namespace Google.Api.Gax.Grpc
         public static T GetStatusDetail<T>(this RpcException ex) where T : class, IMessage<T>, new()
         {
             var status = GetRpcStatus(ex);
-            if (status is null)
-            {
-                return null;
-            }
-            var expectedName = new T().Descriptor.FullName;
-            var any = status.Details.FirstOrDefault(a => Any.GetTypeName(a.TypeUrl) == expectedName);
-            if (any is null)
-            {
-                return null;
-            }
             try
             {
-                return any.Unpack<T>();
+                return status.GetDetail<T>();
             }
             catch
             {
