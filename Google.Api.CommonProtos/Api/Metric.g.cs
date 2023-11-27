@@ -73,6 +73,7 @@ namespace Google.Api {
   /// deleting or altering it stops data collection and makes the metric type's
   /// existing data unusable.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MetricDescriptor : pb::IMessage<MetricDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -845,6 +846,7 @@ namespace Google.Api {
       /// <summary>
       /// Additional annotations that can be used to guide the usage of a metric.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class MetricDescriptorMetadata : pb::IMessage<MetricDescriptorMetadata>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1152,6 +1154,7 @@ namespace Google.Api {
   /// A specific metric, identified by specifying values for all of the
   /// labels of a [`MetricDescriptor`][google.api.MetricDescriptor].
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Metric : pb::IMessage<Metric>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

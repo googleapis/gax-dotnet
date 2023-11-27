@@ -81,6 +81,7 @@ namespace Google.Api {
   ///         metrics:
   ///         - library.googleapis.com/book/borrowed_count
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Billing : pb::IMessage<Billing>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -272,6 +273,7 @@ namespace Google.Api {
       /// Configuration of a specific billing destination (Currently only support
       /// bill against consumer project).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class BillingDestination : pb::IMessage<BillingDestination>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

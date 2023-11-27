@@ -49,6 +49,7 @@ namespace Google.Type {
   /// <summary>
   /// Represents a fraction in terms of a numerator divided by a denominator.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Fraction : pb::IMessage<Fraction>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

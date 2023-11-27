@@ -89,6 +89,7 @@ namespace Google.Api {
   /// applicable advice about potential consequences for the change, such as
   /// backwards-incompatibility.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ConfigChange : pb::IMessage<ConfigChange>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -445,6 +446,7 @@ namespace Google.Api {
   /// Generated advice about this change, used for providing more
   /// information about how a change will affect the existing service.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Advice : pb::IMessage<Advice>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

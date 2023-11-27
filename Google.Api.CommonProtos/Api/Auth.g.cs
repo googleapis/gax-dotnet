@@ -84,6 +84,7 @@ namespace Google.Api {
   ///         oauth:
   ///           canonical_scopes: https://www.googleapis.com/auth/calendar.read
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Authentication : pb::IMessage<Authentication>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -307,6 +308,7 @@ namespace Google.Api {
   /// If a method doesn't have any auth requirements, request credentials will be
   /// ignored.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AuthenticationRule : pb::IMessage<AuthenticationRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -624,6 +626,7 @@ namespace Google.Api {
   /// <summary>
   /// Specifies a location to extract JWT from an API request.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class JwtLocation : pb::IMessage<JwtLocation>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1026,6 +1029,7 @@ namespace Google.Api {
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AuthProvider : pb::IMessage<AuthProvider>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1480,6 +1484,7 @@ namespace Google.Api {
   /// request to be accepted and passed to the backend, a request can still fail
   /// due to the backend requiring additional scopes or permissions.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OAuthRequirements : pb::IMessage<OAuthRequirements>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1683,6 +1688,7 @@ namespace Google.Api {
   /// [JSON Web Token
   /// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AuthRequirement : pb::IMessage<AuthRequirement>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

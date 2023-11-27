@@ -51,6 +51,7 @@ namespace Google.Api {
   /// <summary>
   /// A description of a label.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LabelDescriptor : pb::IMessage<LabelDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

@@ -61,6 +61,7 @@ namespace Google.Api {
   /// and/or a URL query parameter. This configuration specifies which methods
   /// change the names of the system parameters.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SystemParameters : pb::IMessage<SystemParameters>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -273,6 +274,7 @@ namespace Google.Api {
   /// Define a system parameter rule mapping system parameter definitions to
   /// methods.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SystemParameterRule : pb::IMessage<SystemParameterRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -507,6 +509,7 @@ namespace Google.Api {
   /// an HTTP header or a URL query parameter, and if both are passed the behavior
   /// is implementation-dependent.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SystemParameter : pb::IMessage<SystemParameter>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

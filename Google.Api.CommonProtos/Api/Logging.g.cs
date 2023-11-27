@@ -81,6 +81,7 @@ namespace Google.Api {
   ///         logs:
   ///         - activity_history
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Logging : pb::IMessage<Logging>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -304,6 +305,7 @@ namespace Google.Api {
       /// Configuration of a specific logging destination (the producer project
       /// or the consumer project).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class LoggingDestination : pb::IMessage<LoggingDestination>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

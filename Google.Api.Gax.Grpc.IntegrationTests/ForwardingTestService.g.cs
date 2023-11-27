@@ -81,6 +81,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
   /// <summary>
   /// Note: unique field names to avoid any bugs around conversion going undetected.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingSourceMethod1Request : pb::IMessage<ForwardingSourceMethod1Request>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -270,6 +271,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingSourceMethod1Response : pb::IMessage<ForwardingSourceMethod1Response>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -496,6 +498,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingSourceMethod2Request : pb::IMessage<ForwardingSourceMethod2Request>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -685,6 +688,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingSourceMethod2Response : pb::IMessage<ForwardingSourceMethod2Response>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -874,6 +878,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingTargetMethod1Request : pb::IMessage<ForwardingTargetMethod1Request>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1063,6 +1068,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingTargetMethod1Response : pb::IMessage<ForwardingTargetMethod1Response>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1252,6 +1258,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingTargetMethod2Request : pb::IMessage<ForwardingTargetMethod2Request>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1441,6 +1448,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ForwardingTargetMethod2Response : pb::IMessage<ForwardingTargetMethod2Response>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1630,6 +1638,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Irrelevant : pb::IMessage<Irrelevant>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

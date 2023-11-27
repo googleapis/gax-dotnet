@@ -88,6 +88,7 @@ namespace Google.Api {
   /// You can also specify extension ID instead of fully qualified extension name
   /// here.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Context : pb::IMessage<Context>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -275,6 +276,7 @@ namespace Google.Api {
   /// A context rule provides information about the context for an individual API
   /// element.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ContextRule : pb::IMessage<ContextRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

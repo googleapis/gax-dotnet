@@ -47,6 +47,7 @@ namespace Google.Api.Gax.Grpc.Rest {
   /// <summary>
   /// This message defines the error schema for Google's JSON HTTP APIs.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   internal sealed partial class Error : pb::IMessage<Error>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -257,6 +258,7 @@ namespace Google.Api.Gax.Grpc.Rest {
       /// <summary>
       /// Deprecated. This message is only used by error format v1.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       internal sealed partial class ErrorProto : pb::IMessage<ErrorProto>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -415,6 +417,7 @@ namespace Google.Api.Gax.Grpc.Rest {
       /// `errors` for backward compatibility with [Google API Client
       /// Libraries](https://developers.google.com/api-client-library).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       internal sealed partial class Status : pb::IMessage<Status>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

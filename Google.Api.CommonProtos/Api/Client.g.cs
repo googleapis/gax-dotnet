@@ -266,6 +266,7 @@ namespace Google.Api {
   /// <summary>
   /// Required information for every language.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CommonLanguageSettings : pb::IMessage<CommonLanguageSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -494,6 +495,7 @@ namespace Google.Api {
   /// <summary>
   /// Details about how and where to publish client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ClientLibrarySettings : pb::IMessage<ClientLibrarySettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1166,6 +1168,7 @@ namespace Google.Api {
   /// libraries](https://cloud.google.com/apis/docs/cloud-client-libraries)
   /// generated from the service config.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Publishing : pb::IMessage<Publishing>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1698,6 +1701,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Java client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class JavaSettings : pb::IMessage<JavaSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1994,6 +1998,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for C++ client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CppSettings : pb::IMessage<CppSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2198,6 +2203,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Php client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PhpSettings : pb::IMessage<PhpSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2402,6 +2408,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Python client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PythonSettings : pb::IMessage<PythonSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2606,6 +2613,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Node client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NodeSettings : pb::IMessage<NodeSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2810,6 +2818,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Dotnet client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class DotnetSettings : pb::IMessage<DotnetSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3174,6 +3183,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Ruby client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RubySettings : pb::IMessage<RubySettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3378,6 +3388,7 @@ namespace Google.Api {
   /// <summary>
   /// Settings for Go client libraries.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class GoSettings : pb::IMessage<GoSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3582,6 +3593,7 @@ namespace Google.Api {
   /// <summary>
   /// Describes the generator configuration for a method.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MethodSettings : pb::IMessage<MethodSettings>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3850,6 +3862,7 @@ namespace Google.Api {
       /// generators (e.g.
       /// [Java](https://github.com/googleapis/gapic-generator-java/blob/04c2faa191a9b5a10b92392fe8482279c4404803/src/main/java/com/google/api/generator/gapic/composer/common/RetrySettingsComposer.java)).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class LongRunning : pb::IMessage<LongRunning>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

@@ -72,6 +72,7 @@ namespace Google.Api {
   /// <summary>
   /// Rich semantic information of an API field beyond basic typing.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class FieldInfo : pb::IMessage<FieldInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

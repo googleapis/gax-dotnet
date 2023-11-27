@@ -43,6 +43,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
   #region Messages
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BadSimpleRequest : pb::IMessage<BadSimpleRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -232,6 +233,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BadSimpleResponse : pb::IMessage<BadSimpleResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

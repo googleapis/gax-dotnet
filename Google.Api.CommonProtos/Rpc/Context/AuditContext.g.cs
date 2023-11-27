@@ -54,6 +54,7 @@ namespace Google.Rpc.Context {
   /// <summary>
   /// `AuditContext` provides information that is needed for audit logging.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AuditContext : pb::IMessage<AuditContext>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

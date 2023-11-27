@@ -49,6 +49,7 @@ namespace Google.Type {
   /// <summary>
   /// Represents an amount of money with its currency type.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Money : pb::IMessage<Money>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

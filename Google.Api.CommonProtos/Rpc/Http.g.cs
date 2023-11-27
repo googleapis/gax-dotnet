@@ -55,6 +55,7 @@ namespace Google.Rpc {
   /// <summary>
   /// Represents an HTTP request.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HttpRequest : pb::IMessage<HttpRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -360,6 +361,7 @@ namespace Google.Rpc {
   /// <summary>
   /// Represents an HTTP response.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HttpResponse : pb::IMessage<HttpResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -665,6 +667,7 @@ namespace Google.Rpc {
   /// <summary>
   /// Represents an HTTP header.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HttpHeader : pb::IMessage<HttpHeader>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

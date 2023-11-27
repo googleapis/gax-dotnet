@@ -56,6 +56,7 @@ namespace Google.Type {
   /// When the start equals the end, the interval is empty (matches no time).
   /// When both start and end are unspecified, the interval matches any time.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Interval : pb::IMessage<Interval>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

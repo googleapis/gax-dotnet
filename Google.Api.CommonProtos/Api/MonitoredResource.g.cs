@@ -73,6 +73,7 @@ namespace Google.Api {
   /// provide a `list` method that returns the monitored resource descriptors used
   /// by the API.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MonitoredResourceDescriptor : pb::IMessage<MonitoredResourceDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -488,6 +489,7 @@ namespace Google.Api {
   ///                   "instance_id": "12345678901234",
   ///                   "zone": "us-central1-a" }}
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MonitoredResource : pb::IMessage<MonitoredResource>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -725,6 +727,7 @@ namespace Google.Api {
   /// Logging use an ingestion pipeline to extract metadata for cloud resources of
   /// all types, and store the metadata in this message.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MonitoredResourceMetadata : pb::IMessage<MonitoredResourceMetadata>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
