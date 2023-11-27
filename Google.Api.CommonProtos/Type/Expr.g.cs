@@ -79,6 +79,7 @@ namespace Google.Type {
   /// are determined by the service that evaluates it. See the service
   /// documentation for additional information.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Expr : pb::IMessage<Expr>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

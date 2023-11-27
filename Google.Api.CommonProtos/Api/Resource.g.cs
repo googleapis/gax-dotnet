@@ -133,6 +133,7 @@ namespace Google.Api {
   ///       pattern: "organizations/{organization}/logs/{log}"
   ///       pattern: "billingAccounts/{billing_account}/logs/{log}"
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ResourceDescriptor : pb::IMessage<ResourceDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -653,6 +654,7 @@ namespace Google.Api {
   /// Defines a proto annotation that describes a string field that refers to
   /// an API resource.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ResourceReference : pb::IMessage<ResourceReference>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

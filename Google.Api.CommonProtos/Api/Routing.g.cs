@@ -421,6 +421,7 @@ namespace Google.Api {
   ///     x-goog-request-params:
   ///     table_location=instances/instance_bar&amp;routing_id=prof_qux
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RoutingRule : pb::IMessage<RoutingRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -610,6 +611,7 @@ namespace Google.Api {
   /// <summary>
   /// A projection from an input message to the GRPC or REST header.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RoutingParameter : pb::IMessage<RoutingParameter>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

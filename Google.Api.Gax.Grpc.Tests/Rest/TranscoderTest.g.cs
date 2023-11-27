@@ -44,34 +44,34 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "b2R5GAMgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdCIOCgxFbXB0eVJl",
             "cXVlc3QibQoMU2ltcGxlRmllbGRzEgwKBG5hbWUYASABKAkSDwoHaW50ZWdl",
             "chgCIAEoBRIPCgdib29sZWFuGAMgASgIEi0KCXRpbWVzdGFtcBgEIAEoCzIa",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiLAoUUmVxdWlyZWRCb29sZWFu",
-            "RmllbGQSFAoHYm9vbGVhbhgBIAEoCEID4EECIsoDChBRdWVyeVRlc3RNZXNz",
-            "YWdlEh0KEHJlcXVpcmVkX2ludGVnZXIYASABKAVCA+BBAhIkChdwcm90bzNf",
-            "b3B0aW9uYWxfaW50ZWdlchgCIAEoBUgAiAEBEhcKD3JlcGVhdGVkX3N0cmlu",
-            "ZxgDIAMoCRJHCgZuZXN0ZWQYBCABKAsyNy5nb29nbGUuYXBpLmdheC5ncnBj",
-            "LnJlc3QudGVzdHMuUXVlcnlUZXN0TWVzc2FnZS5OZXN0ZWQSDwoHaW5fcGF0",
-            "aBgFIAEoCRJPCgplbnVtX2ZpZWxkGAYgASgOMjsuZ29vZ2xlLmFwaS5nYXgu",
-            "Z3JwYy5yZXN0LnRlc3RzLlF1ZXJ5VGVzdE1lc3NhZ2UuU2FtcGxlRW51bRpD",
-            "CgZOZXN0ZWQSCQoBeBgBIAEoBRIJCgF5GAIgASgFEgkKAXoYAyABKAUSEAoD",
-            "b3B0GAQgASgFSACIAQFCBgoEX29wdCJMCgpTYW1wbGVFbnVtEhsKF1NBTVBM",
-            "RV9FTlVNX1VOU1BFQ0lGSUVEEAASDwoLRklSU1RfVkFMVUUQARIQCgxTRUNP",
-            "TkRfVkFMVUUQAkIaChhfcHJvdG8zX29wdGlvbmFsX2ludGVnZXIi3QEKGERv",
-            "dWJsZU5lc3RpbmdUZXN0TWVzc2FnZRJKCgF4GAEgASgLMj8uZ29vZ2xlLmFw",
-            "aS5nYXguZ3JwYy5yZXN0LnRlc3RzLkRvdWJsZU5lc3RpbmdUZXN0TWVzc2Fn",
-            "ZS5OZXN0ZWQaGQoMRG91YmxlTmVzdGVkEgkKAXoYASABKAUaWgoGTmVzdGVk",
-            "ElAKAXkYASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMu",
-            "RG91YmxlTmVzdGluZ1Rlc3RNZXNzYWdlLkRvdWJsZU5lc3RlZCKXAgobUmVx",
-            "dWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlElAKAXoYASABKAsyRS5nb29nbGUu",
-            "YXBpLmdheC5ncnBjLnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVN",
-            "ZXNzYWdlLlJlY3Vyc2l2ZRI8CgZzaW1wbGUYAiABKAsyLC5nb29nbGUuYXBp",
-            "LmdheC5ncnBjLnJlc3QudGVzdHMuU2ltcGxlRmllbGRzGmgKCVJlY3Vyc2l2",
-            "ZRJQCgF4GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3Rz",
-            "LlJlcXVlc3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5SZWN1cnNpdmUSCQoBeRgC",
-            "IAEoBSJ+ChNTZXBhcmF0ZUJvZHlSZXF1ZXN0EkYKBGJvZHkYASABKAsyOC5n",
-            "b29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuU2VwYXJhdGVCb2R5UmVx",
-            "dWVzdC5Cb2R5EgwKBG5hbWUYAiABKAkaEQoEQm9keRIJCgF4GAEgASgFIjEK",
-            "EE11bHRpTmFtZVJlcXVlc3QSDQoFZmlyc3QYASABKAkSDgoGc2Vjb25kGAIg",
-            "ASgJYgZwcm90bzM="));
+            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiLQoUUmVxdWlyZWRCb29sZWFu",
+            "RmllbGQSFQoHYm9vbGVhbhgBIAEoCEIE4kEBAiLLAwoQUXVlcnlUZXN0TWVz",
+            "c2FnZRIeChByZXF1aXJlZF9pbnRlZ2VyGAEgASgFQgTiQQECEiQKF3Byb3Rv",
+            "M19vcHRpb25hbF9pbnRlZ2VyGAIgASgFSACIAQESFwoPcmVwZWF0ZWRfc3Ry",
+            "aW5nGAMgAygJEkcKBm5lc3RlZBgEIAEoCzI3Lmdvb2dsZS5hcGkuZ2F4Lmdy",
+            "cGMucmVzdC50ZXN0cy5RdWVyeVRlc3RNZXNzYWdlLk5lc3RlZBIPCgdpbl9w",
+            "YXRoGAUgASgJEk8KCmVudW1fZmllbGQYBiABKA4yOy5nb29nbGUuYXBpLmdh",
+            "eC5ncnBjLnJlc3QudGVzdHMuUXVlcnlUZXN0TWVzc2FnZS5TYW1wbGVFbnVt",
+            "GkMKBk5lc3RlZBIJCgF4GAEgASgFEgkKAXkYAiABKAUSCQoBehgDIAEoBRIQ",
+            "CgNvcHQYBCABKAVIAIgBAUIGCgRfb3B0IkwKClNhbXBsZUVudW0SGwoXU0FN",
+            "UExFX0VOVU1fVU5TUEVDSUZJRUQQABIPCgtGSVJTVF9WQUxVRRABEhAKDFNF",
+            "Q09ORF9WQUxVRRACQhoKGF9wcm90bzNfb3B0aW9uYWxfaW50ZWdlciLdAQoY",
+            "RG91YmxlTmVzdGluZ1Rlc3RNZXNzYWdlEkoKAXgYASABKAsyPy5nb29nbGUu",
+            "YXBpLmdheC5ncnBjLnJlc3QudGVzdHMuRG91YmxlTmVzdGluZ1Rlc3RNZXNz",
+            "YWdlLk5lc3RlZBoZCgxEb3VibGVOZXN0ZWQSCQoBehgBIAEoBRpaCgZOZXN0",
+            "ZWQSUAoBeRgBIAEoCzJFLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0",
+            "cy5Eb3VibGVOZXN0aW5nVGVzdE1lc3NhZ2UuRG91YmxlTmVzdGVkIpcCChtS",
+            "ZXF1ZXN0V2l0aFJlY3Vyc2l2ZU1lc3NhZ2USUAoBehgBIAEoCzJFLmdvb2ds",
+            "ZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5SZXF1ZXN0V2l0aFJlY3Vyc2l2",
+            "ZU1lc3NhZ2UuUmVjdXJzaXZlEjwKBnNpbXBsZRgCIAEoCzIsLmdvb2dsZS5h",
+            "cGkuZ2F4LmdycGMucmVzdC50ZXN0cy5TaW1wbGVGaWVsZHMaaAoJUmVjdXJz",
+            "aXZlElAKAXgYASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVz",
+            "dHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJlY3Vyc2l2ZRIJCgF5",
+            "GAIgASgFIn4KE1NlcGFyYXRlQm9keVJlcXVlc3QSRgoEYm9keRgBIAEoCzI4",
+            "Lmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5TZXBhcmF0ZUJvZHlS",
+            "ZXF1ZXN0LkJvZHkSDAoEbmFtZRgCIAEoCRoRCgRCb2R5EgkKAXgYASABKAUi",
+            "MQoQTXVsdGlOYW1lUmVxdWVzdBINCgVmaXJzdBgBIAEoCRIOCgZzZWNvbmQY",
+            "AiABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -96,6 +96,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
   /// <summary>
   /// A collection of tests.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class TestFile : pb::IMessage<TestFile>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -304,6 +305,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
   /// A single transcoding test. Most tests only exercise a single HttpRule,
   /// without any additional bindings, but the same test structure works for both.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Test : pb::IMessage<Test>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -970,6 +972,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
   /// <summary>
   /// The expected output of a successful transcoding operation.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HttpRequest : pb::IMessage<HttpRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1256,6 +1259,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
   /// <summary>
   /// Request messages
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class EmptyRequest : pb::IMessage<EmptyRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1408,6 +1412,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SimpleFields : pb::IMessage<SimpleFields>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1717,6 +1722,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RequiredBooleanField : pb::IMessage<RequiredBooleanField>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1909,6 +1915,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class QueryTestMessage : pb::IMessage<QueryTestMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2313,6 +2320,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         [pbr::OriginalName("SECOND_VALUE")] SecondValue = 2,
       }
 
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Nested : pb::IMessage<Nested>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -2635,6 +2643,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class DoubleNestingTestMessage : pb::IMessage<DoubleNestingTestMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2836,6 +2845,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class DoubleNested : pb::IMessage<DoubleNested>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -3025,6 +3035,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
       }
 
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Nested : pb::IMessage<Nested>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -3228,6 +3239,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RequestWithRecursiveMessage : pb::IMessage<RequestWithRecursiveMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3475,6 +3487,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Recursive : pb::IMessage<Recursive>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -3715,6 +3728,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SeparateBodyRequest : pb::IMessage<SeparateBodyRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3953,6 +3967,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Body : pb::IMessage<Body>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -4147,6 +4162,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MultiNameRequest : pb::IMessage<MultiNameRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

@@ -63,6 +63,7 @@ namespace Google.Api {
   /// <summary>
   /// `Backend` defines the backend configuration for a service.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Backend : pb::IMessage<Backend>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -249,6 +250,7 @@ namespace Google.Api {
   /// <summary>
   /// A backend rule provides configuration for an individual API element.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BackendRule : pb::IMessage<BackendRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

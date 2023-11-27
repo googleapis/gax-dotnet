@@ -77,6 +77,7 @@ namespace Google.Type {
   ///  Reference(s):
   ///   - https://github.com/google/libphonenumber
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PhoneNumber : pb::IMessage<PhoneNumber>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -448,6 +449,7 @@ namespace Google.Type {
       /// with different usage and pricing, even if those regions share the same
       /// country calling code (e.g. US and CA).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class ShortCode : pb::IMessage<ShortCode>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

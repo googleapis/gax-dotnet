@@ -79,6 +79,7 @@ namespace Google.Type {
   /// This type is more flexible than some applications may want. Make sure to
   /// document and validate your application's limitations.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class DateTime : pb::IMessage<DateTime>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -662,6 +663,7 @@ namespace Google.Type {
   /// Represents a time zone from the
   /// [IANA Time Zone Database](https://www.iana.org/time-zones).
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class TimeZone : pb::IMessage<TimeZone>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

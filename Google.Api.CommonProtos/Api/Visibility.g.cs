@@ -120,6 +120,7 @@ namespace Google.Api {
   /// Here, all methods are publicly visible except for the restricted methods
   /// EnhancedSearch and Delegate.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Visibility : pb::IMessage<Visibility>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -307,6 +308,7 @@ namespace Google.Api {
   /// A visibility rule provides visibility configuration for an individual API
   /// element.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class VisibilityRule : pb::IMessage<VisibilityRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

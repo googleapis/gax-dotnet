@@ -54,6 +54,7 @@ namespace Google.Type {
   /// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html
   /// [decimal.Decimal]: https://docs.python.org/3/library/decimal.html
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Decimal : pb::IMessage<Decimal>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

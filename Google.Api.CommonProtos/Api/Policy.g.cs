@@ -78,6 +78,7 @@ namespace Google.Api {
   /// generate the overall policy that will be used for automatic runtime
   /// policy enforcement and documentation generation.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class FieldPolicy : pb::IMessage<FieldPolicy>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -365,6 +366,7 @@ namespace Google.Api {
   /// <summary>
   /// Defines policies applying to an RPC method.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MethodPolicy : pb::IMessage<MethodPolicy>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

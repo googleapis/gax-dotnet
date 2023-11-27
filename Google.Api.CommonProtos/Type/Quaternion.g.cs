@@ -103,6 +103,7 @@ namespace Google.Type {
   /// kept positive, which can be achieved by changing all the signs when `w` is
   /// negative.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Quaternion : pb::IMessage<Quaternion>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

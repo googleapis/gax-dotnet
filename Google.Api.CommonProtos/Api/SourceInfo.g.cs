@@ -50,6 +50,7 @@ namespace Google.Api {
   /// <summary>
   /// Source information used to create a Service Config
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SourceInfo : pb::IMessage<SourceInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

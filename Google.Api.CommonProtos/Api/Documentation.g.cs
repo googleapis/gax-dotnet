@@ -112,6 +112,7 @@ namespace Google.Api {
   /// The directive `suppress_warning` does not directly affect documentation
   /// and is documented together with service config validation.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Documentation : pb::IMessage<Documentation>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -505,6 +506,7 @@ namespace Google.Api {
   /// <summary>
   /// A documentation rule provides information about individual API elements.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class DocumentationRule : pb::IMessage<DocumentationRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -790,6 +792,7 @@ namespace Google.Api {
   /// Represents a documentation page. A page can contain subpages to represent
   /// nested documentation set structure.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Page : pb::IMessage<Page>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

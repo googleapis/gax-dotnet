@@ -53,6 +53,7 @@ namespace Google.Api {
   /// <summary>
   /// Configuration controlling usage of a service.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Usage : pb::IMessage<Usage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -346,6 +347,7 @@ namespace Google.Api {
   ///       - selector: "google.example.library.v1.LibraryService.CreateBook"
   ///         allow_unregistered_calls: true
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class UsageRule : pb::IMessage<UsageRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

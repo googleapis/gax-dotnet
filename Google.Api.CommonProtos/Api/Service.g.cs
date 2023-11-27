@@ -116,6 +116,7 @@ namespace Google.Api {
   ///         requirements:
   ///           provider_id: google_calendar_auth
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Service : pb::IMessage<Service>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

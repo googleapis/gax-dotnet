@@ -55,6 +55,7 @@ namespace Google.Api {
   ///     control:
   ///       environment: servicecontrol.googleapis.com
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Control : pb::IMessage<Control>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

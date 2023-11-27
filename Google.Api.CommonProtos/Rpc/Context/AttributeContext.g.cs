@@ -119,6 +119,7 @@ namespace Google.Rpc.Context {
   /// verify the system specification before relying on an attribute generated
   /// a system.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AttributeContext : pb::IMessage<AttributeContext>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -660,6 +661,7 @@ namespace Google.Rpc.Context {
       /// or receives the request. Service peers should fill in
       /// `principal` and `labels` as appropriate.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Peer : pb::IMessage<Peer>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1010,6 +1012,7 @@ namespace Google.Rpc.Context {
       /// a network API request. The terminology is based on the conventions used
       /// by Google APIs, Istio, and OpenAPI.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Api : pb::IMessage<Api>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1333,6 +1336,7 @@ namespace Google.Rpc.Context {
       /// based on the JSON Web Token (JWT) standard, but the terms also
       /// correlate to concepts in other standards.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Auth : pb::IMessage<Auth>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1717,6 +1721,7 @@ namespace Google.Rpc.Context {
       /// request is not an HTTP request, the runtime system should try to map
       /// the actual request to an equivalent HTTP request.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Request : pb::IMessage<Request>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -2371,6 +2376,7 @@ namespace Google.Rpc.Context {
       /// This message defines attributes for a typical network response. It
       /// generally models semantics of an HTTP response.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Response : pb::IMessage<Response>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -2741,6 +2747,7 @@ namespace Google.Rpc.Context {
       /// addressable (named) entity provided by the destination service. For
       /// example, a file stored on a network storage service.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Resource : pb::IMessage<Resource>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

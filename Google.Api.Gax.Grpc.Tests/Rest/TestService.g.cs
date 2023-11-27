@@ -71,6 +71,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
   /// <summary>
   /// Used in HttpRulePathPatternTest. 
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RuleTestRequest : pb::IMessage<RuleTestRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -435,6 +436,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Nested : pb::IMessage<Nested>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -629,6 +631,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BundlingRequest : pb::IMessage<BundlingRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -844,6 +847,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BundlingResponse : pb::IMessage<BundlingResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1059,6 +1063,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SimpleRequest : pb::IMessage<SimpleRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1248,6 +1253,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SimpleResponse : pb::IMessage<SimpleResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1437,6 +1443,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PageStreamingRequest : pb::IMessage<PageStreamingRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1700,6 +1707,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PageStreamingResponse : pb::IMessage<PageStreamingResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

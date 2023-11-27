@@ -53,6 +53,7 @@ namespace Google.Type {
   /// &lt;a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
   /// standard&lt;/a>. Values must be within normalized ranges.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LatLng : pb::IMessage<LatLng>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

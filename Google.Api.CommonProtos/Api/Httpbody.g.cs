@@ -91,6 +91,7 @@ namespace Google.Api {
   /// Use of this type only changes how the request and response bodies are
   /// handled, all other features will continue to work unchanged.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HttpBody : pb::IMessage<HttpBody>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

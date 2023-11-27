@@ -174,6 +174,7 @@ namespace Google.Type {
   ///
   ///     // ...
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Color : pb::IMessage<Color>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

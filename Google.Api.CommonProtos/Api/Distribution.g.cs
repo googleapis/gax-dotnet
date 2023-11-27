@@ -86,6 +86,7 @@ namespace Google.Api {
   /// non-finite values (infinities or NaNs) in the population of values, as this
   /// will render the `mean` and `sum_of_squared_deviation` fields meaningless.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Distribution : pb::IMessage<Distribution>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -549,6 +550,7 @@ namespace Google.Api {
       /// <summary>
       /// The range of the population values.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Range : pb::IMessage<Range>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -798,6 +800,7 @@ namespace Google.Api {
       /// upper bound of the overflow bucket is +infinity. The finite buckets are
       /// so-called because both bounds are finite.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class BucketOptions : pb::IMessage<BucketOptions>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1160,6 +1163,7 @@ namespace Google.Api {
           ///
           ///    Lower bound (1 &lt;= i &lt; N):       offset + (width * (i - 1)).
           /// </summary>
+          [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
           public sealed partial class Linear : pb::IMessage<Linear>
           #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
               , pb::IBufferMessage
@@ -1444,6 +1448,7 @@ namespace Google.Api {
           ///
           ///    Lower bound (1 &lt;= i &lt; N):       scale * (growth_factor ^ (i - 1)).
           /// </summary>
+          [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
           public sealed partial class Exponential : pb::IMessage<Exponential>
           #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
               , pb::IBufferMessage
@@ -1729,6 +1734,7 @@ namespace Google.Api {
           /// only one element, then there are no finite buckets, and that single
           /// element is the common boundary of the overflow and underflow buckets.
           /// </summary>
+          [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
           public sealed partial class Explicit : pb::IMessage<Explicit>
           #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
               , pb::IBufferMessage
@@ -1924,6 +1930,7 @@ namespace Google.Api {
       /// was active when a value was added. They may contain further information,
       /// such as a example values and timestamps, origin, etc.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Exemplar : pb::IMessage<Exemplar>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

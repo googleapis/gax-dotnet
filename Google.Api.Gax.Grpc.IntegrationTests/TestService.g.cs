@@ -60,6 +60,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
   #region Messages
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SimpleRequest : pb::IMessage<SimpleRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -249,6 +250,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SimpleResponse : pb::IMessage<SimpleResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -438,6 +440,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class EchoHeadersRequest : pb::IMessage<EchoHeadersRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -590,6 +593,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class EchoHeadersResponse : pb::IMessage<EchoHeadersResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -771,6 +775,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class HeaderValue : pb::IMessage<HeaderValue>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

@@ -69,6 +69,7 @@ namespace Google.Api {
   ///      - name: EXTENDED_TILE_CACHE_PERIOD
   ///        type: INT64
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ProjectProperties : pb::IMessage<ProjectProperties>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -262,6 +263,7 @@ namespace Google.Api {
   /// These values can be set via API producer console. Only API providers can
   /// define and set these properties.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Property : pb::IMessage<Property>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

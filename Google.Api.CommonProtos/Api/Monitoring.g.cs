@@ -104,6 +104,7 @@ namespace Google.Api {
   ///         - library.googleapis.com/book/returned_count
   ///         - library.googleapis.com/book/num_overdue
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Monitoring : pb::IMessage<Monitoring>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -331,6 +332,7 @@ namespace Google.Api {
       /// Configuration of a specific monitoring destination (the producer project
       /// or the consumer project).
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class MonitoringDestination : pb::IMessage<MonitoringDestination>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage

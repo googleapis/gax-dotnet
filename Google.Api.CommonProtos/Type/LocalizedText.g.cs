@@ -50,6 +50,7 @@ namespace Google.Type {
   /// <summary>
   /// Localized variant of a text in a particular language.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LocalizedText : pb::IMessage<LocalizedText>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

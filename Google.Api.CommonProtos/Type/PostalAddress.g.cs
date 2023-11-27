@@ -70,6 +70,7 @@ namespace Google.Type {
   /// For more guidance on how to use this schema, please see:
   /// https://support.google.com/business/answer/6397478
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PostalAddress : pb::IMessage<PostalAddress>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

@@ -102,6 +102,7 @@ namespace Google.Rpc {
   ///       }
   ///     }
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ErrorInfo : pb::IMessage<ErrorInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -394,6 +395,7 @@ namespace Google.Rpc {
   /// number of retries have been reached or a maximum retry delay cap has been
   /// reached.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RetryInfo : pb::IMessage<RetryInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -598,6 +600,7 @@ namespace Google.Rpc {
   /// <summary>
   /// Describes additional debugging info.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class DebugInfo : pb::IMessage<DebugInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -832,6 +835,7 @@ namespace Google.Rpc {
   /// Also see RetryInfo and Help types for other details about handling a
   /// quota failure.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class QuotaFailure : pb::IMessage<QuotaFailure>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1020,6 +1024,7 @@ namespace Google.Rpc {
       /// A message type used to describe a single quota violation.  For example, a
       /// daily quota or a custom quota that was exceeded.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Violation : pb::IMessage<Violation>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1272,6 +1277,7 @@ namespace Google.Rpc {
   /// acknowledged, it could list the terms of service violation in the
   /// PreconditionFailure message.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class PreconditionFailure : pb::IMessage<PreconditionFailure>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1459,6 +1465,7 @@ namespace Google.Rpc {
       /// <summary>
       /// A message type used to describe a single precondition failure.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Violation : pb::IMessage<Violation>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -1747,6 +1754,7 @@ namespace Google.Rpc {
   /// Describes violations in a client request. This error type focuses on the
   /// syntactic aspects of the request.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class BadRequest : pb::IMessage<BadRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1934,6 +1942,7 @@ namespace Google.Rpc {
       /// <summary>
       /// A message type used to describe a single bad request field.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class FieldViolation : pb::IMessage<FieldViolation>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -2211,6 +2220,7 @@ namespace Google.Rpc {
   /// Contains metadata about the request that clients can attach when filing a bug
   /// or providing other forms of feedback.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RequestInfo : pb::IMessage<RequestInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2448,6 +2458,7 @@ namespace Google.Rpc {
   /// <summary>
   /// Describes the resource that is being accessed.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ResourceInfo : pb::IMessage<ResourceInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2776,6 +2787,7 @@ namespace Google.Rpc {
   /// project hasn't enabled the accessed service, this can contain a URL pointing
   /// directly to the right place in the developer console to flip the bit.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Help : pb::IMessage<Help>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2963,6 +2975,7 @@ namespace Google.Rpc {
       /// <summary>
       /// Describes a URL link.
       /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
       public sealed partial class Link : pb::IMessage<Link>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
@@ -3204,6 +3217,7 @@ namespace Google.Rpc {
   /// Provides a localized error message that is safe to return to the user
   /// which can be attached to an RPC error.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LocalizedMessage : pb::IMessage<LocalizedMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

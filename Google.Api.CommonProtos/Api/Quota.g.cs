@@ -109,6 +109,7 @@ namespace Google.Api {
   ///        metric_kind: DELTA
   ///        value_type: INT64
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Quota : pb::IMessage<Quota>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -324,6 +325,7 @@ namespace Google.Api {
   /// Bind API methods to metrics. Binding a method to a metric causes that
   /// metric's configured quota behaviors to apply to the method call.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class MetricRule : pb::IMessage<MetricRule>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -558,6 +560,7 @@ namespace Google.Api {
   /// for a limit type. There can be at most one limit for a duration and limit
   /// type combination defined within a `QuotaGroup`.
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class QuotaLimit : pb::IMessage<QuotaLimit>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

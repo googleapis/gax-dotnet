@@ -58,6 +58,7 @@ namespace Google.Api {
   ///       - key: /customer_id
   ///         description: Identifier of a library customer
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LogDescriptor : pb::IMessage<LogDescriptor>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
