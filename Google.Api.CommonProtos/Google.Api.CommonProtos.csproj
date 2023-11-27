@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="[3.23.0, 4.0.0)" />
+    <PackageReference Include="Google.Protobuf" Version="[3.25.0, 4.0.0)" />
     <None Remove="proto-header.txt" />
     <None Include="protos\**\*.proto" Pack="true" PackagePath="content/protos" />
     <None Include="build\*.targets" Pack="true" PackagePath="build" />
