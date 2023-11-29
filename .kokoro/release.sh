@@ -7,6 +7,8 @@ SCRIPT_DIR=$(dirname "$SCRIPT")
 
 cd $SCRIPT_DIR
 
+# Restore tools, in particular the SBOM generator
+dotnet tool restore
 # Make sure secrets are loaded in a well known location before running releasetool
 source ./populatesecrets.sh
 
@@ -36,4 +38,9 @@ export NUGET_API_KEY="$(cat "$SECRETS_LOCATION"/google-apis-nuget-api-key)"
 
 # Push the changes to nuget.
 cd ./releasebuild/nuget
-for pkg in *.nupkg; do dotnet nuget push -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY $pkg; done
+
+for pkg in *.nupkg
+do
+    dotnet generate-sbom $pkg
+    dotnet nuget push -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY $pkg;
+done
