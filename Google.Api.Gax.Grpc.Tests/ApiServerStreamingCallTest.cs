@@ -8,6 +8,8 @@
 using Google.Api.Gax.Testing;
 using Grpc.Core;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -171,6 +173,60 @@ namespace Google.Api.Gax.Grpc.Tests
             var entries = logger.ListLogEntries();
             Assert.Equal(2, entries.Count);
             Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
+        }
+
+        [Fact]
+        public void WithTracing_Sync()
+        {
+            var sourceName = "source";
+            Activity capturedActivity = null;
+
+            // We need a listener attached to an ActivitySource, otherwise activity won't be created.
+            using var listener = new ActivityListener
+            {
+                ShouldListenTo = source => source.Name == sourceName,
+                Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded,
+                ActivityStarted = activity => capturedActivity = activity
+            };
+            ActivitySource.AddActivityListener(listener);
+            using var source = new ActivitySource(sourceName);
+            var call = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(AsyncServerStreamingCall<SimpleResponse>)),
+                (req, cs) => null,
+                null).WithTracing(source);
+            call.Call(new SimpleRequest(), null);
+            Assert.NotNull(capturedActivity);
+            Assert.Contains("SimpleMethod", capturedActivity.OperationName);
+            Assert.Equal(ApiCallTracingExtensions.ServerStreamingCallType, capturedActivity.Tags.First(j => j.Key == ApiCallTracingExtensions.GrpcCallTypeTag).Value);
+            Assert.Equal(sourceName, capturedActivity.Source.Name);
+        }
+
+        [Fact]
+        public async Task WithTracing_Async()
+        {
+            var sourceName = "source";
+            Activity capturedActivity = null;
+
+            // We need a listener attached to an ActivitySource, otherwise activity won't be created.
+            using var listener = new ActivityListener
+            {
+                ShouldListenTo = source => source.Name == sourceName,
+                Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded,
+                ActivityStarted = activity => capturedActivity = activity
+            };
+            ActivitySource.AddActivityListener(listener);
+            using var source = new ActivitySource(sourceName);
+            var call = new ApiServerStreamingCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(AsyncServerStreamingCall<SimpleResponse>)),
+                (req, cs) => null,
+                null).WithTracing(source);
+            await call.CallAsync(new SimpleRequest(), null);
+            Assert.NotNull(capturedActivity);
+            Assert.Contains("SimpleMethod", capturedActivity.OperationName);
+            Assert.Equal(ApiCallTracingExtensions.ServerStreamingCallType, capturedActivity.Tags.FirstOrDefault(j => j.Key == ApiCallTracingExtensions.GrpcCallTypeTag).Value);
+            Assert.Equal(sourceName, capturedActivity.Source.Name);
         }
     }
 }

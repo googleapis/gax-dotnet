@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -26,10 +27,23 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <param name="settings">The service settings.</param>
         /// <param name="logger">The logger to use for API calls</param>
-        public ClientHelper(ServiceSettingsBase settings, ILogger logger)
+        // TODO: We can make this constructor obsolete.
+        public ClientHelper(ServiceSettingsBase settings, ILogger logger) : this(settings, logger, null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a helper from the given settings.
+        /// Behavior is undefined if settings are changed after construction.
+        /// </summary>
+        /// <param name="settings">The service settings.</param>
+        /// <param name="logger">The logger to use for API calls</param>
+        /// <param name="activitySource">The source to create and start <see cref="Activity"/>.</param>
+        public ClientHelper(ServiceSettingsBase settings, ILogger logger, ActivitySource activitySource)
         {
             GaxPreconditions.CheckNotNull(settings, nameof(settings));
             Logger = logger;
+            ActivitySource = activitySource;
             Clock = settings.Clock ?? SystemClock.Instance;
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
@@ -56,6 +70,11 @@ namespace Google.Api.Gax.Grpc
         public ILogger Logger { get; }
 
         /// <summary>
+        /// The ActivitySource used by this instance, or null if it does not perform tracing.
+        /// </summary>
+        public ActivitySource ActivitySource { get; }
+
+        /// <summary>
         /// Builds an <see cref="ApiCall"/> given suitable underlying async and sync calls.
         /// </summary>
         /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
@@ -77,9 +96,10 @@ namespace Google.Api.Gax.Grpc
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiCall.Create(methodName, asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
-                .WithLogging(Logger)
+                .WithTracing(ActivitySource)
+                .WithLogging(Logger)               
                 .WithRetry(Clock, Scheduler, Logger)
-                .WithMergedBaseCallSettings(_versionCallSettings);
+                .WithMergedBaseCallSettings(_versionCallSettings);               
         }
 
         /// <summary>
@@ -101,6 +121,7 @@ namespace Google.Api.Gax.Grpc
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiServerStreamingCall.Create(methodName, grpcCall, baseCallSettings, Clock)
+                .WithTracing(ActivitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -125,6 +146,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithTracing(ActivitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -149,6 +171,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiClientStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithTracing(ActivitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }

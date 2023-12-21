@@ -8,6 +8,7 @@
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
@@ -144,5 +145,14 @@ namespace Google.Api.Gax.Grpc
                     _asyncCall.WithLogging(logger, _methodName),
                     _syncCall.WithLogging(logger, _methodName),
                     BaseCallSettings);
+        
+        internal ApiServerStreamingCall<TRequest, TResponse> WithTracing(ActivitySource source) =>
+           source is null
+               ? this
+               : new ApiServerStreamingCall<TRequest, TResponse>(
+                   _methodName,
+                   _asyncCall.WithTracing(source, _methodName),
+                   _syncCall.WithTracing(source, _methodName),
+                   BaseCallSettings);
     }
 }

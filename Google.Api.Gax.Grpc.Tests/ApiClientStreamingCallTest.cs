@@ -7,6 +7,8 @@
 
 using Google.Api.Gax.Testing;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -51,6 +53,34 @@ namespace Google.Api.Gax.Grpc.Tests
             var logs = logger.ListLogEntries();
             var entry = Assert.Single(logger.ListLogEntries());
             Assert.Contains("ClientStreamingMethod", entry.Message);
+        }
+
+        [Fact]
+        public void WithTracing()
+        {
+            var sourceName = "source";
+            Activity capturedActivity = null;
+
+            // We need a listener attached to an ActivitySource, otherwise activity won't be created.
+            using var listener = new ActivityListener
+            {
+                ShouldListenTo = source => source.Name == sourceName,
+                Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded,
+                ActivityStarted = activity => capturedActivity = activity
+            };
+            ActivitySource.AddActivityListener(listener);
+            using var source = new ActivitySource(sourceName);
+            var apiCall = ApiClientStreamingCall.Create<int, int>(
+                "ClientStreamingMethod",
+                callOptions => null,
+                null,
+                new ClientStreamingSettings(100),
+                new FakeClock()).WithTracing(source);
+            apiCall.Call(null);
+            Assert.NotNull(capturedActivity);
+            Assert.Equal(ApiCallTracingExtensions.ClientStreamingCallType, capturedActivity.Tags.First(j => j.Key == ApiCallTracingExtensions.GrpcCallTypeTag).Value);
+            Assert.Contains("ClientStreamingMethod", capturedActivity.OperationName);
+            Assert.Equal(sourceName, capturedActivity.Source.Name);
         }
     }
 }
