@@ -18,6 +18,6 @@
     <PackageReference Include="Google.Protobuf" Version="[3.25.0, 4.0.0)" />
     <None Remove="proto-header.txt" />
     <None Include="protos\**\*.proto" Pack="true" PackagePath="content/protos" />
-    <None Include="build\*.targets" Pack="true" PackagePath="build" />
+    <None Include="build\*.targets" Pack="true" PackagePath="build;buildTransitive" />
   </ItemGroup>
 </Project>
