@@ -31,7 +31,7 @@ public partial class Status
     /// <example>
     /// For example, to retrieve any <see cref="ErrorInfo"/> that might be in the status details:
     /// <code>
-    /// var errorInfo = status.GetStatusDetail&lt;ErrorInfo&gt;();
+    /// var errorInfo = status.GetDetail&lt;ErrorInfo&gt;();
     /// if (errorInfo is not null)
     /// {
     ///    // ...
