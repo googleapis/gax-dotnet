@@ -20,6 +20,8 @@ namespace Google.Api.Gax.Grpc
     /// </summary>
     public sealed class ServiceMetadata
     {
+        internal const string DefaultUniverseDomain = "googleapis.com";
+
         /// <summary>
         /// The protobuf service descriptor for this service. This is never null.
         /// </summary>

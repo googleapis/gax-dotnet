@@ -40,8 +40,57 @@ namespace Google.Api.Gax.Grpc
         protected ServiceMetadata ServiceMetadata { get; }
 
         /// <summary>
+        /// The universe domain to connect to, or null to use the default universe domain <see cref="ServiceMetadata.DefaultUniverseDomain"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="UniverseDomain"/> is used to build the endpoint to connect to, unless <see cref="Endpoint"/>
+        /// is set, in which case <see cref="Endpoint"/> will be used without further modification.
+        /// </para>
+        /// <para>
+        /// If default credentials or one of <see cref="GoogleCredential"/>, <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>
+        /// is used, <see cref="GoogleCredential.GetUniverseDomain"/> should be:
+        /// <list type="bullet">
+        /// <item>The same as <see cref="UniverseDomain"/> if <see cref="UniverseDomain"/> has been set.</item>
+        /// <item><see cref="ServiceMetadata.DefaultUniverseDomain"/> otherwise.</item>
+        /// </list>
+        /// </para>
+        /// </remarks>
+        public string UniverseDomain { get; set; }
+
+        /// <summary>
+        /// Effective, and known, universe domain to connect to.
+        /// Will be null if <see cref="UniverseDomain"/> is not set and there's nothing to gain
+        /// from defaulting to <see cref="ServiceMetadata.DefaultUniverseDomain"/>. For instance,
+        /// if <see cref="CallInvoker"/> has been set, which is self contained, we really don't know
+        /// the universe we are in, and we really don't care.
+        /// </summary>
+        /// <remarks>
+        /// This will be:
+        /// <list type="bullet">
+        /// <item>The value of <see cref="UniverseDomain"/> if set.</item>
+        /// <item>null if <see cref="CallInvoker"/> is set.</item>
+        /// <item>null if both <see cref="Endpoint"/> and one of the non <see cref="GoogleCredential"/> options is used.</item>
+        /// <item><see cref="ServiceMetadata.DefaultUniverseDomain"/> otherwise.</item>
+        /// </list>
+        /// Note that we don't validate here that the builder properties are set in a valid combination. <see cref="EffectiveUniverseDomain"/>
+        /// is to be called from <see cref="CreateCallInvoker"/> and <see cref="CreateCallInvokerAsync(CancellationToken)"/> after <see cref="Validate"/>
+        /// has been called.
+        /// </remarks>
+#pragma warning disable CS0618 // Type or member is obsolete
+        protected string EffectiveUniverseDomain => UniverseDomain ??
+            (CallInvoker is not null ? null :
+            Endpoint is null ? ServiceMetadata.DefaultUniverseDomain :
+            TokenAccessMethod is null && ChannelCredentials is null && Credential is null ? ServiceMetadata.DefaultUniverseDomain :
+            null);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+        /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
         /// </summary>
+        /// <remarks>
+        /// If <see cref="Endpoint"/> is set, its value will take preference over that built using <see cref="UniverseDomain"/>.
+        /// </remarks>
         public string Endpoint { get; set; }
 
         /// <summary>
@@ -173,6 +222,7 @@ namespace Google.Api.Gax.Grpc
         protected void CopyCommonSettings<TOther>(ClientBuilderBase<TOther> source)
         {
             GaxPreconditions.CheckNotNull(source, nameof(source));
+            UniverseDomain = source.UniverseDomain;
             Endpoint = source.Endpoint;
             Scopes = source.Scopes;
             ChannelCredentials = source.ChannelCredentials;
@@ -244,17 +294,24 @@ namespace Google.Api.Gax.Grpc
         protected virtual void Validate()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            // If there's a call invoker, we shouldn't have any credentials-related information or an endpoint.
-            ValidateOptionExcludesOthers($"{nameof(CallInvoker)} cannot be specified with credentials settings or an endpoint", CallInvoker,
-                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, Endpoint, TokenAccessMethod, GoogleCredential, Credential);
+            // If there's a call invoker, we shouldn't have any credentials-related information, a universe domain or an endpoint.
+            ValidateOptionExcludesOthers($"{nameof(CallInvoker)} cannot be specified with credentials settings, a universe domain or an endpoint", CallInvoker,
+                ChannelCredentials, CredentialsPath, JsonCredentials, Scopes, UniverseDomain, Endpoint, TokenAccessMethod, GoogleCredential, Credential);
 
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
                 ChannelCredentials, CredentialsPath, JsonCredentials, TokenAccessMethod, GoogleCredential, Credential, ApiKey);
 
             ValidateOptionExcludesOthers("Scopes are not relevant when a token access method, channel credentials, ICredential or ApiKey are supplied", Scopes,
                 TokenAccessMethod, ChannelCredentials, Credential, ApiKey);
-#pragma warning restore CS0618 // Type or member is obsolete
 
+            GaxPreconditions.CheckState(
+                UniverseDomain is null ||
+                Endpoint is null ||
+                (TokenAccessMethod is null && Credential is null && ChannelCredentials is null),
+                $"{nameof(UniverseDomain)} cannot be specified if both an {nameof(Endpoint)} and one of {nameof(TokenAccessMethod)}, {nameof(ChannelCredentials)} or {nameof(Credential)} are specified");
+
+#pragma warning restore CS0618 // Type or member is obsolete
+            
             ValidateOptionExcludesOthers($"{nameof(QuotaProject)} cannot be specified if a {nameof(CallInvoker)}, {nameof(ChannelCredentials)}, {nameof(Credential)} or {nameof(ApiKey)} is specified", QuotaProject,
                 CallInvoker, ChannelCredentials, Credential, ApiKey);
         }
@@ -312,6 +369,7 @@ namespace Google.Api.Gax.Grpc
                             variable, nameof(EmulatorDetection), nameof(EmulatorDetection.EmulatorOnly));
                     }
                     // When the settings *only* support the use of an emulator, the other properties shouldn't be set.
+                    CheckNotSet(UniverseDomain, nameof(UniverseDomain));
                     CheckNotSet(Endpoint, nameof(Endpoint));
                     CheckNotSet(CallInvoker, nameof(CallInvoker));
                     CheckNotSet(ChannelCredentials, nameof(ChannelCredentials));
