@@ -7,7 +7,7 @@
 
 using Google.Api.Gax.Testing;
 using Grpc.Core;
-using Moq;
+using NSubstitute;
 using System;
 using System.Linq;
 using System.Threading;
@@ -43,22 +43,22 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public void ToCallOptions_NullSettings()
         {
-            var mockClock = new Mock<IClock>();
+            var mockClock = Substitute.For<IClock>();
             CallSettings callSettings = null;
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock);
             Assert.Null(options.Deadline);
-            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+            mockClock.DidNotReceive().GetCurrentDateTimeUtc();
         }
 
         [Fact]
         public void ToCallOptions_NoExpiration()
         {
-            var mockClock = new Mock<IClock>();
+            var mockClock = Substitute.For<IClock>();
             CallSettings callSettings = CallSettings.CancellationTokenNone;
             Assert.Null(callSettings.Expiration);
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock);
             Assert.Null(options.Deadline);
-            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+            mockClock.DidNotReceive().GetCurrentDateTimeUtc();
         }
 
         [Fact]
@@ -76,29 +76,29 @@ namespace Google.Api.Gax.Grpc.Tests
         public void ToCallOptions_ExpirationDeadline()
         {
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
-            var mockClock = new Mock<IClock>();
+            var mockClock = Substitute.For<IClock>();
             CallSettings callSettings = CallSettings.FromExpiration(Expiration.FromDeadline(deadline));
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock);
             // Value should be exact, as we control time precisely.
             Assert.Equal(options.Deadline.Value, deadline);
-            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+            mockClock.DidNotReceive().GetCurrentDateTimeUtc();
         }
 
         [Fact]
         public void ToCallOptions_ExpirationNone()
         {
             var deadline = new DateTime(2015, 6, 19, 5, 2, 3, DateTimeKind.Utc);
-            var mockClock = new Mock<IClock>();
+            var mockClock = Substitute.For<IClock>();
             CallSettings callSettings = CallSettings.FromExpiration(Expiration.None);
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock);
             Assert.Null(options.Deadline);
-            mockClock.Verify(c => c.GetCurrentDateTimeUtc(), Times.Never);
+            mockClock.DidNotReceive().GetCurrentDateTimeUtc();
         }
 
         [Fact]
         public void ToCallOptions_All()
         {
-            var mockClock = new Mock<IClock>();
+            var mockClock = Substitute.For<IClock>();
             var callSettings = new CallSettings
             (
                 headerMutation: metadata => metadata.Add(new Metadata.Entry("1", "one")),
@@ -109,7 +109,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 writeOptions: new WriteOptions(WriteFlags.NoCompress),
                 propagationToken: null // Not possible to create/mock
             );
-            var options = callSettings.ToCallOptions(mockClock.Object);
+            var options = callSettings.ToCallOptions(mockClock);
             Assert.Equal(1, options.Headers.Count);
             Assert.Equal("[Entry: key=1, value=one]", options.Headers[0].ToString());
             Assert.Null(options.Deadline);
@@ -123,7 +123,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Throws<InvalidOperationException>(
                 () => CallSettings
                 .FromHeaderMutation(metadata => metadata.Add(new Metadata.Entry(header, value)))
-                .ToCallOptions(new Mock<IClock>().Object));
+                .ToCallOptions(Substitute.For<IClock>()));
 
         [Fact]
         public void ToCallOptions_ConcatenatesRoutingParams()
@@ -137,7 +137,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 .MergedWith(projects)
                 .MergedWith(resources);
 
-            var options = callSettings.ToCallOptions(new Mock<IClock>().Object);
+            var options = callSettings.ToCallOptions(Substitute.For<IClock>());
 
             var entry = Assert.Single(options.Headers, entry => entry.Key == CallSettings.RequestParamsHeader);
             Assert.Equal("locations=global&projects=my-project&resources=my-resource", entry.Value);
