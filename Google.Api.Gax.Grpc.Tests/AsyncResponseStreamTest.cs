@@ -7,7 +7,7 @@
 
 using Google.Api.Gax.Grpc.Testing;
 using Grpc.Core;
-using Moq;
+using NSubstitute;
 using System;
 using System.Linq;
 using System.Threading;
@@ -62,40 +62,40 @@ namespace Google.Api.Gax.Grpc.Tests
         [Fact]
         public async Task MoveNextAsync_Parameterless_WithoutGetAsyncEnumerator_UsesCancellationTokenNone()
         {
-            var mock = new Mock<IAsyncStreamReader<int>>(MockBehavior.Strict);
-            mock.Setup(x => x.MoveNext(CancellationToken.None)).Returns(Task.FromResult(true)).Verifiable();
+            var mock = Substitute.For<IAsyncStreamReader<int>>();
+            mock.MoveNext(CancellationToken.None).Returns(Task.FromResult(true));
 
-            var stream = new AsyncResponseStream<int>(mock.Object);
+            var stream = new AsyncResponseStream<int>(mock);
             Assert.True(await stream.MoveNextAsync());
 
-            mock.Verify();
+            _ = mock.Received(1).MoveNext(default);
         }
 
         [Fact]
         public async Task MoveNextAsync_Parameterless_AfterGetAsyncEnumerator_PropagatesToken()
         {
             var token = new CancellationTokenSource().Token;
-            var mock = new Mock<IAsyncStreamReader<int>>(MockBehavior.Strict);
-            mock.Setup(x => x.MoveNext(token)).Returns(Task.FromResult(true)).Verifiable();
+            var mock = Substitute.For<IAsyncStreamReader<int>>();
+            mock.MoveNext(token).Returns(Task.FromResult(true));
 
-            var stream = new AsyncResponseStream<int>(mock.Object);
+            var stream = new AsyncResponseStream<int>(mock);
             stream.GetAsyncEnumerator(token);
             Assert.True(await stream.MoveNextAsync());
 
-            mock.Verify();
+            _ = mock.Received(1).MoveNext(token);
         }
 
         [Fact]
         public async Task MoveNextAsync_WithCancellationToken_PropagatesToken()
         {
             var token = new CancellationTokenSource().Token;
-            var mock = new Mock<IAsyncStreamReader<int>>(MockBehavior.Strict);
-            mock.Setup(x => x.MoveNext(token)).Returns(Task.FromResult(true)).Verifiable();
+            var mock = Substitute.For<IAsyncStreamReader<int>>();
+            mock.MoveNext(token).Returns(Task.FromResult(true));
 
-            var stream = new AsyncResponseStream<int>(mock.Object);
+            var stream = new AsyncResponseStream<int>(mock);
             Assert.True(await stream.MoveNextAsync(token));
 
-            mock.Verify();
+            _ = mock.Received(1).MoveNext(token);
         }
 
         private AsyncResponseStream<int> CreateStream(params int[] array)
