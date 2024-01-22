@@ -313,7 +313,7 @@ namespace Google.Api.Gax.Grpc.Tests
                 // This write can fail if task completion inside writer is not atomic.
                 Task task = writer.WriteAsync(msg);
                 fake.CompleteCurrentTask();
-                await task.ConfigureAwait(false);
+                await task;
             }
             fake.AssertMessages(msgs);
         }
