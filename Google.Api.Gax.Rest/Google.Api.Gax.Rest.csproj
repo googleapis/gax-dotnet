@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
 
-    <PackageReference Include="Google.Apis.Auth" Version="[1.60.0, 2.0.0)" />
+    <PackageReference Include="Google.Apis.Auth" Version="[1.66.0, 2.0.0)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 </Project>

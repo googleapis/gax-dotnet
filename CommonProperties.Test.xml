@@ -16,10 +16,11 @@
 
   <!-- Common dependencies. Not *all* projects need all of these, but enough to make it worth doing. -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
-    <PackageReference Include="xunit" Version="2.5.0" />
-    <PackageReference Include="Xunit.Combinatorial" Version="1.5.25" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="Xunit.Combinatorial" Version="1.6.24" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6" />
+    <!-- TODO: Replace Moq with NSubstitute -->
     <PackageReference Include="Moq" Version="4.18.4" />
   </ItemGroup>
 
