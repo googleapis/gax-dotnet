@@ -24,5 +24,8 @@ namespace Google.Api.Gax.Grpc.Tests
 
         internal static ServiceMetadata WithDefaultScopes(this ServiceMetadata metadata, IEnumerable<string> defaultScopes) =>
             new ServiceMetadata(metadata.ServiceDescriptor, metadata.DefaultEndpoint, defaultScopes, metadata.SupportsScopedJwts, metadata.Transports, metadata.ApiMetadata);
+
+        internal static ServiceMetadata WithDefaultEndpoint(this ServiceMetadata metadata, string defaultEndpoint) =>
+            new ServiceMetadata(metadata.ServiceDescriptor, defaultEndpoint, metadata.DefaultScopes, metadata.SupportsScopedJwts, metadata.Transports, metadata.ApiMetadata);
     }
 }

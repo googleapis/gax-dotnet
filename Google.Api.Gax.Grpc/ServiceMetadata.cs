@@ -35,7 +35,17 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// The default endpoint for the service. This may be null, if a service has no default endpoint.
         /// </summary>
+        /// <remarks>
+        /// The default endpoint is an endpoint in the default universe domain.
+        /// </remarks>
         public string DefaultEndpoint { get; }
+
+        /// <summary>
+        /// The template to build and endpoint for the service taking into account a custom universe domain,
+        /// for instance "storage.{0}".
+        /// May be null, in which case no universe domain dependent endpoint may be built for the service.
+        /// </summary>
+        public string EndpointTemplate { get; }
 
         /// <summary>
         /// The default scopes for the service. This will never be null, but may be empty.
@@ -75,6 +85,9 @@ namespace Google.Api.Gax.Grpc
             Name = serviceDescriptor.Name;
             GaxPreconditions.CheckArgument(Name.Length > 0, nameof(serviceDescriptor), "Service has an empty name");
             DefaultEndpoint = defaultEndpoint;
+            EndpointTemplate = defaultEndpoint?.Contains(DefaultUniverseDomain) == true ?
+                defaultEndpoint.Replace(DefaultUniverseDomain, "{0}") :
+                null;
             DefaultScopes = GaxPreconditions.CheckNotNull(defaultScopes, nameof(defaultScopes)).ToList().AsReadOnly();
             GaxPreconditions.CheckArgument(!DefaultScopes.Any(x => x == null), nameof(defaultScopes), "Scopes must not contain any null references");
             SupportsScopedJwts = supportsScopedJwts;

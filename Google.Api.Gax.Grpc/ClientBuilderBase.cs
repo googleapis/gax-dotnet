@@ -204,6 +204,15 @@ namespace Google.Api.Gax.Grpc
         public ChannelBase LastCreatedChannel { get; protected set; }
 
         /// <summary>
+        /// Returns the service endpoint taking into account <see cref="Endpoint"/> and <see cref="UniverseDomain"/>.
+        /// Override this property in a concrete builder type if an endpoint may be customized further.
+        /// </summary>
+        protected virtual string EffectiveEndpoint => Endpoint ??
+            (ServiceMetadata.EndpointTemplate is not null ? string.Format(ServiceMetadata.EndpointTemplate, EffectiveUniverseDomain) :
+            EffectiveUniverseDomain == ServiceMetadata.DefaultUniverseDomain ? ServiceMetadata.DefaultEndpoint :
+            null);
+
+        /// <summary>
         /// Creates a new instance with no explicit settings.
         /// This takes the value of <see cref="UseJwtAccessWithScopes" /> from <paramref name="serviceMetadata"/>.
         /// </summary>
@@ -456,7 +465,7 @@ namespace Google.Api.Gax.Grpc
             {
                 return CallInvoker;
             }
-            var endpoint = Endpoint ?? ServiceMetadata.DefaultEndpoint;
+            var endpoint = EffectiveEndpoint;
             ChannelBase channel;
             if (CanUseChannelPool)
             {
@@ -483,7 +492,7 @@ namespace Google.Api.Gax.Grpc
             {
                 return CallInvoker;
             }
-            var endpoint = Endpoint ?? ServiceMetadata.DefaultEndpoint;
+            var endpoint = EffectiveEndpoint;
             ChannelBase channel;
             if (CanUseChannelPool)
             {
