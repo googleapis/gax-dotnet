@@ -64,9 +64,9 @@ namespace Google.Api.Gax.Grpc
         }
 
         internal ChannelCredentials GetCredentials() =>
-            GetCredentialsAsync().ResultWithUnwrappedExceptions();
+            GetCredentialsAsync(default).ResultWithUnwrappedExceptions();
 
-        internal Task<ChannelCredentials> GetCredentialsAsync() =>
-            _lazyScopedDefaultChannelCredentials.Value;
+        internal Task<ChannelCredentials> GetCredentialsAsync(CancellationToken cancellationToken) =>
+            _lazyScopedDefaultChannelCredentials.Value.WithCancellationToken(cancellationToken);
     }
 }

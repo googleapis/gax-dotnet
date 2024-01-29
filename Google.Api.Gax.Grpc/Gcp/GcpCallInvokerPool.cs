@@ -91,7 +91,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
             GaxPreconditions.CheckNotNull(apiConfig, nameof(apiConfig));
             GaxPreconditions.CheckNotNull(adapter, nameof(adapter));
-            var credentials = await _credentialsCache.GetCredentialsAsync().ConfigureAwait(false);
+            var credentials = await _credentialsCache.GetCredentialsAsync(default).ConfigureAwait(false);
             return GetCallInvoker(endpoint, credentials, options, apiConfig, adapter);
         }
 
