@@ -6,11 +6,10 @@
  */
 
 using Google.Apis.Auth.OAuth2;
-using Grpc.Auth;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
@@ -31,7 +30,7 @@ namespace Google.Api.Gax.Grpc
         /// The same channel credentials are used by all pools. The field is initialized in the constructor, as it uses
         /// _scopes, and you can't refer to an instance field within an instance field initializer.
         /// </summary>
-        private readonly Lazy<Task<ChannelCredentials>> _lazyScopedDefaultChannelCredentials;
+        private readonly Lazy<Task<GoogleCredential>> _lazyScopedDefaultChannelCredentials;
 
         /// <summary>
         /// Creates a cache which will apply the specified scopes to the default application credentials
@@ -46,7 +45,7 @@ namespace Google.Api.Gax.Grpc
             // However, it won't be any more efficient, and having the scopes easily available when debugging could be handy.
             _scopes = serviceMetadata.DefaultScopes;
             _lazyScopedDefaultChannelCredentials =
-                new Lazy<Task<ChannelCredentials>>(() => Task.Run(async () =>
+                new Lazy<Task<GoogleCredential>>(() => Task.Run(async () =>
                 {
                     var appDefaultCredentials = await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false);
                     if (appDefaultCredentials.IsCreateScopedRequired)
@@ -59,14 +58,17 @@ namespace Google.Api.Gax.Grpc
                     {
                         appDefaultCredentials = GoogleCredential.FromServiceAccountCredential(serviceCredential.WithUseJwtAccessWithScopes(UseJwtAccessWithScopes));
                     }
-                    return appDefaultCredentials.ToChannelCredentials();
+                    return appDefaultCredentials;
                 }));
         }
 
-        internal ChannelCredentials GetCredentials() =>
-            GetCredentialsAsync(default).ResultWithUnwrappedExceptions();
+        internal ChannelCredentials GetCredentials(string universeDomain) =>
+            GetCredentialsAsync(universeDomain, default).ResultWithUnwrappedExceptions();
 
-        internal Task<ChannelCredentials> GetCredentialsAsync(CancellationToken cancellationToken) =>
-            _lazyScopedDefaultChannelCredentials.Value.WithCancellationToken(cancellationToken);
+        internal async Task<ChannelCredentials> GetCredentialsAsync(string universeDomain, CancellationToken cancellationToken)
+        {
+            var googleCredential = await _lazyScopedDefaultChannelCredentials.Value.WithCancellationToken(cancellationToken).ConfigureAwait(false);
+            return googleCredential.ToChannelCredentials(universeDomain);
+        }
     }
 }

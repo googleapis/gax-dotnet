@@ -9,6 +9,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
 {
     internal static class TestServiceMetadata
     {
+        internal const string DefaultUniverseDomain = "googleapis.com";
+
         internal static ApiMetadata ApiMetadata { get; } =
             new ApiMetadata("Google.Api.Gax.Grpc.IntegrationTests", new[] { TestServiceReflection.Descriptor });
         internal static ServiceMetadata TestService { get; } =

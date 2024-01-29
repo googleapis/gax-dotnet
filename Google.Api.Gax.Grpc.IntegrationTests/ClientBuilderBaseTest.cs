@@ -54,7 +54,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         {
             var builder = new SampleClientBuilder();
 
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
@@ -71,14 +71,34 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             var endpoint = "custom.nowhere.com";
             var builder = new SampleClientBuilder { Endpoint = endpoint };
 
-            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
-            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithDefaultEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPoolWithCustomEndpoint = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, "custom.nowhere.com", SampleClientBuilder.DefaultOptions);
 
             Action<CallInvoker> validator = invoker =>
             {
                 var channelFromBuilder = GetChannel(invoker);
                 Assert.Same(channelFromPoolWithCustomEndpoint, channelFromBuilder);
                 Assert.NotSame(channelFromPoolWithDefaultEndpoint, channelFromBuilder);
+                Assert.Null(builder.LastCreatedChannel);
+            };
+            await ValidateResultAsync(builder, validator);
+        }
+
+        [Fact]
+        public async Task DifferentUniverseDomain_StillFromChannelPool()
+        {
+            var universeDomain = "nowhere.com";
+            var builder = new SampleClientBuilder { UniverseDomain = universeDomain };
+
+            ChannelBase channelFromPoolWithDefaultUniverseDomain = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            // The endpoint changes with the universe domain so we cannot use the default endpoint here, even if we are just changing the universe domain.
+            ChannelBase channelFromPoolWithCustomUniverseDomain = builder.ChannelPool.GetChannel(fakeGrpcAdapter, universeDomain, builder.EffectiveEndpoint, SampleClientBuilder.DefaultOptions);
+
+            Action<CallInvoker> validator = invoker =>
+            {
+                var channelFromBuilder = GetChannel(invoker);
+                Assert.Same(channelFromPoolWithCustomUniverseDomain, channelFromBuilder);
+                Assert.NotSame(channelFromPoolWithDefaultUniverseDomain, channelFromBuilder);
                 Assert.Null(builder.LastCreatedChannel);
             };
             await ValidateResultAsync(builder, validator);
@@ -195,7 +215,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientEnabledTest(bool clientUsesJwt, bool poolUsesJwt)
         {
             var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = DummyServiceAccountCredentialFileContents };
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt of client does not match pool, so we won't use channel pool
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
@@ -206,7 +226,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task JwtClientAndPoolEnabledTest(bool enabledJwts)
         {
             var builder = new SampleClientBuilder(enabledJwts, enabledJwts);
-            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
+            ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt is either enabled or disabled for both client and pool
             // We use channel pool
@@ -290,6 +310,10 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             public string EndpointUsedToCreateChannel { get; private set; }
             public ChannelCredentials CredentialsUsedToCreateChannel { get; private set; }
 
+            public new string EffectiveUniverseDomain => base.EffectiveUniverseDomain;
+
+            public new string EffectiveEndpoint => base.EffectiveEndpoint;
+
             private readonly string _name;
 
             /// <summary>
@@ -331,7 +355,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             }
 
             protected override ChannelPool GetChannelPool() => ChannelPool;
-            
+
             public void ResetChannelCreation()
             {
                 EndpointUsedToCreateChannel = null;

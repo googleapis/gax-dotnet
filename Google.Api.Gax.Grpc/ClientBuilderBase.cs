@@ -469,7 +469,7 @@ namespace Google.Api.Gax.Grpc
             ChannelBase channel;
             if (CanUseChannelPool)
             {
-                channel = GetChannelPool().GetChannel(EffectiveGrpcAdapter, endpoint, GetChannelOptions());
+                channel = GetChannelPool().GetChannel(EffectiveGrpcAdapter, EffectiveUniverseDomain, endpoint, GetChannelOptions());
             }
             else
             {
@@ -497,7 +497,7 @@ namespace Google.Api.Gax.Grpc
             if (CanUseChannelPool)
             {
                 channel = await GetChannelPool()
-                    .GetChannelAsync(EffectiveGrpcAdapter, endpoint, GetChannelOptions(), cancellationToken)
+                    .GetChannelAsync(EffectiveGrpcAdapter, EffectiveUniverseDomain, endpoint, GetChannelOptions(), cancellationToken)
                     .ConfigureAwait(false);
             }
             else
@@ -513,7 +513,7 @@ namespace Google.Api.Gax.Grpc
         /// credential mechanisms are supported.
         /// </summary>
         protected virtual ChannelCredentials GetChannelCredentials() =>
-            MaybeGetSimpleChannelCredentials() ?? GetGoogleCredential().ToChannelCredentials();
+            MaybeGetSimpleChannelCredentials() ?? GetGoogleCredential().ToChannelCredentials(EffectiveUniverseDomain);
 
         /// <summary>
         /// Obtains channel credentials asynchronously. Override this method in a concrete builder type if more
@@ -521,7 +521,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected async virtual Task<ChannelCredentials> GetChannelCredentialsAsync(CancellationToken cancellationToken) =>
             MaybeGetSimpleChannelCredentials()
-            ?? (await GetGoogleCredentialAsync(cancellationToken).ConfigureAwait(false)).ToChannelCredentials();
+            ?? (await GetGoogleCredentialAsync(cancellationToken).ConfigureAwait(false)).ToChannelCredentials(EffectiveUniverseDomain);
 
         /// <summary>
         /// Obtains channel credentials synchronously if they've been supplied in a ready-to-go fashion.
