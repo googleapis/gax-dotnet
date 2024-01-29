@@ -90,7 +90,7 @@ namespace Google.Api.Gax.Grpc
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await WithCancellationToken(_credentialCache.GetCredentialsAsync(), cancellationToken).ConfigureAwait(false);
+            var credentials = await _credentialCache.GetCredentialsAsync(cancellationToken).ConfigureAwait(false);
             return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
         }
 
@@ -107,33 +107,6 @@ namespace Google.Api.Gax.Grpc
                     _channels[key] = channel;
                 }
                 return channel;
-            }
-        }
-
-        // Note: this is duplicated in Google.Apis.Auth, Google.Apis.Core and Google.Api.Gax.Rest as well so it can stay internal.
-        // Please change all implementations at the same time.
-        /// <summary>
-        /// Returns a task which can be cancelled by the given cancellation token, but otherwise observes the original
-        /// task's state. This does *not* cancel any work that the original task was doing, and should be used carefully.
-        /// </summary>
-        private static Task<T> WithCancellationToken<T>(Task<T> task, CancellationToken cancellationToken)
-        {
-            if (!cancellationToken.CanBeCanceled)
-            {
-                return task;
-            }
-
-            return ImplAsync();
-
-            // Separate async method to allow the above optimization to avoid creating any new state machines etc.
-            async Task<T> ImplAsync()
-            {
-                var cts = new TaskCompletionSource<T>();
-                using (cancellationToken.Register(() => cts.TrySetCanceled()))
-                {
-                    var completedTask = await Task.WhenAny(task, cts.Task).ConfigureAwait(false);
-                    return await completedTask.ConfigureAwait(false);
-                }
             }
         }
 
