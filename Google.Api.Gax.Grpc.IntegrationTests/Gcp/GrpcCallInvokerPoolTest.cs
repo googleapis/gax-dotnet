@@ -6,9 +6,6 @@
  */
 
 using Google.Api.Gax.Grpc.IntegrationTests;
-using Google.Protobuf.Reflection;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
@@ -20,23 +17,23 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         private static readonly ApiConfig Config1 = new ApiConfig { ChannelPool = new ChannelPoolConfig { MaxSize = 5 } };
 
         [Fact]
-        public void SameEndpointAndOptions_SameCallInvoker()
+        public void SameEndpointAndOptionsAndUniverseDomain_SameCallInvoker()
         {
             var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
-            var callInvoker1 = pool.GetCallInvoker("endpoint", options, Config1, FakeAdapter);
-            var callInvoker2 = pool.GetCallInvoker("endpoint", options, Config1, FakeAdapter);
+            var callInvoker1 = pool.GetCallInvoker("domain", "endpoint", options, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain", "endpoint", options, Config1, FakeAdapter);
             Assert.Same(callInvoker1, callInvoker2);
         }
 
         [Fact]
-        public void SameEndpointAndEqualOptions_SameCallInvoker()
+        public void SameEndpointAndUniverseDomainAndEqualOptions_SameCallInvoker()
         {
             var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
             var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
-            var callInvoker1 = pool.GetCallInvoker("endpoint", options1, Config1, FakeAdapter);
-            var callInvoker2 = pool.GetCallInvoker("endpoint", options2, Config1, FakeAdapter);
+            var callInvoker1 = pool.GetCallInvoker("domain", "endpoint", options1, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain", "endpoint", options2, Config1, FakeAdapter);
             Assert.Same(callInvoker1, callInvoker2);
         }
 
@@ -45,8 +42,8 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         {
             var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
             var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
-            var callInvoker1 = pool.GetCallInvoker("endpoint1", options, Config1, FakeAdapter);
-            var callInvoker2 = pool.GetCallInvoker("endpoint2", options, Config1, FakeAdapter);
+            var callInvoker1 = pool.GetCallInvoker("domain", "endpoint1", options, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain", "endpoint2", options, Config1, FakeAdapter);
             Assert.NotSame(callInvoker1, callInvoker2);
         }
 
@@ -56,11 +53,21 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
             var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
             var options1 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
             var options2 = GrpcChannelOptions.Empty.WithPrimaryUserAgent("def");
-            var callInvoker1 = pool.GetCallInvoker("endpoint", options1, Config1, FakeAdapter);
-            var callInvoker2 = pool.GetCallInvoker("endpoint", options2, Config1, FakeAdapter);
+            var callInvoker1 = pool.GetCallInvoker("domain", "endpoint", options1, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain", "endpoint", options2, Config1, FakeAdapter);
             Assert.NotSame(callInvoker1, callInvoker2);
-            var callInvoker3 = pool.GetCallInvoker("endpoint", options: null, Config1, FakeAdapter);
+            var callInvoker3 = pool.GetCallInvoker("domain", "endpoint", options: null, Config1, FakeAdapter);
             Assert.NotSame(callInvoker1, callInvoker3);
+        }
+
+        [Fact]
+        public void DifferentUniverseDomain_DifferentCallInvoker()
+        {
+            var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
+            var options = GrpcChannelOptions.Empty.WithPrimaryUserAgent("abc");
+            var callInvoker1 = pool.GetCallInvoker("domain1", "endpoint", options, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain2", "endpoint", options, Config1, FakeAdapter);
+            Assert.NotSame(callInvoker1, callInvoker2);
         }
 
         // TODO: equal/non-equal configs, different adapters.
@@ -69,10 +76,10 @@ namespace Google.Api.Gax.Grpc.Gcp.IntegrationTests
         public void ShutdownAsync_EmptiesPool()
         {
             var pool = new GcpCallInvokerPool(TestServiceMetadata.TestService);
-            var callInvoker1 = pool.GetCallInvoker("endpoint", options: null, Config1, FakeAdapter);
+            var callInvoker1 = pool.GetCallInvoker("domain", "endpoint", options: null, Config1, FakeAdapter);
             // Note: *not* waiting for this to complete.
             pool.ShutdownChannelsAsync();
-            var callInvoker2 = pool.GetCallInvoker("endpoint", options: null, Config1, FakeAdapter);
+            var callInvoker2 = pool.GetCallInvoker("domain", "endpoint", options: null, Config1, FakeAdapter);
             Assert.NotSame(callInvoker1, callInvoker2);
         }
     }

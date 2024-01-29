@@ -64,15 +64,18 @@ namespace Google.Api.Gax.Grpc
         /// The specified channel options are applied, but only those options.
         /// </summary>
         /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
+        /// <param name="universeDomain">The universe domain configured for the service client,
+        /// to validate against the one configured for the credential. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <returns>A channel for the specified endpoint.</returns>
-        internal ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions)
+        internal ChannelBase GetChannel(GrpcAdapter grpcAdapter, string universeDomain, string endpoint, GrpcChannelOptions channelOptions)
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
+            GaxPreconditions.CheckNotNull(universeDomain, nameof(universeDomain));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = _credentialCache.GetCredentials();
-            return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
+            var credentials = _credentialCache.GetCredentials(universeDomain);
+            return GetChannel(grpcAdapter, universeDomain, endpoint, channelOptions, credentials);
         }
 
         /// <summary>
@@ -81,22 +84,25 @@ namespace Google.Api.Gax.Grpc
         /// The specified channel options are applied, but only those options.
         /// </summary>
         /// <param name="grpcAdapter">The gRPC implementation to use. Must not be null.</param>
+        /// <param name="universeDomain">The universe domain configured for the service client,
+        /// to validate against the one configured for the credential. Must not be null.</param>
         /// <param name="endpoint">The endpoint to connect to. Must not be null.</param>
         /// <param name="channelOptions">The channel options to include. May be null.</param>
         /// <param name="cancellationToken">A cancellation token for the operation.</param>
         /// <returns>A task representing the asynchronous operation. The value of the completed
         /// task will be channel for the specified endpoint.</returns>
-        internal async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, CancellationToken cancellationToken)
+        internal async Task<ChannelBase> GetChannelAsync(GrpcAdapter grpcAdapter, string universeDomain, string endpoint, GrpcChannelOptions channelOptions, CancellationToken cancellationToken)
         {
             GaxPreconditions.CheckNotNull(grpcAdapter, nameof(grpcAdapter));
+            GaxPreconditions.CheckNotNull(universeDomain, nameof(universeDomain));
             GaxPreconditions.CheckNotNull(endpoint, nameof(endpoint));
-            var credentials = await _credentialCache.GetCredentialsAsync(cancellationToken).ConfigureAwait(false);
-            return GetChannel(grpcAdapter, endpoint, channelOptions, credentials);
+            var credentials = await _credentialCache.GetCredentialsAsync(universeDomain, cancellationToken).ConfigureAwait(false);
+            return GetChannel(grpcAdapter, universeDomain, endpoint, channelOptions, credentials);
         }
 
-        private ChannelBase GetChannel(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions channelOptions, ChannelCredentials credentials)
+        private ChannelBase GetChannel(GrpcAdapter grpcAdapter, string universeDomain, string endpoint, GrpcChannelOptions channelOptions, ChannelCredentials credentials)
         {
-            var key = new Key(grpcAdapter, endpoint, channelOptions);
+            var key = new Key(grpcAdapter, universeDomain, endpoint, channelOptions);
 
             lock (_lock)
             {
@@ -112,23 +118,25 @@ namespace Google.Api.Gax.Grpc
 
         private struct Key : IEquatable<Key>
         {
+            public readonly string UniverseDomain;
             public readonly string Endpoint;
             public readonly GrpcChannelOptions Options;
             public readonly GrpcAdapter GrpcAdapter;
 
-            public Key(GrpcAdapter grpcAdapter, string endpoint, GrpcChannelOptions options) =>
-                (GrpcAdapter, Endpoint, Options) = (grpcAdapter, endpoint, options);
+            public Key(GrpcAdapter grpcAdapter, string universeDomain, string endpoint, GrpcChannelOptions options) =>
+                (GrpcAdapter, UniverseDomain, Endpoint, Options) = (grpcAdapter, universeDomain, endpoint, options);
 
             public override int GetHashCode() =>
                 GaxEqualityHelpers.CombineHashCodes(
                     GrpcAdapter.GetHashCode(),
+                    UniverseDomain.GetHashCode(),
                     Endpoint.GetHashCode(),
                     Options.GetHashCode());
 
             public override bool Equals(object obj) => obj is Key other && Equals(other);
 
             public bool Equals(Key other) =>
-                GrpcAdapter.Equals(other.GrpcAdapter) && Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
+                GrpcAdapter.Equals(other.GrpcAdapter) && UniverseDomain.Equals(other.UniverseDomain) && Endpoint.Equals(other.Endpoint) && Options.Equals(other.Options);
         }
     }
 }
