@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.6.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.5.0...Google.Api.Gax-4.6.0) (2024-02-01)
+
+
+### Features
+
+* Adds UniverseDomain client option. ([e9ee219](https://github.com/googleapis/gax-dotnet/commit/e9ee219dc7268b4a2ab7842d309a55970d60003e))
+* Use the universe domain to build service endpoints. ([f1fee08](https://github.com/googleapis/gax-dotnet/commit/f1fee0868b624f0f3ebecb44b405381b74d9415b))
+* Validate that client and credential universe domain are the same. ([bac7369](https://github.com/googleapis/gax-dotnet/commit/bac7369d11e80a47c08fe2e384db02095b240324))
+
 ## [4.5.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.4.0...Google.Api.Gax-4.5.0) (2024-01-22)
 
 
