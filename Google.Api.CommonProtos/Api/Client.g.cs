@@ -80,26 +80,27 @@ namespace Google.Api {
             "IAEoCToCOAEiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdv",
             "b2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRpbmdz",
             "EjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VT",
-            "ZXR0aW5ncyKwAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkS",
+            "ZXR0aW5ncyLPAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkS",
             "PAoMbG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RTZXR0",
-            "aW5ncy5Mb25nUnVubmluZxrNAQoLTG9uZ1J1bm5pbmcSNQoSaW5pdGlhbF9w",
-            "b2xsX2RlbGF5GAEgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEh0K",
-            "FXBvbGxfZGVsYXlfbXVsdGlwbGllchgCIAEoAhIxCg5tYXhfcG9sbF9kZWxh",
-            "eRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI1ChJ0b3RhbF9w",
-            "b2xsX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24q",
-            "owEKGUNsaWVudExpYnJhcnlPcmdhbml6YXRpb24SKwonQ0xJRU5UX0xJQlJB",
-            "UllfT1JHQU5JWkFUSU9OX1VOU1BFQ0lGSUVEEAASCQoFQ0xPVUQQARIHCgNB",
-            "RFMQAhIKCgZQSE9UT1MQAxIPCgtTVFJFRVRfVklFVxAEEgwKCFNIT1BQSU5H",
-            "EAUSBwoDR0VPEAYSEQoNR0VORVJBVElWRV9BSRAHKmcKGENsaWVudExpYnJh",
-            "cnlEZXN0aW5hdGlvbhIqCiZDTElFTlRfTElCUkFSWV9ERVNUSU5BVElPTl9V",
-            "TlNQRUNJRklFRBAAEgoKBkdJVEhVQhAKEhMKD1BBQ0tBR0VfTUFOQUdFUhAU",
-            "OjkKEG1ldGhvZF9zaWduYXR1cmUSHi5nb29nbGUucHJvdG9idWYuTWV0aG9k",
-            "T3B0aW9ucxibCCADKAk6NgoMZGVmYXVsdF9ob3N0Eh8uZ29vZ2xlLnByb3Rv",
-            "YnVmLlNlcnZpY2VPcHRpb25zGJkIIAEoCTo2CgxvYXV0aF9zY29wZXMSHy5n",
-            "b29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMYmgggASgJQmkKDmNvbS5n",
-            "b29nbGUuYXBpQgtDbGllbnRQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9n",
-            "ZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9u",
-            "c6ICBEdBUEliBnByb3RvMw=="));
+            "aW5ncy5Mb25nUnVubmluZxIdChVhdXRvX3BvcHVsYXRlZF9maWVsZHMYAyAD",
+            "KAkazQEKC0xvbmdSdW5uaW5nEjUKEmluaXRpYWxfcG9sbF9kZWxheRgBIAEo",
+            "CzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIdChVwb2xsX2RlbGF5X211",
+            "bHRpcGxpZXIYAiABKAISMQoObWF4X3BvbGxfZGVsYXkYAyABKAsyGS5nb29n",
+            "bGUucHJvdG9idWYuRHVyYXRpb24SNQoSdG90YWxfcG9sbF90aW1lb3V0GAQg",
+            "ASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uKqMBChlDbGllbnRMaWJy",
+            "YXJ5T3JnYW5pemF0aW9uEisKJ0NMSUVOVF9MSUJSQVJZX09SR0FOSVpBVElP",
+            "Tl9VTlNQRUNJRklFRBAAEgkKBUNMT1VEEAESBwoDQURTEAISCgoGUEhPVE9T",
+            "EAMSDwoLU1RSRUVUX1ZJRVcQBBIMCghTSE9QUElORxAFEgcKA0dFTxAGEhEK",
+            "DUdFTkVSQVRJVkVfQUkQBypnChhDbGllbnRMaWJyYXJ5RGVzdGluYXRpb24S",
+            "KgomQ0xJRU5UX0xJQlJBUllfREVTVElOQVRJT05fVU5TUEVDSUZJRUQQABIK",
+            "CgZHSVRIVUIQChITCg9QQUNLQUdFX01BTkFHRVIQFDo5ChBtZXRob2Rfc2ln",
+            "bmF0dXJlEh4uZ29vZ2xlLnByb3RvYnVmLk1ldGhvZE9wdGlvbnMYmwggAygJ",
+            "OjYKDGRlZmF1bHRfaG9zdBIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0",
+            "aW9ucxiZCCABKAk6NgoMb2F1dGhfc2NvcGVzEh8uZ29vZ2xlLnByb3RvYnVm",
+            "LlNlcnZpY2VPcHRpb25zGJoIIAEoCUJpCg5jb20uZ29vZ2xlLmFwaUILQ2xp",
+            "ZW50UHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xl",
+            "YXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlvbnOiAgRHQVBJYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, new pbr::GeneratedClrTypeInfo[] {
@@ -114,7 +115,7 @@ namespace Google.Api {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common", "RenamedServices", "RenamedResources", "IgnoredResources", "ForcedNamespaceAliases", "HandwrittenSignatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.RubySettings), global::Google.Api.RubySettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.GoSettings), global::Google.Api.GoSettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning", "AutoPopulatedFields" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)})
           }));
     }
     #endregion
@@ -3630,6 +3631,7 @@ namespace Google.Api {
     public MethodSettings(MethodSettings other) : this() {
       selector_ = other.selector_;
       longRunning_ = other.longRunning_ != null ? other.longRunning_.Clone() : null;
+      autoPopulatedFields_ = other.autoPopulatedFields_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3686,6 +3688,30 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "auto_populated_fields" field.</summary>
+    public const int AutoPopulatedFieldsFieldNumber = 3;
+    private static readonly pb::FieldCodec<string> _repeated_autoPopulatedFields_codec
+        = pb::FieldCodec.ForString(26);
+    private readonly pbc::RepeatedField<string> autoPopulatedFields_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// List of top-level fields of the request message, that should be
+    /// automatically populated by the client libraries based on their
+    /// (google.api.field_info).format. Currently supported format: UUID4.
+    ///
+    /// Example of a YAML configuration:
+    ///
+    ///  publishing:
+    ///    method_settings:
+    ///      - selector: google.example.v1.ExampleService.CreateExample
+    ///        auto_populated_fields:
+    ///        - request_id
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> AutoPopulatedFields {
+      get { return autoPopulatedFields_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -3703,6 +3729,7 @@ namespace Google.Api {
       }
       if (Selector != other.Selector) return false;
       if (!object.Equals(LongRunning, other.LongRunning)) return false;
+      if(!autoPopulatedFields_.Equals(other.autoPopulatedFields_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3712,6 +3739,7 @@ namespace Google.Api {
       int hash = 1;
       if (Selector.Length != 0) hash ^= Selector.GetHashCode();
       if (longRunning_ != null) hash ^= LongRunning.GetHashCode();
+      hash ^= autoPopulatedFields_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3738,6 +3766,7 @@ namespace Google.Api {
         output.WriteRawTag(18);
         output.WriteMessage(LongRunning);
       }
+      autoPopulatedFields_.WriteTo(output, _repeated_autoPopulatedFields_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3756,6 +3785,7 @@ namespace Google.Api {
         output.WriteRawTag(18);
         output.WriteMessage(LongRunning);
       }
+      autoPopulatedFields_.WriteTo(ref output, _repeated_autoPopulatedFields_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3772,6 +3802,7 @@ namespace Google.Api {
       if (longRunning_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(LongRunning);
       }
+      size += autoPopulatedFields_.CalculateSize(_repeated_autoPopulatedFields_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3793,6 +3824,7 @@ namespace Google.Api {
         }
         LongRunning.MergeFrom(other.LongRunning);
       }
+      autoPopulatedFields_.Add(other.autoPopulatedFields_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3819,6 +3851,10 @@ namespace Google.Api {
             input.ReadMessage(LongRunning);
             break;
           }
+          case 26: {
+            autoPopulatedFields_.AddEntriesFrom(input, _repeated_autoPopulatedFields_codec);
+            break;
+          }
         }
       }
     #endif
@@ -3843,6 +3879,10 @@ namespace Google.Api {
               LongRunning = new global::Google.Api.MethodSettings.Types.LongRunning();
             }
             input.ReadMessage(LongRunning);
+            break;
+          }
+          case 26: {
+            autoPopulatedFields_.AddEntriesFrom(ref input, _repeated_autoPopulatedFields_codec);
             break;
           }
         }
