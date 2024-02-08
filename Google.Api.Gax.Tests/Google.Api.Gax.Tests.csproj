@@ -5,7 +5,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net462</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
