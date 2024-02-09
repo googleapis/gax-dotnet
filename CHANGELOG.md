@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.6.0-beta02](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0-beta01...Google.Api.Gax-4.6.0-beta02) (2024-02-09)
+
+
+### Features
+
+* Add a FieldFormats static class for auto-populated fields ([f1d44a4](https://github.com/googleapis/gax-dotnet/commit/f1d44a4228ef59a76c5d9c03be857050be64e52e))
+* Detect grpc-dotnet support on Windows under .NET Framework ([bfa72ad](https://github.com/googleapis/gax-dotnet/commit/bfa72add6d62740498aae9b4077f00c8a1a65506))
+* Update common protos ([690670e](https://github.com/googleapis/gax-dotnet/commit/690670e2dcc8b43795bdb54a94cfb20efefc348b))
+
 ## [4.6.0-beta01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.5.0...Google.Api.Gax-4.6.0-beta01) (2024-02-02)
 
 
