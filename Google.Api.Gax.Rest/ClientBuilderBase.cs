@@ -46,6 +46,25 @@ namespace Google.Api.Gax.Rest
         public string BaseUri { get; set; }
 
         /// <summary>
+        /// The universe domain to connect to, or null to use the default universe domain.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="UniverseDomain"/> is used to build the base URI to connect to, unless <see cref="BaseUri"/>
+        /// is set, in which case <see cref="BaseUri"/> will be used without further modification.
+        /// </para>
+        /// <para>
+        /// If default credentials or one of <see cref="GoogleCredential"/>, <see cref="CredentialsPath"/> or <see cref="JsonCredentials"/>
+        /// is used, <see cref="GoogleCredential.GetUniverseDomain"/> should be:
+        /// <list type="bullet">
+        /// <item>The same as <see cref="UniverseDomain"/> if <see cref="UniverseDomain"/> has been set.</item>
+        /// <item>The default universe domain otherwise.</item>
+        /// </list>
+        /// </para>
+        /// </remarks>
+        public string UniverseDomain { get; set; }
+
+        /// <summary>
         /// The credential to use for authentication. This cannot be specified alongside other authentication properties.
         /// Note that scopes are not automatically applied to this credential; if a scoped credential is required, the
         /// scoping must be applied by the calling code.
@@ -165,6 +184,7 @@ namespace Google.Api.Gax.Rest
                 ApiKey = ApiKey,
                 ApplicationName = ApplicationName ?? GetDefaultApplicationName(),
                 BaseUri = BaseUri,
+                UniverseDomain = UniverseDomain,
                 HttpClientFactory = HttpClientFactory
             };
             initializer.VersionHeaderBuilder

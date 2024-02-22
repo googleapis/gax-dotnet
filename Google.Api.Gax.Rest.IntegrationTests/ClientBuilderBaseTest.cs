@@ -134,6 +134,14 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         }
 
         [Fact]
+        public async Task UniverseDomain()
+        {
+            string universeDomain = "custom.domain";
+            var builder = new SampleClientBuilder { UniverseDomain = universeDomain };
+            await ValidateResultAsync(builder, initializer => Assert.Equal(universeDomain, initializer.UniverseDomain));
+        }
+
+        [Fact]
         public async Task ApplicationNameUnspecified()
         {
             var builder = new SampleClientBuilder();

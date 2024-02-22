@@ -19,6 +19,7 @@ public partial class ClientBuilderBaseTest
     {
         var builder = new DefaultsTestBuilder();
         Assert.False(builder.UseJwtAccessWithScopes);
+        Assert.Null(builder.UniverseDomain);
     }
 
     /// <summary>
