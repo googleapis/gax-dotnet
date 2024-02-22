@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0-beta02...Google.Api.Gax-4.6.0) (2024-02-22)
+
+
+### Features
+
+* Universe domain support for Discovery based libraries. ([b43bae5](https://github.com/googleapis/gax-dotnet/commit/b43bae5dd37cbc86216a5ac08c32595e294c3773))
+
 ## [4.6.0-beta02](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0-beta01...Google.Api.Gax-4.6.0-beta02) (2024-02-09)
 
 
