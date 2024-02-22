@@ -18,7 +18,7 @@
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
 
     <PackageReference Include="Grpc.Auth" Version="[2.60.0, 3.0.0)" />
-    <PackageReference Include="Google.Apis.Auth" Version="[1.67.00-beta01, 2.0.0)" />
+    <PackageReference Include="Google.Apis.Auth" Version="[1.67.00, 2.0.0)" />
     <PackageReference Include="Grpc.Core.Api" Version="[2.60.0, 3.0.0)" />
     <PackageReference Include="Grpc.Net.Client" Version="[2.60.0, 3.0.0)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
