@@ -8,6 +8,7 @@
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -80,5 +81,10 @@ namespace Google.Api.Gax.Grpc
             logger is null
                 ? this
                 : new ApiClientStreamingCall<TRequest, TResponse>(_methodName, _call.WithLogging(logger, _methodName), BaseCallSettings, StreamingSettings);
+        
+        internal ApiClientStreamingCall<TRequest, TResponse> WithTracing(ActivitySource source) =>
+                source is null
+                    ? this
+                    : new ApiClientStreamingCall<TRequest, TResponse>(_methodName, _call.WithTracing(source, _methodName), BaseCallSettings, StreamingSettings);
     }
 }

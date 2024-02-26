@@ -7,6 +7,8 @@
 
 using Google.Api.Gax.Testing;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Tests
@@ -17,7 +19,7 @@ namespace Google.Api.Gax.Grpc.Tests
         public void FailWithRetry()
         {
             var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
-                "Method", 
+                "Method",
                 callOptions => null,
                 CallSettings.FromRetry(new RetrySettings(5, TimeSpan.Zero, TimeSpan.Zero, 1.0, e => false, RetrySettings.RandomJitter)),
                 new BidirectionalStreamingSettings(100),
@@ -51,6 +53,34 @@ namespace Google.Api.Gax.Grpc.Tests
             var logs = logger.ListLogEntries();
             var entry = Assert.Single(logger.ListLogEntries());
             Assert.Contains("BidiStreamingMethod", entry.Message);
+        }
+
+        [Fact]
+        public void WithTracing()
+        {
+            var sourceName = "source";
+            Activity capturedActivity = null;
+
+            // We need a listener attached to an ActivitySource, otherwise activity won't be created.
+            using var listener = new ActivityListener
+            {
+                ShouldListenTo = source => source.Name == sourceName,
+                Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded,
+                ActivityStarted = activity => capturedActivity = activity
+            };
+            ActivitySource.AddActivityListener(listener);
+            using var source = new ActivitySource(sourceName);
+            var apiCall = ApiBidirectionalStreamingCall.Create<int, int>(
+                "BidiStreamingMethod",
+                callOptions => null,
+                null,
+                new BidirectionalStreamingSettings(100),
+                new FakeClock()).WithTracing(source);
+            apiCall.Call(null);
+            Assert.NotNull(capturedActivity);
+            Assert.Equal(ApiCallTracingExtensions.BidiStreamingCallType, capturedActivity.Tags.First(j => j.Key == ApiCallTracingExtensions.GrpcCallTypeTag).Value);
+            Assert.Equal(sourceName, capturedActivity.Source.Name);
+            Assert.Contains("BidiStreamingMethod", capturedActivity.OperationName);
         }
     }
 }
