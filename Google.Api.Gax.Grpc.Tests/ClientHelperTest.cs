@@ -19,44 +19,24 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
-            var server = new DummyServerNonStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                "Method", server.MethodAsync, server.MethodSync, null);
-            apiCall.Sync(null, null);
-            Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var server = new TestServer();
 
-        [Fact]
-        public void BuildServerStreamingApiCall_ClientSettings()
-        {
-            var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
-            var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
-            apiCall.Call(null, null);
-            Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
+                "Method", server.UnaryAsync, server.UnarySync, null);
+            unaryCall.Sync(null, null);
+            Assert.Equal(clientSettings.CancellationToken, server.UnaryCallOptions.CancellationToken);
 
-        [Fact]
-        public void BuildBidiStreamingApiCall_ClientSettings()
-        {
-            var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
-            var server = new DummyServerBidiStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
-            apiCall.Call(null);
-            Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var serverStreamingCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.ServerStreaming, null);
+            serverStreamingCall.Call(null, null);
+            Assert.Equal(clientSettings.CancellationToken, server.ServerStreamingCallOptions.CancellationToken);
 
-        [Fact]
-        public void BuildClientStreamingApiCall_ClientSettings()
-        {
-            var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
-            var server = new DummyServerClientStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
-            apiCall.Call(null);
-            Assert.Equal(clientSettings.CancellationToken, server.CallOptions.CancellationToken);
+            var bidiStreamingCall = helper.BuildApiCall("Method", server.BidiStreaming, null, null);
+            bidiStreamingCall.Call(null);
+            Assert.Equal(clientSettings.CancellationToken, server.BidiStreamingCallOptions.CancellationToken);
+
+            var clientStreamingCall = helper.BuildApiCall("Method", server.ClientStreaming, null, null);
+            clientStreamingCall.Call(null);
+            Assert.Equal(clientSettings.CancellationToken, server.ClientStreamingCallOptions.CancellationToken);
         }
 
         [Fact]
@@ -64,147 +44,65 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
             var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerNonStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                "Method", server.MethodAsync, server.MethodSync, perMethodSettings);
-            apiCall.Sync(null, null);
-            Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var server = new TestServer();
 
-        [Fact]
-        public void BuildServerStreamingApiCall_PerMethodSettings()
-        {
-            var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, perMethodSettings);
-            apiCall.Call(null, null);
-            Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
+                "Method", server.UnaryAsync, server.UnarySync, perMethodSettings);
+            unaryCall.Sync(null, null);
+            Assert.Equal(perMethodSettings.CancellationToken, server.UnaryCallOptions.CancellationToken);
 
-        [Fact]
-        public void BuildBidiStreamingApiCall_PerMethodSettings()
-        {
-            var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerBidiStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                "Method", server.Call, perMethodSettings, null);
-            apiCall.Call(null);
-            Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var serverStreamingCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.ServerStreaming, perMethodSettings);
+            serverStreamingCall.Call(null, null);
+            Assert.Equal(perMethodSettings.CancellationToken, server.ServerStreamingCallOptions.CancellationToken);
 
-        [Fact]
-        public void BuildClientStreamingApiCall_PerMethodSettings()
-        {
-            var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerClientStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                "Method", server.Call, perMethodSettings, null);
-            apiCall.Call(null);
-            Assert.Equal(perMethodSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
+            var bidiStreamingCall = helper.BuildApiCall("Method", server.BidiStreaming, perMethodSettings, null);
+            bidiStreamingCall.Call(null);
+            Assert.Equal(perMethodSettings.CancellationToken, server.BidiStreamingCallOptions.CancellationToken);
 
-        [Fact]
-        public void BuildApiCall_PerCallSettings()
-        {
-            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerNonStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
-                "Method", server.MethodAsync, server.MethodSync, null);
-            apiCall.Sync(null, perCallSettings);
-            Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
-
-        [Fact]
-        public void BuildServerStreamingApiCall_PerCallSettings()
-        {
-            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerServerStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null);
-            apiCall.Call(null, perCallSettings);
-            Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
-
-        [Fact]
-        public void BuildBidiStreamingApiCall_PerCallSettings()
-        {
-            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerBidiStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
-            apiCall.Call(perCallSettings);
-            Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
-        }
-        
-        [Fact]
-        public void BuildClientStreamingApiCall_PerCallSettings()
-        {
-            var perCallSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
-            var server = new DummyServerClientStreaming();
-            var apiCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>("Method", server.Call, null, null);
-            apiCall.Call(perCallSettings);
-            Assert.Equal(perCallSettings.CancellationToken, server.CallOptions.CancellationToken);
+            var clientStreamingCall = helper.BuildApiCall("Method", server.ClientStreaming, perMethodSettings, null);
+            clientStreamingCall.Call(null);
+            Assert.Equal(perMethodSettings.CancellationToken, server.ClientStreamingCallOptions.CancellationToken);
         }
 
         private class SimpleSettings: ServiceSettingsBase
         {
             public SimpleSettings() { }
-
             private SimpleSettings(SimpleSettings existing) : base(existing) { }
-
             public SimpleSettings Clone() => new SimpleSettings(this);
         }
 
-        private class DummyServerNonStreaming
+        private class TestServer
         {
-            public CallOptions CallOptions { get; private set; }
+            public CallOptions UnaryCallOptions { get; private set; }
+            public CallOptions BidiStreamingCallOptions { get; private set; }
+            public CallOptions ServerStreamingCallOptions { get; private set; }
+            public CallOptions ClientStreamingCallOptions { get; private set; }
 
-            internal AsyncUnaryCall<SimpleResponse> MethodAsync(SimpleRequest request, CallOptions callOptions)
-            {
+            internal AsyncUnaryCall<SimpleResponse> UnaryAsync(SimpleRequest request, CallOptions callOptions) =>
                 throw new NotImplementedException();
-            }
 
-            internal SimpleResponse MethodSync(SimpleRequest request, CallOptions callOptions)
+            internal SimpleResponse UnarySync(SimpleRequest request, CallOptions callOptions)
             {
-                CallOptions = callOptions;
+                UnaryCallOptions = callOptions;
                 return null;
             }
-        }
 
-        private class DummyServerServerStreaming
-        {
-            public CallOptions CallOptions { get; private set; }
 
-            internal AsyncServerStreamingCall<SimpleResponse> Call(SimpleRequest request, CallOptions callOptions)
+            internal AsyncServerStreamingCall<SimpleResponse> ServerStreaming(SimpleRequest request, CallOptions callOptions)
             {
-                CallOptions = callOptions;
+                ServerStreamingCallOptions = callOptions;
                 return null;
             }
-        }
 
-        private class DummyServerBidiStreaming
-        {
-            public CallOptions CallOptions { get; private set; }
-
-            internal AsyncDuplexStreamingCall<SimpleRequest, SimpleResponse> Call(CallOptions callOptions)
+            internal AsyncDuplexStreamingCall<SimpleRequest, SimpleResponse> BidiStreaming(CallOptions callOptions)
             {
-                CallOptions = callOptions;
+                BidiStreamingCallOptions = callOptions;
                 return null;
             }
-        }
 
-        private class DummyServerClientStreaming
-        {
-            public CallOptions CallOptions { get; private set; }
-
-            internal AsyncClientStreamingCall<SimpleRequest, SimpleResponse> Call(CallOptions callOptions)
+            internal AsyncClientStreamingCall<SimpleRequest, SimpleResponse> ClientStreaming(CallOptions callOptions)
             {
-                CallOptions = callOptions;
+                ClientStreamingCallOptions = callOptions;
                 return null;
             }
         }
