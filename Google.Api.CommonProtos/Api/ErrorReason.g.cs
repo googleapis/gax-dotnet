@@ -31,8 +31,8 @@ namespace Google.Api {
     static ErrorReasonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSrs",
-            "BgoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
+            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSqK",
+            "BwoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
             "FAoQU0VSVklDRV9ESVNBQkxFRBABEhQKEEJJTExJTkdfRElTQUJMRUQQAhIT",
             "Cg9BUElfS0VZX0lOVkFMSUQQAxIbChdBUElfS0VZX1NFUlZJQ0VfQkxPQ0tF",
             "RBAEEiEKHUFQSV9LRVlfSFRUUF9SRUZFUlJFUl9CTE9DS0VEEAcSHgoaQVBJ",
@@ -51,10 +51,10 @@ namespace Google.Api {
             "Tl9WSU9MQVRFRBAZEiAKHFNZU1RFTV9QQVJBTUVURVJfVU5TVVBQT1JURUQQ",
             "GhIdChlPUkdfUkVTVFJJQ1RJT05fVklPTEFUSU9OEBsSIgoeT1JHX1JFU1RS",
             "SUNUSU9OX0hFQURFUl9JTlZBTElEEBwSFwoTU0VSVklDRV9OT1RfVklTSUJM",
-            "RRAdEhEKDUdDUF9TVVNQRU5ERUQQHkJwCg5jb20uZ29vZ2xlLmFwaUIQRXJy",
-            "b3JSZWFzb25Qcm90b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9n",
-            "b29nbGVhcGlzL2FwaS9lcnJvcl9yZWFzb247ZXJyb3JfcmVhc29uogIER0FQ",
-            "SWIGcHJvdG8z"));
+            "RRAdEhEKDUdDUF9TVVNQRU5ERUQQHhIcChhMT0NBVElPTl9QT0xJQ1lfVklP",
+            "TEFURUQQH0JwCg5jb20uZ29vZ2xlLmFwaUIQRXJyb3JSZWFzb25Qcm90b1AB",
+            "WkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9l",
+            "cnJvcl9yZWFzb247ZXJyb3JfcmVhc29uogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ErrorReason), }, null, null));
@@ -641,6 +641,26 @@ namespace Google.Api {
     /// This response indicates the associated GCP account has been suspended.
     /// </summary>
     [pbr::OriginalName("GCP_SUSPENDED")] GcpSuspended = 30,
+    /// <summary>
+    /// The request violates the location policies when creating resources in
+    /// the restricted region.
+    ///
+    /// Example of an ErrorInfo when creating the Cloud Storage Bucket by
+    /// "projects/123" for service storage.googleapis.com:
+    ///
+    ///     { "reason": "LOCATION_POLICY_VIOLATED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "consumer": "projects/123",
+    ///         "service": "storage.googleapis.com",
+    ///       }
+    ///     }
+    ///
+    /// This response indicates creating the Cloud Storage Bucket in
+    /// "locations/asia-northeast3" violates at least one location policy.
+    /// The troubleshooting guidance is provided in the Help links.
+    /// </summary>
+    [pbr::OriginalName("LOCATION_POLICY_VIOLATED")] LocationPolicyViolated = 31,
   }
 
   #endregion
