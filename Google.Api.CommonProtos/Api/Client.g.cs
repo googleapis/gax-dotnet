@@ -47,7 +47,7 @@ namespace Google.Api {
             "IAEoCzIYLmdvb2dsZS5hcGkuTm9kZVNldHRpbmdzEjMKD2RvdG5ldF9zZXR0",
             "aW5ncxgaIAEoCzIaLmdvb2dsZS5hcGkuRG90bmV0U2V0dGluZ3MSLwoNcnVi",
             "eV9zZXR0aW5ncxgbIAEoCzIYLmdvb2dsZS5hcGkuUnVieVNldHRpbmdzEisK",
-            "C2dvX3NldHRpbmdzGBwgASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzIv4C",
+            "C2dvX3NldHRpbmdzGBwgASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzIqgD",
             "CgpQdWJsaXNoaW5nEjMKD21ldGhvZF9zZXR0aW5ncxgCIAMoCzIaLmdvb2ds",
             "ZS5hcGkuTWV0aG9kU2V0dGluZ3MSFQoNbmV3X2lzc3VlX3VyaRhlIAEoCRIZ",
             "ChFkb2N1bWVudGF0aW9uX3VyaRhmIAEoCRIWCg5hcGlfc2hvcnRfbmFtZRhn",
@@ -56,57 +56,59 @@ namespace Google.Api {
             "bml6YXRpb24YayABKA4yJS5nb29nbGUuYXBpLkNsaWVudExpYnJhcnlPcmdh",
             "bml6YXRpb24SOwoQbGlicmFyeV9zZXR0aW5ncxhtIAMoCzIhLmdvb2dsZS5h",
             "cGkuQ2xpZW50TGlicmFyeVNldHRpbmdzEikKIXByb3RvX3JlZmVyZW5jZV9k",
-            "b2N1bWVudGF0aW9uX3VyaRhuIAEoCSLjAQoMSmF2YVNldHRpbmdzEhcKD2xp",
-            "YnJhcnlfcGFja2FnZRgBIAEoCRJMChNzZXJ2aWNlX2NsYXNzX25hbWVzGAIg",
-            "AygLMi8uZ29vZ2xlLmFwaS5KYXZhU2V0dGluZ3MuU2VydmljZUNsYXNzTmFt",
-            "ZXNFbnRyeRIyCgZjb21tb24YAyABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxh",
-            "bmd1YWdlU2V0dGluZ3MaOAoWU2VydmljZUNsYXNzTmFtZXNFbnRyeRILCgNr",
-            "ZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIK",
-            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
-            "aW5ncyJBCgtQaHBTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUu",
-            "YXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiRAoOUHl0aG9uU2V0dGluZ3MS",
-            "MgoGY29tbW9uGAEgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5ndWFnZVNl",
-            "dHRpbmdzIkIKDE5vZGVTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29n",
-            "bGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiqgMKDkRvdG5ldFNldHRp",
-            "bmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3Vh",
-            "Z2VTZXR0aW5ncxJJChByZW5hbWVkX3NlcnZpY2VzGAIgAygLMi8uZ29vZ2xl",
-            "LmFwaS5Eb3RuZXRTZXR0aW5ncy5SZW5hbWVkU2VydmljZXNFbnRyeRJLChFy",
-            "ZW5hbWVkX3Jlc291cmNlcxgDIAMoCzIwLmdvb2dsZS5hcGkuRG90bmV0U2V0",
-            "dGluZ3MuUmVuYW1lZFJlc291cmNlc0VudHJ5EhkKEWlnbm9yZWRfcmVzb3Vy",
-            "Y2VzGAQgAygJEiAKGGZvcmNlZF9uYW1lc3BhY2VfYWxpYXNlcxgFIAMoCRIe",
-            "ChZoYW5kd3JpdHRlbl9zaWduYXR1cmVzGAYgAygJGjYKFFJlbmFtZWRTZXJ2",
-            "aWNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaNwoV",
-            "UmVuYW1lZFJlc291cmNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgC",
-            "IAEoCToCOAEiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdv",
-            "b2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRpbmdz",
+            "b2N1bWVudGF0aW9uX3VyaRhuIAEoCRIoCiByZXN0X3JlZmVyZW5jZV9kb2N1",
+            "bWVudGF0aW9uX3VyaRhvIAEoCSLjAQoMSmF2YVNldHRpbmdzEhcKD2xpYnJh",
+            "cnlfcGFja2FnZRgBIAEoCRJMChNzZXJ2aWNlX2NsYXNzX25hbWVzGAIgAygL",
+            "Mi8uZ29vZ2xlLmFwaS5KYXZhU2V0dGluZ3MuU2VydmljZUNsYXNzTmFtZXNF",
+            "bnRyeRIyCgZjb21tb24YAyABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1",
+            "YWdlU2V0dGluZ3MaOAoWU2VydmljZUNsYXNzTmFtZXNFbnRyeRILCgNrZXkY",
+            "ASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIKBmNv",
+            "bW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5n",
+            "cyJBCgtQaHBTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBp",
+            "LkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiRAoOUHl0aG9uU2V0dGluZ3MSMgoG",
+            "Y29tbW9uGAEgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5ndWFnZVNldHRp",
+            "bmdzIkIKDE5vZGVTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUu",
+            "YXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiqgMKDkRvdG5ldFNldHRpbmdz",
             "EjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VT",
-            "ZXR0aW5ncyLPAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkS",
-            "PAoMbG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RTZXR0",
-            "aW5ncy5Mb25nUnVubmluZxIdChVhdXRvX3BvcHVsYXRlZF9maWVsZHMYAyAD",
-            "KAkazQEKC0xvbmdSdW5uaW5nEjUKEmluaXRpYWxfcG9sbF9kZWxheRgBIAEo",
-            "CzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIdChVwb2xsX2RlbGF5X211",
-            "bHRpcGxpZXIYAiABKAISMQoObWF4X3BvbGxfZGVsYXkYAyABKAsyGS5nb29n",
-            "bGUucHJvdG9idWYuRHVyYXRpb24SNQoSdG90YWxfcG9sbF90aW1lb3V0GAQg",
-            "ASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uKqMBChlDbGllbnRMaWJy",
-            "YXJ5T3JnYW5pemF0aW9uEisKJ0NMSUVOVF9MSUJSQVJZX09SR0FOSVpBVElP",
-            "Tl9VTlNQRUNJRklFRBAAEgkKBUNMT1VEEAESBwoDQURTEAISCgoGUEhPVE9T",
-            "EAMSDwoLU1RSRUVUX1ZJRVcQBBIMCghTSE9QUElORxAFEgcKA0dFTxAGEhEK",
-            "DUdFTkVSQVRJVkVfQUkQBypnChhDbGllbnRMaWJyYXJ5RGVzdGluYXRpb24S",
-            "KgomQ0xJRU5UX0xJQlJBUllfREVTVElOQVRJT05fVU5TUEVDSUZJRUQQABIK",
-            "CgZHSVRIVUIQChITCg9QQUNLQUdFX01BTkFHRVIQFDo5ChBtZXRob2Rfc2ln",
-            "bmF0dXJlEh4uZ29vZ2xlLnByb3RvYnVmLk1ldGhvZE9wdGlvbnMYmwggAygJ",
-            "OjYKDGRlZmF1bHRfaG9zdBIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0",
-            "aW9ucxiZCCABKAk6NgoMb2F1dGhfc2NvcGVzEh8uZ29vZ2xlLnByb3RvYnVm",
-            "LlNlcnZpY2VPcHRpb25zGJoIIAEoCUJpCg5jb20uZ29vZ2xlLmFwaUILQ2xp",
-            "ZW50UHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xl",
-            "YXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlvbnOiAgRHQVBJYgZwcm90",
-            "bzM="));
+            "ZXR0aW5ncxJJChByZW5hbWVkX3NlcnZpY2VzGAIgAygLMi8uZ29vZ2xlLmFw",
+            "aS5Eb3RuZXRTZXR0aW5ncy5SZW5hbWVkU2VydmljZXNFbnRyeRJLChFyZW5h",
+            "bWVkX3Jlc291cmNlcxgDIAMoCzIwLmdvb2dsZS5hcGkuRG90bmV0U2V0dGlu",
+            "Z3MuUmVuYW1lZFJlc291cmNlc0VudHJ5EhkKEWlnbm9yZWRfcmVzb3VyY2Vz",
+            "GAQgAygJEiAKGGZvcmNlZF9uYW1lc3BhY2VfYWxpYXNlcxgFIAMoCRIeChZo",
+            "YW5kd3JpdHRlbl9zaWduYXR1cmVzGAYgAygJGjYKFFJlbmFtZWRTZXJ2aWNl",
+            "c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaNwoVUmVu",
+            "YW1lZFJlc291cmNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
+            "CToCOAEiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2ds",
+            "ZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRpbmdzEjIK",
+            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
+            "aW5ncyLPAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkSPAoM",
+            "bG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RTZXR0aW5n",
+            "cy5Mb25nUnVubmluZxIdChVhdXRvX3BvcHVsYXRlZF9maWVsZHMYAyADKAka",
+            "zQEKC0xvbmdSdW5uaW5nEjUKEmluaXRpYWxfcG9sbF9kZWxheRgBIAEoCzIZ",
+            "Lmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIdChVwb2xsX2RlbGF5X211bHRp",
+            "cGxpZXIYAiABKAISMQoObWF4X3BvbGxfZGVsYXkYAyABKAsyGS5nb29nbGUu",
+            "cHJvdG9idWYuRHVyYXRpb24SNQoSdG90YWxfcG9sbF90aW1lb3V0GAQgASgL",
+            "MhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uKqMBChlDbGllbnRMaWJyYXJ5",
+            "T3JnYW5pemF0aW9uEisKJ0NMSUVOVF9MSUJSQVJZX09SR0FOSVpBVElPTl9V",
+            "TlNQRUNJRklFRBAAEgkKBUNMT1VEEAESBwoDQURTEAISCgoGUEhPVE9TEAMS",
+            "DwoLU1RSRUVUX1ZJRVcQBBIMCghTSE9QUElORxAFEgcKA0dFTxAGEhEKDUdF",
+            "TkVSQVRJVkVfQUkQBypnChhDbGllbnRMaWJyYXJ5RGVzdGluYXRpb24SKgom",
+            "Q0xJRU5UX0xJQlJBUllfREVTVElOQVRJT05fVU5TUEVDSUZJRUQQABIKCgZH",
+            "SVRIVUIQChITCg9QQUNLQUdFX01BTkFHRVIQFDo5ChBtZXRob2Rfc2lnbmF0",
+            "dXJlEh4uZ29vZ2xlLnByb3RvYnVmLk1ldGhvZE9wdGlvbnMYmwggAygJOjYK",
+            "DGRlZmF1bHRfaG9zdBIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0aW9u",
+            "cxiZCCABKAk6NgoMb2F1dGhfc2NvcGVzEh8uZ29vZ2xlLnByb3RvYnVmLlNl",
+            "cnZpY2VPcHRpb25zGJoIIAEoCTo4CgthcGlfdmVyc2lvbhIfLmdvb2dsZS5w",
+            "cm90b2J1Zi5TZXJ2aWNlT3B0aW9ucxjBuqv6ASABKAlCaQoOY29tLmdvb2ds",
+            "ZS5hcGlCC0NsaWVudFByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnBy",
+            "b3RvL2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIE",
+            "R0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes }, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes, ClientExtensions.ApiVersion }, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CommonLanguageSettings), global::Google.Api.CommonLanguageSettings.Parser, new[]{ "ReferenceDocsUri", "Destinations" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ClientLibrarySettings), global::Google.Api.ClientLibrarySettings.Parser, new[]{ "Version", "LaunchStage", "RestNumericEnums", "JavaSettings", "CppSettings", "PhpSettings", "PythonSettings", "NodeSettings", "DotnetSettings", "RubySettings", "GoSettings" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings", "ProtoReferenceDocumentationUri" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings", "ProtoReferenceDocumentationUri", "RestReferenceDocumentationUri" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JavaSettings), global::Google.Api.JavaSettings.Parser, new[]{ "LibraryPackage", "ServiceClassNames", "Common" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CppSettings), global::Google.Api.CppSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PhpSettings), global::Google.Api.PhpSettings.Parser, new[]{ "Common" }, null, null, null, null),
@@ -199,6 +201,24 @@ namespace Google.Api {
     /// </summary>
     public static readonly pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string> OauthScopes =
       new pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string>(1050, pb::FieldCodec.ForString(8402, ""));
+    /// <summary>
+    /// The API version of this service, which should be sent by version-aware
+    /// clients to the service. This allows services to abide by the schema and
+    /// behavior of the service at the time this API version was deployed.
+    /// The format of the API version must be treated as opaque by clients.
+    /// Services may use a format with an apparent structure, but clients must
+    /// not rely on this to determine components within an API version, or attempt
+    /// to construct other valid API versions. Note that this is for upcoming
+    /// functionality and may not be implemented for all services.
+    ///
+    /// Example:
+    ///
+    ///   service Foo {
+    ///     option (google.api.api_version) = "v1_20230821_preview";
+    ///   }
+    /// </summary>
+    public static readonly pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string> ApiVersion =
+      new pb::Extension<global::Google.Protobuf.Reflection.ServiceOptions, string>(525000001, pb::FieldCodec.ForString(4200000010, ""));
   }
 
   #region Enums
@@ -1214,6 +1234,7 @@ namespace Google.Api {
       organization_ = other.organization_;
       librarySettings_ = other.librarySettings_.Clone();
       protoReferenceDocumentationUri_ = other.protoReferenceDocumentationUri_;
+      restReferenceDocumentationUri_ = other.restReferenceDocumentationUri_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1380,6 +1401,22 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "rest_reference_documentation_uri" field.</summary>
+    public const int RestReferenceDocumentationUriFieldNumber = 111;
+    private string restReferenceDocumentationUri_ = "";
+    /// <summary>
+    /// Optional link to REST reference documentation.  Example:
+    /// https://cloud.google.com/pubsub/lite/docs/reference/rest
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string RestReferenceDocumentationUri {
+      get { return restReferenceDocumentationUri_; }
+      set {
+        restReferenceDocumentationUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1405,6 +1442,7 @@ namespace Google.Api {
       if (Organization != other.Organization) return false;
       if(!librarySettings_.Equals(other.librarySettings_)) return false;
       if (ProtoReferenceDocumentationUri != other.ProtoReferenceDocumentationUri) return false;
+      if (RestReferenceDocumentationUri != other.RestReferenceDocumentationUri) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1422,6 +1460,7 @@ namespace Google.Api {
       if (Organization != global::Google.Api.ClientLibraryOrganization.Unspecified) hash ^= Organization.GetHashCode();
       hash ^= librarySettings_.GetHashCode();
       if (ProtoReferenceDocumentationUri.Length != 0) hash ^= ProtoReferenceDocumentationUri.GetHashCode();
+      if (RestReferenceDocumentationUri.Length != 0) hash ^= RestReferenceDocumentationUri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1471,6 +1510,10 @@ namespace Google.Api {
         output.WriteRawTag(242, 6);
         output.WriteString(ProtoReferenceDocumentationUri);
       }
+      if (RestReferenceDocumentationUri.Length != 0) {
+        output.WriteRawTag(250, 6);
+        output.WriteString(RestReferenceDocumentationUri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1512,6 +1555,10 @@ namespace Google.Api {
         output.WriteRawTag(242, 6);
         output.WriteString(ProtoReferenceDocumentationUri);
       }
+      if (RestReferenceDocumentationUri.Length != 0) {
+        output.WriteRawTag(250, 6);
+        output.WriteString(RestReferenceDocumentationUri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1545,6 +1592,9 @@ namespace Google.Api {
       size += librarySettings_.CalculateSize(_repeated_librarySettings_codec);
       if (ProtoReferenceDocumentationUri.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(ProtoReferenceDocumentationUri);
+      }
+      if (RestReferenceDocumentationUri.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(RestReferenceDocumentationUri);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1581,6 +1631,9 @@ namespace Google.Api {
       librarySettings_.Add(other.librarySettings_);
       if (other.ProtoReferenceDocumentationUri.Length != 0) {
         ProtoReferenceDocumentationUri = other.ProtoReferenceDocumentationUri;
+      }
+      if (other.RestReferenceDocumentationUri.Length != 0) {
+        RestReferenceDocumentationUri = other.RestReferenceDocumentationUri;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1637,6 +1690,10 @@ namespace Google.Api {
             ProtoReferenceDocumentationUri = input.ReadString();
             break;
           }
+          case 890: {
+            RestReferenceDocumentationUri = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -1690,6 +1747,10 @@ namespace Google.Api {
           }
           case 882: {
             ProtoReferenceDocumentationUri = input.ReadString();
+            break;
+          }
+          case 890: {
+            RestReferenceDocumentationUri = input.ReadString();
             break;
           }
         }
