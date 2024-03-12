@@ -13,7 +13,7 @@ using System;
 namespace Google.Api.Gax.Grpc
 {
     /// <summary>
-    /// Common helper code shared by clients.
+    /// Common helper code shared by clients. This class is primarily expected to be used from generated code.
     /// </summary>
     public class ClientHelper
     {
@@ -24,12 +24,27 @@ namespace Google.Api.Gax.Grpc
         /// Constructs a helper from the given settings.
         /// Behavior is undefined if settings are changed after construction.
         /// </summary>
+        /// <remarks>
+        /// This constructor will be removed in the next major version of GAX.
+        /// </remarks>
         /// <param name="settings">The service settings.</param>
         /// <param name="logger">The logger to use for API calls</param>
         public ClientHelper(ServiceSettingsBase settings, ILogger logger)
+            : this(new Options { Settings = GaxPreconditions.CheckNotNull(settings, nameof(settings)), Logger = logger })
         {
-            GaxPreconditions.CheckNotNull(settings, nameof(settings));
-            Logger = logger;
+        }
+
+        /// <summary>
+        /// Constructs a helper from the given options. See the properties in <see cref="Options"/>
+        /// for validity constraints.
+        /// </summary>
+        /// <param name="options">The options for the helper.</param>
+        public ClientHelper(Options options)
+        {
+            GaxPreconditions.CheckNotNull(options, nameof(options));
+            var settings = options.Settings;
+            GaxPreconditions.CheckArgument(settings is not null, nameof(options), "{0} in options must not be null", nameof(Options.Settings));
+            Logger = options.Logger;
             Clock = settings.Clock ?? SystemClock.Instance;
             Scheduler = settings.Scheduler ?? SystemScheduler.Instance;
             _clientCallSettings = settings.CallSettings;
@@ -151,6 +166,27 @@ namespace Google.Api.Gax.Grpc
             return ApiClientStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
+        }
+
+        /// <summary>
+        /// The options used to construct a <see cref="ClientHelper"/>.
+        /// </summary>
+        /// <remarks>
+        /// This class is designed to allow additional configuration to be introduced without
+        /// either overloading the ClientHelper constructor or making breaking changes.
+        /// </remarks>
+        public sealed class Options
+        {
+            /// <summary>
+            /// The service settings. This must not be null when the options
+            /// are passed to the <see cref="ClientHelper"/> constructor.
+            /// </summary>
+            public ServiceSettingsBase Settings { get; set; }
+
+            /// <summary>
+            /// The logger to use, if any. This may be null.
+            /// </summary>
+            public ILogger Logger { get; set; }
         }
     }
 }

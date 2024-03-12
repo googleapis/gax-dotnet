@@ -18,7 +18,8 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_ClientSettings()
         {
             var clientSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings { CallSettings = clientSettings }, logger: null);
+            var options = new ClientHelper.Options { Settings = new SimpleSettings { CallSettings = clientSettings } };
+            var helper = new ClientHelper(options);
             var server = new TestServer();
 
             var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
@@ -43,7 +44,8 @@ namespace Google.Api.Gax.Grpc.Tests
         public void BuildApiCall_PerMethodSettings()
         {
             var perMethodSettings = CallSettings.FromCancellationToken(new CancellationTokenSource().Token);
-            var helper = new ClientHelper(new SimpleSettings(), logger: null);
+            var options = new ClientHelper.Options { Settings = new SimpleSettings() };
+            var helper = new ClientHelper(options);
             var server = new TestServer();
 
             var unaryCall = helper.BuildApiCall<SimpleRequest, SimpleResponse>(
