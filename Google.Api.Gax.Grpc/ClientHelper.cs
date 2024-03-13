@@ -64,7 +64,7 @@ namespace Google.Api.Gax.Grpc
             {
                 _versionCallSettings = _versionCallSettings.WithHeader(ApiVersionHeaderName, options.ApiVersion);
             }
-            _activitySource = options.ActivitySource;
+            _activitySource = settings.ActivitySource ?? options.ActivitySource;
         }
 
         /// <summary>
@@ -214,7 +214,8 @@ namespace Google.Api.Gax.Grpc
             public string ApiVersion { get; set; }
 
             /// <summary>
-            /// The activity source to use for tracing, if any. This may be null.
+            /// The activity source to use for tracing, if any. This may be null. This is ignored
+            /// if <see cref="Settings"/> specifies an activity source.
             /// </summary>
             public ActivitySource ActivitySource { get; set; }
         }

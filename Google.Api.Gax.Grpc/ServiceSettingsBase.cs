@@ -7,6 +7,7 @@
 
 using Grpc.Core;
 using Grpc.Core.Interceptors;
+using System.Diagnostics;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -42,6 +43,7 @@ namespace Google.Api.Gax.Grpc
             Scheduler = existing.Scheduler;
             VersionHeaderBuilder = existing.VersionHeaderBuilder.Clone();
             Interceptor = existing.Interceptor;
+            ActivitySource = existing.ActivitySource;
         }
 
         /// <summary>
@@ -84,5 +86,11 @@ namespace Google.Api.Gax.Grpc
         /// on or after that date are aware of this property.
         /// </summary>
         public Interceptor Interceptor { get; set; }
+
+        /// <summary>
+        /// An optional <see cref="ActivitySource"/>, which can override the default activity source used for tracing
+        /// calls from this client.
+        /// </summary>
+        public ActivitySource ActivitySource { get; set; }
     }
 }
