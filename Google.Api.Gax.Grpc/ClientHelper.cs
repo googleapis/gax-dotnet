@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 namespace Google.Api.Gax.Grpc
 {
@@ -27,6 +28,8 @@ namespace Google.Api.Gax.Grpc
         /// optionally the API version (x-goog-api-version).
         /// </summary>
         private readonly CallSettings _versionCallSettings;
+
+        private readonly ActivitySource _activitySource;
 
         /// <summary>
         /// Constructs a helper from the given settings.
@@ -61,6 +64,7 @@ namespace Google.Api.Gax.Grpc
             {
                 _versionCallSettings = _versionCallSettings.WithHeader(ApiVersionHeaderName, options.ApiVersion);
             }
+            _activitySource = options.ActivitySource;
         }
 
         /// <summary>
@@ -104,6 +108,7 @@ namespace Google.Api.Gax.Grpc
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiCall.Create(methodName, asyncGrpcCall, syncGrpcCall, baseCallSettings, Clock)
+                .WithTracing(_activitySource)
                 .WithLogging(Logger)
                 .WithRetry(Clock, Scheduler, Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
@@ -128,6 +133,7 @@ namespace Google.Api.Gax.Grpc
             // These operations are applied in reverse order.
             // I.e. Version header is added first, then retry is performed.
             return ApiServerStreamingCall.Create(methodName, grpcCall, baseCallSettings, Clock)
+                .WithTracing(_activitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -152,6 +158,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithTracing(_activitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -176,6 +183,7 @@ namespace Google.Api.Gax.Grpc
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiClientStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
+                .WithTracing(_activitySource)
                 .WithLogging(Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
@@ -204,6 +212,11 @@ namespace Google.Api.Gax.Grpc
             /// The API version to send in the x-goog-api-version header, if any. This may be null.
             /// </summary>
             public string ApiVersion { get; set; }
+
+            /// <summary>
+            /// The activity source to use for tracing, if any. This may be null.
+            /// </summary>
+            public ActivitySource ActivitySource { get; set; }
         }
     }
 }
