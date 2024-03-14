@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0...Google.Api.Gax-4.7.0) (2024-03-14)
+
+
+### Features
+
+* Support for API version header ([df1467b](https://github.com/googleapis/gax-dotnet/commit/df1467b15e7fd82e7754f7b53796c1c1d7a3fc2d))
+
 ## [4.6.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0-beta02...Google.Api.Gax-4.6.0) (2024-02-22)
 
 
