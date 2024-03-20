@@ -95,7 +95,7 @@ namespace Google.Api.Gax
                 kubernetesToken = File.ReadAllText("/var/run/secrets/kubernetes.io/serviceaccount/token");
                 // On Windows GKE, we currently fail to load this certificate - so just skipping even an attempt
                 // when on .NET Framework seems reasonable.
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER
                 kubernetesCaCert = new X509Certificate2("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt");
 #elif NET462
 #else
@@ -132,7 +132,7 @@ namespace Google.Api.Gax
                     return chain.Build(cert) && chain.ChainElements[chain.ChainElements.Count - 1].Certificate.Thumbprint == kubernetesCaCert.Thumbprint;
                 };
             var handler = new HttpClientHandler();
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER
             handler.ServerCertificateCustomValidationCallback = serverCertificateCustomValidationCallback;
 #elif NET462
             // .NET 4.6.2 supposedly supports .NET Standard (which defines HttpClientHandler.ServerCertificateCustomValidationCallback),
