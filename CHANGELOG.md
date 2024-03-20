@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.0-alpha01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.7.0...Google.Api.Gax-4.8.0-alpha01) (2024-03-20)
+
+
+### Features
+
+* Target netstandard2.0 in GAX ([cffd733](https://github.com/googleapis/gax-dotnet/commit/cffd733091641a91ae4c0f71339be43c378052f1))
+
 ## [4.7.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.6.0...Google.Api.Gax-4.7.0) (2024-03-14)
 
 
