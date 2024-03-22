@@ -93,7 +93,10 @@ namespace Google.Api.Gax
             }
         }
         
-        private static string FormatAssemblyVersion(System.Type type)
+        /// <summary>
+        /// Formats the version of the assembly containing the specified type, in a "generally informative" way.
+        /// </summary>
+        internal static string FormatAssemblyVersion(System.Type type)
         {
             // Prefer AssemblyInformationalVersion, then AssemblyFileVersion,
             // then AssemblyVersion.

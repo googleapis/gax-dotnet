@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Google.Api.Gax.Grpc
@@ -171,6 +172,14 @@ namespace Google.Api.Gax.Grpc
                 : new ApiCall<TRequest, TResponse>(
                     _methodName, _asyncCall.WithLogging(logger, _methodName),
                     _syncCall.WithLogging(logger, _methodName),
+                    BaseCallSettings);
+
+        internal ApiCall<TRequest, TResponse> WithTracing(ActivitySource activitySource) =>
+            activitySource is null
+                ? this
+                : new ApiCall<TRequest, TResponse>(
+                    _methodName, _asyncCall.WithTracing(activitySource, _methodName),
+                    _syncCall.WithTracing(activitySource, _methodName),
                     BaseCallSettings);
 
         /// <summary>
