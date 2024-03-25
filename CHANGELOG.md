@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.8.0-alpha01...Google.Api.Gax-4.8.0) (2024-03-25)
+
+
+### Miscellaneous Chores
+
+* GA release of GAX targeting netstandard2.0 ([#774](https://github.com/googleapis/gax-dotnet/issues/774)) ([e2cd3b1](https://github.com/googleapis/gax-dotnet/commit/e2cd3b10155de5c227434b6868e759047af631d4))
+
 ## [4.8.0-alpha01](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.7.0...Google.Api.Gax-4.8.0-alpha01) (2024-03-20)
 
 
