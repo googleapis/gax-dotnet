@@ -8,7 +8,10 @@ using Google.Api.Gax.Testing;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -215,6 +218,49 @@ namespace Google.Api.Gax.Grpc.Tests
             var entries = logger.ListLogEntries();
             Assert.Equal(2, entries.Count);
             Assert.All(entries, entry => Assert.Contains("SimpleMethod", entry.Message));
+        }
+
+        [Fact]
+        public void WithTracing_Sync()
+        {
+            using var helper = new ActivityHelper();
+            var call = new ApiCall<SimpleRequest, SimpleResponse>(
+                "SimpleMethod",
+                (req, cs) => Task.FromResult(default(SimpleResponse)),
+                (req, cs) => null,
+                null).WithTracing(helper.Source);
+
+            call.Sync(new SimpleRequest(), null);
+
+            var activity = helper.CapturedActivity;
+            Assert.NotNull(activity);
+            Assert.Contains("SimpleMethod", activity.OperationName);
+            Assert.Equal(ActivityStatusCode.Ok, activity.Status);
+        }
+
+        private class ActivityHelper : IDisposable
+        {
+            public ActivitySource Source { get; }
+            public Activity CapturedActivity { get; private set; }
+            private readonly ActivityListener _listener;
+
+            internal ActivityHelper([CallerMemberName] string name = null)
+            {
+                Source = new ActivitySource(name);
+                _listener = new ActivityListener
+                {
+                    ShouldListenTo = candidate => candidate == Source,
+                    Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded,
+                    ActivityStarted = activity => CapturedActivity = activity
+                };
+                ActivitySource.AddActivityListener(_listener);
+            }
+
+            public void Dispose()
+            {
+                _listener.Dispose();
+                Source.Dispose();
+            }
         }
 
         internal class ExtractedRequestParamRequest : IMessage<ExtractedRequestParamRequest>
