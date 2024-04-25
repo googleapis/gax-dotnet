@@ -50,6 +50,24 @@ namespace Google.Api.Gax.Grpc
         public static ErrorInfo GetErrorInfo(this RpcException ex) => GetStatusDetail<ErrorInfo>(ex);
 
         /// <summary>
+        /// Retrieves the <see cref="Help"/> message containing extended error information
+        /// from the trailers in an <see cref="RpcException"/>, if present.
+        /// </summary>
+        /// <param name="ex">The RPC exception to retrieve details from. Must not be null.</param>
+        /// <returns>The <see cref="Help"/> message specified in the exception, or null
+        /// if there is no such information.</returns>
+        public static Help GetHelp(this RpcException ex) => GetStatusDetail<Help>(ex);
+
+        /// <summary>
+        /// Retrieves the <see cref="LocalizedMessage"/> message containing extended error information
+        /// from the trailers in an <see cref="RpcException"/>, if present.
+        /// </summary>
+        /// <param name="ex">The RPC exception to retrieve details from. Must not be null.</param>
+        /// <returns>The <see cref="Help"/> message specified in the exception, or null
+        /// if there is no such information.</returns>
+        public static LocalizedMessage GetLocalizedMessage(this RpcException ex) => GetStatusDetail<LocalizedMessage>(ex);
+
+        /// <summary>
         /// Retrieves the error details of type <typeparamref name="T"/> from the <see cref="Status"/>
         /// message associated with an <see cref="RpcException"/>, if any.
         /// </summary>
