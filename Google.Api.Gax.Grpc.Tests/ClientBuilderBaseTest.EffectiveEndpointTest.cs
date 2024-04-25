@@ -28,7 +28,6 @@ public partial class ClientBuilderBaseTest
                 // Default endpoint, universe domain, expected effective endpoint
                 { DefaultEndpointAtDefaultDomain, null, DefaultEndpointAtDefaultDomain},
                 { DefaultEndpointAtDefaultDomain, DefaultUniverseDomain, DefaultEndpointAtDefaultDomain},
-                { DefaultEndpointAtDefaultDomain, DefaultUniverseDomain, DefaultEndpointAtDefaultDomain},
                 { DefaultEndpointAtDefaultDomain, CustomUniverseDomain, EffectiveEndpointAtCustomUniverseDomain},
                 { DefaultEndpointNotAtDefaultDomain, null, DefaultEndpointNotAtDefaultDomain},
                 { DefaultEndpointNotAtDefaultDomain, DefaultUniverseDomain, DefaultEndpointNotAtDefaultDomain},
