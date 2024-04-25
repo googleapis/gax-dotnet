@@ -14,6 +14,7 @@ using Status = Google.Rpc.Status;
 using GrpcStatus = Grpc.Core.Status;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
+using static Google.Rpc.Help.Types;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -28,6 +29,8 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Throws<ArgumentNullException>(() => ex.GetRpcStatus());
             Assert.Throws<ArgumentNullException>(() => ex.GetBadRequest());
             Assert.Throws<ArgumentNullException>(() => ex.GetErrorInfo());
+            Assert.Throws<ArgumentNullException>(() => ex.GetHelp());
+            Assert.Throws<ArgumentNullException>(() => ex.GetLocalizedMessage());
             Assert.Throws<ArgumentNullException>(() => ex.GetStatusDetail<BadRequest>());
         }
 
@@ -72,6 +75,8 @@ namespace Google.Api.Gax.Grpc.Tests
             // We don't have any details
             Assert.Null(ex.GetBadRequest());
             Assert.Null(ex.GetErrorInfo());
+            Assert.Null(ex.GetHelp());
+            Assert.Null(ex.GetLocalizedMessage());
             Assert.Null(ex.GetStatusDetail<DebugInfo>());
         }
 
@@ -90,6 +95,11 @@ namespace Google.Api.Gax.Grpc.Tests
             {
                 FieldViolations = { new BadRequest.Types.FieldViolation { Description = "Negative", Field = "speed" } }
             };
+            var help = new Help
+            {
+                Links = { new Link { Description = "Google it", Url = "https://google.com" } }
+            };
+            var localizedMessage = new LocalizedMessage { Locale = "en-US", Message = "Oops" };
             var status = new Status
             {
                 Code = 123,
@@ -98,7 +108,9 @@ namespace Google.Api.Gax.Grpc.Tests
                 {
                     Any.Pack(debugInfo),
                     Any.Pack(requestInfo),
-                    Any.Pack(badRequest)
+                    Any.Pack(badRequest),
+                    Any.Pack(help),
+                    Any.Pack(localizedMessage)
                 }
             };
 
@@ -114,6 +126,8 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(debugInfo, ex.GetStatusDetail<DebugInfo>());
             Assert.Equal(requestInfo, ex.GetStatusDetail<RequestInfo>());
             Assert.Equal(badRequest, ex.GetStatusDetail<BadRequest>());
+            Assert.Equal(help, ex.GetStatusDetail<Help>());
+            Assert.Equal(localizedMessage, ex.GetStatusDetail<LocalizedMessage>());
         }
 
         [Fact]
@@ -161,6 +175,8 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Null(ex.GetRpcStatus());
             Assert.Null(ex.GetBadRequest());
             Assert.Null(ex.GetErrorInfo());
+            Assert.Null(ex.GetHelp());
+            Assert.Null(ex.GetLocalizedMessage());
             Assert.Null(ex.GetStatusDetail<DebugInfo>());
         }
     }
