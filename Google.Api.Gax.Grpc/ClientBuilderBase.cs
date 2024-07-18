@@ -175,7 +175,7 @@ namespace Google.Api.Gax.Grpc
         /// and ensure they call <see cref="GetEffectiveSettings{T}(T)"/> to potentially specify the API key header
         /// via CallSettings.
         /// </remarks>
-        protected string ApiKey { get; set; }
+        public string ApiKey { get; set; }
 
         /// <summary>
         /// The GCP project ID that should be used for quota and billing purposes.
@@ -275,9 +275,11 @@ namespace Google.Api.Gax.Grpc
         /// Returns the effective settings for this builder, taking into account API keys and any other properties
         /// which may require additional settings (typically via <see cref="ServiceSettingsBase.CallSettings"/>).
         /// </summary>
-        /// <remarks>This method only needs to be called if the concrete builder type knows that the settings may
-        /// need to be modified (e.g. if the API supports API keys). It should typically be called as
-        /// <c>GetEffectiveSettings(Settings?.Clone())</c>.</remarks>
+        /// <remarks>This method must be called as part of <see cref="Build()"/> and
+        /// <see cref="BuildAsync(CancellationToken)"/> in
+        /// order to support API keys. It should typically be called as
+        /// <c>GetEffectiveSettings(Settings?.Clone())</c>.
+        /// </remarks>
         /// <typeparam name="T">The concrete settings type, derived from <see cref="ServiceSettingsBase"/>, with a
         /// parameterless constructor that can be used to construct a new default instance.</typeparam>
         /// <param name="settings">A clone of the existing settings specified in the concrete builder type. May be null.</param>
