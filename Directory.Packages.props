@@ -1,0 +1,37 @@
+<Project>
+  <ItemGroup>
+    <!-- Test-oriented packages -->
+    <PackageVersion Include="xunit" Version="2.9.0" />
+    <PackageVersion Include="xunit.assert" Version="2.9.0" />
+    <PackageVersion Include="xunit.core" Version="2.9.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="Xunit.SkippableFact" Version="1.4.13" />
+    <PackageVersion Include="Xunit.Combinatorial" Version="1.6.24" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageVersion Include="NSubstitute" Version="5.1.0" />
+    
+    <!-- Google/gRPC packages -->
+    <PackageVersion Include="Grpc.Auth" Version="[2.60.0, 3.0.0)" />
+    <PackageVersion Include="Google.Apis.Auth" Version="[1.67.0, 2.0.0)" />
+    <PackageVersion Include="Google.Protobuf" Version="[3.25.0, 4.0.0)" />
+    <PackageVersion Include="Grpc.Core" Version="[2.46.6, 3.0.0)" />
+    <PackageVersion Include="Grpc.Core.Api" Version="[2.60.0, 3.0.0)" />
+    <PackageVersion Include="Grpc.Net.Client" Version="[2.60.0, 3.0.0)" />
+
+    <!-- Microsoft/System packages -->
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />   
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="6.0.1" />
+    <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
+    <PackageVersion Include="System.ValueTuple" Version="4.5.0" />
+
+    <!-- Other third party packages -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    
+    <!-- Build-oriented packages -->
+    <PackageVersion Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+  </ItemGroup>
+</Project>
