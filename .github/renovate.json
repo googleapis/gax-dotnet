@@ -3,6 +3,7 @@
     "config:base",
     ":disableDependencyDashboard"
   ],
+  "ignorePresets": [":ignoreModulesAndTests"],
   "ignorePaths": [
     "Google.Api.CommonProtos/**",
     "Google.Api.Gax/**",
