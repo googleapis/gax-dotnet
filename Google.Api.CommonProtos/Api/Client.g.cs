@@ -65,44 +65,47 @@ namespace Google.Api {
             "ASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIKBmNv",
             "bW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5n",
             "cyJBCgtQaHBTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBp",
-            "LkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiRAoOUHl0aG9uU2V0dGluZ3MSMgoG",
-            "Y29tbW9uGAEgASgLMiIuZ29vZ2xlLmFwaS5Db21tb25MYW5ndWFnZVNldHRp",
-            "bmdzIkIKDE5vZGVTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUu",
-            "YXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiqgMKDkRvdG5ldFNldHRpbmdz",
-            "EjIKBmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VT",
-            "ZXR0aW5ncxJJChByZW5hbWVkX3NlcnZpY2VzGAIgAygLMi8uZ29vZ2xlLmFw",
-            "aS5Eb3RuZXRTZXR0aW5ncy5SZW5hbWVkU2VydmljZXNFbnRyeRJLChFyZW5h",
-            "bWVkX3Jlc291cmNlcxgDIAMoCzIwLmdvb2dsZS5hcGkuRG90bmV0U2V0dGlu",
-            "Z3MuUmVuYW1lZFJlc291cmNlc0VudHJ5EhkKEWlnbm9yZWRfcmVzb3VyY2Vz",
-            "GAQgAygJEiAKGGZvcmNlZF9uYW1lc3BhY2VfYWxpYXNlcxgFIAMoCRIeChZo",
-            "YW5kd3JpdHRlbl9zaWduYXR1cmVzGAYgAygJGjYKFFJlbmFtZWRTZXJ2aWNl",
-            "c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaNwoVUmVu",
-            "YW1lZFJlc291cmNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEo",
-            "CToCOAEiQgoMUnVieVNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2ds",
-            "ZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJACgpHb1NldHRpbmdzEjIK",
+            "LkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiywEKDlB5dGhvblNldHRpbmdzEjIK",
             "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
-            "aW5ncyLPAgoOTWV0aG9kU2V0dGluZ3MSEAoIc2VsZWN0b3IYASABKAkSPAoM",
-            "bG9uZ19ydW5uaW5nGAIgASgLMiYuZ29vZ2xlLmFwaS5NZXRob2RTZXR0aW5n",
-            "cy5Mb25nUnVubmluZxIdChVhdXRvX3BvcHVsYXRlZF9maWVsZHMYAyADKAka",
-            "zQEKC0xvbmdSdW5uaW5nEjUKEmluaXRpYWxfcG9sbF9kZWxheRgBIAEoCzIZ",
-            "Lmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIdChVwb2xsX2RlbGF5X211bHRp",
-            "cGxpZXIYAiABKAISMQoObWF4X3BvbGxfZGVsYXkYAyABKAsyGS5nb29nbGUu",
-            "cHJvdG9idWYuRHVyYXRpb24SNQoSdG90YWxfcG9sbF90aW1lb3V0GAQgASgL",
-            "MhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uKqMBChlDbGllbnRMaWJyYXJ5",
-            "T3JnYW5pemF0aW9uEisKJ0NMSUVOVF9MSUJSQVJZX09SR0FOSVpBVElPTl9V",
-            "TlNQRUNJRklFRBAAEgkKBUNMT1VEEAESBwoDQURTEAISCgoGUEhPVE9TEAMS",
-            "DwoLU1RSRUVUX1ZJRVcQBBIMCghTSE9QUElORxAFEgcKA0dFTxAGEhEKDUdF",
-            "TkVSQVRJVkVfQUkQBypnChhDbGllbnRMaWJyYXJ5RGVzdGluYXRpb24SKgom",
-            "Q0xJRU5UX0xJQlJBUllfREVTVElOQVRJT05fVU5TUEVDSUZJRUQQABIKCgZH",
-            "SVRIVUIQChITCg9QQUNLQUdFX01BTkFHRVIQFDo5ChBtZXRob2Rfc2lnbmF0",
-            "dXJlEh4uZ29vZ2xlLnByb3RvYnVmLk1ldGhvZE9wdGlvbnMYmwggAygJOjYK",
-            "DGRlZmF1bHRfaG9zdBIfLmdvb2dsZS5wcm90b2J1Zi5TZXJ2aWNlT3B0aW9u",
-            "cxiZCCABKAk6NgoMb2F1dGhfc2NvcGVzEh8uZ29vZ2xlLnByb3RvYnVmLlNl",
-            "cnZpY2VPcHRpb25zGJoIIAEoCTo4CgthcGlfdmVyc2lvbhIfLmdvb2dsZS5w",
-            "cm90b2J1Zi5TZXJ2aWNlT3B0aW9ucxjBuqv6ASABKAlCaQoOY29tLmdvb2ds",
-            "ZS5hcGlCC0NsaWVudFByb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnBy",
-            "b3RvL2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIE",
-            "R0FQSWIGcHJvdG8z"));
+            "aW5ncxJOChVleHBlcmltZW50YWxfZmVhdHVyZXMYAiABKAsyLy5nb29nbGUu",
+            "YXBpLlB5dGhvblNldHRpbmdzLkV4cGVyaW1lbnRhbEZlYXR1cmVzGjUKFEV4",
+            "cGVyaW1lbnRhbEZlYXR1cmVzEh0KFXJlc3RfYXN5bmNfaW9fZW5hYmxlZBgB",
+            "IAEoCCJCCgxOb2RlU2V0dGluZ3MSMgoGY29tbW9uGAEgASgLMiIuZ29vZ2xl",
+            "LmFwaS5Db21tb25MYW5ndWFnZVNldHRpbmdzIqoDCg5Eb3RuZXRTZXR0aW5n",
+            "cxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdl",
+            "U2V0dGluZ3MSSQoQcmVuYW1lZF9zZXJ2aWNlcxgCIAMoCzIvLmdvb2dsZS5h",
+            "cGkuRG90bmV0U2V0dGluZ3MuUmVuYW1lZFNlcnZpY2VzRW50cnkSSwoRcmVu",
+            "YW1lZF9yZXNvdXJjZXMYAyADKAsyMC5nb29nbGUuYXBpLkRvdG5ldFNldHRp",
+            "bmdzLlJlbmFtZWRSZXNvdXJjZXNFbnRyeRIZChFpZ25vcmVkX3Jlc291cmNl",
+            "cxgEIAMoCRIgChhmb3JjZWRfbmFtZXNwYWNlX2FsaWFzZXMYBSADKAkSHgoW",
+            "aGFuZHdyaXR0ZW5fc2lnbmF0dXJlcxgGIAMoCRo2ChRSZW5hbWVkU2Vydmlj",
+            "ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjcKFVJl",
+            "bmFtZWRSZXNvdXJjZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiAB",
+            "KAk6AjgBIkIKDFJ1YnlTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29n",
+            "bGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiQAoKR29TZXR0aW5ncxIy",
+            "CgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0",
+            "dGluZ3MizwIKDk1ldGhvZFNldHRpbmdzEhAKCHNlbGVjdG9yGAEgASgJEjwK",
+            "DGxvbmdfcnVubmluZxgCIAEoCzImLmdvb2dsZS5hcGkuTWV0aG9kU2V0dGlu",
+            "Z3MuTG9uZ1J1bm5pbmcSHQoVYXV0b19wb3B1bGF0ZWRfZmllbGRzGAMgAygJ",
+            "Gs0BCgtMb25nUnVubmluZxI1ChJpbml0aWFsX3BvbGxfZGVsYXkYASABKAsy",
+            "GS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SHQoVcG9sbF9kZWxheV9tdWx0",
+            "aXBsaWVyGAIgASgCEjEKDm1heF9wb2xsX2RlbGF5GAMgASgLMhkuZ29vZ2xl",
+            "LnByb3RvYnVmLkR1cmF0aW9uEjUKEnRvdGFsX3BvbGxfdGltZW91dBgEIAEo",
+            "CzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbiqjAQoZQ2xpZW50TGlicmFy",
+            "eU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElCUkFSWV9PUkdBTklaQVRJT05f",
+            "VU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcKA0FEUxACEgoKBlBIT1RPUxAD",
+            "Eg8KC1NUUkVFVF9WSUVXEAQSDAoIU0hPUFBJTkcQBRIHCgNHRU8QBhIRCg1H",
+            "RU5FUkFUSVZFX0FJEAcqZwoYQ2xpZW50TGlicmFyeURlc3RpbmF0aW9uEioK",
+            "JkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFUSU9OX1VOU1BFQ0lGSUVEEAASCgoG",
+            "R0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5BR0VSEBQ6OQoQbWV0aG9kX3NpZ25h",
+            "dHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRob2RPcHRpb25zGJsIIAMoCTo2",
+            "CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlv",
+            "bnMYmQggASgJOjYKDG9hdXRoX3Njb3BlcxIfLmdvb2dsZS5wcm90b2J1Zi5T",
+            "ZXJ2aWNlT3B0aW9ucxiaCCABKAk6OAoLYXBpX3ZlcnNpb24SHy5nb29nbGUu",
+            "cHJvdG9idWYuU2VydmljZU9wdGlvbnMYwbqr+gEgASgJQmkKDmNvbS5nb29n",
+            "bGUuYXBpQgtDbGllbnRQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9nZW5w",
+            "cm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc6IC",
+            "BEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes, ClientExtensions.ApiVersion }, new pbr::GeneratedClrTypeInfo[] {
@@ -112,7 +115,7 @@ namespace Google.Api {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JavaSettings), global::Google.Api.JavaSettings.Parser, new[]{ "LibraryPackage", "ServiceClassNames", "Common" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CppSettings), global::Google.Api.CppSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PhpSettings), global::Google.Api.PhpSettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common", "ExperimentalFeatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings.Types.ExperimentalFeatures), global::Google.Api.PythonSettings.Types.ExperimentalFeatures.Parser, new[]{ "RestAsyncIoEnabled" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.NodeSettings), global::Google.Api.NodeSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common", "RenamedServices", "RenamedResources", "IgnoredResources", "ForcedNamespaceAliases", "HandwrittenSignatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.RubySettings), global::Google.Api.RubySettings.Parser, new[]{ "Common" }, null, null, null, null),
@@ -469,7 +472,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -493,7 +500,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1022,7 +1033,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1105,7 +1120,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1646,7 +1665,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1705,7 +1728,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2001,7 +2028,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2031,7 +2062,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2222,7 +2257,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2244,7 +2283,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2427,7 +2470,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2449,7 +2496,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2506,6 +2557,7 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public PythonSettings(PythonSettings other) : this() {
       common_ = other.common_ != null ? other.common_.Clone() : null;
+      experimentalFeatures_ = other.experimentalFeatures_ != null ? other.experimentalFeatures_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2530,6 +2582,21 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "experimental_features" field.</summary>
+    public const int ExperimentalFeaturesFieldNumber = 2;
+    private global::Google.Api.PythonSettings.Types.ExperimentalFeatures experimentalFeatures_;
+    /// <summary>
+    /// Experimental features to be included during client library generation.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.PythonSettings.Types.ExperimentalFeatures ExperimentalFeatures {
+      get { return experimentalFeatures_; }
+      set {
+        experimentalFeatures_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2546,6 +2613,7 @@ namespace Google.Api {
         return true;
       }
       if (!object.Equals(Common, other.Common)) return false;
+      if (!object.Equals(ExperimentalFeatures, other.ExperimentalFeatures)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2554,6 +2622,7 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (common_ != null) hash ^= Common.GetHashCode();
+      if (experimentalFeatures_ != null) hash ^= ExperimentalFeatures.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2576,6 +2645,10 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      if (experimentalFeatures_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ExperimentalFeatures);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2590,6 +2663,10 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      if (experimentalFeatures_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ExperimentalFeatures);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2602,6 +2679,9 @@ namespace Google.Api {
       int size = 0;
       if (common_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
+      }
+      if (experimentalFeatures_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExperimentalFeatures);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2621,6 +2701,12 @@ namespace Google.Api {
         }
         Common.MergeFrom(other.Common);
       }
+      if (other.experimentalFeatures_ != null) {
+        if (experimentalFeatures_ == null) {
+          ExperimentalFeatures = new global::Google.Api.PythonSettings.Types.ExperimentalFeatures();
+        }
+        ExperimentalFeatures.MergeFrom(other.ExperimentalFeatures);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2632,7 +2718,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2641,6 +2731,13 @@ namespace Google.Api {
               Common = new global::Google.Api.CommonLanguageSettings();
             }
             input.ReadMessage(Common);
+            break;
+          }
+          case 18: {
+            if (experimentalFeatures_ == null) {
+              ExperimentalFeatures = new global::Google.Api.PythonSettings.Types.ExperimentalFeatures();
+            }
+            input.ReadMessage(ExperimentalFeatures);
             break;
           }
         }
@@ -2654,7 +2751,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2665,10 +2766,234 @@ namespace Google.Api {
             input.ReadMessage(Common);
             break;
           }
+          case 18: {
+            if (experimentalFeatures_ == null) {
+              ExperimentalFeatures = new global::Google.Api.PythonSettings.Types.ExperimentalFeatures();
+            }
+            input.ReadMessage(ExperimentalFeatures);
+            break;
+          }
         }
       }
     }
     #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the PythonSettings message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      /// <summary>
+      /// Experimental features to be included during client library generation.
+      /// These fields will be deprecated once the feature graduates and is enabled
+      /// by default.
+      /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+      public sealed partial class ExperimentalFeatures : pb::IMessage<ExperimentalFeatures>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<ExperimentalFeatures> _parser = new pb::MessageParser<ExperimentalFeatures>(() => new ExperimentalFeatures());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<ExperimentalFeatures> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Google.Api.PythonSettings.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public ExperimentalFeatures() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public ExperimentalFeatures(ExperimentalFeatures other) : this() {
+          restAsyncIoEnabled_ = other.restAsyncIoEnabled_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public ExperimentalFeatures Clone() {
+          return new ExperimentalFeatures(this);
+        }
+
+        /// <summary>Field number for the "rest_async_io_enabled" field.</summary>
+        public const int RestAsyncIoEnabledFieldNumber = 1;
+        private bool restAsyncIoEnabled_;
+        /// <summary>
+        /// Enables generation of asynchronous REST clients if `rest` transport is
+        /// enabled. By default, asynchronous REST clients will not be generated.
+        /// This feature will be enabled by default 1 month after launching the
+        /// feature in preview packages.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool RestAsyncIoEnabled {
+          get { return restAsyncIoEnabled_; }
+          set {
+            restAsyncIoEnabled_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as ExperimentalFeatures);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(ExperimentalFeatures other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (RestAsyncIoEnabled != other.RestAsyncIoEnabled) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (RestAsyncIoEnabled != false) hash ^= RestAsyncIoEnabled.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (RestAsyncIoEnabled != false) {
+            output.WriteRawTag(8);
+            output.WriteBool(RestAsyncIoEnabled);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (RestAsyncIoEnabled != false) {
+            output.WriteRawTag(8);
+            output.WriteBool(RestAsyncIoEnabled);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (RestAsyncIoEnabled != false) {
+            size += 1 + 1;
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(ExperimentalFeatures other) {
+          if (other == null) {
+            return;
+          }
+          if (other.RestAsyncIoEnabled != false) {
+            RestAsyncIoEnabled = other.RestAsyncIoEnabled;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                RestAsyncIoEnabled = input.ReadBool();
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                RestAsyncIoEnabled = input.ReadBool();
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
 
   }
 
@@ -2837,7 +3162,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2859,7 +3188,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3162,7 +3495,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3204,7 +3541,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3407,7 +3748,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3429,7 +3774,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3612,7 +3961,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3634,7 +3987,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3708,6 +4065,13 @@ namespace Google.Api {
     /// <summary>
     /// The fully qualified name of the method, for which the options below apply.
     /// This is used to find the method to apply the options.
+    ///
+    /// Example:
+    ///
+    ///    publishing:
+    ///      method_settings:
+    ///      - selector: google.storage.control.v2.StorageControl.CreateFolder
+    ///        # method settings for CreateFolder...
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3728,17 +4092,14 @@ namespace Google.Api {
     ///
     /// Example of a YAML configuration::
     ///
-    ///  publishing:
-    ///    method_settings:
+    ///    publishing:
+    ///      method_settings:
     ///      - selector: google.cloud.speech.v2.Speech.BatchRecognize
     ///        long_running:
-    ///          initial_poll_delay:
-    ///            seconds: 60 # 1 minute
+    ///          initial_poll_delay: 60s # 1 minute
     ///          poll_delay_multiplier: 1.5
-    ///          max_poll_delay:
-    ///            seconds: 360 # 6 minutes
-    ///          total_poll_timeout:
-    ///             seconds: 54000 # 90 minutes
+    ///          max_poll_delay: 360s # 6 minutes
+    ///          total_poll_timeout: 54000s # 90 minutes
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3761,8 +4122,8 @@ namespace Google.Api {
     ///
     /// Example of a YAML configuration:
     ///
-    ///  publishing:
-    ///    method_settings:
+    ///    publishing:
+    ///      method_settings:
     ///      - selector: google.example.v1.ExampleService.CreateExample
     ///        auto_populated_fields:
     ///        - request_id
@@ -3897,7 +4258,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3927,7 +4292,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4232,7 +4601,11 @@ namespace Google.Api {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -4272,7 +4645,11 @@ namespace Google.Api {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;

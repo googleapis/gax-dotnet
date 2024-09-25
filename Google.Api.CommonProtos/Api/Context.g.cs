@@ -238,7 +238,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -257,7 +261,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -349,7 +357,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> requested_ = new pbc::RepeatedField<string>();
     /// <summary>
-    /// A list of full type names of requested contexts.
+    /// A list of full type names of requested contexts, only the requested context
+    /// will be made available to the backend.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -363,7 +372,8 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(26);
     private readonly pbc::RepeatedField<string> provided_ = new pbc::RepeatedField<string>();
     /// <summary>
-    /// A list of full type names of provided contexts.
+    /// A list of full type names of provided contexts. It is used to support
+    /// propagating HTTP headers and ETags from the response extension.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -524,7 +534,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -559,7 +573,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;

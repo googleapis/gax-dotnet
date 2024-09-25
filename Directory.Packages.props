@@ -13,7 +13,7 @@
     <!-- Google/gRPC packages -->
     <PackageVersion Include="Grpc.Auth" Version="[2.60.0, 3.0.0)" />
     <PackageVersion Include="Google.Apis.Auth" Version="[1.67.0, 2.0.0)" />
-    <PackageVersion Include="Google.Protobuf" Version="[3.25.0, 4.0.0)" />
+    <PackageVersion Include="Google.Protobuf" Version="[3.28.2, 4.0.0)" />
     <PackageVersion Include="Grpc.Core" Version="[2.46.6, 3.0.0)" />
     <PackageVersion Include="Grpc.Core.Api" Version="[2.60.0, 3.0.0)" />
     <PackageVersion Include="Grpc.Net.Client" Version="[2.60.0, 3.0.0)" />
