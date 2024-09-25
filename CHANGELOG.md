@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.9.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.8.0...Google.Api.Gax-4.9.0) (2024-09-25)
+
+
+### Features
+
+* Add helper methods to obtain ActivitySources ([36ee7d3](https://github.com/googleapis/gax-dotnet/commit/36ee7d3bfa12833aba1174c9af1959eedcf17471))
+* Add support for Help and LocalizedMessage status details ([159dcb9](https://github.com/googleapis/gax-dotnet/commit/159dcb98ed797cedfdb36ebef7271e80336647e1))
+* Allow ActivitySource to be specified in ServiceSettingsBase ([0501add](https://github.com/googleapis/gax-dotnet/commit/0501addabe6c0d7702bcaec2703543cf74e11010))
+* Make the gRPC ClientBuilderBase&lt;T&gt;.ApiKey property public ([16c8952](https://github.com/googleapis/gax-dotnet/commit/16c89526f8e3503a23684f8bfdb66aa8e669516f))
+* Support ActivitySource in ClientHelper ([d6fa8a1](https://github.com/googleapis/gax-dotnet/commit/d6fa8a1518ffa1487ad4b84a7d1c2b2f4e9a66f3))
+* Update grpc and Google.Apis.Auth dependencies ([c456c9c](https://github.com/googleapis/gax-dotnet/commit/c456c9ccf1fe6049b6e695309fa3184403131060))
+
 ## [4.8.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.8.0-alpha01...Google.Api.Gax-4.8.0) (2024-03-25)
 
 
