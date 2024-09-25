@@ -32,19 +32,22 @@ namespace Google.Api {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chtnb29nbGUvYXBpL2ZpZWxkX2luZm8ucHJvdG8SCmdvb2dsZS5hcGkaIGdv",
-            "b2dsZS9wcm90b2J1Zi9kZXNjcmlwdG9yLnByb3RvIowBCglGaWVsZEluZm8S",
+            "b2dsZS9wcm90b2J1Zi9kZXNjcmlwdG9yLnByb3RvIsEBCglGaWVsZEluZm8S",
             "LAoGZm9ybWF0GAEgASgOMhwuZ29vZ2xlLmFwaS5GaWVsZEluZm8uRm9ybWF0",
-            "IlEKBkZvcm1hdBIWChJGT1JNQVRfVU5TUEVDSUZJRUQQABIJCgVVVUlENBAB",
-            "EggKBElQVjQQAhIICgRJUFY2EAMSEAoMSVBWNF9PUl9JUFY2EAQ6TAoKZmll",
-            "bGRfaW5mbxIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYzPH5igEg",
-            "ASgLMhUuZ29vZ2xlLmFwaS5GaWVsZEluZm9CbAoOY29tLmdvb2dsZS5hcGlC",
-            "DkZpZWxkSW5mb1Byb3RvUAFaQWdvb2dsZS5nb2xhbmcub3JnL2dlbnByb3Rv",
-            "L2dvb2dsZWFwaXMvYXBpL2Fubm90YXRpb25zO2Fubm90YXRpb25zogIER0FQ",
-            "SWIGcHJvdG8z"));
+            "EjMKEHJlZmVyZW5jZWRfdHlwZXMYAiADKAsyGS5nb29nbGUuYXBpLlR5cGVS",
+            "ZWZlcmVuY2UiUQoGRm9ybWF0EhYKEkZPUk1BVF9VTlNQRUNJRklFRBAAEgkK",
+            "BVVVSUQ0EAESCAoESVBWNBACEggKBElQVjYQAxIQCgxJUFY0X09SX0lQVjYQ",
+            "BCIiCg1UeXBlUmVmZXJlbmNlEhEKCXR5cGVfbmFtZRgBIAEoCTpMCgpmaWVs",
+            "ZF9pbmZvEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxjM8fmKASAB",
+            "KAsyFS5nb29nbGUuYXBpLkZpZWxkSW5mb0JsCg5jb20uZ29vZ2xlLmFwaUIO",
+            "RmllbGRJbmZvUHJvdG9QAVpBZ29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8v",
+            "Z29vZ2xlYXBpcy9hcGkvYW5ub3RhdGlvbnM7YW5ub3RhdGlvbnOiAgRHQVBJ",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pb::Extension[] { FieldInfoExtensions.FieldInfo }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.FieldInfo), global::Google.Api.FieldInfo.Parser, new[]{ "Format" }, null, new[]{ typeof(global::Google.Api.FieldInfo.Types.Format) }, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.FieldInfo), global::Google.Api.FieldInfo.Parser, new[]{ "Format", "ReferencedTypes" }, null, new[]{ typeof(global::Google.Api.FieldInfo.Types.Format) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.TypeReference), global::Google.Api.TypeReference.Parser, new[]{ "TypeName" }, null, null, null, null)
           }));
     }
     #endregion
@@ -57,12 +60,19 @@ namespace Google.Api {
     ///
     /// Examples:
     ///
-    ///   string request_id = 1 [(google.api.field_info).format = UUID4];
-    ///   string old_ip_address = 2 [(google.api.field_info).format = IPV4];
-    ///   string new_ip_address = 3 [(google.api.field_info).format = IPV6];
-    ///   string actual_ip_address = 4 [
-    ///     (google.api.field_info).format = IPV4_OR_IPV6
-    ///   ];
+    ///     string request_id = 1 [(google.api.field_info).format = UUID4];
+    ///     string old_ip_address = 2 [(google.api.field_info).format = IPV4];
+    ///     string new_ip_address = 3 [(google.api.field_info).format = IPV6];
+    ///     string actual_ip_address = 4 [
+    ///       (google.api.field_info).format = IPV4_OR_IPV6
+    ///     ];
+    ///     google.protobuf.Any generic_field = 5 [
+    ///       (google.api.field_info).referenced_types = {type_name: "ActualType"},
+    ///       (google.api.field_info).referenced_types = {type_name: "OtherType"},
+    ///     ];
+    ///     google.protobuf.Any generic_user_input = 5 [
+    ///       (google.api.field_info).referenced_types = {type_name: "*"},
+    ///     ];
     /// </summary>
     public static readonly pb::Extension<global::Google.Protobuf.Reflection.FieldOptions, global::Google.Api.FieldInfo> FieldInfo =
       new pb::Extension<global::Google.Protobuf.Reflection.FieldOptions, global::Google.Api.FieldInfo>(291403980, pb::FieldCodec.ForMessage(2331231842, global::Google.Api.FieldInfo.Parser));
@@ -108,6 +118,7 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FieldInfo(FieldInfo other) : this() {
       format_ = other.format_;
+      referencedTypes_ = other.referencedTypes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -134,6 +145,23 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "referenced_types" field.</summary>
+    public const int ReferencedTypesFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Google.Api.TypeReference> _repeated_referencedTypes_codec
+        = pb::FieldCodec.ForMessage(18, global::Google.Api.TypeReference.Parser);
+    private readonly pbc::RepeatedField<global::Google.Api.TypeReference> referencedTypes_ = new pbc::RepeatedField<global::Google.Api.TypeReference>();
+    /// <summary>
+    /// The type(s) that the annotated, generic field may represent.
+    ///
+    /// Currently, this must only be used on fields of type `google.protobuf.Any`.
+    /// Supporting other generic types may be considered in the future.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Google.Api.TypeReference> ReferencedTypes {
+      get { return referencedTypes_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -150,6 +178,7 @@ namespace Google.Api {
         return true;
       }
       if (Format != other.Format) return false;
+      if(!referencedTypes_.Equals(other.referencedTypes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -158,6 +187,7 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (Format != global::Google.Api.FieldInfo.Types.Format.Unspecified) hash ^= Format.GetHashCode();
+      hash ^= referencedTypes_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -180,6 +210,7 @@ namespace Google.Api {
         output.WriteRawTag(8);
         output.WriteEnum((int) Format);
       }
+      referencedTypes_.WriteTo(output, _repeated_referencedTypes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -194,6 +225,7 @@ namespace Google.Api {
         output.WriteRawTag(8);
         output.WriteEnum((int) Format);
       }
+      referencedTypes_.WriteTo(ref output, _repeated_referencedTypes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -207,6 +239,7 @@ namespace Google.Api {
       if (Format != global::Google.Api.FieldInfo.Types.Format.Unspecified) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Format);
       }
+      size += referencedTypes_.CalculateSize(_repeated_referencedTypes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -222,6 +255,7 @@ namespace Google.Api {
       if (other.Format != global::Google.Api.FieldInfo.Types.Format.Unspecified) {
         Format = other.Format;
       }
+      referencedTypes_.Add(other.referencedTypes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -233,12 +267,20 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
             Format = (global::Google.Api.FieldInfo.Types.Format) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            referencedTypes_.AddEntriesFrom(input, _repeated_referencedTypes_codec);
             break;
           }
         }
@@ -252,12 +294,20 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
             Format = (global::Google.Api.FieldInfo.Types.Format) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            referencedTypes_.AddEntriesFrom(ref input, _repeated_referencedTypes_codec);
             break;
           }
         }
@@ -312,6 +362,218 @@ namespace Google.Api {
 
     }
     #endregion
+
+  }
+
+  /// <summary>
+  /// A reference to a message type, for use in [FieldInfo][google.api.FieldInfo].
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class TypeReference : pb::IMessage<TypeReference>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TypeReference> _parser = new pb::MessageParser<TypeReference>(() => new TypeReference());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TypeReference> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.FieldInfoReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TypeReference() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TypeReference(TypeReference other) : this() {
+      typeName_ = other.typeName_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TypeReference Clone() {
+      return new TypeReference(this);
+    }
+
+    /// <summary>Field number for the "type_name" field.</summary>
+    public const int TypeNameFieldNumber = 1;
+    private string typeName_ = "";
+    /// <summary>
+    /// The name of the type that the annotated, generic field may represent.
+    /// If the type is in the same protobuf package, the value can be the simple
+    /// message name e.g., `"MyMessage"`. Otherwise, the value must be the
+    /// fully-qualified message name e.g., `"google.library.v1.Book"`.
+    ///
+    /// If the type(s) are unknown to the service (e.g. the field accepts generic
+    /// user input), use the wildcard `"*"` to denote this behavior.
+    ///
+    /// See [AIP-202](https://google.aip.dev/202#type-references) for more details.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TypeName {
+      get { return typeName_; }
+      set {
+        typeName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as TypeReference);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(TypeReference other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TypeName != other.TypeName) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TypeName.Length != 0) hash ^= TypeName.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TypeName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TypeName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TypeName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TypeName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (TypeName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TypeName);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(TypeReference other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TypeName.Length != 0) {
+        TypeName = other.TypeName;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            TypeName = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            TypeName = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

@@ -31,12 +31,12 @@ namespace Google.Api {
     static EndpointReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpIlEKCEVu",
-            "ZHBvaW50EgwKBG5hbWUYASABKAkSEwoHYWxpYXNlcxgCIAMoCUICGAESDgoG",
-            "dGFyZ2V0GGUgASgJEhIKCmFsbG93X2NvcnMYBSABKAhCbwoOY29tLmdvb2ds",
-            "ZS5hcGlCDUVuZHBvaW50UHJvdG9QAVpFZ29vZ2xlLmdvbGFuZy5vcmcvZ2Vu",
-            "cHJvdG8vZ29vZ2xlYXBpcy9hcGkvc2VydmljZWNvbmZpZztzZXJ2aWNlY29u",
-            "ZmlnogIER0FQSWIGcHJvdG8z"));
+            "Chlnb29nbGUvYXBpL2VuZHBvaW50LnByb3RvEgpnb29nbGUuYXBpIk0KCEVu",
+            "ZHBvaW50EgwKBG5hbWUYASABKAkSDwoHYWxpYXNlcxgCIAMoCRIOCgZ0YXJn",
+            "ZXQYZSABKAkSEgoKYWxsb3dfY29ycxgFIAEoCEJvCg5jb20uZ29vZ2xlLmFw",
+            "aUINRW5kcG9pbnRQcm90b1ABWkVnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90",
+            "by9nb29nbGVhcGlzL2FwaS9zZXJ2aWNlY29uZmlnO3NlcnZpY2Vjb25maWei",
+            "AgRHQVBJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -139,15 +139,10 @@ namespace Google.Api {
         = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> aliases_ = new pbc::RepeatedField<string>();
     /// <summary>
-    /// Unimplemented. Dot not use.
-    ///
-    /// DEPRECATED: This field is no longer supported. Instead of using aliases,
-    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each
-    /// of the intended aliases.
-    ///
-    /// Additional names that this endpoint will be hosted on.
+    /// Aliases for this endpoint, these will be served by the same UrlMap as the
+    /// parent endpoint, and will be provisioned in the GCP stack for the Regional
+    /// Endpoints.
     /// </summary>
-    [global::System.ObsoleteAttribute]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<string> Aliases {
@@ -330,7 +325,11 @@ namespace Google.Api {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -361,7 +360,11 @@ namespace Google.Api {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
