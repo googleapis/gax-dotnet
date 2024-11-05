@@ -56,7 +56,13 @@ internal static class GoogleCredentialExtensions
 
         private async Task UniverseDomainsMatchCheckUncached()
         {
-            string credentialUniverseDomain = await (_underlying as GoogleCredential).GetUniverseDomainAsync(default).ConfigureAwait(false);
+            GoogleCredential googleCredential = _underlying as GoogleCredential;
+            // b/377378462 Temporarily avoid automatic requests to the MDS UniverseDomain endpoint.
+            if (googleCredential.UnderlyingCredential is ComputeCredential)
+            {
+                return;
+            }
+            string credentialUniverseDomain = await (googleCredential).GetUniverseDomainAsync(default).ConfigureAwait(false);
             if (credentialUniverseDomain != _universeDomain)
             {
                 throw new InvalidOperationException(
