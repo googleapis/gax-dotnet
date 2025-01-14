@@ -25,6 +25,7 @@ namespace Google.Api.Gax.Grpc
     public abstract class ClientBuilderBase<TClient>
     {
         internal const string ApiKeyHeader = "x-goog-api-key";
+        internal const string UniverseDomainEnvironmentVariable = "GOOGLE_CLOUD_UNIVERSE_DOMAIN";
 
         /// <summary>
         /// The default gRPC options.
@@ -61,16 +62,17 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Effective, and known, universe domain to connect to.
         /// Will be null if <see cref="UniverseDomain"/> is not set and there's nothing to gain
-        /// from defaulting to <see cref="ServiceMetadata.DefaultUniverseDomain"/>. For instance,
-        /// if <see cref="CallInvoker"/> has been set, which is self contained, we really don't know
-        /// the universe we are in, and we really don't care.
+        /// from using the default universe domain. For instance,
+        /// if <see cref="CallInvoker"/> has been set, which is self contained, including the credential,
+        /// we really don't know the universe we are in, and we really don't care.
         /// </summary>
         /// <remarks>
         /// This will be:
         /// <list type="bullet">
         /// <item>The value of <see cref="UniverseDomain"/> if set.</item>
         /// <item>null if <see cref="CallInvoker"/> is set.</item>
-        /// <item>null if both <see cref="Endpoint"/> and one of the non <see cref="GoogleCredential"/> options is used.</item>
+        /// <item>null if both <see cref="Endpoint"/> and a credential is set through one of the non <see cref="GoogleCredential"/> options.</item>
+        /// <item>The value of the environment variable <see cref="UniverseDomainEnvironmentVariable"/> if set and not empty.</item>
         /// <item><see cref="ServiceMetadata.DefaultUniverseDomain"/> otherwise.</item>
         /// </list>
         /// Note that we don't validate here that the builder properties are set in a valid combination. <see cref="EffectiveUniverseDomain"/>
@@ -80,10 +82,15 @@ namespace Google.Api.Gax.Grpc
 #pragma warning disable CS0618 // Type or member is obsolete
         protected string EffectiveUniverseDomain => UniverseDomain ??
             (CallInvoker is not null ? null :
-            Endpoint is null ? ServiceMetadata.DefaultUniverseDomain :
-            TokenAccessMethod is null && ChannelCredentials is null && Credential is null ? ServiceMetadata.DefaultUniverseDomain :
+            Endpoint is null ? EffectiveDefaultUniverseDomain :
+            TokenAccessMethod is null && ChannelCredentials is null && Credential is null ? EffectiveDefaultUniverseDomain :
             null);
 #pragma warning restore CS0618 // Type or member is obsolete
+
+        /// <summary>
+        /// The default universe domain, which is specified on <see cref="UniverseDomainEnvironmentVariable"/> if set, otherwise, <see cref="ServiceMetadata.DefaultUniverseDomain"/>.
+        /// </summary>
+        private static string EffectiveDefaultUniverseDomain => GetNonWhiteSpaceOrNullEnvironmentVariable(UniverseDomainEnvironmentVariable) ?? ServiceMetadata.DefaultUniverseDomain;
 
         /// <summary>
         /// The endpoint to connect to, or null to use the default endpoint.
@@ -356,7 +363,7 @@ namespace Google.Api.Gax.Grpc
             Func<string, string> environmentVariableProvider = null)
         {
             environmentVariableProvider ??= Environment.GetEnvironmentVariable;
-            var environment = allEmulatorEnvironmentVariables.ToDictionary(key => key, key => GetEnvironmentVariableOrNull(key));
+            var environment = allEmulatorEnvironmentVariables.ToDictionary(key => key, key => GetNonWhiteSpaceOrNullValue(key, environmentVariableProvider));
 
             switch (EmulatorDetection)
             {
@@ -422,13 +429,6 @@ namespace Google.Api.Gax.Grpc
                     return environment;
                 default:
                     throw new InvalidOperationException($"Invalid emulator detection value: {EmulatorDetection}");
-            }
-
-            // Retrieves an environment variable from <see cref="EnvrionmentVariableProvider"/>, mapping empty or whitespace-only strings to null.
-            string GetEnvironmentVariableOrNull(string variable)
-            {
-                var value = environmentVariableProvider(variable);
-                return string.IsNullOrWhiteSpace(value) ? null : value;
             }
         }
 
@@ -749,6 +749,22 @@ namespace Google.Api.Gax.Grpc
         /// <returns>The channel created by the gRPC adapter.</returns>
         protected virtual ChannelBase CreateChannel(string endpoint, ChannelCredentials credentials) =>
             LastCreatedChannel = EffectiveGrpcAdapter.CreateChannel(ServiceMetadata, endpoint, credentials, GetChannelOptions());
+
+        /// <summary>
+        /// Retrieves the value of the environment variable with <paramref name="name"/>,
+        /// mapping empty or whitespace-only strings to null.
+        /// </summary>
+        private static string GetNonWhiteSpaceOrNullEnvironmentVariable(string name) => GetNonWhiteSpaceOrNullValue(name, Environment.GetEnvironmentVariable);
+
+        /// <summary>
+        /// Retrieves a value with <paramref name="valueName"/> from <paramref name="valueProvider"/>,
+        /// mapping empty or whitespace-only strings to null.
+        /// </summary>
+        private static string GetNonWhiteSpaceOrNullValue(string valueName, Func<string, string> valueProvider)
+        {
+            var value = valueProvider(valueName);
+            return string.IsNullOrWhiteSpace(value) ? null : value;
+        }
 
         private class DelegatedTokenAccess : ITokenAccessWithHeaders
         {
