@@ -27,12 +27,26 @@ namespace Google.Api.Gax.Rest
         /// The path to the credentials file to use, or null if credentials are being provided in a different way.
         /// The resulting credential is automatically scoped with the default scopes for the API.
         /// </summary>
+        /// <remarks>
+        /// Important: If you accept a credential configuration (credential JSON/File/Stream) from an external source
+        /// for authentication to Google Cloud, you must validate it before providing it to any Google API or library.
+        /// Providing an unvalidated credential configuration to Google APIs can compromise the security of your
+        /// systems and data. For more information, refer to
+        /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
+        /// </remarks>
         public string CredentialsPath { get; set; }
 
         /// <summary>
         /// The credentials to use as a JSON string, or null if credentials are being provided in a different way.
         /// The resulting credential is automatically scoped with the default scopes for the API.
         /// </summary>
+        /// <remarks>
+        /// Important: If you accept a credential configuration (credential JSON/File/Stream) from an external source
+        /// for authentication to Google Cloud, you must validate it before providing it to any Google API or library.
+        /// Providing an unvalidated credential configuration to Google APIs can compromise the security of your
+        /// systems and data. For more information, refer to
+        /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
+        /// </remarks>
         public string JsonCredentials { get; set; }
 
         /// <summary>
