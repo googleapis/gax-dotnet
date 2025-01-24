@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.9.0...Google.Api.Gax-4.10.0) (2025-01-24)
+
+
+### Features
+
+* Support GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variable. ([1ac8d14](https://github.com/googleapis/gax-dotnet/commit/1ac8d14d3e4d40575020b759f78397f3081ae9da))
+
 ## [4.9.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.8.0...Google.Api.Gax-4.9.0) (2024-09-25)
 
 
