@@ -8,6 +8,7 @@
 using Google.Protobuf;
 using Google.Rpc;
 using Grpc.Core;
+using System.Collections.Generic;
 using System.Linq;
 using Status = Google.Rpc.Status;
 
@@ -73,7 +74,7 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         /// <typeparam name="T">The message type to decode from within the error details.</typeparam>
         /// <param name="ex">The RPC exception to retrieve details from. Must not be null.</param>
-        /// <returns></returns>
+        /// <returns>The requested status detail, or null if the exception does not contain one.</returns>
         public static T GetStatusDetail<T>(this RpcException ex) where T : class, IMessage<T>, new()
         {
             var status = GetRpcStatus(ex);
@@ -87,6 +88,19 @@ namespace Google.Api.Gax.Grpc
                 return null;
             }
         }
+
+        /// <summary>
+        /// Returns all standard status details associated with an RPC exception.
+        /// </summary>
+        /// <remarks>
+        /// Status details are assumed to be in the <see cref="StandardErrorTypeRegistry">standard error type registry</see>.
+        /// If any detail messages are invalid (known, but containing invalid data) then iterating over the returned collection
+        /// will throw <see cref="InvalidProtocolBufferException"/> when the iterator reaches the invalid message.
+        /// </remarks>
+        /// <param name="ex">The RPC exception to retrieve details from. Must not be null.</param>
+        /// <returns>All standard status details within the exception.</returns>
+        public static IEnumerable<IMessage> GetAllStatusDetails(this RpcException ex) =>
+            GetRpcStatus(ex)?.UnpackDetailMessages() ?? Enumerable.Empty<IMessage>();
 
         private static Metadata.Entry GetTrailer(RpcException ex, string key)
         {

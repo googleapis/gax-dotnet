@@ -15,6 +15,7 @@ using GrpcStatus = Grpc.Core.Status;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
 using static Google.Rpc.Help.Types;
+using System.Linq;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -32,31 +33,35 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Throws<ArgumentNullException>(() => ex.GetHelp());
             Assert.Throws<ArgumentNullException>(() => ex.GetLocalizedMessage());
             Assert.Throws<ArgumentNullException>(() => ex.GetStatusDetail<BadRequest>());
+            Assert.Throws<ArgumentNullException>(() => ex.GetAllStatusDetails());
         }
 
         [Fact]
-        public void NoTrailers_AllMethodsReturnNull()
+        public void NoTrailers_AllMethodsReturnNullOrEmpty()
         {
             RpcException ex = new RpcException(s_status);
             AssertAllMethodsReturnNull(ex);
+            Assert.Empty(ex.GetAllStatusDetails());
         }
 
         [Fact]
-        public void IrrelevantTrailer_AllMethodsReturnNull()
+        public void IrrelevantTrailer_AllMethodsReturnNullOrEmpty()
         {
             var metadata = new Metadata();
             metadata.Add("key", "value");
             RpcException ex = new RpcException(s_status, metadata);
             AssertAllMethodsReturnNull(ex);
+            Assert.Empty(ex.GetAllStatusDetails());
         }
 
         [Fact]
-        public void InvalidProtobufStatusTrailer_AllMethodsReturnNull()
+        public void InvalidProtobufStatusTrailer_AllMethodsReturnNullOrEmpty()
         {
             var metadata = new Metadata();
             metadata.Add(RpcExceptionExtensions.StatusDetailsTrailerName, new byte[] { 1, 2, 3, 4 });
             RpcException ex = new RpcException(s_status, metadata);
             AssertAllMethodsReturnNull(ex);
+            Assert.Empty(ex.GetAllStatusDetails());
         }
 
         [Fact]
@@ -78,6 +83,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Null(ex.GetHelp());
             Assert.Null(ex.GetLocalizedMessage());
             Assert.Null(ex.GetStatusDetail<DebugInfo>());
+            Assert.Empty(ex.GetAllStatusDetails());
         }
 
         [Fact]
@@ -128,6 +134,7 @@ namespace Google.Api.Gax.Grpc.Tests
             Assert.Equal(badRequest, ex.GetStatusDetail<BadRequest>());
             Assert.Equal(help, ex.GetStatusDetail<Help>());
             Assert.Equal(localizedMessage, ex.GetStatusDetail<LocalizedMessage>());
+            Assert.Equal(ex.GetAllStatusDetails(), new IMessage[] { debugInfo, requestInfo, badRequest, help, localizedMessage });
         }
 
         [Fact]
@@ -152,6 +159,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             RpcException ex = new RpcException(s_status, metadata);
             Assert.Equal(errorInfo, ex.GetErrorInfo());
+            Assert.Equal(ex.GetAllStatusDetails(), new IMessage[] { errorInfo });
         }
 
         [Fact]
@@ -168,6 +176,7 @@ namespace Google.Api.Gax.Grpc.Tests
 
             Assert.Equal(status, ex.GetRpcStatus());
             Assert.Null(ex.GetStatusDetail<DebugInfo>());
+            Assert.Throws<InvalidProtocolBufferException>(() => ex.GetAllStatusDetails().Count());
         }
 
         private void AssertAllMethodsReturnNull(RpcException ex)
