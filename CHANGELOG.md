@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.11.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.10.0...Google.Api.Gax-4.11.0) (2025-03-11)
+
+
+### Features
+
+* Add a GetAllStatusDetails extension method for RpcException ([46758ed](https://github.com/googleapis/gax-dotnet/commit/46758edbecdf9ee2e08b42b15a1675b2661b8075))
+
 ## [4.10.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.9.0...Google.Api.Gax-4.10.0) (2025-01-24)
 
 
