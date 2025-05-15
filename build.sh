@@ -9,7 +9,7 @@ rm -rf {src,test,testing}/*/bin {src,test,testing}/*/obj
 
 # Make sure that SourceLink uses the GitHub repo, even if that's not where
 # our origin remote points at.
-git remote add github https://github.com/GoogleCloudPlatform/functions-framework-dotnet.git
+git remote add github https://github.com/googleapis/gax-dotnet
 export GitRepositoryRemoteName=github
 
 export Configuration=Release
