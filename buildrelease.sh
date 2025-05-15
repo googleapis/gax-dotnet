@@ -12,26 +12,18 @@
 # Google.Api.Gax.Grpc.Testing.<version>.nupkg
 # Sample: buildrelease.sh 847118821d8a8b4ac2ea3bbe692acea29c14c4da
 
-# The repo is cloned into a fresh "releasebuild" directory.
-
 set -e
 
-if [ -z "$1" ]
+if [[ $# -gt 0 ]];
 then
-  echo "Please specify a commit hash."
+  echo "This script does not take any args"
   exit 1
 fi
 
-commit=$1
+commit=$(git rev-parse HEAD)
 
 # Do everything from the repository root for sanity.
 cd $(dirname $0)
-
-rm -rf releasebuild
-git clone https://github.com/googleapis/gax-dotnet.git releasebuild -c core.autocrlf=input
-
-cd releasebuild
-git checkout $commit
 
 ./build.sh
 
@@ -70,4 +62,4 @@ do
   fi
 done
 
-echo "Build complete. Push packages from releasebuild/nuget."
+echo "Build complete. Push packages from ./nuget."
