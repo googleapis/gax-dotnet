@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Script to perform a release build for GAX, based on
-# a commit for which tags have been created.
+# HEAD commit for which tags have been created.
 # This builds both GAX and the common protos; but will delete
-# all built packages that don't match one of the tags in the commit
+# all built packages that don't match one of the tags in the HEAD commit
 # hash. For instance, if there's only one tag in the commit hash 
 # that starts with Google.Api.Gax.Grpc then only the following nuget
 # packages will remain after the script is done:
@@ -13,7 +13,7 @@
 
 set -e
 
-commit=$(git rev-parse HEAD)
+qcommit=$(git rev-parse HEAD)
 
 # Do everything from the repository root for sanity.
 cd $(dirname $0)
