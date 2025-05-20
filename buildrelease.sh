@@ -13,7 +13,7 @@
 
 set -e
 
-qcommit=$(git rev-parse HEAD)
+commit=$(git rev-parse HEAD)
 
 # Do everything from the repository root for sanity.
 cd $(dirname $0)
