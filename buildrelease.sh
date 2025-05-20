@@ -10,15 +10,8 @@
 # Google.Api.Gax.Grpc.<version>.nupkg
 # Google.Api.Gax.Grpc.Gcp.<version>.nupkg
 # Google.Api.Gax.Grpc.Testing.<version>.nupkg
-# Sample: buildrelease.sh 847118821d8a8b4ac2ea3bbe692acea29c14c4da
 
 set -e
-
-if [[ $# -gt 0 ]];
-then
-  echo "This script does not take any args"
-  exit 1
-fi
 
 commit=$(git rev-parse HEAD)
 
