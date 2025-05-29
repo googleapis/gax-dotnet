@@ -10,7 +10,7 @@ using Google.Rpc;
 using System.Net;
 using System.Net.Http;
 using Xunit;
-using gc = Grpc.Core;
+using GC = Grpc.Core;
 
 namespace Google.Api.Gax.Grpc.Rest.Tests
 {
@@ -18,7 +18,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
     {
         private static readonly Status s_sampleStatus = new Status
         {
-            Code = (int) gc::StatusCode.AlreadyExists,
+            Code = (int) GC::StatusCode.AlreadyExists,
             Message = "Some message",
             Details = { Any.Pack(new ErrorInfo { Domain = "googleapis.com", Metadata = { { "x", "y" } }, Reason = "It failed" }) }
         };
@@ -60,7 +60,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         {
             var expectedStatus = new Status
             {
-                Code = (int) gc::StatusCode.Internal,
+                Code = (int) GC::StatusCode.Internal,
                 Message = text
             };
             var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.InternalServerError, text);
@@ -105,7 +105,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.NotFound, json);
             var expectedStatus = new Status
             {
-                Code = (int) gc::StatusCode.NotFound,
+                Code = (int) GC::StatusCode.NotFound,
                 Message = "The resource xyz was not found"
             };
             Assert.Equal(expectedStatus, actualStatus);
@@ -139,7 +139,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             var actualStatus = ReadHttpResponseMessage.CreateRpcStatus(HttpStatusCode.PreconditionFailed, json);
             var expectedStatus = new Status
             {
-                Code = (int) gc::StatusCode.AlreadyExists,
+                Code = (int) GC::StatusCode.AlreadyExists,
                 Message = "Some message",
                 Details =
                 {
