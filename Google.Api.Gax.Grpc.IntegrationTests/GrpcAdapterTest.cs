@@ -22,6 +22,11 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [Fact]
         public void CreateChannelMakeCall()
         {
+            // Note: this test fails under .NET Framework on some versions of Windows, when it's using the WinHttpHandler.
+            // (WinHttpException: Error 12152 calling WINHTTP_CALLBACK_STATUS_REQUEST_ERROR)
+            // We believe this is due to talking to a server hosted by Grpc.Net.Client with insecure channel credentials.
+            // As far as we're aware it's fine talking to real services using HTTPS (otherwise all our integration
+            // tests in google-cloud-dotnet would fail), and the same tests currently pass on CI.
             var adapter = GrpcAdapter.GetFallbackAdapter(TestServiceMetadata.TestService);
             var channel = adapter.CreateChannel(TestServiceMetadata.TestService, _fixture.Endpoint, ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
             var client = new TestServiceClient(channel);

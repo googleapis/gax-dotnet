@@ -28,9 +28,6 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
 
         public TestServiceFixture()
         {
-#if NETCOREAPP3_1
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-#endif
             _server = new Server
             {
                 Services = { TestService.BindService(new TestServiceImpl()) },
