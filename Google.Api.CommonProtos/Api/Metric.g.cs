@@ -33,7 +33,7 @@ namespace Google.Api {
           string.Concat(
             "Chdnb29nbGUvYXBpL21ldHJpYy5wcm90bxIKZ29vZ2xlLmFwaRoWZ29vZ2xl",
             "L2FwaS9sYWJlbC5wcm90bxodZ29vZ2xlL2FwaS9sYXVuY2hfc3RhZ2UucHJv",
-            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byKfBgoQTWV0cmlj",
+            "dG8aHmdvb2dsZS9wcm90b2J1Zi9kdXJhdGlvbi5wcm90byKsCAoQTWV0cmlj",
             "RGVzY3JpcHRvchIMCgRuYW1lGAEgASgJEgwKBHR5cGUYCCABKAkSKwoGbGFi",
             "ZWxzGAIgAygLMhsuZ29vZ2xlLmFwaS5MYWJlbERlc2NyaXB0b3ISPAoLbWV0",
             "cmljX2tpbmQYAyABKA4yJy5nb29nbGUuYXBpLk1ldHJpY0Rlc2NyaXB0b3Iu",
@@ -43,24 +43,30 @@ namespace Google.Api {
             "ZGF0YRgKIAEoCzI1Lmdvb2dsZS5hcGkuTWV0cmljRGVzY3JpcHRvci5NZXRy",
             "aWNEZXNjcmlwdG9yTWV0YWRhdGESLQoMbGF1bmNoX3N0YWdlGAwgASgOMhcu",
             "Z29vZ2xlLmFwaS5MYXVuY2hTdGFnZRIgChhtb25pdG9yZWRfcmVzb3VyY2Vf",
-            "dHlwZXMYDSADKAkasAEKGE1ldHJpY0Rlc2NyaXB0b3JNZXRhZGF0YRIxCgxs",
+            "dHlwZXMYDSADKAkavQMKGE1ldHJpY0Rlc2NyaXB0b3JNZXRhZGF0YRIxCgxs",
             "YXVuY2hfc3RhZ2UYASABKA4yFy5nb29nbGUuYXBpLkxhdW5jaFN0YWdlQgIY",
             "ARIwCg1zYW1wbGVfcGVyaW9kGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1",
             "cmF0aW9uEi8KDGluZ2VzdF9kZWxheRgDIAEoCzIZLmdvb2dsZS5wcm90b2J1",
-            "Zi5EdXJhdGlvbiJPCgpNZXRyaWNLaW5kEhsKF01FVFJJQ19LSU5EX1VOU1BF",
-            "Q0lGSUVEEAASCQoFR0FVR0UQARIJCgVERUxUQRACEg4KCkNVTVVMQVRJVkUQ",
-            "AyJxCglWYWx1ZVR5cGUSGgoWVkFMVUVfVFlQRV9VTlNQRUNJRklFRBAAEggK",
-            "BEJPT0wQARIJCgVJTlQ2NBACEgoKBkRPVUJMRRADEgoKBlNUUklORxAEEhAK",
-            "DERJU1RSSUJVVElPThAFEgkKBU1PTkVZEAYidQoGTWV0cmljEgwKBHR5cGUY",
-            "AyABKAkSLgoGbGFiZWxzGAIgAygLMh4uZ29vZ2xlLmFwaS5NZXRyaWMuTGFi",
-            "ZWxzRW50cnkaLQoLTGFiZWxzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
-            "GAIgASgJOgI4AUJfCg5jb20uZ29vZ2xlLmFwaUILTWV0cmljUHJvdG9QAVo3",
-            "Z29vZ2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9hcGkvbWV0",
-            "cmljO21ldHJpY6ICBEdBUEliBnByb3RvMw=="));
+            "Zi5EdXJhdGlvbhKEAQokdGltZV9zZXJpZXNfcmVzb3VyY2VfaGllcmFyY2h5",
+            "X2xldmVsGAQgAygOMlYuZ29vZ2xlLmFwaS5NZXRyaWNEZXNjcmlwdG9yLk1l",
+            "dHJpY0Rlc2NyaXB0b3JNZXRhZGF0YS5UaW1lU2VyaWVzUmVzb3VyY2VIaWVy",
+            "YXJjaHlMZXZlbCKDAQogVGltZVNlcmllc1Jlc291cmNlSGllcmFyY2h5TGV2",
+            "ZWwSNAowVElNRV9TRVJJRVNfUkVTT1VSQ0VfSElFUkFSQ0hZX0xFVkVMX1VO",
+            "U1BFQ0lGSUVEEAASCwoHUFJPSkVDVBABEhAKDE9SR0FOSVpBVElPThACEgoK",
+            "BkZPTERFUhADIk8KCk1ldHJpY0tpbmQSGwoXTUVUUklDX0tJTkRfVU5TUEVD",
+            "SUZJRUQQABIJCgVHQVVHRRABEgkKBURFTFRBEAISDgoKQ1VNVUxBVElWRRAD",
+            "InEKCVZhbHVlVHlwZRIaChZWQUxVRV9UWVBFX1VOU1BFQ0lGSUVEEAASCAoE",
+            "Qk9PTBABEgkKBUlOVDY0EAISCgoGRE9VQkxFEAMSCgoGU1RSSU5HEAQSEAoM",
+            "RElTVFJJQlVUSU9OEAUSCQoFTU9ORVkQBiJ1CgZNZXRyaWMSDAoEdHlwZRgD",
+            "IAEoCRIuCgZsYWJlbHMYAiADKAsyHi5nb29nbGUuYXBpLk1ldHJpYy5MYWJl",
+            "bHNFbnRyeRotCgtMYWJlbHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUY",
+            "AiABKAk6AjgBQl8KDmNvbS5nb29nbGUuYXBpQgtNZXRyaWNQcm90b1ABWjdn",
+            "b29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9tZXRy",
+            "aWM7bWV0cmljogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LabelReflection.Descriptor, global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata", "LaunchStage", "MonitoredResourceTypes" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor), global::Google.Api.MetricDescriptor.Parser, new[]{ "Name", "Type", "Labels", "MetricKind", "ValueType", "Unit", "Description", "DisplayName", "Metadata", "LaunchStage", "MonitoredResourceTypes" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricKind), typeof(global::Google.Api.MetricDescriptor.Types.ValueType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata), global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Parser, new[]{ "LaunchStage", "SamplePeriod", "IngestDelay", "TimeSeriesResourceHierarchyLevel" }, null, new[]{ typeof(global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel) }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Metric), global::Google.Api.Metric.Parser, new[]{ "Type", "Labels" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
@@ -892,6 +898,7 @@ namespace Google.Api {
           launchStage_ = other.launchStage_;
           samplePeriod_ = other.samplePeriod_ != null ? other.samplePeriod_.Clone() : null;
           ingestDelay_ = other.ingestDelay_ != null ? other.ingestDelay_.Clone() : null;
+          timeSeriesResourceHierarchyLevel_ = other.timeSeriesResourceHierarchyLevel_.Clone();
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -954,6 +961,20 @@ namespace Google.Api {
           }
         }
 
+        /// <summary>Field number for the "time_series_resource_hierarchy_level" field.</summary>
+        public const int TimeSeriesResourceHierarchyLevelFieldNumber = 4;
+        private static readonly pb::FieldCodec<global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel> _repeated_timeSeriesResourceHierarchyLevel_codec
+            = pb::FieldCodec.ForEnum(34, x => (int) x, x => (global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel) x);
+        private readonly pbc::RepeatedField<global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel> timeSeriesResourceHierarchyLevel_ = new pbc::RepeatedField<global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel>();
+        /// <summary>
+        /// The scope of the timeseries data of the metric.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public pbc::RepeatedField<global::Google.Api.MetricDescriptor.Types.MetricDescriptorMetadata.Types.TimeSeriesResourceHierarchyLevel> TimeSeriesResourceHierarchyLevel {
+          get { return timeSeriesResourceHierarchyLevel_; }
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
@@ -972,6 +993,7 @@ namespace Google.Api {
           if (LaunchStage != other.LaunchStage) return false;
           if (!object.Equals(SamplePeriod, other.SamplePeriod)) return false;
           if (!object.Equals(IngestDelay, other.IngestDelay)) return false;
+          if(!timeSeriesResourceHierarchyLevel_.Equals(other.timeSeriesResourceHierarchyLevel_)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -982,6 +1004,7 @@ namespace Google.Api {
           if (LaunchStage != global::Google.Api.LaunchStage.Unspecified) hash ^= LaunchStage.GetHashCode();
           if (samplePeriod_ != null) hash ^= SamplePeriod.GetHashCode();
           if (ingestDelay_ != null) hash ^= IngestDelay.GetHashCode();
+          hash ^= timeSeriesResourceHierarchyLevel_.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -1012,6 +1035,7 @@ namespace Google.Api {
             output.WriteRawTag(26);
             output.WriteMessage(IngestDelay);
           }
+          timeSeriesResourceHierarchyLevel_.WriteTo(output, _repeated_timeSeriesResourceHierarchyLevel_codec);
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -1034,6 +1058,7 @@ namespace Google.Api {
             output.WriteRawTag(26);
             output.WriteMessage(IngestDelay);
           }
+          timeSeriesResourceHierarchyLevel_.WriteTo(ref output, _repeated_timeSeriesResourceHierarchyLevel_codec);
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -1053,6 +1078,7 @@ namespace Google.Api {
           if (ingestDelay_ != null) {
             size += 1 + pb::CodedOutputStream.ComputeMessageSize(IngestDelay);
           }
+          size += timeSeriesResourceHierarchyLevel_.CalculateSize(_repeated_timeSeriesResourceHierarchyLevel_codec);
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -1080,6 +1106,7 @@ namespace Google.Api {
             }
             IngestDelay.MergeFrom(other.IngestDelay);
           }
+          timeSeriesResourceHierarchyLevel_.Add(other.timeSeriesResourceHierarchyLevel_);
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -1115,6 +1142,11 @@ namespace Google.Api {
                   IngestDelay = new global::Google.Protobuf.WellKnownTypes.Duration();
                 }
                 input.ReadMessage(IngestDelay);
+                break;
+              }
+              case 34:
+              case 32: {
+                timeSeriesResourceHierarchyLevel_.AddEntriesFrom(input, _repeated_timeSeriesResourceHierarchyLevel_codec);
                 break;
               }
             }
@@ -1154,10 +1186,45 @@ namespace Google.Api {
                 input.ReadMessage(IngestDelay);
                 break;
               }
+              case 34:
+              case 32: {
+                timeSeriesResourceHierarchyLevel_.AddEntriesFrom(ref input, _repeated_timeSeriesResourceHierarchyLevel_codec);
+                break;
+              }
             }
           }
         }
         #endif
+
+        #region Nested types
+        /// <summary>Container for nested types declared in the MetricDescriptorMetadata message type.</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static partial class Types {
+          /// <summary>
+          /// The resource hierarchy level of the timeseries data of a metric.
+          /// </summary>
+          public enum TimeSeriesResourceHierarchyLevel {
+            /// <summary>
+            /// Do not use this default value.
+            /// </summary>
+            [pbr::OriginalName("TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED")] Unspecified = 0,
+            /// <summary>
+            /// Scopes a metric to a project.
+            /// </summary>
+            [pbr::OriginalName("PROJECT")] Project = 1,
+            /// <summary>
+            /// Scopes a metric to an organization.
+            /// </summary>
+            [pbr::OriginalName("ORGANIZATION")] Organization = 2,
+            /// <summary>
+            /// Scopes a metric to a folder.
+            /// </summary>
+            [pbr::OriginalName("FOLDER")] Folder = 3,
+          }
+
+        }
+        #endregion
 
       }
 

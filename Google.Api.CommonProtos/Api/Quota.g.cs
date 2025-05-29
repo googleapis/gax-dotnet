@@ -775,8 +775,8 @@ namespace Google.Api {
     private string unit_ = "";
     /// <summary>
     /// Specify the unit of the quota limit. It uses the same syntax as
-    /// [Metric.unit][]. The supported unit kinds are determined by the quota
-    /// backend system.
+    /// [MetricDescriptor.unit][google.api.MetricDescriptor.unit]. The supported
+    /// unit kinds are determined by the quota backend system.
     ///
     /// Here are some examples:
     /// * "1/min/{project}" for quota per minute per project.

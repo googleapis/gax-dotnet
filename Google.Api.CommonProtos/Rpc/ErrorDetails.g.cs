@@ -38,34 +38,42 @@ namespace Google.Rpc {
             "DU1ldGFkYXRhRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4",
             "ASI7CglSZXRyeUluZm8SLgoLcmV0cnlfZGVsYXkYASABKAsyGS5nb29nbGUu",
             "cHJvdG9idWYuRHVyYXRpb24iMgoJRGVidWdJbmZvEhUKDXN0YWNrX2VudHJp",
-            "ZXMYASADKAkSDgoGZGV0YWlsGAIgASgJInkKDFF1b3RhRmFpbHVyZRI2Cgp2",
-            "aW9sYXRpb25zGAEgAygLMiIuZ29vZ2xlLnJwYy5RdW90YUZhaWx1cmUuVmlv",
-            "bGF0aW9uGjEKCVZpb2xhdGlvbhIPCgdzdWJqZWN0GAEgASgJEhMKC2Rlc2Ny",
-            "aXB0aW9uGAIgASgJIpUBChNQcmVjb25kaXRpb25GYWlsdXJlEj0KCnZpb2xh",
-            "dGlvbnMYASADKAsyKS5nb29nbGUucnBjLlByZWNvbmRpdGlvbkZhaWx1cmUu",
-            "VmlvbGF0aW9uGj8KCVZpb2xhdGlvbhIMCgR0eXBlGAEgASgJEg8KB3N1Ympl",
-            "Y3QYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkigwEKCkJhZFJlcXVlc3QS",
-            "PwoQZmllbGRfdmlvbGF0aW9ucxgBIAMoCzIlLmdvb2dsZS5ycGMuQmFkUmVx",
-            "dWVzdC5GaWVsZFZpb2xhdGlvbho0Cg5GaWVsZFZpb2xhdGlvbhINCgVmaWVs",
-            "ZBgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCSI3CgtSZXF1ZXN0SW5mbxIS",
-            "CgpyZXF1ZXN0X2lkGAEgASgJEhQKDHNlcnZpbmdfZGF0YRgCIAEoCSJgCgxS",
-            "ZXNvdXJjZUluZm8SFQoNcmVzb3VyY2VfdHlwZRgBIAEoCRIVCg1yZXNvdXJj",
-            "ZV9uYW1lGAIgASgJEg0KBW93bmVyGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQg",
-            "ASgJIlYKBEhlbHASJAoFbGlua3MYASADKAsyFS5nb29nbGUucnBjLkhlbHAu",
-            "TGluaxooCgRMaW5rEhMKC2Rlc2NyaXB0aW9uGAEgASgJEgsKA3VybBgCIAEo",
-            "CSIzChBMb2NhbGl6ZWRNZXNzYWdlEg4KBmxvY2FsZRgBIAEoCRIPCgdtZXNz",
-            "YWdlGAIgASgJQmwKDmNvbS5nb29nbGUucnBjQhFFcnJvckRldGFpbHNQcm90",
-            "b1ABWj9nb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL3Jw",
-            "Yy9lcnJkZXRhaWxzO2VycmRldGFpbHOiAgNSUENiBnByb3RvMw=="));
+            "ZXMYASADKAkSDgoGZGV0YWlsGAIgASgJIo8DCgxRdW90YUZhaWx1cmUSNgoK",
+            "dmlvbGF0aW9ucxgBIAMoCzIiLmdvb2dsZS5ycGMuUXVvdGFGYWlsdXJlLlZp",
+            "b2xhdGlvbhrGAgoJVmlvbGF0aW9uEg8KB3N1YmplY3QYASABKAkSEwoLZGVz",
+            "Y3JpcHRpb24YAiABKAkSEwoLYXBpX3NlcnZpY2UYAyABKAkSFAoMcXVvdGFf",
+            "bWV0cmljGAQgASgJEhAKCHF1b3RhX2lkGAUgASgJElEKEHF1b3RhX2RpbWVu",
+            "c2lvbnMYBiADKAsyNy5nb29nbGUucnBjLlF1b3RhRmFpbHVyZS5WaW9sYXRp",
+            "b24uUXVvdGFEaW1lbnNpb25zRW50cnkSEwoLcXVvdGFfdmFsdWUYByABKAMS",
+            "HwoSZnV0dXJlX3F1b3RhX3ZhbHVlGAggASgDSACIAQEaNgoUUXVvdGFEaW1l",
+            "bnNpb25zRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUIV",
+            "ChNfZnV0dXJlX3F1b3RhX3ZhbHVlIpUBChNQcmVjb25kaXRpb25GYWlsdXJl",
+            "Ej0KCnZpb2xhdGlvbnMYASADKAsyKS5nb29nbGUucnBjLlByZWNvbmRpdGlv",
+            "bkZhaWx1cmUuVmlvbGF0aW9uGj8KCVZpb2xhdGlvbhIMCgR0eXBlGAEgASgJ",
+            "Eg8KB3N1YmplY3QYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkizAEKCkJh",
+            "ZFJlcXVlc3QSPwoQZmllbGRfdmlvbGF0aW9ucxgBIAMoCzIlLmdvb2dsZS5y",
+            "cGMuQmFkUmVxdWVzdC5GaWVsZFZpb2xhdGlvbhp9Cg5GaWVsZFZpb2xhdGlv",
+            "bhINCgVmaWVsZBgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZyZWFz",
+            "b24YAyABKAkSNwoRbG9jYWxpemVkX21lc3NhZ2UYBCABKAsyHC5nb29nbGUu",
+            "cnBjLkxvY2FsaXplZE1lc3NhZ2UiNwoLUmVxdWVzdEluZm8SEgoKcmVxdWVz",
+            "dF9pZBgBIAEoCRIUCgxzZXJ2aW5nX2RhdGEYAiABKAkiYAoMUmVzb3VyY2VJ",
+            "bmZvEhUKDXJlc291cmNlX3R5cGUYASABKAkSFQoNcmVzb3VyY2VfbmFtZRgC",
+            "IAEoCRINCgVvd25lchgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCSJWCgRI",
+            "ZWxwEiQKBWxpbmtzGAEgAygLMhUuZ29vZ2xlLnJwYy5IZWxwLkxpbmsaKAoE",
+            "TGluaxITCgtkZXNjcmlwdGlvbhgBIAEoCRILCgN1cmwYAiABKAkiMwoQTG9j",
+            "YWxpemVkTWVzc2FnZRIOCgZsb2NhbGUYASABKAkSDwoHbWVzc2FnZRgCIAEo",
+            "CUJsCg5jb20uZ29vZ2xlLnJwY0IRRXJyb3JEZXRhaWxzUHJvdG9QAVo/Z29v",
+            "Z2xlLmdvbGFuZy5vcmcvZ2VucHJvdG8vZ29vZ2xlYXBpcy9ycGMvZXJyZGV0",
+            "YWlscztlcnJkZXRhaWxzogIDUlBDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ErrorInfo), global::Google.Rpc.ErrorInfo.Parser, new[]{ "Reason", "Domain", "Metadata" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RetryInfo), global::Google.Rpc.RetryInfo.Parser, new[]{ "RetryDelay" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.DebugInfo), global::Google.Rpc.DebugInfo.Parser, new[]{ "StackEntries", "Detail" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure), global::Google.Rpc.QuotaFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.QuotaFailure.Types.Violation), global::Google.Rpc.QuotaFailure.Types.Violation.Parser, new[]{ "Subject", "Description", "ApiService", "QuotaMetric", "QuotaId", "QuotaDimensions", "QuotaValue", "FutureQuotaValue" }, new[]{ "FutureQuotaValue" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure), global::Google.Rpc.PreconditionFailure.Parser, new[]{ "Violations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.PreconditionFailure.Types.Violation), global::Google.Rpc.PreconditionFailure.Types.Violation.Parser, new[]{ "Type", "Subject", "Description" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest), global::Google.Rpc.BadRequest.Parser, new[]{ "FieldViolations" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.BadRequest.Types.FieldViolation), global::Google.Rpc.BadRequest.Types.FieldViolation.Parser, new[]{ "Field", "Description", "Reason", "LocalizedMessage" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.RequestInfo), global::Google.Rpc.RequestInfo.Parser, new[]{ "RequestId", "ServingData" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.ResourceInfo), global::Google.Rpc.ResourceInfo.Parser, new[]{ "ResourceType", "ResourceName", "Owner", "Description" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help), global::Google.Rpc.Help.Parser, new[]{ "Links" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Rpc.Help.Types.Link), global::Google.Rpc.Help.Types.Link.Parser, new[]{ "Description", "Url" }, null, null, null, null)}),
@@ -196,11 +204,12 @@ namespace Google.Rpc {
     /// <summary>
     /// Additional structured details about this error.
     ///
-    /// Keys should match /[a-zA-Z0-9-_]/ and be limited to 64 characters in
+    /// Keys must match a regular expression of `[a-z][a-zA-Z0-9-_]+` but should
+    /// ideally be lowerCamelCase. Also, they must be limited to 64 characters in
     /// length. When identifying the current value of an exceeded limit, the units
     /// should be contained in the key, not the value.  For example, rather than
-    /// {"instanceLimit": "100/request"}, should be returned as,
-    /// {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
+    /// `{"instanceLimit": "100/request"}`, should be returned as,
+    /// `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of
     /// instances that can be created in a single (batch) request.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1064,6 +1073,7 @@ namespace Google.Rpc {
       {
         private static readonly pb::MessageParser<Violation> _parser = new pb::MessageParser<Violation>(() => new Violation());
         private pb::UnknownFieldSet _unknownFields;
+        private int _hasBits0;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public static pb::MessageParser<Violation> Parser { get { return _parser; } }
@@ -1091,8 +1101,15 @@ namespace Google.Rpc {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public Violation(Violation other) : this() {
+          _hasBits0 = other._hasBits0;
           subject_ = other.subject_;
           description_ = other.description_;
+          apiService_ = other.apiService_;
+          quotaMetric_ = other.quotaMetric_;
+          quotaId_ = other.quotaId_;
+          quotaDimensions_ = other.quotaDimensions_.Clone();
+          quotaValue_ = other.quotaValue_;
+          futureQuotaValue_ = other.futureQuotaValue_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -1140,6 +1157,157 @@ namespace Google.Rpc {
           }
         }
 
+        /// <summary>Field number for the "api_service" field.</summary>
+        public const int ApiServiceFieldNumber = 3;
+        private string apiService_ = "";
+        /// <summary>
+        /// The API Service from which the `QuotaFailure.Violation` orginates. In
+        /// some cases, Quota issues originate from an API Service other than the one
+        /// that was called. In other words, a dependency of the called API Service
+        /// could be the cause of the `QuotaFailure`, and this field would have the
+        /// dependency API service name.
+        ///
+        /// For example, if the called API is Kubernetes Engine API
+        /// (container.googleapis.com), and a quota violation occurs in the
+        /// Kubernetes Engine API itself, this field would be
+        /// "container.googleapis.com". On the other hand, if the quota violation
+        /// occurs when the Kubernetes Engine API creates VMs in the Compute Engine
+        /// API (compute.googleapis.com), this field would be
+        /// "compute.googleapis.com".
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public string ApiService {
+          get { return apiService_; }
+          set {
+            apiService_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "quota_metric" field.</summary>
+        public const int QuotaMetricFieldNumber = 4;
+        private string quotaMetric_ = "";
+        /// <summary>
+        /// The metric of the violated quota. A quota metric is a named counter to
+        /// measure usage, such as API requests or CPUs. When an activity occurs in a
+        /// service, such as Virtual Machine allocation, one or more quota metrics
+        /// may be affected.
+        ///
+        /// For example, "compute.googleapis.com/cpus_per_vm_family",
+        /// "storage.googleapis.com/internet_egress_bandwidth".
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public string QuotaMetric {
+          get { return quotaMetric_; }
+          set {
+            quotaMetric_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "quota_id" field.</summary>
+        public const int QuotaIdFieldNumber = 5;
+        private string quotaId_ = "";
+        /// <summary>
+        /// The id of the violated quota. Also know as "limit name", this is the
+        /// unique identifier of a quota in the context of an API service.
+        ///
+        /// For example, "CPUS-PER-VM-FAMILY-per-project-region".
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public string QuotaId {
+          get { return quotaId_; }
+          set {
+            quotaId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "quota_dimensions" field.</summary>
+        public const int QuotaDimensionsFieldNumber = 6;
+        private static readonly pbc::MapField<string, string>.Codec _map_quotaDimensions_codec
+            = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 50);
+        private readonly pbc::MapField<string, string> quotaDimensions_ = new pbc::MapField<string, string>();
+        /// <summary>
+        /// The dimensions of the violated quota. Every non-global quota is enforced
+        /// on a set of dimensions. While quota metric defines what to count, the
+        /// dimensions specify for what aspects the counter should be increased.
+        ///
+        /// For example, the quota "CPUs per region per VM family" enforces a limit
+        /// on the metric "compute.googleapis.com/cpus_per_vm_family" on dimensions
+        /// "region" and "vm_family". And if the violation occurred in region
+        /// "us-central1" and for VM family "n1", the quota_dimensions would be,
+        ///
+        /// {
+        ///   "region": "us-central1",
+        ///   "vm_family": "n1",
+        /// }
+        ///
+        /// When a quota is enforced globally, the quota_dimensions would always be
+        /// empty.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public pbc::MapField<string, string> QuotaDimensions {
+          get { return quotaDimensions_; }
+        }
+
+        /// <summary>Field number for the "quota_value" field.</summary>
+        public const int QuotaValueFieldNumber = 7;
+        private long quotaValue_;
+        /// <summary>
+        /// The enforced quota value at the time of the `QuotaFailure`.
+        ///
+        /// For example, if the enforced quota value at the time of the
+        /// `QuotaFailure` on the number of CPUs is "10", then the value of this
+        /// field would reflect this quantity.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public long QuotaValue {
+          get { return quotaValue_; }
+          set {
+            quotaValue_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "future_quota_value" field.</summary>
+        public const int FutureQuotaValueFieldNumber = 8;
+        private readonly static long FutureQuotaValueDefaultValue = 0L;
+
+        private long futureQuotaValue_;
+        /// <summary>
+        /// The new quota value being rolled out at the time of the violation. At the
+        /// completion of the rollout, this value will be enforced in place of
+        /// quota_value. If no rollout is in progress at the time of the violation,
+        /// this field is not set.
+        ///
+        /// For example, if at the time of the violation a rollout is in progress
+        /// changing the number of CPUs quota from 10 to 20, 20 would be the value of
+        /// this field.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public long FutureQuotaValue {
+          get { if ((_hasBits0 & 1) != 0) { return futureQuotaValue_; } else { return FutureQuotaValueDefaultValue; } }
+          set {
+            _hasBits0 |= 1;
+            futureQuotaValue_ = value;
+          }
+        }
+        /// <summary>Gets whether the "future_quota_value" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool HasFutureQuotaValue {
+          get { return (_hasBits0 & 1) != 0; }
+        }
+        /// <summary>Clears the value of the "future_quota_value" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void ClearFutureQuotaValue() {
+          _hasBits0 &= ~1;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
@@ -1157,6 +1325,12 @@ namespace Google.Rpc {
           }
           if (Subject != other.Subject) return false;
           if (Description != other.Description) return false;
+          if (ApiService != other.ApiService) return false;
+          if (QuotaMetric != other.QuotaMetric) return false;
+          if (QuotaId != other.QuotaId) return false;
+          if (!QuotaDimensions.Equals(other.QuotaDimensions)) return false;
+          if (QuotaValue != other.QuotaValue) return false;
+          if (FutureQuotaValue != other.FutureQuotaValue) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -1166,6 +1340,12 @@ namespace Google.Rpc {
           int hash = 1;
           if (Subject.Length != 0) hash ^= Subject.GetHashCode();
           if (Description.Length != 0) hash ^= Description.GetHashCode();
+          if (ApiService.Length != 0) hash ^= ApiService.GetHashCode();
+          if (QuotaMetric.Length != 0) hash ^= QuotaMetric.GetHashCode();
+          if (QuotaId.Length != 0) hash ^= QuotaId.GetHashCode();
+          hash ^= QuotaDimensions.GetHashCode();
+          if (QuotaValue != 0L) hash ^= QuotaValue.GetHashCode();
+          if (HasFutureQuotaValue) hash ^= FutureQuotaValue.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -1192,6 +1372,27 @@ namespace Google.Rpc {
             output.WriteRawTag(18);
             output.WriteString(Description);
           }
+          if (ApiService.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(ApiService);
+          }
+          if (QuotaMetric.Length != 0) {
+            output.WriteRawTag(34);
+            output.WriteString(QuotaMetric);
+          }
+          if (QuotaId.Length != 0) {
+            output.WriteRawTag(42);
+            output.WriteString(QuotaId);
+          }
+          quotaDimensions_.WriteTo(output, _map_quotaDimensions_codec);
+          if (QuotaValue != 0L) {
+            output.WriteRawTag(56);
+            output.WriteInt64(QuotaValue);
+          }
+          if (HasFutureQuotaValue) {
+            output.WriteRawTag(64);
+            output.WriteInt64(FutureQuotaValue);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -1210,6 +1411,27 @@ namespace Google.Rpc {
             output.WriteRawTag(18);
             output.WriteString(Description);
           }
+          if (ApiService.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(ApiService);
+          }
+          if (QuotaMetric.Length != 0) {
+            output.WriteRawTag(34);
+            output.WriteString(QuotaMetric);
+          }
+          if (QuotaId.Length != 0) {
+            output.WriteRawTag(42);
+            output.WriteString(QuotaId);
+          }
+          quotaDimensions_.WriteTo(ref output, _map_quotaDimensions_codec);
+          if (QuotaValue != 0L) {
+            output.WriteRawTag(56);
+            output.WriteInt64(QuotaValue);
+          }
+          if (HasFutureQuotaValue) {
+            output.WriteRawTag(64);
+            output.WriteInt64(FutureQuotaValue);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -1225,6 +1447,22 @@ namespace Google.Rpc {
           }
           if (Description.Length != 0) {
             size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
+          }
+          if (ApiService.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(ApiService);
+          }
+          if (QuotaMetric.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(QuotaMetric);
+          }
+          if (QuotaId.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(QuotaId);
+          }
+          size += quotaDimensions_.CalculateSize(_map_quotaDimensions_codec);
+          if (QuotaValue != 0L) {
+            size += 1 + pb::CodedOutputStream.ComputeInt64Size(QuotaValue);
+          }
+          if (HasFutureQuotaValue) {
+            size += 1 + pb::CodedOutputStream.ComputeInt64Size(FutureQuotaValue);
           }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -1243,6 +1481,22 @@ namespace Google.Rpc {
           }
           if (other.Description.Length != 0) {
             Description = other.Description;
+          }
+          if (other.ApiService.Length != 0) {
+            ApiService = other.ApiService;
+          }
+          if (other.QuotaMetric.Length != 0) {
+            QuotaMetric = other.QuotaMetric;
+          }
+          if (other.QuotaId.Length != 0) {
+            QuotaId = other.QuotaId;
+          }
+          quotaDimensions_.MergeFrom(other.quotaDimensions_);
+          if (other.QuotaValue != 0L) {
+            QuotaValue = other.QuotaValue;
+          }
+          if (other.HasFutureQuotaValue) {
+            FutureQuotaValue = other.FutureQuotaValue;
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -1271,6 +1525,30 @@ namespace Google.Rpc {
                 Description = input.ReadString();
                 break;
               }
+              case 26: {
+                ApiService = input.ReadString();
+                break;
+              }
+              case 34: {
+                QuotaMetric = input.ReadString();
+                break;
+              }
+              case 42: {
+                QuotaId = input.ReadString();
+                break;
+              }
+              case 50: {
+                quotaDimensions_.AddEntriesFrom(input, _map_quotaDimensions_codec);
+                break;
+              }
+              case 56: {
+                QuotaValue = input.ReadInt64();
+                break;
+              }
+              case 64: {
+                FutureQuotaValue = input.ReadInt64();
+                break;
+              }
             }
           }
         #endif
@@ -1296,6 +1574,30 @@ namespace Google.Rpc {
               }
               case 18: {
                 Description = input.ReadString();
+                break;
+              }
+              case 26: {
+                ApiService = input.ReadString();
+                break;
+              }
+              case 34: {
+                QuotaMetric = input.ReadString();
+                break;
+              }
+              case 42: {
+                QuotaId = input.ReadString();
+                break;
+              }
+              case 50: {
+                quotaDimensions_.AddEntriesFrom(ref input, _map_quotaDimensions_codec);
+                break;
+              }
+              case 56: {
+                QuotaValue = input.ReadInt64();
+                break;
+              }
+              case 64: {
+                FutureQuotaValue = input.ReadInt64();
                 break;
               }
             }
@@ -2043,6 +2345,8 @@ namespace Google.Rpc {
         public FieldViolation(FieldViolation other) : this() {
           field_ = other.field_;
           description_ = other.description_;
+          reason_ = other.reason_;
+          localizedMessage_ = other.localizedMessage_ != null ? other.localizedMessage_.Clone() : null;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -2118,6 +2422,42 @@ namespace Google.Rpc {
           }
         }
 
+        /// <summary>Field number for the "reason" field.</summary>
+        public const int ReasonFieldNumber = 3;
+        private string reason_ = "";
+        /// <summary>
+        /// The reason of the field-level error. This is a constant value that
+        /// identifies the proximate cause of the field-level error. It should
+        /// uniquely identify the type of the FieldViolation within the scope of the
+        /// google.rpc.ErrorInfo.domain. This should be at most 63
+        /// characters and match a regular expression of `[A-Z][A-Z0-9_]+[A-Z0-9]`,
+        /// which represents UPPER_SNAKE_CASE.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public string Reason {
+          get { return reason_; }
+          set {
+            reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        /// <summary>Field number for the "localized_message" field.</summary>
+        public const int LocalizedMessageFieldNumber = 4;
+        private global::Google.Rpc.LocalizedMessage localizedMessage_;
+        /// <summary>
+        /// Provides a localized error message for field-level errors that is safe to
+        /// return to the API consumer.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public global::Google.Rpc.LocalizedMessage LocalizedMessage {
+          get { return localizedMessage_; }
+          set {
+            localizedMessage_ = value;
+          }
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
@@ -2135,6 +2475,8 @@ namespace Google.Rpc {
           }
           if (Field != other.Field) return false;
           if (Description != other.Description) return false;
+          if (Reason != other.Reason) return false;
+          if (!object.Equals(LocalizedMessage, other.LocalizedMessage)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -2144,6 +2486,8 @@ namespace Google.Rpc {
           int hash = 1;
           if (Field.Length != 0) hash ^= Field.GetHashCode();
           if (Description.Length != 0) hash ^= Description.GetHashCode();
+          if (Reason.Length != 0) hash ^= Reason.GetHashCode();
+          if (localizedMessage_ != null) hash ^= LocalizedMessage.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -2170,6 +2514,14 @@ namespace Google.Rpc {
             output.WriteRawTag(18);
             output.WriteString(Description);
           }
+          if (Reason.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(Reason);
+          }
+          if (localizedMessage_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(LocalizedMessage);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2188,6 +2540,14 @@ namespace Google.Rpc {
             output.WriteRawTag(18);
             output.WriteString(Description);
           }
+          if (Reason.Length != 0) {
+            output.WriteRawTag(26);
+            output.WriteString(Reason);
+          }
+          if (localizedMessage_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(LocalizedMessage);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -2203,6 +2563,12 @@ namespace Google.Rpc {
           }
           if (Description.Length != 0) {
             size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
+          }
+          if (Reason.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
+          }
+          if (localizedMessage_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(LocalizedMessage);
           }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -2221,6 +2587,15 @@ namespace Google.Rpc {
           }
           if (other.Description.Length != 0) {
             Description = other.Description;
+          }
+          if (other.Reason.Length != 0) {
+            Reason = other.Reason;
+          }
+          if (other.localizedMessage_ != null) {
+            if (localizedMessage_ == null) {
+              LocalizedMessage = new global::Google.Rpc.LocalizedMessage();
+            }
+            LocalizedMessage.MergeFrom(other.LocalizedMessage);
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -2249,6 +2624,17 @@ namespace Google.Rpc {
                 Description = input.ReadString();
                 break;
               }
+              case 26: {
+                Reason = input.ReadString();
+                break;
+              }
+              case 34: {
+                if (localizedMessage_ == null) {
+                  LocalizedMessage = new global::Google.Rpc.LocalizedMessage();
+                }
+                input.ReadMessage(LocalizedMessage);
+                break;
+              }
             }
           }
         #endif
@@ -2274,6 +2660,17 @@ namespace Google.Rpc {
               }
               case 18: {
                 Description = input.ReadString();
+                break;
+              }
+              case 26: {
+                Reason = input.ReadString();
+                break;
+              }
+              case 34: {
+                if (localizedMessage_ == null) {
+                  LocalizedMessage = new global::Google.Rpc.LocalizedMessage();
+                }
+                input.ReadMessage(LocalizedMessage);
                 break;
               }
             }
