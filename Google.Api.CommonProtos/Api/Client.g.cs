@@ -34,93 +34,102 @@ namespace Google.Api {
             "Chdnb29nbGUvYXBpL2NsaWVudC5wcm90bxIKZ29vZ2xlLmFwaRodZ29vZ2xl",
             "L2FwaS9sYXVuY2hfc3RhZ2UucHJvdG8aIGdvb2dsZS9wcm90b2J1Zi9kZXNj",
             "cmlwdG9yLnByb3RvGh5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8i",
-            "dAoWQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncxIeChJyZWZlcmVuY2VfZG9jc191",
-            "cmkYASABKAlCAhgBEjoKDGRlc3RpbmF0aW9ucxgCIAMoDjIkLmdvb2dsZS5h",
-            "cGkuQ2xpZW50TGlicmFyeURlc3RpbmF0aW9uIvsDChVDbGllbnRMaWJyYXJ5",
-            "U2V0dGluZ3MSDwoHdmVyc2lvbhgBIAEoCRItCgxsYXVuY2hfc3RhZ2UYAiAB",
-            "KA4yFy5nb29nbGUuYXBpLkxhdW5jaFN0YWdlEhoKEnJlc3RfbnVtZXJpY19l",
-            "bnVtcxgDIAEoCBIvCg1qYXZhX3NldHRpbmdzGBUgASgLMhguZ29vZ2xlLmFw",
-            "aS5KYXZhU2V0dGluZ3MSLQoMY3BwX3NldHRpbmdzGBYgASgLMhcuZ29vZ2xl",
-            "LmFwaS5DcHBTZXR0aW5ncxItCgxwaHBfc2V0dGluZ3MYFyABKAsyFy5nb29n",
-            "bGUuYXBpLlBocFNldHRpbmdzEjMKD3B5dGhvbl9zZXR0aW5ncxgYIAEoCzIa",
-            "Lmdvb2dsZS5hcGkuUHl0aG9uU2V0dGluZ3MSLwoNbm9kZV9zZXR0aW5ncxgZ",
-            "IAEoCzIYLmdvb2dsZS5hcGkuTm9kZVNldHRpbmdzEjMKD2RvdG5ldF9zZXR0",
-            "aW5ncxgaIAEoCzIaLmdvb2dsZS5hcGkuRG90bmV0U2V0dGluZ3MSLwoNcnVi",
-            "eV9zZXR0aW5ncxgbIAEoCzIYLmdvb2dsZS5hcGkuUnVieVNldHRpbmdzEisK",
-            "C2dvX3NldHRpbmdzGBwgASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzIqgD",
-            "CgpQdWJsaXNoaW5nEjMKD21ldGhvZF9zZXR0aW5ncxgCIAMoCzIaLmdvb2ds",
-            "ZS5hcGkuTWV0aG9kU2V0dGluZ3MSFQoNbmV3X2lzc3VlX3VyaRhlIAEoCRIZ",
-            "ChFkb2N1bWVudGF0aW9uX3VyaRhmIAEoCRIWCg5hcGlfc2hvcnRfbmFtZRhn",
-            "IAEoCRIUCgxnaXRodWJfbGFiZWwYaCABKAkSHgoWY29kZW93bmVyX2dpdGh1",
-            "Yl90ZWFtcxhpIAMoCRIWCg5kb2NfdGFnX3ByZWZpeBhqIAEoCRI7Cgxvcmdh",
-            "bml6YXRpb24YayABKA4yJS5nb29nbGUuYXBpLkNsaWVudExpYnJhcnlPcmdh",
-            "bml6YXRpb24SOwoQbGlicmFyeV9zZXR0aW5ncxhtIAMoCzIhLmdvb2dsZS5h",
-            "cGkuQ2xpZW50TGlicmFyeVNldHRpbmdzEikKIXByb3RvX3JlZmVyZW5jZV9k",
-            "b2N1bWVudGF0aW9uX3VyaRhuIAEoCRIoCiByZXN0X3JlZmVyZW5jZV9kb2N1",
-            "bWVudGF0aW9uX3VyaRhvIAEoCSLjAQoMSmF2YVNldHRpbmdzEhcKD2xpYnJh",
-            "cnlfcGFja2FnZRgBIAEoCRJMChNzZXJ2aWNlX2NsYXNzX25hbWVzGAIgAygL",
-            "Mi8uZ29vZ2xlLmFwaS5KYXZhU2V0dGluZ3MuU2VydmljZUNsYXNzTmFtZXNF",
-            "bnRyeRIyCgZjb21tb24YAyABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1",
-            "YWdlU2V0dGluZ3MaOAoWU2VydmljZUNsYXNzTmFtZXNFbnRyeRILCgNrZXkY",
-            "ASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIKBmNv",
-            "bW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5n",
-            "cyJBCgtQaHBTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBp",
-            "LkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiywEKDlB5dGhvblNldHRpbmdzEjIK",
-            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
-            "aW5ncxJOChVleHBlcmltZW50YWxfZmVhdHVyZXMYAiABKAsyLy5nb29nbGUu",
-            "YXBpLlB5dGhvblNldHRpbmdzLkV4cGVyaW1lbnRhbEZlYXR1cmVzGjUKFEV4",
-            "cGVyaW1lbnRhbEZlYXR1cmVzEh0KFXJlc3RfYXN5bmNfaW9fZW5hYmxlZBgB",
-            "IAEoCCJCCgxOb2RlU2V0dGluZ3MSMgoGY29tbW9uGAEgASgLMiIuZ29vZ2xl",
-            "LmFwaS5Db21tb25MYW5ndWFnZVNldHRpbmdzIqoDCg5Eb3RuZXRTZXR0aW5n",
+            "vgEKFkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MSHgoScmVmZXJlbmNlX2RvY3Nf",
+            "dXJpGAEgASgJQgIYARI6CgxkZXN0aW5hdGlvbnMYAiADKA4yJC5nb29nbGUu",
+            "YXBpLkNsaWVudExpYnJhcnlEZXN0aW5hdGlvbhJIChpzZWxlY3RpdmVfZ2Fw",
+            "aWNfZ2VuZXJhdGlvbhgDIAEoCzIkLmdvb2dsZS5hcGkuU2VsZWN0aXZlR2Fw",
+            "aWNHZW5lcmF0aW9uIvsDChVDbGllbnRMaWJyYXJ5U2V0dGluZ3MSDwoHdmVy",
+            "c2lvbhgBIAEoCRItCgxsYXVuY2hfc3RhZ2UYAiABKA4yFy5nb29nbGUuYXBp",
+            "LkxhdW5jaFN0YWdlEhoKEnJlc3RfbnVtZXJpY19lbnVtcxgDIAEoCBIvCg1q",
+            "YXZhX3NldHRpbmdzGBUgASgLMhguZ29vZ2xlLmFwaS5KYXZhU2V0dGluZ3MS",
+            "LQoMY3BwX3NldHRpbmdzGBYgASgLMhcuZ29vZ2xlLmFwaS5DcHBTZXR0aW5n",
+            "cxItCgxwaHBfc2V0dGluZ3MYFyABKAsyFy5nb29nbGUuYXBpLlBocFNldHRp",
+            "bmdzEjMKD3B5dGhvbl9zZXR0aW5ncxgYIAEoCzIaLmdvb2dsZS5hcGkuUHl0",
+            "aG9uU2V0dGluZ3MSLwoNbm9kZV9zZXR0aW5ncxgZIAEoCzIYLmdvb2dsZS5h",
+            "cGkuTm9kZVNldHRpbmdzEjMKD2RvdG5ldF9zZXR0aW5ncxgaIAEoCzIaLmdv",
+            "b2dsZS5hcGkuRG90bmV0U2V0dGluZ3MSLwoNcnVieV9zZXR0aW5ncxgbIAEo",
+            "CzIYLmdvb2dsZS5hcGkuUnVieVNldHRpbmdzEisKC2dvX3NldHRpbmdzGBwg",
+            "ASgLMhYuZ29vZ2xlLmFwaS5Hb1NldHRpbmdzIqgDCgpQdWJsaXNoaW5nEjMK",
+            "D21ldGhvZF9zZXR0aW5ncxgCIAMoCzIaLmdvb2dsZS5hcGkuTWV0aG9kU2V0",
+            "dGluZ3MSFQoNbmV3X2lzc3VlX3VyaRhlIAEoCRIZChFkb2N1bWVudGF0aW9u",
+            "X3VyaRhmIAEoCRIWCg5hcGlfc2hvcnRfbmFtZRhnIAEoCRIUCgxnaXRodWJf",
+            "bGFiZWwYaCABKAkSHgoWY29kZW93bmVyX2dpdGh1Yl90ZWFtcxhpIAMoCRIW",
+            "Cg5kb2NfdGFnX3ByZWZpeBhqIAEoCRI7Cgxvcmdhbml6YXRpb24YayABKA4y",
+            "JS5nb29nbGUuYXBpLkNsaWVudExpYnJhcnlPcmdhbml6YXRpb24SOwoQbGli",
+            "cmFyeV9zZXR0aW5ncxhtIAMoCzIhLmdvb2dsZS5hcGkuQ2xpZW50TGlicmFy",
+            "eVNldHRpbmdzEikKIXByb3RvX3JlZmVyZW5jZV9kb2N1bWVudGF0aW9uX3Vy",
+            "aRhuIAEoCRIoCiByZXN0X3JlZmVyZW5jZV9kb2N1bWVudGF0aW9uX3VyaRhv",
+            "IAEoCSLjAQoMSmF2YVNldHRpbmdzEhcKD2xpYnJhcnlfcGFja2FnZRgBIAEo",
+            "CRJMChNzZXJ2aWNlX2NsYXNzX25hbWVzGAIgAygLMi8uZ29vZ2xlLmFwaS5K",
+            "YXZhU2V0dGluZ3MuU2VydmljZUNsYXNzTmFtZXNFbnRyeRIyCgZjb21tb24Y",
+            "AyABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MaOAoW",
+            "U2VydmljZUNsYXNzTmFtZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUY",
+            "AiABKAk6AjgBIkEKC0NwcFNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdv",
+            "b2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncyJBCgtQaHBTZXR0aW5n",
             "cxIyCgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdl",
-            "U2V0dGluZ3MSSQoQcmVuYW1lZF9zZXJ2aWNlcxgCIAMoCzIvLmdvb2dsZS5h",
-            "cGkuRG90bmV0U2V0dGluZ3MuUmVuYW1lZFNlcnZpY2VzRW50cnkSSwoRcmVu",
-            "YW1lZF9yZXNvdXJjZXMYAyADKAsyMC5nb29nbGUuYXBpLkRvdG5ldFNldHRp",
-            "bmdzLlJlbmFtZWRSZXNvdXJjZXNFbnRyeRIZChFpZ25vcmVkX3Jlc291cmNl",
-            "cxgEIAMoCRIgChhmb3JjZWRfbmFtZXNwYWNlX2FsaWFzZXMYBSADKAkSHgoW",
-            "aGFuZHdyaXR0ZW5fc2lnbmF0dXJlcxgGIAMoCRo2ChRSZW5hbWVkU2Vydmlj",
-            "ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjcKFVJl",
-            "bmFtZWRSZXNvdXJjZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiAB",
-            "KAk6AjgBIkIKDFJ1YnlTZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29n",
-            "bGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MiQAoKR29TZXR0aW5ncxIy",
-            "CgZjb21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0",
-            "dGluZ3MizwIKDk1ldGhvZFNldHRpbmdzEhAKCHNlbGVjdG9yGAEgASgJEjwK",
-            "DGxvbmdfcnVubmluZxgCIAEoCzImLmdvb2dsZS5hcGkuTWV0aG9kU2V0dGlu",
-            "Z3MuTG9uZ1J1bm5pbmcSHQoVYXV0b19wb3B1bGF0ZWRfZmllbGRzGAMgAygJ",
-            "Gs0BCgtMb25nUnVubmluZxI1ChJpbml0aWFsX3BvbGxfZGVsYXkYASABKAsy",
-            "GS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SHQoVcG9sbF9kZWxheV9tdWx0",
-            "aXBsaWVyGAIgASgCEjEKDm1heF9wb2xsX2RlbGF5GAMgASgLMhkuZ29vZ2xl",
-            "LnByb3RvYnVmLkR1cmF0aW9uEjUKEnRvdGFsX3BvbGxfdGltZW91dBgEIAEo",
-            "CzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbiqjAQoZQ2xpZW50TGlicmFy",
-            "eU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElCUkFSWV9PUkdBTklaQVRJT05f",
-            "VU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcKA0FEUxACEgoKBlBIT1RPUxAD",
-            "Eg8KC1NUUkVFVF9WSUVXEAQSDAoIU0hPUFBJTkcQBRIHCgNHRU8QBhIRCg1H",
-            "RU5FUkFUSVZFX0FJEAcqZwoYQ2xpZW50TGlicmFyeURlc3RpbmF0aW9uEioK",
-            "JkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFUSU9OX1VOU1BFQ0lGSUVEEAASCgoG",
-            "R0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5BR0VSEBQ6OQoQbWV0aG9kX3NpZ25h",
-            "dHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRob2RPcHRpb25zGJsIIAMoCTo2",
-            "CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlv",
-            "bnMYmQggASgJOjYKDG9hdXRoX3Njb3BlcxIfLmdvb2dsZS5wcm90b2J1Zi5T",
-            "ZXJ2aWNlT3B0aW9ucxiaCCABKAk6OAoLYXBpX3ZlcnNpb24SHy5nb29nbGUu",
-            "cHJvdG9idWYuU2VydmljZU9wdGlvbnMYwbqr+gEgASgJQmkKDmNvbS5nb29n",
-            "bGUuYXBpQgtDbGllbnRQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9nZW5w",
-            "cm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc6IC",
-            "BEdBUEliBnByb3RvMw=="));
+            "U2V0dGluZ3MimwIKDlB5dGhvblNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIi",
+            "Lmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncxJOChVleHBlcmlt",
+            "ZW50YWxfZmVhdHVyZXMYAiABKAsyLy5nb29nbGUuYXBpLlB5dGhvblNldHRp",
+            "bmdzLkV4cGVyaW1lbnRhbEZlYXR1cmVzGoQBChRFeHBlcmltZW50YWxGZWF0",
+            "dXJlcxIdChVyZXN0X2FzeW5jX2lvX2VuYWJsZWQYASABKAgSJwofcHJvdG9i",
+            "dWZfcHl0aG9uaWNfdHlwZXNfZW5hYmxlZBgCIAEoCBIkChx1bnZlcnNpb25l",
+            "ZF9wYWNrYWdlX2Rpc2FibGVkGAMgASgIIkIKDE5vZGVTZXR0aW5ncxIyCgZj",
+            "b21tb24YASABKAsyIi5nb29nbGUuYXBpLkNvbW1vbkxhbmd1YWdlU2V0dGlu",
+            "Z3MiqgMKDkRvdG5ldFNldHRpbmdzEjIKBmNvbW1vbhgBIAEoCzIiLmdvb2ds",
+            "ZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0aW5ncxJJChByZW5hbWVkX3NlcnZp",
+            "Y2VzGAIgAygLMi8uZ29vZ2xlLmFwaS5Eb3RuZXRTZXR0aW5ncy5SZW5hbWVk",
+            "U2VydmljZXNFbnRyeRJLChFyZW5hbWVkX3Jlc291cmNlcxgDIAMoCzIwLmdv",
+            "b2dsZS5hcGkuRG90bmV0U2V0dGluZ3MuUmVuYW1lZFJlc291cmNlc0VudHJ5",
+            "EhkKEWlnbm9yZWRfcmVzb3VyY2VzGAQgAygJEiAKGGZvcmNlZF9uYW1lc3Bh",
+            "Y2VfYWxpYXNlcxgFIAMoCRIeChZoYW5kd3JpdHRlbl9zaWduYXR1cmVzGAYg",
+            "AygJGjYKFFJlbmFtZWRTZXJ2aWNlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2",
+            "YWx1ZRgCIAEoCToCOAEaNwoVUmVuYW1lZFJlc291cmNlc0VudHJ5EgsKA2tl",
+            "eRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiQgoMUnVieVNldHRpbmdzEjIK",
+            "BmNvbW1vbhgBIAEoCzIiLmdvb2dsZS5hcGkuQ29tbW9uTGFuZ3VhZ2VTZXR0",
+            "aW5ncyK/AQoKR29TZXR0aW5ncxIyCgZjb21tb24YASABKAsyIi5nb29nbGUu",
+            "YXBpLkNvbW1vbkxhbmd1YWdlU2V0dGluZ3MSRQoQcmVuYW1lZF9zZXJ2aWNl",
+            "cxgCIAMoCzIrLmdvb2dsZS5hcGkuR29TZXR0aW5ncy5SZW5hbWVkU2Vydmlj",
+            "ZXNFbnRyeRo2ChRSZW5hbWVkU2VydmljZXNFbnRyeRILCgNrZXkYASABKAkS",
+            "DQoFdmFsdWUYAiABKAk6AjgBIs8CCg5NZXRob2RTZXR0aW5ncxIQCghzZWxl",
+            "Y3RvchgBIAEoCRI8Cgxsb25nX3J1bm5pbmcYAiABKAsyJi5nb29nbGUuYXBp",
+            "Lk1ldGhvZFNldHRpbmdzLkxvbmdSdW5uaW5nEh0KFWF1dG9fcG9wdWxhdGVk",
+            "X2ZpZWxkcxgDIAMoCRrNAQoLTG9uZ1J1bm5pbmcSNQoSaW5pdGlhbF9wb2xs",
+            "X2RlbGF5GAEgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEh0KFXBv",
+            "bGxfZGVsYXlfbXVsdGlwbGllchgCIAEoAhIxCg5tYXhfcG9sbF9kZWxheRgD",
+            "IAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI1ChJ0b3RhbF9wb2xs",
+            "X3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24iUQoY",
+            "U2VsZWN0aXZlR2FwaWNHZW5lcmF0aW9uEg8KB21ldGhvZHMYASADKAkSJAoc",
+            "Z2VuZXJhdGVfb21pdHRlZF9hc19pbnRlcm5hbBgCIAEoCCqjAQoZQ2xpZW50",
+            "TGlicmFyeU9yZ2FuaXphdGlvbhIrCidDTElFTlRfTElCUkFSWV9PUkdBTkla",
+            "QVRJT05fVU5TUEVDSUZJRUQQABIJCgVDTE9VRBABEgcKA0FEUxACEgoKBlBI",
+            "T1RPUxADEg8KC1NUUkVFVF9WSUVXEAQSDAoIU0hPUFBJTkcQBRIHCgNHRU8Q",
+            "BhIRCg1HRU5FUkFUSVZFX0FJEAcqZwoYQ2xpZW50TGlicmFyeURlc3RpbmF0",
+            "aW9uEioKJkNMSUVOVF9MSUJSQVJZX0RFU1RJTkFUSU9OX1VOU1BFQ0lGSUVE",
+            "EAASCgoGR0lUSFVCEAoSEwoPUEFDS0FHRV9NQU5BR0VSEBQ6OQoQbWV0aG9k",
+            "X3NpZ25hdHVyZRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRob2RPcHRpb25zGJsI",
+            "IAMoCTo2CgxkZWZhdWx0X2hvc3QSHy5nb29nbGUucHJvdG9idWYuU2Vydmlj",
+            "ZU9wdGlvbnMYmQggASgJOjYKDG9hdXRoX3Njb3BlcxIfLmdvb2dsZS5wcm90",
+            "b2J1Zi5TZXJ2aWNlT3B0aW9ucxiaCCABKAk6OAoLYXBpX3ZlcnNpb24SHy5n",
+            "b29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMYwbqr+gEgASgJQmkKDmNv",
+            "bS5nb29nbGUuYXBpQgtDbGllbnRQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9y",
+            "Zy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0",
+            "aW9uc6ICBEdBUEliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.LaunchStageReflection.Descriptor, global::Google.Protobuf.Reflection.DescriptorReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ClientLibraryOrganization), typeof(global::Google.Api.ClientLibraryDestination), }, new pb::Extension[] { ClientExtensions.MethodSignature, ClientExtensions.DefaultHost, ClientExtensions.OauthScopes, ClientExtensions.ApiVersion }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CommonLanguageSettings), global::Google.Api.CommonLanguageSettings.Parser, new[]{ "ReferenceDocsUri", "Destinations" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CommonLanguageSettings), global::Google.Api.CommonLanguageSettings.Parser, new[]{ "ReferenceDocsUri", "Destinations", "SelectiveGapicGeneration" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.ClientLibrarySettings), global::Google.Api.ClientLibrarySettings.Parser, new[]{ "Version", "LaunchStage", "RestNumericEnums", "JavaSettings", "CppSettings", "PhpSettings", "PythonSettings", "NodeSettings", "DotnetSettings", "RubySettings", "GoSettings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Publishing), global::Google.Api.Publishing.Parser, new[]{ "MethodSettings", "NewIssueUri", "DocumentationUri", "ApiShortName", "GithubLabel", "CodeownerGithubTeams", "DocTagPrefix", "Organization", "LibrarySettings", "ProtoReferenceDocumentationUri", "RestReferenceDocumentationUri" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.JavaSettings), global::Google.Api.JavaSettings.Parser, new[]{ "LibraryPackage", "ServiceClassNames", "Common" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.CppSettings), global::Google.Api.CppSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PhpSettings), global::Google.Api.PhpSettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common", "ExperimentalFeatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings.Types.ExperimentalFeatures), global::Google.Api.PythonSettings.Types.ExperimentalFeatures.Parser, new[]{ "RestAsyncIoEnabled" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings), global::Google.Api.PythonSettings.Parser, new[]{ "Common", "ExperimentalFeatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.PythonSettings.Types.ExperimentalFeatures), global::Google.Api.PythonSettings.Types.ExperimentalFeatures.Parser, new[]{ "RestAsyncIoEnabled", "ProtobufPythonicTypesEnabled", "UnversionedPackageDisabled" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.NodeSettings), global::Google.Api.NodeSettings.Parser, new[]{ "Common" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.DotnetSettings), global::Google.Api.DotnetSettings.Parser, new[]{ "Common", "RenamedServices", "RenamedResources", "IgnoredResources", "ForcedNamespaceAliases", "HandwrittenSignatures" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.RubySettings), global::Google.Api.RubySettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.GoSettings), global::Google.Api.GoSettings.Parser, new[]{ "Common" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning", "AutoPopulatedFields" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.GoSettings), global::Google.Api.GoSettings.Parser, new[]{ "Common", "RenamedServices" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings), global::Google.Api.MethodSettings.Parser, new[]{ "Selector", "LongRunning", "AutoPopulatedFields" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.MethodSettings.Types.LongRunning), global::Google.Api.MethodSettings.Types.LongRunning.Parser, new[]{ "InitialPollDelay", "PollDelayMultiplier", "MaxPollDelay", "TotalPollTimeout" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.SelectiveGapicGeneration), global::Google.Api.SelectiveGapicGeneration.Parser, new[]{ "Methods", "GenerateOmittedAsInternal" }, null, null, null, null)
           }));
     }
     #endregion
@@ -327,6 +336,7 @@ namespace Google.Api {
     public CommonLanguageSettings(CommonLanguageSettings other) : this() {
       referenceDocsUri_ = other.referenceDocsUri_;
       destinations_ = other.destinations_.Clone();
+      selectiveGapicGeneration_ = other.selectiveGapicGeneration_ != null ? other.selectiveGapicGeneration_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -367,6 +377,21 @@ namespace Google.Api {
       get { return destinations_; }
     }
 
+    /// <summary>Field number for the "selective_gapic_generation" field.</summary>
+    public const int SelectiveGapicGenerationFieldNumber = 3;
+    private global::Google.Api.SelectiveGapicGeneration selectiveGapicGeneration_;
+    /// <summary>
+    /// Configuration for which RPCs should be generated in the GAPIC client.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Api.SelectiveGapicGeneration SelectiveGapicGeneration {
+      get { return selectiveGapicGeneration_; }
+      set {
+        selectiveGapicGeneration_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -384,6 +409,7 @@ namespace Google.Api {
       }
       if (ReferenceDocsUri != other.ReferenceDocsUri) return false;
       if(!destinations_.Equals(other.destinations_)) return false;
+      if (!object.Equals(SelectiveGapicGeneration, other.SelectiveGapicGeneration)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -393,6 +419,7 @@ namespace Google.Api {
       int hash = 1;
       if (ReferenceDocsUri.Length != 0) hash ^= ReferenceDocsUri.GetHashCode();
       hash ^= destinations_.GetHashCode();
+      if (selectiveGapicGeneration_ != null) hash ^= SelectiveGapicGeneration.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -416,6 +443,10 @@ namespace Google.Api {
         output.WriteString(ReferenceDocsUri);
       }
       destinations_.WriteTo(output, _repeated_destinations_codec);
+      if (selectiveGapicGeneration_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(SelectiveGapicGeneration);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -431,6 +462,10 @@ namespace Google.Api {
         output.WriteString(ReferenceDocsUri);
       }
       destinations_.WriteTo(ref output, _repeated_destinations_codec);
+      if (selectiveGapicGeneration_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(SelectiveGapicGeneration);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -445,6 +480,9 @@ namespace Google.Api {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ReferenceDocsUri);
       }
       size += destinations_.CalculateSize(_repeated_destinations_codec);
+      if (selectiveGapicGeneration_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SelectiveGapicGeneration);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -461,6 +499,12 @@ namespace Google.Api {
         ReferenceDocsUri = other.ReferenceDocsUri;
       }
       destinations_.Add(other.destinations_);
+      if (other.selectiveGapicGeneration_ != null) {
+        if (selectiveGapicGeneration_ == null) {
+          SelectiveGapicGeneration = new global::Google.Api.SelectiveGapicGeneration();
+        }
+        SelectiveGapicGeneration.MergeFrom(other.SelectiveGapicGeneration);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -489,6 +533,13 @@ namespace Google.Api {
             destinations_.AddEntriesFrom(input, _repeated_destinations_codec);
             break;
           }
+          case 26: {
+            if (selectiveGapicGeneration_ == null) {
+              SelectiveGapicGeneration = new global::Google.Api.SelectiveGapicGeneration();
+            }
+            input.ReadMessage(SelectiveGapicGeneration);
+            break;
+          }
         }
       }
     #endif
@@ -515,6 +566,13 @@ namespace Google.Api {
           case 18:
           case 16: {
             destinations_.AddEntriesFrom(ref input, _repeated_destinations_codec);
+            break;
+          }
+          case 26: {
+            if (selectiveGapicGeneration_ == null) {
+              SelectiveGapicGeneration = new global::Google.Api.SelectiveGapicGeneration();
+            }
+            input.ReadMessage(SelectiveGapicGeneration);
             break;
           }
         }
@@ -2824,6 +2882,8 @@ namespace Google.Api {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public ExperimentalFeatures(ExperimentalFeatures other) : this() {
           restAsyncIoEnabled_ = other.restAsyncIoEnabled_;
+          protobufPythonicTypesEnabled_ = other.protobufPythonicTypesEnabled_;
+          unversionedPackageDisabled_ = other.unversionedPackageDisabled_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -2851,6 +2911,42 @@ namespace Google.Api {
           }
         }
 
+        /// <summary>Field number for the "protobuf_pythonic_types_enabled" field.</summary>
+        public const int ProtobufPythonicTypesEnabledFieldNumber = 2;
+        private bool protobufPythonicTypesEnabled_;
+        /// <summary>
+        /// Enables generation of protobuf code using new types that are more
+        /// Pythonic which are included in `protobuf>=5.29.x`. This feature will be
+        /// enabled by default 1 month after launching the feature in preview
+        /// packages.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool ProtobufPythonicTypesEnabled {
+          get { return protobufPythonicTypesEnabled_; }
+          set {
+            protobufPythonicTypesEnabled_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "unversioned_package_disabled" field.</summary>
+        public const int UnversionedPackageDisabledFieldNumber = 3;
+        private bool unversionedPackageDisabled_;
+        /// <summary>
+        /// Disables generation of an unversioned Python package for this client
+        /// library. This means that the module names will need to be versioned in
+        /// import statements. For example `import google.cloud.library_v2` instead
+        /// of `import google.cloud.library`.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool UnversionedPackageDisabled {
+          get { return unversionedPackageDisabled_; }
+          set {
+            unversionedPackageDisabled_ = value;
+          }
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
@@ -2867,6 +2963,8 @@ namespace Google.Api {
             return true;
           }
           if (RestAsyncIoEnabled != other.RestAsyncIoEnabled) return false;
+          if (ProtobufPythonicTypesEnabled != other.ProtobufPythonicTypesEnabled) return false;
+          if (UnversionedPackageDisabled != other.UnversionedPackageDisabled) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -2875,6 +2973,8 @@ namespace Google.Api {
         public override int GetHashCode() {
           int hash = 1;
           if (RestAsyncIoEnabled != false) hash ^= RestAsyncIoEnabled.GetHashCode();
+          if (ProtobufPythonicTypesEnabled != false) hash ^= ProtobufPythonicTypesEnabled.GetHashCode();
+          if (UnversionedPackageDisabled != false) hash ^= UnversionedPackageDisabled.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -2897,6 +2997,14 @@ namespace Google.Api {
             output.WriteRawTag(8);
             output.WriteBool(RestAsyncIoEnabled);
           }
+          if (ProtobufPythonicTypesEnabled != false) {
+            output.WriteRawTag(16);
+            output.WriteBool(ProtobufPythonicTypesEnabled);
+          }
+          if (UnversionedPackageDisabled != false) {
+            output.WriteRawTag(24);
+            output.WriteBool(UnversionedPackageDisabled);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2911,6 +3019,14 @@ namespace Google.Api {
             output.WriteRawTag(8);
             output.WriteBool(RestAsyncIoEnabled);
           }
+          if (ProtobufPythonicTypesEnabled != false) {
+            output.WriteRawTag(16);
+            output.WriteBool(ProtobufPythonicTypesEnabled);
+          }
+          if (UnversionedPackageDisabled != false) {
+            output.WriteRawTag(24);
+            output.WriteBool(UnversionedPackageDisabled);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -2922,6 +3038,12 @@ namespace Google.Api {
         public int CalculateSize() {
           int size = 0;
           if (RestAsyncIoEnabled != false) {
+            size += 1 + 1;
+          }
+          if (ProtobufPythonicTypesEnabled != false) {
+            size += 1 + 1;
+          }
+          if (UnversionedPackageDisabled != false) {
             size += 1 + 1;
           }
           if (_unknownFields != null) {
@@ -2938,6 +3060,12 @@ namespace Google.Api {
           }
           if (other.RestAsyncIoEnabled != false) {
             RestAsyncIoEnabled = other.RestAsyncIoEnabled;
+          }
+          if (other.ProtobufPythonicTypesEnabled != false) {
+            ProtobufPythonicTypesEnabled = other.ProtobufPythonicTypesEnabled;
+          }
+          if (other.UnversionedPackageDisabled != false) {
+            UnversionedPackageDisabled = other.UnversionedPackageDisabled;
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -2962,6 +3090,14 @@ namespace Google.Api {
                 RestAsyncIoEnabled = input.ReadBool();
                 break;
               }
+              case 16: {
+                ProtobufPythonicTypesEnabled = input.ReadBool();
+                break;
+              }
+              case 24: {
+                UnversionedPackageDisabled = input.ReadBool();
+                break;
+              }
             }
           }
         #endif
@@ -2983,6 +3119,14 @@ namespace Google.Api {
                 break;
               case 8: {
                 RestAsyncIoEnabled = input.ReadBool();
+                break;
+              }
+              case 16: {
+                ProtobufPythonicTypesEnabled = input.ReadBool();
+                break;
+              }
+              case 24: {
+                UnversionedPackageDisabled = input.ReadBool();
                 break;
               }
             }
@@ -3835,6 +3979,7 @@ namespace Google.Api {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GoSettings(GoSettings other) : this() {
       common_ = other.common_ != null ? other.common_.Clone() : null;
+      renamedServices_ = other.renamedServices_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3859,6 +4004,27 @@ namespace Google.Api {
       }
     }
 
+    /// <summary>Field number for the "renamed_services" field.</summary>
+    public const int RenamedServicesFieldNumber = 2;
+    private static readonly pbc::MapField<string, string>.Codec _map_renamedServices_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 18);
+    private readonly pbc::MapField<string, string> renamedServices_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// Map of service names to renamed services. Keys are the package relative
+    /// service names and values are the name to be used for the service client
+    /// and call options.
+    ///
+    /// publishing:
+    ///   go_settings:
+    ///     renamed_services:
+    ///       Publisher: TopicAdmin
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> RenamedServices {
+      get { return renamedServices_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -3875,6 +4041,7 @@ namespace Google.Api {
         return true;
       }
       if (!object.Equals(Common, other.Common)) return false;
+      if (!RenamedServices.Equals(other.RenamedServices)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3883,6 +4050,7 @@ namespace Google.Api {
     public override int GetHashCode() {
       int hash = 1;
       if (common_ != null) hash ^= Common.GetHashCode();
+      hash ^= RenamedServices.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3905,6 +4073,7 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      renamedServices_.WriteTo(output, _map_renamedServices_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3919,6 +4088,7 @@ namespace Google.Api {
         output.WriteRawTag(10);
         output.WriteMessage(Common);
       }
+      renamedServices_.WriteTo(ref output, _map_renamedServices_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3932,6 +4102,7 @@ namespace Google.Api {
       if (common_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Common);
       }
+      size += renamedServices_.CalculateSize(_map_renamedServices_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3950,6 +4121,7 @@ namespace Google.Api {
         }
         Common.MergeFrom(other.Common);
       }
+      renamedServices_.MergeFrom(other.renamedServices_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3976,6 +4148,10 @@ namespace Google.Api {
             input.ReadMessage(Common);
             break;
           }
+          case 18: {
+            renamedServices_.AddEntriesFrom(input, _map_renamedServices_codec);
+            break;
+          }
         }
       }
     #endif
@@ -4000,6 +4176,10 @@ namespace Google.Api {
               Common = new global::Google.Api.CommonLanguageSettings();
             }
             input.ReadMessage(Common);
+            break;
+          }
+          case 18: {
+            renamedServices_.AddEntriesFrom(ref input, _map_renamedServices_codec);
             break;
           }
         }
@@ -4687,6 +4867,246 @@ namespace Google.Api {
 
     }
     #endregion
+
+  }
+
+  /// <summary>
+  /// This message is used to configure the generation of a subset of the RPCs in
+  /// a service for client libraries.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class SelectiveGapicGeneration : pb::IMessage<SelectiveGapicGeneration>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<SelectiveGapicGeneration> _parser = new pb::MessageParser<SelectiveGapicGeneration>(() => new SelectiveGapicGeneration());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<SelectiveGapicGeneration> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Api.ClientReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SelectiveGapicGeneration() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SelectiveGapicGeneration(SelectiveGapicGeneration other) : this() {
+      methods_ = other.methods_.Clone();
+      generateOmittedAsInternal_ = other.generateOmittedAsInternal_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SelectiveGapicGeneration Clone() {
+      return new SelectiveGapicGeneration(this);
+    }
+
+    /// <summary>Field number for the "methods" field.</summary>
+    public const int MethodsFieldNumber = 1;
+    private static readonly pb::FieldCodec<string> _repeated_methods_codec
+        = pb::FieldCodec.ForString(10);
+    private readonly pbc::RepeatedField<string> methods_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// An allowlist of the fully qualified names of RPCs that should be included
+    /// on public client surfaces.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> Methods {
+      get { return methods_; }
+    }
+
+    /// <summary>Field number for the "generate_omitted_as_internal" field.</summary>
+    public const int GenerateOmittedAsInternalFieldNumber = 2;
+    private bool generateOmittedAsInternal_;
+    /// <summary>
+    /// Setting this to true indicates to the client generators that methods
+    /// that would be excluded from the generation should instead be generated
+    /// in a way that indicates these methods should not be consumed by
+    /// end users. How this is expressed is up to individual language
+    /// implementations to decide. Some examples may be: added annotations,
+    /// obfuscated identifiers, or other language idiomatic patterns.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool GenerateOmittedAsInternal {
+      get { return generateOmittedAsInternal_; }
+      set {
+        generateOmittedAsInternal_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SelectiveGapicGeneration);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SelectiveGapicGeneration other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!methods_.Equals(other.methods_)) return false;
+      if (GenerateOmittedAsInternal != other.GenerateOmittedAsInternal) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= methods_.GetHashCode();
+      if (GenerateOmittedAsInternal != false) hash ^= GenerateOmittedAsInternal.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      methods_.WriteTo(output, _repeated_methods_codec);
+      if (GenerateOmittedAsInternal != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(GenerateOmittedAsInternal);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      methods_.WriteTo(ref output, _repeated_methods_codec);
+      if (GenerateOmittedAsInternal != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(GenerateOmittedAsInternal);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += methods_.CalculateSize(_repeated_methods_codec);
+      if (GenerateOmittedAsInternal != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SelectiveGapicGeneration other) {
+      if (other == null) {
+        return;
+      }
+      methods_.Add(other.methods_);
+      if (other.GenerateOmittedAsInternal != false) {
+        GenerateOmittedAsInternal = other.GenerateOmittedAsInternal;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            methods_.AddEntriesFrom(input, _repeated_methods_codec);
+            break;
+          }
+          case 16: {
+            GenerateOmittedAsInternal = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            methods_.AddEntriesFrom(ref input, _repeated_methods_codec);
+            break;
+          }
+          case 16: {
+            GenerateOmittedAsInternal = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

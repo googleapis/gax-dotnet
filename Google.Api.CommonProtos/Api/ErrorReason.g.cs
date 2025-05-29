@@ -31,7 +31,7 @@ namespace Google.Api {
     static ErrorReasonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSqK",
+            "Ch1nb29nbGUvYXBpL2Vycm9yX3JlYXNvbi5wcm90bxIKZ29vZ2xlLmFwaSq6",
             "BwoLRXJyb3JSZWFzb24SHAoYRVJST1JfUkVBU09OX1VOU1BFQ0lGSUVEEAAS",
             "FAoQU0VSVklDRV9ESVNBQkxFRBABEhQKEEJJTExJTkdfRElTQUJMRUQQAhIT",
             "Cg9BUElfS0VZX0lOVkFMSUQQAxIbChdBUElfS0VZX1NFUlZJQ0VfQkxPQ0tF",
@@ -52,9 +52,10 @@ namespace Google.Api {
             "GhIdChlPUkdfUkVTVFJJQ1RJT05fVklPTEFUSU9OEBsSIgoeT1JHX1JFU1RS",
             "SUNUSU9OX0hFQURFUl9JTlZBTElEEBwSFwoTU0VSVklDRV9OT1RfVklTSUJM",
             "RRAdEhEKDUdDUF9TVVNQRU5ERUQQHhIcChhMT0NBVElPTl9QT0xJQ1lfVklP",
-            "TEFURUQQH0JwCg5jb20uZ29vZ2xlLmFwaUIQRXJyb3JSZWFzb25Qcm90b1AB",
-            "WkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9l",
-            "cnJvcl9yZWFzb247ZXJyb3JfcmVhc29uogIER0FQSWIGcHJvdG8z"));
+            "TEFURUQQHxISCg5NSVNTSU5HX09SSUdJThAhEhoKFk9WRVJMT0FERURfQ1JF",
+            "REVOVElBTFMQIkJwCg5jb20uZ29vZ2xlLmFwaUIQRXJyb3JSZWFzb25Qcm90",
+            "b1ABWkNnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2Fw",
+            "aS9lcnJvcl9yZWFzb247ZXJyb3JfcmVhc29uogIER0FQSWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Api.ErrorReason), }, null, null));
@@ -661,6 +662,41 @@ namespace Google.Api {
     /// The troubleshooting guidance is provided in the Help links.
     /// </summary>
     [pbr::OriginalName("LOCATION_POLICY_VIOLATED")] LocationPolicyViolated = 31,
+    /// <summary>
+    /// The request is denied because origin request header is missing.
+    ///
+    /// Example of an ErrorInfo when
+    /// accessing "pubsub.googleapis.com" service with an empty "Origin" request
+    /// header.
+    ///
+    /// {
+    ///   reason: "MISSING_ORIGIN"
+    ///   domain: "googleapis.com"
+    ///   metadata {
+    ///     "consumer":"projects/123456"
+    ///     "service": "pubsub.googleapis.com"
+    ///   }
+    /// }
+    /// </summary>
+    [pbr::OriginalName("MISSING_ORIGIN")] MissingOrigin = 33,
+    /// <summary>
+    /// The request is denied because the request contains more than one credential
+    /// type that are individually acceptable, but not together. The customer
+    /// should retry their request with only one set of credentials.
+    ///
+    /// Example of an ErrorInfo when
+    /// accessing "pubsub.googleapis.com" service with overloaded credentials.
+    ///
+    /// {
+    ///   reason: "OVERLOADED_CREDENTIALS"
+    ///   domain: "googleapis.com"
+    ///   metadata {
+    ///     "consumer":"projects/123456"
+    ///     "service": "pubsub.googleapis.com"
+    ///   }
+    /// }
+    /// </summary>
+    [pbr::OriginalName("OVERLOADED_CREDENTIALS")] OverloadedCredentials = 34,
   }
 
   #endregion

@@ -2957,7 +2957,8 @@ namespace Google.Rpc.Context {
         /// may be set by external tools to store and retrieve arbitrary metadata.
         /// They are not queryable and should be preserved when modifying objects.
         ///
-        /// More info: https://kubernetes.io/docs/user-guide/annotations
+        /// More info:
+        /// https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
