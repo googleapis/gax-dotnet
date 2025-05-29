@@ -9,6 +9,10 @@ rm -rf {src,test,testing}/*/bin {src,test,testing}/*/obj
 
 # Make sure that SourceLink uses the GitHub repo, even if that's not where
 # our origin remote points at.
+# First remove any previous remote called github, typically from a
+# failed test run.
+git remote remove github 2> /dev/null || true
+
 git remote add github https://github.com/googleapis/gax-dotnet
 export GitRepositoryRemoteName=github
 

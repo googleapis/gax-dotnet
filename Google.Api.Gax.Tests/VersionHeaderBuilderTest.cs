@@ -21,8 +21,9 @@ namespace Google.Api.Gax.Tests
         // This theory will only have a single test case per framework, but it's the simplest way of expressing what we mean.
         [Theory]
 #if NETCOREAPP3_1_OR_GREATER
-        // In recent test frameworks, .NET Core and .NET 5+ are always reported as 3.1.0.
-        [InlineData("3.1.0")]
+        // Before Microsoft.NET.Test.Sdk verison 17.4.0, .NET Core and .NET 5+ were always reported as 3.1.0.
+        // From Microsoft.NET.Test.Sdk version 17.14.0 onwards, the real runtime version is reported.
+        [InlineData("8.0.0")]
 #elif NET462
         // This will be the runtime version, which will always be 4.0.x, but we don't know x.
         [InlineData("4.0.")]
