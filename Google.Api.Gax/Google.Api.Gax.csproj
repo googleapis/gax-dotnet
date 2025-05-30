@@ -3,7 +3,7 @@
   <Import Project="..\CommonProperties.xml" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net8.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -14,8 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
     <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" />
   </ItemGroup>
 
