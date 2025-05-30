@@ -7,15 +7,6 @@ cd $(dirname $0)
 # Clean up previous builds
 rm -rf {src,test,testing}/*/bin {src,test,testing}/*/obj
 
-# Make sure that SourceLink uses the GitHub repo, even if that's not where
-# our origin remote points at.
-# First remove any previous remote called github, typically from a
-# failed test run.
-git remote remove github 2> /dev/null || true
-
-git remote add github https://github.com/googleapis/gax-dotnet
-export GitRepositoryRemoteName=github
-
 export Configuration=Release
 export ContinuousIntegrationBuild=true
 
@@ -35,7 +26,3 @@ done
 # builds, it's good to make sure we always *can* pack.
 echo Packing
 dotnet pack Gax.sln --no-build -o $PWD/nuget
-
-# Remove the github remote so that if there are multiple iterations
-# against the same clone, the "git remote add" earlier will work.
-git remote remove github
