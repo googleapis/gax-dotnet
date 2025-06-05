@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
 using Grpc.Core;
 using System;
@@ -29,6 +30,7 @@ namespace Google.Api.Gax.Grpc.Rest
             .AppendAssemblyVersion("gapic", typeof(RestChannel))
             .AppendAssemblyVersion("gax", typeof(CallSettings))
             .AppendAssemblyVersion("rest", typeof(HttpClient))
+            .AppendAssemblyVersion("pb", typeof(Duration))
             .ToString();
 
         private readonly AsyncAuthInterceptor _channelAuthInterceptor;

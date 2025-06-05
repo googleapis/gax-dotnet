@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using System.Diagnostics;
@@ -28,7 +29,8 @@ namespace Google.Api.Gax.Grpc
                 .AppendAssemblyVersion("gax", typeof(CallSettings))
                 // Note: this will be the version of gRPC Core API that we're using, not necessarily the implementation.
                 // But the implementation will depend on the API, so it's likely that it's all in sync.
-                .AppendAssemblyVersion("grpc", typeof(ChannelBase));
+                .AppendAssemblyVersion("grpc", typeof(ChannelBase))
+                .AppendAssemblyVersion("pb", typeof(Duration));
         }
 
         /// <summary>
