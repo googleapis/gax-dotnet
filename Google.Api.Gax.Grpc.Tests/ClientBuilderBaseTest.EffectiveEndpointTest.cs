@@ -67,6 +67,21 @@ public partial class ClientBuilderBaseTest
             clientBuilder.Validate();
         }
 
+        [Theory]
+        [InlineData("test-host:123", null, "test-host:123")]
+        [InlineData("test-host:123", "custom.domain.com", "test-host:123")]
+        public void EffectiveEndpointWithEndpoint(string endpoint, string universeDomain, string expectedEffectiveEndpoint)
+        {
+            FakeClientBuilder clientBuilder = new FakeClientBuilder(TestServiceMetadata.TestService)
+            {
+                UniverseDomain = universeDomain,
+                Endpoint = endpoint
+            };
+
+            Assert.Equal(expectedEffectiveEndpoint, clientBuilder.EffectiveEndpoint);
+        }
+
+
         public class FakeClientBuilder : ClientBuilderBase<string>
         {
             public FakeClientBuilder(ServiceMetadata serviceMetadata) : base(serviceMetadata)
