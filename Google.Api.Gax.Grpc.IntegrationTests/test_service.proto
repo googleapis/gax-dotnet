@@ -29,6 +29,12 @@ service TestService {
       post: "/v1/custom:echoHeaders"
     };
   }
+
+  rpc FetchEmptyResponse(SimpleRequest) returns (SimpleResponse) {
+    option (google.api.http) = {
+      get: "/v1/emptyResponse/{name}"
+    };
+  }
 }
 
 message SimpleRequest {
