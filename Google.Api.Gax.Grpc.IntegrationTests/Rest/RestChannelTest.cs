@@ -65,6 +65,14 @@ public class RestChannelTest
         Assert.Equal("Error details", exception.Status.Detail);
     }
 
+    [Fact]
+    public void HttpOkStatusWithEmptyResponse()
+    {
+        var client = CreateClient();
+        var response = client.FetchEmptyResponse(new SimpleRequest { Name = "emptyResponse" });
+        Assert.Null(response);
+    }
+
     private TestServiceClient CreateClient()
     {
         var metadata = TestServiceMetadata.ApiMetadata;
@@ -79,6 +87,7 @@ public class RestChannelTest
         private const string SimplePathPrefix = "/v1/simple/";
         private const string ServerStreamingPathPrefix = "/v1/serverStreaming/";
         private const string CustomPathPrefix = "/v1/custom:";
+        private const string EmptyResponsePathPrefix = "/v1/emptyResponse/";
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -88,6 +97,7 @@ public class RestChannelTest
                 path.StartsWith(SimplePathPrefix) ? GetSimpleResponse(request)
                 : path.StartsWith(ServerStreamingPathPrefix) ? GetStreamingResponse(request)
                 : path.StartsWith(CustomPathPrefix) ? GetCustomMethod(request)
+                : path.StartsWith(EmptyResponsePathPrefix) ? GetEmptyResponse(request)
                 : new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
             return Task.FromResult(response);
         }
@@ -125,6 +135,11 @@ public class RestChannelTest
         private HttpResponseMessage GetCustomMethod(HttpRequestMessage request)
         {
             return new HttpResponseMessage { StatusCode = HttpStatusCode.NotImplemented };
+        }
+
+        private HttpResponseMessage GetEmptyResponse(HttpRequestMessage request)
+        {
+            return CreateSuccessResponseMessage("");
         }
 
         private static HttpResponseMessage CreateSuccessResponseMessage(object message)

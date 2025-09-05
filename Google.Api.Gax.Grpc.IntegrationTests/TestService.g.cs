@@ -34,7 +34,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
             "dWUYASABKAwSEwoLc3RyaW5nVmFsdWUYAiABKAkadgoMSGVhZGVyc0VudHJ5",
             "EgsKA2tleRgBIAEoCRJVCgV2YWx1ZRgCIAEoCzJGLmdvb2dsZS5hcGkuZ2F4",
             "LmdycGMuaW50ZWdyYXRpb25fdGVzdHMuRWNob0hlYWRlcnNSZXNwb25zZS5I",
-            "ZWFkZXJWYWx1ZToCOAEy8AMKC1Rlc3RTZXJ2aWNlEpIBCghEb1NpbXBsZRI0",
+            "ZWFkZXJWYWx1ZToCOAEylgUKC1Rlc3RTZXJ2aWNlEpIBCghEb1NpbXBsZRI0",
             "Lmdvb2dsZS5hcGkuZ2F4LmdycGMuaW50ZWdyYXRpb25fdGVzdHMuU2ltcGxl",
             "UmVxdWVzdBo1Lmdvb2dsZS5hcGkuZ2F4LmdycGMuaW50ZWdyYXRpb25fdGVz",
             "dHMuU2ltcGxlUmVzcG9uc2UiGYLT5JMCExIRL3YxL3NpbXBsZS97bmFtZX0S",
@@ -45,7 +45,11 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
             "cnMSOS5nb29nbGUuYXBpLmdheC5ncnBjLmludGVncmF0aW9uX3Rlc3RzLkVj",
             "aG9IZWFkZXJzUmVxdWVzdBo6Lmdvb2dsZS5hcGkuZ2F4LmdycGMuaW50ZWdy",
             "YXRpb25fdGVzdHMuRWNob0hlYWRlcnNSZXNwb25zZSIegtPkkwIYIhYvdjEv",
-            "Y3VzdG9tOmVjaG9IZWFkZXJzYgZwcm90bzM="));
+            "Y3VzdG9tOmVjaG9IZWFkZXJzEqMBChJGZXRjaEVtcHR5UmVzcG9uc2USNC5n",
+            "b29nbGUuYXBpLmdheC5ncnBjLmludGVncmF0aW9uX3Rlc3RzLlNpbXBsZVJl",
+            "cXVlc3QaNS5nb29nbGUuYXBpLmdheC5ncnBjLmludGVncmF0aW9uX3Rlc3Rz",
+            "LlNpbXBsZVJlc3BvbnNlIiCC0+STAhoSGC92MS9lbXB0eVJlc3BvbnNlL3tu",
+            "YW1lfWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Api.AnnotationsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {

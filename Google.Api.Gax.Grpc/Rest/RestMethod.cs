@@ -96,7 +96,12 @@ internal class RestMethod
         {
             throw new RpcException(status, httpResponse.GetTrailers());
         }
-        return ParseJson<TResponse>(httpResponse.Content);
+
+        string jsonToParse = httpResponse.Content;
+
+        // See b/436913122#comment13. Returns the default value on an empty response
+        // instead of converting to an empty JSON element string ("{}") to prevent JSON parsing issues.
+        return string.IsNullOrEmpty(jsonToParse) ? default : ParseJson<TResponse>(jsonToParse);
     }
 
     /// <summary>
