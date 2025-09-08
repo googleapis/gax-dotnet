@@ -85,6 +85,14 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
         __Marshaller_google_api_gax_grpc_integration_tests_EchoHeadersRequest,
         __Marshaller_google_api_gax_grpc_integration_tests_EchoHeadersResponse);
 
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> __Method_FetchEmptyResponse = new grpc::Method<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "FetchEmptyResponse",
+        __Marshaller_google_api_gax_grpc_integration_tests_SimpleRequest,
+        __Marshaller_google_api_gax_grpc_integration_tests_SimpleResponse);
+
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
@@ -109,6 +117,12 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::System.Threading.Tasks.Task<global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse> EchoHeaders(global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> FetchEmptyResponse(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -192,6 +206,26 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       {
         return CallInvoker.AsyncUnaryCall(__Method_EchoHeaders, null, options, request);
       }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse FetchEmptyResponse(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return FetchEmptyResponse(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse FetchEmptyResponse(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_FetchEmptyResponse, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> FetchEmptyResponseAsync(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return FetchEmptyResponseAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse> FetchEmptyResponseAsync(global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_FetchEmptyResponse, null, options, request);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       protected override TestServiceClient NewInstance(ClientBaseConfiguration configuration)
@@ -208,7 +242,8 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_DoSimple, serviceImpl.DoSimple)
           .AddMethod(__Method_ServerStreaming, serviceImpl.ServerStreaming)
-          .AddMethod(__Method_EchoHeaders, serviceImpl.EchoHeaders).Build();
+          .AddMethod(__Method_EchoHeaders, serviceImpl.EchoHeaders)
+          .AddMethod(__Method_FetchEmptyResponse, serviceImpl.FetchEmptyResponse).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
@@ -221,6 +256,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests {
       serviceBinder.AddMethod(__Method_DoSimple, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(serviceImpl.DoSimple));
       serviceBinder.AddMethod(__Method_ServerStreaming, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(serviceImpl.ServerStreaming));
       serviceBinder.AddMethod(__Method_EchoHeaders, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersRequest, global::Google.Api.Gax.Grpc.IntegrationTests.EchoHeadersResponse>(serviceImpl.EchoHeaders));
+      serviceBinder.AddMethod(__Method_FetchEmptyResponse, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Api.Gax.Grpc.IntegrationTests.SimpleRequest, global::Google.Api.Gax.Grpc.IntegrationTests.SimpleResponse>(serviceImpl.FetchEmptyResponse));
     }
 
   }
