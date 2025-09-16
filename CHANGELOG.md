@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.11.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.11.0...Google.Api.Gax-4.11.1) (2025-09-16)
+
+
+### Bug Fixes
+
+* Return default response if http content is empty ([#846](https://github.com/googleapis/gax-dotnet/issues/846)) ([26bf621](https://github.com/googleapis/gax-dotnet/commit/26bf621b9c5fa024217f606d3a833ea7e7667179))
+
 ## [4.11.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.10.0...Google.Api.Gax-4.11.0) (2025-05-29)
 
 
