@@ -73,7 +73,7 @@ namespace Google.Api.Gax.Rest.IntegrationTests
             var builder = new SampleClientBuilder
             {
                 ApiKey = SampleApiKey,
-                JsonCredentials = TestServiceAccountJson
+                GoogleCredential = CreateTestServiceAccountCredential()
             };
 
             Action<BaseClientService.Initializer> validator = initializer =>
@@ -90,7 +90,7 @@ namespace Google.Api.Gax.Rest.IntegrationTests
             var builder = new SampleClientBuilder
             {
                 ApiKey = SampleApiKey,
-                JsonCredentials = TestServiceAccountJson,
+                GoogleCredential = CreateTestServiceAccountCredential(),
                 QuotaProject = SampleQuotaProject
             };
 
@@ -135,6 +135,7 @@ namespace Google.Api.Gax.Rest.IntegrationTests
             await ValidateResultAsync(builder, initializer => Assert.Equal(applicationName, initializer.ApplicationName));
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public async Task JsonCredentials()
         {
@@ -204,6 +205,7 @@ namespace Google.Api.Gax.Rest.IntegrationTests
                 File.Delete(file);
             }
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         [Fact]
         public async Task CustomCredential()
@@ -215,9 +217,11 @@ namespace Google.Api.Gax.Rest.IntegrationTests
 
         public static TheoryData<SampleClientBuilder> InvalidCombinationsTheoryData = new TheoryData<SampleClientBuilder>
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             new SampleClientBuilder("CredentialsPathAndJsonCredentials") { CredentialsPath = "foo.json", JsonCredentials = TestServiceAccountJson },
             new SampleClientBuilder("CredentialAndJsonCredentials") { Credential = CreateTestServiceAccountCredential(), JsonCredentials = TestServiceAccountJson },
             new SampleClientBuilder("CredentialAndCredentialsPath") { Credential = CreateTestServiceAccountCredential(), CredentialsPath = "foo.json" },
+#pragma warning restore CS0618 // Type or member is obsolete
             new SampleClientBuilder("CredentialAndQuotaProject") { Credential = CreateTestServiceAccountCredential(), QuotaProject = SampleQuotaProject },
         };
 

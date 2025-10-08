@@ -34,6 +34,7 @@ namespace Google.Api.Gax.Rest
         /// systems and data. For more information, refer to
         /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
         /// </remarks>
+        [Obsolete($"This property is deprecated because of a potential security risk. Instead, provide explicit credential objects through the {nameof(GoogleCredential)} property. See the remarks for more details.")]
         public string CredentialsPath { get; set; }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Google.Api.Gax.Rest
         /// systems and data. For more information, refer to
         /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
         /// </remarks>
+        [Obsolete($"This property is deprecated because of a potential security risk. Instead, provide explicit credential objects through the {nameof(GoogleCredential)} property. See the remarks for more details.")]
         public string JsonCredentials { get; set; }
 
         /// <summary>
@@ -157,8 +159,10 @@ namespace Google.Api.Gax.Rest
         /// <exception cref="InvalidOperationException">The builder is in an invalid state.</exception>
         protected virtual void Validate()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ValidateAtMostOneNotNull("Only one source of credentials can be specified",
                 CredentialsPath, JsonCredentials, Credential, GoogleCredential);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             ValidateAtMostOneNotNull($"If an already-built credential is specified via {nameof(Credential)}, {nameof(QuotaProject)} must be null.",
                 Credential, QuotaProject);
@@ -325,8 +329,10 @@ namespace Google.Api.Gax.Rest
 
             HttpClientFactory ??= provider.GetService<IHttpClientFactory>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if (CredentialsPath is null && JsonCredentials is null && GoogleCredential is null && Credential is null)
             {
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (provider.GetService<ICredential>() is ICredential credential)
                 {
                     Credential = credential;

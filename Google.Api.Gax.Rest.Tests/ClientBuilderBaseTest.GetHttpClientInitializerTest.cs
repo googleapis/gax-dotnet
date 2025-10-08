@@ -28,6 +28,7 @@ namespace Google.Api.Gax.Rest.Tests
         {
             private static readonly string[] s_scopes = { "scope1", "scope2" };
 
+#pragma warning disable CS0618 // Type or member is obsolete
             [Fact]
             public async Task JsonCredentials_Valid()
             {
@@ -51,6 +52,7 @@ namespace Google.Api.Gax.Rest.Tests
                 await AssertCredentialAsync(builder, AssertBasicProperties);
                 File.Delete(path);
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             [Fact]
             public async Task GoogleCredential_Valid()
