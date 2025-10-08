@@ -12,6 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static Google.Api.Gax.Testing.TestCredentials;
 
 namespace Google.Api.Gax.Rest.Tests
 {
@@ -49,15 +50,15 @@ namespace Google.Api.Gax.Rest.Tests
             public void CredentialsNotUsedWhenAlreadySet()
             {
                 var serviceCollection = new ServiceCollection();
-                var dependencyCredential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var dependencyCredential = CreateTestServiceAccountCredential();
                 serviceCollection.AddSingleton(dependencyCredential);
 #pragma warning disable CS0618 // Type or member is obsolete
                 Action<FakeBuilder>[] actions = new Action<FakeBuilder>[]
                 {
                     builder => builder.JsonCredentials = "{}",
                     builder => builder.CredentialsPath = "abc",
-                    builder => builder.Credential = GoogleCredential.FromJson(s_serviceAccountJson),
-                    builder => builder.GoogleCredential = GoogleCredential.FromJson(s_serviceAccountJson),
+                    builder => builder.Credential = CreateTestServiceAccountCredential(),
+                    builder => builder.GoogleCredential = CreateTestServiceAccountCredential(),
                 };
 #pragma warning restore CS0618 // Type or member is obsolete
                 foreach (var action in actions)
@@ -74,8 +75,8 @@ namespace Google.Api.Gax.Rest.Tests
             [Fact]
             public void CredentialsPrecedence_ICredential()
             {
-                var credential1 = GoogleCredential.FromJson(s_serviceAccountJson);
-                var credential2 = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential1 = CreateTestServiceAccountCredential();
+                var credential2 = CreateTestServiceAccountCredential();
                 var serviceCollection = new ServiceCollection();
                 serviceCollection.AddSingleton<ICredential>(credential1);
                 serviceCollection.AddSingleton(credential2);
@@ -88,7 +89,7 @@ namespace Google.Api.Gax.Rest.Tests
             [Fact]
             public void CredentialsPrecedence_GoogleCredential()
             {
-                var credential = GoogleCredential.FromJson(s_serviceAccountJson);
+                var credential = CreateTestServiceAccountCredential();
                 var serviceCollection = new ServiceCollection();
                 serviceCollection.AddSingleton(credential);
                 var builder = new FakeBuilder();

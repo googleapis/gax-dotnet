@@ -1,19 +1,23 @@
-﻿/*
- * Copyright 2021 Google LLC All Rights Reserved.
+/*
+ * Copyright 2025 Google LLC All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
+
 using Google.Apis.Auth.OAuth2;
 
-namespace Google.Api.Gax.Grpc.Tests
+namespace Google.Api.Gax.Testing
 {
-    internal static class TestServiceCredentials
+    /// <summary>
+    /// Credentials to be used in testing
+    /// </summary>
+    public static class TestCredentials
     {
         /// <summary>
         /// JSON for a service account which is no longer enabled.
         /// </summary>
-        internal static string TestServiceAccountJson { get; } = @"{
+        public static string TestServiceAccountJson { get; } = @"{
 ""private_key_id"": ""PRIVATE_KEY_ID"",
 ""private_key"": ""-----BEGIN PRIVATE KEY-----
 MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJJM6HT4s6btOsfe
@@ -39,7 +43,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         /// Creates a new instance of GoogleCredential with a no-longer-valid private
         /// key on each call.
         /// </summary>
-        internal static GoogleCredential CreateTestServiceAccountCredential() =>
+        public static GoogleCredential CreateTestServiceAccountCredential() =>
             GoogleCredential.FromJson(TestServiceAccountJson);
     }
 }

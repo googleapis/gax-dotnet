@@ -14,5 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax\Google.Api.Gax.csproj" />
+    <PackageReference Include="Google.Apis.Auth" />
   </ItemGroup>
 </Project>

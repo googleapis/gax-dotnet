@@ -10,5 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Google.Api.Gax.Rest\Google.Api.Gax.Rest.csproj" />
+    <ProjectReference Include="..\Google.Api.Gax.Testing\Google.Api.Gax.Testing.csproj" />
   </ItemGroup>
 </Project>
