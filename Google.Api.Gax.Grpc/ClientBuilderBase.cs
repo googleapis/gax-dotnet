@@ -125,6 +125,7 @@ namespace Google.Api.Gax.Grpc
         /// systems and data. For more information, refer to
         /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
         /// </remarks>
+        [Obsolete($"This property is deprecated because of a potential security risk. Instead, provide explicit credential objects through the {nameof(GoogleCredential)} property. See the remarks for more details.")]
         public string CredentialsPath { get; set; }
 
         /// <summary>
@@ -137,6 +138,7 @@ namespace Google.Api.Gax.Grpc
         /// systems and data. For more information, refer to
         /// <see href="https://cloud.google.com/docs/authentication/external/externally-sourced-credentials">Validate credential configurations from external sources</see>.
         /// </remarks>
+        [Obsolete($"This property is deprecated because of a potential security risk. Instead, provide explicit credential objects through the {nameof(GoogleCredential)} property. See the remarks for more details.")]
         public string JsonCredentials { get; set; }
 
         /// <summary>
@@ -256,13 +258,13 @@ namespace Google.Api.Gax.Grpc
             Endpoint = source.Endpoint;
             Scopes = source.Scopes;
             ChannelCredentials = source.ChannelCredentials;
+#pragma warning disable CS0618 // Type or member is obsolete
             CredentialsPath = source.CredentialsPath;
             JsonCredentials = source.JsonCredentials;
-            GoogleCredential = source.GoogleCredential;
-            Credential = source.Credential;
-#pragma warning disable CS0618 // Type or member is obsolete
             TokenAccessMethod = source.TokenAccessMethod;
 #pragma warning restore CS0618 // Type or member is obsolete
+            GoogleCredential = source.GoogleCredential;
+            Credential = source.Credential;
             CallInvoker = source.CallInvoker;
             UserAgent = source.UserAgent;
             GrpcAdapter = source.GrpcAdapter;
@@ -405,10 +407,10 @@ namespace Google.Api.Gax.Grpc
                     CheckNotSet(Endpoint, nameof(Endpoint));
                     CheckNotSet(CallInvoker, nameof(CallInvoker));
                     CheckNotSet(ChannelCredentials, nameof(ChannelCredentials));
-                    CheckNotSet(CredentialsPath, nameof(CredentialsPath));
-                    CheckNotSet(JsonCredentials, nameof(JsonCredentials));
                     CheckNotSet(Scopes, nameof(Scopes));
 #pragma warning disable CS0618 // Type or member is obsolete
+                    CheckNotSet(CredentialsPath, nameof(CredentialsPath));
+                    CheckNotSet(JsonCredentials, nameof(JsonCredentials));
                     CheckNotSet(TokenAccessMethod, nameof(TokenAccessMethod));
 #pragma warning restore CS0618 // Type or member is obsolete
                     CheckNotSet(QuotaProject, nameof(QuotaProject));
@@ -633,9 +635,9 @@ namespace Google.Api.Gax.Grpc
         /// </summary>
         protected virtual bool CanUseChannelPool =>
             ChannelCredentials == null &&
+#pragma warning disable CS0618 // Type or member is obsolete
             CredentialsPath == null &&
             JsonCredentials == null &&
-#pragma warning disable CS0618 // Type or member is obsolete
             TokenAccessMethod == null &&
 #pragma warning restore CS0618 // Type or member is obsolete
             Scopes == null &&

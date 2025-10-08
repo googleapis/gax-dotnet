@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static Google.Api.Gax.Testing.TestCredentials;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -125,7 +126,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public void DetectionIsEmulatorOnly_AllVariables_WithAdditionalSettings()
             {
                 // With EmulatorOnly, it's invalid to specify credentials etc.
-                var builder = new FakeBuilder(EmulatorDetection.EmulatorOnly) { CredentialsPath = "foo" };
+                var builder = new FakeBuilder(EmulatorDetection.EmulatorOnly) { GoogleCredential = CreateTestServiceAccountCredential() };
                 var environment = CreateEnvironmentDictionary(Required1, Required2, Optional1, Optional2, OtherVariable);
                 Assert.Throws<InvalidOperationException>(() => builder.GetEmulatorEnvironment(environment));
             }
@@ -182,7 +183,7 @@ namespace Google.Api.Gax.Grpc.Tests
             public void DetectionIsEmulatorOrProduction_AllVariables_WithAdditionalSettings()
             {
                 // With EmulatorOrProduction, it's valid to specify credentials etc.
-                var builder = new FakeBuilder(EmulatorDetection.EmulatorOrProduction) { CredentialsPath = "foo" };
+                var builder = new FakeBuilder(EmulatorDetection.EmulatorOrProduction) { GoogleCredential = CreateTestServiceAccountCredential() };
                 var environment = CreateEnvironmentDictionary(Required1, Required2, Optional1, Optional2, OtherVariable);
                 var result = builder.GetEmulatorEnvironment(environment);
                 var expected = CreateEnvironmentDictionary(Required1, Required2, Optional1, Optional2);

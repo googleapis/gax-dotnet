@@ -114,12 +114,14 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             await ValidateResultAsync(builder, validator);
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public async Task JsonCredentials()
         {
             var builder = new SampleClientBuilder { JsonCredentials = TestServiceAccountJson };
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         [Fact]
         public async Task GoogleCredentialProperty()
@@ -135,6 +137,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public async Task CredentialsFilePath()
         {
@@ -151,6 +154,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
                 File.Delete(file);
             }
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         [Fact]
         public async Task CustomScopes()
@@ -193,7 +197,7 @@ namespace Google.Api.Gax.Grpc.IntegrationTests
         [InlineData(false, true)]
         public async Task JwtClientEnabledTest(bool clientUsesJwt, bool poolUsesJwt)
         {
-            var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = TestServiceAccountJson };
+            var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { GoogleCredential = CreateTestServiceAccountCredential() };
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt of client does not match pool, so we won't use channel pool
