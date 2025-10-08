@@ -13,33 +13,12 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static Google.Api.Gax.Testing.TestCredentials;
 
 namespace Google.Api.Gax.Grpc.IntegrationTests
 {
     public class ClientBuilderBaseTest
     {
-        private const string DummyServiceAccountCredentialFileContents = @"{
-""private_key_id"": ""PRIVATE_KEY_ID"",
-""private_key"": ""-----BEGIN PRIVATE KEY-----
-MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJJM6HT4s6btOsfe
-2x4zrzrwSUtmtR37XTTi0sPARTDF8uzmXy8UnE5RcVJzEH5T2Ssz/ylX4Sl/CI4L
-no1l8j9GiHJb49LSRjWe4Yx936q0Xj9H0R1HTxvjUPqwAsTwy2fKBTog+q1frqc9
-o8s2r6LYivUGDVbhuUzCaMJsf+x3AgMBAAECgYEAi0FTXsu/zRswAUGaViQiHjrL
-uU65BSHXNVjV/2fLNEKnGWGqpli68z1IXY+S2nwbUak7rnGsq9/0F6jtsW+hZbLk
-KXUOuuExpeC5Kd6ngWX/f2jqmhlUabiQijU9cVk7pMq8EHkRtvlosnMTUAEzempu
-QUPwn1PZHhmJkBvZ4lECQQDCErrxl+e3BwUDcS0yVEEmCNSG6xdXs2878b8rzbe7
-3Mmi6SuuOLi3PU92J+j+f/MOdtYrk13mEDdYmd5dhrt5AkEAwPvDEsDT/W4y4h5n
-gv1awGBA5aLFE1JNWM/Gwn4D1cGpEDHKFREaBtxMDCASpHJuw8r7zUywpKhmBZcf
-GS37bwJANdSAKfbafLfjuhqwUJ9yGpykZm/a36aTmerp/bpn1iHdg+RtCzwMcDb/
-TWSwibbvsflgWmHbz657y4WSWhq+8QJAWrpCNN/ZCk2zuGDo80lfUBAwkoVat8G6
-wWU1oZyS+vzIGef+hLb8kHsjeZPej9eIwZ39kcBbT54oELrCkRjwGwJAQ8V2A7lT
-ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
-4Z5p2prkjWTLcA==
------END PRIVATE KEY-----"",
-""client_email"": ""CLIENT_EMAIL"",
-""client_id"": ""CLIENT_ID"",
-""type"": ""service_account""}";
-
         // It doesn't matter what kind of CallInvoker we use. DefaultCallInvoker is just a handy one.
         private static readonly CallInvoker CustomInvoker = new DefaultCallInvoker(new Channel("other.nowhere.com", 443, ChannelCredentials.Insecure));
 
@@ -138,21 +117,21 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [Fact]
         public async Task JsonCredentials()
         {
-            var builder = new SampleClientBuilder { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            var builder = new SampleClientBuilder { JsonCredentials = TestServiceAccountJson };
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Fact]
         public async Task GoogleCredentialProperty()
         {
-            var builder = new SampleClientBuilder { GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) };
+            var builder = new SampleClientBuilder { GoogleCredential = CreateTestServiceAccountCredential() };
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
         [Fact]
         public async Task Credential()
         {
-            var builder = new SampleClientBuilder { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) };
+            var builder = new SampleClientBuilder { Credential = CreateTestServiceAccountCredential() };
             await ValidateResultAsync(builder, AssertNonChannelPool(builder));
         }
 
@@ -160,7 +139,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         public async Task CredentialsFilePath()
         {
             var file = Path.GetTempFileName();
-            File.WriteAllText(file, DummyServiceAccountCredentialFileContents);
+            File.WriteAllText(file, TestServiceAccountJson);
 
             try
             {
@@ -214,7 +193,7 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         [InlineData(false, true)]
         public async Task JwtClientEnabledTest(bool clientUsesJwt, bool poolUsesJwt)
         {
-            var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = DummyServiceAccountCredentialFileContents };
+            var builder = new SampleClientBuilder(clientUsesJwt, poolUsesJwt) { JsonCredentials = TestServiceAccountJson };
             ChannelBase channelFromPool = builder.ChannelPool.GetChannel(fakeGrpcAdapter, TestServiceMetadata.DefaultUniverseDomain, TestServiceMetadata.TestService.DefaultEndpoint, SampleClientBuilder.DefaultOptions);
 
             // Jwt of client does not match pool, so we won't use channel pool
@@ -270,26 +249,26 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
             new SampleClientBuilder("CallInvokerAndScopes") { CallInvoker = CustomInvoker, Scopes = new[] { "a", "b" } },
             new SampleClientBuilder("CallInvokerAndCredentialsPath") { CallInvoker = CustomInvoker, CredentialsPath = "foo.json" },
             new SampleClientBuilder("CallInvokerAndChannelCredentials") { CallInvoker = CustomInvoker, ChannelCredentials = ChannelCredentials.Insecure },
-            new SampleClientBuilder("CallInvokerAndJsonCredentials") { CallInvoker = CustomInvoker, JsonCredentials = DummyServiceAccountCredentialFileContents },
+            new SampleClientBuilder("CallInvokerAndJsonCredentials") { CallInvoker = CustomInvoker, JsonCredentials = TestServiceAccountJson },
             new SampleClientBuilder("CallInvokerAndTokenAccesMethod") { CallInvoker = CustomInvoker, TokenAccessMethod = CustomTokenAccess },
             new SampleClientBuilder("CallInvokerAndQuotaProject") { CallInvoker = CustomInvoker, QuotaProject = SampleQuotaProject },
-            new SampleClientBuilder("CallInvokerAndCredential") { CallInvoker = CustomInvoker, Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
-            new SampleClientBuilder("CallInvokerAndGoogleCredential") { CallInvoker = CustomInvoker, GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
+            new SampleClientBuilder("CallInvokerAndCredential") { CallInvoker = CustomInvoker, Credential = CreateTestServiceAccountCredential() },
+            new SampleClientBuilder("CallInvokerAndGoogleCredential") { CallInvoker = CustomInvoker, GoogleCredential = CreateTestServiceAccountCredential() },
 
             // ChannelCredentials also excludes quota project.
             new SampleClientBuilder("ChannelCredentialsAndQuotaProject") { ChannelCredentials = ChannelCredentials.Insecure, QuotaProject = SampleQuotaProject },
 
             // Each method of specifying credentials excludes the rest (tests are not exhaustive)
             new SampleClientBuilder("ChannelCredentialsAndCredentialsPath") { ChannelCredentials = ChannelCredentials.Insecure, CredentialsPath = "foo.json" },
-            new SampleClientBuilder("ChannelCredentialsAndJsonCredentials") { ChannelCredentials = ChannelCredentials.Insecure, JsonCredentials = DummyServiceAccountCredentialFileContents },
+            new SampleClientBuilder("ChannelCredentialsAndJsonCredentials") { ChannelCredentials = ChannelCredentials.Insecure, JsonCredentials = TestServiceAccountJson },
             new SampleClientBuilder("ChannelCredentialsAndTokenAccessMethod") { ChannelCredentials = ChannelCredentials.Insecure, TokenAccessMethod = CustomTokenAccess },
-            new SampleClientBuilder("JsonCredentialsAndTokenAccessMethod") { JsonCredentials = DummyServiceAccountCredentialFileContents, TokenAccessMethod = CustomTokenAccess },
-            new SampleClientBuilder("CredentialAndTokenAccessMethod") { Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
-            new SampleClientBuilder("GoogleCredentialAndTokenAccessMethod") { GoogleCredential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents), TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("JsonCredentialsAndTokenAccessMethod") { JsonCredentials = TestServiceAccountJson, TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("CredentialAndTokenAccessMethod") { Credential = CreateTestServiceAccountCredential(), TokenAccessMethod = CustomTokenAccess },
+            new SampleClientBuilder("GoogleCredentialAndTokenAccessMethod") { GoogleCredential = CreateTestServiceAccountCredential(), TokenAccessMethod = CustomTokenAccess },
 
             // Scopes only work with default credentials, a GoogleCredential, a credentials file, or JSON
             new SampleClientBuilder("ScopesAndTokenAccess") { Scopes = new[] { "a" }, TokenAccessMethod = CustomTokenAccess },
-            new SampleClientBuilder("ScopesAndCredential") { Scopes = new[] { "a" }, Credential = GoogleCredential.FromJson(DummyServiceAccountCredentialFileContents) },
+            new SampleClientBuilder("ScopesAndCredential") { Scopes = new[] { "a" }, Credential = CreateTestServiceAccountCredential() },
             new SampleClientBuilder("ScopesAndChannelCredentials") { Scopes = new[] { "a" }, ChannelCredentials = ChannelCredentials.Insecure },
         };
 #pragma warning restore CS0618 // Type or member is obsolete

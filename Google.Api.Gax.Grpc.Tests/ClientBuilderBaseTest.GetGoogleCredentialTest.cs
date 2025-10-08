@@ -11,7 +11,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using static Google.Api.Gax.Grpc.Tests.TestServiceCredentials;
+using static Google.Api.Gax.Testing.TestCredentials;
 
 namespace Google.Api.Gax.Grpc.Tests
 {

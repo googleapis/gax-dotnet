@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -9,6 +9,7 @@ using Grpc.Auth;
 using Grpc.Core;
 using System;
 using Xunit;
+using static Google.Api.Gax.Testing.TestCredentials;
 
 namespace Google.Api.Gax.Grpc.Tests
 {
@@ -85,7 +86,7 @@ namespace Google.Api.Gax.Grpc.Tests
         {
             { ChannelCredentials.SecureSsl, true },
             { ChannelCredentials.Insecure, false },
-            { TestServiceCredentials.CreateTestServiceAccountCredential().ToChannelCredentials(), true }
+            { CreateTestServiceAccountCredential().ToChannelCredentials(), true }
         };
 
         [Theory]
