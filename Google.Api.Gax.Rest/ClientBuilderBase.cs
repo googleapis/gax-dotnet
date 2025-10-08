@@ -220,8 +220,10 @@ namespace Google.Api.Gax.Rest
             }
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
+#pragma warning disable CS0618 // Type or member is obsolete
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
+#pragma warning restore CS0618 // Type or member is obsolete
                 null; // Use default credentials (maybe - see below)
 
             // While we accept any credentials that are specified even if there's an API key,
@@ -253,8 +255,10 @@ namespace Google.Api.Gax.Rest
             }
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
+#pragma warning disable CS0618 // Type or member is obsolete
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
+#pragma warning restore CS0618 // Type or member is obsolete
                 null; // Use default credentials (maybe - see below)
 
             // While we accept any credentials that are specified even if there's an API key,
