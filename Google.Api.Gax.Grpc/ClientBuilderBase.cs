@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2019 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -556,8 +556,10 @@ namespace Google.Api.Gax.Grpc
         {
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
+#pragma warning disable CS0618 // Type or member is obsolete
                 CredentialsPath != null ? GoogleCredential.FromFile(CredentialsPath) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
+#pragma warning restore CS0618 // Type or member is obsolete
                 GoogleCredential.GetApplicationDefault();
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);
@@ -575,8 +577,10 @@ namespace Google.Api.Gax.Grpc
         {
             GoogleCredential unscoped =
                 GoogleCredential != null ? GoogleCredential :
+#pragma warning disable CS0618 // Type or member is obsolete
                 CredentialsPath != null ? await GoogleCredential.FromFileAsync(CredentialsPath, cancellationToken).ConfigureAwait(false) :
                 JsonCredentials != null ? GoogleCredential.FromJson(JsonCredentials) :
+#pragma warning restore CS0618 // Type or member is obsolete
                 await GoogleCredential.GetApplicationDefaultAsync(cancellationToken).ConfigureAwait(false);
             GoogleCredential scoped = unscoped.CreateScoped(Scopes ?? ServiceMetadata.DefaultScopes);
             GoogleCredential maybeWithProject = QuotaProject is null ? scoped : scoped.CreateWithQuotaProject(QuotaProject);

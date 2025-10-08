@@ -43,7 +43,6 @@ ZUp8AsbVqF6rbLiiUfJMo2btGclQu4DEVyS+ymFA65tXDLUuR9EDqJYdqHNZJ5B8
         /// Creates a new instance of GoogleCredential with a no-longer-valid private
         /// key on each call.
         /// </summary>
-        public static GoogleCredential CreateTestServiceAccountCredential() =>
-            GoogleCredential.FromJson(TestServiceAccountJson);
+        public static GoogleCredential CreateTestServiceAccountCredential() => CredentialFactory.FromJson<ServiceAccountCredential>(TestServiceAccountJson).ToGoogleCredential();
     }
 }
