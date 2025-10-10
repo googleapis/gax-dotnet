@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.12.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.11.1...Google.Api.Gax-4.12.0) (2025-10-10)
+
+
+### Features
+
+* **grpc:** Deprecate JsonCredentials and CredentialsPath ([97b1fea](https://github.com/googleapis/gax-dotnet/commit/97b1fea7cabc9762a7a9f2fa77d1372ac5a955ee))
+* **rest:** Deprecate JsonCredentials and CredentialsPath ([d06bc32](https://github.com/googleapis/gax-dotnet/commit/d06bc324e7a269b864ee71ca8f9397d615b2345a))
+* Upgrade authentication library 1.71 -&gt; 1.72 ([1b6c8ca](https://github.com/googleapis/gax-dotnet/commit/1b6c8ca9d468966cd6f9f6c5e4ca232815921f41))
+
 ## [4.11.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.11.0...Google.Api.Gax-4.11.1) (2025-09-16)
 
 
