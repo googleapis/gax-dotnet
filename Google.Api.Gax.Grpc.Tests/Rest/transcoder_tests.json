@@ -686,6 +686,67 @@
     },
 
     {
+      "name": "BytesQueryParameterRequiresWebSafeBase64",
+      "details": "Request with a bytes query parameter, which should be web-safe-base64-encoded",
+      "inlineRule": {
+        "get": "/v1/bytes"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "blob": "WwuJdQx48jP+4g=="
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bytes?blob=WwuJdQx48jP-4g"
+      }
+    },
+    {
+      "name": "BytesPathSegmentRequiresWebSafeBase64",
+      "details": "Request with a bytes path segment, which should be web-safe-base64-encoded",
+      "inlineRule": {
+        "get": "/v1/bytes/{blob}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "blob": "WwuJdQx48jP+4g=="
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bytes/WwuJdQx48jP-4g"
+      }
+    },
+    {
+      "name": "BytesQueryParameterRequiresWebSafeBase64",
+      "details": "Request with a bytes query parameter, which should be base64-encoded (same result with or with out web-safe encoding)",
+      "inlineRule": {
+        "get": "/v1/bytes"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "blob": "AQID"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bytes?blob=AQID"
+      }
+    },
+    {
+      "name": "BytesPathSegmentRequiresAnyBase64",
+      "details": "Request with a bytes path segment, which should be base64-encoded (same result with or with out web-safe encoding)",
+      "inlineRule": {
+        "get": "/v1/bytes/{blob}"
+      },
+      "requestMessageName": "SimpleFields",
+      "request": {
+        "blob": "AQID"
+      },
+      "success": {
+        "method": "GET",
+        "uri": "/v1/bytes/AQID"
+      }
+    },
+
+    {
       "name": "DoubleNestingInQueryParameters",
       "details": "Request with a doubly-nested query parameter",
       "inlineRule": {

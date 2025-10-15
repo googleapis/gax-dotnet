@@ -66,6 +66,9 @@ internal static class ProtobufUtilities
     /// is effectively formatted the same way it is in the JSON representation. The return value of this
     /// method is only guaranteed for single primitive values - not repeated fields, maps, or messages.
     /// </summary>
+    /// <remarks>
+    /// <see cref="ByteString"/> values are always formatted as web-safe base64 (no trailing '='; '-' instead of '+'; '_' instead of '/').
+    /// </remarks>
     /// <returns>A string representation of the given value, or null if the value is null</returns>
     internal static string FormatValueAsJsonPrimitive(object value) =>
         value switch
@@ -77,7 +80,7 @@ internal static class ProtobufUtilities
             Timestamp or Duration or FieldMask or Int64Value or UInt64Value or DoubleValue or FloatValue or BytesValue =>
                 RemoveWellKnownTypeQuotes(value),
             IFormattable formattable => formattable.ToString(format: null, CultureInfo.InvariantCulture),
-            ByteString bs => bs.ToBase64(),
+            ByteString bs => bs.ToBase64().Replace('+', '-').Replace('/', '_').TrimEnd('='),
             _ => value.ToString()
         };
 

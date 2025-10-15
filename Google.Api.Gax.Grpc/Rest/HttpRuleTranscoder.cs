@@ -152,7 +152,7 @@ internal sealed partial class HttpRuleTranscoder
 
             static bool IsEligibleQueryParameterLeafField(FieldDescriptor field)
             {
-                if ((field.FieldType == FieldType.Message && !field.MessageType.IsWellKnownType()) || field.FieldType == FieldType.Group || field.FieldType == FieldType.Bytes)
+                if ((field.FieldType == FieldType.Message && !field.MessageType.IsWellKnownType()) || field.FieldType == FieldType.Group)
                 {
                     return false;
                 }

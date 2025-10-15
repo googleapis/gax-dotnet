@@ -92,4 +92,14 @@ public class ProtobufUtilitiesTest
         string actual = ProtobufUtilities.FormatValueAsJsonPrimitive(value);
         Assert.Equal(expectedText, actual);
     }
+
+    [Theory]
+    [InlineData("AQID", "AQID")]
+    [InlineData("WwuJdQx48jP+4g==", "WwuJdQx48jP-4g")]
+    public void FormatValueAsJson_Bytes(string base64, string expectedText)
+    {
+        var value = ByteString.FromBase64(base64);
+        string actual = ProtobufUtilities.FormatValueAsJsonPrimitive(value);
+        Assert.Equal(expectedText, actual);
+    }
 }
