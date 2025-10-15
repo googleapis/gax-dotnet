@@ -83,6 +83,7 @@ message SimpleFields {
   int32 integer = 2;
   bool boolean = 3;
   google.protobuf.Timestamp timestamp = 4;
+  bytes blob = 5;
 }
 
 message RequiredBooleanField {
