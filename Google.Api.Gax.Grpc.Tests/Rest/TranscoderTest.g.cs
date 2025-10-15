@@ -42,36 +42,36 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             "Lkh0dHBSZXF1ZXN0SAFCBgoEcnVsZUIRCg9leHBlY3RlZF9yZXN1bHQiUQoL",
             "SHR0cFJlcXVlc3QSDgoGbWV0aG9kGAEgASgJEgsKA3VyaRgCIAEoCRIlCgRi",
             "b2R5GAMgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdCIOCgxFbXB0eVJl",
-            "cXVlc3QibQoMU2ltcGxlRmllbGRzEgwKBG5hbWUYASABKAkSDwoHaW50ZWdl",
+            "cXVlc3QiewoMU2ltcGxlRmllbGRzEgwKBG5hbWUYASABKAkSDwoHaW50ZWdl",
             "chgCIAEoBRIPCgdib29sZWFuGAMgASgIEi0KCXRpbWVzdGFtcBgEIAEoCzIa",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiLAoUUmVxdWlyZWRCb29sZWFu",
-            "RmllbGQSFAoHYm9vbGVhbhgBIAEoCEID4EECIsoDChBRdWVyeVRlc3RNZXNz",
-            "YWdlEh0KEHJlcXVpcmVkX2ludGVnZXIYASABKAVCA+BBAhIkChdwcm90bzNf",
-            "b3B0aW9uYWxfaW50ZWdlchgCIAEoBUgAiAEBEhcKD3JlcGVhdGVkX3N0cmlu",
-            "ZxgDIAMoCRJHCgZuZXN0ZWQYBCABKAsyNy5nb29nbGUuYXBpLmdheC5ncnBj",
-            "LnJlc3QudGVzdHMuUXVlcnlUZXN0TWVzc2FnZS5OZXN0ZWQSDwoHaW5fcGF0",
-            "aBgFIAEoCRJPCgplbnVtX2ZpZWxkGAYgASgOMjsuZ29vZ2xlLmFwaS5nYXgu",
-            "Z3JwYy5yZXN0LnRlc3RzLlF1ZXJ5VGVzdE1lc3NhZ2UuU2FtcGxlRW51bRpD",
-            "CgZOZXN0ZWQSCQoBeBgBIAEoBRIJCgF5GAIgASgFEgkKAXoYAyABKAUSEAoD",
-            "b3B0GAQgASgFSACIAQFCBgoEX29wdCJMCgpTYW1wbGVFbnVtEhsKF1NBTVBM",
-            "RV9FTlVNX1VOU1BFQ0lGSUVEEAASDwoLRklSU1RfVkFMVUUQARIQCgxTRUNP",
-            "TkRfVkFMVUUQAkIaChhfcHJvdG8zX29wdGlvbmFsX2ludGVnZXIi3QEKGERv",
-            "dWJsZU5lc3RpbmdUZXN0TWVzc2FnZRJKCgF4GAEgASgLMj8uZ29vZ2xlLmFw",
-            "aS5nYXguZ3JwYy5yZXN0LnRlc3RzLkRvdWJsZU5lc3RpbmdUZXN0TWVzc2Fn",
-            "ZS5OZXN0ZWQaGQoMRG91YmxlTmVzdGVkEgkKAXoYASABKAUaWgoGTmVzdGVk",
-            "ElAKAXkYASABKAsyRS5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMu",
-            "RG91YmxlTmVzdGluZ1Rlc3RNZXNzYWdlLkRvdWJsZU5lc3RlZCKXAgobUmVx",
-            "dWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlElAKAXoYASABKAsyRS5nb29nbGUu",
-            "YXBpLmdheC5ncnBjLnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVN",
-            "ZXNzYWdlLlJlY3Vyc2l2ZRI8CgZzaW1wbGUYAiABKAsyLC5nb29nbGUuYXBp",
-            "LmdheC5ncnBjLnJlc3QudGVzdHMuU2ltcGxlRmllbGRzGmgKCVJlY3Vyc2l2",
-            "ZRJQCgF4GAEgASgLMkUuZ29vZ2xlLmFwaS5nYXguZ3JwYy5yZXN0LnRlc3Rz",
-            "LlJlcXVlc3RXaXRoUmVjdXJzaXZlTWVzc2FnZS5SZWN1cnNpdmUSCQoBeRgC",
-            "IAEoBSJ+ChNTZXBhcmF0ZUJvZHlSZXF1ZXN0EkYKBGJvZHkYASABKAsyOC5n",
-            "b29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuU2VwYXJhdGVCb2R5UmVx",
-            "dWVzdC5Cb2R5EgwKBG5hbWUYAiABKAkaEQoEQm9keRIJCgF4GAEgASgFIjEK",
-            "EE11bHRpTmFtZVJlcXVlc3QSDQoFZmlyc3QYASABKAkSDgoGc2Vjb25kGAIg",
-            "ASgJYgZwcm90bzM="));
+            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEYmxvYhgFIAEoDCIsChRS",
+            "ZXF1aXJlZEJvb2xlYW5GaWVsZBIUCgdib29sZWFuGAEgASgIQgPgQQIiygMK",
+            "EFF1ZXJ5VGVzdE1lc3NhZ2USHQoQcmVxdWlyZWRfaW50ZWdlchgBIAEoBUID",
+            "4EECEiQKF3Byb3RvM19vcHRpb25hbF9pbnRlZ2VyGAIgASgFSACIAQESFwoP",
+            "cmVwZWF0ZWRfc3RyaW5nGAMgAygJEkcKBm5lc3RlZBgEIAEoCzI3Lmdvb2ds",
+            "ZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5RdWVyeVRlc3RNZXNzYWdlLk5l",
+            "c3RlZBIPCgdpbl9wYXRoGAUgASgJEk8KCmVudW1fZmllbGQYBiABKA4yOy5n",
+            "b29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuUXVlcnlUZXN0TWVzc2Fn",
+            "ZS5TYW1wbGVFbnVtGkMKBk5lc3RlZBIJCgF4GAEgASgFEgkKAXkYAiABKAUS",
+            "CQoBehgDIAEoBRIQCgNvcHQYBCABKAVIAIgBAUIGCgRfb3B0IkwKClNhbXBs",
+            "ZUVudW0SGwoXU0FNUExFX0VOVU1fVU5TUEVDSUZJRUQQABIPCgtGSVJTVF9W",
+            "QUxVRRABEhAKDFNFQ09ORF9WQUxVRRACQhoKGF9wcm90bzNfb3B0aW9uYWxf",
+            "aW50ZWdlciLdAQoYRG91YmxlTmVzdGluZ1Rlc3RNZXNzYWdlEkoKAXgYASAB",
+            "KAsyPy5nb29nbGUuYXBpLmdheC5ncnBjLnJlc3QudGVzdHMuRG91YmxlTmVz",
+            "dGluZ1Rlc3RNZXNzYWdlLk5lc3RlZBoZCgxEb3VibGVOZXN0ZWQSCQoBehgB",
+            "IAEoBRpaCgZOZXN0ZWQSUAoBeRgBIAEoCzJFLmdvb2dsZS5hcGkuZ2F4Lmdy",
+            "cGMucmVzdC50ZXN0cy5Eb3VibGVOZXN0aW5nVGVzdE1lc3NhZ2UuRG91Ymxl",
+            "TmVzdGVkIpcCChtSZXF1ZXN0V2l0aFJlY3Vyc2l2ZU1lc3NhZ2USUAoBehgB",
+            "IAEoCzJFLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5SZXF1ZXN0",
+            "V2l0aFJlY3Vyc2l2ZU1lc3NhZ2UuUmVjdXJzaXZlEjwKBnNpbXBsZRgCIAEo",
+            "CzIsLmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5TaW1wbGVGaWVs",
+            "ZHMaaAoJUmVjdXJzaXZlElAKAXgYASABKAsyRS5nb29nbGUuYXBpLmdheC5n",
+            "cnBjLnJlc3QudGVzdHMuUmVxdWVzdFdpdGhSZWN1cnNpdmVNZXNzYWdlLlJl",
+            "Y3Vyc2l2ZRIJCgF5GAIgASgFIn4KE1NlcGFyYXRlQm9keVJlcXVlc3QSRgoE",
+            "Ym9keRgBIAEoCzI4Lmdvb2dsZS5hcGkuZ2F4LmdycGMucmVzdC50ZXN0cy5T",
+            "ZXBhcmF0ZUJvZHlSZXF1ZXN0LkJvZHkSDAoEbmFtZRgCIAEoCRoRCgRCb2R5",
+            "EgkKAXgYASABKAUiMQoQTXVsdGlOYW1lUmVxdWVzdBINCgVmaXJzdBgBIAEo",
+            "CRIOCgZzZWNvbmQYAiABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.StructReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Api.FieldBehaviorReflection.Descriptor, global::Google.Api.HttpReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -79,7 +79,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.Test), global::Google.Api.Gax.Grpc.Rest.Tests.Test.Parser, new[]{ "Name", "Details", "InlineRule", "RuleName", "RequestMessageName", "Request", "InvalidRule", "NonmatchingRequest", "Success" }, new[]{ "Rule", "ExpectedResult" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest), global::Google.Api.Gax.Grpc.Rest.Tests.HttpRequest.Parser, new[]{ "Method", "Uri", "Body" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest), global::Google.Api.Gax.Grpc.Rest.Tests.EmptyRequest.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer", "Boolean", "Timestamp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields), global::Google.Api.Gax.Grpc.Rest.Tests.SimpleFields.Parser, new[]{ "Name", "Integer", "Boolean", "Timestamp", "Blob" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField), global::Google.Api.Gax.Grpc.Rest.Tests.RequiredBooleanField.Parser, new[]{ "Boolean" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Parser, new[]{ "RequiredInteger", "Proto3OptionalInteger", "RepeatedString", "Nested", "InPath", "EnumField" }, new[]{ "Proto3OptionalInteger" }, new[]{ typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.SampleEnum) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested), global::Google.Api.Gax.Grpc.Rest.Tests.QueryTestMessage.Types.Nested.Parser, new[]{ "X", "Y", "Z", "Opt" }, new[]{ "Opt" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage), global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Parser, new[]{ "X" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested), global::Google.Api.Gax.Grpc.Rest.Tests.DoubleNestingTestMessage.Types.DoubleNested.Parser, new[]{ "Z" }, null, null, null, null),
@@ -1483,6 +1483,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       integer_ = other.integer_;
       boolean_ = other.boolean_;
       timestamp_ = other.timestamp_ != null ? other.timestamp_.Clone() : null;
+      blob_ = other.blob_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1540,6 +1541,18 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       }
     }
 
+    /// <summary>Field number for the "blob" field.</summary>
+    public const int BlobFieldNumber = 5;
+    private pb::ByteString blob_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pb::ByteString Blob {
+      get { return blob_; }
+      set {
+        blob_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1559,6 +1572,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       if (Integer != other.Integer) return false;
       if (Boolean != other.Boolean) return false;
       if (!object.Equals(Timestamp, other.Timestamp)) return false;
+      if (Blob != other.Blob) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1570,6 +1584,7 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       if (Integer != 0) hash ^= Integer.GetHashCode();
       if (Boolean != false) hash ^= Boolean.GetHashCode();
       if (timestamp_ != null) hash ^= Timestamp.GetHashCode();
+      if (Blob.Length != 0) hash ^= Blob.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1604,6 +1619,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(34);
         output.WriteMessage(Timestamp);
       }
+      if (Blob.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteBytes(Blob);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1630,6 +1649,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
         output.WriteRawTag(34);
         output.WriteMessage(Timestamp);
       }
+      if (Blob.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteBytes(Blob);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1651,6 +1674,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
       }
       if (timestamp_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Timestamp);
+      }
+      if (Blob.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Blob);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1678,6 +1704,9 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
           Timestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
         Timestamp.MergeFrom(other.Timestamp);
+      }
+      if (other.Blob.Length != 0) {
+        Blob = other.Blob;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1717,6 +1746,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
             input.ReadMessage(Timestamp);
             break;
           }
+          case 42: {
+            Blob = input.ReadBytes();
+            break;
+          }
         }
       }
     #endif
@@ -1753,6 +1786,10 @@ namespace Google.Api.Gax.Grpc.Rest.Tests {
               Timestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(Timestamp);
+            break;
+          }
+          case 42: {
+            Blob = input.ReadBytes();
             break;
           }
         }
