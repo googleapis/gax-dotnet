@@ -716,7 +716,7 @@
       }
     },
     {
-      "name": "BytesQueryParameterRequiresWebSafeBase64",
+      "name": "BytesQueryParameterRequiresAnyBase64",
       "details": "Request with a bytes query parameter, which should be base64-encoded (same result with or with out web-safe encoding)",
       "inlineRule": {
         "get": "/v1/bytes"
