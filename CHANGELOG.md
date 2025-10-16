@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.12.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.12.0...Google.Api.Gax-4.12.1) (2025-10-16)
+
+
+### Bug Fixes
+
+* encode bytes query parameters as web-safe base64 ([315634a](https://github.com/googleapis/gax-dotnet/commit/315634ae40d998aee38caf3ba365e6c41447242e))
+
 ## [4.12.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.11.1...Google.Api.Gax-4.12.0) (2025-10-10)
 
 
