@@ -28,7 +28,7 @@ namespace Google.Api.Gax.Grpc.Gcp
 
         // Lock to protect the channel reference collections, as they're not thread-safe.
         private readonly object _thisLock = new object();
-        private readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
+        internal readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
         private readonly IList<ChannelRef> _channelRefs = new List<ChannelRef>();
 
         // Access to these fields does not need to be protected by the lock: the objects are never modified.
@@ -62,7 +62,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             _affinityByMethod = InitAffinityByMethodIndex(this._apiConfig);
         }
 
-        private static IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
+        internal static IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
         {
             IDictionary<string, AffinityConfig> index = new Dictionary<string, AffinityConfig>();
             foreach (MethodConfig method in config.Method)
@@ -178,6 +178,9 @@ namespace Google.Api.Gax.Grpc.Gcp
                         GetAffinityKeysFromProto(names, namesIndex + 1, nestedMessage, affinityKeyValues);
                     }
                     break;
+                case ByteString bytes:
+                    affinityKeyValues.Add(bytes.ToBase64());
+                    break;
                 case null:
                     // Probably a nested message, but with no value. Just don't use an affinity key.
                     break;
@@ -186,7 +189,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        private void Bind(ChannelRef channelRef, string affinityKey)
+        internal void Bind(ChannelRef channelRef, string affinityKey)
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
@@ -202,7 +205,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        private void Unbind(string affinityKey)
+        internal void Unbind(string affinityKey)
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
@@ -222,11 +225,11 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        private ChannelRef PreProcess<TRequest>(AffinityConfig affinityConfig, TRequest request)
+        internal ChannelRef PreProcess<TRequest>(AffinityConfig affinityConfig, TRequest request)
         {
             // Gets the affinity bound key if required in the request method.
             string boundKey = null;
-            if (affinityConfig != null && affinityConfig.Command == AffinityConfig.Types.Command.Bound)
+            if (affinityConfig != null && (affinityConfig.Command == AffinityConfig.Types.Command.Bound || affinityConfig.Command == AffinityConfig.Types.Command.Unbind))
             {
                 boundKey = GetAffinityKeysFromProto(affinityConfig.AffinityKey, (IMessage)request).SingleOrDefault();
             }
@@ -239,7 +242,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         // Note: response may be default(TResponse) in the case of a failure. We only expect to be called from
         // protobuf-based calls anyway, so it will always be a class type, and will never be null for success cases.
         // We can therefore check for nullity rather than having a separate "success" parameter.
-        private void PostProcess<TRequest, TResponse>(AffinityConfig affinityConfig, ChannelRef channelRef, TRequest request, TResponse response)
+        internal void PostProcess<TRequest, TResponse>(AffinityConfig affinityConfig, ChannelRef channelRef, TRequest request, TResponse response)
         {
             channelRef.ActiveStreamCountDecr();
             // Process BIND or UNBIND if the method has affinity feature enabled, but only for successful calls.
