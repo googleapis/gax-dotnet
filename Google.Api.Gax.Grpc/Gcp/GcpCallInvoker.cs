@@ -183,12 +183,23 @@ namespace Google.Api.Gax.Grpc.Gcp
             {
                 case string text when namesIndex < lastIndex:
                 case RepeatedField<string> texts when namesIndex < lastIndex:
+                case ByteString bytes when namesIndex < lastIndex:
+                case RepeatedField<ByteString> bytesList when namesIndex < lastIndex:
                     throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is neither a message or repeated message field.");
                 case string text:
                     affinityKeyValues.Add(text);
                     break;
                 case RepeatedField<string> texts:
                     affinityKeyValues.AddRange(texts);
+                    break;
+                case ByteString bytes:
+                    affinityKeyValues.Add(bytes.ToBase64());
+                    break;
+                case RepeatedField<ByteString> bytesList:
+                    foreach (var byteString in bytesList)
+                    {
+                        affinityKeyValues.Add(byteString.ToBase64());
+                    }
                     break;
                 case IMessage nestedMessage:
                     GetAffinityKeysFromProto(names, namesIndex + 1, nestedMessage, affinityKeyValues);
@@ -202,9 +213,6 @@ namespace Google.Api.Gax.Grpc.Gcp
                     {
                         GetAffinityKeysFromProto(names, namesIndex + 1, nestedMessage, affinityKeyValues);
                     }
-                    break;
-                case ByteString bytes:
-                    affinityKeyValues.Add(bytes.ToBase64());
                     break;
                 case null:
                     // Probably a nested message, but with no value. Just don't use an affinity key.
