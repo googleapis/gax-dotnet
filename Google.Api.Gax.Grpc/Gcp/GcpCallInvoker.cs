@@ -28,7 +28,7 @@ namespace Google.Api.Gax.Grpc.Gcp
 
         // Lock to protect the channel reference collections, as they're not thread-safe.
         private readonly object _thisLock = new object();
-        internal readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
+        private readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
         private readonly IList<ChannelRef> _channelRefs = new List<ChannelRef>();
 
 
@@ -70,7 +70,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             _affinityByMethod = InitAffinityByMethodIndex(this._apiConfig);
         }
 
-        internal static IDictionary<string, AffinityConfigs> InitAffinityByMethodIndex(ApiConfig config)
+        private static IDictionary<string, AffinityConfigs> InitAffinityByMethodIndex(ApiConfig config)
         {
             IDictionary<string, AffinityConfigs> index = new Dictionary<string, AffinityConfigs>();
             foreach (MethodConfig method in config.Method)
@@ -222,7 +222,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        internal void Bind(ChannelRef channelRef, string affinityKey)
+        private void Bind(ChannelRef channelRef, string affinityKey)
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
@@ -238,7 +238,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        internal void Unbind(string affinityKey)
+        private void Unbind(string affinityKey)
         {
             if (!string.IsNullOrEmpty(affinityKey))
             {
@@ -258,7 +258,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        internal ChannelRef PreProcess<TRequest>(AffinityConfigs affinityConfigs, TRequest request)
+        private ChannelRef PreProcess<TRequest>(AffinityConfigs affinityConfigs, TRequest request)
         {
             // Gets the affinity bound key if required in the request method.
             string boundKey = null;
@@ -277,7 +277,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         // Note: response may be default(TResponse) in the case of a failure. We only expect to be called from
         // protobuf-based calls anyway, so it will always be a class type, and will never be null for success cases.
         // We can therefore check for nullity rather than having a separate "success" parameter.
-        internal void PostProcess<TRequest, TResponse>(AffinityConfigs affinityConfigs, ChannelRef channelRef, TRequest request, TResponse response)
+        private void PostProcess<TRequest, TResponse>(AffinityConfigs affinityConfigs, ChannelRef channelRef, TRequest request, TResponse response)
         {
             channelRef.ActiveStreamCountDecr();
             // Process BIND or UNBIND if the method has affinity feature enabled, but only for successful calls.
