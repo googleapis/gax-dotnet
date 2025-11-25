@@ -31,7 +31,6 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly IDictionary<string, ChannelRef> _channelRefByAffinityKey = new Dictionary<string, ChannelRef>();
         private readonly IList<ChannelRef> _channelRefs = new List<ChannelRef>();
 
-
         // Access to these fields does not need to be protected by the lock: the objects are never modified.
         private readonly string _target;
         private readonly ApiConfig _apiConfig;
@@ -95,6 +94,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                             configs.Unbind = method.Affinity;
                             break;
                     }
+
                     index[name] = configs;
                 }
             }
@@ -196,10 +196,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                     affinityKeyValues.Add(bytes.ToBase64());
                     break;
                 case RepeatedField<ByteString> bytesList:
-                    foreach (var byteString in bytesList)
-                    {
-                        affinityKeyValues.Add(byteString.ToBase64());
-                    }
+                    affinityKeyValues.AddRange(bytesList.Select(byteString => byteString.ToBase64()));
                     break;
                 case IMessage nestedMessage:
                     GetAffinityKeysFromProto(names, namesIndex + 1, nestedMessage, affinityKeyValues);
@@ -218,7 +215,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                     // Probably a nested message, but with no value. Just don't use an affinity key.
                     break;
                 default:
-                    throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is neither a string or repeated string field nor another message or repeated message field.");
+                    throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is not a string, bytestring, repeated string field, repeated bytestring field, another message or repeated message field.");
             }
         }
 

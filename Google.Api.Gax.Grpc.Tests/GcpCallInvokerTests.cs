@@ -1,12 +1,11 @@
 ﻿/*
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
 
 using Grpc.Core;
-using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Google.Protobuf;
 using Google.Api.Gax.Grpc.Tests;
+using System.Threading;
 
 namespace Google.Api.Gax.Grpc.Gcp.Tests
 {
@@ -24,13 +24,13 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
         private static readonly ChannelCredentials s_credentials = ChannelCredentials.Insecure;
         private static readonly GrpcChannelOptions s_options = GrpcChannelOptions.Empty;
 
-        internal const string BindOnlyMethodName = "/test.v1.TestService/BindOnlyMethod";
         internal const string BindMethodName = "/test.v1.TestService/BindMethod";
         internal const string BoundMethodName = "/test.v1.TestService/BoundMethod";
         internal const string BindAndBoundMethodName = "/test.v1.TestService/BindAndBoundMethod";
         internal const string UnbindMethodName = "/test.v1.TestService/UnbindMethod";
 
-        private static readonly Method<SimpleRequest, SimpleResponse> s_bindOnlyMethod = NewMethod("BindOnlyMethod");
+        internal const string NonSharedKeyBind = "nonSharedKeyBind";
+
         private static readonly Method<SimpleRequest, SimpleResponse> s_bindMethod = NewMethod("BindMethod");
         private static readonly Method<SimpleRequest, SimpleResponse> s_boundMethod = NewMethod("BoundMethod");
         private static readonly Method<SimpleRequest, SimpleResponse> s_bindAndBoundMethod = NewMethod("BindAndBoundMethod");
@@ -41,10 +41,9 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
 
         private static readonly ApiConfig s_apiConfig = new ApiConfig
         {
-            ChannelPool = new ChannelPoolConfig { MaxSize = 10, MaxConcurrentStreamsLowWatermark = 5 },
+            ChannelPool = new ChannelPoolConfig { MaxSize = 10, MaxConcurrentStreamsLowWatermark = 1 },
             Method =
             {
-                new MethodConfig { Name = { BindOnlyMethodName }, Affinity = new AffinityConfig { Command = AffinityConfig.Types.Command.Bind, AffinityKey = "name" } },
                 new MethodConfig { Name = { BindMethodName }, Affinity = new AffinityConfig { Command = AffinityConfig.Types.Command.Bind, AffinityKey = "name" } },
                 new MethodConfig { Name = { BoundMethodName }, Affinity = new AffinityConfig { Command = AffinityConfig.Types.Command.Bound, AffinityKey = "name" } },
                 new MethodConfig { Name = { BindAndBoundMethodName }, Affinity = new AffinityConfig { Command = AffinityConfig.Types.Command.Bind, AffinityKey = "name" } },
@@ -63,13 +62,13 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             var request = new SimpleRequest { Name = key };
 
             // Act
-            await invoker.AsyncUnaryCall(s_bindOnlyMethod, null, default, request).ResponseAsync;
+            await invoker.AsyncUnaryCall(s_bindMethod, null, default, request).ResponseAsync;
 
             // Assert
             Assert.Single(fakeAdapter.CreatedChannels);
             var channel = fakeAdapter.CreatedChannels[0];
             Assert.Single(channel.CallInvoker.Calls);
-            Assert.Equal(s_bindOnlyMethod, channel.CallInvoker.Calls[0].Method);
+            Assert.Equal(s_bindMethod, channel.CallInvoker.Calls[0].Method);
 
             var affinityMap = invoker.GetChannelRefsByAffinityKeyForTest();
             Assert.True(affinityMap.ContainsKey(key), $"Key '{key}' not found in affinity map.");
@@ -78,7 +77,7 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
         }
 
         [Fact]
-        public async Task BindAndBound_DiffRpc_ReusesChannel()
+        public async Task BindAndBound_DiffRpc_SameAffinity_ReusesChannel()
         {
             // Arrange
             var fakeAdapter = new FakeGrpcAdapter();
@@ -103,6 +102,34 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
 
             var affinityMap = invoker.GetChannelRefsByAffinityKeyForTest();
             Assert.True(affinityMap.ContainsKey(key), $"Key '{key}' not found in affinity map.");
+        }
+
+        [Fact]
+        public async Task BindAndBound_DiffRpc_DiffAffinity_NewChannel()
+        {
+            // Arrange
+            var fakeAdapter = new FakeGrpcAdapter();
+            var invoker = new GcpCallInvoker(s_serviceMetadata, Target, s_credentials, s_options, s_apiConfig, fakeAdapter);
+            var nonSharedKeyBound = "nonSharedKey2";
+            var bindRequest = new SimpleRequest { Name = NonSharedKeyBind };
+            var boundRequest = new SimpleRequest { Name = nonSharedKeyBound };
+
+
+            // Bind and Bound RPCs need to run in parralel to be able to create a new Channel each based on the MaxConcurrentStreamsLowWatermark setting
+            Task task1 = Task.Run(() => invoker.AsyncUnaryCall(s_bindMethod, null, default, bindRequest).ResponseAsync);
+            Task task2 = Task.Run(() => invoker.AsyncUnaryCall(s_boundMethod, null, default, boundRequest).ResponseAsync);
+
+            await task1;
+            await task2;
+
+            var bindChannel = fakeAdapter.CreatedChannels.First();
+            var boundChannel = fakeAdapter.CreatedChannels.Last();
+
+            // Assert
+            Assert.Equal(2, fakeAdapter.CreatedChannels.Count);
+            Assert.NotEqual(bindChannel, boundChannel);
+            Assert.Equal(s_bindMethod, bindChannel.CallInvoker.Calls[0].Method);
+            Assert.Equal(s_boundMethod, boundChannel.CallInvoker.Calls[0].Method);
         }
 
         [Fact]
@@ -165,24 +192,24 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
 
     public class FakeGrpcAdapter : GrpcAdapter
     {
-        public List<FakeChannelBase> CreatedChannels { get; } = new List<FakeChannelBase>();
+        public List<FakeChannel> CreatedChannels { get; } = new List<FakeChannel>();
 
         public FakeGrpcAdapter() : base(ApiTransports.Grpc) { }
 
         private protected override ChannelBase CreateChannelImpl(ServiceMetadata serviceMetadata, string endpoint, ChannelCredentials credentials, GrpcChannelOptions options)
         {
-            var channel = new FakeChannelBase(CreatedChannels.Count.ToString());
+            var channel = new FakeChannel(CreatedChannels.Count.ToString());
             CreatedChannels.Add(channel);
             return channel;
         }
     }
 
-    public class FakeChannelBase : ChannelBase
+    public class FakeChannel : ChannelBase
     {
         public string Id { get; }
         public FakeCallInvoker CallInvoker { get; }
 
-        public FakeChannelBase(string id) : base("test-" + id)
+        public FakeChannel(string id) : base("test-" + id)
         {
             Id = id;
             CallInvoker = new FakeCallInvoker(this);
@@ -193,10 +220,10 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
 
     public class FakeCallInvoker : CallInvoker
     {
-        public FakeChannelBase Channel { get; }
+        public FakeChannel Channel { get; }
         public List<(Method<SimpleRequest, SimpleResponse> Method, SimpleRequest Request)> Calls { get; } = new List<(Method<SimpleRequest, SimpleResponse>, SimpleRequest)>();
 
-        public FakeCallInvoker(FakeChannelBase channel)
+        public FakeCallInvoker(FakeChannel channel)
         {
             Channel = channel;
         }
@@ -210,10 +237,16 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
                 SimpleResponse response = new SimpleResponse();
                 // For Bind methods, the key is extracted from the response's "name" field.
                 // We use the request's "name" to populate this for the test.
-                if (method.FullName == GcpCallInvokerTest.BindMethodName || method.FullName == GcpCallInvokerTest.BindOnlyMethodName || method.FullName == GcpCallInvokerTest.BindAndBoundMethodName)
+                response.Name = srRequest.Name;
+
+                if (srRequest.Name.Equals(GcpCallInvokerTest.NonSharedKeyBind))
                 {
-                    response.Name = srRequest.Name;
+                    // This is to aid new channel creations for different RPCs having different affinity key values
+                    // If we do not do this, the channel gets freed up and reused in the test (which is what we want for most of the tests)
+
+                    Thread.Sleep(5000); // Sleep for 5s, mimicking some long running task
                 }
+
                 return CreateAsyncUnaryCall(response as TResponse);
             }
             throw new NotSupportedException($"Method type not supported in fake: {method.Type}");
