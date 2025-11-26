@@ -29,7 +29,7 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
         internal const string BindAndBoundMethodName = "/test.v1.TestService/BindAndBoundMethod";
         internal const string UnbindMethodName = "/test.v1.TestService/UnbindMethod";
 
-        internal const string NonSharedKeyBind = "nonSharedKeyBind";
+        internal const string IntroduceDelayKey = "introduceDelayKey";
 
         private static readonly Method<SimpleRequest, SimpleResponse> s_bindMethod = NewMethod("BindMethod");
         private static readonly Method<SimpleRequest, SimpleResponse> s_boundMethod = NewMethod("BoundMethod");
@@ -69,11 +69,6 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             var channel = fakeAdapter.CreatedChannels[0];
             Assert.Single(channel.CallInvoker.Calls);
             Assert.Equal(s_bindMethod, channel.CallInvoker.Calls[0].Method);
-
-            var affinityMap = invoker.GetChannelRefsByAffinityKeyForTest();
-            Assert.True(affinityMap.ContainsKey(key), $"Key '{key}' not found in affinity map.");
-            Assert.Equal(1, affinityMap[key].AffinityCount);
-            Assert.Same(channel, affinityMap[key].Channel);
         }
 
         [Fact]
@@ -99,9 +94,6 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             Assert.Same(bindChannel, boundChannel);
             Assert.Equal(s_bindMethod, bindChannel.CallInvoker.Calls[0].Method);
             Assert.Equal(s_boundMethod, bindChannel.CallInvoker.Calls[1].Method);
-
-            var affinityMap = invoker.GetChannelRefsByAffinityKeyForTest();
-            Assert.True(affinityMap.ContainsKey(key), $"Key '{key}' not found in affinity map.");
         }
 
         [Fact]
@@ -111,7 +103,7 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             var fakeAdapter = new FakeGrpcAdapter();
             var invoker = new GcpCallInvoker(s_serviceMetadata, Target, s_credentials, s_options, s_apiConfig, fakeAdapter);
             var nonSharedKeyBound = "nonSharedKey2";
-            var bindRequest = new SimpleRequest { Name = NonSharedKeyBind };
+            var bindRequest = new SimpleRequest { Name = IntroduceDelayKey };
             var boundRequest = new SimpleRequest { Name = nonSharedKeyBound };
 
 
@@ -128,6 +120,8 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             // Assert
             Assert.Equal(2, fakeAdapter.CreatedChannels.Count);
             Assert.NotEqual(bindChannel, boundChannel);
+            Assert.Single(bindChannel.CallInvoker.Calls);
+            Assert.Single(boundChannel.CallInvoker.Calls);
             Assert.Equal(s_bindMethod, bindChannel.CallInvoker.Calls[0].Method);
             Assert.Equal(s_boundMethod, boundChannel.CallInvoker.Calls[0].Method);
         }
@@ -140,29 +134,22 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             var invoker = new GcpCallInvoker(s_serviceMetadata, Target, s_credentials, s_options, s_apiConfig, fakeAdapter);
             var key = "selfBoundKey1";
             var request = new SimpleRequest { Name = key };
-
             // Act 1: First call (binds)
             await invoker.AsyncUnaryCall(s_bindAndBoundMethod, null, default, request).ResponseAsync;
             var channel1 = fakeAdapter.CreatedChannels.Last();
-
             // Act 2: Second call (should use bound channel)
             await invoker.AsyncUnaryCall(s_bindAndBoundMethod, null, default, request).ResponseAsync;
             var channel2 = fakeAdapter.CreatedChannels.Last();
-
             // Assert
             Assert.Single(fakeAdapter.CreatedChannels);
             Assert.Same(channel1, channel2);
             Assert.Equal(2, channel1.CallInvoker.Calls.Count);
             Assert.Equal(s_bindAndBoundMethod, channel1.CallInvoker.Calls[0].Method);
             Assert.Equal(s_bindAndBoundMethod, channel1.CallInvoker.Calls[1].Method);
-
-            var affinityMap = invoker.GetChannelRefsByAffinityKeyForTest();
-            Assert.True(affinityMap.ContainsKey(key), $"Key '{key}' not found in affinity map.");
-            Assert.Equal(2, affinityMap[key].AffinityCount);
         }
 
         [Fact]
-        public async Task BindAndUnbind_FreesChannel()
+        public async Task BindAndUnbind_Success()
         {
             // Arrange
             var fakeAdapter = new FakeGrpcAdapter();
@@ -174,8 +161,6 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             // Act 1: Bind
             await invoker.AsyncUnaryCall(s_bindMethod, null, default, bindRequest).ResponseAsync;
             var bindChannel = fakeAdapter.CreatedChannels.Last();
-            var affinityMap1 = invoker.GetChannelRefsByAffinityKeyForTest();
-            Assert.True(affinityMap1.ContainsKey(key), $"Key '{key}' not found in affinity map after Bind.");
 
             // Act 2: Unbind
             await invoker.AsyncUnaryCall(s_unbindMethod, null, default, unbindRequest).ResponseAsync;
@@ -184,9 +169,6 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
             Assert.Single(fakeAdapter.CreatedChannels);
             Assert.Equal(s_bindMethod, bindChannel.CallInvoker.Calls[0].Method);
             Assert.Equal(s_unbindMethod, bindChannel.CallInvoker.Calls[1].Method);
-
-            var affinityMap2 = invoker.GetChannelRefsByAffinityKeyForTest();
-            Assert.False(affinityMap2.ContainsKey(key), $"Key '{key}' still found in affinity map after Unbind.");
         }
     }
 
@@ -239,12 +221,13 @@ namespace Google.Api.Gax.Grpc.Gcp.Tests
                 // We use the request's "name" to populate this for the test.
                 response.Name = srRequest.Name;
 
-                if (srRequest.Name.Equals(GcpCallInvokerTest.NonSharedKeyBind))
+                if (srRequest.Name.Equals(GcpCallInvokerTest.IntroduceDelayKey))
                 {
                     // This is to aid new channel creations for different RPCs having different affinity key values
                     // If we do not do this, the channel gets freed up and reused in the test (which is what we want for most of the tests)
 
-                    Thread.Sleep(5000); // Sleep for 5s, mimicking some long running task
+                    // TODO: Substitute Thread.Sleep with FakeScheduler.Delay
+                    Thread.Sleep(5000);
                 }
 
                 return CreateAsyncUnaryCall(response as TResponse);

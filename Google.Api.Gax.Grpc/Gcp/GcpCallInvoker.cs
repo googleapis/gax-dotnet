@@ -40,13 +40,6 @@ namespace Google.Api.Gax.Grpc.Gcp
         private readonly GrpcAdapter _adapter;
         private readonly ServiceMetadata _serviceMetadata;
 
-        internal struct AffinityConfigs
-        {
-            internal AffinityConfig Bind { get; set; }
-            internal AffinityConfig Bound { get; set; }
-            internal AffinityConfig Unbind { get; set; }
-        }
-
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
@@ -80,6 +73,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                     if (!index.TryGetValue(name, out AffinityConfigs configs))
                     {
                         configs = new AffinityConfigs();
+                        index[name] = configs;
                     }
 
                     switch (method.Affinity.Command)
@@ -94,8 +88,6 @@ namespace Google.Api.Gax.Grpc.Gcp
                             configs.Unbind = method.Affinity;
                             break;
                     }
-
-                    index[name] = configs;
                 }
             }
             return index;
@@ -259,9 +251,8 @@ namespace Google.Api.Gax.Grpc.Gcp
         {
             // Gets the affinity bound key if required in the request method.
             string boundKey = null;
-            AffinityConfig affinityConfig = affinityConfigs.Bound;
 
-            if (affinityConfig != null)
+            if (affinityConfigs?.Bound is AffinityConfig affinityConfig)
             {
                 boundKey = GetAffinityKeysFromProto(affinityConfig.AffinityKey, (IMessage)request).SingleOrDefault();
             }
@@ -280,16 +271,16 @@ namespace Google.Api.Gax.Grpc.Gcp
             // Process BIND or UNBIND if the method has affinity feature enabled, but only for successful calls.
             if (response != null)
             {
-                if (affinityConfigs.Bind != null)
+                if (affinityConfigs?.Bind is AffinityConfig bindConfig)
                 {
-                    foreach (string bindingKey in GetAffinityKeysFromProto(affinityConfigs.Bind.AffinityKey, (IMessage)response))
+                    foreach (string bindingKey in GetAffinityKeysFromProto(bindConfig.AffinityKey, (IMessage)response))
                     {
                         Bind(channelRef, bindingKey);
                     }
                 }
-                if (affinityConfigs.Unbind != null)
+                if (affinityConfigs?.Unbind is AffinityConfig unbindConfig)
                 {
-                    foreach (string unbindingKey in GetAffinityKeysFromProto(affinityConfigs.Unbind.AffinityKey, (IMessage)request))
+                    foreach (string unbindingKey in GetAffinityKeysFromProto(unbindConfig.AffinityKey, (IMessage)request))
                     {
                         Unbind(unbindingKey);
                     }
@@ -460,17 +451,11 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        /// <summary>
-        /// Returns a deep clone of the internal dictionary of channel references by affinity key.
-        /// This method should only be used in tests to see if channels are added/remove correctly according to affinity
-        /// </summary>
-        internal IDictionary<string, ChannelRef> GetChannelRefsByAffinityKeyForTest()
+        private class AffinityConfigs
         {
-            lock (_thisLock)
-            {
-                // Create an independent copy
-                return _channelRefByAffinityKey.ToDictionary(pair => pair.Key, pair => pair.Value.Clone());
-            }
+            internal AffinityConfig Bind { get; set; }
+            internal AffinityConfig Bound { get; set; }
+            internal AffinityConfig Unbind { get; set; }
         }
     }
 }
