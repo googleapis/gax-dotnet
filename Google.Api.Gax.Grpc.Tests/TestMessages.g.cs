@@ -27,20 +27,20 @@ namespace Google.Api.Gax.Grpc {
             "ChN0ZXN0X21lc3NhZ2VzLnByb3RvEhNnb29nbGUuYXBpLmdheC5ncnBjIjAK",
             "D0J1bmRsaW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJEg8KB2VudHJpZXMYAiAD",
             "KAkiMQoQQnVuZGxpbmdSZXNwb25zZRIMCgRuYW1lGAEgASgJEg8KB2VudHJp",
-            "ZXMYAiADKAkiHQoNU2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJIh4KDlNp",
-            "bXBsZVJlc3BvbnNlEgwKBG5hbWUYAiABKAkiTAoUUGFnZVN0cmVhbWluZ1Jl",
-            "cXVlc3QSEgoKcGFnZV90b2tlbhgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUS",
-            "DQoFY2hlY2sYAyABKAkiPwoVUGFnZVN0cmVhbWluZ1Jlc3BvbnNlEg0KBWl0",
-            "ZW1zGAEgAygFEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTJiCgtUZXN0U2Vy",
-            "dmljZRJTCghEb1NpbXBsZRIiLmdvb2dsZS5hcGkuZ2F4LmdycGMuU2ltcGxl",
-            "UmVxdWVzdBojLmdvb2dsZS5hcGkuZ2F4LmdycGMuU2ltcGxlUmVzcG9uc2Vi",
-            "BnByb3RvMw=="));
+            "ZXMYAiADKAkiNAoNU2ltcGxlUmVxdWVzdBIMCgRuYW1lGAEgASgJEhUKDXRp",
+            "bWVfZGVsYXlfbXMYAiABKAUiHgoOU2ltcGxlUmVzcG9uc2USDAoEbmFtZRgC",
+            "IAEoCSJMChRQYWdlU3RyZWFtaW5nUmVxdWVzdBISCgpwYWdlX3Rva2VuGAEg",
+            "ASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRINCgVjaGVjaxgDIAEoCSI/ChVQYWdl",
+            "U3RyZWFtaW5nUmVzcG9uc2USDQoFaXRlbXMYASADKAUSFwoPbmV4dF9wYWdl",
+            "X3Rva2VuGAIgASgJMmIKC1Rlc3RTZXJ2aWNlElMKCERvU2ltcGxlEiIuZ29v",
+            "Z2xlLmFwaS5nYXguZ3JwYy5TaW1wbGVSZXF1ZXN0GiMuZ29vZ2xlLmFwaS5n",
+            "YXguZ3JwYy5TaW1wbGVSZXNwb25zZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingRequest), global::Google.Api.Gax.Grpc.BundlingRequest.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.BundlingResponse), global::Google.Api.Gax.Grpc.BundlingResponse.Parser, new[]{ "Name", "Entries" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleRequest), global::Google.Api.Gax.Grpc.SimpleRequest.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleRequest), global::Google.Api.Gax.Grpc.SimpleRequest.Parser, new[]{ "Name", "TimeDelayMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.SimpleResponse), global::Google.Api.Gax.Grpc.SimpleResponse.Parser, new[]{ "Name" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingRequest), global::Google.Api.Gax.Grpc.PageStreamingRequest.Parser, new[]{ "PageToken", "PageSize", "Check" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Api.Gax.Grpc.PageStreamingResponse), global::Google.Api.Gax.Grpc.PageStreamingResponse.Parser, new[]{ "Items", "NextPageToken" }, null, null, null, null)
@@ -534,6 +534,7 @@ namespace Google.Api.Gax.Grpc {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SimpleRequest(SimpleRequest other) : this() {
       name_ = other.name_;
+      timeDelayMs_ = other.timeDelayMs_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -555,6 +556,18 @@ namespace Google.Api.Gax.Grpc {
       }
     }
 
+    /// <summary>Field number for the "time_delay_ms" field.</summary>
+    public const int TimeDelayMsFieldNumber = 2;
+    private int timeDelayMs_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TimeDelayMs {
+      get { return timeDelayMs_; }
+      set {
+        timeDelayMs_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -571,6 +584,7 @@ namespace Google.Api.Gax.Grpc {
         return true;
       }
       if (Name != other.Name) return false;
+      if (TimeDelayMs != other.TimeDelayMs) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -579,6 +593,7 @@ namespace Google.Api.Gax.Grpc {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (TimeDelayMs != 0) hash ^= TimeDelayMs.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -601,6 +616,10 @@ namespace Google.Api.Gax.Grpc {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (TimeDelayMs != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(TimeDelayMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -615,6 +634,10 @@ namespace Google.Api.Gax.Grpc {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (TimeDelayMs != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(TimeDelayMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -627,6 +650,9 @@ namespace Google.Api.Gax.Grpc {
       int size = 0;
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (TimeDelayMs != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TimeDelayMs);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -642,6 +668,9 @@ namespace Google.Api.Gax.Grpc {
       }
       if (other.Name.Length != 0) {
         Name = other.Name;
+      }
+      if (other.TimeDelayMs != 0) {
+        TimeDelayMs = other.TimeDelayMs;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -666,6 +695,10 @@ namespace Google.Api.Gax.Grpc {
             Name = input.ReadString();
             break;
           }
+          case 16: {
+            TimeDelayMs = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -687,6 +720,10 @@ namespace Google.Api.Gax.Grpc {
             break;
           case 10: {
             Name = input.ReadString();
+            break;
+          }
+          case 16: {
+            TimeDelayMs = input.ReadInt32();
             break;
           }
         }

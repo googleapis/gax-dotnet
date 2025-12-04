@@ -27,6 +27,7 @@ message BundlingResponse {
 
 message SimpleRequest {
   string name = 1;
+  int32 time_delay_ms = 2;
 }
 
 message SimpleResponse {

@@ -34,7 +34,7 @@ namespace Google.Api.Gax.Grpc.Gcp
         // Access to these fields does not need to be protected by the lock: the objects are never modified.
         private readonly string _target;
         private readonly ApiConfig _apiConfig;
-        private readonly IDictionary<string, AffinityConfig> _affinityByMethod;
+        private readonly IDictionary<string, AffinityConfigs> _affinityByMethod;
         private readonly ChannelCredentials _credentials;
         private readonly GrpcChannelOptions _channelOptions;
         private readonly GrpcAdapter _adapter;
@@ -62,15 +62,32 @@ namespace Google.Api.Gax.Grpc.Gcp
             _affinityByMethod = InitAffinityByMethodIndex(this._apiConfig);
         }
 
-        private static IDictionary<string, AffinityConfig> InitAffinityByMethodIndex(ApiConfig config)
+        private static IDictionary<string, AffinityConfigs> InitAffinityByMethodIndex(ApiConfig config)
         {
-            IDictionary<string, AffinityConfig> index = new Dictionary<string, AffinityConfig>();
+            IDictionary<string, AffinityConfigs> index = new Dictionary<string, AffinityConfigs>();
             foreach (MethodConfig method in config.Method)
             {
                 // TODO(fengli): supports wildcard in method selector.
                 foreach (string name in method.Name)
                 {
-                    index.Add(name, method.Affinity);
+                    if (!index.TryGetValue(name, out AffinityConfigs configs))
+                    {
+                        configs = new AffinityConfigs();
+                        index[name] = configs;
+                    }
+
+                    switch (method.Affinity.Command)
+                    {
+                        case AffinityConfig.Types.Command.Bind:
+                            configs.Bind = method.Affinity;
+                            break;
+                        case AffinityConfig.Types.Command.Bound:
+                            configs.Bound = method.Affinity;
+                            break;
+                        case AffinityConfig.Types.Command.Unbind:
+                            configs.Unbind = method.Affinity;
+                            break;
+                    }
                 }
             }
             return index;
@@ -158,12 +175,20 @@ namespace Google.Api.Gax.Grpc.Gcp
             {
                 case string text when namesIndex < lastIndex:
                 case RepeatedField<string> texts when namesIndex < lastIndex:
+                case ByteString bytes when namesIndex < lastIndex:
+                case RepeatedField<ByteString> bytesList when namesIndex < lastIndex:
                     throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is neither a message or repeated message field.");
                 case string text:
                     affinityKeyValues.Add(text);
                     break;
                 case RepeatedField<string> texts:
                     affinityKeyValues.AddRange(texts);
+                    break;
+                case ByteString bytes:
+                    affinityKeyValues.Add(bytes.ToBase64());
+                    break;
+                case RepeatedField<ByteString> bytesList:
+                    affinityKeyValues.AddRange(bytesList.Select(byteString => byteString.ToBase64()));
                     break;
                 case IMessage nestedMessage:
                     GetAffinityKeysFromProto(names, namesIndex + 1, nestedMessage, affinityKeyValues);
@@ -182,7 +207,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                     // Probably a nested message, but with no value. Just don't use an affinity key.
                     break;
                 default:
-                    throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is neither a string or repeated string field nor another message or repeated message field.");
+                    throw new InvalidOperationException($"Field {name} in message {message.Descriptor.Name} is not a string, bytestring, repeated string field, repeated bytestring field, another message or repeated message field.");
             }
         }
 
@@ -222,11 +247,12 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        private ChannelRef PreProcess<TRequest>(AffinityConfig affinityConfig, TRequest request)
+        private ChannelRef PreProcess<TRequest>(AffinityConfigs affinityConfigs, TRequest request)
         {
             // Gets the affinity bound key if required in the request method.
             string boundKey = null;
-            if (affinityConfig != null && affinityConfig.Command == AffinityConfig.Types.Command.Bound)
+
+            if (affinityConfigs?.Bound is AffinityConfig affinityConfig)
             {
                 boundKey = GetAffinityKeysFromProto(affinityConfig.AffinityKey, (IMessage)request).SingleOrDefault();
             }
@@ -239,22 +265,22 @@ namespace Google.Api.Gax.Grpc.Gcp
         // Note: response may be default(TResponse) in the case of a failure. We only expect to be called from
         // protobuf-based calls anyway, so it will always be a class type, and will never be null for success cases.
         // We can therefore check for nullity rather than having a separate "success" parameter.
-        private void PostProcess<TRequest, TResponse>(AffinityConfig affinityConfig, ChannelRef channelRef, TRequest request, TResponse response)
+        private void PostProcess<TRequest, TResponse>(AffinityConfigs affinityConfigs, ChannelRef channelRef, TRequest request, TResponse response)
         {
             channelRef.ActiveStreamCountDecr();
             // Process BIND or UNBIND if the method has affinity feature enabled, but only for successful calls.
-            if (affinityConfig != null && response != null)
+            if (response != null)
             {
-                if (affinityConfig.Command == AffinityConfig.Types.Command.Bind)
+                if (affinityConfigs?.Bind is AffinityConfig bindConfig)
                 {
-                    foreach (string bindingKey in GetAffinityKeysFromProto(affinityConfig.AffinityKey, (IMessage)response))
+                    foreach (string bindingKey in GetAffinityKeysFromProto(bindConfig.AffinityKey, (IMessage)response))
                     {
                         Bind(channelRef, bindingKey);
                     }
                 }
-                else if (affinityConfig.Command == AffinityConfig.Types.Command.Unbind)
+                if (affinityConfigs?.Unbind is AffinityConfig unbindConfig)
                 {
-                    foreach (string unbindingKey in GetAffinityKeysFromProto(affinityConfig.AffinityKey, (IMessage)request))
+                    foreach (string unbindingKey in GetAffinityKeysFromProto(unbindConfig.AffinityKey, (IMessage)request))
                     {
                         Unbind(unbindingKey);
                     }
@@ -333,16 +359,16 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override AsyncServerStreamingCall<TResponse>
             AsyncServerStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfigs affinityConfigs);
 
-            ChannelRef channelRef = PreProcess(affinityConfig, request);
+            ChannelRef channelRef = PreProcess(affinityConfigs, request);
 
             var originalCall = channelRef.CallInvoker.AsyncServerStreamingCall(method, host, options, request);
 
             // Executes affinity postprocess once the streaming response finishes its final batch.
             var gcpResponseStream = new GcpClientResponseStream<TRequest, TResponse>(
                 originalCall.ResponseStream,
-                (resp) => PostProcess(affinityConfig, channelRef, request, resp));
+                (resp) => PostProcess(affinityConfigs, channelRef, request, resp));
 
             // Create a wrapper of the original AsyncServerStreamingCall.
             return new AsyncServerStreamingCall<TResponse>(
@@ -359,9 +385,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override AsyncUnaryCall<TResponse>
             AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfigs affinityConfigs);
 
-            ChannelRef channelRef = PreProcess(affinityConfig, request);
+            ChannelRef channelRef = PreProcess(affinityConfigs, request);
 
             var originalCall = channelRef.CallInvoker.AsyncUnaryCall<TRequest, TResponse>(method, host, options, request);
 
@@ -386,7 +412,7 @@ namespace Google.Api.Gax.Grpc.Gcp
                 }
                 finally
                 {
-                    PostProcess(affinityConfig, channelRef, request, response);
+                    PostProcess(affinityConfigs, channelRef, request, response);
                 }
             }
         }
@@ -397,9 +423,9 @@ namespace Google.Api.Gax.Grpc.Gcp
         public override TResponse
             BlockingUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request)
         {
-            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfig affinityConfig);
+            _affinityByMethod.TryGetValue(method.FullName, out AffinityConfigs affinityConfigs);
 
-            ChannelRef channelRef = PreProcess(affinityConfig, request);
+            ChannelRef channelRef = PreProcess(affinityConfigs, request);
 
             TResponse response = default(TResponse);
             try
@@ -409,7 +435,7 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
             finally
             {
-                PostProcess(affinityConfig, channelRef, request, response);
+                PostProcess(affinityConfigs, channelRef, request, response);
             }
         }
 
@@ -425,32 +451,11 @@ namespace Google.Api.Gax.Grpc.Gcp
             }
         }
 
-        // Test helper methods
-
-        /// <summary>
-        /// Returns a deep clone of the internal list of channel references.
-        /// This method should only be used in tests.
-        /// </summary>
-        internal IList<ChannelRef> GetChannelRefsForTest()
+        private class AffinityConfigs
         {
-            lock (_thisLock)
-            {
-                // Create an independent copy
-                return _channelRefs.Select(cr => cr.Clone()).ToList();
-            }
-        }
-
-        /// <summary>
-        /// Returns a deep clone of the internal dictionary of channel references by affinity key.
-        /// This method should only be used in tests.
-        /// </summary>
-        internal IDictionary<string, ChannelRef> GetChannelRefsByAffinityKeyForTest()
-        {
-            lock (_thisLock)
-            {
-                // Create an independent copy
-                return _channelRefByAffinityKey.ToDictionary(pair => pair.Key, pair => pair.Value.Clone());
-            }
+            internal AffinityConfig Bind { get; set; }
+            internal AffinityConfig Bound { get; set; }
+            internal AffinityConfig Unbind { get; set; }
         }
     }
 }
