@@ -94,7 +94,7 @@ public class GcpCallInvokerTest
         Assert.Equal(s_boundMethod, bindChannel.CallInvoker.Calls[1].Method);
     }
 
-    [Fact]
+    [Fact(Skip = "b/465532153")]
     public async Task BindAndBound_DiffRpc_DiffAffinity_NewChannel()
     {
         // Arrange
@@ -102,9 +102,10 @@ public class GcpCallInvokerTest
         var invoker = new GcpCallInvoker(s_serviceMetadata, Target, s_credentials, s_options, s_apiConfig, fakeAdapter);
         var nonSharedKeyBound1 = "nonSharedKey1";
         var nonSharedKeyBound2 = "nonSharedKey2";
-        var bindRequest = new SimpleRequest { Name = nonSharedKeyBound1 };
-        var boundRequest = new SimpleRequest { Name = nonSharedKeyBound2 };
 
+        // Important to have the TimeDelayMs set here to make sure we mimic a long running task
+        var bindRequest = new SimpleRequest { Name = nonSharedKeyBound1, TimeDelayMs = 5000 };
+        var boundRequest = new SimpleRequest { Name = nonSharedKeyBound2, TimeDelayMs = 5000 };
 
         // Bind and Bound RPCs need to run in parralel to be able to create a new Channel each based on the MaxConcurrentStreamsLowWatermark setting
         Task task1 = invoker.AsyncUnaryCall(s_bindMethod, null, default, bindRequest).ResponseAsync;
@@ -220,16 +221,20 @@ public class FakeCallInvoker : CallInvoker
             // We use the request's "name" to populate this for the test.
             response.Name = srRequest.Name;
 
-            return CreateAsyncUnaryCall(response as TResponse);
+            return CreateAsyncUnaryCall(response as TResponse, srRequest.TimeDelayMs);
         }
         throw new NotSupportedException($"Method type not supported in fake: {method.Type}");
     }
 
-    private AsyncUnaryCall<TResponse> CreateAsyncUnaryCall<TResponse>(TResponse response) where TResponse : class =>
+    private AsyncUnaryCall<TResponse> CreateAsyncUnaryCall<TResponse>(TResponse response, int delayInMs) where TResponse : class =>
         new AsyncUnaryCall<TResponse>(Task.Run(async () =>
         {
-            // TODO: Replace this Task.Delay for implementation of the FakeScheduler
-            await Task.Delay(5000);
+            if (delayInMs > 0)
+            {
+                // TODO(b/465532153): Replace this Task.Delay for implementation of the FakeScheduler
+                await Task.Delay(delayInMs);
+            }
+
             return response;
         }), Task.FromResult(new Metadata()), () => Status.DefaultSuccess, () => new Metadata(), () => { });
 
