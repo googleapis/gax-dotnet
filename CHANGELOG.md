@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.13.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.12.1...Google.Api.Gax-4.13.0) (2025-12-04)
+
+
+### Features
+
+* Support multiple Channel Affinity Commands per method ([#857](https://github.com/googleapis/gax-dotnet/issues/857)) ([e48def9](https://github.com/googleapis/gax-dotnet/commit/e48def90c9efc1ecb205c66ade09afaea01f34eb))
+
 ## [4.12.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.12.0...Google.Api.Gax-4.12.1) (2025-10-16)
 
 
