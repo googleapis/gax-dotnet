@@ -7,7 +7,6 @@
 
 using Google.Apis.Requests;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,11 +75,6 @@ namespace Google.Api.Gax.Rest
                 var current = request.Execute();
                 var resources = _pageManager.GetResourcesEmptyIfNull(current);
                 items.AddRange(resources);
-                if (items.Count > pageSize)
-                {
-                    throw new NotSupportedException("Invalid server response: " +
-                        $"requested {requestCount} items, received {resources.Count()} items");
-                }
                 nextPageToken = _pageManager.GetNextPageToken(current);
                 if (nextPageToken == null)
                 {

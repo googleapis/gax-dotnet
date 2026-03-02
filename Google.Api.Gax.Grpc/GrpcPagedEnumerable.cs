@@ -6,8 +6,6 @@
  */
 
 using Google.Protobuf;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,11 +75,6 @@ namespace Google.Api.Gax.Grpc
                 request.PageSize = requestSize;
                 var current = _apiCall.Sync(request, _callSettings);
                 items.AddRange(current);
-                if (items.Count > pageSize)
-                {
-                    throw new NotSupportedException("Invalid server response: " +
-                        $"requested {requestSize} items, received {current.Count()} items");
-                }
                 nextPageToken = current.NextPageToken;                
                 if (nextPageToken == "")
                 {

@@ -289,7 +289,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0 };
             var paged = server.PagedSync(null, null, request);
-            Assert.Throws<NotSupportedException>(() => paged.ReadPage(1));
+            Assert.NotEqual(0, paged.Count());
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace Google.Api.Gax.Grpc.Tests
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest { PageSize = 0 };
             var paged = server.PagedAsync(null, null, request);
-            await Assert.ThrowsAsync<NotSupportedException>(() => paged.ReadPageAsync(1));
+            Assert.NotEqual(0, await paged.CountAsync());
         }
     }
 }

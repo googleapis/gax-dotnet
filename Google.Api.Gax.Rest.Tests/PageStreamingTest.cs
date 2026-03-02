@@ -293,7 +293,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedSync(request);
-            Assert.Throws<NotSupportedException>(() => paged.ReadPage(1));
+            Assert.NotEqual(0, paged.Count());
         }
 
         [Fact]
@@ -302,7 +302,7 @@ namespace Google.Api.Gax.Rest
             var server = new FakeServer(s_resourceA, 1);
             var request = new PageStreamingRequest(server) { PageSize = 0 };
             var paged = server.PagedAsync(request);
-            await Assert.ThrowsAsync<NotSupportedException>(() => paged.ReadPageAsync(1));
+            Assert.NotEqual(0, await paged.CountAsync());
         }
 
         private class PageStreamingRequest : IClientServiceRequest<PageStreamingResponse>
