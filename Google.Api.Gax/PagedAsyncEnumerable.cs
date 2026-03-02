@@ -33,8 +33,23 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
-        /// Eagerly (but asynchronously) reads a single page of results with a fixed maximum size. The returned page is guaranteed
-        /// to have that many results, unless there is no more data available.
+        /// Eagerly reads a single page of results with a fixed maximum size. The returned page is not guaranteed
+        /// to have that many results:
+        /// <list type="bullet">
+        /// <item>
+        /// The resulting page may contain fewer than <paramref name="pageSize"/> items if there were not that many items available.
+        /// </item>
+        /// <item>
+        /// The resulting page may contain more than <paramref name="pageSize"/> items,
+        /// if <typeparamref name="TResource"/> is a key-value pair, where the value is itself a collection of items.
+        /// In such cases, an arbitrary number of keys may appear, including keys with an empty collection value.
+        /// The underlying API should guarantee that the number of elements across all value collections is <paramref name="pageSize"/>
+        /// at most.
+        /// </item>
+        /// <item>
+        /// Otherwise, the underlying API should guarantee that the return page contains exactly <paramref name="pageSize"/> items.
+        /// </item>
+        /// </list>
         /// </summary>
         /// <remarks>
         /// "Natural" pages returned by the API may contain a smaller number of resources than requested.
