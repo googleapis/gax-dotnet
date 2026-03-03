@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.13.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.13.0...Google.Api.Gax-4.13.1) (2026-03-03)
+
+
+### Bug Fixes
+
+* Stop checking returned page size against requested page size. ([c388c56](https://github.com/googleapis/gax-dotnet/commit/c388c568d7c158d52a3f531ba5a0390e895a6c70))
+
 ## [4.13.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.12.1...Google.Api.Gax-4.13.0) (2025-12-04)
 
 
