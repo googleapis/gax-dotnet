@@ -10,10 +10,10 @@ OS=windows
 declare -r ROOT=$(realpath $(dirname $0))
 cd $ROOT
 
-PROTOBUF_VERSION=3.28.2
+PROTOC_VERSION=3.31.0
 GRPC_VERSION=2.71.0
-PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
-CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOBUF_VERSION/tools
+PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOC_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
+CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOC_VERSION/tools
 GRPC_PLUGIN=$ROOT/packages/Grpc.Tools.$GRPC_VERSION/tools/windows_x64/grpc_csharp_plugin.exe
 
 # Nuget isn't working nicely for me on Linux...
@@ -36,8 +36,7 @@ nuget_install() {
 
 install_dependencies() {
   # Make sure we have all the tools we need.
-  # Prerequisite: Java already installed so that gradlew will work
-  nuget_install Google.Protobuf.Tools $PROTOBUF_VERSION
+  nuget_install Google.Protobuf.Tools $PROTOC_VERSION
   nuget_install Grpc.Tools $GRPC_VERSION
 }
 
