@@ -35,6 +35,11 @@ namespace Google.Api.Gax
         /// <summary>
         /// Execution platform is Google Cloud Run.
         /// </summary>
-        CloudRun = 4
+        CloudRun = 4,
+
+        /// <summary>
+        /// Execution platform is Google Cloud Run Job.
+        /// </summary>
+        CloudRunJob = 5
     }
 }

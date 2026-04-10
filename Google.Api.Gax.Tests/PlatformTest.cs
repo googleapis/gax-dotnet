@@ -86,6 +86,26 @@ namespace Google.Api.Gax.Tests
         }
 
         [Fact]
+        public void CloudRunJob_Valid()
+        {
+            var details = new CloudRunJobPlatformDetails("json", "project", "us-central1-1", "job");
+            Assert.Equal("json", details.MetadataJson);
+            Assert.Equal("project", details.ProjectId);
+            Assert.Equal("us-central1-1", details.Zone);
+            Assert.Equal("us-central1", details.Region);
+            Assert.Equal("job", details.JobName);
+        }
+
+        [Fact]
+        public void CloudRunJob_Invalid()
+        {
+            Assert.Throws<ArgumentNullException>(() => new CloudRunJobPlatformDetails(null, "", "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunJobPlatformDetails("", null, "", ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunJobPlatformDetails("", "", null, ""));
+            Assert.Throws<ArgumentNullException>(() => new CloudRunJobPlatformDetails("", "", "", null));
+        }
+
+        [Fact]
         public void Gke_NoData()
         {
             Assert.Throws<ArgumentNullException>(() => GkePlatformDetails.TryLoad(null, new GkePlatformDetails.KubernetesData()));
@@ -278,6 +298,14 @@ namespace Google.Api.Gax.Tests
             var details = new CloudRunPlatformDetails("json", "cr-project", "us-central1-1", "service", "revision", "configuration");
             var platform = new Platform(details);
             Assert.Equal("cr-project", platform.ProjectId);
+        }
+
+        [Fact]
+        public void Project_CloudRunJob()
+        {
+            var details = new CloudRunJobPlatformDetails("json", "crj-project", "us-central1-1", "job");
+            var platform = new Platform(details);
+            Assert.Equal("crj-project", platform.ProjectId);
         }
 
         [Fact]

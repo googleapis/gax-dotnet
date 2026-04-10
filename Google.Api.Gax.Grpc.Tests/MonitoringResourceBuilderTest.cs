@@ -80,6 +80,21 @@ namespace Google.Api.Gax.Grpc.Tests
         }
 
         [Fact]
+        public void CloudRunJobPlatform()
+        {
+            var details = new CloudRunJobPlatformDetails("json", "projectId", "us-central1-1", "job");
+            var resource = MonitoredResourceBuilder.FromPlatform(new Platform(details));
+            Assert.Equal("cloud_run_job", resource.Type);
+            Assert.Equal(new Dictionary<string, string>
+            {
+                { "project_id", "projectId" },
+                // Note this is the region, not the zone
+                { "location", "us-central1" },
+                { "job_name", "job" }
+            }, resource.Labels);
+        }
+
+        [Fact]
         public void GkePlatform()
         {
             const string metadataJson = @"

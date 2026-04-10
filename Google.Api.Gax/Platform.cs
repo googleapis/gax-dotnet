@@ -164,6 +164,11 @@ namespace Google.Api.Gax
                 {
                     return new Platform(cloudRunDetails);
                 }
+                CloudRunJobPlatformDetails cloudRunJobDetails = CloudRunJobPlatformDetails.TryLoad(metadataJson);
+                if (cloudRunJobDetails != null)
+                {
+                    return new Platform(cloudRunJobDetails);
+                }
                 GcePlatformDetails gceDetails = GcePlatformDetails.TryLoad(metadataJson);
                 if (gceDetails != null)
                 {
@@ -218,6 +223,15 @@ namespace Google.Api.Gax
         }
 
         /// <summary>
+        /// Construct with details of Google Cloud Run Job.
+        /// </summary>
+        /// <param name="cloudRunJobDetails">Details of Google Cloud Run Job.</param>
+        public Platform(CloudRunJobPlatformDetails cloudRunJobDetails)
+        {
+            CloudRunJobDetails = GaxPreconditions.CheckNotNull(cloudRunJobDetails, nameof(cloudRunJobDetails));
+        }
+
+        /// <summary>
         /// Google App Engine (GAE) platform details.
         /// <c>null</c> if not executing on GAE.
         /// </summary>
@@ -225,21 +239,27 @@ namespace Google.Api.Gax
 
         /// <summary>
         /// Google Compute Engine (GCE) platform details.
-        /// <c>null</c> if not executing on GCE. 
+        /// <c>null</c> if not executing on GCE.
         /// </summary>
         public GcePlatformDetails GceDetails { get; }
 
         /// <summary>
         /// Google Container (Kubernetes) Engine (GKE) platform details.
-        /// <c>null</c> if not executing on GKE. 
+        /// <c>null</c> if not executing on GKE.
         /// </summary>
         public GkePlatformDetails GkeDetails { get; }
 
         /// <summary>
         /// Google Cloud Run platform details.
-        /// <c>null</c> if not executing on Google Cloud Run. 
+        /// <c>null</c> if not executing on Google Cloud Run.
         /// </summary>
         public CloudRunPlatformDetails CloudRunDetails { get; }
+
+        /// <summary>
+        /// Google Cloud Run Job platform details.
+        /// <c>null</c> if not executing on Google Cloud Run Job.
+        /// </summary>
+        public CloudRunJobPlatformDetails CloudRunJobDetails { get; }
 
         /// <summary>
         /// The current execution platform.
@@ -249,6 +269,7 @@ namespace Google.Api.Gax
             GceDetails != null ? PlatformType.Gce :
             GkeDetails != null ? PlatformType.Gke :
             CloudRunDetails != null ? PlatformType.CloudRun :
+            CloudRunJobDetails != null ? PlatformType.CloudRunJob :
             PlatformType.Unknown;
 
         /// <summary>
@@ -259,7 +280,8 @@ namespace Google.Api.Gax
             GaeDetails?.ProjectId ??
             GceDetails?.ProjectId ??
             GkeDetails?.ProjectId ??
-            CloudRunDetails?.ProjectId;
+            CloudRunDetails?.ProjectId ??
+            CloudRunJobDetails?.ProjectId;
 
         /// <inheritdoc/>
         public override string ToString()
@@ -274,6 +296,8 @@ namespace Google.Api.Gax
                     return GkeDetails.ToString();
                 case PlatformType.CloudRun:
                     return CloudRunDetails.ToString();
+                case PlatformType.CloudRunJob:
+                    return CloudRunJobDetails.ToString();
                 case PlatformType.Unknown:
                     return "[Unknown platform]";
                 default:

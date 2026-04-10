@@ -111,6 +111,18 @@ namespace Google.Api.Gax.Grpc
                             { "configuration_name", cloudRun.ConfigurationName }
                         }
                     };
+                case PlatformType.CloudRunJob:
+                    var cloudRunJob = platform.CloudRunJobDetails;
+                    return new MonitoredResource
+                    {
+                        Type = "cloud_run_job",
+                        Labels =
+                        {
+                            { "project_id", cloudRunJob.ProjectId },
+                            { "job_name", cloudRunJob.JobName },
+                            { "location", cloudRunJob.Region }
+                        }
+                    };
 
                 default:
                     // This isn't great, but is better than throwing an exception.
