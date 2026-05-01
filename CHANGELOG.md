@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.14.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.13.1...Google.Api.Gax-4.14.0) (2026-05-01)
+
+
+### Features
+
+* add new CloudRunJob platform ([3fc8872](https://github.com/googleapis/gax-dotnet/commit/3fc88727b63555b406efa1d2de12d136861d505c))
+
 ## [4.13.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.13.0...Google.Api.Gax-4.13.1) (2026-03-03)
 
 
