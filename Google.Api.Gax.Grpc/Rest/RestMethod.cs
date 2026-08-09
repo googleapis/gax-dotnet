@@ -8,7 +8,6 @@
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,19 +20,18 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// </summary>
 internal class RestMethod
 {
-    private readonly ApiMetadata _apiMetadata;
     private readonly MethodDescriptor _protoMethod;
     private readonly JsonParser _parser;
-    private readonly HttpRuleTranscoder _transcoder;
+    private readonly ITranscoder _transcoder;
 
     /// <summary>
     /// The service-qualified method name, as used by gRPC, e.g. "/google.somepackage.SomeService/SomeMethod"
     /// </summary>
     internal string FullName { get; }
 
-    private RestMethod(ApiMetadata apiMetadata, MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
-        (_apiMetadata, _protoMethod,  _parser, FullName, _transcoder) =
-        (apiMetadata, protoMethod, parser, GetGrpcFullName(protoMethod), transcoder);
+    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
+        (_protoMethod,  _parser, FullName, _transcoder) =
+        (protoMethod, parser, GetGrpcFullName(protoMethod), transcoder);
 
     /// <summary>
     /// Returns the name by which gRPC will refer to the given proto method,
@@ -68,8 +66,8 @@ internal class RestMethod
         {
             return null;
         }
-        var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule);
-        return new RestMethod(apiMetadata, method, parser, transcoder);
+        var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule, apiMetadata);
+        return new RestMethod(method, parser, transcoder);
     }
 
     internal HttpRequestMessage CreateRequest(IMessage request, string host)
@@ -77,12 +75,7 @@ internal class RestMethod
         var transcodingOutput = _transcoder.Transcode(request)
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument,
                 "Request could not be transcoded; it does not match any HTTP rule. Please check that all required fields are set with appropriate values."));
-
-        if (_apiMetadata.RequestNumericEnumJsonEncoding)
-        {
-            transcodingOutput = transcodingOutput.WithAdditionalQueryParameter("$alt", "json;enum-encoding=int");
-        }
-        return transcodingOutput.CreateRequest(host);
+        return transcodingOutput.ToHttpRequestMessage(host);
     }
 
     /// <summary>

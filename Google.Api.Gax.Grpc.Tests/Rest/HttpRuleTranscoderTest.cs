@@ -67,7 +67,7 @@ public class HttpRuleTranscoderTest
                 break;
             case ExpectedResultOneofCase.Success:
                 Assert.NotNull(request);
-                var actualResult = CreateTranscoder().Transcode(request);
+                var actualResult = CreateTranscoder().Transcode(request) as HttpRuleTranscodingOutput;
                 var expectedResult = test.Success;
                 Assert.NotNull(actualResult);
                 Assert.Equal(expectedResult.Method, actualResult.Method.Method);
@@ -79,7 +79,7 @@ public class HttpRuleTranscoderTest
                 throw new ArgumentException($"Unknown expected result case: {test.ExpectedResultCase}");
         }
 
-        HttpRuleTranscoder CreateTranscoder() => new HttpRuleTranscoder(test.Name, requestMessageDescriptor, rule);
+        ITranscoder CreateTranscoder() => new HttpRuleTranscoder(test.Name, requestMessageDescriptor, rule, TestApiMetadata.Test);
     }
 }
 
