@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -47,10 +47,9 @@ namespace Google.Api.Gax.Grpc.Rest
             var typeRegistry = TypeRegistry.FromFiles(fileDescriptors.ToArray());
             var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true).WithTypeRegistry(typeRegistry));
             var methodsByName = services.SelectMany(service => service.Methods)
-                .ToDictionary(
-                    RestMethod.GetGrpcFullName,
-                    method => RestMethod.Create(metadata, method, parser),
-                    StringComparer.Ordinal);
+                .SelectMany(method => RestMethod.Create(metadata, method, parser))
+                .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
             return new RestServiceCollection(new ReadOnlyDictionary<string, RestMethod>(methodsByName));
         }
     }

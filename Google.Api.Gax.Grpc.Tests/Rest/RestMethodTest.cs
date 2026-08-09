@@ -25,7 +25,7 @@ public class RestMethodTest
     {
         var apiMetadata = TestApiMetadata.Test.WithRequestNumericEnumJsonEncoding(value);
         var methodDescriptor = GetMethod("Sample", "SimpleMethod");
-        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        var restMethod = Assert.Single(RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default)).Value;
 
         var request = new SimpleRequest { Name = "abc" };
         var httpRequest = restMethod.CreateRequest(request, null);
@@ -39,7 +39,7 @@ public class RestMethodTest
         var methodDescriptor = GetMethod("Sample", "SimpleMethod");
         var overrides = new Dictionary<string, ByteString> { { methodDescriptor.FullName, rule.ToByteString() } };
         var apiMetadata = TestApiMetadata.Test.WithHttpRuleOverrides(overrides);
-        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        var restMethod = Assert.Single(RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default)).Value;
 
         var request = new SimpleRequest { Name = "ghi" };
         var httpRequest = restMethod.CreateRequest(request, null);
@@ -53,7 +53,7 @@ public class RestMethodTest
         var methodDescriptor = GetMethod("Sample", "MethodWithNoHttpOptions");
         var overrides = new Dictionary<string, ByteString> { { methodDescriptor.FullName, rule.ToByteString() } };
         var apiMetadata = TestApiMetadata.Test.WithHttpRuleOverrides(overrides);
-        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        var restMethod = Assert.Single(RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default)).Value;
         Assert.NotNull(restMethod);
     }
 
@@ -65,8 +65,8 @@ public class RestMethodTest
     {
         var methodDescriptor = GetMethod("Sample", method);
         var apiMetadata = TestApiMetadata.Test;
-        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
-        Assert.Null(restMethod);
+        var pair = Assert.Single(RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default));
+        Assert.Null(pair.Value);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class RestMethodTest
         var methodDescriptor = BadServiceReflection.Descriptor.Services.Single()
             .FindMethodByName("BadResourcePath");
         var apiMetadata = TestApiMetadata.Test;
-        Assert.Throws<ArgumentException>(() => RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default));
+        Assert.Throws<ArgumentException>(() => RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default).ToList());
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class RestMethodTest
     {
         var apiMetadata = TestApiMetadata.Test;
         var methodDescriptor = GetMethod("Sample", "SimpleMethod");
-        var restMethod = RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default);
+        var restMethod = Assert.Single(RestMethod.Create(apiMetadata, methodDescriptor, JsonParser.Default)).Value;
 
         var request = new SimpleRequest();
         var exception = Assert.Throws<RpcException>(() => restMethod.CreateRequest(request, null));
