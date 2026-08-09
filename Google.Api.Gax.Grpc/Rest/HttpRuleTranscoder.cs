@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -22,7 +22,8 @@ namespace Google.Api.Gax.Grpc.Rest;
 internal sealed partial class HttpRuleTranscoder : ITranscoder
 {
     private readonly List<SingleRuleTranscoder> _transcoders;
-    private ApiMetadata _apiMetadata;
+    private readonly ApiMetadata _apiMetadata;
+    private readonly string _methodName;
 
     /// <summary>
     /// Creates a transcoder for the given method (named only for error messages) with the specified
@@ -35,6 +36,7 @@ internal sealed partial class HttpRuleTranscoder : ITranscoder
     /// <param name="apiMetadata">Metadata for the API the method belongs to.</param>
     internal HttpRuleTranscoder(string methodName, MessageDescriptor requestMessage, HttpRule rule, ApiMetadata apiMetadata)
     {
+        _methodName = methodName;
         _transcoders = new List<SingleRuleTranscoder> { new SingleRuleTranscoder(methodName, requestMessage, rule) };
         _transcoders.AddRange(rule.AdditionalBindings.Select(binding => new SingleRuleTranscoder(methodName, requestMessage, binding)));
         _apiMetadata = apiMetadata;
@@ -49,6 +51,10 @@ internal sealed partial class HttpRuleTranscoder : ITranscoder
         var output = _transcoders
             .Select(t => t.Transcode(request))
             .FirstOrDefault(result => result is not null);
+        if (RestMethod.IsResumableUploadMethod(_methodName, _apiMetadata, out string prefix) && prefix is not null)
+        {
+            output = output?.WithPrefix(prefix);
+        }
         if (_apiMetadata.RequestNumericEnumJsonEncoding)
         {
             output = output?.WithAdditionalQueryParameter("$alt", "json;enum-encoding=int");
