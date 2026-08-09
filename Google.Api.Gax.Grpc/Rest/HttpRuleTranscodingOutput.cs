@@ -17,7 +17,7 @@ namespace Google.Api.Gax.Grpc.Rest;
 /// The result of transcoding a protobuf request using an HttpRule.
 /// This is produced by <see cref="HttpRuleTranscoder"/>.
 /// </summary>
-internal sealed class TranscodingOutput
+internal sealed class HttpRuleTranscodingOutput : ITranscodingOutput
 {
     private const string ApplicationJsonMediaType = "application/json";
 
@@ -26,12 +26,11 @@ internal sealed class TranscodingOutput
     internal string Body { get; }
     internal HttpMethod Method { get; }
 
-    internal TranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body) =>
+    internal HttpRuleTranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body) =>
         (Method, _uriPath, _queryStringParameters, Body) =
         (method, uriPath, queryStringParameters, body);
 
-    // TODO: Rename to ToHttpRequestMessage?
-    internal HttpRequestMessage CreateRequest(string host)
+    HttpRequestMessage ITranscodingOutput.ToHttpRequestMessage(string host)
     {
         var relativeUri = GetRelativeUri();
         var uri = host is null ? new Uri(relativeUri, UriKind.Relative) : new UriBuilder { Host = host, Path = relativeUri }.Uri;
@@ -46,13 +45,13 @@ internal sealed class TranscodingOutput
         };
     }
 
-    internal TranscodingOutput WithAdditionalQueryParameter(string name, string value) =>
-        new TranscodingOutput(Method, _uriPath, _queryStringParameters.Concat(new[] { new KeyValuePair<string, string>(name, value) }), Body);
+    internal HttpRuleTranscodingOutput WithAdditionalQueryParameter(string name, string value) =>
+        new HttpRuleTranscodingOutput(Method, _uriPath, _queryStringParameters.Concat(new[] { new KeyValuePair<string, string>(name, value) }), Body);
 
     /// <summary>
     /// Merges the uri path and the query string parameters, escaping them.
     /// Ignores the possibility that the path can already have parameters or contain an anchor (`#`).
-    /// This method is visible for testing; production code should generally call <see cref="CreateRequest(string)"/>
+    /// This method is visible for testing; production code should generally call <see cref="ITranscodingOutput.ToHttpRequestMessage(string)"/>
     /// instead.
     /// </summary>
     /// <returns>The URI path merged with the encoded query string parameters</returns>
