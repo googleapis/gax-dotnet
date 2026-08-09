@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -21,14 +21,20 @@ internal sealed class HttpRuleTranscodingOutput : ITranscodingOutput
 {
     private const string ApplicationJsonMediaType = "application/json";
 
-    private IEnumerable<KeyValuePair<string, string>> _queryStringParameters;
-    private string _uriPath;
+    private readonly IEnumerable<KeyValuePair<string, string>> _queryStringParameters;
+    private readonly string _uriPath;
+    private readonly string _prefix;
     internal string Body { get; }
     internal HttpMethod Method { get; }
 
-    internal HttpRuleTranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body) =>
-        (Method, _uriPath, _queryStringParameters, Body) =
-        (method, uriPath, queryStringParameters, body);
+    internal HttpRuleTranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body)
+        : this(method, uriPath, queryStringParameters, body, prefix: null)
+    {
+    }
+
+    private HttpRuleTranscodingOutput(HttpMethod method, string uriPath, IEnumerable<KeyValuePair<string, string>> queryStringParameters, string body, string prefix) =>
+        (Method, _uriPath, _queryStringParameters, Body, _prefix) =
+        (method, uriPath, queryStringParameters, body, prefix);
 
     HttpRequestMessage ITranscodingOutput.ToHttpRequestMessage(string host)
     {
@@ -46,7 +52,10 @@ internal sealed class HttpRuleTranscodingOutput : ITranscodingOutput
     }
 
     internal HttpRuleTranscodingOutput WithAdditionalQueryParameter(string name, string value) =>
-        new HttpRuleTranscodingOutput(Method, _uriPath, _queryStringParameters.Concat(new[] { new KeyValuePair<string, string>(name, value) }), Body);
+        new HttpRuleTranscodingOutput(Method, _uriPath, _queryStringParameters.Concat(new[] { new KeyValuePair<string, string>(name, value) }), Body, _prefix);
+
+    internal HttpRuleTranscodingOutput WithPrefix(string prefix) =>
+        new HttpRuleTranscodingOutput(Method, _uriPath, _queryStringParameters, Body, prefix);
 
     /// <summary>
     /// Merges the uri path and the query string parameters, escaping them.
@@ -58,6 +67,15 @@ internal sealed class HttpRuleTranscodingOutput : ITranscodingOutput
     internal string GetRelativeUri()
     {
         var sb = new StringBuilder();
+        if (!string.IsNullOrEmpty(_prefix))
+        {
+            // We trim the trailing '/' but it may have not been present at all.
+            sb.Append(_prefix.TrimEnd('/'));
+        }
+        if (!_uriPath.StartsWith("/"))
+        {
+            sb.Append("/");
+        }
         sb.Append(_uriPath);
         bool sbHasParameters = false;
 

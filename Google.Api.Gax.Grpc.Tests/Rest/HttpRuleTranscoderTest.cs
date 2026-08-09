@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -80,6 +80,20 @@ public class HttpRuleTranscoderTest
         }
 
         ITranscoder CreateTranscoder() => new HttpRuleTranscoder(test.Name, requestMessageDescriptor, rule, TestApiMetadata.Test);
+    }
+
+    [Fact]
+    public void Transcode_ResumableUploadStart_PrependsPrefix()
+    {
+        var rule = new HttpRule { Post = "/v1/media/upload", Body = "*" };
+        var requestMessageDescriptor = SimpleRequest.Descriptor;
+        var transcoder = (ITranscoder) new HttpRuleTranscoder("google.showcase.v1beta1.ResumableUploadService.UploadMedia", requestMessageDescriptor, rule, TestApiMetadata.Test);
+        var request = new SimpleRequest { Name = "test" };
+
+        var output = transcoder.Transcode(request);
+        Assert.NotNull(output);
+        var httpRequest = output.ToHttpRequestMessage(host: null);
+        Assert.Equal("/resumable/upload/v1/media/upload", httpRequest.RequestUri.ToString());
     }
 }
 
