@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -85,6 +85,13 @@ namespace Google.Api.Gax.Grpc.Tests
             // We could just keep hold of the ByteString, but this demonstrates the expected usage more clearly.
             var decoded = HttpRule.Parser.ParseFrom(ruleBytes);
             Assert.Equal(rule, decoded);
+        }
+
+        [Fact]
+        public void ResumableUploadPrefix()
+        {
+            var original = TestApiMetadata.Test;
+            Assert.Equal("/resumable/upload", original.ResumableUploadPrefix);
         }
 
         private class CountingSequence : IEnumerable<FileDescriptor>

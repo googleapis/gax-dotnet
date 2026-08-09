@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -49,6 +49,14 @@ namespace Google.Api.Gax.Grpc
         /// rather than as strings, preserving unknown values.
         /// </summary>
         public bool RequestNumericEnumJsonEncoding { get; }
+
+        // TODO: To be populated from the service config once that's available.
+        // For now we hardcode "/resumable/upload" because both supported services,
+        // Showcase and Ads, use the same prefix.
+        /// <summary>
+        /// The prefix used for resumable upload requests, if any.
+        /// </summary>
+        internal string ResumableUploadPrefix => "/resumable/upload";
 
         /// <summary>
         /// A dictionary (based on ordinal string comparisons) from fully-qualified RPC names

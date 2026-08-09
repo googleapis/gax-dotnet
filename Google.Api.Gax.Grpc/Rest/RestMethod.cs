@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -8,6 +8,8 @@
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -113,4 +115,29 @@ internal class RestMethod
     /// <typeparam name="TResponse">The response type to parse; this is expected to match the method output type.</typeparam>
     internal TResponse ParseJson<TResponse>(string json) =>
         (TResponse) _parser.Parse(json, _protoMethod.OutputType);
+
+    // TODO: Hardcoded method names will be replaced by inspecting a value on the HttpRule
+    // once service configs and proto annotations are available.
+    internal static bool IsResumableUploadMethod(string methodFullName, ApiMetadata apiMetadata, out string resumableUploadPrefix)
+    {
+        resumableUploadPrefix = null;
+        // TODO: This should examine the HttpRule associated to the method once that's possible.
+        bool isResumableUpload = s_resumableUploadAllowlist.Contains(methodFullName);
+        if (isResumableUpload)
+        {
+            resumableUploadPrefix = apiMetadata.ResumableUploadPrefix;
+        }
+        // Note that it's possible to return true here, but there might be no prefix.
+        // That's fine, we need to skip a method that's marked as resumable upload in the annotation
+        // but where there are no resumable upload settings on the service configuration.
+        return isResumableUpload;
+    }
+
+    private static readonly HashSet<string> s_resumableUploadAllowlist = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "google.showcase.v1beta1.ResumableUploadService.UploadMedia",
+        "google.ads.googleads.v23.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
+        "google.ads.googleads.v24.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
+        "google.ads.googleads.v25.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
+    };
 }

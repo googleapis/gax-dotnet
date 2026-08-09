@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2022 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -88,6 +88,20 @@ public class RestMethodTest
         var request = new SimpleRequest();
         var exception = Assert.Throws<RpcException>(() => restMethod.CreateRequest(request, null));
         Assert.Equal(StatusCode.InvalidArgument, exception.StatusCode);
+    }
+
+    [Theory]
+    [InlineData("google.showcase.v1beta1.ResumableUploadService.UploadMedia", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v23.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v24.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v25.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.showcase.v1beta1.ResumableUploadService.OtherMethod", false, null)]
+    public void IsResumableUploadMethod(string methodFullName, bool expectedResult, string expectedPrefix)
+    {
+        var apiMetadata = TestApiMetadata.Test;
+        bool isResumable = RestMethod.IsResumableUploadMethod(methodFullName, apiMetadata, out var prefix);
+        Assert.Equal(expectedResult, isResumable);
+        Assert.Equal(expectedPrefix, prefix);
     }
 
     private static MethodDescriptor GetMethod(string service, string method) =>
