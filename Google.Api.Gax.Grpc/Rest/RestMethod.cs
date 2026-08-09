@@ -31,7 +31,7 @@ internal class RestMethod
     /// </summary>
     internal string FullName { get; }
 
-    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, string fullName, HttpRuleTranscoder transcoder) =>
+    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, string fullName, ITranscoder transcoder) =>
         (_protoMethod,  _parser, FullName, _transcoder) =
         (protoMethod, parser, fullName, transcoder);
 
@@ -78,6 +78,21 @@ internal class RestMethod
             yield return new KeyValuePair<string, RestMethod>(methodGrpcName, null);
             yield break;
         }
+
+        if (IsResumableUploadMethod(method.FullName, apiMetadata, out string prefix))
+        {
+            string startedName = $"{methodGrpcName}#started";
+            methodGrpcName = $"{methodGrpcName}#start";
+            if (prefix is null)
+            {
+                yield return new KeyValuePair<string, RestMethod>(methodGrpcName, null);
+                yield return new KeyValuePair<string, RestMethod>(startedName, null);
+                yield break;
+            }
+
+            yield return new KeyValuePair<string, RestMethod>(startedName, new RestMethod(method, parser, startedName, ResumableUploadTranscoder.Instance));
+        }
+
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule, apiMetadata);
         yield return new KeyValuePair<string, RestMethod>(methodGrpcName, new RestMethod(method, parser, methodGrpcName, transcoder));
     }
