@@ -29,30 +29,39 @@ internal class RestMethod
     /// </summary>
     internal string FullName { get; }
 
-    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, HttpRuleTranscoder transcoder) =>
+    private RestMethod(MethodDescriptor protoMethod, JsonParser parser, string fullName, HttpRuleTranscoder transcoder) =>
         (_protoMethod,  _parser, FullName, _transcoder) =
-        (protoMethod, parser, GetGrpcFullName(protoMethod), transcoder);
+        (protoMethod, parser, fullName, transcoder);
 
     /// <summary>
     /// Returns the name by which gRPC will refer to the given proto method,
     /// e.g. "/google.somepackage.SomeService/SomeMethod".
     /// </summary>
-    internal static string GetGrpcFullName(MethodDescriptor method) => $"/{method.Service.FullName}/{method.Name}";
+    private static string GetGrpcFullName(MethodDescriptor method) => $"/{method.Service.FullName}/{method.Name}";
 
     /// <summary>
-    /// Creates a <see cref="RestMethod"/> representation from the given protobuf method representation.
+    /// Creates <see cref="RestMethod"/> representations from the given protobuf method representation.
     /// </summary>
     /// <param name="apiMetadata">The metadata for the API that this method is part of.</param>
     /// <param name="method">The protobuf method to represent.</param>
     /// <param name="parser">The JSON parser to use when parsing requests.</param>
-    /// <returns>A representation of the method that can be used to handle HTTP requests/responses,
-    /// or null if the method is currently not supported in REGAPIC.</returns>
-    internal static RestMethod Create(ApiMetadata apiMetadata, MethodDescriptor method, JsonParser parser)
+    /// <returns>
+    /// A sequence of representations of the method that can be used to handle HTTP requests/responses.
+    /// A representation may be null if the method is currently not supported in REGAPIC.
+    /// </returns>
+    /// <remarks>
+    /// Most protobuf methods will have a single representation. But in some cases, like for
+    /// resumable upload, a single protobuf method will have several representations, e.g.
+    /// one for "start", one for "upload", one for "query", etc.
+    /// </remarks>
+    internal static IEnumerable<KeyValuePair<string,RestMethod>> Create(ApiMetadata apiMetadata, MethodDescriptor method, JsonParser parser)
     {
+        string methodGrpcName = GetGrpcFullName(method);
         // We don't support client streaming (and bidi) methods with REST.
         if (method.IsClientStreaming)
         {
-            return null;
+            yield return new KeyValuePair<string, RestMethod>(methodGrpcName, null);
+            yield break;
         }
         var rule = method.GetOptions()?.GetExtension(AnnotationsExtensions.Http);
         // If we have an override, it completely replaces the original rule,
@@ -64,10 +73,11 @@ internal class RestMethod
         // If we still haven't got a rule, this method isn't supported in REGAPIC.
         if (rule is null)
         {
-            return null;
+            yield return new KeyValuePair<string, RestMethod>(methodGrpcName, null);
+            yield break;
         }
         var transcoder = new HttpRuleTranscoder(method.FullName, method.InputType, rule, apiMetadata);
-        return new RestMethod(method, parser, transcoder);
+        yield return new KeyValuePair<string, RestMethod>(methodGrpcName, new RestMethod(method, parser, methodGrpcName, transcoder));
     }
 
     internal HttpRequestMessage CreateRequest(IMessage request, string host)
