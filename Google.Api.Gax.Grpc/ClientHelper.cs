@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2016 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -89,8 +89,8 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Builds an <see cref="ApiCall"/> given suitable underlying async and sync calls.
         /// </summary>
-        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
-        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TRequest">Request type.</typeparam>
+        /// <typeparam name="TResponse">Response type.</typeparam>
         /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <param name="asyncGrpcCall">The underlying synchronous gRPC call.</param>
         /// <param name="syncGrpcCall">The underlying asynchronous gRPC call.</param>
@@ -101,8 +101,8 @@ namespace Google.Api.Gax.Grpc
             Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,
             CallSettings perMethodCallSettings)
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
+            where TRequest : class
+            where TResponse : class
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
@@ -117,8 +117,8 @@ namespace Google.Api.Gax.Grpc
         /// <summary>
         /// Builds an <see cref="ApiServerStreamingCall"/> given a suitable underlying server streaming call.
         /// </summary>
-        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
-        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TRequest">Request type.</typeparam>
+        /// <typeparam name="TResponse">Response type.</typeparam>
         /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
         /// <param name="grpcCall">The underlying gRPC server streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
@@ -126,8 +126,8 @@ namespace Google.Api.Gax.Grpc
         public ApiServerStreamingCall<TRequest, TResponse> BuildApiCall<TRequest, TResponse>(
             string methodName, Func<TRequest, CallOptions, AsyncServerStreamingCall<TResponse>> grpcCall,
             CallSettings perMethodCallSettings)
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
+            where TRequest : class
+            where TResponse : class
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             // These operations are applied in reverse order.
@@ -142,8 +142,8 @@ namespace Google.Api.Gax.Grpc
         /// Builds an <see cref="ApiBidirectionalStreamingCall"/> given a suitable underlying duplex call.
         /// </summary>
         /// <param name="methodName">The underlying method name, for diagnostic purposes.</param>
-        /// <typeparam name="TRequest">Request type, which must be a protobuf message.</typeparam>
-        /// <typeparam name="TResponse">Response type, which must be a protobuf message.</typeparam>
+        /// <typeparam name="TRequest">Request type.</typeparam>
+        /// <typeparam name="TResponse">Response type.</typeparam>
         /// <param name="grpcCall">The underlying gRPC duplex streaming call.</param>
         /// <param name="perMethodCallSettings">The default method call settings.</param>
         /// <param name="streamingSettings">The default streaming settings.</param>
@@ -153,8 +153,8 @@ namespace Google.Api.Gax.Grpc
             Func<CallOptions, AsyncDuplexStreamingCall<TRequest, TResponse>> grpcCall,
             CallSettings perMethodCallSettings,
             BidirectionalStreamingSettings streamingSettings)
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
+            where TRequest : class
+            where TResponse : class
         {
             CallSettings baseCallSettings = _clientCallSettings.MergedWith(perMethodCallSettings);
             return ApiBidirectionalStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
