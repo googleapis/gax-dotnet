@@ -1,11 +1,10 @@
-﻿/*
+/*
  * Copyright 2016 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,8 +21,8 @@ namespace Google.Api.Gax.Grpc
             Func<TRequest, CallOptions, TResponse> syncGrpcCall,
             CallSettings baseCallSettings,
             IClock clock)
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
+            where TRequest : class
+            where TResponse : class
         {
             var adapter = new GrpcCallAdapter<TRequest, TResponse>(asyncGrpcCall, syncGrpcCall, clock);
             return new ApiCall<TRequest, TResponse>(methodName, adapter.CallAsync, adapter.CallSync, baseCallSettings);
@@ -34,8 +33,8 @@ namespace Google.Api.Gax.Grpc
         /// to use the async gRPC code.
         /// </summary>
         private class GrpcCallAdapter<TRequest, TResponse>
-            where TRequest : class, IMessage<TRequest>
-            where TResponse : class, IMessage<TResponse>
+            where TRequest : class
+            where TResponse : class
         {
             private readonly Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> _asyncGrpcCall;
             private readonly Func<TRequest, CallOptions, TResponse> _syncGrpcCall;
@@ -104,8 +103,8 @@ namespace Google.Api.Gax.Grpc
     /// <typeparam name="TRequest">RPC request type</typeparam>
     /// <typeparam name="TResponse">RPC response type</typeparam>
     public sealed class ApiCall<TRequest, TResponse>
-        where TRequest : class, IMessage<TRequest>
-        where TResponse : class, IMessage<TResponse>
+        where TRequest : class
+        where TResponse : class
     {
         private readonly string _methodName;
         private readonly Func<TRequest, CallSettings, Task<TResponse>> _asyncCall;
