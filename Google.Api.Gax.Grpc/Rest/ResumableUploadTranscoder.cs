@@ -50,7 +50,7 @@ internal sealed class ResumableUploadTranscodingOutput : ITranscodingOutput
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, _request.Uri);
         if (_request.UploadChunk is not null)
         {
-            httpRequest.Content = new ByteArrayContent(_request.UploadChunk.Buffer, (int) _request.UploadChunk.Offset, _request.UploadChunk.Count);
+            httpRequest.Content = new ByteArrayContent(_request.UploadChunk.Buffer, (int) _request.UploadChunk.BufferOffset, _request.UploadChunk.Count);
         }
 
         return httpRequest;

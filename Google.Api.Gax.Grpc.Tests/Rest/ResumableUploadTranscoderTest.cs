@@ -35,7 +35,7 @@ public class ResumableUploadTranscoderTest
     {
         var uploadUri = new Uri("https://storage.googleapis.com/upload/session123");
         byte[] buffer = new byte[] { 10, 20, 30, 40, 50 };
-        var chunk = new ResumableUploadChunk(buffer, offset: 1, count: 3);
+        var chunk = new ResumableUploadChunk(buffer, bufferOffset: 1, count: 3, uploadOffset: 100);
         var request = new ResumableUploadRequest(uploadUri, chunk);
 
         ITranscodingOutput output = s_transcoder.Transcode(request);

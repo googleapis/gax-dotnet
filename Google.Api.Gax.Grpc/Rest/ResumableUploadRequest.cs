@@ -24,18 +24,24 @@ internal sealed class ResumableUploadChunk
     /// <summary>
     /// The offset in <see cref="Buffer"/> where the chunk data begins.
     /// </summary>
-    internal long Offset { get; }
+    internal long BufferOffset { get; }
 
     /// <summary>
     /// The number of bytes in the chunk.
     /// </summary>
     internal int Count { get; }
 
-    internal ResumableUploadChunk(byte[] buffer, long offset, int count)
+    /// <summary>
+    /// The offset in the overall upload stream where this chunk begins.
+    /// </summary>
+    internal long UploadOffset { get; }
+
+    internal ResumableUploadChunk(byte[] buffer, long bufferOffset, int count, long uploadOffset)
     {
         Buffer = GaxPreconditions.CheckNotNull(buffer, nameof(buffer));
-        Offset = offset;
+        BufferOffset = bufferOffset;
         Count = count;
+        UploadOffset = uploadOffset;
     }
 }
 
