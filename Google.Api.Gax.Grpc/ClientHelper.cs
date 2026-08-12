@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Grpc.Rest;
 using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -185,6 +186,57 @@ namespace Google.Api.Gax.Grpc
             return ApiClientStreamingCall.Create(methodName, grpcCall, baseCallSettings, streamingSettings, Clock)
                 .WithLogging(Logger)
                 .WithTracing(_activitySource)
+                .WithMergedBaseCallSettings(_versionCallSettings);
+        }
+
+        /// <summary>
+        /// Builds an <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> given a <see cref="CallInvoker"/>, service name, and method name.
+        /// </summary>
+        /// <remarks>
+        /// A gRPC <see cref="Method{TRequest, TResponse}"/> descriptor is synthesized internally because the gRPC C# plugin
+        /// generates method descriptors as private static fields on the outer gRPC service class, making them inaccessible
+        /// to the generated client implementation class.
+        /// </remarks>
+        /// <typeparam name="TRequest">Request type.</typeparam>
+        /// <typeparam name="TResponse">Response type.</typeparam>
+        /// <param name="serviceName">The service name (e.g. google.showcase.v1beta1.Compliance).</param>
+        /// <param name="methodName">The method name (e.g. UploadMedia).</param>
+        /// <param name="callInvoker">The underlying call invoker. Must be a <see cref="RestCallInvoker"/>.</param>
+        /// <param name="startMethodCallSettings">The default method call settings.</param>
+        /// <param name="resumableUploadSettings">The default resumable upload settings.</param>
+        /// <returns>An API call proxy for resumable upload operations.</returns>
+        public ApiResumableUploadCall<TRequest, TResponse> BuildResumableUploadCall<TRequest, TResponse>(
+            string serviceName,
+            string methodName,
+            CallInvoker callInvoker,
+            CallSettings startMethodCallSettings,
+            ResumableUploadSettings resumableUploadSettings = null)
+            where TRequest : class, IMessage<TRequest>, new()
+            where TResponse : class, IMessage<TResponse>, new()
+        {
+            var method = new Method<TRequest, TResponse>(
+                MethodType.Unary,
+                serviceName,
+                methodName,
+                Marshallers.Create(
+                    (arg, ctx) => ctx.Complete(arg.ToByteArray()),
+                    ctx =>
+                    {
+                        var parser = new MessageParser<TRequest>(() => new TRequest());
+                        return parser.ParseFrom(ctx.PayloadAsReadOnlySequence());
+                    }),
+                Marshallers.Create(
+                    (arg, ctx) => ctx.Complete(arg.ToByteArray()),
+                    ctx =>
+                    {
+                        var parser = new MessageParser<TResponse>(() => new TResponse());
+                        return parser.ParseFrom(ctx.PayloadAsReadOnlySequence());
+                    }));
+            CallSettings startMethodbaseCallSettings = _clientCallSettings.MergedWith(startMethodCallSettings);
+            return ApiResumableUploadCall.Create(methodName, callInvoker, method, startMethodbaseCallSettings, resumableUploadSettings, Clock)
+                .WithLogging(Logger)
+                .WithTracing(_activitySource)
+                .WithRetry(Clock, Scheduler, Logger)
                 .WithMergedBaseCallSettings(_versionCallSettings);
         }
 
