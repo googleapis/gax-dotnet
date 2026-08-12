@@ -198,7 +198,7 @@ public class ResumableUploadClientTest
         handler.StatusCode = HttpStatusCode.Unauthorized;
 
         var request = new SimpleRequest { Name = "test" };
-        var ex = await Assert.ThrowsAsync<RpcException>(() => client.StartAsync(request));
+        var ex = await Assert.ThrowsAsync<RpcException>(async () => await client.StartAsync(request));
         Assert.Equal(StatusCode.Unauthenticated, ex.StatusCode);
     }
 

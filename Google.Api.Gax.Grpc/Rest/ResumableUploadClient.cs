@@ -105,7 +105,7 @@ internal sealed class ResumableUploadClient<TRequest, TResponse>
     /// <summary>
     /// Issues the 'start' command for a resumable upload session.
     /// </summary>
-    internal async Task<StartUploadResponse> StartAsync(TRequest request, CallOptions options = default)
+    internal AsyncUnaryCall<StartUploadResponse> StartAsync(TRequest request, CallOptions options = default)
     {
         GaxPreconditions.CheckNotNull(request, nameof(request));
 
@@ -113,10 +113,18 @@ internal sealed class ResumableUploadClient<TRequest, TResponse>
         options = WithHeader(options, ResumableUploadClient.CommandHeaderName, ResumableUploadClient.StartCommandValue);
 
         var call = _callInvoker.AsyncUnaryCall(_startMethod, host: null, options, request);
+        return new AsyncUnaryCall<StartUploadResponse>(
+            GetStartUploadResponseAsync(call),
+            call.ResponseHeadersAsync,
+            call.GetStatus,
+            call.GetTrailers,
+            call.Dispose);
+    }
 
+    private static async Task<StartUploadResponse> GetStartUploadResponseAsync(AsyncUnaryCall<TResponse> call)
+    {
         await call.ResponseAsync.ConfigureAwait(false);
         var headers = await call.ResponseHeadersAsync.ConfigureAwait(false);
-
         return StartUploadResponse.FromResponseHeaders(headers);
     }
 
@@ -124,30 +132,30 @@ internal sealed class ResumableUploadClient<TRequest, TResponse>
     /// Issues the 'upload' command for a chunk of a resumable upload session.
     /// Attaches the 'X-Goog-Upload-Offset' header extracted from <see cref="ResumableUploadChunk.UploadOffset"/>.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> UploadChunkAsync(ResumableUploadRequest request, CallOptions options = default) =>
+    internal AsyncUnaryCall<UploadChunkResponse<TResponse>> UploadChunkAsync(ResumableUploadRequest request, CallOptions options = default) =>
         ExecuteStartedCommandAsync(request, ResumableUploadClient.UploadCommandValue, includeUploadOffset: true, options);
 
     /// <summary>
     /// Issues the 'upload, finalize' command for the final chunk of a resumable upload session.
     /// Attaches the 'X-Goog-Upload-Offset' header extracted from <see cref="ResumableUploadChunk.UploadOffset"/>.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> UploadFinalizeAsync(ResumableUploadRequest request, CallOptions options = default) =>
+    internal AsyncUnaryCall<UploadChunkResponse<TResponse>> UploadFinalizeAsync(ResumableUploadRequest request, CallOptions options = default) =>
         ExecuteStartedCommandAsync(request, ResumableUploadClient.UploadFinalizeCommandValue, includeUploadOffset: true, options);
 
     /// <summary>
     /// Issues the 'query' command to inspect the current committed offset of a resumable upload session.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> QueryOffsetAsync(ResumableUploadRequest request, CallOptions options = default) =>
+    internal AsyncUnaryCall<UploadChunkResponse<TResponse>> QueryOffsetAsync(ResumableUploadRequest request, CallOptions options = default) =>
         ExecuteStartedCommandAsync(request, ResumableUploadClient.QueryCommandValue, includeUploadOffset: false, options);
 
     /// <summary>
     /// Issues the 'finalize' command for an empty final payload to complete a resumable upload session.
     /// Does not attach the 'X-Goog-Upload-Offset' header as no payload data is transmitted.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> FinalizeAsync(ResumableUploadRequest request, CallOptions options = default) =>
+    internal AsyncUnaryCall<UploadChunkResponse<TResponse>> FinalizeAsync(ResumableUploadRequest request, CallOptions options = default) =>
         ExecuteStartedCommandAsync(request, ResumableUploadClient.FinalizeCommandValue, includeUploadOffset: false, options);
 
-    private async Task<UploadChunkResponse<TResponse>> ExecuteStartedCommandAsync(ResumableUploadRequest request, string command, bool includeUploadOffset, CallOptions options)
+    private AsyncUnaryCall<UploadChunkResponse<TResponse>> ExecuteStartedCommandAsync(ResumableUploadRequest request, string command, bool includeUploadOffset, CallOptions options)
     {
         GaxPreconditions.CheckNotNull(request, nameof(request));
         GaxPreconditions.CheckNotNull(command, nameof(command));
@@ -161,9 +169,18 @@ internal sealed class ResumableUploadClient<TRequest, TResponse>
         }
 
         var call = _callInvoker.AsyncUnaryCall(_startedMethod, host: null, options, request);
+        return new AsyncUnaryCall<UploadChunkResponse<TResponse>>(
+            GetUploadChunkResponseAsync(call),
+            call.ResponseHeadersAsync,
+            call.GetStatus,
+            call.GetTrailers,
+            call.Dispose);
+    }
+
+    private static async Task<UploadChunkResponse<TResponse>> GetUploadChunkResponseAsync(AsyncUnaryCall<TResponse> call)
+    {
         var responseBody = await call.ResponseAsync.ConfigureAwait(false);
         var headers = await call.ResponseHeadersAsync.ConfigureAwait(false);
-
         return UploadChunkResponse<TResponse>.FromHeadersAndPayload(headers, responseBody);
     }
 

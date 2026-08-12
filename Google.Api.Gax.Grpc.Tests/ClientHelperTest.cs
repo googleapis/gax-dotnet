@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2016 Google Inc. All Rights Reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -127,6 +127,44 @@ namespace Google.Api.Gax.Grpc.Tests
             void AssertNoVersionHeader(CallOptions callOptions) =>
                 Assert.DoesNotContain(callOptions.Headers, entry => entry.Key == ClientHelper.ApiVersionHeaderName);
         }
+
+        [Fact]
+        public void BuildResumableUploadCall_NonRestCallInvoker_ThrowsArgumentException()
+        {
+            var options = new ClientHelper.Options { Settings = new SimpleSettings() };
+            var helper = new ClientHelper(options);
+            var dummyCallInvoker = new DummyCallInvoker();
+
+            var ex = Assert.Throws<ArgumentException>(() =>
+                helper.BuildResumableUploadCall<SimpleRequest, SimpleResponse>("google.showcase.v1beta1.Compliance", "UploadMedia", dummyCallInvoker, null));
+
+            Assert.Contains("Resumable uploads require a REST transport (RestCallInvoker)", ex.Message);
+        }
+
+        [Fact]
+        public void BuildResumableUploadCall_WithRestCallInvoker_ReturnsCall()
+        {
+            var options = new ClientHelper.Options { Settings = new SimpleSettings() };
+            var helper = new ClientHelper(options);
+            var serviceCollection = Rest.RestServiceCollection.Create(TestServiceMetadata.TestService.ApiMetadata);
+            var channel = new Rest.RestChannel(serviceCollection, "localhost", ChannelCredentials.Insecure, GrpcChannelOptions.Empty);
+            var restCallInvoker = (Rest.RestCallInvoker) channel.CreateCallInvoker();
+
+            var apiCall = helper.BuildResumableUploadCall<SimpleRequest, SimpleResponse>("google.showcase.v1beta1.Compliance", "UploadMedia", restCallInvoker, null);
+
+            Assert.NotNull(apiCall);
+        }
+
+        private class DummyCallInvoker : CallInvoker
+        {
+            public override AsyncClientStreamingCall<TRequest, TResponse> AsyncClientStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options) => throw new NotImplementedException();
+            public override AsyncDuplexStreamingCall<TRequest, TResponse> AsyncDuplexStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options) => throw new NotImplementedException();
+            public override AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) => throw new NotImplementedException();
+            public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) => throw new NotImplementedException();
+            public override TResponse BlockingUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string host, CallOptions options, TRequest request) => throw new NotImplementedException();
+        }
+
+
 
         private class SimpleSettings: ServiceSettingsBase
         {

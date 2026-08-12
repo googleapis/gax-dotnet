@@ -28,6 +28,18 @@ namespace Google.Api.Gax.Grpc
             return new ApiCall<TRequest, TResponse>(methodName, adapter.CallAsync, adapter.CallSync, baseCallSettings);
         }
 
+        internal static ApiCall<TRequest, TResponse> Create<TRequest, TResponse>(
+            string methodName,
+            Func<TRequest, CallOptions, AsyncUnaryCall<TResponse>> asyncGrpcCall,
+            CallSettings baseCallSettings,
+            IClock clock)
+            where TRequest : class
+            where TResponse : class
+        {
+            var adapter = new GrpcCallAdapter<TRequest, TResponse>(asyncGrpcCall, syncGrpcCall: null, clock);
+            return new ApiCall<TRequest, TResponse>(methodName, adapter.CallAsync, adapter.CallSync, baseCallSettings);
+        }
+
         /// <summary>
         /// Adapter used to mask the fact that when we need response/trailing metadata, a sync call may need
         /// to use the async gRPC code.
@@ -85,9 +97,9 @@ namespace Google.Api.Gax.Grpc
 
             internal TResponse CallSync(TRequest request, CallSettings callSettings)
             {
-                // If we don't have complicated requirements, use the gRPC sync call. Otherwise,
-                // async the sync call.
-                if (callSettings?.ResponseMetadataHandler == null && callSettings?.TrailingMetadataHandler == null)
+                // If we don't have complicated requirements and a sync call is provided, use the gRPC sync call.
+                // Otherwise, delegate to CallAsync.
+                if (_syncGrpcCall != null && callSettings?.ResponseMetadataHandler == null && callSettings?.TrailingMetadataHandler == null)
                 {
                     return _syncGrpcCall(request, callSettings.ToCallOptions(_clock));
                 }
