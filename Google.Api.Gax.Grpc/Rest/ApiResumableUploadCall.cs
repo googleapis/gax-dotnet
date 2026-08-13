@@ -41,30 +41,33 @@ internal static class ApiResumableUploadCall
         var restCallInvoker = (RestCallInvoker) callInvoker;
         var resumableUploadClient = new ResumableUploadClient<TRequest, TResponse>(restCallInvoker, method);
 
+        var controlCallSettings = resumableUploadSettings.ToControlCallSettings();
+        var dataCallSettings = resumableUploadSettings.ToDataCallSettings();
+
         var startCall = ApiCall.Create<TRequest, StartUploadResponse>(
             $"{methodName}#start",
             resumableUploadClient.StartAsync,
-            startMethodCallSettings, clock);
+            controlCallSettings.MergedWith(startMethodCallSettings), clock);
 
         var uploadChunkCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<TResponse>>(
             $"{methodName}#upload",
             resumableUploadClient.UploadChunkAsync,
-            baseCallSettings: null, clock);
+            dataCallSettings, clock);
 
         var uploadFinalizeCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<TResponse>>(
             $"{methodName}#upload,finalize",
             resumableUploadClient.UploadFinalizeAsync,
-            baseCallSettings: null, clock);
+            dataCallSettings, clock);
 
         var queryOffsetCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<TResponse>>(
             $"{methodName}#query",
             resumableUploadClient.QueryOffsetAsync,
-            baseCallSettings: null, clock);
+            controlCallSettings, clock);
 
         var finalizeCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<TResponse>>(
             $"{methodName}#finalize",
             resumableUploadClient.FinalizeAsync,
-            baseCallSettings: null, clock);
+            dataCallSettings, clock);
 
         return new ApiResumableUploadCall<TRequest, TResponse>(
             startCall,
@@ -72,7 +75,8 @@ internal static class ApiResumableUploadCall
             uploadFinalizeCall,
             queryOffsetCall,
             finalizeCall,
-            resumableUploadSettings);
+            resumableUploadSettings,
+            clock);
     }
 }
 
@@ -119,6 +123,11 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
     internal ResumableUploadSettings ResumableUploadSettings { get; }
 
     /// <summary>
+    /// Gets the <see cref="IClock"/> for this call.
+    /// </summary>
+    internal IClock Clock { get; }
+
+    /// <summary>
     /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> with the specified parameters.
     /// </summary>
     internal ApiResumableUploadCall(
@@ -127,7 +136,8 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
         ApiCall<ResumableUploadRequest, UploadChunkResponse<TResponse>> uploadFinalizeCall,
         ApiCall<ResumableUploadRequest, UploadChunkResponse<TResponse>> queryOffsetCall,
         ApiCall<ResumableUploadRequest, UploadChunkResponse<TResponse>> finalizeCall,
-        ResumableUploadSettings resumableUploadSettings)
+        ResumableUploadSettings resumableUploadSettings,
+        IClock clock)
     {
         StartCall = GaxPreconditions.CheckNotNull(startCall, nameof(startCall));
         UploadChunkCall = GaxPreconditions.CheckNotNull(uploadChunkCall, nameof(uploadChunkCall));
@@ -135,6 +145,7 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
         QueryOffsetCall = GaxPreconditions.CheckNotNull(queryOffsetCall, nameof(queryOffsetCall));
         FinalizeCall = GaxPreconditions.CheckNotNull(finalizeCall, nameof(finalizeCall));
         ResumableUploadSettings = GaxPreconditions.CheckNotNull(resumableUploadSettings, nameof(resumableUploadSettings));
+        Clock = GaxPreconditions.CheckNotNull(clock, nameof(clock));
     }
 
     /// <summary>
@@ -144,28 +155,28 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
         StartCall.Async(request, perCallCallSettings);
 
     /// <summary>
-    /// Executes the 'upload' command asynchronously for a chunk.
+    /// Executes the 'upload' command asynchronously for a chunk with optional expiration.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> UploadChunkAsync(ResumableUploadRequest request) =>
-        UploadChunkCall.Async(request, perCallCallSettings: null);
+    internal Task<UploadChunkResponse<TResponse>> UploadChunkAsync(ResumableUploadRequest request, Expiration expiration = null) =>
+        UploadChunkCall.Async(request, CallSettings.FromExpiration(expiration));
 
     /// <summary>
-    /// Executes the 'upload, finalize' command asynchronously for the final chunk.
+    /// Executes the 'upload, finalize' command asynchronously for the final chunk with optional expiration.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> UploadFinalizeAsync(ResumableUploadRequest request) =>
-        UploadFinalizeCall.Async(request, perCallCallSettings: null);
+    internal Task<UploadChunkResponse<TResponse>> UploadFinalizeAsync(ResumableUploadRequest request, Expiration expiration = null) =>
+        UploadFinalizeCall.Async(request, CallSettings.FromExpiration(expiration));
 
     /// <summary>
-    /// Executes the 'query' command asynchronously to recover the committed offset.
+    /// Executes the 'query' command asynchronously to recover the committed offset with optional expiration.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> QueryOffsetAsync(ResumableUploadRequest request) =>
-        QueryOffsetCall.Async(request, perCallCallSettings: null);
+    internal Task<UploadChunkResponse<TResponse>> QueryOffsetAsync(ResumableUploadRequest request, Expiration expiration = null) =>
+        QueryOffsetCall.Async(request, CallSettings.FromExpiration(expiration));
 
     /// <summary>
-    /// Executes the 'finalize' command asynchronously for an empty final payload.
+    /// Executes the 'finalize' command asynchronously for an empty final payload with optional expiration.
     /// </summary>
-    internal Task<UploadChunkResponse<TResponse>> FinalizeAsync(ResumableUploadRequest request) =>
-        FinalizeCall.Async(request, perCallCallSettings: null);
+    internal Task<UploadChunkResponse<TResponse>> FinalizeAsync(ResumableUploadRequest request, Expiration expiration = null) =>
+        FinalizeCall.Async(request, CallSettings.FromExpiration(expiration));
 
     internal ApiResumableUploadCall<TRequest, TResponse> WithMergedBaseCallSettings(CallSettings settings) =>
         new ApiResumableUploadCall<TRequest, TResponse>(
@@ -174,7 +185,8 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
             UploadFinalizeCall,
             QueryOffsetCall,
             FinalizeCall,
-            ResumableUploadSettings);
+            ResumableUploadSettings,
+            Clock);
 
     /// <summary>
     /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> that applies an overlay to the underlying <see cref="CallSettings"/> of the <see cref="StartCall"/>.
@@ -186,7 +198,8 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
             UploadFinalizeCall,
             QueryOffsetCall,
             FinalizeCall,
-            ResumableUploadSettings);
+            ResumableUploadSettings,
+            Clock);
 
     internal ApiResumableUploadCall<TRequest, TResponse> WithLogging(ILogger logger) =>
         logger is null
@@ -197,7 +210,8 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
                 UploadFinalizeCall.WithLogging(logger),
                 QueryOffsetCall.WithLogging(logger),
                 FinalizeCall.WithLogging(logger),
-                ResumableUploadSettings);
+                ResumableUploadSettings,
+                Clock);
 
     internal ApiResumableUploadCall<TRequest, TResponse> WithTracing(ActivitySource activitySource) =>
         activitySource is null
@@ -208,19 +222,21 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
                 UploadFinalizeCall.WithTracing(activitySource),
                 QueryOffsetCall.WithTracing(activitySource),
                 FinalizeCall.WithTracing(activitySource),
-                ResumableUploadSettings);
+                ResumableUploadSettings,
+                Clock);
 
     /// <summary>
-    /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> with retry applied strictly to the <see cref="StartCall"/>.
+    /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> with retry applied to all underlying sub-calls.
     /// </summary>
     internal ApiResumableUploadCall<TRequest, TResponse> WithRetry(IClock clock, IScheduler scheduler, ILogger retryLogger) =>
         new ApiResumableUploadCall<TRequest, TResponse>(
             StartCall.WithRetry(clock, scheduler, retryLogger),
-            UploadChunkCall,
-            UploadFinalizeCall,
-            QueryOffsetCall,
-            FinalizeCall,
-            ResumableUploadSettings);
+            UploadChunkCall.WithRetry(clock, scheduler, retryLogger),
+            UploadFinalizeCall.WithRetry(clock, scheduler, retryLogger),
+            QueryOffsetCall.WithRetry(clock, scheduler, retryLogger),
+            FinalizeCall.WithRetry(clock, scheduler, retryLogger),
+            ResumableUploadSettings,
+            clock ?? Clock);
 
     /// <summary>
     /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> that applies an x-goog-request-params header to the <see cref="StartCall"/>.
@@ -232,7 +248,8 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
             UploadFinalizeCall,
             QueryOffsetCall,
             FinalizeCall,
-            ResumableUploadSettings);
+            ResumableUploadSettings,
+            Clock);
 
     /// <summary>
     /// Constructs a new <see cref="ApiResumableUploadCall{TRequest, TResponse}"/> that applies an extracted routing header to the <see cref="StartCall"/>.
@@ -244,5 +261,6 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
             UploadFinalizeCall,
             QueryOffsetCall,
             FinalizeCall,
-            ResumableUploadSettings);
+            ResumableUploadSettings,
+            Clock);
 }
