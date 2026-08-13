@@ -149,6 +149,14 @@ public sealed class ApiResumableUploadCall<TRequest, TResponse>
     }
 
     /// <summary>
+    /// Creates a new <see cref="ResumableUploadSession{TRequest, TResponse}"/> managed by this call wrapper.
+    /// </summary>
+    /// <returns>A new <see cref="ResumableUploadSession{TRequest, TResponse}"/> instance.</returns>
+    public ResumableUploadSession<TRequest, TResponse> CreateSession() =>
+        new ResumableUploadSession<TRequest, TResponse>(this);
+
+
+    /// <summary>
     /// Executes the 'start' command asynchronously.
     /// </summary>
     internal Task<StartUploadResponse> StartAsync(TRequest request, CallSettings perCallCallSettings = null) =>
