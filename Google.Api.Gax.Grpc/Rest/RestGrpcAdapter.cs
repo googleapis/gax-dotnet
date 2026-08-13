@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -56,6 +56,7 @@ namespace Google.Api.Gax.Grpc.Rest
                     401 => StatusCode.Unauthenticated,
                     403 => StatusCode.PermissionDenied,
                     404 => StatusCode.NotFound,
+                    408 => StatusCode.DeadlineExceeded,
                     409 => StatusCode.Aborted,
                     416 => StatusCode.OutOfRange,
                     429 => StatusCode.ResourceExhausted,

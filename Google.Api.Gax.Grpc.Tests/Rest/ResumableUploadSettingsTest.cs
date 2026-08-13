@@ -6,6 +6,7 @@
  */
 
 using System;
+using Grpc.Core;
 using Xunit;
 
 namespace Google.Api.Gax.Grpc.Rest.Tests;
@@ -21,6 +22,69 @@ public class ResumableUploadSettingsTest
         Assert.Equal(8 * 1024 * 1024, settings.ChunkSize);
         Assert.Same(ResumableUploadSettings.DefaultUploadDeadline, settings.UploadDeadline);
         Assert.Equal(TimeSpan.FromMinutes(15), settings.UploadDeadline.Timeout);
+    }
+
+    [Fact]
+    public void StaticInternalProperties_HaveExpectedValues()
+    {
+        Assert.NotNull(ResumableUploadSettings.TransientErrorCodes);
+        Assert.Equal(4, ResumableUploadSettings.TransientErrorCodes.Count);
+        Assert.Contains(StatusCode.Unavailable, ResumableUploadSettings.TransientErrorCodes);
+        Assert.Contains(StatusCode.DeadlineExceeded, ResumableUploadSettings.TransientErrorCodes);
+        Assert.Contains(StatusCode.ResourceExhausted, ResumableUploadSettings.TransientErrorCodes);
+        Assert.Contains(StatusCode.Internal, ResumableUploadSettings.TransientErrorCodes);
+
+        Assert.NotNull(ResumableUploadSettings.ControlOperationDeadline);
+        Assert.Equal(TimeSpan.FromMinutes(1), ResumableUploadSettings.ControlOperationDeadline.Timeout);
+
+        Assert.NotNull(ResumableUploadSettings.DefaultRetry);
+        Assert.Equal(int.MaxValue, ResumableUploadSettings.DefaultRetry.MaxAttempts);
+        Assert.Equal(TimeSpan.FromSeconds(1), ResumableUploadSettings.DefaultRetry.InitialBackoff);
+        Assert.Equal(TimeSpan.FromSeconds(60), ResumableUploadSettings.DefaultRetry.MaxBackoff);
+        Assert.Equal(2.0, ResumableUploadSettings.DefaultRetry.BackoffMultiplier);
+        Assert.NotNull(ResumableUploadSettings.DefaultRetry.RetryFilter);
+        Assert.NotNull(ResumableUploadSettings.DefaultRetry.BackoffJitter);
+    }
+
+    [Fact]
+    public void ToControlCallSettings_ReturnsExpectedCallSettings()
+    {
+        var settings = ResumableUploadSettings.Default;
+        var controlCallSettings = settings.ToControlCallSettings();
+
+        Assert.NotNull(controlCallSettings);
+        Assert.Same(ResumableUploadSettings.ControlOperationDeadline, controlCallSettings.Expiration);
+        Assert.Same(ResumableUploadSettings.DefaultRetry, controlCallSettings.Retry);
+    }
+
+    [Fact]
+    public void ToDataCallSettings_ReturnsExpectedCallSettings()
+    {
+        var settings = ResumableUploadSettings.Default;
+        var dataCallSettings = settings.ToDataCallSettings();
+
+        Assert.NotNull(dataCallSettings);
+        Assert.NotNull(dataCallSettings.Expiration);
+        Assert.Equal(ExpirationType.Timeout, dataCallSettings.Expiration.Type);
+        Assert.Equal(TimeSpan.FromMinutes(7.5), dataCallSettings.Expiration.Timeout);
+        Assert.Same(ResumableUploadSettings.DefaultRetry, dataCallSettings.Retry);
+
+        var customSettings = settings.WithUploadDeadline(Expiration.FromTimeout(TimeSpan.FromMinutes(20)));
+        var customDataCallSettings = customSettings.ToDataCallSettings();
+        Assert.Equal(ExpirationType.Timeout, customDataCallSettings.Expiration.Type);
+        Assert.Equal(TimeSpan.FromMinutes(10), customDataCallSettings.Expiration.Timeout);
+        Assert.Same(ResumableUploadSettings.DefaultRetry, customDataCallSettings.Retry);
+
+        var deadlineSettings = settings.WithUploadDeadline(Expiration.FromDeadline(DateTime.UtcNow.AddMinutes(10)));
+        var deadlineDataCallSettings = deadlineSettings.ToDataCallSettings();
+        Assert.NotNull(deadlineDataCallSettings.Expiration);
+        Assert.Equal(ExpirationType.Deadline, deadlineDataCallSettings.Expiration.Type);
+        Assert.Same(deadlineSettings.UploadDeadline, deadlineDataCallSettings.Expiration);
+
+        var noneSettings = settings.WithUploadDeadline(Expiration.None);
+        var noneDataCallSettings = noneSettings.ToDataCallSettings();
+        Assert.NotNull(noneDataCallSettings.Expiration);
+        Assert.Equal(ExpirationType.None, noneDataCallSettings.Expiration.Type);
     }
 
     [Theory]

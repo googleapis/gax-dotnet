@@ -5,6 +5,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+using Google.Api.Gax.Testing;
 using Grpc.Core;
 using System;
 using System.Threading.Tasks;
@@ -99,7 +100,10 @@ public class ApiResumableUploadCallTest
             uploadFinalizeCall,
             queryOffsetCall,
             finalizeCall,
-            ResumableUploadSettings.Default);
+            ResumableUploadSettings.Default,
+            clock);
+
+        Assert.Same(clock, call.Clock);
 
         var startResp = await call.StartAsync(new FakeRequest { Name = "test" });
         Assert.True(startCalled);
@@ -143,6 +147,7 @@ public class ApiResumableUploadCallTest
         Assert.Same(call.UploadFinalizeCall, updatedCall.UploadFinalizeCall);
         Assert.Same(call.QueryOffsetCall, updatedCall.QueryOffsetCall);
         Assert.Same(call.FinalizeCall, updatedCall.FinalizeCall);
+        Assert.Same(call.Clock, updatedCall.Clock);
     }
 
     [Fact]
@@ -157,6 +162,22 @@ public class ApiResumableUploadCallTest
         Assert.Same(call.UploadFinalizeCall, updatedCall.UploadFinalizeCall);
         Assert.Same(call.QueryOffsetCall, updatedCall.QueryOffsetCall);
         Assert.Same(call.FinalizeCall, updatedCall.FinalizeCall);
+        Assert.Same(call.Clock, updatedCall.Clock);
+    }
+
+    [Fact]
+    public void WithRetry_AppliesToAllSubCalls()
+    {
+        var call = CreateDummyCall();
+        var updatedCall = call.WithRetry(SystemClock.Instance, new FakeScheduler(), null);
+
+        Assert.NotSame(call, updatedCall);
+        Assert.NotSame(call.StartCall, updatedCall.StartCall);
+        Assert.NotSame(call.UploadChunkCall, updatedCall.UploadChunkCall);
+        Assert.NotSame(call.UploadFinalizeCall, updatedCall.UploadFinalizeCall);
+        Assert.NotSame(call.QueryOffsetCall, updatedCall.QueryOffsetCall);
+        Assert.NotSame(call.FinalizeCall, updatedCall.FinalizeCall);
+        Assert.Same(call.Clock, updatedCall.Clock);
     }
 
     private ApiResumableUploadCall<FakeRequest, FakeResponse> CreateDummyCall()
@@ -199,6 +220,7 @@ public class ApiResumableUploadCallTest
             finalizeChunkCall,
             queryCall,
             finalCall,
-            ResumableUploadSettings.Default);
+            ResumableUploadSettings.Default,
+            clock);
     }
 }
