@@ -88,7 +88,7 @@ public sealed class ResumableUploadSession<TRequest, TResponse>
         effectiveUploadSettings = WithAdjustedChunkSize(effectiveUploadSettings, startResponse.ChunkGranularity);
 
         using IResumableUploadStream resumableStream = ResumableUploadStream.Create(stream, effectiveUploadSettings.ChunkSize, leaveOpen: true);
-        var engine = new ResumableUploadProtocolEngine<TRequest, TResponse>(_uploadCall, UploadUri, resumableStream, effectiveUploadSettings);
+        var engine = new ResumableUploadProtocolEngine<TRequest, TResponse>(_uploadCall, UploadUri, ChunkGranularity, resumableStream, effectiveUploadSettings);
         return await engine.UploadChunksAsync().ConfigureAwait(false);
     }
 
@@ -112,7 +112,7 @@ public sealed class ResumableUploadSession<TRequest, TResponse>
         ResumableUploadSettings effectiveUploadSettings = uploadSettings ?? _uploadCall.ResumableUploadSettings;
 
         using IResumableUploadStream resumableStream = ResumableUploadStream.Create(stream, effectiveUploadSettings.ChunkSize, leaveOpen: true);
-        var engine = new ResumableUploadProtocolEngine<TRequest, TResponse>(_uploadCall, UploadUri, resumableStream, effectiveUploadSettings);
+        var engine = new ResumableUploadProtocolEngine<TRequest, TResponse>(_uploadCall, UploadUri, ChunkGranularity, resumableStream, effectiveUploadSettings);
         return await engine.ResumeAsync().ConfigureAwait(false);
     }
 
@@ -170,6 +170,7 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
 {
     private readonly ApiResumableUploadCall<TRequest, TResponse> _uploadCall;
     private readonly Uri _uploadUri;
+    private readonly long? _chunkGranularity;
     private readonly IResumableUploadStream _stream;
     private readonly ResumableUploadSettings _uploadSettings;
     private readonly byte[] _chunkBuffer;
@@ -180,11 +181,13 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
     public ResumableUploadProtocolEngine(
         ApiResumableUploadCall<TRequest, TResponse> uploadCall,
         Uri uploadUri,
+        long? chunkGranularity,
         IResumableUploadStream stream,
         ResumableUploadSettings uploadSettings)
     {
         _uploadCall = GaxPreconditions.CheckNotNull(uploadCall, nameof(uploadCall));
         _uploadUri = GaxPreconditions.CheckNotNull(uploadUri, nameof(uploadUri));
+        _chunkGranularity = chunkGranularity;
         _stream = GaxPreconditions.CheckNotNull(stream, nameof(stream));
         _uploadSettings = GaxPreconditions.CheckNotNull(uploadSettings, nameof(uploadSettings));
         _chunkBuffer = new byte[(int) Math.Min(_uploadSettings.ChunkSize, int.MaxValue)];
@@ -200,7 +203,11 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
     /// <summary>
     /// Entry point for starting or continuing chunk upload execution.
     /// </summary>
-    public Task<TResponse> UploadChunksAsync() => ReadNextChunkAsync();
+    public Task<TResponse> UploadChunksAsync()
+    {
+        ReportProgress(ResumableUploadState.Starting, 0);
+        return ReadNextChunkAsync();
+    }
 
     /// <summary>
     /// Entry point for resuming an existing upload session by querying the server's committed offset.
@@ -212,11 +219,13 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
     /// </summary>
     private async Task<TResponse> QueryAsync()
     {
+        ReportProgress(ResumableUploadState.Recovering, _currentOffset);
         var queryRequest = new ResumableUploadRequest(_uploadUri);
         UploadChunkResponse<TResponse> queryResponse = await _uploadCall.QueryOffsetAsync(queryRequest).ConfigureAwait(false);
 
         if (queryResponse.IsFinal)
         {
+            ReportProgress(ResumableUploadState.Finalized, queryResponse.CommittedOffset ?? _currentOffset);
             return queryResponse.ResponseBody;
         }
 
@@ -232,11 +241,12 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
         }
 
         _currentOffset = serverCommittedOffset;
+        ReportProgress(ResumableUploadState.OffsetReceived, _currentOffset);
         return await ReadNextChunkAsync().ConfigureAwait(false);
     }
 
     /// <summary>
-    /// Reading / Chunk Preparation State: Reads next chunk from stream and transitions to UploadChunkAsync or UploadFinalChunkAsync.
+    /// Reading / Chunk Preparation State: Reads next chunk from stream and transitions to UploadChunkAsync.
     /// </summary>
     private async Task<TResponse> ReadNextChunkAsync()
     {
@@ -273,13 +283,34 @@ internal sealed class ResumableUploadProtocolEngine<TRequest, TResponse>
             return await QueryAsync().ConfigureAwait(false);
         }
 
+        _currentOffset = chunkResponse.CommittedOffset ?? (_currentOffset + chunkRequest.UploadChunk.Count);
+
         if (chunkResponse.IsFinal)
         {
+            ReportProgress(ResumableUploadState.Finalized, _currentOffset);
             return chunkResponse.ResponseBody;
         }
 
-        _currentOffset = chunkResponse.CommittedOffset ?? (_currentOffset + chunkRequest.UploadChunk.Count);
+        ReportProgress(ResumableUploadState.Uploading, _currentOffset);
         return await ReadNextChunkAsync().ConfigureAwait(false);
+    }
+
+    private void ReportProgress(ResumableUploadState state, long committedOffset)
+    {
+        if (_uploadSettings.Progress is null)
+        {
+            return;
+        }
+
+        try
+        {
+            var notification = new ResumableUploadProgress(state, committedOffset, _uploadUri, _chunkGranularity);
+            _uploadSettings.Progress.Report(notification);
+        }
+        catch
+        {
+            // Progress callback exceptions are isolated so user progress handler errors do not interrupt upload execution.
+        }
     }
 
     private Expiration GetNextChunkExpiration()
