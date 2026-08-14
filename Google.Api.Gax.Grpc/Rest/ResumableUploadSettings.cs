@@ -72,10 +72,16 @@ public sealed class ResumableUploadSettings
     /// </summary>
     public Expiration UploadDeadline { get; }
 
-    private ResumableUploadSettings(long chunkSize, Expiration uploadDeadline)
+    /// <summary>
+    /// Gets the progress reporter for receiving session progress notifications, or null if none is configured.
+    /// </summary>
+    public IProgress<ResumableUploadProgress> Progress { get; }
+
+    private ResumableUploadSettings(long chunkSize, Expiration uploadDeadline, IProgress<ResumableUploadProgress> progress = null)
     {
         ChunkSize = GaxPreconditions.CheckArgumentRange(chunkSize, nameof(chunkSize), minInclusive: 1L, maxInclusive: long.MaxValue);
         UploadDeadline = GaxPreconditions.CheckNotNull(uploadDeadline, nameof(uploadDeadline));
+        Progress = progress;
     }
 
     /// <summary>
@@ -84,7 +90,7 @@ public sealed class ResumableUploadSettings
     /// <param name="chunkSize">The new chunk size in bytes. Must be greater than zero.</param>
     /// <returns>A new <see cref="ResumableUploadSettings"/> instance with the updated chunk size.</returns>
     public ResumableUploadSettings WithChunkSize(long chunkSize) =>
-        new ResumableUploadSettings(chunkSize, UploadDeadline);
+        new ResumableUploadSettings(chunkSize, UploadDeadline, Progress);
 
     /// <summary>
     /// Returns a new instance of <see cref="ResumableUploadSettings"/> with the specified <see cref="UploadDeadline"/>.
@@ -92,7 +98,15 @@ public sealed class ResumableUploadSettings
     /// <param name="uploadDeadline">The new upload deadline. Must not be null.</param>
     /// <returns>A new <see cref="ResumableUploadSettings"/> instance with the updated upload deadline.</returns>
     public ResumableUploadSettings WithUploadDeadline(Expiration uploadDeadline) =>
-        new ResumableUploadSettings(ChunkSize, uploadDeadline);
+        new ResumableUploadSettings(ChunkSize, uploadDeadline, Progress);
+
+    /// <summary>
+    /// Returns a new instance of <see cref="ResumableUploadSettings"/> with the specified progress reporter.
+    /// </summary>
+    /// <param name="progress">The progress reporter for receiving session progress notifications.</param>
+    /// <returns>A new <see cref="ResumableUploadSettings"/> instance with the updated progress reporter.</returns>
+    public ResumableUploadSettings WithProgress(IProgress<ResumableUploadProgress> progress) =>
+        new ResumableUploadSettings(ChunkSize, UploadDeadline, progress);
 
     /// <summary>
     /// Creates a <see cref="CallSettings"/> for control operations (start, query, cancel) using <see cref="ControlOperationDeadline"/> and <see cref="DefaultRetry"/>.

@@ -22,6 +22,7 @@ public class ResumableUploadSettingsTest
         Assert.Equal(8 * 1024 * 1024, settings.ChunkSize);
         Assert.Same(ResumableUploadSettings.DefaultUploadDeadline, settings.UploadDeadline);
         Assert.Equal(TimeSpan.FromMinutes(15), settings.UploadDeadline.Timeout);
+        Assert.Null(settings.Progress);
     }
 
     [Fact]
@@ -135,5 +136,50 @@ public class ResumableUploadSettingsTest
     public void WithUploadDeadline_Null_ThrowsArgumentNullException()
     {
         Assert.Throws<ArgumentNullException>(() => ResumableUploadSettings.Default.WithUploadDeadline(null));
+    }
+
+    [Fact]
+    public void WithProgress_ReturnsNewInstanceWithUpdatedProgress()
+    {
+        var settings = ResumableUploadSettings.Default;
+        var progress = new SyncProgress<ResumableUploadProgress>(_ => { });
+        var custom = settings.WithProgress(progress);
+
+        Assert.NotSame(settings, custom);
+        Assert.Same(progress, custom.Progress);
+        Assert.Equal(settings.ChunkSize, custom.ChunkSize);
+        Assert.Same(settings.UploadDeadline, custom.UploadDeadline);
+    }
+
+    [Fact]
+    public void WithChunkSize_PreservesProgress()
+    {
+        var progress = new SyncProgress<ResumableUploadProgress>(_ => { });
+        var settings = ResumableUploadSettings.Default.WithProgress(progress);
+        var custom = settings.WithChunkSize(1024);
+
+        Assert.NotSame(settings, custom);
+        Assert.Same(progress, custom.Progress);
+        Assert.Equal(1024, custom.ChunkSize);
+    }
+
+    [Fact]
+    public void WithUploadDeadline_PreservesProgress()
+    {
+        var progress = new SyncProgress<ResumableUploadProgress>(_ => { });
+        var settings = ResumableUploadSettings.Default.WithProgress(progress);
+        var newDeadline = Expiration.FromTimeout(TimeSpan.FromHours(2));
+        var custom = settings.WithUploadDeadline(newDeadline);
+
+        Assert.NotSame(settings, custom);
+        Assert.Same(progress, custom.Progress);
+        Assert.Same(newDeadline, custom.UploadDeadline);
+    }
+
+    private class SyncProgress<T> : IProgress<T>
+    {
+        private readonly Action<T> _handler;
+        public SyncProgress(Action<T> handler) => _handler = handler;
+        public void Report(T value) => _handler(value);
     }
 }

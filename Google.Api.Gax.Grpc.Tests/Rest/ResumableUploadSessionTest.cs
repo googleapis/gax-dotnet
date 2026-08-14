@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -380,5 +381,110 @@ public class ResumableUploadSessionTest
         var ex = await Assert.ThrowsAsync<RpcException>(() => session.BeginUploadAsync(new FakeRequest(), stream));
         Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
         Assert.False(queryCalled);
+    }
+
+    [Fact]
+    public async Task UploadChunks_ReportsProgressEvents()
+    {
+        var clock = new FakeClock();
+        var uploadUri = new Uri("http://localhost/upload/session123");
+        long granularity = 5;
+
+        var startCall = ApiCall.Create<FakeRequest, StartUploadResponse>(
+            "test#start",
+            (req, options) => CreateAsyncUnaryCall(new StartUploadResponse(uploadUri, "active", granularity)),
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var firstAttempt = true;
+        var uploadChunkCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<FakeResponse>>(
+            "test#upload",
+            (req, options) =>
+            {
+                if (firstAttempt)
+                {
+                    firstAttempt = false;
+                    throw new RpcException(new Status(StatusCode.Unavailable, "Transient"));
+                }
+                return CreateAsyncUnaryCall(new UploadChunkResponse<FakeResponse>(5, "active", null));
+            },
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var uploadFinalizeCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<FakeResponse>>(
+            "test#uploadFinalize",
+            (req, options) => CreateAsyncUnaryCall(new UploadChunkResponse<FakeResponse>(10, "final", new FakeResponse { Result = "OK" })),
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var queryOffsetCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<FakeResponse>>(
+            "test#query",
+            (req, options) => CreateAsyncUnaryCall(new UploadChunkResponse<FakeResponse>(0, "active", null)),
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var uploadCall = new ApiResumableUploadCall<FakeRequest, FakeResponse>(
+            startCall, uploadChunkCall, uploadFinalizeCall, queryOffsetCall, uploadFinalizeCall, ResumableUploadSettings.Default, clock);
+
+        var session = uploadCall.CreateSession();
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("0123456789"));
+
+        var progressList = new List<ResumableUploadProgress>();
+        var progressMock = new SyncProgress<ResumableUploadProgress>(p => progressList.Add(p));
+        var settings = ResumableUploadSettings.Default.WithChunkSize(5).WithProgress(progressMock);
+
+        var result = await session.BeginUploadAsync(new FakeRequest(), stream, uploadSettings: settings);
+
+        Assert.Equal("OK", result.Result);
+        Assert.Equal(5, progressList.Count);
+
+        Assert.Equal(ResumableUploadState.Starting, progressList[0].State);
+        Assert.Equal(0, progressList[0].CommittedOffset);
+        Assert.Equal(uploadUri, progressList[0].UploadUri);
+        Assert.Equal(granularity, progressList[0].ChunkGranularity);
+
+        Assert.Equal(ResumableUploadState.Recovering, progressList[1].State);
+        Assert.Equal(0, progressList[1].CommittedOffset);
+
+        Assert.Equal(ResumableUploadState.OffsetReceived, progressList[2].State);
+        Assert.Equal(0, progressList[2].CommittedOffset);
+
+        Assert.Equal(ResumableUploadState.Uploading, progressList[3].State);
+        Assert.Equal(5, progressList[3].CommittedOffset);
+
+        Assert.Equal(ResumableUploadState.Finalized, progressList[4].State);
+        Assert.Equal(10, progressList[4].CommittedOffset);
+    }
+
+    [Fact]
+    public async Task UploadChunks_IsolatesProgressCallbackExceptions()
+    {
+        var clock = new FakeClock();
+        var uploadUri = new Uri("http://localhost/upload/session123");
+
+        var startCall = ApiCall.Create<FakeRequest, StartUploadResponse>(
+            "test#start",
+            (req, options) => CreateAsyncUnaryCall(new StartUploadResponse(uploadUri, "active")),
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var uploadFinalizeCall = ApiCall.Create<ResumableUploadRequest, UploadChunkResponse<FakeResponse>>(
+            "test#uploadFinalize",
+            (req, options) => CreateAsyncUnaryCall(new UploadChunkResponse<FakeResponse>(10, "final", new FakeResponse { Result = "OK" })),
+            CallSettings.FromExpiration(Expiration.None), clock);
+
+        var uploadCall = new ApiResumableUploadCall<FakeRequest, FakeResponse>(
+            startCall, uploadFinalizeCall, uploadFinalizeCall, uploadFinalizeCall, uploadFinalizeCall, ResumableUploadSettings.Default, clock);
+
+        var session = uploadCall.CreateSession();
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("0123456789"));
+
+        var progressMock = new SyncProgress<ResumableUploadProgress>(p => throw new InvalidOperationException("User Callback Exception"));
+        var settings = ResumableUploadSettings.Default.WithProgress(progressMock);
+
+        var result = await session.BeginUploadAsync(new FakeRequest(), stream, uploadSettings: settings);
+        Assert.Equal("OK", result.Result);
+    }
+
+    private class SyncProgress<T> : IProgress<T>
+    {
+        private readonly Action<T> _handler;
+        public SyncProgress(Action<T> handler) => _handler = handler;
+        public void Report(T value) => _handler(value);
     }
 }
