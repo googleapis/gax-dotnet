@@ -527,6 +527,51 @@ namespace Google.Api.Gax.Grpc
         }
 
         /// <summary>
+        /// Returns <paramref name="callInvoker"/> if it is already a <see cref="Rest.RestCallInvoker"/>,
+        /// or attempts to create a <see cref="Rest.RestCallInvoker"/> if the adapter supports REST.
+        /// </summary>
+        /// <param name="callInvoker">The primary call invoker.</param>
+        /// <returns>A <see cref="Rest.RestCallInvoker"/> if supported, or null otherwise.</returns>
+        protected CallInvoker MaybeCreateRestCallInvoker(CallInvoker callInvoker)
+        {
+            if (callInvoker is Rest.RestCallInvoker restCallInvoker)
+            {
+                return restCallInvoker;
+            }
+            if (EffectiveGrpcAdapter is Rest.RestGrpcAdapter)
+            {
+                var endpoint = EffectiveEndpoint;
+                var credentials = GetChannelCredentials();
+                var channel = CreateChannel(endpoint, credentials);
+                return channel.CreateCallInvoker();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Asynchronously returns <paramref name="callInvoker"/> if it is already a <see cref="Rest.RestCallInvoker"/>,
+        /// or attempts to create a <see cref="Rest.RestCallInvoker"/> if the adapter supports REST.
+        /// </summary>
+        /// <param name="callInvoker">The primary call invoker.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A <see cref="Rest.RestCallInvoker"/> if supported, or null otherwise.</returns>
+        protected async Task<CallInvoker> MaybeCreateRestCallInvokerAsync(CallInvoker callInvoker, CancellationToken cancellationToken)
+        {
+            if (callInvoker is Rest.RestCallInvoker restCallInvoker)
+            {
+                return restCallInvoker;
+            }
+            if (EffectiveGrpcAdapter is Rest.RestGrpcAdapter)
+            {
+                var endpoint = EffectiveEndpoint;
+                var credentials = await GetChannelCredentialsAsync(cancellationToken).ConfigureAwait(false);
+                var channel = CreateChannel(endpoint, credentials);
+                return channel.CreateCallInvoker();
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Obtains channel credentials synchronously. Override this method in a concrete builder type if more
         /// credential mechanisms are supported.
         /// </summary>
