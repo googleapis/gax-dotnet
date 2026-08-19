@@ -23,6 +23,19 @@ dotnet build $DOTNET_BUILD_ARGS Gax.sln
 
 echo Testing
 
+cleanup() {
+  echo "Tearing down GAPIC Showcase"
+  if [ -f showcase.pid ]; then
+    kill $(cat showcase.pid) 2>/dev/null || true
+    rm -f showcase.pid
+  fi
+  rm -f gapic-showcase gapic-showcase.exe
+}
+trap cleanup EXIT
+
+echo "Setup GAPIC Showcase for Integration Tests"
+./startshowcase.sh
+
 for testproject in *.IntegrationTests
 do
   # This will run the tests on every platform  
