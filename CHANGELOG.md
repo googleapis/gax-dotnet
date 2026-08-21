@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.15.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.14.0...Google.Api.Gax-4.15.0) (2026-08-21)
+
+
+### Features
+
+* ClientHelper supports resumable uploads. ([aef3de9](https://github.com/googleapis/gax-dotnet/commit/aef3de911acebe079c693c30fe27ca7decbec3eb))
+* HttpRuleTranscoder supports resumable upload URI prefix for the start command. ([c74c04f](https://github.com/googleapis/gax-dotnet/commit/c74c04fe5d439f65093733c4af20aa143f8848b8))
+* Identify resumable upload methods and config. ([58eac2b](https://github.com/googleapis/gax-dotnet/commit/58eac2bf6943ccf7a7fc3aeeec9e155cf57bdbde))
+* Implement ResumableUploadStream. ([7c7bb7b](https://github.com/googleapis/gax-dotnet/commit/7c7bb7bb0cdcdc4a4788f50b3b1624b266d041ca))
+* Implement the low level ResumableUploadClient. ([3cf408f](https://github.com/googleapis/gax-dotnet/commit/3cf408ff1f384b8b39ae1b836ca0099a0c71b600))
+* RestMethod.Create supports resumable uploads. ([af876f0](https://github.com/googleapis/gax-dotnet/commit/af876f050d7c6a21d440a2c17810c3def0530062))
+* Retry transient errors in resumable upload. ([67b1f9f](https://github.com/googleapis/gax-dotnet/commit/67b1f9f44b1f0847edce874a411b87c6ef8ed48a))
+* Support building a rest call invoker from a client builder. ([0dacd27](https://github.com/googleapis/gax-dotnet/commit/0dacd27436200942c6bd4e88014365cb9d4e35e7))
+* Support progress reporting in resumable uplaod. ([0a6d5c1](https://github.com/googleapis/gax-dotnet/commit/0a6d5c1eb2fce6a6e219eba54124caf5f358e15f))
+* Support resumable upload sessions. ([f895140](https://github.com/googleapis/gax-dotnet/commit/f895140121b0e57410e3b7f912051bf75097d15b))
+* Support resumable upload transcoding. ([49aa781](https://github.com/googleapis/gax-dotnet/commit/49aa781119b7559d0710def4fcee53f919fc298b))
+* Support user provided settings for resumable upload. ([b040261](https://github.com/googleapis/gax-dotnet/commit/b040261771e9cbcca00f03dec34e3a23c17039f0))
+
+
+### Bug Fixes
+
+* ChunkSize and Granularity of resumable uploads should be int. ([c80d91f](https://github.com/googleapis/gax-dotnet/commit/c80d91f41ca638d4f4b94d173434f24b2d04581a))
+
 ## [4.14.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.13.1...Google.Api.Gax-4.14.0) (2026-05-01)
 
 
