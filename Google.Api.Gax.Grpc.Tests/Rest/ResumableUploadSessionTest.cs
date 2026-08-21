@@ -184,16 +184,16 @@ public class ResumableUploadSessionTest
     public void WithAdjustedChunkSize_CalculatesClosestSmallerMultiple()
     {
         var defaultSettings = ResumableUploadSettings.Default.WithChunkSize(8000000);
-        Assert.Equal(7864320, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(defaultSettings, 262144L).ChunkSize);
+        Assert.Equal(7864320, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(defaultSettings, 262144).ChunkSize);
 
         var alignedSettings = ResumableUploadSettings.Default.WithChunkSize(8388608);
-        Assert.Same(alignedSettings, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(alignedSettings, 262144L));
+        Assert.Same(alignedSettings, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(alignedSettings, 262144));
 
         var smallSettings = ResumableUploadSettings.Default.WithChunkSize(100000);
-        Assert.Equal(262144, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(smallSettings, 262144L).ChunkSize);
+        Assert.Equal(262144, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(smallSettings, 262144).ChunkSize);
 
         Assert.Same(defaultSettings, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(defaultSettings, null));
-        Assert.Same(defaultSettings, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(defaultSettings, 0L));
+        Assert.Same(defaultSettings, ResumableUploadSession<FakeRequest, FakeResponse>.WithAdjustedChunkSize(defaultSettings, 0));
     }
 
     [Fact]
@@ -388,7 +388,7 @@ public class ResumableUploadSessionTest
     {
         var clock = new FakeClock();
         var uploadUri = new Uri("http://localhost/upload/session123");
-        long granularity = 5;
+        int granularity = 5;
 
         var startCall = ApiCall.Create<FakeRequest, StartUploadResponse>(
             "test#start",

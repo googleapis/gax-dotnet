@@ -140,7 +140,7 @@ public sealed class ResumableUploadSession<TRequest, TResponse>
         }
     }
 
-    internal static ResumableUploadSettings WithAdjustedChunkSize(ResumableUploadSettings uploadSettings, long? serverGranularity)
+    internal static ResumableUploadSettings WithAdjustedChunkSize(ResumableUploadSettings uploadSettings, int? serverGranularity)
     {
         GaxPreconditions.CheckNotNull(uploadSettings, nameof(uploadSettings));
 
@@ -149,10 +149,10 @@ public sealed class ResumableUploadSession<TRequest, TResponse>
             return uploadSettings;
         }
 
-        long granularity = serverGranularity.Value;
-        long multiple = uploadSettings.ChunkSize / granularity;
+        int granularity = serverGranularity.Value;
+        int multiple = uploadSettings.ChunkSize / granularity;
 
-        long adjustedChunkSize = multiple == 0 ? granularity : multiple * granularity;
+        int adjustedChunkSize = multiple == 0 ? granularity : multiple * granularity;
 
         return adjustedChunkSize == uploadSettings.ChunkSize
             ? uploadSettings

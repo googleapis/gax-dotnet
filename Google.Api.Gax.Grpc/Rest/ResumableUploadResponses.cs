@@ -28,9 +28,9 @@ internal sealed class StartUploadResponse
     /// <summary>
     /// The required chunk granularity extracted from response header 'X-Goog-Upload-Chunk-Granularity', or <c>null</c> if not specified.
     /// </summary>
-    internal long? ChunkGranularity { get; }
+    internal int? ChunkGranularity { get; }
 
-    internal StartUploadResponse(Uri uploadUri, string status, long? chunkGranularity = null) =>
+    internal StartUploadResponse(Uri uploadUri, string status, int? chunkGranularity = null) =>
         (UploadUri, Status, ChunkGranularity) = (uploadUri, status, chunkGranularity);
 
     internal static StartUploadResponse FromResponseHeaders(Metadata headers)
@@ -39,7 +39,7 @@ internal sealed class StartUploadResponse
         Uri uploadUri = uploadUrlStr is not null ? new Uri(uploadUrlStr) : null;
         string status = ResumableUploadClient.GetHeaderValue(headers, ResumableUploadClient.StatusHeaderName);
         string granularityStr = ResumableUploadClient.GetHeaderValue(headers, ResumableUploadClient.ChunkGranularityHeaderName);
-        long? chunkGranularity = long.TryParse(granularityStr, out long parsedGranularity) ? parsedGranularity : null;
+        int? chunkGranularity = int.TryParse(granularityStr, out int parsedGranularity) ? parsedGranularity : null;
         return new StartUploadResponse(uploadUri, status, chunkGranularity);
     }
 }
