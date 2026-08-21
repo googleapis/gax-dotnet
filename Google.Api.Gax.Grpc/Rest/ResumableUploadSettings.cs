@@ -20,7 +20,7 @@ public sealed class ResumableUploadSettings
     /// <summary>
     /// Default chunk size in bytes (8 MiB).
     /// </summary>
-    public const long DefaultChunkSize = 8 * 1024 * 1024;
+    public const int DefaultChunkSize = 8 * 1024 * 1024;
 
     /// <summary>
     /// Default upload deadline for a resumable upload session (15 minutes).
@@ -64,7 +64,7 @@ public sealed class ResumableUploadSettings
     /// <summary>
     /// Gets the chunk size in bytes. Defaults to <see cref="DefaultChunkSize"/> (8 MiB).
     /// </summary>
-    public long ChunkSize { get; }
+    public int ChunkSize { get; }
 
     /// <summary>
     /// Gets the upload deadline for the entire resumable upload session. This is never null.
@@ -77,9 +77,9 @@ public sealed class ResumableUploadSettings
     /// </summary>
     public IProgress<ResumableUploadProgress> Progress { get; }
 
-    private ResumableUploadSettings(long chunkSize, Expiration uploadDeadline, IProgress<ResumableUploadProgress> progress = null)
+    private ResumableUploadSettings(int chunkSize, Expiration uploadDeadline, IProgress<ResumableUploadProgress> progress = null)
     {
-        ChunkSize = GaxPreconditions.CheckArgumentRange(chunkSize, nameof(chunkSize), minInclusive: 1L, maxInclusive: long.MaxValue);
+        ChunkSize = GaxPreconditions.CheckArgumentRange(chunkSize, nameof(chunkSize), minInclusive: 1, maxInclusive: int.MaxValue);
         UploadDeadline = GaxPreconditions.CheckNotNull(uploadDeadline, nameof(uploadDeadline));
         Progress = progress;
     }
@@ -89,7 +89,7 @@ public sealed class ResumableUploadSettings
     /// </summary>
     /// <param name="chunkSize">The new chunk size in bytes. Must be greater than zero.</param>
     /// <returns>A new <see cref="ResumableUploadSettings"/> instance with the updated chunk size.</returns>
-    public ResumableUploadSettings WithChunkSize(long chunkSize) =>
+    public ResumableUploadSettings WithChunkSize(int chunkSize) =>
         new ResumableUploadSettings(chunkSize, UploadDeadline, Progress);
 
     /// <summary>

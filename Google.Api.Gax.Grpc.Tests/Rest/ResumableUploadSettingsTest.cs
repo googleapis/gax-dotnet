@@ -93,7 +93,7 @@ public class ResumableUploadSettingsTest
     [InlineData(1000L)]
     [InlineData(256 * 1024L)]
     [InlineData(8 * 1024 * 1024L)]
-    public void WithChunkSize_ValidChunkSize_Accepted(long chunkSize)
+    public void WithChunkSize_ValidChunkSize_Accepted(int chunkSize)
     {
         var settings = ResumableUploadSettings.Default.WithChunkSize(chunkSize);
         Assert.Equal(chunkSize, settings.ChunkSize);
@@ -103,7 +103,7 @@ public class ResumableUploadSettingsTest
     [InlineData(0L)]
     [InlineData(-1L)]
     [InlineData(-256 * 1024L)]
-    public void WithChunkSize_InvalidChunkSize_ThrowsArgumentOutOfRangeException(long chunkSize)
+    public void WithChunkSize_InvalidChunkSize_ThrowsArgumentOutOfRangeException(int chunkSize)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => ResumableUploadSettings.Default.WithChunkSize(chunkSize));
     }
