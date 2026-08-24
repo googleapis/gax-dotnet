@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -255,6 +255,19 @@ internal sealed class HttpRulePathPattern
             if (result is null || !_validationRegex.IsMatch(result))
             {
                 return null;
+            }
+            // Reject query (?) or fragment (#) injections as defense-in-depth.
+            // Although segment-level Uri.EscapeDataString escapes these characters, this check
+            // guarantees explicit validation if the escaping behavior is modified in the future.
+            if (result.Contains("?") || result.Contains("#"))
+            {
+                throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid characters '?' or '#': '{result}'");
+            }
+            // Split path parameter value by '/' and reject any standalone dot (.) or double-dot (..) segments
+            // (either literal or URL-encoded) to prevent path traversal exploits.
+            if (result.Split('/').Select(segment => Uri.UnescapeDataString(segment)).Any(s => s == "." || s == ".."))
+            {
+                throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.' or '..': '{result}'");
             }
             // Escape everything except slashes
             return string.Join("/", result.Split('/').Select(segment => Uri.EscapeDataString(segment)));

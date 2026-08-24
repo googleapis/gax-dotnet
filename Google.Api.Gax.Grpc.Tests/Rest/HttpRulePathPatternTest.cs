@@ -66,6 +66,49 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             Assert.Throws<ArgumentException>(() => HttpRulePathPattern.Parse(pattern, RuleTestRequest.Descriptor));
         }        
 
+        [Theory]
+        // Dialogflow session (standard single-wildcard segment)
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/..")]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/.")]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1?key=val")]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1#frag")]
+        // Firestore documents (reserved double-wildcard path)
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../default")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e/escape-db")]
+        [InlineData("v1/{x=**}/indexes", "../escape-db")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/./child")]
+        // Webhooks (multiple standard wildcards)
+        [InlineData("v3/projects/{x}/webhooks/{nested.a}", "..")]
+        [InlineData("v3/projects/{x}/webhooks/{nested.a}", ".")]
+        public void PathTraversalAndInjection_ThrowsArgumentException(string pattern, string xValue)
+        {
+            var rulePathPattern = ParsePattern(pattern);
+            RuleTestRequest request;
+            if (pattern.Contains("nested.a"))
+            {
+                request = new RuleTestRequest { X = "p1", Nested = new RuleTestRequest.Types.Nested { A = xValue } };
+            }
+            else
+            {
+                request = new RuleTestRequest { X = xValue };
+            }
+            Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
+        }
+
+        [Theory]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1", "v3/projects/p/locations/l/agents/a/sessions/s1:detectIntent")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1", "v1/projects/sys-prod-123/databases/default/documents/doc-1/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/my-file.txt", "v1/projects/sys-prod-123/databases/default/documents/my-file.txt/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/my-file..txt", "v1/projects/sys-prod-123/databases/default/documents/my-file..txt/indexes")]
+        public void ValidRealisticPatterns_Succeed(string pattern, string xValue, string expectedFormatResult)
+        {
+            var rulePathPattern = ParsePattern(pattern);
+            var request = new RuleTestRequest { X = xValue };
+            string actualFormatResult = rulePathPattern.TryFormat(request);
+            Assert.Equal(expectedFormatResult, actualFormatResult);
+        }
+
         private static HttpRulePathPattern ParsePattern(string pattern) =>
             HttpRulePathPattern.Parse(pattern, RuleTestRequest.Descriptor);
     }
