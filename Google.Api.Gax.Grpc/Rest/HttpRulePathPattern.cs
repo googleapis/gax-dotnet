@@ -263,13 +263,12 @@ internal sealed class HttpRulePathPattern
             {
                 throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid characters '?' or '#': '{result}'");
             }
-            // Split path parameter value by '/' and reject any standalone dot (.) or double-dot (..) segments
-            // (either literal or URL-encoded) to prevent path traversal exploits.
-            string[] segments = result.Split('/');
+            // Unescape the entire value first and split by '/' to prevent bypasses using URL-encoded slashes (e.g. %2f).
+            string unescapedVal = Uri.UnescapeDataString(result);
+            string[] segments = unescapedVal.Split('/');
             foreach (var segment in segments)
             {
-                string unescaped = Uri.UnescapeDataString(segment);
-                if (unescaped == "." || unescaped == "..")
+                if (segment == "." || segment == "..")
                 {
                     throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.' or '..': '{result}'");
                 }

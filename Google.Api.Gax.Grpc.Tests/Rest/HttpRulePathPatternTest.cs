@@ -76,6 +76,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../default")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e/escape-db")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/..%2f..%2fescape-db")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e%2f%2e%2e%2fescape-db")]
         [InlineData("v1/{x=**}/indexes", "../escape-db")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/./child")]
         // Webhooks (multiple standard wildcards)
