@@ -275,11 +275,11 @@ internal sealed class HttpRulePathPattern
 
                 if (segmentLength == 1 && unescapedVal[valStart] == '.')
                 {
-                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.' or '..': '{result}'");
+                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.': '{result}'");
                 }
                 if (segmentLength == 2 && unescapedVal[valStart] == '.' && unescapedVal[valStart + 1] == '.')
                 {
-                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.' or '..': '{result}'");
+                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '..': '{result}'");
                 }
 
                 if (nextSlash == -1)

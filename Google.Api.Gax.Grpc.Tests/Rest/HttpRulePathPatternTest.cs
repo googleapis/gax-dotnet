@@ -95,7 +95,23 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             {
                 request = new RuleTestRequest { X = xValue };
             }
-            Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
+            var exception = Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
+            string unescaped = Uri.UnescapeDataString(xValue);
+            bool hasDoubleDot = false;
+            bool hasSingleDot = false;
+            foreach (var segment in unescaped.Split('/'))
+            {
+                if (segment == "..") hasDoubleDot = true;
+                if (segment == ".") hasSingleDot = true;
+            }
+            if (hasDoubleDot)
+            {
+                Assert.Contains("contains invalid segment '..'", exception.Message);
+            }
+            else if (hasSingleDot)
+            {
+                Assert.Contains("contains invalid segment '.'", exception.Message);
+            }
         }
 
         [Theory]
