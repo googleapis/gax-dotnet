@@ -127,6 +127,7 @@ internal sealed class HttpRulePathPattern
 
         private readonly Regex _validationRegex;
         private readonly Func<IMessage, string> _propertyAccessor;
+        private readonly bool _isReserved;
 
         /// <summary>
         /// Creates a segment representing the given field text, with respect to
@@ -144,6 +145,7 @@ internal sealed class HttpRulePathPattern
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
             _validationRegex = ConvertPatternForValidation(pattern);
+            _isReserved = pattern.Contains("**");
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
@@ -275,11 +277,25 @@ internal sealed class HttpRulePathPattern
 
                 if (segmentLength == 1 && unescapedVal[valStart] == '.')
                 {
-                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '.': '{result}'");
+                    if (!_isReserved)
+                    {
+                        throw new ArgumentException($"Invalid value '.' for {JsonFieldPath}");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
+                    }
                 }
                 if (segmentLength == 2 && unescapedVal[valStart] == '.' && unescapedVal[valStart + 1] == '.')
                 {
-                    throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid segment '..': '{result}'");
+                    if (!_isReserved)
+                    {
+                        throw new ArgumentException($"Invalid value '..' for {JsonFieldPath}");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
+                    }
                 }
 
                 if (nextSlash == -1)

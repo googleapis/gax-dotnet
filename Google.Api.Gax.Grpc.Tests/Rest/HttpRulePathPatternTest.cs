@@ -97,6 +97,14 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             }
             var exception = Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
             string unescaped = Uri.UnescapeDataString(xValue);
+
+            if (unescaped.Contains("?") || unescaped.Contains("#"))
+            {
+                Assert.StartsWith($"Path parameter 'x' contains invalid character", exception.Message);
+                return;
+            }
+
+            bool isReserved = pattern.Contains("**");
             bool hasDoubleDot = false;
             bool hasSingleDot = false;
             foreach (var segment in unescaped.Split('/'))
@@ -104,13 +112,16 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
                 if (segment == "..") hasDoubleDot = true;
                 if (segment == ".") hasSingleDot = true;
             }
-            if (hasDoubleDot)
+
+            string paramName = pattern.Contains("nested.a") ? "nested.a" : "x";
+            if (!isReserved)
             {
-                Assert.Contains("contains invalid segment '..'", exception.Message);
+                string matchedDot = hasDoubleDot ? ".." : (hasSingleDot ? "." : "");
+                Assert.StartsWith($"Invalid value '{matchedDot}' for {paramName}", exception.Message);
             }
-            else if (hasSingleDot)
+            else
             {
-                Assert.Contains("contains invalid segment '.'", exception.Message);
+                Assert.StartsWith($"Value for {paramName} must not contain segments that are exactly . or ..", exception.Message);
             }
         }
 
