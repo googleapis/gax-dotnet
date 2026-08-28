@@ -70,8 +70,6 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         // Dialogflow session (standard single-wildcard segment)
         [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/..")]
         [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/.")]
-        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1?key=val")]
-        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1#frag")]
         // Firestore documents (reserved double-wildcard path)
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../default")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db")]
@@ -98,12 +96,6 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             var exception = Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
             string unescaped = Uri.UnescapeDataString(xValue);
 
-            if (unescaped.Contains("?") || unescaped.Contains("#"))
-            {
-                Assert.StartsWith($"Path parameter 'x' contains invalid character", exception.Message);
-                return;
-            }
-
             bool isReserved = pattern.Contains("**");
             bool hasDoubleDot = false;
             bool hasSingleDot = false;
@@ -127,9 +119,13 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
 
         [Theory]
         [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1", "v3/projects/p/locations/l/agents/a/sessions/s1:detectIntent")]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1?key=val", "v3/projects/p/locations/l/agents/a/sessions/s1%3Fkey%3Dval:detectIntent")]
+        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/s1#frag", "v3/projects/p/locations/l/agents/a/sessions/s1%23frag:detectIntent")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1", "v1/projects/sys-prod-123/databases/default/documents/doc-1/indexes")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/my-file.txt", "v1/projects/sys-prod-123/databases/default/documents/my-file.txt/indexes")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/my-file..txt", "v1/projects/sys-prod-123/databases/default/documents/my-file..txt/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc?key=val", "v1/projects/sys-prod-123/databases/default/documents/doc%3Fkey%3Dval/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc#frag", "v1/projects/sys-prod-123/databases/default/documents/doc%23frag/indexes")]
         public void ValidRealisticPatterns_Succeed(string pattern, string xValue, string expectedFormatResult)
         {
             var rulePathPattern = ParsePattern(pattern);

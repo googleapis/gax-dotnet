@@ -258,14 +258,6 @@ internal sealed class HttpRulePathPattern
             {
                 return null;
             }
-            // Reject query (?) or fragment (#) injections as defense-in-depth.
-            // Although segment-level Uri.EscapeDataString escapes these characters, this check
-            // guarantees explicit validation if the escaping behavior is modified in the future.
-            if (result.IndexOf('?') != -1 || result.IndexOf('#') != -1)
-            {
-                throw new ArgumentException($"Path parameter '{JsonFieldPath}' contains invalid characters '?' or '#': '{result}'");
-            }
-
             // Unescape the entire value first to prevent bypasses using URL-encoded slashes (e.g. %2f).
             string unescapedVal = Uri.UnescapeDataString(result);
             // Scan for '.' and '..' segments in place using char-index scanning to avoid heap allocations.
