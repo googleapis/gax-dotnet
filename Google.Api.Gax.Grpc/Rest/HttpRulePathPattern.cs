@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -127,6 +127,7 @@ internal sealed class HttpRulePathPattern
 
         private readonly Regex _validationRegex;
         private readonly Func<IMessage, string> _propertyAccessor;
+        private readonly bool _isReserved;
 
         /// <summary>
         /// Creates a segment representing the given field text, with respect to
@@ -144,6 +145,7 @@ internal sealed class HttpRulePathPattern
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
             _validationRegex = ConvertPatternForValidation(pattern);
+            _isReserved = pattern.Contains("**");
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
@@ -256,8 +258,75 @@ internal sealed class HttpRulePathPattern
             {
                 return null;
             }
-            // Escape everything except slashes
-            return string.Join("/", result.Split('/').Select(segment => Uri.EscapeDataString(segment)));
+            // Unescape the entire value first to prevent bypasses using URL-encoded slashes (e.g. %2f).
+            string unescapedVal = Uri.UnescapeDataString(result);
+            // Scan for '.' and '..' segments in place using char-index scanning to avoid heap allocations.
+            int valStart = 0;
+            while (valStart < unescapedVal.Length)
+            {
+                int nextSlash = unescapedVal.IndexOf('/', valStart);
+                int segmentLength = nextSlash == -1 ? unescapedVal.Length - valStart : nextSlash - valStart;
+
+                if (segmentLength == 1 && unescapedVal[valStart] == '.')
+                {
+                    if (!_isReserved)
+                    {
+                        throw new ArgumentException($"Invalid value '.' for {JsonFieldPath}");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
+                    }
+                }
+                if (segmentLength == 2 && unescapedVal[valStart] == '.' && unescapedVal[valStart + 1] == '.')
+                {
+                    if (!_isReserved)
+                    {
+                        throw new ArgumentException($"Invalid value '..' for {JsonFieldPath}");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
+                    }
+                }
+
+                if (nextSlash == -1)
+                {
+                    break;
+                }
+                valStart = nextSlash + 1;
+            }
+
+            // Escape everything except slashes.
+            // If the parameter contains no slashes, we can avoid splitting/rebuilding entirely.
+            int firstSlash = result.IndexOf('/');
+            if (firstSlash == -1)
+            {
+                return Uri.EscapeDataString(result);
+            }
+
+            // Otherwise, rebuild the string escaping each segment manually.
+            var builder = new StringBuilder(result.Length * 2);
+            int start = 0;
+            while (start < result.Length)
+            {
+                int nextSlash = result.IndexOf('/', start);
+                int length = nextSlash == -1 ? result.Length - start : nextSlash - start;
+
+                if (length > 0)
+                {
+                    builder.Append(Uri.EscapeDataString(result.Substring(start, length)));
+                }
+
+                if (nextSlash == -1)
+                {
+                    break;
+                }
+
+                builder.Append('/');
+                start = nextSlash + 1;
+            }
+            return builder.ToString();
         }
     }
 
