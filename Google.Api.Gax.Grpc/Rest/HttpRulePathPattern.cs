@@ -258,75 +258,28 @@ internal sealed class HttpRulePathPattern
             {
                 return null;
             }
-            // Unescape the entire value first to prevent bypasses using URL-encoded slashes (e.g. %2f).
-            string unescapedVal = Uri.UnescapeDataString(result);
-            // Scan for '.' and '..' segments in place using char-index scanning to avoid heap allocations.
-            int valStart = 0;
-            while (valStart < unescapedVal.Length)
-            {
-                int nextSlash = unescapedVal.IndexOf('/', valStart);
-                int segmentLength = nextSlash == -1 ? unescapedVal.Length - valStart : nextSlash - valStart;
 
-                if (segmentLength == 1 && unescapedVal[valStart] == '.')
+            // Escape each path segment individually to preserve slashes, while rejecting path traversal segments ('.' or '..').
+            // We unescape first to prevent path traversal bypasses via URL-encoded slashes (e.g. %2f).
+            string[] segments = Uri.UnescapeDataString(result).Split('/');
+            for (int i = 0; i < segments.Length; i++)
+            {
+                string segment = segments[i];
+                if (segment == "." || segment == "..")
                 {
                     if (!_isReserved)
                     {
-                        throw new ArgumentException($"Invalid value '.' for {JsonFieldPath}");
+                        throw new ArgumentException($"Invalid value '{segment}' for {JsonFieldPath}");
                     }
                     else
                     {
                         throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
                     }
                 }
-                if (segmentLength == 2 && unescapedVal[valStart] == '.' && unescapedVal[valStart + 1] == '.')
-                {
-                    if (!_isReserved)
-                    {
-                        throw new ArgumentException($"Invalid value '..' for {JsonFieldPath}");
-                    }
-                    else
-                    {
-                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
-                    }
-                }
-
-                if (nextSlash == -1)
-                {
-                    break;
-                }
-                valStart = nextSlash + 1;
+                segments[i] = Uri.EscapeDataString(segment);
             }
 
-            // Escape everything except slashes.
-            // If the parameter contains no slashes, we can avoid splitting/rebuilding entirely.
-            int firstSlash = result.IndexOf('/');
-            if (firstSlash == -1)
-            {
-                return Uri.EscapeDataString(result);
-            }
-
-            // Otherwise, rebuild the string escaping each segment manually.
-            var builder = new StringBuilder(result.Length * 2);
-            int start = 0;
-            while (start < result.Length)
-            {
-                int nextSlash = result.IndexOf('/', start);
-                int length = nextSlash == -1 ? result.Length - start : nextSlash - start;
-
-                if (length > 0)
-                {
-                    builder.Append(Uri.EscapeDataString(result.Substring(start, length)));
-                }
-
-                if (nextSlash == -1)
-                {
-                    break;
-                }
-
-                builder.Append('/');
-                start = nextSlash + 1;
-            }
-            return builder.ToString();
+            return string.Join("/", segments);
         }
     }
 
