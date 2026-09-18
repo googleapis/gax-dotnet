@@ -260,8 +260,7 @@ internal sealed class HttpRulePathPattern
             }
 
             // Escape each path segment individually to preserve slashes, while rejecting path traversal segments ('.' or '..').
-            // We unescape first to prevent path traversal bypasses via URL-encoded slashes (e.g. %2f).
-            string[] segments = Uri.UnescapeDataString(result).Split('/');
+            string[] segments = result.Split('/');
             for (int i = 0; i < segments.Length; i++)
             {
                 string segment = segments[i];

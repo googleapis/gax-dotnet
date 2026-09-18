@@ -73,9 +73,6 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         // Firestore documents (reserved double-wildcard path)
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../default")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db")]
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e/escape-db")]
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/..%2f..%2fescape-db")]
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e%2f%2e%2e%2fescape-db")]
         [InlineData("v1/{x=**}/indexes", "../escape-db")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/./child")]
         // Webhooks (multiple standard wildcards)
@@ -94,12 +91,11 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
                 request = new RuleTestRequest { X = xValue };
             }
             var exception = Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
-            string unescaped = Uri.UnescapeDataString(xValue);
 
             bool isReserved = pattern.Contains("**");
             bool hasDoubleDot = false;
             bool hasSingleDot = false;
-            foreach (var segment in unescaped.Split('/'))
+            foreach (var segment in xValue.Split('/'))
             {
                 if (segment == "..") hasDoubleDot = true;
                 if (segment == ".") hasSingleDot = true;
@@ -126,6 +122,8 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/my-file..txt", "v1/projects/sys-prod-123/databases/default/documents/my-file..txt/indexes")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc?key=val", "v1/projects/sys-prod-123/databases/default/documents/doc%3Fkey%3Dval/indexes")]
         [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc#frag", "v1/projects/sys-prod-123/databases/default/documents/doc%23frag/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/..%2f..%2fescape-db", "v1/projects/sys-prod-123/databases/default/documents/doc-1/..%252f..%252fescape-db/indexes")]
+        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/%2e%2e/escape-db", "v1/projects/sys-prod-123/databases/default/documents/doc-1/%252e%252e/escape-db/indexes")]
         public void ValidRealisticPatterns_Succeed(string pattern, string xValue, string expectedFormatResult)
         {
             var rulePathPattern = ParsePattern(pattern);
