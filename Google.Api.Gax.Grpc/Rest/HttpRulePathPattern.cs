@@ -127,7 +127,7 @@ internal sealed class HttpRulePathPattern
 
         private readonly Regex _validationRegex;
         private readonly Func<IMessage, string> _propertyAccessor;
-        private readonly bool _isReserved;
+        private readonly string _dotsErrorTemplate;
 
         /// <summary>
         /// Creates a segment representing the given field text, with respect to
