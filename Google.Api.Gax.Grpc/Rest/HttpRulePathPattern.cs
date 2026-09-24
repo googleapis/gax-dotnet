@@ -145,7 +145,9 @@ internal sealed class HttpRulePathPattern
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
             _validationRegex = ConvertPatternForValidation(pattern);
-            _isReserved = pattern.Contains("**");
+            _dotsErrorTemplate = pattern.EndsWith("**") ?
+                "Value for {0} must not contain segments that are exactly '{1}'." :
+                "Invalid value for {0} '{1}'.";
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
