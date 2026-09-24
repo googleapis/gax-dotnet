@@ -262,25 +262,14 @@ internal sealed class HttpRulePathPattern
             }
 
             // Escape each path segment individually to preserve slashes, while rejecting path traversal segments ('.' or '..').
-            string[] segments = result.Split('/');
-            for (int i = 0; i < segments.Length; i++)
+            return string.Join("/", result.Split('/').Select(segment =>
             {
-                string segment = segments[i];
                 if (segment == "." || segment == "..")
                 {
-                    if (!_isReserved)
-                    {
-                        throw new ArgumentException($"Invalid value '{segment}' for {JsonFieldPath}");
-                    }
-                    else
-                    {
-                        throw new ArgumentException($"Value for {JsonFieldPath} must not contain segments that are exactly . or ..");
-                    }
+                    throw new ArgumentException(string.Format(_dotsErrorTemplate, JsonFieldPath, segment));
                 }
-                segments[i] = Uri.EscapeDataString(segment);
-            }
-
-            return string.Join("/", segments);
+                return Uri.EscapeDataString(segment);
+            }));
         }
     }
 
