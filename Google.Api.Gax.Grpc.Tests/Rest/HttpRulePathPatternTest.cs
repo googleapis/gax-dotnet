@@ -66,51 +66,29 @@ namespace Google.Api.Gax.Grpc.Rest.Tests
             Assert.Throws<ArgumentException>(() => HttpRulePathPattern.Parse(pattern, RuleTestRequest.Descriptor));
         }        
 
+        public static TheoryData<string, string, string> PathTraversalAndInjectionData = ConvertTheoryData(new TheoryData<string, RuleTestRequest, string>
+        {
+            // Dialogflow session (standard single-wildcard segment)
+            { "v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", new RuleTestRequest { X = "projects/p/locations/l/agents/a/sessions/.." }, "Invalid value for x '..'." },
+            { "v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", new RuleTestRequest { X = "projects/p/locations/l/agents/a/sessions/." }, "Invalid value for x '.'." },
+            // Firestore documents (reserved double-wildcard path)
+            { "v1/{x=projects/*/databases/*/documents/**}/indexes", new RuleTestRequest { X = "projects/sys-prod-123/databases/default/documents/doc-1/../../default" }, "Value for x must not contain segments that are exactly '..'." },
+            { "v1/{x=projects/*/databases/*/documents/**}/indexes", new RuleTestRequest { X = "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db" }, "Value for x must not contain segments that are exactly '..'." },
+            { "v1/{x=**}/indexes", new RuleTestRequest { X = "../escape-db" }, "Value for x must not contain segments that are exactly '..'." },
+            { "v1/{x=projects/*/databases/*/documents/**}/indexes", new RuleTestRequest { X = "projects/sys-prod-123/databases/default/documents/doc-1/./child" }, "Value for x must not contain segments that are exactly '.'." },
+            // Webhooks (multiple standard wildcards)
+            { "v3/projects/{x}/webhooks/{nested.a}", new RuleTestRequest { X = "p1", Nested = new RuleTestRequest.Types.Nested { A = ".." } }, "Invalid value for nested.a '..'." },
+            { "v3/projects/{x}/webhooks/{nested.a}", new RuleTestRequest { X = "p1", Nested = new RuleTestRequest.Types.Nested { A = "." } }, "Invalid value for nested.a '.'." },
+        });
+
         [Theory]
-        // Dialogflow session (standard single-wildcard segment)
-        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/..")]
-        [InlineData("v3/{x=projects/*/locations/*/agents/*/sessions/*}:detectIntent", "projects/p/locations/l/agents/a/sessions/.")]
-        // Firestore documents (reserved double-wildcard path)
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../default")]
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/../../../../../../../escape-db")]
-        [InlineData("v1/{x=**}/indexes", "../escape-db")]
-        [InlineData("v1/{x=projects/*/databases/*/documents/**}/indexes", "projects/sys-prod-123/databases/default/documents/doc-1/./child")]
-        // Webhooks (multiple standard wildcards)
-        [InlineData("v3/projects/{x}/webhooks/{nested.a}", "..")]
-        [InlineData("v3/projects/{x}/webhooks/{nested.a}", ".")]
-        public void PathTraversalAndInjection_ThrowsArgumentException(string pattern, string xValue)
+        [MemberData(nameof(PathTraversalAndInjectionData))]
+        public void PathTraversalAndInjection_ThrowsArgumentException(string pattern, string requestJson, string expectedErrorMessage)
         {
             var rulePathPattern = ParsePattern(pattern);
-            RuleTestRequest request;
-            if (pattern.Contains("nested.a"))
-            {
-                request = new RuleTestRequest { X = "p1", Nested = new RuleTestRequest.Types.Nested { A = xValue } };
-            }
-            else
-            {
-                request = new RuleTestRequest { X = xValue };
-            }
+            var request = RuleTestRequest.Parser.ParseJson(requestJson);
             var exception = Assert.Throws<ArgumentException>(() => rulePathPattern.TryFormat(request));
-
-            bool isReserved = pattern.Contains("**");
-            bool hasDoubleDot = false;
-            bool hasSingleDot = false;
-            foreach (var segment in xValue.Split('/'))
-            {
-                if (segment == "..") hasDoubleDot = true;
-                if (segment == ".") hasSingleDot = true;
-            }
-
-            string paramName = pattern.Contains("nested.a") ? "nested.a" : "x";
-            if (!isReserved)
-            {
-                string matchedDot = hasDoubleDot ? ".." : (hasSingleDot ? "." : "");
-                Assert.StartsWith($"Invalid value '{matchedDot}' for {paramName}", exception.Message);
-            }
-            else
-            {
-                Assert.StartsWith($"Value for {paramName} must not contain segments that are exactly . or ..", exception.Message);
-            }
+            Assert.Equal(expectedErrorMessage, exception.Message);
         }
 
         [Theory]
