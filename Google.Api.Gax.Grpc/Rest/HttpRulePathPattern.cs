@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2020 Google LLC
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -127,6 +127,7 @@ internal sealed class HttpRulePathPattern
 
         private readonly Regex _validationRegex;
         private readonly Func<IMessage, string> _propertyAccessor;
+        private readonly string _dotsErrorTemplate;
 
         /// <summary>
         /// Creates a segment representing the given field text, with respect to
@@ -144,6 +145,9 @@ internal sealed class HttpRulePathPattern
             string fieldPath = bits[0];
             string pattern = bits.Length == 2 ? bits[1] : "*";
             _validationRegex = ConvertPatternForValidation(pattern);
+            _dotsErrorTemplate = pattern.EndsWith("**") ?
+                "Value for {0} must not contain segments that are exactly '{1}'." :
+                "Invalid value for {0} '{1}'.";
 
             string[] fieldNames = fieldPath.Split(s_fieldPathSeparator);
 
@@ -256,8 +260,16 @@ internal sealed class HttpRulePathPattern
             {
                 return null;
             }
-            // Escape everything except slashes
-            return string.Join("/", result.Split('/').Select(segment => Uri.EscapeDataString(segment)));
+
+            // Escape each path segment individually to preserve slashes, while rejecting path traversal segments ('.' or '..').
+            return string.Join("/", result.Split('/').Select(segment =>
+            {
+                if (segment == "." || segment == "..")
+                {
+                    throw new ArgumentException(string.Format(_dotsErrorTemplate, JsonFieldPath, segment));
+                }
+                return Uri.EscapeDataString(segment);
+            }));
         }
     }
 
