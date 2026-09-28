@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.15.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.15.0...Google.Api.Gax-4.15.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* Validate path parameters against path traversal dot segments ([#914](https://github.com/googleapis/gax-dotnet/issues/914)) ([503a728](https://github.com/googleapis/gax-dotnet/commit/503a72841363f57064a23a27e0da218064cbd700))
+
 ## [4.15.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.14.0...Google.Api.Gax-4.15.0) (2026-08-21)
 
 
