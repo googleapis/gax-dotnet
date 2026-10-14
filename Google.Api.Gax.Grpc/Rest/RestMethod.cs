@@ -10,6 +10,7 @@ using Google.Protobuf.Reflection;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -137,7 +138,9 @@ internal class RestMethod
     {
         resumableUploadPrefix = null;
         // TODO: This should examine the HttpRule associated to the method once that's possible.
-        bool isResumableUpload = s_resumableUploadAllowlist.Contains(methodFullName);
+        bool isResumableUpload = s_resumableUploadAllowlist.Any(allowed =>
+            methodFullName.StartsWith(allowed.Prefix, StringComparison.Ordinal)
+            && methodFullName.EndsWith(allowed.Suffix, StringComparison.Ordinal));
         if (isResumableUpload)
         {
             resumableUploadPrefix = apiMetadata.ResumableUploadPrefix;
@@ -148,11 +151,14 @@ internal class RestMethod
         return isResumableUpload;
     }
 
-    private static readonly HashSet<string> s_resumableUploadAllowlist = new HashSet<string>(StringComparer.Ordinal)
+    /// <summary>
+    /// The current allow list for resumable upload methods. The tuples contain the prefix and suffix
+    /// on supported full method names.
+    /// This is to avoid restricting resumable upload to specific Ads API versions.
+    /// </summary>
+    private static readonly (string Prefix, string Suffix)[] s_resumableUploadAllowlist = new[]
     {
-        "google.showcase.v1beta1.ResumableUploadService.UploadMedia",
-        "google.ads.googleads.v23.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
-        "google.ads.googleads.v24.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
-        "google.ads.googleads.v25.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload",
+        ( "google.showcase.v1beta1.", ".ResumableUploadService.UploadMedia" ),
+        ( "google.ads.googleads.", ".services.YouTubeVideoUploadService.CreateYouTubeVideoUpload" ),
     };
 }

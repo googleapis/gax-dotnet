@@ -96,7 +96,12 @@ public class RestMethodTest
     [InlineData("google.ads.googleads.v23.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
     [InlineData("google.ads.googleads.v24.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
     [InlineData("google.ads.googleads.v25.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v26.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v28-beta1.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
+    [InlineData("google.ads.googleads.v100.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", true, "/resumable/upload")]
     [InlineData("google.showcase.v1beta1.ResumableUploadService.OtherMethod", false, null)]
+    [InlineData("google.ads.googleads.v26.services.YouTubeVideoUploadService.OtherMethod", false, null)]
+    [InlineData("google.cloud.spanner.v1.services.YouTubeVideoUploadService.CreateYouTubeVideoUpload", false, null)]
     public void IsResumableUploadMethod(string methodFullName, bool expectedResult, string expectedPrefix)
     {
         var apiMetadata = TestApiMetadata.Test;
