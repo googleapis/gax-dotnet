@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.15.2](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.15.1...Google.Api.Gax-4.15.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* Relax detection of resumable upload methods. ([fabc8c4](https://github.com/googleapis/gax-dotnet/commit/fabc8c4b2aa907545934f0f98ba2913fb2597de9))
+
 ## [4.15.1](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.15.0...Google.Api.Gax-4.15.1) (2026-09-28)
 
 
