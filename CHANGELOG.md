@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.16.0](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.15.2...Google.Api.Gax-4.16.0) (2026-11-02)
+
+
+### Features
+
+* Update Auth and gRPC dependencies ([e344e9b](https://github.com/googleapis/gax-dotnet/commit/e344e9b4befed0f35f1d6d03326b9849e8c9389a))
+* Update protobuf version and regenerate protos ([583fe43](https://github.com/googleapis/gax-dotnet/commit/583fe43bd20223426d7617de4d6728d06c38d613))
+* Update System and Microsoft.Extensions dependencies ([e0eb2ed](https://github.com/googleapis/gax-dotnet/commit/e0eb2eda918b8ea0c9512b271fd093628353306e))
+
 ## [4.15.2](https://github.com/googleapis/gax-dotnet/compare/Google.Api.Gax-4.15.1...Google.Api.Gax-4.15.2) (2026-10-14)
 
 
