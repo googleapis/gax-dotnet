@@ -14,6 +14,7 @@ PROTOC_VERSION=3.31.0
 GRPC_VERSION=2.71.0
 PROTOC=$ROOT/packages/Google.Protobuf.Tools.$PROTOC_VERSION/tools/${OS}_x64/protoc${EXE_SUFFIX}
 CORE_PROTOS_ROOT=$ROOT/packages/Google.Protobuf.Tools.$PROTOC_VERSION/tools
+COMMON_PROTOS_ROOT=$ROOT/Google.Api.CommonProtos/protos
 GRPC_PLUGIN=$ROOT/packages/Grpc.Tools.$GRPC_VERSION/tools/windows_x64/grpc_csharp_plugin.exe
 
 # Nuget isn't working nicely for me on Linux...
@@ -75,7 +76,7 @@ rm -rf $OUTDIR
 (cd Google.Api.Gax.Grpc.IntegrationTests;
  $PROTOC --csharp_opt=file_extension=.g.cs --csharp_out=. \
          --grpc_opt=file_suffix=Grpc.g.cs --grpc_out=. \
-         -I. -I $CORE_PROTOS_ROOT -I ../googleapis \
+         -I. -I $CORE_PROTOS_ROOT -I $COMMON_PROTOS_ROOT \
          --plugin=protoc-gen-grpc=$GRPC_PLUGIN *.proto)
 
 (cd Google.Api.Gax.Grpc.Tests;
@@ -85,11 +86,11 @@ rm -rf $OUTDIR
  $PROTOC --csharp_opt=file_extension=.g.cs \
    --grpc_opt=file_suffix=Grpc.g.cs --grpc_out=. \
    --plugin=protoc-gen-grpc=$GRPC_PLUGIN \
-   --csharp_out=. -I. -I $CORE_PROTOS_ROOT -I ../../googleapis *.proto)
+   --csharp_out=. -I. -I $CORE_PROTOS_ROOT -I $COMMON_PROTOS_ROOT *.proto)
 
 (cd Google.Api.Gax.Grpc/Gcp;
  $PROTOC --csharp_opt=file_extension=.g.cs --csharp_out=. -I. *.proto)
 
 (cd Google.Api.Gax.Grpc/Rest;
  $PROTOC --csharp_opt=file_extension=.g.cs,internal_access \
-   --csharp_out=. -I. -I $CORE_PROTOS_ROOT -I ../../googleapis *.proto)
+   --csharp_out=. -I. -I $CORE_PROTOS_ROOT -I $COMMON_PROTOS_ROOT *.proto)
