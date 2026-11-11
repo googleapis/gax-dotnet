@@ -17,7 +17,7 @@
     <PackageVersion Include="Grpc.Core.Api" Version="[2.85.0, 3.0.0)" />
     <PackageVersion Include="Grpc.Net.Client" Version="[2.85.0, 3.0.0)" />
     <!-- Microsoft/System packages -->
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.14" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.15" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
@@ -28,6 +28,6 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <!-- Build-oriented packages -->
     <PackageVersion Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.404" />
   </ItemGroup>
 </Project>
